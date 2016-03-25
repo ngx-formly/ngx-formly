@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Angular2 playground</title>
+</head>
+
+<body>
+    <hello-app>Loading...</hello-app>
+</body>
+
+<!-- ES6-related imports -->
+<script src="/node_modules/angular2/bundles/angular2-polyfills.js"></script>
+<script src="/node_modules/es6-shim/es6-shim.min.js"></script>
+<script src="/node_modules/systemjs/dist/system.js"></script>
+<script>
+    //configure system loader
+    System.config({defaultJSExtensions: true});
+</script>
+<script src="/node_modules/rxjs/bundles/Rx.js"></script>
+<script src="/node_modules/angular2/bundles/angular2.min.js"></script>
+<script>
+    //bootstrap the Angular2 application
+    System.import('dist/hello').catch(console.log.bind(console));
+</script>
+
+</html>

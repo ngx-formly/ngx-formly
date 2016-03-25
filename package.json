@@ -1,34 +1,29 @@
 {
-  "name": "ng2-play",
-  "version": "0.0.0",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "gulp play"
-  },
+  "name": "ng2-formly",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "A minimal Angular2 formly implementation using TypeScript",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pkozlowski-opensource/ng2-play.git"
+    "url": "git+https://github.com/formly-js/angular2-formly.git"
   },
   "bugs": {
-    "url": "https://github.com/pkozlowski-opensource/ng2-play/issues"
+    "url": "https://github.com/formly-js/angular2-formly/issues"
   },
-  "homepage": "https://github.com/pkozlowski-opensource/ng2-play",
+  "homepage": "https://github.com/formly-js/angular2-formly#readme",
   "devDependencies": {
-    "connect": "^3.3.4",
-    "del": "~1.1.1",
-    "gulp": "~3.8.10",
-    "gulp-concat": "~2.5.0",
-    "gulp-plumber": "^1.0.0",
-    "gulp-rename": "~1.2.0",
-    "gulp-traceur": "0.17.*",
+    "connect": "^3.4.0",
+    "del": "^1.2.0",
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.8.0",
     "open": "0.0.5",
-    "serve-static": "~1.8.1",
-    "through2": "~0.6.3"
+    "serve-static": "^1.10.0"
   },
   "dependencies": {
-    "angular2": "2.0.0-alpha.18",
-    "zone.js": "0.4.1",
-    "es6-module-loader": "~0.11.0",
-    "systemjs": "~0.11.0"
+    "angular2": "2.0.0-beta.12",
+    "es6-shim": "0.35.0",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2",
+    "zone.js": "0.6.6",
+    "systemjs": "0.19.6"
   }
 }
