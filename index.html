@@ -3,6 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Angular2 playground</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+        .ng-invalid {
+            border: 1px solid red;
+        }
+        .ng-invalid:focus {
+            border: 1px solid red;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(233, 102, 102, 0.6);
+        }
+        .ng-untouched {
+            border: 1px solid green;
+        }
+        .ng-untouched:focus {
+            border: 1px solid green;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,7 +34,7 @@
     System.config({defaultJSExtensions: true});
 </script>
 <script src="/node_modules/rxjs/bundles/Rx.js"></script>
-<script src="/node_modules/angular2/bundles/angular2.min.js"></script>
+<script src="/node_modules/angular2/bundles/angular2.js"></script>
 <script>
     //bootstrap the Angular2 application
     System.import('dist/hello').catch(console.log.bind(console));

@@ -1,0 +1,6 @@
+<div class="form-group" [ngFormModel]="form" [ngClass]="{'has-error': !form.controls[key].valid}">
+    <label>{{options.label}}</label>
+    <input type="{{options.type}}" [ngControl]="key" class="form-control"  placeholder="{{options.placeholder}}" (keyup)="inputChange($event)">    
+    
+    <formly-message [control]="key"></formly-message>
+</div>
