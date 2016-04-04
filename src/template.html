@@ -1,0 +1,10 @@
+<div class="container">
+<h1>Example Demonstrating Formly</h1>
+<code>&lt;formly-form [model]="user" [fields]="userFields"&gt;&lt;/formly-form&gt;</code>
+<formly-form [model]="user" [fields]="userFields" (formSubmit)="console($event)" [changeEmitter]="Stream">
+    <button type="submit" class="btn btn-default" (click)="submit(user)">Button</button>
+</formly-form>
+<input type="text" [(ngModel)]="user.email">
+{{user | json}}
+<button (click)="showEmail()" class="btn btn-success">Show Email Field</button>
+</div>
