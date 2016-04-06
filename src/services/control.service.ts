@@ -1,5 +1,5 @@
 import {Injectable}   from 'angular2/core';
-import {ControlGroup, FormBuilder, Validators} from 'angular2/common';
+import {FormBuilder} from 'angular2/common';
 import {FieldBase} from './field.base';
 
 @Injectable()

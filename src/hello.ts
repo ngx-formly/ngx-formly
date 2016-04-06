@@ -1,26 +1,68 @@
+/// <reference path="./../typings/ng2-formly.d.ts" />
 import {Component} from 'angular2/core';
-import {ControlGroup, Validators} from 'angular2/common';
+import {Validators} from 'angular2/common';
 import {bootstrap} from 'angular2/platform/browser';
 import {FormlyForm} from './components/formly.form';
 import {ValidationService} from './validation.service';
 import {FormlyProviders} from './services/formly.providers'
 import {FormlyMessages} from './services/formly.messages';
 import { FormlyEventEmitter } from './services/formly.event.emitter';
+import {FormlyConfig} from "./services/formly.config";
+import {TemplateDirectives} from "./templates/templates";
+
+
+/*************************************************************
+    Interface for FormlyFields and FormlyTemplateOptions
+ *************************************************************/
+
+    interface IFormlyTemplateOptions {
+        type?: string;
+        label?: string;
+        placeholder?: string;
+        disabled?: Boolean
+    }
+    interface IFormlyFields {
+        key?: string;
+        className?: string;
+        fieldGroup?: Array<IFormlyFields>;
+        type?: string;
+        templateOptions?: IFormlyTemplateOptions;
+        validation?: Validators;
+        template?: string;
+        expressionProperties?:Object
+    }
+
 
 @Component({
     directives: [FormlyForm],
     selector: 'hello-app',
-    templateUrl: 'src/template.html'
+    templateUrl: 'src/template.html',
+    providers: [FormlyConfig]
 })
 export class HelloApp {
     
     Stream;
-    constructor(fm:FormlyMessages) {
+    constructor(fm:FormlyMessages, fc: FormlyConfig) {
         fm.addStringMessage('required', 'This field is required.');
         fm.addStringMessage('invalidEmailAddress', 'Invalid Email Address');
         fm.addStringMessage('maxlength', 'Maximum Length Exceeded.');
         fm.addStringMessage('minlength', 'Should have atleast 2 Characters');
         
+        function getFieldComponent(field) {
+            return 'formly-field-' + field;
+        }
+        
+        ['input', 'checkbox', 'radio', 'select'].forEach(function (field) {
+            fc.setType({
+                name: field,
+                component: TemplateDirectives[field]
+            });
+        });
+
+
+        
+
+
         this.Stream = new FormlyEventEmitter();
         
         setTimeout(() => {
@@ -34,9 +76,13 @@ export class HelloApp {
                     templateOptions: {
                         type: 'email',
                         label: 'Email address',
-                        placeholder: 'Enter email'
+                        placeholder: 'Enter email',
+                        disabled: true
                     },
-                    validation: Validators.compose([Validators.required, ValidationService.emailValidator])
+                    validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
+                    expressionProperties: {
+                        'templateOptions.disbled': '!model.password'
+                    }
                 }, {
                     className: 'col-xs-6',
                     key: 'password',
@@ -44,8 +90,7 @@ export class HelloApp {
                     templateOptions: {
                         type: 'password',
                         label: 'Password',
-                        placeholder: 'Password',
-                        pattern: ''
+                        placeholder: 'Password'
                     },
                     validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
                 }]
@@ -59,14 +104,16 @@ export class HelloApp {
                     type: 'input',
                     key: 'street',
                     templateOptions: {
-                        label: 'Street'
+                        label: 'Street',
+                        placeholder: '604 Causley Ave. '
                     }
                 }, {
                     className: 'col-xs-3',
                     type: 'input',
                     key: 'city',
                     templateOptions: {
-                        label: 'City'
+                        label: 'City',
+                        placeholder: 'Arlington'
                     }
                 }, {
                     className: 'col-xs-3',
@@ -74,7 +121,8 @@ export class HelloApp {
                     key: 'zip',
                     templateOptions: {
                         type: 'number',
-                        label: 'Zip'
+                        label: 'Zip',
+                        placeholder: '76010'
                     }
                 }]
             }, {
@@ -87,7 +135,7 @@ export class HelloApp {
             
             this.user = {
                 email: 'email@gmail.com',
-                checked: false
+                checked: 'off'
             };
             this.Stream.emit({
                 model: this.user,
@@ -95,18 +143,24 @@ export class HelloApp {
             });
         }, 0);
     }
-    user = {};
-    userFields: Array<Object> = [];
+    user:any = {};
+    userFields: Array<IFormlyFields> = [];
   
   console(data) {
       console.log(data);
   }
   
   showEmail() {
-      this.user.email = "baigan";
-      this.Stream.emit({});
+      this.user.email = "invalid";
+      this.user.checked = !this.user.checked;
+      this.Stream.emit({
+          model: this.user
+      });
   }
-  
+ 
+  changeEmail() {
+      this.Stream.emit({});
+  }  
   submit(user) {
       console.log(user);
   }

@@ -21,7 +21,7 @@ export class FormlyMessages {
     selector: 'formly-message',
     template: `<div *ngIf="errorMessage !== null">{{errorMessage}}</div>`
 })
-export class FormlyMessage {
+export class FormlyMessage{
     @Input() control: string;
     
     constructor(@Host() private _formDir: NgFormModel, protected fm: FormlyMessages) { }
