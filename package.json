@@ -1,7 +1,23 @@
 {
   "name": "ng2-formly",
-  "version": "1.0.0-SNAPSHOT",
-  "description": "A minimal Angular2 formly implementation using TypeScript",
+  "version": "0.0.0-semantically-released.0",
+  "author": "Mohammed Zama Khan <mohammedzamakhan@gmail.com>",
+  "contributors": [
+    "Mohammed Zama Khan <mohammedzamakhan@gmail.com>",
+    "Kent C. Dodds <kent@doddsfamily.us>"
+  ],
+  "keywords": [
+    "angular",
+    "forms",
+    "angular2-formly",
+    "formly",
+    "angular 2",
+    "angular 2 forms",
+    "json forms",
+    "form library"
+  ],
+  "license": "MIT",
+  "description": "angular2-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms. The formly-form Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formly-js/angular2-formly.git"
