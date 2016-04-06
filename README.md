@@ -10,14 +10,16 @@ angular2-formly is an Angular 2 module which has a Components to help customize 
 The `formly-form` Component and the `FormlyConfig` service are very powerful and bring unmatched maintainability to your
 application's forms.
 
-This is still a serious WIP.
+***This is still a serious WIP.***
 
+Include the FormlyForm in the `directives` attribute of you `Component` and put this in your template
 ```html
 <formly-form [model]="user" [fields]="userFields">
     <button type="submit" class="btn btn-default" (click)="submit(user)">Button</button>
 </formly-form>
 ```
 
+and in your TypeScript file define the the `model` and `fields` attrnbutes
 ```ts
 this.userFields = [{
   className: 'row',
@@ -65,7 +67,7 @@ your company) would be willing to contribute :-) You can support me [here](https
 
 ## Thanks
 
-A special thanks to [Kent C. Dodds](http://gonimbly.com) for giving me opportunity to work on this.
-This library is maintained (with love) by me, [Mohammed Zama Khan](https://twitter.com/mohammedzamakha).
+A special thanks to [Kent C. Dodds](https://twitter.com/kentcdodds) for giving me opportunity to work on this.
+This library is maintained (with love) by me, [Mohammed Zama Khan](https://twitter.com/mohamedzamakhan).
 Thanks to all [contributors](https://github.com/formly-js/angular2-formly/graphs/contributors)!
 If you're trying to find angular-formly, go [here](https://github.com/formly-js/angular-formly)
