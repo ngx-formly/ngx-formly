@@ -6,6 +6,11 @@
 Status: 
 [![Build Status](https://travis-ci.org/formly-js/angular2-formly.svg?branch=master)](https://travis-ci.org/formly-js/angular2-formly)
 
+Links:
+[![Gitter](https://badges.gitter.im/formly-js/angular2-formly.svg)](https://gitter.im/formly-js/angular2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+
 angular2-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms.
 The `formly-form` Component and the `FormlyConfig` service are very powerful and bring unmatched maintainability to your
 application's forms.
