@@ -1,5 +1,5 @@
-import {Component, Output, Input, EventEmitter, DoCheck} from 'angular2/core';
-import {FormlyMessages, FormlyMessage} from './../services/formly.messages';
+import {Output, Input, EventEmitter} from 'angular2/core';
+import {FormlyMessages} from './../services/formly.messages';
 import {FormlyPubSub} from './../services/formly.event.emitter';
 
 
@@ -13,8 +13,8 @@ export class Field{
             this.form = form;
         });
     }
-    inputChange(e) {
-        this.changeFn.emit(e.target.value);
+    inputChange(e, val) {
+        this.changeFn.emit(e.target[val]);
         this.ps.setUpdated(true);
     }
 }

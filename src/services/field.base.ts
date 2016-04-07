@@ -5,6 +5,7 @@ export class FieldBase<T>{
   validation;
   template: string;
   fieldGroup: Array<FieldBase<any>>;
+  className: string;
 
   constructor(options:{
       key?:string,
@@ -12,10 +13,7 @@ export class FieldBase<T>{
       templateOptions?:Object,
       validation?:any
     } = {}){
+    this.templateOptions = options.templateOptions || {};
     this.key = options.key || '';
-    this.controlType = options.controlType || '';
-    this.templateOptions = options.templateOptions || '';
-    this.validation = undefined;
-    this.template = undefined;
   }
 }

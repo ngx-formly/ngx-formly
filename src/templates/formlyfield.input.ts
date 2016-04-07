@@ -1,4 +1,4 @@
-import {Component, Output, Input, EventEmitter, DoCheck} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {FormlyMessages, FormlyMessage} from './../services/formly.messages';
 import {FormlyPubSub} from './../services/formly.event.emitter';
 import { Field } from './field';
