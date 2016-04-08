@@ -1,0 +1,5 @@
+<div class="radio" *ngFor="#option of options.options" [ngFormModel]="form">
+    <label for="">
+        <input type="radio" [ngControl]="key" value="{{option.value}}" [(ngModel)]="model" name="{{key}}" (change)="inputChange($event, 'value')"> {{option.label}}
+    </label>
+</div>

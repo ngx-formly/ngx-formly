@@ -29,7 +29,8 @@ import {TemplateDirectives} from "./templates/templates";
         templateOptions?: IFormlyTemplateOptions;
         validation?: Validators;
         template?: string;
-        expressionProperties?:Object
+        expressionProperties?:Object,
+        hideExpression?: boolean
     }
 
 
@@ -48,20 +49,12 @@ export class HelloApp {
         fm.addStringMessage('maxlength', 'Maximum Length Exceeded.');
         fm.addStringMessage('minlength', 'Should have atleast 2 Characters');
         
-        function getFieldComponent(field) {
-            return 'formly-field-' + field;
-        }
-        
         ['input', 'checkbox', 'radio', 'select'].forEach(function (field) {
             fc.setType({
                 name: field,
                 component: TemplateDirectives[field]
             });
         });
-
-
-        
-
 
         this.Stream = new FormlyEventEmitter();
         
@@ -70,7 +63,7 @@ export class HelloApp {
             this.userFields = [{
                 className: 'row',
                 fieldGroup: [{
-                    className: 'col-xs-6',
+                    className: 'col-xs-4',
                     key: 'email',
                     type: 'input',
                     templateOptions: {
@@ -84,7 +77,7 @@ export class HelloApp {
                         'templateOptions.disbled': '!model.password'
                     }
                 }, {
-                    className: 'col-xs-6',
+                    className: 'col-xs-4',
                     key: 'password',
                     type: 'input',
                     templateOptions: {
@@ -93,6 +86,21 @@ export class HelloApp {
                         placeholder: 'Password'
                     },
                     validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
+                }, {
+                    className: 'col-xs-4',
+                    key: 'select',
+                    type: 'select',
+                    templateOptions: {
+                        options: [{
+                            label: 'Male',
+                            value: 'male'
+                        }, {
+                            label: 'Female',
+                            value: 'female'
+                        }],
+                        label: 'Gender',
+                        placeholder: 'Select Gender'
+                    }
                 }]
             }, {
                 className: 'section-label',
@@ -135,7 +143,8 @@ export class HelloApp {
             
             this.user = {
                 email: 'email@gmail.com',
-                checked: 'off'
+                checked: 'off',
+                select: 'male'
             };
             this.Stream.emit({
                 model: this.user,
@@ -151,12 +160,15 @@ export class HelloApp {
   }
   
   showEmail() {
-      this.user.email = "invalid";
+      this.user.email = "mohammedzamakhan";
       this.user.checked = !this.user.checked;
       this.Stream.emit({
           model: this.user
       });
   }
+hide() {
+    this.userFields[0].hideExpression = !this.userFields[0].hideExpression;
+}
  
   changeEmail() {
       this.Stream.emit({});

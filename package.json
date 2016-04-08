@@ -1,9 +1,9 @@
 {
   "name": "ng2-formly",
-  "version": "0.0.0-semantically-released.0",
-  "author": "Mohammed Zama Khan <mohammedzamakhan@gmail.com>",
+  "version": "2.0.0-alpha.0",
+  "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
-    "Mohammed Zama Khan <mohammedzamakhan@gmail.com>",
+    "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
   "keywords": [

@@ -1,0 +1,7 @@
+<div class="select" [ngFormModel]="form">
+    <label for="">{{options.label}}</label>
+    <select [id]="key" [ngControl]="key" (change)="inputChange($event, 'value')" class="form-control">
+        <option value="" *ngIf="options.placeholder">{{options.placeholder}}</option>
+        <option *ngFor="#opt of options.options" [value]="opt.value">{{opt.label}}</option>
+    </select>
+</div>

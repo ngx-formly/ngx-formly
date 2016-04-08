@@ -17,6 +17,7 @@ import { FormlyCommon } from './formly.common.component';
                 <formly-field [model]="model" [key]="field.key" [form]="form" [field]="field" (changeFn)="changeFunction($event, field)"></formly-field>
             </div>
             <ng-content></ng-content>
+            {{form.valid}}
         </form>
     `,
     providers: [NgFormModel]
