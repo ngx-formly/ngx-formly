@@ -1,10 +1,11 @@
 <img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
 
 
-# angular2-formly
+# ng2-formly
 
 Status: 
 [![Build Status](https://travis-ci.org/formly-js/angular2-formly.svg?branch=master)](https://travis-ci.org/formly-js/angular2-formly)
+[![npm version](https://badge.fury.io/js/ng2-formly.svg)](https://badge.fury.io/js/ng2-formly)
 
 Links:
 [![Gitter](https://badges.gitter.im/formly-js/angular2-formly.svg)](https://gitter.im/formly-js/angular2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
