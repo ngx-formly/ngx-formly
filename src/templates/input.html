@@ -1,6 +1,6 @@
-<div class="form-group" [ngFormModel]="form" [ngClass]="{'has-error': !form.controls[key].valid}">
+<div class="form-group" [ngFormModel]="form" [ngClass]="{'has-error': !form.controls[key].valid && form.controls[key].dirty}">
     <label>{{options.label}}</label>
-    <input type="{{options.type}}" [ngControl]="key" class="form-control"  placeholder="{{options.placeholder}}" [disabled]="options.disabled" (keyup)="inputChange($event, 'value')" (change)="inputChange($event, 'value')">    
+    <input type="{{options.type}}" [ngControl]="key" class="form-control"  placeholder="{{options.placeholder}}" [disabled]="options.disabled" (keyup)="inputChange($event, 'value')" (change)="inputChange($event, 'value')" *ngIf="!options.hidden">
     
     <formly-message [control]="key"></formly-message>
 </div>
