@@ -4,7 +4,7 @@
 # ng2-formly
 
 Status: 
-[![Build Status](https://travis-ci.org/formly-js/angular2-formly.svg?branch=master)](https://travis-ci.org/formly-js/angular2-formly)
+[![Build Status](https://travis-ci.org/formly-js/angular2-formly.svg?branch=master)](https://travis-ci.org/formly-js/ng2-formly)
 [![npm version](https://badge.fury.io/js/ng2-formly.svg)](https://badge.fury.io/js/ng2-formly)
 
 Links:
