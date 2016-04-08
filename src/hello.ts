@@ -167,7 +167,7 @@ export class HelloApp {
       });
   }
 hide() {
-    this.userFields[0].hideExpression = !this.userFields[0].hideExpression;
+    this.userFields[0].fieldGroup[0].hideExpression = !this.userFields[0].fieldGroup[0].hideExpression;
 }
  
   changeEmail() {

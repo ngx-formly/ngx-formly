@@ -59,33 +59,30 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
             });
         }
     }
-    hideFn() {
-        this.elem.nativeElement.style.display = 'none';
-        for(var i = 0; i < this.field.fieldGroup.length; i++) {
-            this.ps.getEmitter([this.field.fieldGroup[i].key]).emit({
+    toggleFn(cond) {
+        this.elem.nativeElement.style.display = cond ? '' : 'none';
+        if (this.field.fieldGroup) {
+            for (var i = 0; i < this.field.fieldGroup.length; i++) {
+                this.ps.getEmitter([this.field.fieldGroup[i].key]).emit({
+                    key: 'hidden',
+                    value: !cond
+                });
+            }
+        } else {
+            this.ps.getEmitter(this.field.key).emit({
                 key: 'hidden',
-                value: true
-            });
-        }
-    }
-    showFn() {
-        this.elem.nativeElement.style.display = '';
-        for(var i = 0; i < this.field.fieldGroup.length; i++) {
-            this.ps.getEmitter([this.field.fieldGroup[i].key]).emit({
-                key: 'hidden',
-                value: false
-            });
+                value: !cond
+            })
         }
     }
     ngDoCheck() {
         if(this.field.hideExpression !== undefined && this.field.hideExpression !== this.hide)  {
             this.hide = this.field.hideExpression;
             if(this.hide) {
-                this.hideFn();
+                this.toggleFn(false);
             } else {
-                this.showFn();
+                this.toggleFn(true);
             }
-
         }
     }
 }

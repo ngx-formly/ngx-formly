@@ -35,7 +35,7 @@
     "serve-static": "^1.10.0"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.12",
+    "angular2": "2.0.0-beta.14",
     "es6-shim": "0.35.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
