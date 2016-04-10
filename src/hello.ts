@@ -9,6 +9,7 @@ import {FormlyMessages} from './services/formly.messages';
 import { FormlyEventEmitter } from './services/formly.event.emitter';
 import {FormlyConfig} from "./services/formly.config";
 import {TemplateDirectives} from "./templates/templates";
+import {FormlyBootstrap} from "./templates/formlyBootstrap";
 
 
 /*************************************************************
@@ -19,7 +20,8 @@ import {TemplateDirectives} from "./templates/templates";
         type?: string;
         label?: string;
         placeholder?: string;
-        disabled?: Boolean
+        disabled?: Boolean,
+        options?: Array<any>
     }
     interface IFormlyFields {
         key?: string;
@@ -29,10 +31,9 @@ import {TemplateDirectives} from "./templates/templates";
         templateOptions?: IFormlyTemplateOptions;
         validation?: Validators;
         template?: string;
-        expressionProperties?:Object,
-        hideExpression?: boolean
+        expressionProperties?:Object;
+        hideExpression?: boolean;
     }
-
 
 @Component({
     directives: [FormlyForm],
@@ -43,19 +44,19 @@ import {TemplateDirectives} from "./templates/templates";
 export class HelloApp {
     
     Stream;
-    constructor(fm:FormlyMessages, fc: FormlyConfig) {
+    constructor(fm: FormlyMessages, fc: FormlyConfig) {
+
         fm.addStringMessage('required', 'This field is required.');
         fm.addStringMessage('invalidEmailAddress', 'Invalid Email Address');
         fm.addStringMessage('maxlength', 'Maximum Length Exceeded.');
         fm.addStringMessage('minlength', 'Should have atleast 2 Characters');
-        
+
         ['input', 'checkbox', 'radio', 'select'].forEach(function (field) {
             fc.setType({
                 name: field,
                 component: TemplateDirectives[field]
             });
         });
-
         this.Stream = new FormlyEventEmitter();
         
         setTimeout(() => {
@@ -143,7 +144,7 @@ export class HelloApp {
             
             this.user = {
                 email: 'email@gmail.com',
-                checked: 'off',
+                checked: true,
                 select: 'male'
             };
             this.Stream.emit({
@@ -154,7 +155,7 @@ export class HelloApp {
     }
     user:any = {};
     userFields: Array<IFormlyFields> = [];
-  
+
   console(data) {
       console.log(data);
   }
@@ -178,4 +179,4 @@ hide() {
   }
 }
 
-bootstrap(HelloApp, [FormlyProviders]);
+bootstrap(HelloApp, [FormlyBootstrap, FormlyProviders]);

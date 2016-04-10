@@ -6,6 +6,9 @@
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
+  "scripts": {
+    "commit": "git-cz"
+  },
   "keywords": [
     "angular",
     "forms",
@@ -27,7 +30,9 @@
   },
   "homepage": "https://github.com/formly-js/angular2-formly#readme",
   "devDependencies": {
+    "commitizen": "^2.7.6",
     "connect": "^3.4.0",
+    "cz-conventional-changelog": "^1.1.5",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-typescript": "^2.8.0",
@@ -41,5 +46,8 @@
     "rxjs": "5.0.0-beta.2",
     "zone.js": "0.6.6",
     "systemjs": "0.19.6"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
   }
 }

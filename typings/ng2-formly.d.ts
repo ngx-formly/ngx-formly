@@ -1,4 +1,6 @@
-declare namespace formly {
+import {Validators} from 'angular2/common';
+
+
     interface IFormlyTemplateOptions {
         type?: string;
         label?: string;
@@ -14,4 +16,3 @@ declare namespace formly {
         template?: string;
         expressionProperties?:Object
     }
-}

@@ -1,5 +1,5 @@
 <div class="checkbox" [ngFormModel]="form">
     <label>
-        <input type="checkbox" [(ngModel)]="model" (change)="inputChange($event, 'checked')"> {{options.label}}
+        <input type="checkbox" [ngControl]="key" (change)="inputChange($event, 'checked')" value="on"> {{options.label}}
     </label>
 </div>
