@@ -31,7 +31,7 @@ export class FormlyMessage{
         let c = this._formDir.form.find(this.control);
 
         for (let propertyName in c.errors) {
-            if (c.errors.hasOwnProperty(propertyName) && c.dirty) {
+            if (c.errors.hasOwnProperty(propertyName)) {
               return this.fm.getValidatorErrorMessage(propertyName);
             }
         }

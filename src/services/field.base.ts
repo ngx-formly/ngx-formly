@@ -6,6 +6,7 @@ export class FieldBase<T>{
   template: string;
   fieldGroup: Array<FieldBase<any>>;
   className: string;
+    type: string;
 
   constructor(options:{
       key?:string,

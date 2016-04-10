@@ -5,6 +5,7 @@ import {
 import {FormlyCommon} from './formly.common.component';
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";
+import {FormlyForm} from "./formly.form";
 
 @Component({
     selector: 'formly-field',
@@ -13,7 +14,7 @@ import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter
         <div *ngIf="field.template" [innerHtml]="field.template"></div>
          <div class="formly-field"
             *ngFor="#f of field.fieldGroup">
-            <formly-field [hide]="f.hideExpression" [model]="model" [key]="f.key" [form]="form" [field]="f" (changeFn)="changeFunction($event, f)" [ngClass]="f.className"></formly-field>
+            <formly-field [hide]="f.hideExpression" [model]="model" [key]="f.key" [form]="form" [field]="f" (changeFn)="changeFunction($event, f)" [ngClass]="f.className" [eventEmitter]="eventEmitter"></formly-field>
         </div> 
     `,
     directives: [FormlyField]
@@ -24,10 +25,11 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
     @Input() key;
     @Input() form;
     @Input() field;
-    
+    @Input() eventEmitter;
+
     //Outputs
     @Output() changeFn: EventEmitter<any> = new EventEmitter();
-    
+
     //Local Variables
     directives;
     hide;
@@ -74,6 +76,10 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
                 value: !cond
             })
         }
+        this.eventEmitter.emit({
+            key: this.field.key,
+            value: !cond
+        });
     }
     ngDoCheck() {
         if(this.field.hideExpression !== undefined && this.field.hideExpression !== this.hide)  {
