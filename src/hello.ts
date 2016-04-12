@@ -33,6 +33,8 @@ import {FormlyBootstrap} from "./templates/formlyBootstrap";
         template?: string;
         expressionProperties?:Object;
         hideExpression?: boolean;
+        rows?: number;
+        cols?: number;
     }
 
 @Component({
@@ -51,7 +53,7 @@ export class HelloApp {
         fm.addStringMessage('maxlength', 'Maximum Length Exceeded.');
         fm.addStringMessage('minlength', 'Should have atleast 2 Characters');
 
-        ['input', 'checkbox', 'radio', 'select'].forEach(function (field) {
+        ['input', 'checkbox', 'radio', 'select', 'textarea'].forEach(function (field) {
             fc.setType({
                 name: field,
                 component: TemplateDirectives[field]
@@ -62,6 +64,18 @@ export class HelloApp {
         setTimeout(() => {
             
             this.userFields = [{
+                type: 'radio',
+                key: 'title',
+                templateOptions: {
+                    options: [{
+                        key: 'mr',
+                        value: 'Mr.'
+                    }, {
+                        key: 'mrs',
+                        value: 'Mrs'
+                    }]
+                }
+            }, {
                 className: 'row',
                 fieldGroup: [{
                     className: 'col-xs-4',
@@ -140,12 +154,21 @@ export class HelloApp {
                 templateOptions: {
                     label: 'Check me out'
                 }
+            }, {
+              key: 'textAreaVal',
+              type: 'textarea',
+              templateOptions: {
+                rows: 5,
+                placeholder: 'Type a paragraph...',
+                label: 'Message'
+              }
             }];
             
             this.user = {
                 email: 'email@gmail.com',
                 checked: true,
-                select: 'male'
+                select: 'male',
+                title: 'Mr.'
             };
             this.Stream.emit({
                 model: this.user,
