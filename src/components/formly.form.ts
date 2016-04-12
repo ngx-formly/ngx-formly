@@ -28,7 +28,7 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
     @Input() changeEmitter;
 
     //Local Variables
-    form: ControlGroup;
+    @Input() form: ControlGroup;
     event;
 
     constructor(private _cs: ControlService, private _fm: NgFormModel, private ps: FormlyPubSub) {

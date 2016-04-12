@@ -1,8 +1,8 @@
 <div class="container">
     <h1>Example Demonstrating Formly</h1>
-    <code>&lt;formly-form [model]="user" [fields]="userFields"&gt;&lt;/formly-form&gt;</code>
-    <formly-form [model]="user" [fields]="userFields" (formSubmit)="console($event)" [changeEmitter]="Stream">
-        <button type="submit" class="btn btn-default" (click)="submit(user)">Button</button>
+    <hr>
+    <formly-form [model]="user" [fields]="userFields" (formSubmit)="console($event)" [changeEmitter]="Stream" [form]="form">
+        <button type="submit" class="btn btn-primary" (click)="submit(user)">Button</button>
     </formly-form>
     <hr>
     <h3>Outside Formly</h3>
@@ -11,4 +11,24 @@
     <hr>
     <button (click)="showEmail()" class="btn btn-success">Change Email</button>
     <button (click)="hide()" class="btn btn-info">Hide Expression Toggle</button>
+
+
+    <div style="margin-top:30px">
+        <small>
+            This is an example for the
+            <a href="https://formly-js.github.io/ng2-formly">ng2-formly</a>
+            project made with ♥ by
+            <strong>
+          <span *ngIf="!author.name || !author.url">
+            {{vm.author.name || 'anonymous'}}
+          </span>
+                <a ng-if="vm.author.url" href="{{author.url}}">
+                    {{author.name}}
+                </a>
+            </strong>
+            <br />
+            This example is running angular version "{{env.angularVersion}}" and formly version "{{env.formlyVersion}}"
+        </small>
+    </div>
 </div>
+

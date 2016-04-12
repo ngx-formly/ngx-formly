@@ -10,6 +10,31 @@ import { FormlyEventEmitter } from './services/formly.event.emitter';
 import {FormlyConfig} from "./services/formly.config";
 import {TemplateDirectives} from "./templates/templates";
 import {FormlyBootstrap} from "./templates/formlyBootstrap";
+import { Field } from './templates/field';
+import {FormlyPubSub} from './services/formly.event.emitter';
+
+
+//Custom Input Field type 'toggle' Component Definition
+@Component({
+  selector: 'formly-field-toggle',
+  template: `
+    <div [ngFormModel]="form">
+      <div class="checkbox-toggle">
+          <input id="checkbox" type="checkbox" type="checkbox" [ngControl]="key" (change)="inputChange($event, 'checked')" value="on">
+          <label for="checkbox">
+              <div></div>
+          </label>
+      </div>
+  </div>
+  `
+})
+export class FormlyFieldToggle extends Field {
+
+  constructor(fm: FormlyMessages, ps:FormlyPubSub) {
+    super(fm, ps);
+  }
+
+}
 
 
 /*************************************************************
@@ -21,7 +46,10 @@ import {FormlyBootstrap} from "./templates/formlyBootstrap";
         label?: string;
         placeholder?: string;
         disabled?: Boolean,
-        options?: Array<any>
+        options?: Array<any>;
+        rows?: number;
+        cols?: number;
+        description?: string;
     }
     interface IFormlyFields {
         key?: string;
@@ -32,9 +60,7 @@ import {FormlyBootstrap} from "./templates/formlyBootstrap";
         validation?: Validators;
         template?: string;
         expressionProperties?:Object;
-        hideExpression?: boolean;
-        rows?: number;
-        cols?: number;
+        hideExpression?: boolean;    
     }
 
 @Component({
@@ -44,8 +70,10 @@ import {FormlyBootstrap} from "./templates/formlyBootstrap";
     providers: [FormlyConfig]
 })
 export class HelloApp {
-    
+    form;
     Stream;
+    author;
+    env;
     constructor(fm: FormlyMessages, fc: FormlyConfig) {
 
         fm.addStringMessage('required', 'This field is required.');
@@ -59,6 +87,19 @@ export class HelloApp {
                 component: TemplateDirectives[field]
             });
         });
+        this.author = {
+          name: 'Mohammed Zama Khan',
+          url: 'https://www.github.com/mohammedzamakhan'
+        };
+        this.env = {
+          angularVersion: "2.0.0-beta.14",
+          formlyVersion: "2.0.0-alpha.1"
+        };
+        fc.setType({
+          name: 'toggle',
+          component: FormlyFieldToggle
+        });
+
         this.Stream = new FormlyEventEmitter();
         
         setTimeout(() => {
@@ -73,7 +114,9 @@ export class HelloApp {
                     }, {
                         key: 'mrs',
                         value: 'Mrs'
-                    }]
+                    }],
+                    label: 'Title',
+                    description: 'Select a title that suits your description'
                 }
             }, {
                 className: 'row',
@@ -98,7 +141,8 @@ export class HelloApp {
                     templateOptions: {
                         type: 'password',
                         label: 'Password',
-                        placeholder: 'Password'
+                        placeholder: 'Password',
+                        focus: true
                     },
                     validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
                 }, {
@@ -128,7 +172,8 @@ export class HelloApp {
                     key: 'street',
                     templateOptions: {
                         label: 'Street',
-                        placeholder: '604 Causley Ave. '
+                        placeholder: '604 Causley Ave. ',
+                        description: 'Enter a valid US Address'
                     }
                 }, {
                     className: 'col-xs-3',
@@ -152,7 +197,8 @@ export class HelloApp {
                 key: 'checked',
                 type: 'checkbox',
                 templateOptions: {
-                    label: 'Check me out'
+                    label: 'Check me out',
+                    description: 'If you want to check me out, check this box'
                 }
             }, {
               key: 'textAreaVal',
@@ -160,7 +206,14 @@ export class HelloApp {
               templateOptions: {
                 rows: 5,
                 placeholder: 'Type a paragraph...',
-                label: 'Message'
+                label: 'Message',
+                description: 'Please enter atleast 150 characters'
+              }
+            }, {
+              key: 'toggleVal',
+              type: 'toggle',
+              templateOptions: {
+
               }
             }];
             
@@ -168,7 +221,8 @@ export class HelloApp {
                 email: 'email@gmail.com',
                 checked: true,
                 select: 'male',
-                title: 'Mr.'
+                title: 'Mr.',
+                toggleVal: true
             };
             this.Stream.emit({
                 model: this.user,
@@ -191,7 +245,7 @@ export class HelloApp {
       });
   }
 hide() {
-    this.userFields[0].fieldGroup[0].hideExpression = !this.userFields[0].fieldGroup[0].hideExpression;
+    this.userFields[1].fieldGroup[0].hideExpression = !this.userFields[1].fieldGroup[0].hideExpression;
 }
  
   changeEmail() {
