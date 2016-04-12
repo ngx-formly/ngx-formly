@@ -1,5 +1,5 @@
 import {Injectable}   from 'angular2/core';
-import {FormBuilder} from 'angular2/common';
+import {FormBuilder, RadioButtonState} from 'angular2/common';
 import {FieldBase} from './field.base';
 
 @Injectable()
@@ -11,14 +11,29 @@ export class ControlService {
 
     fields.forEach(field => {
       if(!field.template && !field.fieldGroup) {
-          group[field.key] =  [(field.type === 'checkbox')? (model[field.key]? 'on': undefined) : model[field.key] || '', field.key === key && value ? undefined : field.validation];
+          group[field.key] =  getControlGroup(this._fb, field);
       } else if(field.fieldGroup) {
           field.fieldGroup.forEach(f => {
-              group[f.key] =  [(f.type === 'checkbox')? (model[f.key]? 'on': undefined) : model[f.key] || '', f.key === key && value ? undefined : f.validation];
-
+              group[f.key] = getControlGroup(this._fb, f);
           })
       }
     });
+
+    function getControlGroup(formBuilder, field) {
+      var control;
+      if(field.type === 'radio') {
+        let group = {};
+        field.templateOptions.options.forEach(option => {
+          group[option.key] = [new RadioButtonState(model[field.key] === option.value , option.key)]
+        });
+        control = formBuilder.group(group);
+      } else {
+        control = [(field.type === 'checkbox')? (model[field.key]? 'on': undefined) : model[field.key] || '', field.key === key && value ? undefined : field.validation];
+      }
+
+      return control;
+    }
+
     return this._fb.group(group);
   }
 }

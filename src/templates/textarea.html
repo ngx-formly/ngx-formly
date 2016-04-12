@@ -1,0 +1,4 @@
+<div class="textarea" [ngFormModel]="form">
+    <label for="">{{options.label}}</label>
+    <textarea name="{{key}}" [ngControl]="key" id="{{key}}" cols="{{options.cols}}" rows="{{options.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')" placeholder="{{options.placeholder}}" class="form-control"></textarea>
+</div>
