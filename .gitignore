@@ -11,6 +11,6 @@ typings
 /src/**/*.js.map
 /src/**/*.d.ts
 
-ng2-formly.jsgit l
+ng2-formly.js
 ng2-formly.d.ts
 ng2-formly.js.map

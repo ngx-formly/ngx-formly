@@ -41,7 +41,7 @@ export class FormlyFieldToggle extends Field {
     Interface for FormlyFields and FormlyTemplateOptions
  *************************************************************/
 
-    interface IFormlyTemplateOptions {
+    interface FormlyTemplateOptions {
         type?: string;
         label?: string;
         placeholder?: string;
@@ -50,13 +50,14 @@ export class FormlyFieldToggle extends Field {
         rows?: number;
         cols?: number;
         description?: string;
+        focus?: boolean;
     }
-    interface IFormlyFields {
+    interface FormlyFields {
         key?: string;
         className?: string;
-        fieldGroup?: Array<IFormlyFields>;
+        fieldGroup?: Array<FormlyFields>;
         type?: string;
-        templateOptions?: IFormlyTemplateOptions;
+        templateOptions?: FormlyTemplateOptions;
         validation?: Validators;
         template?: string;
         expressionProperties?:Object;
@@ -231,7 +232,7 @@ export class HelloApp {
         }, 0);
     }
     user:any = {};
-    userFields: Array<IFormlyFields> = [];
+    private userFields: Array<FormlyFields> = [];
 
   console(data) {
       console.log(data);

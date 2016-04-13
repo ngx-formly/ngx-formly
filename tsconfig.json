@@ -1,15 +1,21 @@
 {
-  "version": "1.6.2",
+  "version": "1.8.9",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "declaration": false,
     "module": "system",
     "moduleResolution": "node",
     "removeComments": true,
-    "sourceMap": false
+    "sourceMap": false,
+    "noImplicitAny": false
   },
   "exclude": [
     "node_modules"
+  ],
+  "files": [
+    "./typings/browser.d.ts",
+    "./ng2-formly.ts"
   ]
 }

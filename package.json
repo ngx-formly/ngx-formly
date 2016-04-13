@@ -1,6 +1,6 @@
 {
   "name": "ng2-formly",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.5",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -13,7 +13,7 @@
     "flow.compile:system": "./.config/bundle-system.js",
     "flow.clean": "./node_modules/.bin/del dist \"dist/components\" \"dist/services\" \"dist/templates\"",
     "commit": "git-cz",
-    "prepublish": "npm run flow.clean"
+    "prepublish": "npm run flow.clean && npm run flow.compile"
   },
   "keywords": [
     "angular",
