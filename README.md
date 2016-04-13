@@ -60,6 +60,58 @@ this.user = {
             
 ```
 
+## Quick Start
+- install `ng2-formly`
+
+```bash
+  npm install ng2-formly --save
+```
+- add the script to the HTML file
+```html
+<!-- index.html -->
+<script src="node_modules/ng2-formly/bundles/ng2-formly.min.js"></script>
+
+```
+
+- and to your component add
+
+```ts
+import {Component} from 'angular2/core';
+import {bootstrap} from 'angular2/platform/browser';
+import {FormlyForm, FormlyConfig, FormlyMessages, TemplateDirectives, FormlyProviders} from 'ng2-formly/ng2-formly'
+
+@Component({
+    selector: 'hello-app',
+    template: `
+        <h1>Hello, {{name}}!</h1>
+        Say hello to: <input [value]="name" (input)="name = $event.target.value">
+        <formly-form [model]="user" [fields]="userFields"></formly-form>
+    `,
+    directives: [FormlyForm],
+    providers: [FormlyConfig, FormlyMessages]
+})
+export class HelloApp {
+    name: string = 'World';
+    user = {};
+    userFields;
+    constructor(fc: FormlyConfig) {
+        ['input', 'checkbox'].forEach((field) => {
+            fc.setType({
+                name: field,
+                component: TemplateDirectives[field]
+            })
+        });
+        
+        this.userFields = [{
+            key: 'nameOfPerson',
+            type: 'input',
+            templateOptions: {}
+        }]
+    }
+}
+
+bootstrap(HelloApp, [FormlyProviders]);
+```
 From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
 
 ## Roadmap
