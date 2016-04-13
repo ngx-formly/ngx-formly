@@ -2,3 +2,15 @@
 node_modules
 npm-debug.log
 dist
+typings
+/bundles
+/demo/**/*.js
+/demo/**/*.js.map
+/demo/**/*.d.ts
+/src/**/*.js
+/src/**/*.js.map
+/src/**/*.d.ts
+
+ng2-formly.js
+ng2-formly.d.ts
+ng2-formly.js.map

@@ -19,7 +19,7 @@ import { FormlyCommon } from './formly.common.component';
             <ng-content></ng-content>
         </form>
     `,
-    providers: [NgFormModel]
+    providers: [NgFormModel, FormlyPubSub, ControlService]
 })
 export class FormlyForm extends FormlyCommon implements OnInit  {
     
@@ -36,6 +36,9 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
         this.event = new FormlyEventEmitter();
     }
     ngOnInit(){
+        if(!this.model) {
+            this.model = {};
+        }
         this.form = this._cs.toControlGroup(this.fields, this.model, undefined, undefined);
         if(this.changeEmitter) {
             this.changeEmitter.subscribe((info) => {

@@ -1,13 +1,19 @@
 {
   "name": "ng2-formly",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.5",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
   "scripts": {
-    "commit": "git-cz"
+    "flow.install:typings": "./node_modules/.bin/typings install",
+    "flow.compile": "npm run flow.install:typings && npm run flow.compile:common && npm run flow.compile:system ",
+    "flow.compile:common": "./node_modules/.bin/tsc",
+    "flow.compile:system": "./.config/bundle-system.js",
+    "flow.clean": "./node_modules/.bin/del dist \"dist/components\" \"dist/services\" \"dist/templates\"",
+    "commit": "git-cz",
+    "prepublish": "npm run flow.clean && npm run flow.compile"
   },
   "keywords": [
     "angular",
@@ -33,11 +39,16 @@
     "commitizen": "^2.7.6",
     "connect": "^3.4.0",
     "cz-conventional-changelog": "^1.1.5",
-    "del": "^1.2.0",
+    "del": "^2.2.0",
+    "del-cli": "^0.2.0",
     "gulp": "^3.9.0",
     "gulp-typescript": "^2.8.0",
     "open": "0.0.5",
-    "serve-static": "^1.10.0"
+    "serve-static": "^1.10.0",
+    "systemjs-builder": "^0.15.15",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "typings": "^0.7.12"
   },
   "dependencies": {
     "angular2": "2.0.0-beta.14",

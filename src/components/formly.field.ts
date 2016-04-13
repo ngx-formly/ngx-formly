@@ -5,7 +5,6 @@ import {
 import {FormlyCommon} from './formly.common.component';
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";
-import {FormlyForm} from "./formly.form";
 
 @Component({
     selector: 'formly-field',
