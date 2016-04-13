@@ -8,6 +8,20 @@
 
     <style>
 
+        pre {
+            display: block;
+            padding: 9.5px;
+            margin: 0 0 10px;
+            font-size: 13px;
+            line-height: 1.42857143;
+            color: #333;
+            word-break: break-all;
+            word-wrap: break-word;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+        }
+
         .c-select {
             display: block;
             width: 100%;
@@ -79,9 +93,10 @@
 </script>
 <script src="/node_modules/rxjs/bundles/Rx.js"></script>
 <script src="/node_modules/angular2/bundles/angular2.js"></script>
+<script src="../bundles/ng2-formly.js"></script>
 <script>
     //bootstrap the Angular2 application
-    System.import('dist/hello').catch(console.log.bind(console));
+    System.import('hello').catch(console.log.bind(console));
 </script>
 
 </html>

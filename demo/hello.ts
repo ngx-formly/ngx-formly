@@ -2,16 +2,16 @@
 import {Component} from 'angular2/core';
 import {Validators} from 'angular2/common';
 import {bootstrap} from 'angular2/platform/browser';
-import {FormlyForm} from './components/formly.form';
+import {FormlyForm} from './../src/components/formly.form';
 import {ValidationService} from './validation.service';
-import {FormlyProviders} from './services/formly.providers'
-import {FormlyMessages} from './services/formly.messages';
-import { FormlyEventEmitter } from './services/formly.event.emitter';
-import {FormlyConfig} from "./services/formly.config";
-import {TemplateDirectives} from "./templates/templates";
-import {FormlyBootstrap} from "./templates/formlyBootstrap";
-import { Field } from './templates/field';
-import {FormlyPubSub} from './services/formly.event.emitter';
+import {FormlyProviders} from './../src/services/formly.providers'
+import {FormlyMessages} from './../src/services/formly.messages';
+import { FormlyEventEmitter } from './../src/services/formly.event.emitter';
+import {FormlyConfig} from "./../src/services/formly.config";
+import {TemplateDirectives} from "./../src/templates/templates";
+import {FormlyBootstrap} from "./../src/templates/formlyBootstrap";
+import { Field } from './../src/templates/field';
+import {FormlyPubSub} from './../src/services/formly.event.emitter';
 
 
 //Custom Input Field type 'toggle' Component Definition
@@ -66,8 +66,8 @@ export class FormlyFieldToggle extends Field {
 @Component({
     directives: [FormlyForm],
     selector: 'hello-app',
-    templateUrl: 'src/template.html',
-    providers: [FormlyConfig]
+    templateUrl: '../demo/template.html',
+    providers: [FormlyConfig, FormlyMessages]
 })
 export class HelloApp {
     form;
