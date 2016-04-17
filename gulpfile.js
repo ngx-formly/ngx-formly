@@ -1,7 +1,8 @@
 var gulp = require('gulp');
 
 var PATHS = {
-    src: 'src/**/*.ts'
+    src: 'src/**/*.ts',
+    demo: 'demo/**/*.ts'
 };
 
 gulp.task('clean', function (done) {
@@ -18,6 +19,21 @@ gulp.task('ts2js', function () {
         .pipe(typescript(tscConfig.compilerOptions));
 
     return tsResult.js.pipe(gulp.dest('dist'));
+});
+
+gulp.task('test', function (done) {
+    var karmaServer = require('karma').Server;
+    new karmaServer({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
+
+gulp.task('tdd', function (done) {
+    var karmaServer = require('karma').Server;
+    new karmaServer({
+        configFile: __dirname + '/karma.conf.js'
+    }, done).start();
 });
 
 gulp.task('play', ['ts2js'], function () {
