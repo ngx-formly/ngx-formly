@@ -1,4 +1,4 @@
-import {Subject} from 'rxjs/Subject';
+import {Subject} from "rxjs/Subject";
 
 export class FormlyEventEmitter extends Subject<String> {
     constructor() {
@@ -16,7 +16,7 @@ export class FormlyPubSub {
     constructor() {
         this.Stream = new FormlyEventEmitter();
     }
-    
+
     getUpdated() {
         return this.updated;
     }

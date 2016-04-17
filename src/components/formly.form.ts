@@ -1,12 +1,12 @@
-import {Component, OnInit, Input} from 'angular2/core';
-import {ControlGroup, NgFormModel} from 'angular2/common';
-import {FormlyField} from './formly.field';
-import {ControlService} from './../services/control.service';
-import {FormlyPubSub, FormlyEventEmitter} from './../services/formly.event.emitter';
-import { FormlyCommon } from './formly.common.component';
+import {Component, OnInit, Input} from "angular2/core";
+import {ControlGroup, NgFormModel} from "angular2/common";
+import {FormlyField} from "./formly.field";
+import {ControlService} from "./../services/control.service";
+import {FormlyPubSub, FormlyEventEmitter} from "./../services/formly.event.emitter";
+import { FormlyCommon } from "./formly.common.component";
 
 @Component({
-    selector: 'formly-form',
+    selector: "formly-form",
     directives: [FormlyField],
     template: `
         <form class="formly"
@@ -22,12 +22,11 @@ import { FormlyCommon } from './formly.common.component';
     providers: [NgFormModel, FormlyPubSub, ControlService]
 })
 export class FormlyForm extends FormlyCommon implements OnInit  {
-    
-    //Inputs
+    // Inputs
     @Input() fields;
     @Input() changeEmitter;
 
-    //Local Variables
+    // Local Variables
     @Input() form: ControlGroup;
     event;
 
@@ -35,29 +34,29 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
         super();
         this.event = new FormlyEventEmitter();
     }
-    ngOnInit(){
-        if(!this.model) {
+    ngOnInit() {
+        if (!this.model) {
             this.model = {};
         }
         this.form = this._cs.toControlGroup(this.fields, this.model, undefined, undefined);
-        if(this.changeEmitter) {
+        if (this.changeEmitter) {
             this.changeEmitter.subscribe((info) => {
-                if(info.model) {
+                if (info.model) {
                     this.model = info.model;
                 }
-                if(info.fields) {
+                if (info.fields) {
                     this.fields = info.fields;
                 }
                 this.form = this._cs.toControlGroup(this.fields, this.model, undefined, undefined);
                 this.ps.Stream.emit(this.form);
-            })
+            });
         }
         this.event.subscribe((info) => {
             this.form = this._cs.toControlGroup(this.fields, this.model, info.key, info.value);
             this.ps.Stream.emit(this.form);
         });
     }
-    changeFunction(value, field){
+    changeFunction(value, field) {
         this.model[field.key] = value;
         this.formSubmit.emit(value);
     }

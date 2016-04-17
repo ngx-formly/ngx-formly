@@ -1,7 +1,9 @@
 var gulp = require('gulp');
+var karmaServer = require('karma').Server;
 
 var PATHS = {
-    src: 'src/**/*.ts'
+    src: 'src/**/*.ts',
+    demo: 'demo/**/*.ts'
 };
 
 gulp.task('clean', function (done) {
@@ -14,10 +16,22 @@ gulp.task('ts2js', function () {
     var tscConfig = require('./tsconfig.json');
 
     var tsResult = gulp
-        .src([PATHS.src, 'node_modules/angular2/typings/browser.d.ts'])
+        .src([PATHS.src, 'node_modules/angular2/typings/browser.d.ts', PATHS.demo])
         .pipe(typescript(tscConfig.compilerOptions));
 
     return tsResult.js.pipe(gulp.dest('dist'));
+});
+
+gulp.task("tslint", function() {
+    var tslint = require("gulp-tslint");
+
+    gulp.src(PATHS.src)
+        .pipe(tslint())
+        .pipe(tslint.report("verbose"))
+
+    gulp.src(PATHS.demo)
+        .pipe(tslint())
+        .pipe(tslint.report("verbose"))
 });
 
 gulp.task('play', ['ts2js'], function () {
