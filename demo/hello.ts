@@ -82,7 +82,7 @@ export class HelloApp {
         fm.addStringMessage("maxlength", "Maximum Length Exceeded.");
         fm.addStringMessage("minlength", "Should have atleast 2 Characters");
 
-        ["input", "checkbox", "radio", "select", "textarea"].forEach(function (field) {
+        ["input", "checkbox", "radio", "select", "textarea", "multicheckbox"].forEach(function (field) {
             fc.setType({
                 name: field,
                 component: TemplateDirectives[field]
@@ -106,6 +106,20 @@ export class HelloApp {
         setTimeout(() => {
 
             this.userFields = [{
+                type: 'multicheckbox',
+                key: 'interest',
+                templateOptions: {
+                    options: [{
+                        key: 'sports',
+                        value: 'Sports'
+                    }, {
+                        key: 'movies',
+                        value: 'Movies'
+                    }],
+                    label: 'Interest',
+                    description: 'Select areas which you are interested'
+                }
+            },  {
                 type: "radio",
                 key: "title",
                 templateOptions: {
@@ -224,7 +238,9 @@ export class HelloApp {
                 checked: true,
                 select: "male",
                 title: "Mr.",
-                toggleVal: true
+                toggleVal: true,
+                interest: {"movies": false,
+                    "sports": true}
             };
             this.Stream.emit({
                 model: this.user,

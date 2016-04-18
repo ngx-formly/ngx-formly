@@ -27,8 +27,16 @@ export class ControlService {
           group[option.key] = [new RadioButtonState(model[field.key] === option.value , option.key)];
         });
         control = formBuilder.group(group);
+      } else if(field.type === 'multicheckbox') {
+        let group = {};
+        field.templateOptions.options.forEach(option => {
+          group[option.key] = [model[field.key]? model[field.key][option.key]: undefined]
+        });
+        control = formBuilder.group(group);
+      } else if (field.type === 'checkbox') {
+        control = [(model[field.key]? 'on': undefined), field.key === key && value ? undefined : field.validation];
       } else {
-        control = [(field.type === "checkbox") ? (model[field.key] ? "on" : undefined) : model[field.key] || "", field.key === key && value ? undefined : field.validation];
+        control = [model[field.key] || '', field.key === key && value ? undefined : field.validation];
       }
 
       return control;
