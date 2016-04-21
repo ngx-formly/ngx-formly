@@ -5,7 +5,7 @@ import {ControlService} from "./services/control.service";
 import {FormlyMessage, FormlyMessages} from "./services/formly.messages";
 import {FormlyCommon} from "./components/formly.common.component";
 import {FormlyForm} from "./components/formly.form";
-import {FormlyField} from './components/formly.field';
+import {FormlyField} from "./components/formly.field";
 import {FormlyProviders} from "./services/formly.providers";
 
 export {FieldBase} from "./services/field.base";
@@ -15,5 +15,5 @@ export {ControlService} from "./services/control.service";
 export {FormlyMessage, FormlyMessages} from "./services/formly.messages";
 export {FormlyCommon} from "./components/formly.common.component";
 export {FormlyForm} from "./components/formly.form";
-export {FormlyField} from './components/formly.field';
+export {FormlyField} from "./components/formly.field";
 export {FormlyProviders} from "./services/formly.providers";

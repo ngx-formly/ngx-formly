@@ -1,13 +1,13 @@
 import {
     Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ElementRef,
     DoCheck
-} from 'angular2/core';
-import {FormlyCommon} from './formly.common.component';
+} from "angular2/core";
+import {FormlyCommon} from "./formly.common.component";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";
 
 @Component({
-    selector: 'formly-field',
+    selector: "formly-field",
     template: `
         <div #child></div>
         <div *ngIf="field.template" [innerHtml]="field.template"></div>
@@ -19,17 +19,17 @@ import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter
     directives: [FormlyField]
 })
 export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
-    //Inputs and Outputs
+    // Inputs and Outputs
     @Input() model;
     @Input() key;
     @Input() form;
     @Input() field;
     @Input() eventEmitter;
 
-    //Outputs
+    // Outputs
     @Output() changeFn: EventEmitter<any> = new EventEmitter();
 
-    //Local Variables
+    // Local Variables
     directives;
     hide;
     update;
@@ -39,19 +39,19 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
         this.directives = fc.getDirectives();
      }
     ngOnInit() {
-        if(this.field.hideExpression) {
+        if (this.field.hideExpression) {
             this.hide = true;
         } else {
             this.hide = false;
         }
-        if(!!this.field.hideExpression || this.field.hideExpression === undefined && !this.field.template && !this.field.fieldGroup) {
+        if (!!this.field.hideExpression || this.field.hideExpression === undefined && !this.field.template && !this.field.fieldGroup) {
             this.update = new FormlyEventEmitter();
             this.ps.setEmitter(this.key, this.update);
-            this.dcl.loadIntoLocation(this.directives[this.field.type], this.elem, 'child').then(ref => {
+            this.dcl.loadIntoLocation(this.directives[this.field.type], this.elem, "child").then(ref => {
                 ref.instance.model = this.model[this.field.key];
                 ref.instance.type = this.field.type;
                 ref.instance.options = this.field.templateOptions;
-                ref.instance.changeFn.subscribe((value)=> {
+                ref.instance.changeFn.subscribe((value) => {
                     this.changeFn.emit(value);
                 });
                 ref.instance.key = this.key;
@@ -61,19 +61,19 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
         }
     }
     toggleFn(cond) {
-        this.elem.nativeElement.style.display = cond ? '' : 'none';
+        this.elem.nativeElement.style.display = cond ? "" : "none";
         if (this.field.fieldGroup) {
-            for (var i = 0; i < this.field.fieldGroup.length; i++) {
+            for (let i = 0; i < this.field.fieldGroup.length; i++) {
                 this.ps.getEmitter([this.field.fieldGroup[i].key]).emit({
-                    key: 'hidden',
+                    key: "hidden",
                     value: !cond
                 });
             }
         } else {
             this.ps.getEmitter(this.field.key).emit({
-                key: 'hidden',
+                key: "hidden",
                 value: !cond
-            })
+            });
         }
         this.eventEmitter.emit({
             key: this.field.key,
@@ -81,9 +81,9 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
         });
     }
     ngDoCheck() {
-        if(this.field.hideExpression !== undefined && this.field.hideExpression !== this.hide)  {
+        if (this.field.hideExpression !== undefined && this.field.hideExpression !== this.hide)  {
             this.hide = this.field.hideExpression;
-            if(this.hide) {
+            if (this.hide) {
                 this.toggleFn(false);
             } else {
                 this.toggleFn(true);

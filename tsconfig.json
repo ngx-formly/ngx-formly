@@ -16,6 +16,7 @@
   ],
   "files": [
     "./typings/browser.d.ts",
-    "./ng2-formly.ts"
+    "./ng2-formly.ts",
+    "./demo/hello.ts"
   ]
 }

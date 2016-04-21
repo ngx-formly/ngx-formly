@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit, AfterContentInit, AfterViewInit} from 'angular2/core';
-import {FormlyMessages, FormlyMessage} from './../services/formly.messages';
-import {FormlyPubSub} from './../services/formly.event.emitter';
-import { Field } from './field';
+import {Component, ElementRef, OnInit, AfterContentInit, AfterViewInit} from "angular2/core";
+import {FormlyMessages, FormlyMessage} from "./../services/formly.messages";
+import {FormlyPubSub} from "./../services/formly.event.emitter";
+import { Field } from "./field";
 
 @Component({
-    selector: 'formly-field-input',
+    selector: "formly-field-input",
     template: `
         <div class="form-group" [ngFormModel]="form" [ngClass]="{'has-danger': !form.controls[key].valid}">
             <label attr.for="{{key}}" class="form-control-label">{{options.label}}</label>
@@ -15,15 +15,15 @@ import { Field } from './field';
     `,
     directives: [FormlyMessage]
 })
-export class FormlyFieldInput extends Field implements AfterViewInit{
+export class FormlyFieldInput extends Field implements AfterViewInit {
 
-    
-    constructor(fm: FormlyMessages, ps:FormlyPubSub, private elem: ElementRef) {
+
+    constructor(fm: FormlyMessages, ps: FormlyPubSub, private elem: ElementRef) {
         super(fm, ps);
     }
     ngAfterViewInit() {
         if(this.options.focus) {
-            this.elem.nativeElement.querySelector('input').focus();
+            this.elem.nativeElement.querySelector("input").focus();
         }
     }
 }

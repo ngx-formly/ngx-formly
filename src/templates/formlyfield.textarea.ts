@@ -4,7 +4,7 @@ import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 @Component({
-  selector: 'formly-field-textarea',
+  selector: "formly-field-textarea",
   template: `
     <fieldset class="form-group" [ngFormModel]="form">
         <label attr.for="{{key}}">{{options.label}}</label>
@@ -12,13 +12,13 @@ import {Field} from "./field";
         <small class="text-muted">{{options.description}}</small>
     </fieldset>`
 })
-export class FormlyFieldTextArea extends Field implements AfterViewInit{
-  constructor(fm: FormlyMessages, ps:FormlyPubSub, private  elem: ElementRef) {
+export class FormlyFieldTextArea extends Field implements AfterViewInit {
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, private  elem: ElementRef) {
     super(fm, ps);
   }
   ngAfterViewInit() {
-    if(this.options.focus) {
-      this.elem.nativeElement.querySelector('textarea').focus();
+    if (this.options.focus) {
+      this.elem.nativeElement.querySelector("textarea").focus();
     }
   }
 }

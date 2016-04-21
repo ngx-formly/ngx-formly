@@ -1,14 +1,14 @@
-import {Injectable}   from 'angular2/core';
-import {Component, Host, Input} from 'angular2/core';
-import {NgFormModel} from 'angular2/common';
+import {Injectable}   from "angular2/core";
+import {Component, Host, Input} from "angular2/core";
+import {NgFormModel} from "angular2/common";
 
 @Injectable()
 export class FormlyMessages {
   messages = {};
-  constructor(){ }
-  addStringMessage(validator, message){
+  constructor() { }
+  addStringMessage(validator, message) {
       this.messages[validator] = message;
-  } 
+  }
   getMessages() {
       return this.messages;
   }
@@ -18,12 +18,12 @@ export class FormlyMessages {
 }
 
 @Component({
-    selector: 'formly-message',
+    selector: "formly-message",
     template: `<div *ngIf="errorMessage !== null">{{errorMessage}}</div>`
 })
-export class FormlyMessage{
+export class FormlyMessage {
     @Input() control: string;
-    
+
     constructor(@Host() private _formDir: NgFormModel, protected fm: FormlyMessages) { }
 
 
@@ -35,7 +35,7 @@ export class FormlyMessage{
               return this.fm.getValidatorErrorMessage(propertyName);
             }
         }
-        
+
         return null;
     }
 }

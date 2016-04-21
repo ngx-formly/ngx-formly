@@ -1,6 +1,6 @@
 export class FieldBase<T>{
-  key:string;
-  controlType:string;
+  key: string;
+  controlType: string;
   templateOptions;
   validation;
   template: string;
@@ -8,13 +8,13 @@ export class FieldBase<T>{
   className: string;
     type: string;
 
-  constructor(options:{
-      key?:string,
-      controlType?:string,
-      templateOptions?:Object,
-      validation?:any
-    } = {}){
+  constructor(options: {
+      key?: string,
+      controlType?: string,
+      templateOptions?: Object,
+      validation?: any
+    } = {}) {
     this.templateOptions = options.templateOptions || {};
-    this.key = options.key || '';
+    this.key = options.key || "";
   }
 }
