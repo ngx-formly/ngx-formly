@@ -1,12 +1,12 @@
 import {Injectable}   from "angular2/core";
-import {FormBuilder, RadioButtonState} from "angular2/common";
+import {FormBuilder, ControlGroup, RadioButtonState} from "angular2/common";
 import {FieldBase} from "./field.base";
 
 @Injectable()
 export class ControlService {
   constructor(private _fb: FormBuilder) { }
 
-  toControlGroup(fields: FieldBase<any>[], model, key, value ) {
+  toControlGroup(fields: FieldBase<any>[], model, key, value ): ControlGroup {
     let group = {};
 
     fields.forEach(field => {
