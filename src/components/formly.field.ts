@@ -1,5 +1,5 @@
 import {
-    Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ElementRef,
+    Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ViewContainerRef,
     DoCheck
 } from "angular2/core";
 import {FormlyCommon} from "./formly.common.component";
@@ -34,7 +34,7 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
     hide;
     update;
 
-    constructor(protected dcl: DynamicComponentLoader, protected elem: ElementRef, fc: FormlyConfig, protected ps: FormlyPubSub) {
+    constructor(protected dcl: DynamicComponentLoader, protected elem: ViewContainerRef, fc: FormlyConfig, protected ps: FormlyPubSub) {
         super();
         this.directives = fc.getDirectives();
      }
@@ -47,7 +47,9 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
         if (!!this.field.hideExpression || this.field.hideExpression === undefined && !this.field.template && !this.field.fieldGroup) {
             this.update = new FormlyEventEmitter();
             this.ps.setEmitter(this.key, this.update);
-            this.dcl.loadIntoLocation(this.directives[this.field.type], this.elem, "child").then(ref => {
+            this.dcl.loadNextToLocation(this.directives[this.field.type], this.elem)
+            // this.dcl.loadIntoLocation(this.directives[this.field.type], this.elem, "child")
+            .then(ref => {
                 ref.instance.model = this.model[this.field.key];
                 ref.instance.type = this.field.type;
                 ref.instance.options = this.field.templateOptions;
@@ -61,7 +63,7 @@ export class FormlyField extends FormlyCommon implements OnInit, DoCheck {
         }
     }
     toggleFn(cond) {
-        this.elem.nativeElement.style.display = cond ? "" : "none";
+        this.elem.element.nativeElement.style.display = cond ? "" : "none";
         if (this.field.fieldGroup) {
             for (let i = 0; i < this.field.fieldGroup.length; i++) {
                 this.ps.getEmitter([this.field.fieldGroup[i].key]).emit({
