@@ -12,7 +12,7 @@ import { FormlyCommon } from "./formly.common.component";
         <form class="formly"
             role="form" novalidate [ngFormModel]="form">
             <div class="formly-field"
-                *ngFor="#field of fields"
+                *ngFor="let field of fields"
                 [ngClass]="field.className">
                 <formly-field [model]="model" [key]="field.key" [form]="form" [field]="field" (changeFn)="changeFunction($event, field)" [eventEmitter]="event"></formly-field>
             </div>

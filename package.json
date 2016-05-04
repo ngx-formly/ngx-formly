@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/formly-js/angular2-formly#readme",
   "devDependencies": {
+    "async": "^1.5.2",
     "commitizen": "^2.7.6",
     "connect": "^3.4.0",
     "cz-conventional-changelog": "^1.1.5",
@@ -61,12 +62,12 @@
     "typings": "^0.7.12"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.14",
+    "angular2": "2.0.0-beta.17",
     "es6-shim": "0.35.0",
     "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.2",
-    "zone.js": "0.6.6",
-    "systemjs": "0.19.6"
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "~0.6.12",
+    "systemjs": "~0.19.25"
   },
   "config": {
     "commitizen": {
