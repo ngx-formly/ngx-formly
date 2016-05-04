@@ -10,7 +10,7 @@ import {Field} from "./field";
             <label for="" class="form-control-label">{{options.label}}</label>
             <select [id]="key" [ngControl]="key" (change)="inputChange($event, 'value')" class="c-select">
                 <option value="" *ngIf="options.placeholder">{{options.placeholder}}</option>
-                <option *ngFor="#opt of options.options" [value]="opt.value">{{opt.label}}</option>
+                <option *ngFor="let opt of options.options" [value]="opt.value">{{opt.label}}</option>
             </select>
             <small class="text-muted">{{options.description}}</small>
         </div>
