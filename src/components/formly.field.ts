@@ -1,5 +1,5 @@
 import {
-    Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ElementRef, 
+    Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ElementRef,
     ViewContainerRef, ViewChild, DoCheck, Directive
 } from "angular2/core";
 import {FormlyCommon} from "./formly.common.component";
