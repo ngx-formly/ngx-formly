@@ -8,7 +8,7 @@
     "module": "system",
     "moduleResolution": "node",
     "removeComments": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "noImplicitAny": false
   },
   "exclude": [

@@ -106,20 +106,6 @@ export class HelloApp {
         setTimeout(() => {
 
             this.userFields = [{
-                type: "multicheckbox",
-                key: "interest",
-                templateOptions: {
-                    options: [{
-                        key: "sports",
-                        value: "Sports"
-                    }, {
-                        key: "movies",
-                        value: "Movies"
-                    }],
-                    label: "Interest",
-                    description: "Select areas which you are interested"
-                }
-            },  {
                 type: "radio",
                 key: "title",
                 templateOptions: {
@@ -214,6 +200,23 @@ export class HelloApp {
                 templateOptions: {
                     label: "Check me out",
                     description: "If you want to check me out, check this box"
+                }
+            }, {
+                type: "multicheckbox",
+                key: "interest",
+                templateOptions: {
+                    options: [{
+                        key: "sports",
+                        value: "Sports"
+                    }, {
+                        key: "movies",
+                        value: "Movies"
+                    }, {
+                        key: "none",
+                        value: "None"
+                    }],
+                    label: "Interest",
+                    description: "Select areas which you are interested"
                 }
             }, {
               key: "textAreaVal",
