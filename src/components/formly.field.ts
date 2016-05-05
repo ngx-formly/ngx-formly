@@ -7,10 +7,10 @@ import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";
 
 @Directive({
-  selector: '[child-host]',
+  selector: "[child-host]"
 })
 export class DivComponent {
-  constructor(public viewContainer:ViewContainerRef){ }
+  constructor(public viewContainer: ViewContainerRef) { }
 }
 
 @Component({
@@ -40,14 +40,14 @@ export class FormlyField extends FormlyCommon implements DoCheck {
     directives;
     hide;
     update;
-    
+
     @ViewChild(DivComponent) myChild: DivComponent;
 
     constructor(protected dcl: DynamicComponentLoader, protected elem: ElementRef, fc: FormlyConfig, protected ps: FormlyPubSub) {
         super();
         this.directives = fc.getDirectives();
      }
-     
+
      ngAfterViewInit() {
         if (this.field.hideExpression) {
             this.hide = true;

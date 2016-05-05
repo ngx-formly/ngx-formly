@@ -22,7 +22,7 @@ export class FormlyFieldInput extends Field implements AfterViewInit {
         super(fm, ps);
     }
     ngAfterViewInit() {
-        if(this.options.focus) {
+        if (this.options.focus) {
             this.elem.nativeElement.querySelector("input").focus();
         }
     }

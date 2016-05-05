@@ -5,7 +5,7 @@ import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 
 @Component({
-    selector: 'formly-field-multicheckbox',
+    selector: "formly-field-multicheckbox",
     template: `
         <div [ngFormModel]="form">
             <div [ngControlGroup]="key" class="form-group">
@@ -25,7 +25,7 @@ export class FormlyFieldMultiCheckbox extends Field {
 
     @Input() model: Object;
 
-    constructor(fm: FormlyMessages, private fps:FormlyPubSub) {
+    constructor(fm: FormlyMessages, private fps: FormlyPubSub) {
         super(fm, fps);
     }
 
