@@ -10,6 +10,8 @@ typings
 /src/**/*.js
 /src/**/*.js.map
 /src/**/*.d.ts
+/test/**/*.js
+/test/**/*.js.map
 
 ng2-formly.js
 ng2-formly.d.ts
