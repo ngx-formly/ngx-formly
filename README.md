@@ -18,7 +18,7 @@ application's forms.
 
 ***This is still a serious WIP.***
 
-Include the FormlyForm in the `directives` attribute of you `Component` and put this in your template
+Include the FormlyForm component import in the `directives` attribute of your `Component` and put this in your template
 ```html
 <formly-form [model]="user" [fields]="userFields">
     <button type="submit" class="btn btn-default" (click)="submit(user)">Button</button>
