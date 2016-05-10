@@ -5,6 +5,7 @@ import {
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";
+import {FormlyFieldVisibilityDelegate} from "../services/formly.field.visibility";
 
 @Directive({
   selector: "[child-host]"
@@ -40,21 +41,22 @@ export class FormlyField extends FormlyCommon implements DoCheck {
     directives;
     hide;
     update;
+    visibilityDelegate;
 
     @ViewChild(DivComponent) myChild: DivComponent;
 
     constructor(protected dcl: DynamicComponentLoader, protected elem: ElementRef, fc: FormlyConfig, protected ps: FormlyPubSub) {
         super();
         this.directives = fc.getDirectives();
+        this.visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
      }
 
      ngAfterViewInit() {
-        if (this.field.hideExpression) {
-            this.hide = true;
-        } else {
-            this.hide = false;
-        }
-        if (!!this.field.hideExpression || this.field.hideExpression === undefined && !this.field.template && !this.field.fieldGroup) {
+
+         //TODO support this.formlyField.field.hideExpression as a callback/observable
+        this.hide = this.field.hideExpression? true : false;
+
+        if (!this.field.template && !this.field.fieldGroup) {
             this.update = new FormlyEventEmitter();
             this.ps.setEmitter(this.key, this.update);
             this.dcl.loadNextToLocation(this.directives[this.field.type], this.myChild.viewContainer)
@@ -71,34 +73,35 @@ export class FormlyField extends FormlyCommon implements DoCheck {
             });
         }
     }
-    toggleFn(cond) {
-        this.elem.nativeElement.style.display = cond ? "" : "none";
+    isHidden() {
+        return this.hide;
+    }
+    setHidden(cond: boolean) {
+        this.hide = cond;
+
+        this.elem.nativeElement.style.display = cond ? "none" : "";
         if (this.field.fieldGroup) {
             for (let i = 0; i < this.field.fieldGroup.length; i++) {
-                this.ps.getEmitter([this.field.fieldGroup[i].key]).emit({
-                    key: "hidden",
-                    value: !cond
-                });
+                this.psEmit(this.field.fieldGroup[i].key,"hidden", this.hide);
             }
         } else {
-            this.ps.getEmitter(this.field.key).emit({
-                key: "hidden",
-                value: !cond
-            });
+            this.psEmit(this.field.key, "hidden", this.hide);
         }
         this.eventEmitter.emit({
             key: this.field.key,
-            value: !cond
+            value: this.hide
         });
     }
     ngDoCheck() {
-        if (this.field.hideExpression !== undefined && this.field.hideExpression !== this.hide)  {
-            this.hide = this.field.hideExpression;
-            if (this.hide) {
-                this.toggleFn(false);
-            } else {
-                this.toggleFn(true);
-            }
+        this.visibilityDelegate.checkVisibilityChange();
+    }
+
+    private psEmit(fieldKey:string, eventKey:string, value:any) {
+        if(this.ps && this.ps.getEmitter(fieldKey) && this.ps.getEmitter(fieldKey).emit){
+            this.ps.getEmitter(fieldKey).emit({
+                key: eventKey,
+                value: value
+            });
         }
     }
 }
