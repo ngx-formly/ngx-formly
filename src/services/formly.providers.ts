@@ -3,7 +3,7 @@ import {FormlyPubSub} from "./formly.event.emitter";
 import {FormlyMessages} from "./formly.messages";
 
 export const FormlyProviders = [
-    ControlService,
-    FormlyPubSub,
-    FormlyMessages
+  ControlService,
+  FormlyPubSub,
+  FormlyMessages
 ];

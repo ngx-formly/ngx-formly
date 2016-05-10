@@ -9,11 +9,11 @@ export class FieldBase<T> {
   type: string;
 
   constructor(options: {
-      key?: string,
-      controlType?: string,
-      templateOptions?: Object,
-      validation?: any
-    } = {}) {
+    key?: string,
+    controlType?: string,
+    templateOptions?: Object,
+    validation?: any
+  } = {}) {
     this.templateOptions = options.templateOptions || {};
     this.key = options.key || "";
   }
