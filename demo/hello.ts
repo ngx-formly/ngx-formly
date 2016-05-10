@@ -93,8 +93,8 @@ export class HelloApp {
       url: "https://www.github.com/mohammedzamakhan"
     };
     this.env = {
-      angularVersion: "2.0.0-beta.14",
-      formlyVersion: "2.0.0-alpha.1"
+      angularVersion: "2.0.0-beta.17",
+      formlyVersion: "2.0.0-alpha.5"
     };
     fc.setType({
       name: "toggle",
