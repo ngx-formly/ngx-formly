@@ -6,10 +6,10 @@ import {FormlyFieldTextArea} from "./formlyfield.textarea";
 import {FormlyFieldMultiCheckbox} from "./formlyfield.multicheckbox";
 
 export const TemplateDirectives = {
-    input: FormlyFieldInput,
-    checkbox: FormlyFieldCheckbox,
-    radio: FormlyFieldRadio,
-    select: FormlyFieldSelect,
-    textarea: FormlyFieldTextArea,
-    multicheckbox: FormlyFieldMultiCheckbox
+  input: FormlyFieldInput,
+  checkbox: FormlyFieldCheckbox,
+  radio: FormlyFieldRadio,
+  select: FormlyFieldSelect,
+  textarea: FormlyFieldTextArea,
+  multicheckbox: FormlyFieldMultiCheckbox
 };

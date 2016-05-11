@@ -4,8 +4,8 @@ import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
 
 @Component({
-    selector: "formly-field-checkbox",
-    template: `
+  selector: "formly-field-checkbox",
+  template: `
       <div class="form-group">
           <div [ngFormModel]="form">
               <label class="c-input c-checkbox">
@@ -19,8 +19,8 @@ import {FormlyPubSub} from "./../services/formly.event.emitter";
 })
 export class FormlyFieldCheckbox extends Field {
 
-      constructor(fm: FormlyMessages, ps: FormlyPubSub) {
-        super(fm, ps);
-    }
+  constructor(fm: FormlyMessages, ps: FormlyPubSub) {
+    super(fm, ps);
+  }
 
 }
