@@ -4,7 +4,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "declaration": true,
+    "declaration": false,
     "module": "system",
     "moduleResolution": "node",
     "removeComments": true,

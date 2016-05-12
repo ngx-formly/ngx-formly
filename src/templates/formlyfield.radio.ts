@@ -4,8 +4,8 @@ import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 @Component({
-    selector: "formly-field-radio",
-    template: `
+  selector: "formly-field-radio",
+  template: `
         <div [ngFormModel]="form">
             <div [ngControlGroup]="key" class="form-group">
                 <label class="form-control-label" for="">{{options.label}}</label>
@@ -21,7 +21,7 @@ import {Field} from "./field";
     `
 })
 export class FormlyFieldRadio extends Field {
-    constructor(fm: FormlyMessages, ps: FormlyPubSub) {
-        super(fm, ps);
-    }
+  constructor(fm: FormlyMessages, ps: FormlyPubSub) {
+    super(fm, ps);
+  }
 }

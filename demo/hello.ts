@@ -38,253 +38,254 @@ export class FormlyFieldToggle extends Field {
 
 
 /*************************************************************
-    Interface for FormlyFields and FormlyTemplateOptions
+ Interface for FormlyFields and FormlyTemplateOptions
  *************************************************************/
 
-    interface FormlyTemplateOptions {
-        type?: string;
-        label?: string;
-        placeholder?: string;
-        disabled?: Boolean;
-        options?: Array<any>;
-        rows?: number;
-        cols?: number;
-        description?: string;
-        focus?: boolean;
-    }
-    interface FormlyFields {
-        key?: string;
-        className?: string;
-        fieldGroup?: Array<FormlyFields>;
-        type?: string;
-        templateOptions?: FormlyTemplateOptions;
-        validation?: Validators;
-        template?: string;
-        expressionProperties?: Object;
-        hideExpression?: boolean | string | (()=>boolean);
-    }
+interface FormlyTemplateOptions {
+  type?: string;
+  label?: string;
+  placeholder?: string;
+  disabled?: Boolean;
+  options?: Array<any>;
+  rows?: number;
+  cols?: number;
+  description?: string;
+  focus?: boolean;
+}
+interface FormlyFields {
+  key?: string;
+  className?: string;
+  fieldGroup?: Array<FormlyFields>;
+  type?: string;
+  templateOptions?: FormlyTemplateOptions;
+  validation?: Validators;
+  template?: string;
+  expressionProperties?: Object;
+  hideExpression?: boolean | string | (() => boolean);
+}
 
 @Component({
-    directives: [FormlyForm],
-    selector: "hello-app",
-    templateUrl: "../demo/template.html",
-    providers: [FormlyConfig, FormlyMessages]
+  directives: [FormlyForm],
+  selector: "hello-app",
+  templateUrl: "../demo/template.html",
+  providers: [FormlyConfig, FormlyMessages]
 })
 export class HelloApp {
-    form;
-    Stream;
-    author;
-    env;
-    constructor(fm: FormlyMessages, fc: FormlyConfig) {
+  form;
+  Stream;
+  author;
+  env;
+  constructor(fm: FormlyMessages, fc: FormlyConfig) {
 
-        fm.addStringMessage("required", "This field is required.");
-        fm.addStringMessage("invalidEmailAddress", "Invalid Email Address");
-        fm.addStringMessage("maxlength", "Maximum Length Exceeded.");
-        fm.addStringMessage("minlength", "Should have atleast 2 Characters");
+    fm.addStringMessage("required", "This field is required.");
+    fm.addStringMessage("invalidEmailAddress", "Invalid Email Address");
+    fm.addStringMessage("maxlength", "Maximum Length Exceeded.");
+    fm.addStringMessage("minlength", "Should have atleast 2 Characters");
 
-        ["input", "checkbox", "radio", "select", "textarea", "multicheckbox"].forEach(function (field) {
-            fc.setType({
-                name: field,
-                component: TemplateDirectives[field]
-            });
-        });
-        this.author = {
-          name: "Mohammed Zama Khan",
-          url: "https://www.github.com/mohammedzamakhan"
-        };
-        this.env = {
-          angularVersion: "2.0.0-beta.17",
-          formlyVersion: "2.0.0-alpha.5"
-        };
-        fc.setType({
-          name: "toggle",
-          component: FormlyFieldToggle
-        });
+    ["input", "checkbox", "radio", "select", "textarea", "multicheckbox"].forEach(function (field) {
+      fc.setType({
+        name: field,
+        component: TemplateDirectives[field]
+      });
+    });
+    this.author = {
+      name: "Mohammed Zama Khan",
+      url: "https://www.github.com/mohammedzamakhan"
+    };
+    this.env = {
+      angularVersion: "2.0.0-beta.17",
+      formlyVersion: "2.0.0-alpha.5"
+    };
+    fc.setType({
+      name: "toggle",
+      component: FormlyFieldToggle
+    });
 
-        this.Stream = new FormlyEventEmitter();
+    this.Stream = new FormlyEventEmitter();
 
-        setTimeout(() => {
+    setTimeout(() => {
 
-            this.userFields = [{
-                type: "radio",
-                key: "title",
-                templateOptions: {
-                    options: [{
-                        key: "mr",
-                        value: "Mr."
-                    }, {
-                        key: "mrs",
-                        value: "Mrs"
-                    }],
-                    label: "Title",
-                    description: "Select a title that suits your description"
-                }
+      this.userFields = [{
+        type: "radio",
+        key: "title",
+        templateOptions: {
+          options: [{
+            key: "mr",
+            value: "Mr."
+          }, {
+            key: "mrs",
+            value: "Mrs"
+          }],
+          label: "Title",
+          description: "Select a title that suits your description"
+        }
+      }, {
+        className: "row",
+        fieldGroup: [{
+          className: "col-xs-4",
+          key: "email",
+          type: "input",
+          templateOptions: {
+            type: "email",
+            label: "Email address",
+            placeholder: "Enter email",
+            disabled: true
+          },
+          validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
+          expressionProperties: {
+            "templateOptions.disbled": "!model.password"
+          }
+        }, {
+          className: "col-xs-4",
+          key: "password",
+          type: "input",
+          templateOptions: {
+            type: "password",
+            label: "Password",
+            placeholder: "Password",
+            focus: true
+          },
+          validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
+        }, {
+          className: "col-xs-4",
+          key: "select",
+          type: "select",
+          templateOptions: {
+            options: [{
+              label: "Male",
+              value: "male"
             }, {
-                className: "row",
-                fieldGroup: [{
-                    className: "col-xs-4",
-                    key: "email",
-                    type: "input",
-                    templateOptions: {
-                        type: "email",
-                        label: "Email address",
-                        placeholder: "Enter email",
-                        disabled: true
-                    },
-                    validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
-                    expressionProperties: {
-                        "templateOptions.disbled": "!model.password"
-                    }
-                }, {
-                    className: "col-xs-4",
-                    key: "password",
-                    type: "input",
-                    templateOptions: {
-                        type: "password",
-                        label: "Password",
-                        placeholder: "Password",
-                        focus: true
-                    },
-                    validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
-                }, {
-                    className: "col-xs-4",
-                    key: "select",
-                    type: "select",
-                    templateOptions: {
-                        options: [{
-                            label: "Male",
-                            value: "male"
-                        }, {
-                            label: "Female",
-                            value: "female"
-                        }],
-                        label: "Gender",
-                        placeholder: "Select Gender"
-                    }
-                }]
-            }, {
-                className: "section-label",
-                template: "</hr /><div><strong>Address:</strong></div>"
-            }, {
-                className: "row",
-                fieldGroup: [{
-                    className: "col-xs-6",
-                    type: "input",
-                    key: "street",
-                    templateOptions: {
-                        label: "Street",
-                        placeholder: "604 Causley Ave. ",
-                        description: "Enter a valid US Address"
-                    }
-                }, {
-                    className: "col-xs-3",
-                    type: "input",
-                    key: "city",
-                    templateOptions: {
-                        label: "City",
-                        placeholder: "Arlington"
-                    }
-                }, {
-                    className: "col-xs-3",
-                    type: "input",
-                    key: "zip",
-                    templateOptions: {
-                        type: "number",
-                        label: "Zip",
-                        placeholder: "76010"
-                    }
-                }]
-            }, {
-                key: "checked",
-                type: "checkbox",
-                templateOptions: {
-                    label: "Check me out",
-                    description: "If you want to check me out, check this box"
-                }
-            }, {
-                type: "multicheckbox",
-                key: "interest",
-                templateOptions: {
-                    options: [{
-                        key: "sports",
-                        value: "Sports"
-                    }, {
-                        key: "movies",
-                        value: "Movies"
-                    }, {
-                        key: "others",
-                        value: "Others"
-                    }],
-                    label: "Interest",
-                    description: "Select areas which you are interested"
-                }
-            }, {
-                key: "otherInterest",
-                type: "textarea",
-                hideExpression: "!this.model.interest.others",
-                templateOptions: {
-                    rows: 5,
-                    cols: 20,
-                    placeholder: "Type a paragraph about your interest...",
-                    label: "Other Interest"
-                }
-            }, {
-              key: "textAreaVal",
-              type: "textarea",
-              templateOptions: {
-                rows: 5,
-                cols: 20,
-                placeholder: "Type a paragraph...",
-                label: "Message",
-                description: "Please enter atleast 150 characters"
-              }
-            }, {
-              key: "toggleVal",
-              type: "toggle",
-              templateOptions: {
+              label: "Female",
+              value: "female"
+            }],
+            label: "Gender",
+            placeholder: "Select Gender"
+          }
+        }]
+      }, {
+        className: "section-label",
+        template: "</hr /><div><strong>Address:</strong></div>"
+      }, {
+        className: "row",
+        fieldGroup: [{
+          className: "col-xs-6",
+          type: "input",
+          key: "street",
+          templateOptions: {
+            label: "Street",
+            placeholder: "604 Causley Ave. ",
+            description: "Enter a valid US Address"
+          }
+        }, {
+          className: "col-xs-3",
+          type: "input",
+          key: "city",
+          templateOptions: {
+            label: "City",
+            placeholder: "Arlington"
+          }
+        }, {
+          className: "col-xs-3",
+          type: "input",
+          key: "zip",
+          templateOptions: {
+            type: "number",
+            label: "Zip",
+            placeholder: "76010"
+          }
+        }]
+      }, {
+        key: "checked",
+        type: "checkbox",
+        templateOptions: {
+          label: "Check me out",
+          description: "If you want to check me out, check this box"
+        }
+      }, {
+        type: "multicheckbox",
+        key: "interest",
+        templateOptions: {
+          options: [{
+            key: "sports",
+            value: "Sports"
+          }, {
+            key: "movies",
+            value: "Movies"
+          }, {
+            key: "others",
+            value: "Others"
+          }],
+          label: "Interest",
+          description: "Select areas which you are interested"
+        }
+      }, {
+        key: "otherInterest",
+        type: "textarea",
+        hideExpression: "!this.model.interest.others",
+        templateOptions: {
+          rows: 5,
+          cols: 20,
+          placeholder: "Type a paragraph about your interest...",
+          label: "Other Interest"
+        }
+      }, {
+        key: "textAreaVal",
+        type: "textarea",
+        templateOptions: {
+          rows: 5,
+          cols: 20,
+          placeholder: "Type a paragraph...",
+          label: "Message",
+          description: "Please enter atleast 150 characters"
+        }
+      }, {
+        key: "toggleVal",
+        type: "toggle",
+        templateOptions: {
 
-              }
-            }];
+        }
+      }];
 
-            this.user = {
-                email: "email@gmail.com",
-                checked: true,
-                select: "male",
-                title: "Mr.",
-                toggleVal: true,
-                interest: {"movies": false,
-                    "sports": false,
-                "others": true}
-            };
-            this.Stream.emit({
-                model: this.user,
-                fields: this.userFields
-            });
-        }, 0);
-    }
-    user: any = {};
-    private userFields: Array<FormlyFields> = [];
+      this.user = {
+        email: "email@gmail.com",
+        checked: true,
+        select: "male",
+        title: "Mr.",
+        toggleVal: true,
+        interest: {
+          "movies": false,
+          "sports": false,
+          "others": true}
+      };
+      this.Stream.emit({
+        model: this.user,
+        fields: this.userFields
+      });
+    }, 0);
+  }
+  user: any = {};
+  private userFields: Array<FormlyFields> = [];
 
   console(data) {
-      console.log(data);
+    console.log(data);
   }
 
   showEmail() {
-      this.user.email = "mohammedzamakhan";
-      this.user.checked = !this.user.checked;
-      this.Stream.emit({
-          model: this.user
-      });
+    this.user.email = "mohammedzamakhan";
+    this.user.checked = !this.user.checked;
+    this.Stream.emit({
+      model: this.user
+    });
   }
-hide() {
+  hide() {
     this.userFields[1].fieldGroup[0].hideExpression = !this.userFields[1].fieldGroup[0].hideExpression;
-}
+  }
 
   changeEmail() {
-      this.Stream.emit({});
+    this.Stream.emit({});
   }
   submit(user) {
-      console.log(user);
+    console.log(user);
   }
 }
 

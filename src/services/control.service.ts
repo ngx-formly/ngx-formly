@@ -11,11 +11,11 @@ export class ControlService {
 
     fields.forEach(field => {
       if (!field.template && !field.fieldGroup) {
-          group[field.key] =  getControlGroup(this._fb, field);
+        group[field.key] =  getControlGroup(this._fb, field);
       } else if (field.fieldGroup) {
-          field.fieldGroup.forEach(f => {
-              group[f.key] = getControlGroup(this._fb, f);
-          });
+        field.fieldGroup.forEach(f => {
+          group[f.key] = getControlGroup(this._fb, f);
+        });
       }
     });
 
