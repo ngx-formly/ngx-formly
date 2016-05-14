@@ -1,5 +1,5 @@
 
-import {Component, Input} from "angular2/core";
+import {Component, Input} from "@angular/core";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";

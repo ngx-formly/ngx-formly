@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, AfterContentInit, AfterViewInit} from "angular2/core";
+import {Component, ElementRef, OnInit, AfterContentInit, AfterViewInit} from "@angular/core";
 import {FormlyMessages, FormlyMessage} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
 import { Field } from "./field";
