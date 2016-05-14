@@ -1,4 +1,4 @@
-import { Input, Output, EventEmitter } from "angular2/core";
+import { Input, Output, EventEmitter } from "@angular/core";
 
 export class FormlyCommon {
   @Input() model: Object;

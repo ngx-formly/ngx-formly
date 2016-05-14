@@ -1,4 +1,4 @@
-import {Output, Input, EventEmitter, OnInit, ElementRef, AfterViewInit, AfterViewChecked} from "angular2/core";
+import {Output, Input, EventEmitter, OnInit, ElementRef, AfterViewInit, AfterViewChecked} from "@angular/core";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
 

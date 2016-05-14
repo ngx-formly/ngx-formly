@@ -1,7 +1,7 @@
 import {
   Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ElementRef,
   ViewContainerRef, ViewChild, DoCheck, Directive
-} from "angular2/core";
+} from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";

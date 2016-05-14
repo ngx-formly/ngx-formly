@@ -1,7 +1,7 @@
 /// <reference path="./../typings/ng2-formly.d.ts" />
-import {Component} from "angular2/core";
-import {Validators} from "angular2/common";
-import {bootstrap} from "angular2/platform/browser";
+import {Component} from "@angular/core";
+import {Validators} from "@angular/common";
+import {bootstrap} from "@angular/platform-browser-dynamic";
 import {FormlyForm} from "./../src/components/formly.form";
 import {ValidationService} from "./validation.service";
 import {FormlyProviders} from "./../src/services/formly.providers";
@@ -93,8 +93,8 @@ export class HelloApp {
       url: "https://www.github.com/mohammedzamakhan"
     };
     this.env = {
-      angularVersion: "2.0.0-beta.17",
-      formlyVersion: "2.0.0-alpha.5"
+      angularVersion: "2.0.0-rc.1",
+      formlyVersion: "2.0.0-beta.1"
     };
     fc.setType({
       name: "toggle",

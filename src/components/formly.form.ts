@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from "angular2/core";
-import {ControlGroup, NgFormModel} from "angular2/common";
+import {Component, OnInit, Input} from "@angular/core";
+import {ControlGroup, NgFormModel} from "@angular/common";
 import {FormlyField} from "./formly.field";
 import {ControlService} from "./../services/control.service";
 import {FormlyPubSub, FormlyEventEmitter} from "./../services/formly.event.emitter";

@@ -1,7 +1,7 @@
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyMessages} from "../services/formly.messages";
 import {TemplateDirectives} from "./templates";
-import {Injectable} from "angular2/core";
+import {Injectable} from "@angular/core";
 
 @Injectable()
 export class FormlyBootstrap {
