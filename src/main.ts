@@ -16,4 +16,5 @@ export {FormlyMessage, FormlyMessages} from "./services/formly.messages";
 export {FormlyCommon} from "./components/formly.common.component";
 export {FormlyForm} from "./components/formly.form";
 export {FormlyField} from "./components/formly.field";
+export {FormlyFieldVisibilityDelegate} from "./services/formly.field.visibility"
 export {FormlyProviders} from "./services/formly.providers";

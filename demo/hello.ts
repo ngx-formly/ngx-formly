@@ -61,7 +61,7 @@ interface FormlyFields {
   validation?: Validators;
   template?: string;
   expressionProperties?: Object;
-  hideExpression?: boolean;
+  hideExpression?: boolean | string | (() => boolean);
 }
 
 @Component({
@@ -212,11 +212,21 @@ export class HelloApp {
             key: "movies",
             value: "Movies"
           }, {
-            key: "none",
-            value: "None"
+            key: "others",
+            value: "Others"
           }],
           label: "Interest",
           description: "Select areas which you are interested"
+        }
+      }, {
+        key: "otherInterest",
+        type: "textarea",
+        hideExpression: "!this.model.interest.others",
+        templateOptions: {
+          rows: 5,
+          cols: 20,
+          placeholder: "Type a paragraph about your interest...",
+          label: "Other Interest"
         }
       }, {
         key: "textAreaVal",
@@ -242,8 +252,10 @@ export class HelloApp {
         select: "male",
         title: "Mr.",
         toggleVal: true,
-        interest: {"movies": false,
-          "sports": true}
+        interest: {
+          "movies": false,
+          "sports": false,
+          "others": true}
       };
       this.Stream.emit({
         model: this.user,
