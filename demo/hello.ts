@@ -6,13 +6,13 @@ import {FormlyForm} from "./../src/components/formly.form";
 import {ValidationService} from "./validation.service";
 import {FormlyProviders} from "./../src/services/formly.providers";
 import {FormlyMessages} from "./../src/services/formly.messages";
-import { FormlyEventEmitter } from "./../src/services/formly.event.emitter";
+import {FormlyEventEmitter} from "./../src/services/formly.event.emitter";
 import {FormlyConfig} from "./../src/services/formly.config";
 import {TemplateDirectives} from "./../src/templates/templates";
 import {FormlyBootstrap} from "./../src/templates/formlyBootstrap";
-import { Field } from "./../src/templates/field";
+import {Field} from "./../src/templates/field";
 import {FormlyPubSub} from "./../src/services/formly.event.emitter";
-
+import {FormlyFieldConfig} from "./../src/components/formly.config";
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
@@ -34,34 +34,6 @@ export class FormlyFieldToggle extends Field {
     super(fm, ps);
   }
 
-}
-
-
-/*************************************************************
- Interface for FormlyFields and FormlyTemplateOptions
- *************************************************************/
-
-interface FormlyTemplateOptions {
-  type?: string;
-  label?: string;
-  placeholder?: string;
-  disabled?: Boolean;
-  options?: Array<any>;
-  rows?: number;
-  cols?: number;
-  description?: string;
-  focus?: boolean;
-}
-interface FormlyFields {
-  key?: string;
-  className?: string;
-  fieldGroup?: Array<FormlyFields>;
-  type?: string;
-  templateOptions?: FormlyTemplateOptions;
-  validation?: Validators;
-  template?: string;
-  expressionProperties?: Object;
-  hideExpression?: boolean | string | (() => boolean);
 }
 
 @Component({
@@ -255,7 +227,8 @@ export class HelloApp {
         interest: {
           "movies": false,
           "sports": false,
-          "others": true}
+          "others": true
+        }
       };
       this.Stream.emit({
         model: this.user,
@@ -264,7 +237,7 @@ export class HelloApp {
     }, 0);
   }
   user: any = {};
-  private userFields: Array<FormlyFields> = [];
+  private userFields: Array<FormlyFieldConfig> = [];
 
   console(data) {
     console.log(data);

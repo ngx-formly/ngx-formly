@@ -44,6 +44,7 @@
     "del": "^2.2.0",
     "del-cli": "^0.2.0",
     "gulp": "^3.9.0",
+    "gulp-livereload": "^3.8.1",
     "gulp-tslint": "^4.3.5",
     "gulp-typescript": "^2.8.0",
     "jasmine": "^2.4.1",

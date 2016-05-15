@@ -1,11 +1,14 @@
 import {
   Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ElementRef,
-  ViewContainerRef, ViewChild, DoCheck, Directive
+  ViewContainerRef, ViewChild, DoCheck, Directive, ComponentFactory, ComponentResolver
 } from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyFieldVisibilityDelegate} from "../services/formly.field.visibility";
+import {Field} from "../templates/field";
+import {FormlyConfigProcessor} from "../services/formly.processor";
+import {FormlyFieldConfig} from "./formly.config";
 
 @Directive({
   selector: "[child-host]"
@@ -20,18 +23,21 @@ export class DivComponent {
         <div child-host #child></div>
         <div *ngIf="field.template" [innerHtml]="field.template"></div>
          <div class="formly-field"
-            *ngFor="let f of field.fieldGroup">
-            <formly-field [hide]="f.hideExpression" [model]="model" [key]="f.key" [form]="form" [field]="f" (changeFn)="changeFunction($event, f)" [ngClass]="f.className" [eventEmitter]="eventEmitter"></formly-field>
+            *ngFor="let field of field.fieldGroup">
+            <formly-field [hide]="field.hideExpression" [model]="model" [key]="field.key" [form]="form" [field]="field"
+              (changeFn)="changeFunction($event, field)" [ngClass]="field.className" [eventEmitter]="eventEmitter">
+            </formly-field>
         </div> 
     `,
   directives: [FormlyField, DivComponent]
 })
-export class FormlyField extends FormlyCommon implements DoCheck {
+export class FormlyField extends FormlyCommon implements DoCheck, OnInit {
+
   // Inputs and Outputs
   @Input() model;
   @Input() key;
   @Input() form;
-  @Input() field;
+  @Input() field: FormlyFieldConfig;
   @Input() eventEmitter;
 
   // Outputs
@@ -45,33 +51,42 @@ export class FormlyField extends FormlyCommon implements DoCheck {
 
   @ViewChild(DivComponent) myChild: DivComponent;
 
-  constructor(protected dcl: DynamicComponentLoader, protected elem: ElementRef, fc: FormlyConfig, protected ps: FormlyPubSub) {
+  constructor(protected elem: ElementRef, fc: FormlyConfig, protected ps: FormlyPubSub, protected cr: ComponentResolver) {
     super();
     this.directives = fc.getDirectives();
     this.visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
   }
 
-  ngAfterViewInit() {
+  ngOnInit(): any {
+    this.createChilds();
+  }
+
+  ngAfterViewInit() {}
+
+  createChilds() {
     // TODO support this.formlyField.field.hideExpression as a callback/observable
     this.hide = this.field.hideExpression ? true : false;
-
     if (!this.field.template && !this.field.fieldGroup) {
       this.update = new FormlyEventEmitter();
       this.ps.setEmitter(this.key, this.update);
-      this.dcl.loadNextToLocation(this.directives[this.field.type], this.myChild.viewContainer)
-        .then(ref => {
+      this.cr.resolveComponent(this.directives[this.field.type])
+        .then((cf: ComponentFactory<any>) => {
+          let ref = this.myChild.viewContainer.createComponent(cf);
           ref.instance.model = this.model[this.field.key];
           ref.instance.type = this.field.type;
-          ref.instance.options = this.field.templateOptions;
+          ref.instance.templateOptions = this.field.templateOptions;
           ref.instance.changeFn.subscribe((value) => {
             this.changeFn.emit(value);
           });
           ref.instance.key = this.key;
           ref.instance.form = this.form;
           ref.instance.update = this.update;
-        });
+          ref.instance.field = this.field;
+          this.form.addControl(this.key, ref.instance.formControl);
+        }).then();
     }
   }
+
   isHidden() {
     return this.hide;
   }
