@@ -7,9 +7,9 @@ import {Field} from "./field";
   selector: "formly-field-textarea",
   template: `
     <fieldset class="form-group" [ngFormModel]="form">
-        <label attr.for="{{key}}">{{options.label}}</label>
-        <textarea name="{{key}}" [ngControl]="key" id="{{key}}" cols="{{options.cols}}" rows="{{options.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')" placeholder="{{options.placeholder}}" class="form-control"></textarea>
-        <small class="text-muted">{{options.description}}</small>
+      <label attr.for="{{key}}">{{templateOptions.label}}</label>
+      <textarea name="{{key}}" [ngControl]="key" id="{{key}}" cols="{{templateOptions.cols}}" rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')" placeholder="{{templateOptions.placeholder}}" class="form-control"></textarea>
+      <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`
 })
 export class FormlyFieldTextArea extends Field implements AfterViewInit {
@@ -17,7 +17,7 @@ export class FormlyFieldTextArea extends Field implements AfterViewInit {
     super(fm, ps);
   }
   ngAfterViewInit() {
-    if (this.options.focus) {
+    if (this.templateOptions.focus) {
       this.elem.nativeElement.querySelector("textarea").focus();
     }
   }

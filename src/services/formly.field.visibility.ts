@@ -18,7 +18,7 @@ export class FormlyFieldVisibilityDelegate {
     }
   }
   hasHideExpression(): boolean {
-    return this.formlyField.field.hideExpression !== undefined && this.formlyField.field.hideExpression;
+    return (this.formlyField.field.hideExpression !== undefined) && this.formlyField.field.hideExpression ? true : false;
   }
   checkVisibilityChange() {
     let hideExpressionResult: boolean = this.eval(this.formlyField.field.hideExpression);

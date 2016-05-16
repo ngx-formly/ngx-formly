@@ -6,10 +6,13 @@ import { Field } from "./field";
 @Component({
   selector: "formly-field-input",
   template: `
-        <div class="form-group" [ngFormModel]="form" [ngClass]="{'has-danger': !form.controls[key].valid}">
-            <label attr.for="{{key}}" class="form-control-label">{{options.label}}</label>
-            <input type="{{options.type}}" [ngControl]="key" class="form-control" id="{{key}}" placeholder="{{options.placeholder}}" [disabled]="options.disabled" (keyup)="inputChange($event, 'value')" (change)="inputChange($event, 'value')" *ngIf="!options.hidden" [ngClass]="{'form-control-danger': !form.controls[key].valid}">
-            <small class="text-muted">{{options.description}}</small>
+        <div class="form-group" [ngFormModel]="form" [ngClass]="{'has-danger': !formControl.valid}">
+            <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
+            <input type="{{templateOptions.type}}" [ngControl]="key" class="form-control" id="{{key}}"
+              placeholder="{{templateOptions.placeholder}}" [disabled]="templateOptions.disabled"
+              (keyup)="inputChange($event, 'value')" (change)="inputChange($event, 'value')"
+              *ngIf="!templateOptions.hidden" [ngClass]="{'form-control-danger': !form.controls[key].valid}">
+            <small class="text-muted">{{templateOptions.description}}</small>
             <small class="text-muted text-danger"><formly-message [control]="key"></formly-message></small>
         </div>
     `,
@@ -22,7 +25,7 @@ export class FormlyFieldInput extends Field implements AfterViewInit {
     super(fm, ps);
   }
   ngAfterViewInit() {
-    if (this.options.focus) {
+    if (this.templateOptions.focus) {
       this.elem.nativeElement.querySelector("input").focus();
     }
   }
