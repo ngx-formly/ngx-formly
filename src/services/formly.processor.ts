@@ -1,5 +1,5 @@
 
-import {FormlyFieldConfig} from "../components/formly.config";
+import {FormlyFieldConfig} from "../components/formly.field.config";
 
 export interface FormlyConfigVisitor {
   visit(config: FormlyFieldConfig);

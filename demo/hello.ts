@@ -12,7 +12,7 @@ import {TemplateDirectives} from "./../src/templates/templates";
 import {FormlyBootstrap} from "./../src/templates/formlyBootstrap";
 import {Field} from "./../src/templates/field";
 import {FormlyPubSub} from "./../src/services/formly.event.emitter";
-import {FormlyFieldConfig} from "./../src/components/formly.config";
+import {FormlyFieldConfig} from "./../src/components/formly.field.config";
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
@@ -105,7 +105,7 @@ export class HelloApp {
           },
           validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
           expressionProperties: {
-            "templateOptions.disbled": "!model.password"
+            "templateOptions.disabled": "!model.password"
           }
         }, {
           className: "col-xs-4",
@@ -193,7 +193,7 @@ export class HelloApp {
       }, {
         key: "otherInterest",
         type: "textarea",
-        hideExpression: "!this.model.interest.others",
+        hideExpression: "!model.interest.others",
         templateOptions: {
           rows: 5,
           cols: 20,

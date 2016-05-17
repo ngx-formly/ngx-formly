@@ -6,9 +6,11 @@ import {Field} from "./field";
 @Component({
   selector: "formly-field-textarea",
   template: `
-    <fieldset class="form-group" [ngFormModel]="form">
-      <label attr.for="{{key}}">{{templateOptions.label}}</label>
-      <textarea name="{{key}}" [ngControl]="key" id="{{key}}" cols="{{templateOptions.cols}}" rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')" placeholder="{{templateOptions.placeholder}}" class="form-control"></textarea>
+    <fieldset class="form-group" [ngFormModel]="form" *ngIf="!templateOptions.hidden">
+      <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
+      <textarea name="{{key}}" [ngControl]="key" id="{{key}}" cols="{{templateOptions.cols}}"
+        rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')"
+        placeholder="{{templateOptions.placeholder}}" class="form-control" [disabled]="templateOptions.disabled"></textarea>
       <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`
 })

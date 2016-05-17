@@ -1,14 +1,12 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, DynamicComponentLoader, ElementRef,
+  Component, OnInit, Input, Output, EventEmitter, ElementRef,
   ViewContainerRef, ViewChild, DoCheck, Directive, ComponentFactory, ComponentResolver
 } from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyEventEmitter, FormlyPubSub} from "../services/formly.event.emitter";
-import {FormlyFieldVisibilityDelegate} from "../services/formly.field.visibility";
-import {Field} from "../templates/field";
-import {FormlyConfigProcessor} from "../services/formly.processor";
-import {FormlyFieldConfig} from "./formly.config";
+import {FormlyFieldVisibilityDelegate, FormlyFieldExpressionDelegate} from "../services/formly.field.delegates";
+import {FormlyFieldConfig} from "./formly.field.config";
 
 @Directive({
   selector: "[child-host]"
@@ -22,11 +20,11 @@ export class DivComponent {
   template: `
         <div child-host #child></div>
         <div *ngIf="field.template" [innerHtml]="field.template"></div>
-         <div class="formly-field"
-            *ngFor="let field of field.fieldGroup">
-            <formly-field [hide]="field.hideExpression" [model]="model" [key]="field.key" [form]="form" [field]="field"
-              (changeFn)="changeFunction($event, field)" [ngClass]="field.className" [eventEmitter]="eventEmitter">
-            </formly-field>
+        <div class="formly-field"
+          *ngFor="let field of field.fieldGroup">
+          <formly-field [hide]="field.hideExpression" [model]="model" [key]="field.key" [form]="form" [field]="field"
+            (changeFn)="changeFunction($event, field)" [ngClass]="field.className" [eventEmitter]="eventEmitter">
+          </formly-field>
         </div> 
     `,
   directives: [FormlyField, DivComponent]
@@ -47,7 +45,8 @@ export class FormlyField extends FormlyCommon implements DoCheck, OnInit {
   directives;
   hide;
   update;
-  visibilityDelegate;
+  visibilityDelegate: FormlyFieldVisibilityDelegate;
+  expressionDelegate: FormlyFieldExpressionDelegate;
 
   @ViewChild(DivComponent) myChild: DivComponent;
 
@@ -55,6 +54,7 @@ export class FormlyField extends FormlyCommon implements DoCheck, OnInit {
     super();
     this.directives = fc.getDirectives();
     this.visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
+    this.expressionDelegate = new FormlyFieldExpressionDelegate(this);
   }
 
   ngOnInit(): any {
@@ -83,7 +83,7 @@ export class FormlyField extends FormlyCommon implements DoCheck, OnInit {
           ref.instance.update = this.update;
           ref.instance.field = this.field;
           this.form.addControl(this.key, ref.instance.formControl);
-        }).then();
+        });
     }
   }
 
@@ -108,6 +108,7 @@ export class FormlyField extends FormlyCommon implements DoCheck, OnInit {
   }
   ngDoCheck() {
     this.visibilityDelegate.checkVisibilityChange();
+    this.expressionDelegate.checkExpressionChange();
   }
   private psEmit(fieldKey: string, eventKey: string, value: any) {
     if (this.ps && this.ps.getEmitter(fieldKey) && this.ps.getEmitter(fieldKey).emit) {

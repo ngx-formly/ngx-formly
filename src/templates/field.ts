@@ -1,7 +1,7 @@
 import {Output, Input, EventEmitter, OnInit} from "@angular/core";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
-import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.config";
+import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
 import {Control, AbstractControl} from "@angular/common";
 
 
@@ -13,7 +13,6 @@ export class Field implements OnInit {
   @Input() key: string;
   @Input() field: FormlyFieldConfig;
   model: any;
-  formModel: any;
 
   @Output() changeFn: EventEmitter<any> = new EventEmitter();
 
