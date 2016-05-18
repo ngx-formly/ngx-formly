@@ -22,4 +22,5 @@ export interface FormlyTemplateOptions {
   cols?: number;
   description?: string;
   focus?: boolean;
+  hidden?: boolean;
 }

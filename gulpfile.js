@@ -15,7 +15,7 @@ gulp.task('ts2js', function () {
   var typescript = require('gulp-typescript');
   var tscConfig = require('./tsconfig.json');
 
-  gulp.src([PATHS.src, 'node_modules/angular2/typings/browser.d.ts', PATHS.demo])
+  gulp.src([PATHS.src, './typings/browser.d.ts', PATHS.demo])
     .pipe(typescript(tscConfig.compilerOptions))
     .js.pipe(gulp.dest('src'))
     .pipe(livereload());
@@ -41,11 +41,11 @@ gulp.task("tslint", function() {
 
   gulp.src(PATHS.src)
     .pipe(tslint())
-    .pipe(tslint.report("verbose"))
+    .pipe(tslint.report("verbose"));
 
   gulp.src(PATHS.demo)
     .pipe(tslint())
-    .pipe(tslint.report("verbose"))
+    .pipe(tslint.report("verbose"));
 });
 
 gulp.task('play', ['ts2js'], function () {

@@ -3,7 +3,7 @@ import {ControlGroup, NgFormModel, FormBuilder} from "@angular/common";
 import {FormlyField} from "./formly.field";
 import {FormlyPubSub, FormlyEventEmitter} from "./../services/formly.event.emitter";
 import {FormlyCommon} from "./formly.common.component";
-import {FormlyFieldConfig} from "./formly.config";
+import {FormlyFieldConfig} from "./formly.field.config";
 
 @Component({
   selector: "formly-form",
