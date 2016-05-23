@@ -47,6 +47,7 @@ export class HelloApp {
   Stream;
   author;
   env;
+  _user;
   constructor(fm: FormlyMessages, fc: FormlyConfig) {
 
     fm.addStringMessage("required", "This field is required.");
@@ -244,8 +245,10 @@ export class HelloApp {
   }
 
   showEmail() {
-    this.user.email = "mohammedzamakhan";
-    this.user.checked = !this.user.checked;
+    this._user = Object.assign({}, this.user);
+    this._user.email = "mohammedzamakhan";
+    this._user.checked = !this.user.checked;
+    this.user = this._user;
     this.Stream.emit({
       model: this.user
     });

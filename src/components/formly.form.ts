@@ -24,12 +24,30 @@ import {FormlyFieldConfig} from "./formly.field.config";
 })
 export class FormlyForm extends FormlyCommon implements OnInit  {
   // Inputs
-  @Input() fields: FormlyFieldConfig[];
-  @Input() changeEmitter;
+  @Input()
+  public get fields(): FormlyFieldConfig[] {
+    return this._fields;
+  }
+
+  public set fields(value) {
+    this._fields = value;
+    this.ps.Stream.emit(this.form);
+  }
+  @Input()
+  public get model() {
+    return this._model;
+  };
+
+  public set model(value) {
+    this._model = value;
+    this.ps.Stream.emit(this.form);
+  }
 
   // Local Variables
   @Input() form: ControlGroup;
   event;
+  private _model;
+  private _fields: FormlyFieldConfig[];
 
   constructor(private _fm: NgFormModel, private ps: FormlyPubSub, private fb: FormBuilder) {
     super();
@@ -40,17 +58,6 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
       this.model = {};
     }
     this.form = this.fb.group({});
-    if (this.changeEmitter) {
-      this.changeEmitter.subscribe((info) => {
-        if (info.model) {
-          this.model = info.model;
-        }
-        if (info.fields) {
-          this.fields = info.fields;
-        }
-        this.ps.Stream.emit(this.form);
-      });
-    }
   }
   changeFunction(value, field) {
     this.model[field.key] = value;
