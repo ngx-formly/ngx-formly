@@ -6,6 +6,8 @@
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "flow.install:typings": "./node_modules/.bin/typings install",
     "flow.compile": "npm run flow.install:typings && npm run flow.compile:common && npm run flow.check && npm run flow.compile:system ",
@@ -14,7 +16,8 @@
     "flow.clean": "./node_modules/.bin/del dist \"dist/components\" \"dist/services\" \"dist/templates\"",
     "flow.check": "./node_modules/.bin/tslint -c tslint.json src/**/*.ts demo/**/*.ts",
     "commit": "npm run flow.compile && git-cz",
-    "prepublish": "npm run flow.clean && npm run flow.compile"
+    "prebuild": "shx rm -rf ./lib && typings install",
+    "build": "tsc --project tsconfig.build.json"
   },
   "keywords": [
     "angular",
@@ -57,6 +60,7 @@
     "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
     "serve-static": "^1.10.0",
+    "shx": "^0.1.2",
     "systemjs-builder": "^0.15.15",
     "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",

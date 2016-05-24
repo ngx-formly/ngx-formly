@@ -1,11 +1,25 @@
+.config
 .idea
+node_modules
+src
+.editorconfig
+.gitignore
+.npmignore
+.travis.yml
+gulpfile.js
+ng2-formly.ts
+tsconfig.json
+tslint.json
+
 gulp-tasks
 logs
 
 # typings
 typings
+typings.json
 
 # testing
+test
 karma.conf.js
 test.bundle.js
 coverage
