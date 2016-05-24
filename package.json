@@ -15,7 +15,7 @@
     "flow.compile:system": "node ./.config/bundle-system.js",
     "flow.clean": "./node_modules/.bin/del dist \"dist/components\" \"dist/services\" \"dist/templates\"",
     "flow.check": "./node_modules/.bin/tslint -c tslint.json src/**/*.ts demo/**/*.ts",
-    "commit": "npm run flow.compile && git-cz",
+    "commit": "npm run build && git-cz",
     "prebuild": "shx rm -rf ./lib && typings install",
     "build": "tsc --project tsconfig.build.json"
   },
