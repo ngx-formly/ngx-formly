@@ -16,8 +16,14 @@
     "flow.clean": "./node_modules/.bin/del dist \"dist/components\" \"dist/services\" \"dist/templates\"",
     "flow.check": "./node_modules/.bin/tslint -c tslint.json src/**/*.ts demo/**/*.ts",
     "commit": "npm run build && git-cz",
-    "prebuild": "shx rm -rf ./lib && typings install",
-    "build": "tsc --project tsconfig.build.json"
+    "prebuild": "typings install",
+    "build": "npm run build:lib && npm run build:bundles",
+    "prebuild:lib": "shx rm -rf ./lib",
+    "build:lib": "tsc --project tsconfig.build.json --outDir lib",
+    "prebuild:bundles": "shx rm -rf ./bundles",
+    "build:bundles": "npm run build:bundles:compile && npm run build:bundles:minify",
+    "build:bundles:compile": "tsc --project tsconfig.build.json --module system --outFile bundles/ng2-formly.js",
+    "build:bundles:minify": "uglifyjs bundles/ng2-formly.js --output bundles/ng2-formly.min.js --in-source-map bundles/ng2-formly.js.map --source-map bundles/ng2-formly.min.js.map"
   },
   "keywords": [
     "angular",
@@ -65,7 +71,8 @@
     "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",
     "typescript": "^1.8.10",
-    "typings": "^0.7.12"
+    "typings": "^0.7.12",
+    "uglify-js": "^2.6.2"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.1",

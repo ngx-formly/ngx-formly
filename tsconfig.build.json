@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
     "target": "es5",
-    "outDir": "lib",
+    "moduleResolution": "node",
     "declaration": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true,
