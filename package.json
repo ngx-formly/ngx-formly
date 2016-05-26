@@ -6,6 +6,8 @@
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "flow.install:typings": "./node_modules/.bin/typings install",
     "flow.compile": "npm run flow.install:typings && npm run flow.compile:common && npm run flow.check && npm run flow.compile:system ",
@@ -13,8 +15,16 @@
     "flow.compile:system": "node ./.config/bundle-system.js",
     "flow.clean": "./node_modules/.bin/del dist \"dist/components\" \"dist/services\" \"dist/templates\"",
     "flow.check": "./node_modules/.bin/tslint -c tslint.json src/**/*.ts demo/**/*.ts",
-    "commit": "npm run flow.compile && git-cz",
-    "prepublish": "npm run flow.clean && npm run flow.compile"
+    "postinstall": "typings install",
+    "commit": "npm run build && git-cz",
+    "prebuild": "typings install",
+    "build": "npm run build:lib && npm run build:bundles",
+    "prebuild:lib": "shx rm -rf ./lib",
+    "build:lib": "tsc --project tsconfig.build.json --outDir lib",
+    "prebuild:bundles": "shx rm -rf ./bundles",
+    "build:bundles": "npm run build:bundles:compile && npm run build:bundles:minify",
+    "build:bundles:compile": "tsc --project tsconfig.build.json --module system --outFile bundles/ng2-formly.js",
+    "build:bundles:minify": "uglifyjs bundles/ng2-formly.js --output bundles/ng2-formly.min.js --in-source-map bundles/ng2-formly.js.map --source-map bundles/ng2-formly.min.js.map"
   },
   "keywords": [
     "angular",
@@ -57,11 +67,13 @@
     "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
     "serve-static": "^1.10.0",
+    "shx": "^0.1.2",
     "systemjs-builder": "^0.15.15",
     "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",
     "typescript": "^1.8.10",
-    "typings": "^0.7.12"
+    "typings": "^0.7.12",
+    "uglify-js": "^2.6.2"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.1",
