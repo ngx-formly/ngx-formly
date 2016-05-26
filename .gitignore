@@ -1,9 +1,9 @@
 .idea
-node_modules
-npm-debug.log
+bundles
 lib
+node_modules
 typings
-/bundles
+npm-debug.log
 /demo/**/*.js
 /demo/**/*.js.map
 /demo/**/*.d.ts
@@ -12,7 +12,3 @@ typings
 /src/**/*.d.ts
 /test/**/*.js
 /test/**/*.js.map
-
-ng2-formly.js
-ng2-formly.d.ts
-ng2-formly.js.map
