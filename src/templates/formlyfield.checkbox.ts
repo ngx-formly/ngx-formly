@@ -26,7 +26,7 @@ export class FormlyFieldCheckbox extends Field {
   }
 
   createControl(): AbstractControl {
-    return this.formBuilder.control(this.model[this.key] ? "on" : undefined);
+    return this.formBuilder.control(this._viewModel ? "on" : undefined);
   }
 
 }

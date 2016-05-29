@@ -1,66 +1,56 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit, Input, ElementRef} from "@angular/core";
 import {ControlGroup, NgFormModel, FormBuilder} from "@angular/common";
 import {FormlyField} from "./formly.field";
-import {FormlyPubSub, FormlyEventEmitter} from "./../services/formly.event.emitter";
-import {FormlyCommon} from "./formly.common.component";
+import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyFieldConfig} from "./formly.field.config";
+import {FormlyFieldGroup} from "./formly.field.group";
+import {FormlyConfig} from "../services/formly.config";
 
 @Component({
   selector: "formly-form",
-  directives: [FormlyField],
+  directives: [FormlyField, FormlyFieldGroup],
   template: `
             <form class="formly" role="form" novalidate [ngFormModel]="form">
               <div class="formly-field"
-                  *ngFor="let field of fields"
-                  [ngClass]="field.className">
-                  <formly-field [hide]="field.hideExpression" [model]="model" [key]="field.key" [form]="form" [field]="field"
-                    (changeFn)="changeFunction($event, field)" [eventEmitter]="event">
-                  </formly-field>
+                *ngFor="let f of fields"
+                [ngClass]="f.className">
+                <formly-field *ngIf="!f.fieldGroup" [hide]="f.hideExpression" [viewModel]="viewModel[f.key]"
+                  [key]="f.key" [form]="form" [field]="f" [formModel]= "viewModel"
+                  (changeFn)="changeFunction($event, field)" [eventEmitter]="event">
+                </formly-field>
+                <formly-field-group *ngIf="f.fieldGroup" [hide]="f.hideExpression"
+                  [viewModel]="f.key ? viewModel[f.key]: viewModel" [key]="f.key" [form]="form" [field]="f"
+                  [formModel]= "viewModel" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
+                </formly-field-group>
               </div>
               <ng-content></ng-content>
             </form>
             `,
-  providers: [NgFormModel, FormlyPubSub]
+  providers: [NgFormModel, FormlyPubSub],
+  inputs: ["field", "formModel", "form", "hide", "viewModel", "key", "fields"]
 })
-export class FormlyForm extends FormlyCommon implements OnInit  {
-  // Inputs
-  @Input()
-  public get fields(): FormlyFieldConfig[] {
-    return this._fields;
-  }
+export class FormlyForm extends FormlyFieldGroup implements OnInit  {
 
-  public set fields(value) {
-    this._fields = value;
-    this.ps.Stream.emit(this.form);
-  }
-  @Input()
-  public get model() {
-    return this._model;
-  };
-
-  public set model(value) {
-    this._model = value;
-    this.ps.Stream.emit(this.form);
-  }
-
-  // Local Variables
-  @Input() form: ControlGroup;
   event;
-  private _model;
-  private _fields: FormlyFieldConfig[];
 
-  constructor(private _fm: NgFormModel, private ps: FormlyPubSub, private fb: FormBuilder) {
-    super();
+  constructor(elem: ElementRef, protected _fm: NgFormModel, ps: FormlyPubSub, private fb: FormBuilder,
+              formlyConfig: FormlyConfig) {
+    super(elem, ps, formlyConfig);
     this.event = new FormlyEventEmitter();
   }
   ngOnInit() {
-    if (!this.model) {
-      this.model = {};
+    if (!this._viewModel) {
+      this._viewModel = {};
     }
-    this.form = this.fb.group({});
+    if(!this.formModel) {
+      this.formModel = this.viewModel;
+    }
+    if (!this.form) {
+      this.form = this.fb.group({});
+    }
   }
-  changeFunction(value, field) {
-    this.model[field.key] = value;
-    this.formSubmit.emit(value);
+  changeFunction(event: FormlyValueChangeEvent, field) {
+    this._viewModel[event.key] = event.value;
+    this.formSubmit.emit(event);
   }
 }

@@ -1,48 +1,60 @@
 import {FormlyField} from "../components/formly.field";
 import {evalExpression, expressionValueSetter} from "./formly.expression";
+import {FormlyCommon} from "../components/formly.common.component";
 
 export class FormlyFieldVisibilityDelegate {
 
-  constructor(private formlyField: FormlyField) {
+  constructor(private formlyCommon: FormlyCommon) {
 
   }
 
   eval(expression: string | Function | boolean): boolean {
-    // TODO support this.formlyField.field.hideExpression as a observable
+    // TODO support this.formlyCommon.field.hideExpression as a observable
     if (expression instanceof Function) {
       return expression();
     } else if (typeof expression === "string") {
-      return evalExpression(expression, this.formlyField, ["model", "fieldModel"], [this.formlyField.model, this.formlyField.model[this.formlyField.key]]);
+      return evalExpression(expression, this.formlyCommon, ["model", "fieldViewModel"], [this.formlyCommon.formModel, this.formlyCommon.viewModel]);
     } else {
       return expression ? true : false;
     }
   }
 
   hasHideExpression(): boolean {
-    return (this.formlyField.field.hideExpression !== undefined) && this.formlyField.field.hideExpression ? true : false;
+    return (this.formlyCommon.field && this.formlyCommon.field.hideExpression !== undefined) && this.formlyCommon.field.hideExpression ? true : false;
   }
   checkVisibilityChange() {
-    let hideExpressionResult: boolean = this.eval(this.formlyField.field.hideExpression);
-    if (hideExpressionResult !== this.formlyField.isHidden()) {
-      this.formlyField.setHidden(hideExpressionResult);
+    if(this.hasHideExpression()) {
+      let hideExpressionResult: boolean = this.eval(this.formlyCommon.field.hideExpression);
+      if (hideExpressionResult !== this.formlyCommon.isHidden()) {
+        this.formlyCommon.setHidden(hideExpressionResult);
+      }
     }
   }
 }
 
 export class FormlyFieldExpressionDelegate {
-  constructor(private formlyField: FormlyField) {
+  constructor(private formlyCommon: FormlyCommon) {
 
   }
 
-  checkExpressionChange() {
-    let expressionProperties = this.formlyField.field.expressionProperties;
+  hasExpression(): boolean {
+    return (this.formlyCommon.field && this.formlyCommon.field.expressionProperties !== undefined);
+  }
 
-    if (expressionProperties) {
-      for (let key in expressionProperties) {
-        let expressionValue = evalExpression(expressionProperties[key], this.formlyField, ["model", "fieldModel"], [this.formlyField.model, this.formlyField.model[this.formlyField.key]]);
-        expressionValueSetter(key, expressionValue, this.formlyField
-            , ["model", "fieldModel", "templateOptions"]
-            , [this.formlyField.model, this.formlyField.model[this.formlyField.key], this.formlyField.field.templateOptions]);
+  checkExpressionChange() {
+    if(this.hasExpression()) {
+      let expressionProperties = this.formlyCommon.field.expressionProperties;
+
+      if (expressionProperties) {
+        for (let key in expressionProperties) {
+          // TODO Performance improvement for expression Evaluation by caching built expression
+          let expressionValue = evalExpression(expressionProperties[key], this.formlyCommon, ["model", "fieldValue"], [this.formlyCommon.formModel, this.formlyCommon.viewModel]);
+
+          // TODO Performance improvement for expression value Setter by caching built expression setter
+          expressionValueSetter(key, expressionValue, this.formlyCommon
+            , ["model", "fieldViewModel", "templateOptions"]
+            , [this.formlyCommon.formModel, this.formlyCommon.viewModel, this.formlyCommon.field.templateOptions]);
+        }
       }
     }
   }

@@ -29,7 +29,7 @@ export class FormlyFieldRadio extends Field {
 
   createControl(): AbstractControl {
     let controlGroupConfig = this.templateOptions.options.reduce((previous, option) => {
-      previous[option.key] = [new RadioButtonState(this.model === option.value , option.value)];
+      previous[option.key] = [new RadioButtonState(this._viewModel === option.value , option.value)];
       return previous;
     }, {});
     return this.formBuilder.group(controlGroupConfig);

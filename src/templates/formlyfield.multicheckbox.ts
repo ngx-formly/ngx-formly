@@ -1,6 +1,6 @@
 
 import {Component, Input} from "@angular/core";
-import {FormlyPubSub} from "../services/formly.event.emitter";
+import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 import {FormBuilder, AbstractControl} from "@angular/common";
@@ -24,21 +24,19 @@ import {FormBuilder, AbstractControl} from "@angular/common";
 })
 export class FormlyFieldMultiCheckbox extends Field {
 
-  @Input() model: Object;
-
   constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder) {
     super(fm, fps);
   }
 
   inputChange(e, val) {
-    this.model[val] = e.target.checked;
-    this.changeFn.emit(this.model);
+    this._viewModel[val] = e.target.checked;
+    this.changeFn.emit(new FormlyValueChangeEvent(this.key, this._viewModel));
     this.fps.setUpdated(true);
   }
 
   createControl(): AbstractControl {
     let controlGroupConfig = this.templateOptions.options.reduce((previous, option) => {
-      previous[option.key] = [this.model ? this.model[option.key] : undefined];
+      previous[option.key] = [this._viewModel ? this._viewModel[option.key] : undefined];
       return previous;
     }, {});
     return this.formBuilder.group(controlGroupConfig);
