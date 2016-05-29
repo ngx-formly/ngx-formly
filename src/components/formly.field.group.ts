@@ -13,7 +13,7 @@ import {FormlyFieldConfig} from "./formly.field.config";
         <div class="formly-field"
           *ngFor="let f of field.fieldGroup">
           <formly-field [hide]="f.hideExpression" [viewModel]="viewModel?viewModel[f.key]:''" [key]="f.key" [form]="form" [field]="f"
-            [formModel] = "formModel" (changeFn)="changeFunction($event, f)" [ngClass]="field.className" [eventEmitter]="eventEmitter">
+            [formModel] = "formModel" (changeFn)="changeFunction($event, f)" [ngClass]="f.className" [eventEmitter]="eventEmitter">
           </formly-field>
           <formly-field-group *ngIf="f.fieldGroup" [hide]="field.hideExpression" [viewModel]="f.key ? model[f.key]: model" [key]="f.key" [form]="form" [field]="f"
             [fields]="f.fieldGroup" [formModel]= "formModel" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
@@ -25,7 +25,7 @@ import {FormlyFieldConfig} from "./formly.field.config";
 })
 export class FormlyFieldGroup extends FormlyCommon implements OnInit {
 
-  @Input() public fields: FormlyFieldConfig[];
+  public fields: FormlyFieldConfig[];
   @Input() public eventEmitter;
 
   // Outputs
@@ -38,9 +38,10 @@ export class FormlyFieldGroup extends FormlyCommon implements OnInit {
   }
 
   ngOnInit(): any {
-
+    if (!this.fields) {
+      this.fields = this.field.fieldGroup;
+    }
   }
-
 
   changeFunction(event: FormlyValueChangeEvent, field) {
     if (this.key && this.key === event.key) {

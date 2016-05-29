@@ -13,14 +13,16 @@ import {FormBuilder, AbstractControl} from "@angular/common";
                 <label class="form-control-label" for="">{{templateOptions.label}}</label>
                 <div *ngFor="let option of templateOptions.options">
                     <label class="c-input c-radio">
-                        <input type="checkbox" name="choose" value="{{option.value}}" [ngControl]="option.key" (change)="inputChange($event, option.key)">{{option.value}}
+                        <input type="checkbox" name="choose" value="{{option.value}}" [ngControl]="option.key"
+                          [(ngModel)]="viewModel[option.key]" (change)="inputChange($event, option.key)">{{option.value}}
                         <span class="c-indicator"></span>
                     </label>
                 </div>
                 <small class="text-muted">{{templateOptions.description}}</small>
             </div>
         </div>
-    `
+    `,
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "viewModel"]
 })
 export class FormlyFieldMultiCheckbox extends Field {
 

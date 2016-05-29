@@ -5,7 +5,7 @@ import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.fie
 import {Control, AbstractControl} from "@angular/common";
 
 
-export class Field implements OnInit, OnChanges {
+export class Field implements OnInit {
 
   @Input() form;
   @Input() update;
@@ -20,6 +20,15 @@ export class Field implements OnInit, OnChanges {
   messages;
   _control: AbstractControl;
   _viewModel: any;
+
+  // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
+  _viewModelUpdateReceiver: EventEmitter<any>;
+  set viewModelUpdateReceiver(viewModelUpdateReceiver: EventEmitter<any>) {
+    this._viewModelUpdateReceiver = viewModelUpdateReceiver;
+    this._viewModelUpdateReceiver.subscribe((viewModel: any) => {
+      this.viewModel = viewModel;
+    });
+  }
 
   @Input()
   public get viewModel(): any {
@@ -58,9 +67,5 @@ export class Field implements OnInit, OnChanges {
 
   createControl(): AbstractControl {
     return new Control(this._viewModel || "", this.field.validation);
-  }
-
-  ngOnChanges(changes: {}): any {
-    console.log(JSON.stringify(changes));
   }
 }

@@ -1,8 +1,7 @@
-import {Component, OnInit, Input, ElementRef} from "@angular/core";
-import {ControlGroup, NgFormModel, FormBuilder} from "@angular/common";
+import {Component, OnInit, ElementRef} from "@angular/core";
+import {NgFormModel, FormBuilder} from "@angular/common";
 import {FormlyField} from "./formly.field";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
-import {FormlyFieldConfig} from "./formly.field.config";
 import {FormlyFieldGroup} from "./formly.field.group";
 import {FormlyConfig} from "../services/formly.config";
 
@@ -18,7 +17,7 @@ import {FormlyConfig} from "../services/formly.config";
                   [key]="f.key" [form]="form" [field]="f" [formModel]= "viewModel"
                   (changeFn)="changeFunction($event, field)" [eventEmitter]="event">
                 </formly-field>
-                <formly-field-group *ngIf="f.fieldGroup" [hide]="f.hideExpression"
+                <formly-field-group *ngIf="f.fieldGroup" [hide]="f.hideExpression" [fields]="f.fieldGroup"
                   [viewModel]="f.key ? viewModel[f.key]: viewModel" [key]="f.key" [form]="form" [field]="f"
                   [formModel]= "viewModel" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
                 </formly-field-group>
@@ -42,7 +41,7 @@ export class FormlyForm extends FormlyFieldGroup implements OnInit  {
     if (!this._viewModel) {
       this._viewModel = {};
     }
-    if(!this.formModel) {
+    if (!this.formModel) {
       this.formModel = this.viewModel;
     }
     if (!this.form) {

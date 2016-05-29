@@ -264,6 +264,22 @@ export class HelloApp {
   changeEmail() {
     this.Stream.emit({});
   }
+
+  resetForm() {
+    this.user = {
+      email: "email@gmail.com",
+      checked: true,
+      select: "male",
+      title: "Mr.",
+      toggleVal: true,
+      interest: {
+        "movies": false,
+        "sports": false,
+        "others": true
+      }
+    };
+  }
+
   submit(user) {
     console.log(user);
   }

@@ -8,13 +8,14 @@ import {Field} from "./field";
   template: `
         <div class="select" [ngFormModel]="form">
           <label for="" class="form-control-label">{{templateOptions.label}}</label>
-          <select [id]="key" [ngControl]="key" (change)="inputChange($event, 'value')" class="c-select">
+          <select [id]="key" [ngControl]="key" (change)="inputChange($event, 'value')" class="c-select" [(ngModel)]="viewModel">
             <option value="" *ngIf="templateOptions.placeholder">{{templateOptions.placeholder}}</option>
             <option *ngFor="let opt of templateOptions.options" [value]="opt.value">{{opt.label}}</option>
           </select>
           <small class="text-muted">{{templateOptions.description}}</small>
         </div>
-    `
+    `,
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "viewModel"]
 })
 export class FormlyFieldSelect extends Field {
   constructor(fm: FormlyMessages, ps: FormlyPubSub) {

@@ -10,13 +10,14 @@ import { Field } from "./field";
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
         <input type="{{templateOptions.type}}" [ngControl]="key" class="form-control" id="{{key}}"
           placeholder="{{templateOptions.placeholder}}" [disabled]="templateOptions.disabled"
-          (keyup)="inputChange($event, 'value')" (change)="inputChange($event, 'value')"
+          (keyup)="inputChange($event, 'value')" (change)="inputChange($event, 'value')" [(ngModel)]="viewModel"
           [ngClass]="{'form-control-danger': !form.controls[key].valid}">
         <small class="text-muted">{{templateOptions.description}}</small>
         <small class="text-muted text-danger"><formly-message [control]="key"></formly-message></small>
       </div>
     `,
-  directives: [FormlyMessage]
+  directives: [FormlyMessage],
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "viewModel"]
 })
 export class FormlyFieldInput extends Field implements AfterViewInit {
 
