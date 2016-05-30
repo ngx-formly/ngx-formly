@@ -19,24 +19,24 @@ export class Field implements OnInit {
 
   messages;
   _control: AbstractControl;
-  _viewModel: any;
+  _model: any;
 
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
-  _viewModelUpdateReceiver: EventEmitter<any>;
-  set viewModelUpdateReceiver(viewModelUpdateReceiver: EventEmitter<any>) {
-    this._viewModelUpdateReceiver = viewModelUpdateReceiver;
-    this._viewModelUpdateReceiver.subscribe((viewModel: any) => {
-      this.viewModel = viewModel;
+  _modelUpdateReceiver: EventEmitter<any>;
+  set modelUpdateReceiver(modelUpdateReceiver: EventEmitter<any>) {
+    this._modelUpdateReceiver = modelUpdateReceiver;
+    this._modelUpdateReceiver.subscribe((model: any) => {
+      this.model = model;
     });
   }
 
   @Input()
-  public get viewModel(): any {
-    return this._viewModel;
+  public get model(): any {
+    return this._model;
   }
 
-  public set viewModel(value: any) {
-    this._viewModel = value;
+  public set model(value: any) {
+    this._model = value;
   }
 
   constructor(fm: FormlyMessages, private ps: FormlyPubSub) {
@@ -45,15 +45,17 @@ export class Field implements OnInit {
       this.form = form;
     });
   }
+
   ngOnInit() {
     if (this.update) {
       this.update.subscribe((update) => {
         this.templateOptions[update.key] = update.value;
       });
     }
-   }
+  }
+
   inputChange(e, val) {
-    this._viewModel = e.target[val];
+    this._model = e.target[val];
     this.changeFn.emit(new FormlyValueChangeEvent(this.key, e.target[val]));
     this.ps.setUpdated(true);
   }
@@ -66,6 +68,6 @@ export class Field implements OnInit {
   }
 
   createControl(): AbstractControl {
-    return new Control(this._viewModel || "", this.field.validation);
+    return new Control(this._model || "", this.field.validation);
   }
 }

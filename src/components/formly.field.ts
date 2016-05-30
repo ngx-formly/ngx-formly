@@ -22,7 +22,7 @@ export class DivComponent {
         <div *ngIf="field.template" [innerHtml]="field.template"></div>
     `,
   directives: [FormlyField, DivComponent],
-  inputs: ["field", "formModel", "form", "hide", "viewModel", "key", "eventEmitter"],
+  inputs: ["field", "formModel", "form", "hide", "model", "key", "eventEmitter"],
   outputs: ["formSubmit", "changeFn", "eventEmitter"]
 })
 export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
@@ -35,7 +35,7 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   update;
 
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45; This is a temporary fix.
-  viewModelUpdateEmitter: EventEmitter<any> = new EventEmitter();
+  modelUpdateEmitter: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(DivComponent) myChild: DivComponent;
   private childFieldRef: ComponentRef<Field>;
@@ -56,7 +56,7 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
       this.update = new FormlyEventEmitter();
       this.fb.createChildFields(this.field, this, this.formlyConfig).then((ref: ComponentRef<any>) => {
         this.childFieldRef = ref;
-        this.childFieldRef.instance.viewModelUpdateReceiver = this.viewModelUpdateEmitter;
+        this.childFieldRef.instance.modelUpdateReceiver = this.modelUpdateEmitter;
         ref.instance.changeFn.subscribe((event) => {
           this.changeFunction(event, this.field);
         });
@@ -67,12 +67,12 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
 
   changeFunction(event: FormlyValueChangeEvent, field) {
     if (this.key && this.key === event.key) {
-      this._viewModel = event.value;
+      this._model = event.value;
       this.changeFn.emit(event);
       this.formSubmit.emit(event);
     } else if (this.key && this.key !== event.key) {
-      this._viewModel[event.key] = event.value;
-      this.changeFn.emit(new FormlyValueChangeEvent(this.key, this._viewModel));
+      this._model[event.key] = event.value;
+      this.changeFn.emit(new FormlyValueChangeEvent(this.key, this._model));
       this.formSubmit.emit(event);
     } else {
       this.changeFn.emit(event);
@@ -83,9 +83,9 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   ngOnChanges(changes: {
     [key: string]: SimpleChange;
   }): any {
-    if (changes["viewModel"]) {
+    if (changes["model"]) {
       // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
-      this.viewModelUpdateEmitter.emit(changes["viewModel"].currentValue);
+      this.modelUpdateEmitter.emit(changes["model"].currentValue);
     }
   }
 }

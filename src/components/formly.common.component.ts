@@ -15,7 +15,7 @@ export class FormlyCommon {
   @Output() formSubmit = new EventEmitter();
 
 
-  protected _viewModel: any;
+  protected _model: any;
   update;
   visibilityDelegate: FormlyFieldVisibilityDelegate;
   expressionDelegate: FormlyFieldExpressionDelegate;
@@ -27,12 +27,12 @@ export class FormlyCommon {
   }
 
   @Input()
-  public get viewModel(): any {
-    return this._viewModel;
+  public get model(): any {
+    return this._model;
   };
 
-  public set viewModel(value) {
-    this._viewModel = value;
+  public set model(value) {
+    this._model = value;
     this.ps.Stream.emit(this.form);
   }
 

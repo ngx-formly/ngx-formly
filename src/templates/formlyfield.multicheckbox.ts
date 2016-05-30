@@ -14,7 +14,7 @@ import {FormBuilder, AbstractControl} from "@angular/common";
                 <div *ngFor="let option of templateOptions.options">
                     <label class="c-input c-radio">
                         <input type="checkbox" name="choose" value="{{option.value}}" [ngControl]="option.key"
-                          [(ngModel)]="viewModel[option.key]" (change)="inputChange($event, option.key)">{{option.value}}
+                          [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)">{{option.value}}
                         <span class="c-indicator"></span>
                     </label>
                 </div>
@@ -22,7 +22,7 @@ import {FormBuilder, AbstractControl} from "@angular/common";
             </div>
         </div>
     `,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "viewModel"]
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
 })
 export class FormlyFieldMultiCheckbox extends Field {
 
@@ -31,14 +31,14 @@ export class FormlyFieldMultiCheckbox extends Field {
   }
 
   inputChange(e, val) {
-    this._viewModel[val] = e.target.checked;
-    this.changeFn.emit(new FormlyValueChangeEvent(this.key, this._viewModel));
+    this._model[val] = e.target.checked;
+    this.changeFn.emit(new FormlyValueChangeEvent(this.key, this._model));
     this.fps.setUpdated(true);
   }
 
   createControl(): AbstractControl {
     let controlGroupConfig = this.templateOptions.options.reduce((previous, option) => {
-      previous[option.key] = [this._viewModel ? this._viewModel[option.key] : undefined];
+      previous[option.key] = [this._model ? this._model[option.key] : undefined];
       return previous;
     }, {});
     return this.formBuilder.group(controlGroupConfig);

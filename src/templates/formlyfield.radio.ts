@@ -13,7 +13,7 @@ import {RadioButtonState, Control, ControlGroup, AbstractControl, FormBuilder} f
         <label class="form-control-label" for="">{{templateOptions.label}}</label>
         <div *ngFor="let option of templateOptions.options">
           <label class="c-input c-radio">
-            <input type="radio" name="choose" value="{{option.value}}" [ngControl]="option.key" [(ngModel)]="viewModel[option.key]"
+            <input type="radio" name="choose" value="{{option.value}}" [ngControl]="option.key"
               (change)="inputChange($event, 'value')">{{option.value}}
             <span class="c-indicator"></span>
           </label>
@@ -21,7 +21,7 @@ import {RadioButtonState, Control, ControlGroup, AbstractControl, FormBuilder} f
         <small class="text-muted">{{templateOptions.description}}</small>
       </div>
     </div>`,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "viewModel"]
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
 })
 export class FormlyFieldRadio extends Field {
   constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder) {
@@ -30,7 +30,7 @@ export class FormlyFieldRadio extends Field {
 
   createControl(): AbstractControl {
     let controlGroupConfig = this.templateOptions.options.reduce((previous, option) => {
-      previous[option.key] = [new RadioButtonState(this._viewModel === option.value , option.value)];
+      previous[option.key] = [new RadioButtonState(this._model === option.value , option.value)];
       return previous;
     }, {});
     return this.formBuilder.group(controlGroupConfig);

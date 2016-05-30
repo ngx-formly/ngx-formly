@@ -12,7 +12,7 @@ export class FormlyFieldVisibilityDelegate {
     if (expression instanceof Function) {
       return expression();
     } else if (typeof expression === "string") {
-      return evalExpression(expression, this.formlyCommon, ["model", "fieldViewModel"], [this.formlyCommon.formModel, this.formlyCommon.viewModel]);
+      return evalExpression(expression, this.formlyCommon, ["model", "fieldModel"], [this.formlyCommon.formModel, this.formlyCommon.model]);
     } else {
       return expression ? true : false;
     }
@@ -47,12 +47,12 @@ export class FormlyFieldExpressionDelegate {
       if (expressionProperties) {
         for (let key in expressionProperties) {
           // TODO Performance improvement for expression Evaluation by caching built expression
-          let expressionValue = evalExpression(expressionProperties[key], this.formlyCommon, ["model", "fieldValue"], [this.formlyCommon.formModel, this.formlyCommon.viewModel]);
+          let expressionValue = evalExpression(expressionProperties[key], this.formlyCommon, ["model", "fieldValue"], [this.formlyCommon.formModel, this.formlyCommon.model]);
 
           // TODO Performance improvement for expression value Setter by caching built expression setter
           expressionValueSetter(key, expressionValue, this.formlyCommon
-            , ["model", "fieldViewModel", "templateOptions"]
-            , [this.formlyCommon.formModel, this.formlyCommon.viewModel, this.formlyCommon.field.templateOptions]);
+            , ["model", "fieldModel", "templateOptions"]
+            , [this.formlyCommon.formModel, this.formlyCommon.model, this.formlyCommon.field.templateOptions]);
         }
       }
     }

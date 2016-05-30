@@ -19,7 +19,7 @@ export class FormlyFieldBuilder {
     return this.cr.resolveComponent(formlyConfig.getDirective(fieldConfig.type))
       .then((cf: ComponentFactory<any>) => {
         let ref = formlyField.myChild.viewContainer.createComponent(cf);
-        ref.instance.viewModel = formlyField.viewModel;
+        ref.instance.model = formlyField.model;
         ref.instance.type = fieldConfig.type;
         ref.instance.templateOptions = fieldConfig.templateOptions;
         ref.instance.key = formlyField.key;

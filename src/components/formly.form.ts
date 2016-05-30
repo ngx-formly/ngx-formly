@@ -13,20 +13,20 @@ import {FormlyConfig} from "../services/formly.config";
               <div class="formly-field"
                 *ngFor="let f of fields"
                 [ngClass]="f.className">
-                <formly-field *ngIf="!f.fieldGroup" [hide]="f.hideExpression" [viewModel]="viewModel[f.key]"
-                  [key]="f.key" [form]="form" [field]="f" [formModel]= "viewModel"
+                <formly-field *ngIf="!f.fieldGroup" [hide]="f.hideExpression" [model]="model[f.key]"
+                  [key]="f.key" [form]="form" [field]="f" [formModel]= "model"
                   (changeFn)="changeFunction($event, field)" [eventEmitter]="event">
                 </formly-field>
                 <formly-field-group *ngIf="f.fieldGroup" [hide]="f.hideExpression" [fields]="f.fieldGroup"
-                  [viewModel]="f.key ? viewModel[f.key]: viewModel" [key]="f.key" [form]="form" [field]="f"
-                  [formModel]= "viewModel" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
+                  [model]="f.key ? model[f.key]: model" [key]="f.key" [form]="form" [field]="f"
+                  [formModel]= "model" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
                 </formly-field-group>
               </div>
               <ng-content></ng-content>
             </form>
             `,
   providers: [NgFormModel, FormlyPubSub],
-  inputs: ["field", "formModel", "form", "hide", "viewModel", "key", "fields"]
+  inputs: ["field", "formModel", "form", "hide", "model", "key", "fields"]
 })
 export class FormlyForm extends FormlyFieldGroup implements OnInit  {
 
@@ -38,18 +38,18 @@ export class FormlyForm extends FormlyFieldGroup implements OnInit  {
     this.event = new FormlyEventEmitter();
   }
   ngOnInit() {
-    if (!this._viewModel) {
-      this._viewModel = {};
+    if (!this._model) {
+      this._model = {};
     }
     if (!this.formModel) {
-      this.formModel = this.viewModel;
+      this.formModel = this.model;
     }
     if (!this.form) {
       this.form = this.fb.group({});
     }
   }
   changeFunction(event: FormlyValueChangeEvent, field) {
-    this._viewModel[event.key] = event.value;
+    this._model[event.key] = event.value;
     this.formSubmit.emit(event);
   }
 }
