@@ -10,14 +10,15 @@ import {AbstractControl, FormBuilder} from "@angular/common";
     <div class="form-group">
       <div [ngFormModel]="form">
         <label class="c-input c-checkbox">
-          <input type="checkbox" [ngControl]="key" (change)="inputChange($event, 'checked')"
+          <input type="checkbox" [ngControl]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
             *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"> {{templateOptions.label}}
             <span class="c-indicator"></span>
           </label>
       </div>
       <small class="text-muted">{{templateOptions.description}}</small>
     </div>
-    `
+    `,
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
 })
 export class FormlyFieldCheckbox extends Field {
 
@@ -26,7 +27,7 @@ export class FormlyFieldCheckbox extends Field {
   }
 
   createControl(): AbstractControl {
-    return this.formBuilder.control(this.model[this.key] ? "on" : undefined);
+    return this.formBuilder.control(this._model ? "on" : undefined);
   }
 
 }

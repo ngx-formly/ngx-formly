@@ -1,6 +1,6 @@
 /// <reference path="./../typings/ng2-formly.d.ts" />
 import {Component} from "@angular/core";
-import {Validators} from "@angular/common";
+import {Validators, FormBuilder} from "@angular/common";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {FormlyForm} from "./../src/components/formly.form";
 import {ValidationService} from "./validation.service";
@@ -48,7 +48,11 @@ export class HelloApp {
   author;
   env;
   _user;
-  constructor(fm: FormlyMessages, fc: FormlyConfig) {
+  constructor(fm: FormlyMessages, fc: FormlyConfig, protected fb: FormBuilder) {
+
+    if (!this.form) {
+      this.form = this.fb.group({});
+    }
 
     fm.addStringMessage("required", "This field is required.");
     fm.addStringMessage("invalidEmailAddress", "Invalid Email Address");
@@ -137,7 +141,7 @@ export class HelloApp {
         }]
       }, {
         className: "section-label",
-        template: "</hr /><div><strong>Address:</strong></div>"
+        template: "<hr/><div><strong>Address:</strong></div>"
       }, {
         className: "row",
         fieldGroup: [{
@@ -260,6 +264,22 @@ export class HelloApp {
   changeEmail() {
     this.Stream.emit({});
   }
+
+  resetForm() {
+    this.user = {
+      email: "email@gmail.com",
+      checked: true,
+      select: "male",
+      title: "Mr.",
+      toggleVal: true,
+      interest: {
+        "movies": false,
+        "sports": false,
+        "others": true
+      }
+    };
+  }
+
   submit(user) {
     console.log(user);
   }

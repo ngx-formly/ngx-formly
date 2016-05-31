@@ -8,11 +8,12 @@ import {Field} from "./field";
   template: `
     <fieldset class="form-group" [ngFormModel]="form" *ngIf="!templateOptions.hidden">
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
-      <textarea name="{{key}}" [ngControl]="key" id="{{key}}" cols="{{templateOptions.cols}}"
+      <textarea name="{{key}}" [ngControl]="key" id="{{key}}" [(ngModel)]="model" cols="{{templateOptions.cols}}"
         rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')"
         placeholder="{{templateOptions.placeholder}}" class="form-control" [disabled]="templateOptions.disabled"></textarea>
       <small class="text-muted">{{templateOptions.description}}</small>
-    </fieldset>`
+    </fieldset>`,
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
 })
 export class FormlyFieldTextArea extends Field implements AfterViewInit {
   constructor(fm: FormlyMessages, ps: FormlyPubSub, private  elem: ElementRef) {
