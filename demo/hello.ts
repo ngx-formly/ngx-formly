@@ -71,7 +71,7 @@ export class HelloApp {
     };
     this.env = {
       angularVersion: "2.0.0-rc.1",
-      formlyVersion: "2.0.0-beta.4"
+      formlyVersion: "2.0.0-beta.5"
     };
     fc.setType({
       name: "toggle",
