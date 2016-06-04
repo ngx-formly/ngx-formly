@@ -3,7 +3,7 @@
 
 # ng2-formly
 
-Status: 
+Status:
 [![Build Status](https://travis-ci.org/formly-js/ng2-formly.svg?branch=master)](https://travis-ci.org/formly-js/ng2-formly)
 [![npm version](https://badge.fury.io/js/ng2-formly.svg)](https://badge.fury.io/js/ng2-formly)
 
@@ -25,7 +25,7 @@ Include the FormlyForm component import in the `directives` attribute of your `C
 </formly-form>
 ```
 
-and in your TypeScript file define the the `model` and `fields` attrnbutes
+and in your TypeScript file define the the `model` and `fields` attributes
 ```ts
 this.userFields = [{
   className: 'row',
@@ -57,7 +57,7 @@ this.user = {
   email: 'email@gmail.com',
   checked: false
 };
-            
+
 ```
 
 ## Quick Start
@@ -66,7 +66,7 @@ this.user = {
 ```bash
   npm install ng2-formly --save
 ```
-- add the script to the HTML file
+- add the script to the HTML file (if necessary)
 ```html
 <!-- index.html -->
 <script src="node_modules/ng2-formly/bundles/ng2-formly.min.js"></script>
@@ -76,9 +76,9 @@ this.user = {
 - and to your component add
 
 ```ts
-import {Component} from 'angular2/core';
-import {bootstrap} from 'angular2/platform/browser';
-import {FormlyForm, FormlyConfig, FormlyMessages, TemplateDirectives, FormlyProviders} from 'ng2-formly/ng2-formly'
+import {Component} from '@angular/core';
+import {bootstrap} from '@angular/platform/browser';
+import {FormlyForm, FormlyConfig, FormlyMessages, TemplateDirectives, FormlyProviders} from 'ng2-formly'
 
 @Component({
     selector: 'hello-app',
@@ -101,7 +101,7 @@ export class HelloApp {
                 component: TemplateDirectives[field]
             })
         });
-        
+
         this.userFields = [{
             key: 'nameOfPerson',
             type: 'input',
