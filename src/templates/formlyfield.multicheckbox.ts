@@ -41,6 +41,6 @@ export class FormlyFieldMultiCheckbox extends Field {
       previous[option.key] = [this._model ? this._model[option.key] : undefined];
       return previous;
     }, {});
-    return this.formBuilder.group(controlGroupConfig);
+    return this._control = this.formBuilder.group(controlGroupConfig);
   }
 }

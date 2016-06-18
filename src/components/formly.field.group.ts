@@ -1,5 +1,6 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, ElementRef} from "@angular/core";
+  Component, OnInit, Input, Output, EventEmitter, ElementRef, Renderer
+} from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyFieldVisibilityDelegate, FormlyFieldExpressionDelegate} from "../services/formly.field.delegates";
@@ -33,8 +34,9 @@ export class FormlyFieldGroup extends FormlyCommon implements OnInit {
 
   update;
 
-  constructor(protected elem: ElementRef, protected ps: FormlyPubSub, protected formlyConfig: FormlyConfig) {
-    super(elem, ps, formlyConfig);
+  constructor(protected elem: ElementRef, protected ps: FormlyPubSub, protected formlyConfig: FormlyConfig,
+              renderer: Renderer) {
+    super(elem, ps, formlyConfig, renderer);
   }
 
   ngOnInit(): any {

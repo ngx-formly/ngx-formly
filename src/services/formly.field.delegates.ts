@@ -24,8 +24,8 @@ export class FormlyFieldVisibilityDelegate {
   checkVisibilityChange() {
     if (this.hasHideExpression()) {
       let hideExpressionResult: boolean = this.eval(this.formlyCommon.field.hideExpression);
-      if (hideExpressionResult !== this.formlyCommon.isHidden()) {
-        this.formlyCommon.setHidden(hideExpressionResult);
+      if (hideExpressionResult !== this.formlyCommon.hide) {
+        this.formlyCommon.hide = hideExpressionResult;
       }
     }
   }

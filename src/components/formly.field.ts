@@ -1,6 +1,6 @@
 import {
   Component, OnInit, Input, Output, EventEmitter, ElementRef,
-  ViewContainerRef, ViewChild, Directive, ComponentRef, SimpleChange, OnChanges
+  ViewContainerRef, ViewChild, Directive, ComponentRef, SimpleChange, OnChanges, Renderer
 } from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
@@ -41,8 +41,8 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   private childFieldRef: ComponentRef<Field>;
 
   constructor(elem: ElementRef, ps: FormlyPubSub, protected fb: FormlyFieldBuilder,
-              formlyConfig: FormlyConfig) {
-    super(elem, ps, formlyConfig);
+              formlyConfig: FormlyConfig, renderer: Renderer) {
+    super(elem, ps, formlyConfig, renderer);
   }
 
   ngOnInit(): any {
@@ -85,6 +85,7 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   }): any {
     if (changes["model"]) {
       // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
+      console.log("Communicating the change to Native Field");
       this.modelUpdateEmitter.emit(changes["model"].currentValue);
     }
   }
