@@ -1,5 +1,5 @@
 
-import {Component, AfterViewInit, ElementRef} from "@angular/core";
+import {Component, AfterViewInit, ElementRef, Renderer, QueryList, ViewChildren} from "@angular/core";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
@@ -10,18 +10,24 @@ import {Field} from "./field";
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
       <textarea name="{{key}}" [ngControl]="key" id="{{key}}" [(ngModel)]="model" cols="{{templateOptions.cols}}"
         rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')"
-        placeholder="{{templateOptions.placeholder}}" class="form-control" [disabled]="templateOptions.disabled"></textarea>
+        placeholder="{{templateOptions.placeholder}}" class="form-control" [disabled]="templateOptions.disabled"
+        #textAreaElement></textarea>
       <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
+  queries: {inputComponent: new ViewChildren("textAreaElement")}
 })
 export class FormlyFieldTextArea extends Field implements AfterViewInit {
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, private  elem: ElementRef) {
-    super(fm, ps);
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer) {
+    super(fm, ps, renderer);
   }
-  ngAfterViewInit() {
-    if (this.templateOptions.focus) {
-      this.elem.nativeElement.querySelector("textarea").focus();
+
+  inputComponent: QueryList<ElementRef>;
+
+  public set focus (value: boolean) {
+    if (this.inputComponent.length > 0) {
+      this.renderer.invokeElementMethod(this.inputComponent.first.nativeElement, "focus", []);
     }
+    this._focus = value;
   }
 }

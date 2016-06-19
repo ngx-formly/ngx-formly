@@ -1,5 +1,5 @@
 /// <reference path="./../typings/ng2-formly.d.ts" />
-import {Component} from "@angular/core";
+import {Component, Renderer} from "@angular/core";
 import {Validators, FormBuilder} from "@angular/common";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {FormlyForm} from "./../src/components/formly.form";
@@ -30,8 +30,8 @@ import {FormlyFieldConfig} from "./../src/components/formly.field.config";
 })
 export class FormlyFieldToggle extends Field {
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub) {
-    super(fm, ps);
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer) {
+    super(fm, ps, renderer);
   }
 
 }
@@ -119,8 +119,7 @@ export class HelloApp {
           templateOptions: {
             type: "password",
             label: "Password",
-            placeholder: "Password",
-            focus: true
+            placeholder: "Password"
           },
           validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
         }, {
@@ -213,7 +212,8 @@ export class HelloApp {
           cols: 20,
           placeholder: "Type a paragraph...",
           label: "Message",
-          description: "Please enter atleast 150 characters"
+          description: "Please enter atleast 150 characters",
+          focus: true
         }
       }, {
         key: "toggleVal",

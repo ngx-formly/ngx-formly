@@ -1,5 +1,5 @@
 
-import {Component} from "@angular/core";
+import {Component, Renderer} from "@angular/core";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
@@ -24,8 +24,8 @@ import {RadioButtonState, AbstractControl, FormBuilder} from "@angular/common";
   inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
 })
 export class FormlyFieldRadio extends Field {
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder) {
-    super(fm, ps);
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer) {
+    super(fm, ps, renderer);
   }
 
   createControl(): AbstractControl {

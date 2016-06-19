@@ -1,5 +1,5 @@
 
-import {Component, Input} from "@angular/core";
+import {Component, Input, Renderer} from "@angular/core";
 import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
@@ -26,8 +26,8 @@ import {FormBuilder, AbstractControl} from "@angular/common";
 })
 export class FormlyFieldMultiCheckbox extends Field {
 
-  constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder) {
-    super(fm, fps);
+  constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer) {
+    super(fm, fps, renderer);
   }
 
   inputChange(e, val) {

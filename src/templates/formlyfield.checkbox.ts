@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Renderer} from "@angular/core";
 import { Field } from "./field";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
@@ -22,8 +22,8 @@ import {AbstractControl, FormBuilder} from "@angular/common";
 })
 export class FormlyFieldCheckbox extends Field {
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder) {
-    super(fm, ps);
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer) {
+    super(fm, ps, renderer);
   }
 
   createControl(): AbstractControl {

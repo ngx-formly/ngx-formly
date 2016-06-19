@@ -85,7 +85,6 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   }): any {
     if (changes["model"]) {
       // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
-      console.log("Communicating the change to Native Field");
       this.modelUpdateEmitter.emit(changes["model"].currentValue);
     }
   }
