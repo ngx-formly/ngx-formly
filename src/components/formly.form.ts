@@ -1,4 +1,4 @@
-import {Component, OnInit, ElementRef} from "@angular/core";
+import {Component, OnInit, ElementRef, Renderer} from "@angular/core";
 import {NgFormModel, FormBuilder} from "@angular/common";
 import {FormlyField} from "./formly.field";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
@@ -33,8 +33,8 @@ export class FormlyForm extends FormlyFieldGroup implements OnInit  {
   event;
 
   constructor(elem: ElementRef, protected _fm: NgFormModel, ps: FormlyPubSub, private fb: FormBuilder,
-              formlyConfig: FormlyConfig) {
-    super(elem, ps, formlyConfig);
+              formlyConfig: FormlyConfig, renderer: Renderer) {
+    super(elem, ps, formlyConfig, renderer);
     this.event = new FormlyEventEmitter();
   }
   ngOnInit() {

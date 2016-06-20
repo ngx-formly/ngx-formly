@@ -1,4 +1,4 @@
-import {Output, Input, EventEmitter, OnInit, OnChanges} from "@angular/core";
+import {Output, Input, EventEmitter, OnInit} from "@angular/core";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
@@ -23,7 +23,7 @@ export class Field implements OnInit {
 
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
   _modelUpdateReceiver: EventEmitter<any>;
-  set modelUpdateReceiver(modelUpdateReceiver: EventEmitter<any>) {
+  public set modelUpdateReceiver(modelUpdateReceiver: EventEmitter<any>) {
     this._modelUpdateReceiver = modelUpdateReceiver;
     this._modelUpdateReceiver.subscribe((model: any) => {
       this.model = model;
@@ -39,7 +39,7 @@ export class Field implements OnInit {
     this._model = value;
   }
 
-  constructor(fm: FormlyMessages, private ps: FormlyPubSub) {
+  constructor(fm: FormlyMessages, protected ps: FormlyPubSub) {
     this.messages = fm.getMessages();
     this.ps.Stream.subscribe(form => {
       this.form = form;
@@ -55,19 +55,19 @@ export class Field implements OnInit {
   }
 
   inputChange(e, val) {
-    this._model = e.target[val];
+    this.model = e.target[val];
     this.changeFn.emit(new FormlyValueChangeEvent(this.key, e.target[val]));
     this.ps.setUpdated(true);
   }
 
   get formControl(): AbstractControl {
     if (!this._control) {
-     this._control = this.createControl();
+     this.createControl();
     }
     return this._control;
   }
 
-  createControl(): AbstractControl {
-    return new Control(this._model || "", this.field.validation);
+  createControl(): void {
+    this._control = new Control(this._model || "", this.field.validation);
   }
 }

@@ -227,7 +227,7 @@ export class HelloApp {
         email: "email@gmail.com",
         checked: true,
         select: "male",
-        title: "Mr.",
+        title: "mr",
         toggleVal: true,
         interest: {
           "movies": false,
@@ -270,7 +270,7 @@ export class HelloApp {
       email: "email@gmail.com",
       checked: true,
       select: "male",
-      title: "Mr.",
+      title: "mr",
       toggleVal: true,
       interest: {
         "movies": false,

@@ -1,4 +1,4 @@
-import {Input, Output, EventEmitter, ElementRef, OnChanges} from "@angular/core";
+import {Input, Output, EventEmitter, ElementRef, Renderer} from "@angular/core";
 import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyConfig} from "../services/formly.config";
@@ -10,7 +10,7 @@ export class FormlyCommon {
   @Input() public field: FormlyFieldConfig;
   @Input() public form: any;
   @Input() public key: string;
-  @Input() public hide: any;
+  @Input() public _hide: any;
 
   @Output() formSubmit = new EventEmitter();
 
@@ -21,7 +21,8 @@ export class FormlyCommon {
   expressionDelegate: FormlyFieldExpressionDelegate;
 
 
-  constructor(protected elem: ElementRef, protected ps: FormlyPubSub, protected formlyConfig: FormlyConfig) {
+  constructor(protected elem: ElementRef, protected ps: FormlyPubSub, protected formlyConfig: FormlyConfig,
+              private renderer: Renderer) {
     this.visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
     this.expressionDelegate = new FormlyFieldExpressionDelegate(this);
   }
@@ -36,19 +37,20 @@ export class FormlyCommon {
     this.ps.Stream.emit(this.form);
   }
 
-  isHidden() {
-    return this.hide;
+  @Input()
+  public get hide() {
+    return this._hide;
   }
-  setHidden(cond: boolean) {
-    this.hide = cond;
+  public set hide(value: boolean) {
+    this._hide = value;
 
-    this.elem.nativeElement.style.display = cond ? "none" : "";
+    this.renderer.setElementStyle(this.elem.nativeElement, "display", value ? "none" : "");
     if (this.field.fieldGroup) {
       for (let i = 0; i < this.field.fieldGroup.length; i++) {
-        this.psEmit(this.field.fieldGroup[i].key, "hidden", this.hide);
+        this.psEmit(this.field.fieldGroup[i].key, "hidden", this._hide);
       }
     } else {
-      this.psEmit(this.field.key, "hidden", this.hide);
+      this.psEmit(this.field.key, "hidden", this._hide);
     }
   }
 
