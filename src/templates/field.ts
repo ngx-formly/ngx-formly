@@ -1,4 +1,4 @@
-import {Output, Input, EventEmitter, OnInit} from "@angular/core";
+import {Output, Input, EventEmitter, OnInit, Renderer} from "@angular/core";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
@@ -20,6 +20,7 @@ export class Field implements OnInit {
   messages;
   _control: AbstractControl;
   _model: any;
+  protected _focus: boolean;
 
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
   _modelUpdateReceiver: EventEmitter<any>;
@@ -39,7 +40,8 @@ export class Field implements OnInit {
     this._model = value;
   }
 
-  constructor(fm: FormlyMessages, protected ps: FormlyPubSub) {
+  constructor(fm: FormlyMessages, protected ps: FormlyPubSub,
+              protected renderer: Renderer) {
     this.messages = fm.getMessages();
     this.ps.Stream.subscribe(form => {
       this.form = form;
@@ -69,5 +71,19 @@ export class Field implements OnInit {
 
   createControl(): void {
     this._control = new Control(this._model || "", this.field.validation);
+  }
+
+  ngAfterViewInit() {
+    if (this.templateOptions.focus) {
+      this.focus = true;
+    }
+  }
+
+  public set focus (value: boolean) {
+    this._focus = value;
+  }
+
+  public get focus (): boolean {
+    return this._focus;
   }
 }

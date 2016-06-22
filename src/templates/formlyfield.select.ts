@@ -1,5 +1,5 @@
 
-import {Component} from "@angular/core";
+import {Component, Renderer} from "@angular/core";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
@@ -18,7 +18,7 @@ import {Field} from "./field";
   inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
 })
 export class FormlyFieldSelect extends Field {
-  constructor(fm: FormlyMessages, ps: FormlyPubSub) {
-    super(fm, ps);
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer) {
+    super(fm, ps, renderer);
   }
 }

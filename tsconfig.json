@@ -4,11 +4,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "declaration": false,
-    "module": "system",
+    "declaration": true,
     "moduleResolution": "node",
     "removeComments": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "noImplicitAny": false
   },
   "exclude": [
@@ -18,7 +17,7 @@
   ],
   "files": [
     "./typings/browser.d.ts",
-    "./ng2-formly.ts",
+    "src/index.ts",
     "./demo/hello.ts"
   ]
 }
