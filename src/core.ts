@@ -7,4 +7,3 @@ export {FormlyPubSub, FormlyEventEmitter} from "./services/formly.event.emitter"
 export {FormlyMessage, FormlyMessages} from "./services/formly.messages";
 export {FormlyFieldVisibilityDelegate} from "./services/formly.field.delegates"
 export {FormlyProviders} from "./services/formly.providers";
-export {FormlyConfigProcessor} from "./services/formly.processor";

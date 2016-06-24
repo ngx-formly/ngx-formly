@@ -3,9 +3,10 @@ import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
 import {Control, AbstractControl} from "@angular/common";
+import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 
-export class Field implements OnInit {
+export abstract class Field implements OnInit {
 
   @Input() form;
   @Input() update;
@@ -40,11 +41,17 @@ export class Field implements OnInit {
     this._model = value;
   }
 
-  constructor(fm: FormlyMessages, protected ps: FormlyPubSub,
-              protected renderer: Renderer) {
+  constructor(fm: FormlyMessages, protected ps: FormlyPubSub, protected renderer: Renderer,
+              protected focusDispatcher: SingleFocusDispatcher) {
     this.messages = fm.getMessages();
     this.ps.Stream.subscribe(form => {
       this.form = form;
+    });
+
+    focusDispatcher.listen((key: String) => {
+      if (this.key !== key) {
+        this.focus = false;
+      }
     });
   }
 
@@ -79,11 +86,27 @@ export class Field implements OnInit {
     }
   }
 
-  public set focus (value: boolean) {
-    this._focus = value;
+  public set focus (newFocusValue: boolean) {
+    if (!this._focus && newFocusValue) {
+      this._focus = true;
+      this.setNativeFocusProperty(this._focus);
+      this.focusDispatcher.notify(this.key);
+      // TODO: Raise a Event which can be used for streaming
+      console.log(this.key + " got the focus");
+    } else if (this._focus && !newFocusValue) {
+      this._focus = false;
+      // TODO: Raise a Event which can be used for streaming
+      console.log(this.key + " lost the focus");
+    }
   }
+
+  protected abstract setNativeFocusProperty(newFocusValue: boolean): void;
 
   public get focus (): boolean {
     return this._focus;
+  }
+
+  public onInputFocus(): void {
+    this.focus = true;
   }
 }

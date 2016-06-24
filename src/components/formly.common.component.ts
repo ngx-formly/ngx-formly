@@ -43,7 +43,6 @@ export class FormlyCommon {
   }
   public set hide(value: boolean) {
     this._hide = value;
-
     this.renderer.setElementStyle(this.elem.nativeElement, "display", value ? "none" : "");
     if (this.field.fieldGroup) {
       for (let i = 0; i < this.field.fieldGroup.length; i++) {

@@ -1,8 +1,9 @@
-import {Component, Renderer} from "@angular/core";
-import { Field } from "./field";
+import {Component, Renderer, ElementRef, ViewChildren, QueryList} from "@angular/core";
+import {Field} from "./field";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
 import {AbstractControl, FormBuilder} from "@angular/common";
+import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
   selector: "formly-field-checkbox",
@@ -11,23 +12,35 @@ import {AbstractControl, FormBuilder} from "@angular/common";
       <div [ngFormModel]="form">
         <label class="c-input c-checkbox">
           <input type="checkbox" [ngControl]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
-            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"> {{templateOptions.label}}
+            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on" (focus)="onInputFocus()"
+            #inputElement>
+            {{templateOptions.label}}
             <span class="c-indicator"></span>
           </label>
       </div>
       <small class="text-muted">{{templateOptions.description}}</small>
     </div>
     `,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
+  queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldCheckbox extends Field {
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer) {
-    super(fm, ps, renderer);
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer,
+              focusDispatcher: SingleFocusDispatcher) {
+    super(fm, ps, renderer, focusDispatcher);
   }
+
+  inputComponent: QueryList<ElementRef>;
 
   createControl(): AbstractControl {
     return this._control = this.formBuilder.control(this._model ? "on" : undefined);
+  }
+
+  protected setNativeFocusProperty(newFocusValue: boolean): void {
+    if (this.inputComponent.length > 0) {
+      this.renderer.invokeElementMethod(this.inputComponent.first.nativeElement, "focus", [newFocusValue]);
+    }
   }
 
 }

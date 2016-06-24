@@ -1,9 +1,10 @@
 
-import {Component, Input, Renderer} from "@angular/core";
+import {Component, Renderer, QueryList, ElementRef, ViewChildren} from "@angular/core";
 import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 import {FormBuilder, AbstractControl} from "@angular/common";
+import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
   selector: "formly-field-multicheckbox",
@@ -14,7 +15,9 @@ import {FormBuilder, AbstractControl} from "@angular/common";
                 <div *ngFor="let option of templateOptions.options">
                     <label class="c-input c-radio">
                         <input type="checkbox" name="choose" value="{{option.value}}" [ngControl]="option.key"
-                          [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)">{{option.value}}
+                          [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)" (focus)="onInputFocus()"
+                          >
+                          {{option.value}}
                         <span class="c-indicator"></span>
                     </label>
                 </div>
@@ -22,12 +25,14 @@ import {FormBuilder, AbstractControl} from "@angular/common";
             </div>
         </div>
     `,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"]
+  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
+  queries: {inputComponent: new ViewChildren("textAreaElement")}
 })
 export class FormlyFieldMultiCheckbox extends Field {
 
-  constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer) {
-    super(fm, fps, renderer);
+  constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer,
+              focusDispatcher: SingleFocusDispatcher) {
+    super(fm, fps, renderer, focusDispatcher);
   }
 
   inputChange(e, val) {
@@ -42,5 +47,13 @@ export class FormlyFieldMultiCheckbox extends Field {
       return previous;
     }, {});
     return this._control = this.formBuilder.group(controlGroupConfig);
+  }
+
+  inputComponent: QueryList<ElementRef>;
+
+  protected setNativeFocusProperty(newFocusValue: boolean): void {
+    if (this.inputComponent.length > 0) {
+      this.renderer.invokeElementMethod(this.inputComponent.first.nativeElement, "focus", [newFocusValue]);
+    }
   }
 }

@@ -3,7 +3,6 @@ import {
 } from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
-import {FormlyFieldVisibilityDelegate, FormlyFieldExpressionDelegate} from "../services/formly.field.delegates";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyField} from "./formly.field";
 import {FormlyFieldConfig} from "./formly.field.config";

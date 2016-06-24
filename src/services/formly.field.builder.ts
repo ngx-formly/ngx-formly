@@ -4,6 +4,7 @@ import {ComponentFactory, ComponentResolver, Injectable, ComponentRef} from "@an
 import {FormlyFieldConfig} from "../components/formly.field.config";
 import {FormlyConfig} from "./formly.config";
 import {FormlyField} from "../components/formly.field";
+import {Field} from "../templates/field";
 
 @Injectable()
 export class FormlyFieldBuilder {
@@ -12,15 +13,14 @@ export class FormlyFieldBuilder {
 
   constructor(protected cr: ComponentResolver) { }
 
-  createChildFields(fieldConfig: FormlyFieldConfig, formlyField: FormlyField, formlyConfig: FormlyConfig): Promise<ComponentRef<any>> {
+  createChildFields(fieldConfig: FormlyFieldConfig, formlyField: FormlyField, formlyConfig: FormlyConfig): Promise<ComponentRef<Field>> {
     // TODO support formlyField.field.hideExpression as a callback/observable
     formlyField.hide = fieldConfig.hideExpression ? true : false;
 
     return this.cr.resolveComponent(formlyConfig.getDirective(fieldConfig.type))
-      .then((cf: ComponentFactory<any>) => {
+      .then((cf: ComponentFactory<Field>) => {
         let ref = formlyField.myChild.viewContainer.createComponent(cf);
         ref.instance.model = formlyField.model;
-        ref.instance.type = fieldConfig.type;
         ref.instance.templateOptions = fieldConfig.templateOptions;
         ref.instance.key = formlyField.key;
         ref.instance.form = formlyField.form;
