@@ -1,5 +1,5 @@
-import {Component, Host, Input, Injectable} from "@angular/core";
-import {NgFormModel} from "@angular/common";
+import {Component, Input, Injectable} from "@angular/core";
+import {FormGroup, AbstractControl} from "@angular/forms";
 
 @Injectable()
 export class FormlyMessages {
@@ -22,12 +22,13 @@ export class FormlyMessages {
 })
 export class FormlyMessage {
   @Input() control: string;
+  @Input() formDir: FormGroup;
 
-  constructor(@Host() private _formDir: NgFormModel, protected fm: FormlyMessages) { }
+  constructor(protected fm: FormlyMessages) { }
 
 
   get errorMessage() {
-    let c = this._formDir.form.find(this.control);
+    let c: AbstractControl = this.formDir.find(this.control);
 
     for (let propertyName in c.errors) {
       if (c.errors.hasOwnProperty(propertyName)) {

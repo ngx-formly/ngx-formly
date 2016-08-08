@@ -2,7 +2,7 @@ import {Output, Input, EventEmitter, OnInit, Renderer} from "@angular/core";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
-import {Control, AbstractControl} from "@angular/common";
+import {FormControl, AbstractControl} from "@angular/forms";
 
 
 export class Field implements OnInit {
@@ -70,7 +70,7 @@ export class Field implements OnInit {
   }
 
   createControl(): void {
-    this._control = new Control(this._model || "", this.field.validation);
+    this._control = new FormControl(this._model || "", this.field.validation);
   }
 
   ngAfterViewInit() {
