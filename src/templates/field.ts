@@ -92,11 +92,9 @@ export abstract class Field implements OnInit {
       this.setNativeFocusProperty(this._focus);
       this.focusDispatcher.notify(this.key);
       // TODO: Raise a Event which can be used for streaming
-      console.log(this.key + " got the focus");
     } else if (this._focus && !newFocusValue) {
       this._focus = false;
       // TODO: Raise a Event which can be used for streaming
-      console.log(this.key + " lost the focus");
     }
   }
 
