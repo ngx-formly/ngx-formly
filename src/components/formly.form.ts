@@ -4,6 +4,9 @@ import {FormlyField} from "./formly.field";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyFieldGroup} from "./formly.field.group";
 import {FormlyConfig} from "../services/formly.config";
+import {FormlyFieldBuilder} from "../services/formly.field.builder";
+import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+import {NgFormModel} from "@angular/common";
 
 @Component({
   selector: "formly-form",
@@ -25,12 +28,12 @@ import {FormlyConfig} from "../services/formly.config";
               <ng-content></ng-content>
             </form>
             `,
-  providers: [FormlyPubSub, FORM_PROVIDERS],
+  providers: [NgFormModel, FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder, FORM_PROVIDERS],
   inputs: ["field", "formModel", "form", "hide", "model", "key", "fields"]
 })
 export class FormlyForm extends FormlyFieldGroup implements OnInit  {
 
-  event;
+  event: FormlyEventEmitter;
 
   constructor(elem: ElementRef, ps: FormlyPubSub, private fb: FormBuilder,
               formlyConfig: FormlyConfig, renderer: Renderer) {

@@ -1,9 +1,9 @@
-import {Component, Renderer} from "@angular/core";
-import { Field } from "./field";
+import {Component, Renderer, ElementRef, ViewChildren, QueryList} from "@angular/core";
+import {Field} from "./field";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
 import {AbstractControl, FormBuilder, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
-
+import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 @Component({
   selector: "formly-field-checkbox",
   template: `
@@ -11,7 +11,9 @@ import {AbstractControl, FormBuilder, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES}
       <div [formGroup]="form">
         <label class="c-input c-checkbox">
           <input type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
-            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"> {{templateOptions.label}}
+            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"
+            #inputElement>
+            {{templateOptions.label}}
             <span class="c-indicator"></span>
           </label>
       </div>
@@ -19,16 +21,26 @@ import {AbstractControl, FormBuilder, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES}
     </div>
     `,
   inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
-  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
+  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
+  queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldCheckbox extends Field {
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer) {
-    super(fm, ps, renderer);
+  constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer,
+              focusDispatcher: SingleFocusDispatcher) {
+    super(fm, ps, renderer, focusDispatcher);
   }
+
+  inputComponent: QueryList<ElementRef>;
 
   createControl(): AbstractControl {
     return this._control = this.formBuilder.control(this._model ? "on" : undefined);
+  }
+
+  protected setNativeFocusProperty(newFocusValue: boolean): void {
+    if (this.inputComponent.length > 0) {
+      this.renderer.invokeElementMethod(this.inputComponent.first.nativeElement, "focus", [newFocusValue]);
+    }
   }
 
 }
