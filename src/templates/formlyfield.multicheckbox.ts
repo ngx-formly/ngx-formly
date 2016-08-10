@@ -3,21 +3,20 @@ import {Component, Renderer, QueryList, ElementRef, ViewChildren} from "@angular
 import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
-import {FormBuilder, AbstractControl} from "@angular/common";
+import {FormBuilder, AbstractControl} from "@angular/forms";
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
   selector: "formly-field-multicheckbox",
   template: `
-        <div [ngFormModel]="form">
-            <div [ngControlGroup]="key" class="form-group">
+        <div [formGroup]="form">
+            <div [formGroupName]="key" class="form-group">
                 <label class="form-control-label" for="">{{templateOptions.label}}</label>
                 <div *ngFor="let option of templateOptions.options">
                     <label class="c-input c-radio">
-                        <input type="checkbox" name="choose" value="{{option.value}}" [ngControl]="option.key"
-                          [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)" (focus)="onInputFocus()"
-                          >
-                          {{option.value}}
+                        <input type="checkbox" name="choose" value="{{option.value}}" [formControlName]="option.key"
+                          [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)" (focus)="onInputFocus()">{{option.value}}
                         <span class="c-indicator"></span>
                     </label>
                 </div>
@@ -26,6 +25,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
         </div>
     `,
   inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
+  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   queries: {inputComponent: new ViewChildren("textAreaElement")}
 })
 export class FormlyFieldMultiCheckbox extends Field {

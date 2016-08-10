@@ -6,11 +6,12 @@ import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emi
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyField} from "./formly.field";
 import {FormlyFieldConfig} from "./formly.field.config";
+import {REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 
 @Component({
   selector: "formly-field-group",
   template: `
-        <div class="formly-field"
+        <div  class="formly-field"
           *ngFor="let f of field.fieldGroup">
           <formly-field [hide]="f.hideExpression" [model]="model?model[f.key]:''" [key]="f.key" [form]="form" [field]="f"
             [formModel] = "formModel" (changeFn)="changeFunction($event, f)" [ngClass]="f.className" [eventEmitter]="eventEmitter">
@@ -18,9 +19,9 @@ import {FormlyFieldConfig} from "./formly.field.config";
           <formly-field-group *ngIf="f.fieldGroup" [hide]="field.hideExpression" [model]="f.key ? model[f.key]: model" [key]="f.key" [form]="form" [field]="f"
             [fields]="f.fieldGroup" [formModel]= "formModel" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
           </formly-field-group>
-        </div> 
+        </div > 
     `,
-  directives: [FormlyField],
+  directives: [FormlyField, REACTIVE_FORM_DIRECTIVES],
   inputs: ["field", "formModel", "form", "hide", "model", "key", "fields"]
 })
 export class FormlyFieldGroup extends FormlyCommon implements OnInit {

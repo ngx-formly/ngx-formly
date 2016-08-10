@@ -3,13 +3,15 @@ import {Component, AfterViewInit, ElementRef, Renderer, QueryList, ViewChildren}
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+
 @Component({
   selector: "formly-field-textarea",
   template: `
-    <fieldset class="form-group" [ngFormModel]="form" *ngIf="!templateOptions.hidden">
+    <fieldset class="form-group" [formGroup]="form" *ngIf="!templateOptions.hidden">
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
-      <textarea name="{{key}}" [ngControl]="key" id="{{key}}" [(ngModel)]="model" cols="{{templateOptions.cols}}"
+      <textarea name="{{key}}" [formControlName]="key" id="{{key}}" [(ngModel)]="model" cols="{{templateOptions.cols}}"
         rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')"
         placeholder="{{templateOptions.placeholder}}" class="form-control" [disabled]="templateOptions.disabled"
         (focus)="onInputFocus()" #textAreaElement>
@@ -18,7 +20,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
       <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`,
   inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
-  queries: {inputComponent: new ViewChildren("textAreaElement")}
+  queries: {inputComponent: new ViewChildren("textAreaElement")},
+  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
 })
 export class FormlyFieldTextArea extends Field implements AfterViewInit {
   constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {

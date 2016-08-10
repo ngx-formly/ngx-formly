@@ -1,17 +1,18 @@
 import {Component, OnInit, ElementRef, Renderer} from "@angular/core";
-import {NgFormModel, FormBuilder} from "@angular/common";
+import {FormBuilder, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, FORM_PROVIDERS} from "@angular/forms";
 import {FormlyField} from "./formly.field";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyFieldGroup} from "./formly.field.group";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyFieldBuilder} from "../services/formly.field.builder";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+import {NgFormModel} from "@angular/common";
 
 @Component({
   selector: "formly-form",
-  directives: [FormlyField, FormlyFieldGroup],
+  directives: [FormlyField, FormlyFieldGroup, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   template: `
-            <form class="formly" role="form" novalidate [ngFormModel]="form">
+            <form class="formly" role="form" novalidate [formGroup]="form">
               <div class="formly-field"
                 *ngFor="let f of fields"
                 [ngClass]="f.className">
@@ -27,14 +28,14 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
               <ng-content></ng-content>
             </form>
             `,
-  providers: [NgFormModel, FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder],
+  providers: [NgFormModel, FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder, FORM_PROVIDERS],
   inputs: ["field", "formModel", "form", "hide", "model", "key", "fields"]
 })
 export class FormlyForm extends FormlyFieldGroup implements OnInit  {
 
   event: FormlyEventEmitter;
 
-  constructor(elem: ElementRef, protected _fm: NgFormModel, ps: FormlyPubSub, private fb: FormBuilder,
+  constructor(elem: ElementRef, ps: FormlyPubSub, private fb: FormBuilder,
               formlyConfig: FormlyConfig, renderer: Renderer) {
     super(elem, ps, formlyConfig, renderer);
     this.event = new FormlyEventEmitter();

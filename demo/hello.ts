@@ -1,6 +1,6 @@
 /// <reference path="./../typings/ng2-formly.d.ts" />
 import {Component, Renderer, ViewChildren, QueryList, ElementRef} from "@angular/core";
-import {Validators, FormBuilder} from "@angular/common";
+import {Validators, FormBuilder} from "@angular/forms";
 import {bootstrap} from "@angular/platform-browser-dynamic";
 import {FormlyForm} from "./../src/components/formly.form";
 import {ValidationService} from "./validation.service";
@@ -14,20 +14,22 @@ import {Field} from "./../src/templates/field";
 import {FormlyPubSub} from "./../src/services/formly.event.emitter";
 import {FormlyFieldConfig} from "./../src/components/formly.field.config";
 import {SingleFocusDispatcher} from "../src/services/formly.single.focus.dispatcher";
+import {disableDeprecatedForms, provideForms, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
   selector: "formly-field-toggle",
   template: `
-    <div [ngFormModel]="form">
+    <div [formGroup]="form">
       <div class="checkbox-toggle">
-          <input id="checkbox" type="checkbox" type="checkbox" [ngControl]="key" (change)="inputChange($event, 'checked')" value="on">
+          <input id="checkbox" type="checkbox" type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" value="on">
           <label for="checkbox">
               <div></div>
           </label>
       </div>
   </div>
   `,
+  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
@@ -295,4 +297,7 @@ export class HelloApp {
   }
 }
 
-bootstrap(HelloApp, [FormlyBootstrap, FormlyProviders]);
+bootstrap(HelloApp, [disableDeprecatedForms(),
+  provideForms(),
+  FormlyBootstrap,
+  FormlyProviders]);

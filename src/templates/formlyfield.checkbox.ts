@@ -2,17 +2,16 @@ import {Component, Renderer, ElementRef, ViewChildren, QueryList} from "@angular
 import {Field} from "./field";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub} from "./../services/formly.event.emitter";
-import {AbstractControl, FormBuilder} from "@angular/common";
+import {AbstractControl, FormBuilder, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
-
 @Component({
   selector: "formly-field-checkbox",
   template: `
     <div class="form-group">
-      <div [ngFormModel]="form">
+      <div [formGroup]="form">
         <label class="c-input c-checkbox">
-          <input type="checkbox" [ngControl]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
-            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on" (focus)="onInputFocus()"
+          <input type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
+            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"
             #inputElement>
             {{templateOptions.label}}
             <span class="c-indicator"></span>
@@ -22,6 +21,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
     </div>
     `,
   inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
+  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldCheckbox extends Field {

@@ -3,12 +3,13 @@ import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../s
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyFieldConfig} from "./formly.field.config";
+import {FormGroup} from "@angular/forms"
 
 export class FormlyCommon {
 
   @Input() public formModel: any;
   @Input() public field: FormlyFieldConfig;
-  @Input() public form: any;
+  @Input() public form: FormGroup;
   @Input() public key: string;
   @Input() public _hide: any;
 
