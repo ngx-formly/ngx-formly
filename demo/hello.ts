@@ -14,7 +14,7 @@ import {Field} from "./../src/templates/field";
 import {FormlyPubSub} from "./../src/services/formly.event.emitter";
 import {FormlyFieldConfig} from "./../src/components/formly.field.config";
 import {SingleFocusDispatcher} from "../src/services/formly.single.focus.dispatcher";
-import {disableDeprecatedForms, provideForms, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
+import {provideForms, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
@@ -30,7 +30,6 @@ import {disableDeprecatedForms, provideForms, FORM_DIRECTIVES, REACTIVE_FORM_DIR
   </div>
   `,
   directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldToggle extends Field {
@@ -304,7 +303,6 @@ export class HelloApp {
   }
 }
 
-bootstrap(HelloApp, [disableDeprecatedForms(),
-  provideForms(),
+bootstrap(HelloApp, [provideForms(),
   FormlyBootstrap,
   FormlyProviders]);

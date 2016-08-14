@@ -12,22 +12,27 @@ import {REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
   selector: "formly-field-group",
   template: `
         <div  class="formly-field"
-          *ngFor="let f of field.fieldGroup">
-          <formly-field [hide]="f.hideExpression" [model]="model?model[f.key]:''" [key]="f.key" [form]="form" [field]="f"
-            [formModel] = "formModel" (changeFn)="changeFunction($event, f)" [ngClass]="f.className" [eventEmitter]="eventEmitter">
+          *ngFor="let f of fields"
+          [ngClass]="f.className">
+          <formly-field *ngIf="!f.fieldGroup" [hide]="f.hideExpression" [model]="model?model[f.key]:''"
+            [key]="f.key" [form]="form" [field]="f" [formModel] = "formModel"
+            (changeFn)="changeFunction($event, f)" [eventEmitter]="eventEmitter">
           </formly-field>
-          <formly-field-group *ngIf="f.fieldGroup" [hide]="field.hideExpression" [model]="f.key ? model[f.key]: model" [key]="f.key" [form]="form" [field]="f"
-            [fields]="f.fieldGroup" [formModel]= "formModel" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
+          <formly-field-group *ngIf="f.fieldGroup" [hide]="f.hideExpression" [fields]="f.fieldGroup"
+            [model]="f.key ? model[f.key]: model" [key]="f.key" [form]="form" [field]="f"
+            [formModel]= "formModel" (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
           </formly-field-group>
         </div > 
     `,
   directives: [FormlyField, FormlyFieldGroup, REACTIVE_FORM_DIRECTIVES],
-  inputs: ["field", "formModel", "form", "hide", "model", "key", "fields"]
+  inputs: ["field", "formModel", "form", "hide", "model", "key"]
 })
 export class FormlyFieldGroup extends FormlyCommon implements OnInit {
 
+  @Input()
   public fields: FormlyFieldConfig[];
-  @Input() public eventEmitter;
+  @Input()
+  public eventEmitter;
 
   // Outputs
   @Output() changeFn: EventEmitter<any> = new EventEmitter();

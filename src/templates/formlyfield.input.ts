@@ -19,7 +19,6 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
       </div>
     `,
   directives: [FormlyMessage, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldInput extends Field implements AfterViewInit {

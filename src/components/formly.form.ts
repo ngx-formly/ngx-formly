@@ -6,7 +6,6 @@ import {FormlyFieldGroup} from "./formly.field.group";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyFieldBuilder} from "../services/formly.field.builder";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
-import {NgFormModel} from "@angular/common";
 
 @Component({
   selector: "formly-form",
@@ -18,7 +17,7 @@ import {NgFormModel} from "@angular/common";
                 [ngClass]="f.className">
                 <formly-field *ngIf="!f.fieldGroup" [hide]="f.hideExpression" [model]="model[f.key]"
                   [key]="f.key" [form]="form" [field]="f" [formModel]= "model"
-                  (changeFn)="changeFunction($event, field)" [eventEmitter]="event">
+                  (changeFn)="changeFunction($event, f)" [eventEmitter]="event">
                 </formly-field>
                 <formly-field-group *ngIf="f.fieldGroup" [hide]="f.hideExpression" [fields]="f.fieldGroup"
                   [model]="f.key ? model[f.key]: model" [key]="f.key" [form]="form" [field]="f"
@@ -28,8 +27,8 @@ import {NgFormModel} from "@angular/common";
               <ng-content></ng-content>
             </form>
             `,
-  providers: [NgFormModel, FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder, FORM_PROVIDERS],
-  inputs: ["field", "formModel", "form", "hide", "model", "key", "fields"]
+  providers: [FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder, FORM_PROVIDERS],
+  inputs: ["field", "formModel", "form", "hide", "model", "key"]
 })
 export class FormlyForm extends FormlyFieldGroup implements OnInit  {
 

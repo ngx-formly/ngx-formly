@@ -22,7 +22,6 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
         <small class="text-muted">{{templateOptions.description}}</small>
       </div>
     </div>`,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
   directives: [REACTIVE_FORM_DIRECTIVES, FORM_DIRECTIVES],
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
