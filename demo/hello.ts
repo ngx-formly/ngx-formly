@@ -111,76 +111,83 @@ export class HelloApp {
       }, {
         className: "row",
         fieldGroup: [{
-          className: "col-xs-4",
-          key: "email",
-          type: "input",
-          templateOptions: {
-            type: "email",
-            label: "Email address",
-            placeholder: "Enter email",
-            disabled: true
-          },
-          validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
-          expressionProperties: {
-            "templateOptions.disabled": "!model.password"
-          }
+          className: "col-xs-5",
+          fieldGroup: [{
+            className: "row",
+            fieldGroup: [{
+            className: "col-xs-4",
+            key: "email",
+            type: "input",
+            templateOptions: {
+              type: "email",
+              label: "Email address",
+              placeholder: "Enter email",
+              disabled: true
+            },
+            validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
+            expressionProperties: {
+              "templateOptions.disabled": "!model.password"
+            }
+          }, {
+            className: "col-xs-4",
+            key: "password",
+            type: "input",
+            templateOptions: {
+              type: "password",
+              label: "Password",
+              placeholder: "Password"
+            },
+            validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
+          }, {
+            className: "col-xs-4",
+            key: "select",
+            type: "select",
+            templateOptions: {
+              options: [{
+                label: "Male",
+                value: "male"
+              }, {
+                label: "Female",
+                value: "female"
+              }],
+              label: "Gender",
+              placeholder: "Select Gender"
+            }
+          }]
+
+          }]
         }, {
-          className: "col-xs-4",
-          key: "password",
-          type: "input",
-          templateOptions: {
-            type: "password",
-            label: "Password",
-            placeholder: "Password"
-          },
-          validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
-        }, {
-          className: "col-xs-4",
-          key: "select",
-          type: "select",
-          templateOptions: {
-            options: [{
-              label: "Male",
-              value: "male"
+          className: "col-md-7",
+          fieldGroup: [{
+            className: "row",
+            fieldGroup: [{
+              className: "col-xs-6",
+              type: "input",
+              key: "street",
+              templateOptions: {
+                label: "Street",
+                placeholder: "604 Causley Ave. ",
+                description: "Enter a valid US Address"
+              }
             }, {
-              label: "Female",
-              value: "female"
-            }],
-            label: "Gender",
-            placeholder: "Select Gender"
-          }
-        }]
-      }, {
-        className: "section-label",
-        template: "<hr/><div><strong>Address:</strong></div>"
-      }, {
-        className: "row",
-        fieldGroup: [{
-          className: "col-xs-6",
-          type: "input",
-          key: "street",
-          templateOptions: {
-            label: "Street",
-            placeholder: "604 Causley Ave. ",
-            description: "Enter a valid US Address"
-          }
-        }, {
-          className: "col-xs-3",
-          type: "input",
-          key: "city",
-          templateOptions: {
-            label: "City",
-            placeholder: "Arlington"
-          }
-        }, {
-          className: "col-xs-3",
-          type: "input",
-          key: "zip",
-          templateOptions: {
-            type: "number",
-            label: "Zip",
-            placeholder: "76010"
-          }
+              className: "col-xs-3",
+              type: "input",
+              key: "city",
+              templateOptions: {
+                label: "City",
+                placeholder: "Arlington"
+              }
+            }, {
+              className: "col-xs-3",
+              type: "input",
+              key: "zip",
+              templateOptions: {
+                type: "number",
+                label: "Zip",
+                placeholder: "76010"
+              }
+            }]
+          }]
         }]
       }, {
         key: "checked",

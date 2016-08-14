@@ -21,7 +21,7 @@ import {REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
           </formly-field-group>
         </div > 
     `,
-  directives: [FormlyField, REACTIVE_FORM_DIRECTIVES],
+  directives: [FormlyField, FormlyFieldGroup, REACTIVE_FORM_DIRECTIVES],
   inputs: ["field", "formModel", "form", "hide", "model", "key", "fields"]
 })
 export class FormlyFieldGroup extends FormlyCommon implements OnInit {
