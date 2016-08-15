@@ -22,12 +22,12 @@ export class FormlyFieldBuilder {
         let ref = formlyField.myChild.viewContainer.createComponent(cf);
         ref.instance.model = formlyField.model;
         ref.instance.templateOptions = fieldConfig.templateOptions;
-        ref.instance.key = formlyField.key;
+        ref.instance.key = formlyField.field.key;
         ref.instance.form = formlyField.form;
         ref.instance.update = formlyField.update;
         ref.instance.field = fieldConfig;
         ref.instance.formModel = formlyField.formModel;
-        formlyField.form.addControl(formlyField.key, ref.instance.formControl);
+        formlyField.form.addControl(formlyField.field.key, ref.instance.formControl);
         return ref;
       });
   }

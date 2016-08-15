@@ -1,4 +1,4 @@
-import {Output, EventEmitter, ElementRef, Renderer} from "@angular/core";
+import {EventEmitter, ElementRef, Renderer} from "@angular/core";
 import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyConfig} from "../services/formly.config";
@@ -10,10 +10,9 @@ export class FormlyCommon {
   public formModel: any;
   public field: FormlyFieldConfig;
   public form: FormGroup;
-  public key: string;
   public _hide: any;
 
-  @Output() formSubmit = new EventEmitter();
+  formSubmit = new EventEmitter();
 
 
   protected _model: any;
