@@ -1,19 +1,18 @@
-import {Input, Output, EventEmitter, ElementRef, Renderer} from "@angular/core";
+import {EventEmitter, ElementRef, Renderer} from "@angular/core";
 import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyFieldConfig} from "./formly.field.config";
-import {FormGroup} from "@angular/forms"
+import {FormGroup} from "@angular/forms";
 
 export class FormlyCommon {
 
-  @Input() public formModel: any;
-  @Input() public field: FormlyFieldConfig;
-  @Input() public form: FormGroup;
-  @Input() public key: string;
-  @Input() public _hide: any;
+  public formModel: any;
+  public field: FormlyFieldConfig;
+  public form: FormGroup;
+  public _hide: any;
 
-  @Output() formSubmit = new EventEmitter();
+  formSubmit = new EventEmitter();
 
 
   protected _model: any;
@@ -28,7 +27,6 @@ export class FormlyCommon {
     this.expressionDelegate = new FormlyFieldExpressionDelegate(this);
   }
 
-  @Input()
   public get model(): any {
     return this._model;
   };
@@ -38,7 +36,7 @@ export class FormlyCommon {
     this.ps.Stream.emit(this.form);
   }
 
-  @Input()
+
   public get hide() {
     return this._hide;
   }

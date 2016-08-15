@@ -24,7 +24,6 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
             </div>
         </div>
     `,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
   directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   queries: {inputComponent: new ViewChildren("textAreaElement")}
 })
