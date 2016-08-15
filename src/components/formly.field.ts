@@ -23,7 +23,7 @@ export class DivComponent {
         
         <formly-field *ngFor="let f of field.fieldGroup" 
           [hide]="f.hideExpression"
-          [model]="f.key ? model[f.key]: model"
+          [model]="model?(f.key ? model[f.key]: model):''"
           [form]="form" [field]="f" [formModel] = "formModel"
           (changeFn)="changeFunction($event, f)" [eventEmitter]="eventEmitter"
           [ngClass]="f.className">
@@ -79,6 +79,9 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
       this.changeFn.emit(event);
       this.formSubmit.emit(event);
     } else if (this.field.key && this.field.key !== event.key) {
+      if (!this._model) {
+        this.model = {};
+      }
       this._model[event.key] = event.value;
       this.changeFn.emit(new FormlyValueChangeEvent(this.field.key, this._model));
       this.formSubmit.emit(event);
