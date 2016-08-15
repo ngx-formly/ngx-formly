@@ -19,7 +19,6 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
       </textarea>
       <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`,
-  inputs: [ "form", "update", "templateOptions", "key", "field", "formModel", "model"],
   queries: {inputComponent: new ViewChildren("textAreaElement")},
   directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
 })

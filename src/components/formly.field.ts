@@ -18,8 +18,16 @@ export class DivComponent {
 @Component({
   selector: "formly-field",
   template: `
-        <div child-host #child></div>
-        <div *ngIf="field.template" [innerHtml]="field.template"></div>
+        <div *ngIf="!field.fieldGroup && !field.template" child-host #child></div>
+        <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
+        
+        <formly-field *ngFor="let f of field.fieldGroup" 
+          [hide]="f.hideExpression"
+          [model]="model?(f.key ? model[f.key]: model):''"
+          [form]="form" [field]="f" [formModel] = "formModel"
+          (changeFn)="changeFunction($event, f)" [eventEmitter]="eventEmitter"
+          [ngClass]="f.className">
+        </formly-field> 
     `,
   directives: [FormlyField, DivComponent],
   inputs: ["field", "formModel", "form", "hide", "model", "key", "eventEmitter"],
@@ -61,18 +69,21 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
           this.changeFunction(event, this.field);
         });
       });
-      this.ps.setEmitter(this.key, this.update);
+      this.ps.setEmitter(this.field.key, this.update);
     }
   }
 
   changeFunction(event: FormlyValueChangeEvent, field) {
-    if (this.key && this.key === event.key) {
+    if (this.field.key && this.field.key === event.key) {
       this._model = event.value;
       this.changeFn.emit(event);
       this.formSubmit.emit(event);
-    } else if (this.key && this.key !== event.key) {
+    } else if (this.field.key && this.field.key !== event.key) {
+      if (!this._model) {
+        this.model = {};
+      }
       this._model[event.key] = event.value;
-      this.changeFn.emit(new FormlyValueChangeEvent(this.key, this._model));
+      this.changeFn.emit(new FormlyValueChangeEvent(this.field.key, this._model));
       this.formSubmit.emit(event);
     } else {
       this.changeFn.emit(event);
