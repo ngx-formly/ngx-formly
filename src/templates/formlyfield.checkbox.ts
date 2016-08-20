@@ -11,7 +11,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
       <div [formGroup]="form">
         <label class="c-input c-checkbox">
           <input type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
-            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"
+            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on" class="form-control"
             #inputElement>
             {{templateOptions.label}}
             <span class="c-indicator"></span>

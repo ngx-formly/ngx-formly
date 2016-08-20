@@ -17,7 +17,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
                     <label class="c-input c-radio">
                         <input type="checkbox" name="choose" value="{{option.value}}" [formControlName]="option.key"
                           [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)"
-                          (focus)="onInputFocus()"
+                          (focus)="onInputFocus()" class="form-control"
                           [disabled]="templateOptions.disabled">{{option.value}}
                         <span class="c-indicator"></span>
                     </label>
