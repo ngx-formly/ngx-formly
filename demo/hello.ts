@@ -13,7 +13,7 @@ import {FormlyBootstrap} from "./../src/templates/formlyBootstrap";
 import {Field} from "./../src/templates/field";
 import {FormlyPubSub} from "./../src/services/formly.event.emitter";
 import {FormlyFieldConfig} from "./../src/components/formly.field.config";
-import {SingleFocusDispatcher} from "../src/services/formly.single.focus.dispatcher";
+import {SingleFocusDispatcher} from "./../src/templates";
 import {provideForms, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 
 // Custom Input Field type 'toggle' Component Definition
