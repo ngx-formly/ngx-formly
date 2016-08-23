@@ -59,6 +59,7 @@ gulp.task('play', ['ts2js'], function () {
   livereload.listen({quiet: true});
 
   gulp.watch(PATHS.src, ['ts2js']);
+  gulp.watch(PATHS.demo, ['ts2js']);
 
   app = connect().use(serveStatic(__dirname));
   http.createServer(app).listen(port, function () {

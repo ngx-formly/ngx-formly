@@ -1,6 +1,5 @@
 import {Component, OnInit, ElementRef, Renderer, Input} from "@angular/core";
-import {FormBuilder, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, FORM_PROVIDERS} from "@angular/forms";
-import {FormlyField} from "./formly.field";
+import {FormBuilder} from "@angular/forms";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyFieldBuilder} from "../services/formly.field.builder";
@@ -10,7 +9,6 @@ import {FormlyFieldConfig} from "./formly.field.config";
 
 @Component({
   selector: "formly-form",
-  directives: [FormlyField, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   template: `
             <form class="formly" role="form" novalidate [formGroup]="form">
                 <formly-field *ngFor="let f of fields"
@@ -22,7 +20,7 @@ import {FormlyFieldConfig} from "./formly.field.config";
               <ng-content></ng-content>
             </form>
             `,
-  providers: [FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder, FORM_PROVIDERS],
+  providers: [FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder],
   inputs: ["field", "formModel", "form", "hide", "model"]
 })
 export class FormlyForm extends FormlyCommon implements OnInit  {

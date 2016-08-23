@@ -1,9 +1,7 @@
-
 import {Component, AfterViewInit, ElementRef, Renderer, QueryList, ViewChildren} from "@angular/core";
 import {FormlyPubSub} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
@@ -15,12 +13,11 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
         rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')"
         placeholder="{{templateOptions.placeholder}}" class="form-control" [disabled]="templateOptions.disabled"
         (focus)="onInputFocus()" #textAreaElement>
-        
+
       </textarea>
       <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`,
   queries: {inputComponent: new ViewChildren("textAreaElement")},
-  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
 })
 export class FormlyFieldTextArea extends Field implements AfterViewInit {
   constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {

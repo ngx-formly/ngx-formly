@@ -5,7 +5,6 @@ import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.fie
 import {FormControl, AbstractControl} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
-
 export abstract class Field implements OnInit {
 
   @Input() form;
@@ -16,7 +15,6 @@ export abstract class Field implements OnInit {
   @Input() formModel: any;
 
   @Output() changeFn: EventEmitter<any> = new EventEmitter();
-
 
   messages;
   _control: AbstractControl;

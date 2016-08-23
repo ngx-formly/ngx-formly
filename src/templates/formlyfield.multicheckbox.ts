@@ -4,7 +4,6 @@ import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emi
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 import {FormBuilder, AbstractControl} from "@angular/forms";
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
@@ -26,7 +25,6 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
             </div>
         </div>
     `,
-  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   queries: {inputComponent: new ViewChildren("textAreaElement")}
 })
 export class FormlyFieldMultiCheckbox extends Field {
