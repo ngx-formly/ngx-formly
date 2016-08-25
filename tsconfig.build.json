@@ -9,7 +9,8 @@
     "removeComments": true
   },
   "files": [
-    "src/index.ts",
+    "src/core/index.ts",
+    "src/ui-bootstrap/index.ts",
     "typings/main/ambient/es6-shim/index.d.ts"
   ]
 }

@@ -17,7 +17,8 @@
   ],
   "files": [
     "./typings/browser.d.ts",
-    "src/index.ts",
+    "src/core/index.ts",
+    "src/ui-bootstrap/index.ts",
     "./demo/hello.ts"
   ]
 }

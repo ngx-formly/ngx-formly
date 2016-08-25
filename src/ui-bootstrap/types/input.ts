@@ -1,8 +1,5 @@
 import {Component, ElementRef, AfterViewInit, Renderer, ViewChildren, QueryList} from "@angular/core";
-import {FormlyMessages} from "./../services/formly.messages";
-import {FormlyPubSub} from "./../services/formly.event.emitter";
-import {Field} from "./field";
-import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+import {FormlyMessages, FormlyPubSub, Field, SingleFocusDispatcher} from "../../core/index";
 
 @Component({
   selector: "formly-field-input",

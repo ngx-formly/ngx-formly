@@ -1,19 +1,11 @@
 /// <reference path="./../typings/ng2-formly.d.ts" />
 import {NgModule, Component, Renderer, ViewChildren, QueryList, ElementRef} from "@angular/core";
-import {Validators, FormBuilder} from "@angular/forms";
-import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {BrowserModule} from "@angular/platform-browser";
-import {FormlyModule} from "./../src/core";
+import {FormsModule, ReactiveFormsModule, Validators, FormBuilder} from "@angular/forms";
+import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
+import {FormlyModule, FormlyMessages, FormlyEventEmitter, FormlyConfig, Field, FormlyPubSub, FormlyFieldConfig, SingleFocusDispatcher} from "../src/core/index";
+import {FormlyBootstrap, FormlyBootstrapModule} from "../src/ui-bootstrap/index";
 import {ValidationService} from "./validation.service";
-import {FormlyMessages} from "./../src/services/formly.messages";
-import {FormlyEventEmitter} from "./../src/services/formly.event.emitter";
-import {FormlyConfig} from "./../src/services/formly.config";
-import {FormlyBootstrap, FormlyBootstrapModule} from "./../src/templates/formlyBootstrap";
-import {Field} from "./../src/templates/field";
-import {FormlyPubSub} from "./../src/services/formly.event.emitter";
-import {FormlyFieldConfig} from "./../src/components/formly.field.config";
-import {SingleFocusDispatcher} from "./../src/templates";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
