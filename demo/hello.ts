@@ -1,20 +1,19 @@
 /// <reference path="./../typings/ng2-formly.d.ts" />
-import {Component, Renderer, ViewChildren, QueryList, ElementRef} from "@angular/core";
+import {NgModule, Component, Renderer, ViewChildren, QueryList, ElementRef} from "@angular/core";
 import {Validators, FormBuilder} from "@angular/forms";
-import {bootstrap} from "@angular/platform-browser-dynamic";
-import {FormlyForm} from "./../src/components/formly.form";
+import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
+import {BrowserModule} from "@angular/platform-browser";
+import {FormlyModule} from "./../src/core";
 import {ValidationService} from "./validation.service";
-import {FormlyProviders} from "./../src/services/formly.providers";
 import {FormlyMessages} from "./../src/services/formly.messages";
 import {FormlyEventEmitter} from "./../src/services/formly.event.emitter";
 import {FormlyConfig} from "./../src/services/formly.config";
-import {TemplateDirectives} from "./../src/templates/templates";
-import {FormlyBootstrap} from "./../src/templates/formlyBootstrap";
+import {FormlyBootstrap, FormlyBootstrapModule} from "./../src/templates/formlyBootstrap";
 import {Field} from "./../src/templates/field";
 import {FormlyPubSub} from "./../src/services/formly.event.emitter";
 import {FormlyFieldConfig} from "./../src/components/formly.field.config";
 import {SingleFocusDispatcher} from "./../src/templates";
-import {provideForms, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
@@ -29,7 +28,6 @@ import {provideForms, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from "@angular/
       </div>
   </div>
   `,
-  directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldToggle extends Field {
@@ -48,10 +46,8 @@ export class FormlyFieldToggle extends Field {
 }
 
 @Component({
-  directives: [FormlyForm],
   selector: "hello-app",
   templateUrl: "../demo/template.html",
-  providers: [FormlyConfig, FormlyMessages]
 })
 export class HelloApp {
   form;
@@ -59,7 +55,7 @@ export class HelloApp {
   author;
   env;
   _user;
-  constructor(fm: FormlyMessages, fc: FormlyConfig, protected fb: FormBuilder) {
+  constructor(fm: FormlyMessages, fc: FormlyConfig, formlyBootstrap: FormlyBootstrap, protected fb: FormBuilder) {
 
     if (!this.form) {
       this.form = this.fb.group({});
@@ -70,12 +66,6 @@ export class HelloApp {
     fm.addStringMessage("maxlength", "Maximum Length Exceeded.");
     fm.addStringMessage("minlength", "Should have atleast 2 Characters");
 
-    ["input", "checkbox", "radio", "select", "textarea", "multicheckbox"].forEach(function (field) {
-      fc.setType({
-        name: field,
-        component: TemplateDirectives[field]
-      });
-    });
     this.author = {
       name: "Mohammed Zama Khan",
       url: "https://www.github.com/mohammedzamakhan"
@@ -297,6 +287,23 @@ export class HelloApp {
   }
 }
 
-bootstrap(HelloApp, [provideForms(),
-  FormlyBootstrap,
-  FormlyProviders]);
+@NgModule({
+  declarations: [
+    HelloApp,
+  ],
+  imports: [
+    BrowserModule,
+    FormlyModule,
+    FormlyBootstrapModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  entryComponents: [
+    FormlyFieldToggle,
+  ],
+  bootstrap: [HelloApp]
+})
+export class FormlyDemoModule {
+}
+
+platformBrowserDynamic().bootstrapModule(FormlyDemoModule);

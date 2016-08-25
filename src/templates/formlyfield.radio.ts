@@ -1,9 +1,7 @@
-
 import {Component, Renderer, QueryList, ElementRef, ViewChildren} from "@angular/core";
 import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
-import {AbstractControl, FormBuilder, REACTIVE_FORM_DIRECTIVES, FORM_DIRECTIVES} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
@@ -23,7 +21,6 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
         <small class="text-muted">{{templateOptions.description}}</small>
       </div>
     </div>`,
-  directives: [REACTIVE_FORM_DIRECTIVES, FORM_DIRECTIVES],
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldRadio extends Field {
