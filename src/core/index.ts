@@ -1,0 +1,12 @@
+export {FormlyCommon} from "./components/formly.common.component";
+export {FormlyField} from "./components/formly.field";
+export {FormlyFieldConfig} from "./components/formly.field.config";
+export {FormlyForm} from "./components/formly.form";
+export {FormlyConfig, TypeOption} from "./services/formly.config";
+export {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "./services/formly.event.emitter";
+export {FormlyMessage, FormlyMessages} from "./services/formly.messages";
+export {FormlyFieldVisibilityDelegate} from "./services/formly.field.delegates";
+export {SingleFocusDispatcher} from "./services/formly.single.focus.dispatcher";
+export {FormlyProviders} from "./services/formly.providers";
+export {Field} from "./templates/field";
+export {FORMLY_DIRECTIVES, FormlyModule} from "./core.module";

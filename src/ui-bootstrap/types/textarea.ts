@@ -1,8 +1,5 @@
 import {Component, AfterViewInit, ElementRef, Renderer, QueryList, ViewChildren} from "@angular/core";
-import {FormlyPubSub} from "../services/formly.event.emitter";
-import {FormlyMessages} from "../services/formly.messages";
-import {Field} from "./field";
-import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+import {FormlyPubSub, FormlyMessages, Field, SingleFocusDispatcher} from  "../../core/index";
 
 @Component({
   selector: "formly-field-textarea",

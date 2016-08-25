@@ -1,8 +1,5 @@
 import {Component, Renderer, QueryList, ElementRef, ViewChildren} from "@angular/core";
-import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
-import {FormlyMessages} from "../services/formly.messages";
-import {Field} from "./field";
-import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+import {FormlyMessages, Field, SingleFocusDispatcher, FormlyPubSub, FormlyValueChangeEvent} from  "../../core/index";
 
 @Component({
   selector: "formly-field-radio",

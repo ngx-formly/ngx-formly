@@ -1,9 +1,6 @@
 import {Component, Renderer, ElementRef, ViewChildren, QueryList} from "@angular/core";
-import {Field} from "./field";
-import {FormlyMessages} from "./../services/formly.messages";
-import {FormlyPubSub} from "./../services/formly.event.emitter";
 import {AbstractControl, FormBuilder} from "@angular/forms";
-import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+import {Field, FormlyMessages, FormlyPubSub, SingleFocusDispatcher} from "../../core/index";
 
 @Component({
   selector: "formly-field-checkbox",
