@@ -8,13 +8,13 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
   selector: "formly-field-checkbox",
   template: `
     <div class="form-group">
-      <div [formGroup]="form">
-        <label class="c-input c-checkbox">
+      <div [formGroup]="form" class="checkbox">
+        <label class="custom-control custom-checkbox">
           <input type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
-            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on" class="form-control"
-            #inputElement>
+            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"
+            #inputElement class="custom-control-input">
             {{templateOptions.label}}
-            <span class="c-indicator"></span>
+            <span class="custom-control-indicator"></span>
           </label>
       </div>
       <small class="text-muted">{{templateOptions.description}}</small>
