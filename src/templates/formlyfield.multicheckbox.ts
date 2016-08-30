@@ -12,13 +12,13 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
         <div [formGroup]="form">
             <div [formGroupName]="key" class="form-group">
                 <label class="form-control-label" for="">{{templateOptions.label}}</label>
-                <div *ngFor="let option of templateOptions.options">
-                    <label class="c-input c-radio">
+                <div *ngFor="let option of templateOptions.options" class="checkbox">
+                    <label class="custom-control custom-checkbox">
                         <input type="checkbox" name="choose" value="{{option.value}}" [formControlName]="option.key"
                           [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)"
-                          (focus)="onInputFocus()"
+                          (focus)="onInputFocus()" class="custom-control-input"
                           [disabled]="templateOptions.disabled">{{option.value}}
-                        <span class="c-indicator"></span>
+                        <span class="custom-control-indicator"></span>
                     </label>
                 </div>
                 <small class="text-muted">{{templateOptions.description}}</small>
