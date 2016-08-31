@@ -119,6 +119,12 @@ From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms
 
 See the [issues labeled enhancement](https://github.com/formly-js/angular2-formly/labels/enhancement)
 
+## Supported templates
+
+[Material2](https://github.com/formly-js/ng2-formly-template-material)
+[Bootstrap](https://github.com/formly-js/ng2-formly-templates-bootstrap)
+
+
 ## Financial Support
 
 Some have expressed a desire to contribute financially as a way of expressing gratitude. I appreciate anything you (or
