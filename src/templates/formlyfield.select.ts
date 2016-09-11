@@ -7,9 +7,9 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
 @Component({
   selector: "formly-field-select",
   template: `
-        <div class="select" [formGroup]="form">
+        <div class="select form-group" [formGroup]="form">
           <label for="" class="form-control-label">{{templateOptions.label}}</label>
-          <select [id]="key" [formControlName]="key" (change)="inputChange($event, 'value')" class="c-select" [(ngModel)]="model"
+          <select [id]="key" [formControlName]="key" (change)="inputChange($event, 'value')" class="form-control" [(ngModel)]="model"
           (focus)="onInputFocus()"
           [disabled]="templateOptions.disabled"
           #selectElement>
