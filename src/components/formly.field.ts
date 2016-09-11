@@ -46,7 +46,10 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.createChildFields();
+    // FIXME: setTimeout is not good
+    // setTimeout(() => {
+      this.createChildFields();
+    // }, 0);
   }
 
   createChildFields() {

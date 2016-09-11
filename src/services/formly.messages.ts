@@ -28,7 +28,7 @@ export class FormlyMessage {
 
 
   get errorMessage() {
-    let c: AbstractControl = this.formDir.find(this.control);
+    let c: AbstractControl = this.formDir.get(this.control);
 
     for (let propertyName in c.errors) {
       if (c.errors.hasOwnProperty(propertyName)) {
