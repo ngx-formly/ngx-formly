@@ -16,7 +16,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
             #inputElement>
             {{templateOptions.label}}
             <span class="c-indicator"></span>
-          </label>
+         </label>
       </div>
       <small class="text-muted">{{templateOptions.description}}</small>
     </div>

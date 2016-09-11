@@ -15,6 +15,8 @@ gulp.task('ts2js', function () {
   var typescript = require('gulp-typescript');
   var tscConfig = require('./tsconfig.json');
 
+  tscConfig.compilerOptions.typescript = require('typescript');
+
   gulp.src([PATHS.src, './typings/browser.d.ts', PATHS.demo])
     .pipe(typescript(tscConfig.compilerOptions))
     .js.pipe(gulp.dest('src'))
