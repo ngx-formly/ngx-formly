@@ -2,9 +2,11 @@
     <h1>NG2-formly example: Introduction</h1>
     <p>This is a small subset of the things that formly can do :-) See the other examples and the documentation for more.</p>
     <hr>
-    <formly-form [model]="user" [fields]="userFields" (formSubmit)="console($event)" [form]="form">
-        <button type="submit" class="btn btn-primary" (click)="submit(user)">Button</button>
-    </formly-form>
+    <form class="formly" role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
+        <formly-form [model]="user" [fields]="userFields" (formSubmit)="console($event)" [form]="form">
+            <button type="submit" class="btn btn-primary">Button</button>
+        </formly-form>
+    </form>
     <hr>
     <h3>Outside Formly</h3>
     <input type="text" [(ngModel)]="user.email" (keyup)="changeEmail()" class="form-control">
