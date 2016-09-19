@@ -31,12 +31,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldToggle extends Field {
+  inputComponent: QueryList<ElementRef>;
 
   constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
     super(fm, ps, renderer, focusDispatcher);
   }
-
-  inputComponent: QueryList<ElementRef>;
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {
     if (this.inputComponent.length > 0) {
@@ -46,7 +45,7 @@ export class FormlyFieldToggle extends Field {
 }
 
 @Component({
-  selector: "hello-app",
+  selector: "formly-demo-hello-app",
   templateUrl: "../demo/template.html",
 })
 export class HelloApp {
@@ -55,6 +54,9 @@ export class HelloApp {
   author;
   env;
   _user;
+  user: any = {};
+  private userFields: Array<FormlyFieldConfig> = [];
+
   constructor(fm: FormlyMessages, fc: FormlyConfig, formlyBootstrap: FormlyBootstrap, protected fb: FormBuilder) {
 
     if (!this.form) {
@@ -243,8 +245,6 @@ export class HelloApp {
       });
     }, 0);
   }
-  user: any = {};
-  private userFields: Array<FormlyFieldConfig> = [];
 
   console(data) {
     console.log(data);

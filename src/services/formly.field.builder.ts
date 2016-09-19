@@ -6,16 +6,14 @@ import {Field} from "../templates/field";
 
 @Injectable()
 export class FormlyFieldBuilder {
-
-  fc: FormlyConfig;
-
   constructor(protected componentFactoryResolver: ComponentFactoryResolver) { }
 
   createChildFields(fieldConfig: FormlyFieldConfig, formlyField: FormlyField, formlyConfig: FormlyConfig): ComponentRef<Field> {
     // TODO support formlyField.field.hideExpression as a callback/observable
     formlyField.hide = fieldConfig.hideExpression ? true : false;
 
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(formlyConfig.getDirective(fieldConfig.type));
+    let type = formlyConfig.getType(fieldConfig.type);
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(type.component);
     let ref = <ComponentRef<Field>>formlyField.myChild.createComponent(componentFactory);
     Object.assign(ref.instance, {
         model: formlyField.model,

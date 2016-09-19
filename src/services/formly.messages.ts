@@ -26,7 +26,6 @@ export class FormlyMessage {
 
   constructor(protected fm: FormlyMessages) { }
 
-
   get errorMessage() {
     let c: AbstractControl = this.formDir.find(this.control);
 

@@ -1,4 +1,3 @@
-
 export interface FormlyFieldConfig {
   key?: string;
   id?: string;

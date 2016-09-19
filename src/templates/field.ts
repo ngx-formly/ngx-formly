@@ -1,12 +1,11 @@
-import {Output, Input, EventEmitter, OnInit, Renderer} from "@angular/core";
+import {Output, Input, EventEmitter, OnInit, AfterViewInit, Renderer} from "@angular/core";
 import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
 import {FormControl, AbstractControl} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
-export abstract class Field implements OnInit {
-
+export abstract class Field implements OnInit, AfterViewInit {
   @Input() form;
   @Input() update;
   @Input() templateOptions: FormlyTemplateOptions;
@@ -23,7 +22,7 @@ export abstract class Field implements OnInit {
 
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
   _modelUpdateReceiver: EventEmitter<any>;
-  public set modelUpdateReceiver(modelUpdateReceiver: EventEmitter<any>) {
+  set modelUpdateReceiver(modelUpdateReceiver: EventEmitter<any>) {
     this._modelUpdateReceiver = modelUpdateReceiver;
     this._modelUpdateReceiver.subscribe((model: any) => {
       this.model = model;
@@ -31,11 +30,11 @@ export abstract class Field implements OnInit {
   }
 
   @Input()
-  public get model(): any {
+  get model(): any {
     return this._model;
   }
 
-  public set model(value: any) {
+  set model(value: any) {
     this._model = value;
   }
 
@@ -84,7 +83,7 @@ export abstract class Field implements OnInit {
     }
   }
 
-  public set focus (newFocusValue: boolean) {
+  set focus (newFocusValue: boolean) {
     if (!this._focus && newFocusValue) {
       this._focus = true;
       this.setNativeFocusProperty(this._focus);
@@ -96,13 +95,13 @@ export abstract class Field implements OnInit {
     }
   }
 
-  protected abstract setNativeFocusProperty(newFocusValue: boolean): void;
-
-  public get focus (): boolean {
+  get focus (): boolean {
     return this._focus;
   }
 
-  public onInputFocus(): void {
+  onInputFocus(): void {
     this.focus = true;
   }
+
+  protected abstract setNativeFocusProperty(newFocusValue: boolean): void;
 }

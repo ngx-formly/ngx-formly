@@ -4,7 +4,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {FormlyForm} from "./components/formly.form";
 import {FormlyField} from "./components/formly.field";
 import {FormlyConfig} from "./services/formly.config";
-import {FormlyMessage, FormlyMessages} from "./services/formly.messages";
+import {FormlyMessage} from "./services/formly.messages";
 import {FormlyProviders} from "./services/formly.providers";
 
 export {FormlyCommon} from "./components/formly.common.component";

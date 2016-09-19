@@ -1,22 +1,18 @@
 import {Injectable, ViewContainerRef} from "@angular/core";
-import {Type} from "@angular/common/src/facade/lang";
 
 /**
  * Maintains list of formly field directive types. This can be used to register new field templates.
  */
 @Injectable()
 export class FormlyConfig {
-  types: {[name: string]: Type} = {};
+  types: {[name: string]: TypeOption} = {};
   manipulators: {[name: string]: TemplateManipulator} = {};
+
   setType(options: TypeOption) {
-    this.types[options.name] = options.component;
+    this.types[options.name] = options;
   }
 
-  getDirectives() {
-    return this.types;
-  }
-
-  getDirective(name: string): any {
+  getType(name: string): TypeOption {
     return this.types[name];
   }
 

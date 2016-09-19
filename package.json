@@ -48,6 +48,7 @@
   "homepage": "https://github.com/formly-js/angular2-formly#readme",
   "devDependencies": {
     "async": "^1.5.2",
+    "codelyzer": "0.0.28",
     "commitizen": "^2.7.6",
     "connect": "^3.4.0",
     "cz-conventional-changelog": "^1.1.5",
