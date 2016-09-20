@@ -1,6 +1,5 @@
 import {Subject} from "rxjs/Subject";
 
-
 export class FormlyValueChangeEvent {
   constructor(public key: string, public value: any) {}
 }
@@ -9,6 +8,7 @@ export class FormlyEventEmitter extends Subject<String> {
   constructor() {
     super();
   }
+
   emit(value) {
     super.next(value);
   }
@@ -18,6 +18,7 @@ export class FormlyPubSub {
   Stream: FormlyEventEmitter;
   emitters = {};
   updated = false;
+
   constructor() {
     this.Stream = new FormlyEventEmitter();
   }
@@ -25,6 +26,7 @@ export class FormlyPubSub {
   getUpdated() {
     return this.updated;
   }
+
   setUpdated(value) {
     this.updated = value;
   }

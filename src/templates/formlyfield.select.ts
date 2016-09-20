@@ -22,11 +22,11 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
   queries: {inputComponent: new ViewChildren("selectElement")}
 })
 export class FormlyFieldSelect extends Field {
+  inputComponent: QueryList<ElementRef>;
+
   constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
     super(fm, ps, renderer, focusDispatcher);
   }
-
-  inputComponent: QueryList<ElementRef>;
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {
     if (this.inputComponent.length > 0) {

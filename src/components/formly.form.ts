@@ -24,17 +24,15 @@ import {FormlyFieldConfig} from "./formly.field.config";
   inputs: ["field", "formModel", "form", "hide", "model"]
 })
 export class FormlyForm extends FormlyCommon implements OnInit  {
-
+  @Input() fields: FormlyFieldConfig[];
   event: FormlyEventEmitter;
-
-  @Input()
-  public fields: FormlyFieldConfig[];
 
   constructor(elem: ElementRef, ps: FormlyPubSub, private fb: FormBuilder,
               formlyConfig: FormlyConfig, renderer: Renderer) {
     super(elem, ps, formlyConfig, renderer);
     this.event = new FormlyEventEmitter();
   }
+
   ngOnInit() {
     if (!this._model) {
       this._model = {};
@@ -46,6 +44,7 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
       this.form = this.fb.group({});
     }
   }
+
   changeFunction(event: FormlyValueChangeEvent, field) {
     this._model[event.key] = event.value;
     this.formSubmit.emit(event);

@@ -2,10 +2,7 @@ import {evalExpression, expressionValueSetter} from "./formly.expression";
 import {FormlyCommon} from "../components/formly.common.component";
 
 export class FormlyFieldVisibilityDelegate {
-
-  constructor(private formlyCommon: FormlyCommon) {
-
-  }
+  constructor(private formlyCommon: FormlyCommon) {}
 
   eval(expression: string | Function | boolean): boolean {
     // TODO support this.formlyCommon.field.hideExpression as a observable
@@ -21,6 +18,7 @@ export class FormlyFieldVisibilityDelegate {
   hasHideExpression(): boolean {
     return (this.formlyCommon.field && this.formlyCommon.field.hideExpression !== undefined) && this.formlyCommon.field.hideExpression ? true : false;
   }
+
   checkVisibilityChange() {
     if (this.hasHideExpression()) {
       let hideExpressionResult: boolean = this.eval(this.formlyCommon.field.hideExpression);
@@ -32,9 +30,7 @@ export class FormlyFieldVisibilityDelegate {
 }
 
 export class FormlyFieldExpressionDelegate {
-  constructor(private formlyCommon: FormlyCommon) {
-
-  }
+  constructor(private formlyCommon: FormlyCommon) {}
 
   hasExpression(): boolean {
     return (this.formlyCommon.field && this.formlyCommon.field.expressionProperties !== undefined);

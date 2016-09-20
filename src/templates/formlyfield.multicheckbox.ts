@@ -28,6 +28,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
   queries: {inputComponent: new ViewChildren("textAreaElement")}
 })
 export class FormlyFieldMultiCheckbox extends Field {
+  inputComponent: QueryList<ElementRef>;
 
   constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer,
               focusDispatcher: SingleFocusDispatcher) {
@@ -47,8 +48,6 @@ export class FormlyFieldMultiCheckbox extends Field {
     }, {});
     return this._control = this.formBuilder.group(controlGroupConfig);
   }
-
-  inputComponent: QueryList<ElementRef>;
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {
     if (this.inputComponent.length > 0) {

@@ -20,17 +20,16 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
       </div>
       <small class="text-muted">{{templateOptions.description}}</small>
     </div>
-    `,
+  `,
   queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldCheckbox extends Field {
+  inputComponent: QueryList<ElementRef>;
 
   constructor(fm: FormlyMessages, ps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer,
               focusDispatcher: SingleFocusDispatcher) {
     super(fm, ps, renderer, focusDispatcher);
   }
-
-  inputComponent: QueryList<ElementRef>;
 
   createControl(): AbstractControl {
     return this._control = this.formBuilder.control(this._model ? "on" : undefined);

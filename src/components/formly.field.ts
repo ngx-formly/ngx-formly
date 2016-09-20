@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, ElementRef,
+  Component, OnInit, EventEmitter, ElementRef,
   ViewContainerRef, ViewChild, ComponentRef, SimpleChange, OnChanges, Renderer
 } from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
@@ -11,17 +11,17 @@ import {Field} from "../templates/field";
 @Component({
   selector: "formly-field",
   template: `
-        <template #child></template>
-        <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
+    <template #child></template>
+    <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
 
-        <formly-field *ngFor="let f of field.fieldGroup"
-          [hide]="f.hideExpression"
-          [model]="model?(f.key ? model[f.key]: model):''"
-          [form]="form" [field]="f" [formModel] = "formModel"
-          (changeFn)="changeFunction($event, f)" [eventEmitter]="eventEmitter"
-          [ngClass]="f.className">
-        </formly-field>
-    `,
+    <formly-field *ngFor="let f of field.fieldGroup"
+      [hide]="f.hideExpression"
+      [model]="model?(f.key ? model[f.key]: model):''"
+      [form]="form" [field]="f" [formModel] = "formModel"
+      (changeFn)="changeFunction($event, f)" [eventEmitter]="eventEmitter"
+      [ngClass]="f.className">
+    </formly-field>
+  `,
   inputs: ["field", "formModel", "form", "hide", "model", "key", "eventEmitter"],
   outputs: ["formSubmit", "changeFn", "eventEmitter"]
 })
