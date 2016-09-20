@@ -1,5 +1,3 @@
-/// <reference path="./../typings/main/ambient/jasmine/index.d.ts"/>
-
 describe("Demo test", () => {
     beforeEach(() => {
 
@@ -8,4 +6,4 @@ describe("Demo test", () => {
     it("should concatenate first and last names", () => {
         expect("Hello Test").toBe("Hello Test");
     });
-})
+});

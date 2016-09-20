@@ -1,4 +1,3 @@
-/// <reference path="./../typings/ng2-formly.d.ts" />
 import {NgModule, Component, Renderer, ViewChildren, QueryList, ElementRef} from "@angular/core";
 import {Validators, FormBuilder} from "@angular/forms";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
