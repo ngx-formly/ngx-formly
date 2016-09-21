@@ -10,16 +10,14 @@ import {FormlyFieldConfig} from "./formly.field.config";
 @Component({
   selector: "formly-form",
   template: `
-            <form class="formly" role="form" novalidate [formGroup]="form">
-                <formly-field *ngFor="let f of fields"
-                  [hide]="f.hideExpression" [model]="f.key?model[f.key]:model"
-                  [key]="f.key" [form]="form" [field]="f" [formModel]= "model"
-                  (changeFn)="changeFunction($event, f)" [eventEmitter]="event"
-                  [ngClass]="f.className">
-                </formly-field>
-              <ng-content></ng-content>
-            </form>
-            `,
+    <formly-field *ngFor="let f of fields"
+      [hide]="f.hideExpression" [model]="f.key?model[f.key]:model"
+      [key]="f.key" [form]="form" [field]="f" [formModel]= "model"
+      (changeFn)="changeFunction($event, f)" [eventEmitter]="event"
+      [ngClass]="f.className">
+    </formly-field>
+    <ng-content></ng-content>
+  `,
   providers: [FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder],
   inputs: ["field", "formModel", "form", "hide", "model"]
 })
