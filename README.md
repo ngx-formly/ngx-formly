@@ -21,9 +21,11 @@ application's forms.
 
 Include the FormlyForm component import in the `directives` attribute of your `Component` and put this in your template
 ```html
-<formly-form [model]="user" [fields]="userFields">
-    <button type="submit" class="btn btn-default" (click)="submit(user)">Button</button>
-</formly-form>
+<form class="formly" role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
+    <formly-form [model]="user" [fields]="userFields">
+        <button type="submit" class="btn btn-default">Button</button>
+    </formly-form>
+</form>
 ```
 
 and in your TypeScript file define the the `model` and `fields` attributes
