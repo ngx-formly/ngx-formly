@@ -1,5 +1,4 @@
 {
-  "version": "1.8.9",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -8,15 +7,18 @@
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "baseUrl": "src",
+    "paths": [],
+    "lib": ["dom", "es6"],
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
   "exclude": [
-    "node_modules",
-    "typings/main",
-    "typings/main.d.ts"
+    "node_modules"
   ],
   "files": [
-    "./typings/browser.d.ts",
     "src/index.ts",
     "./demo/hello.ts"
   ]
