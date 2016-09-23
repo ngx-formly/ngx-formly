@@ -288,7 +288,7 @@ export class HelloApp {
 
 @NgModule({
   declarations: [
-    HelloApp,
+    HelloApp, FormlyFieldToggle
   ],
   imports: [
     BrowserModule,

@@ -23,12 +23,11 @@ import {FormlyFieldConfig} from "./formly.field.config";
 })
 export class FormlyForm extends FormlyCommon implements OnInit  {
   @Input() fields: FormlyFieldConfig[];
-  event: FormlyEventEmitter;
+  event: FormlyEventEmitter = new FormlyEventEmitter();
 
   constructor(elem: ElementRef, ps: FormlyPubSub, private fb: FormBuilder,
               formlyConfig: FormlyConfig, renderer: Renderer) {
     super(elem, ps, formlyConfig, renderer);
-    this.event = new FormlyEventEmitter();
   }
 
   ngOnInit() {
