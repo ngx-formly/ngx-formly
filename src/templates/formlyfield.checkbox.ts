@@ -12,7 +12,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
       <div [formGroup]="form" class="checkbox">
         <label class="custom-control custom-checkbox">
           <input type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
-            *ngIf="!templateOptions.hidden" [disabled]="templateOptions.disabled" value="on"
+            *ngIf="!templateOptions.hidden" value="on"
             #inputElement class="custom-control-input">
             {{templateOptions.label}}
             <span class="custom-control-indicator"></span>
@@ -32,7 +32,7 @@ export class FormlyFieldCheckbox extends Field {
   }
 
   createControl(): AbstractControl {
-    return this._control = this.formBuilder.control(this._model ? "on" : undefined);
+    return this._control = this.formBuilder.control(this.model ? "on" : undefined);
   }
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {

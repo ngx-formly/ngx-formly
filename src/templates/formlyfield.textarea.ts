@@ -11,9 +11,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
       <textarea name="{{key}}" [formControlName]="key" id="{{key}}" [(ngModel)]="model" cols="{{templateOptions.cols}}"
         rows="{{templateOptions.rows}}" (change)="inputChange($event, 'value')" (keyup)="inputChange($event, 'value')"
-        placeholder="{{templateOptions.placeholder}}" class="form-control" [disabled]="templateOptions.disabled"
+        placeholder="{{templateOptions.placeholder}}" class="form-control"
         (focus)="onInputFocus()" #textAreaElement>
-
       </textarea>
       <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`,

@@ -50,6 +50,16 @@ export class FormlyFieldExpressionDelegate {
             , ["model", "fieldModel", "templateOptions"]
             , [this.formlyCommon.formModel, this.formlyCommon.model, this.formlyCommon.field.templateOptions]);
         }
+
+        // disable attribute binding is not supported (see https://github.com/angular/angular/issues/11324)
+        let formControl = this.formlyCommon.form.get(this.formlyCommon.field.key);
+        if (formControl) {
+            if (this.formlyCommon.field.templateOptions.disabled) {
+                formControl.disable();
+            } else {
+                formControl.enable();
+            }
+        }
       }
     }
   }

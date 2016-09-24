@@ -13,8 +13,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
         <div *ngFor="let option of templateOptions.options" class="radio">
           <label class="custom-control custom-radio">
             <input type="radio" [value]="option.key" [formControlName]="key" [(ngModel)]="model"
-            (change)="inputChange($event, option.key)" (focus)="onInputFocus()" class="custom-control-input"
-            [disabled]="templateOptions.disabled">{{option.value}}
+            (change)="inputChange($event, option.key)" (focus)="onInputFocus()"
+            class="custom-control-input">{{option.value}}
             <span class="custom-control-indicator"></span>
           </label>
         </div>
