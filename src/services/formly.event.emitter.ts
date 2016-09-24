@@ -5,23 +5,15 @@ export class FormlyValueChangeEvent {
 }
 
 export class FormlyEventEmitter extends Subject<String> {
-  constructor() {
-    super();
-  }
-
   emit(value) {
     super.next(value);
   }
 }
 
 export class FormlyPubSub {
-  Stream: FormlyEventEmitter;
+  Stream = new FormlyEventEmitter();
   emitters = {};
   updated = false;
-
-  constructor() {
-    this.Stream = new FormlyEventEmitter();
-  }
 
   getUpdated() {
     return this.updated;
