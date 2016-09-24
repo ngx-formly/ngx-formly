@@ -17,7 +17,7 @@ import {Field} from "../templates/field";
     <formly-field *ngFor="let f of field.fieldGroup"
       [hide]="f.hideExpression"
       [model]="model?(f.key ? model[f.key]: model):''"
-      [form]="form" [field]="f" [formModel] = "formModel"
+      [form]="form" [field]="f" [formModel]="formModel"
       (changeFn)="changeFunction($event)"
       [ngClass]="f.className">
     </formly-field>

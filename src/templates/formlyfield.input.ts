@@ -14,7 +14,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
           (keyup)="inputChange($event, 'value')" (change)="inputChange($event, 'value')" [(ngModel)]="model"
           (focus)="onInputFocus()" [ngClass]="{'form-control-danger': !form.controls[key].valid}" #inputElement>
         <small class="text-muted">{{templateOptions.description}}</small>
-        <small class="text-muted text-danger" *ngIf="formControl.touched && !formControl.valid"><formly-message [formControlName]="key" [formGroup]="form"></formly-message></small>
+        <small class="text-muted text-danger" *ngIf="formControl.touched && !formControl.valid"><formly-message [form]="form" [controlName]="key"></formly-message></small>
       </div>
     `,
   queries: {inputComponent: new ViewChildren("inputElement")}

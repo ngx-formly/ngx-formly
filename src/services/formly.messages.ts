@@ -20,23 +20,21 @@ export class FormlyMessages {
 
 @Component({
   selector: "formly-message",
-  template: `<div *ngIf="errorMessage !== null">{{errorMessage}}</div>`
+  template: `<div *ngIf="errorMessage">{{errorMessage}}</div>`
 })
 export class FormlyMessage {
-  @Input() formControlName: string;
-  @Input() formGroup: FormGroup;
+  @Input() controlName: string;
+  @Input() form: FormGroup;
 
-  constructor(protected fm: FormlyMessages) { }
+  constructor(private formlyMessages: FormlyMessages) {}
 
   get errorMessage() {
-    let formControl = this.formGroup.get(this.formControlName);
+    let formControl = this.form.get(this.controlName);
 
     for (let propertyName in formControl.errors) {
       if (formControl.errors.hasOwnProperty(propertyName)) {
-        return this.fm.getValidatorErrorMessage(propertyName);
+        return this.formlyMessages.getValidatorErrorMessage(propertyName);
       }
     }
-
-    return null;
   }
 }
