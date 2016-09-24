@@ -26,9 +26,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
 export class FormlyFieldRadio extends Field {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer,
-              focusDispatcher: SingleFocusDispatcher) {
-    super(fm, ps, renderer, focusDispatcher);
+  constructor(formlyPubSub: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
+    super(formlyPubSub, renderer, focusDispatcher);
   }
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {
@@ -40,6 +39,6 @@ export class FormlyFieldRadio extends Field {
   inputChange(e, val) {
     this.model = val;
     this.changeFn.emit(new FormlyValueChangeEvent(this.key, this.model));
-    this.ps.setUpdated(true);
+    this.formlyPubSub.setUpdated(true);
   }
 }

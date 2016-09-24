@@ -22,8 +22,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
 export class FormlyFieldInput extends Field implements AfterViewInit {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
-    super(fm, ps, renderer, focusDispatcher);
+  constructor(formlyPubSub: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
+    super(formlyPubSub, renderer, focusDispatcher);
   }
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {

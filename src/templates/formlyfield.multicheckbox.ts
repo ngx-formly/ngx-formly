@@ -29,15 +29,19 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
 export class FormlyFieldMultiCheckbox extends Field {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer,
-              focusDispatcher: SingleFocusDispatcher) {
-    super(fm, fps, renderer, focusDispatcher);
+  constructor(
+    formlyPubSub: FormlyPubSub,
+    renderer: Renderer,
+    focusDispatcher: SingleFocusDispatcher,
+    private formBuilder: FormBuilder,
+  ) {
+    super(formlyPubSub, renderer, focusDispatcher);
   }
 
   inputChange(e, val) {
     this.model[val] = e.target.checked;
     this.changeFn.emit(new FormlyValueChangeEvent(this.key, this.model));
-    this.fps.setUpdated(true);
+    this.formlyPubSub.setUpdated(true);
   }
 
   createControl(): AbstractControl {

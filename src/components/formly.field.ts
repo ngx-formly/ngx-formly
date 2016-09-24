@@ -11,7 +11,7 @@ import {Field} from "../templates/field";
 @Component({
   selector: "formly-field",
   template: `
-    <template #child></template>
+    <template #fieldComponent></template>
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
 
     <formly-field *ngFor="let f of field.fieldGroup"
@@ -32,8 +32,8 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45; This is a temporary fix.
   modelUpdateEmitter: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild("child", {read: ViewContainerRef}) myChild: ViewContainerRef;
-  private childFieldRef: ComponentRef<Field>;
+  @ViewChild("fieldComponent", {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
+  private fieldComponentRef: ComponentRef<Field>;
 
   constructor(
     elementRef: ElementRef,
@@ -61,9 +61,9 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   createChildFields() {
     if (this.field && !this.field.template && !this.field.fieldGroup) {
       this.update = new FormlyEventEmitter();
-      this.childFieldRef = this.formlyFieldBuilder.createChildFields(this.field, this, this.formlyConfig);
-      this.childFieldRef.instance.modelUpdateReceiver = this.modelUpdateEmitter;
-      this.childFieldRef.instance.changeFn.subscribe((event) => this.changeFunction(event));
+      this.fieldComponentRef = this.formlyFieldBuilder.createChildFields(this.field, this, this.formlyConfig);
+      this.fieldComponentRef.instance.modelUpdateReceiver = this.modelUpdateEmitter;
+      this.fieldComponentRef.instance.changeFn.subscribe((event) => this.changeFunction(event));
       this.formlyPubSub.setEmitter(this.field.key, this.update);
     }
   }

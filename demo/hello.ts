@@ -32,8 +32,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 export class FormlyFieldToggle extends Field {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
-    super(fm, ps, renderer, focusDispatcher);
+  constructor(ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
+    super(ps, renderer, focusDispatcher);
   }
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {

@@ -12,8 +12,8 @@ export class FormlyCommon implements DoCheck {
   _hide: any;
   formSubmit = new EventEmitter();
   update;
-  visibilityDelegate: FormlyFieldVisibilityDelegate;
-  expressionDelegate: FormlyFieldExpressionDelegate;
+  visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
+  expressionDelegate = new FormlyFieldExpressionDelegate(this);
   protected _model: any;
 
   constructor(
@@ -21,10 +21,7 @@ export class FormlyCommon implements DoCheck {
     protected formlyPubSub: FormlyPubSub,
     protected formlyConfig: FormlyConfig,
     private renderer: Renderer
-  ) {
-    this.visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
-    this.expressionDelegate = new FormlyFieldExpressionDelegate(this);
-  }
+  ) {}
 
   ngDoCheck() {
     this.visibilityDelegate.checkVisibilityChange();

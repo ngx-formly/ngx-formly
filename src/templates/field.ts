@@ -1,5 +1,4 @@
 import {Output, Input, EventEmitter, OnInit, AfterViewInit, Renderer} from "@angular/core";
-import {FormlyMessages} from "./../services/formly.messages";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
 import {FormControl, AbstractControl} from "@angular/forms";
@@ -16,7 +15,6 @@ export abstract class Field implements OnInit, AfterViewInit {
 
   @Output() changeFn: EventEmitter<any> = new EventEmitter();
 
-  messages;
   _control: AbstractControl;
   protected _focus: boolean;
 
@@ -29,12 +27,12 @@ export abstract class Field implements OnInit, AfterViewInit {
     });
   }
 
-  constructor(fm: FormlyMessages, protected ps: FormlyPubSub, protected renderer: Renderer,
-              protected focusDispatcher: SingleFocusDispatcher) {
-    this.messages = fm.getMessages();
-    this.ps.Stream.subscribe(form => {
-      this.form = form;
-    });
+  constructor(
+    protected formlyPubSub: FormlyPubSub,
+    protected renderer: Renderer,
+    protected focusDispatcher: SingleFocusDispatcher
+  ) {
+    this.formlyPubSub.Stream.subscribe(form => this.form = form);
 
     focusDispatcher.listen((key: String) => {
       if (this.key !== key) {
@@ -54,7 +52,7 @@ export abstract class Field implements OnInit, AfterViewInit {
   inputChange(e, val) {
     this.model = e.target[val];
     this.changeFn.emit(new FormlyValueChangeEvent(this.key, e.target[val]));
-    this.ps.setUpdated(true);
+    this.formlyPubSub.setUpdated(true);
   }
 
   get formControl(): AbstractControl {

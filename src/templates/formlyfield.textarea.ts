@@ -1,6 +1,5 @@
 import {Component, AfterViewInit, ElementRef, Renderer, QueryList, ViewChildren} from "@angular/core";
 import {FormlyPubSub} from "../services/formly.event.emitter";
-import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
@@ -21,8 +20,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
 export class FormlyFieldTextArea extends Field implements AfterViewInit {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
-    super(fm, ps, renderer, focusDispatcher);
+  constructor(formlyPubSub: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
+    super(formlyPubSub, renderer, focusDispatcher);
   }
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {

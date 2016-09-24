@@ -14,7 +14,7 @@ export class FormlyFieldBuilder {
 
     let type = formlyConfig.getType(fieldConfig.type);
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(type.component);
-    let ref = <ComponentRef<Field>>formlyField.myChild.createComponent(componentFactory);
+    let ref = <ComponentRef<Field>>formlyField.fieldComponent.createComponent(componentFactory);
     Object.assign(ref.instance, {
         model: formlyField.model,
         templateOptions: fieldConfig.templateOptions,
