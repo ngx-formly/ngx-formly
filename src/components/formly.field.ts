@@ -18,21 +18,16 @@ import {Field} from "../templates/field";
       [hide]="f.hideExpression"
       [model]="model?(f.key ? model[f.key]: model):''"
       [form]="form" [field]="f" [formModel] = "formModel"
-      (changeFn)="changeFunction($event, f)" [eventEmitter]="eventEmitter"
+      (changeFn)="changeFunction($event)"
       [ngClass]="f.className">
     </formly-field>
   `,
-  inputs: ["field", "formModel", "form", "hide", "model", "key", "eventEmitter"],
-  outputs: ["formSubmit", "changeFn", "eventEmitter"]
+  inputs: ["field", "formModel", "form", "hide", "model", "key"],
+  outputs: ["formSubmit", "changeFn"]
 })
 export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
-
-  eventEmitter;
-
   // Outputs
   changeFn: EventEmitter<any> = new EventEmitter();
-
-  update;
 
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45; This is a temporary fix.
   modelUpdateEmitter: EventEmitter<any> = new EventEmitter();
@@ -40,28 +35,40 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   @ViewChild("child", {read: ViewContainerRef}) myChild: ViewContainerRef;
   private childFieldRef: ComponentRef<Field>;
 
-  constructor(elem: ElementRef, ps: FormlyPubSub, protected fb: FormlyFieldBuilder,
-              formlyConfig: FormlyConfig, renderer: Renderer) {
-    super(elem, ps, formlyConfig, renderer);
+  constructor(
+    elementRef: ElementRef,
+    formlyPubSub: FormlyPubSub,
+    formlyConfig: FormlyConfig,
+    renderer: Renderer,
+    private formlyFieldBuilder: FormlyFieldBuilder,
+  ) {
+    super(elementRef, formlyPubSub, formlyConfig, renderer);
   }
 
   ngOnInit() {
-    this.createChildFields();
+    // FIXME: setTimeout may not be good idea. This is a temporary fix for following issue
+    /* core.umd.js:5995 EXCEPTION: Error in ./FormlyFieldRadio class FormlyFieldRadio - inline template:1:4
+    caused by: Expression has changed after it was checked. Previous value: 'true'. Current value: 'false'.
+
+    This is caused in demo application because when email form control with validation error is added to form the
+    ngClassValid attribute of formGroup directive in radio button template changes from true to false. This whole thing
+    happens within changedetection and ngonInit lifecycle.
+
+    See https://github.com/angular/angular/issues/10131 for more information*/
+    setTimeout(() => this.createChildFields());
   }
 
   createChildFields() {
     if (this.field && !this.field.template && !this.field.fieldGroup) {
       this.update = new FormlyEventEmitter();
-      this.childFieldRef = this.fb.createChildFields(this.field, this, this.formlyConfig);
+      this.childFieldRef = this.formlyFieldBuilder.createChildFields(this.field, this, this.formlyConfig);
       this.childFieldRef.instance.modelUpdateReceiver = this.modelUpdateEmitter;
-      this.childFieldRef.instance.changeFn.subscribe((event) => {
-        this.changeFunction(event, this.field);
-      });
-      this.ps.setEmitter(this.field.key, this.update);
+      this.childFieldRef.instance.changeFn.subscribe((event) => this.changeFunction(event));
+      this.formlyPubSub.setEmitter(this.field.key, this.update);
     }
   }
 
-  changeFunction(event: FormlyValueChangeEvent, field) {
+  changeFunction(event: FormlyValueChangeEvent) {
     if (this.field.key && this.field.key === event.key) {
       this._model = event.value;
       this.changeFn.emit(event);

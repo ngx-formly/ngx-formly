@@ -16,8 +16,12 @@ export class FormlyCommon implements DoCheck {
   expressionDelegate: FormlyFieldExpressionDelegate;
   protected _model: any;
 
-  constructor(protected elem: ElementRef, protected ps: FormlyPubSub, protected formlyConfig: FormlyConfig,
-              private renderer: Renderer) {
+  constructor(
+    protected elementRef: ElementRef,
+    protected formlyPubSub: FormlyPubSub,
+    protected formlyConfig: FormlyConfig,
+    private renderer: Renderer
+  ) {
     this.visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
     this.expressionDelegate = new FormlyFieldExpressionDelegate(this);
   }
@@ -33,7 +37,7 @@ export class FormlyCommon implements DoCheck {
 
   set model(value) {
     this._model = value;
-    this.ps.Stream.emit(this.form);
+    this.formlyPubSub.Stream.emit(this.form);
   }
 
   get hide() {
@@ -42,7 +46,7 @@ export class FormlyCommon implements DoCheck {
 
   set hide(value: boolean) {
     this._hide = value;
-    this.renderer.setElementStyle(this.elem.nativeElement, "display", value ? "none" : "");
+    this.renderer.setElementStyle(this.elementRef.nativeElement, "display", value ? "none" : "");
     if (this.field.fieldGroup) {
       for (let i = 0; i < this.field.fieldGroup.length; i++) {
         this.psEmit(this.field.fieldGroup[i].key, "hidden", this._hide);
@@ -53,8 +57,8 @@ export class FormlyCommon implements DoCheck {
   }
 
   private psEmit(fieldKey: string, eventKey: string, value: any) {
-    if (this.ps && this.ps.getEmitter(fieldKey) && this.ps.getEmitter(fieldKey).emit) {
-      this.ps.getEmitter(fieldKey).emit({
+    if (this.formlyPubSub && this.formlyPubSub.getEmitter(fieldKey) && this.formlyPubSub.getEmitter(fieldKey).emit) {
+      this.formlyPubSub.getEmitter(fieldKey).emit({
         key: eventKey,
         value: value
       });

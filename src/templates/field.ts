@@ -12,12 +12,12 @@ export abstract class Field implements OnInit, AfterViewInit {
   @Input() key: string;
   @Input() field: FormlyFieldConfig;
   @Input() formModel: any;
+  @Input() model: any;
 
   @Output() changeFn: EventEmitter<any> = new EventEmitter();
 
   messages;
   _control: AbstractControl;
-  _model: any;
   protected _focus: boolean;
 
   // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
@@ -27,15 +27,6 @@ export abstract class Field implements OnInit, AfterViewInit {
     this._modelUpdateReceiver.subscribe((model: any) => {
       this.model = model;
     });
-  }
-
-  @Input()
-  get model(): any {
-    return this._model;
-  }
-
-  set model(value: any) {
-    this._model = value;
   }
 
   constructor(fm: FormlyMessages, protected ps: FormlyPubSub, protected renderer: Renderer,
@@ -74,7 +65,7 @@ export abstract class Field implements OnInit, AfterViewInit {
   }
 
   createControl(): void {
-    this._control = new FormControl(this._model || "", this.field.validation);
+    this._control = new FormControl({ value: this.model || "", disabled: this.templateOptions.disabled }, this.field.validation);
   }
 
   ngAfterViewInit() {

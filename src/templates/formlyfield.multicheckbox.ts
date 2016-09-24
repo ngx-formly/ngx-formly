@@ -16,8 +16,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
                     <label class="custom-control custom-checkbox">
                         <input type="checkbox" name="choose" value="{{option.value}}" [formControlName]="option.key"
                           [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)"
-                          (focus)="onInputFocus()" class="custom-control-input"
-                          [disabled]="templateOptions.disabled">{{option.value}}
+                          (focus)="onInputFocus()" class="custom-control-input">{{option.value}}
                         <span class="custom-control-indicator"></span>
                     </label>
                 </div>
@@ -36,14 +35,14 @@ export class FormlyFieldMultiCheckbox extends Field {
   }
 
   inputChange(e, val) {
-    this._model[val] = e.target.checked;
-    this.changeFn.emit(new FormlyValueChangeEvent(this.key, this._model));
+    this.model[val] = e.target.checked;
+    this.changeFn.emit(new FormlyValueChangeEvent(this.key, this.model));
     this.fps.setUpdated(true);
   }
 
   createControl(): AbstractControl {
     let controlGroupConfig = this.templateOptions.options.reduce((previous, option) => {
-      previous[option.key] = [this._model ? this._model[option.key] : undefined];
+      previous[option.key] = [this.model ? this.model[option.key] : undefined];
       return previous;
     }, {});
     return this._control = this.formBuilder.group(controlGroupConfig);

@@ -54,8 +54,8 @@
     "del-cli": "^0.2.0",
     "gulp": "^3.9.0",
     "gulp-livereload": "^3.8.1",
-    "gulp-tslint": "^4.3.5",
-    "gulp-typescript": "^2.13.6",
+    "gulp-tslint": "^6.1.1",
+    "gulp-typescript": "^3.0.0",
     "jasmine": "^2.4.1",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.3",
@@ -70,21 +70,21 @@
     "systemjs-builder": "^0.15.15",
     "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",
-    "typescript": "^2.0.2",
+    "typescript": "^2.0.3",
     "uglify-js": "^2.6.2"
   },
   "dependencies": {
-    "@angular/common": "=2.0.0-rc.5",
-    "@angular/compiler": "=2.0.0-rc.5",
-    "@angular/core": "=2.0.0-rc.5",
-    "@angular/forms": "^0.3.0",
-    "@angular/platform-browser": "=2.0.0-rc.5",
-    "@angular/platform-browser-dynamic": "=2.0.0-rc.5",
+    "@angular/common": "^2.0.1",
+    "@angular/compiler": "^2.0.1",
+    "@angular/core": "^2.0.1",
+    "@angular/forms": "^2.0.1",
+    "@angular/platform-browser": "^2.0.1",
+    "@angular/platform-browser-dynamic": "^2.0.1",
     "es6-shim": "^0.35.1",
     "reflect-metadata": "^0.1.3",
     "rxjs": "^5.0.0-beta.11",
     "systemjs": "^0.19.31",
-    "zone.js": "^0.6.12"
+    "zone.js": "^0.6.25"
   },
   "config": {
     "commitizen": {
