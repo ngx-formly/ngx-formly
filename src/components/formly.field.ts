@@ -1,6 +1,6 @@
 import {
-  Component, OnInit, EventEmitter, ElementRef,
-  ViewContainerRef, ViewChild, ComponentRef, SimpleChange, OnChanges, Renderer
+  Component, OnInit, EventEmitter, ElementRef, Output,
+  ViewContainerRef, ViewChild, ComponentRef, Renderer
 } from "@angular/core";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
@@ -18,19 +18,14 @@ import {Field} from "../templates/field";
       [hide]="f.hideExpression"
       [model]="model?(f.key ? model[f.key]: model):''"
       [form]="form" [field]="f" [formModel]="formModel"
-      (changeFn)="changeFunction($event)"
+      (modelChange)="changeModel($event)"
       [ngClass]="f.className">
     </formly-field>
   `,
   inputs: ["field", "formModel", "form", "hide", "model", "key"],
-  outputs: ["formSubmit", "changeFn"]
 })
-export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
-  // Outputs
-  changeFn: EventEmitter<any> = new EventEmitter();
-
-  // FIXME: See https://github.com/formly-js/ng2-formly/issues/45; This is a temporary fix.
-  modelUpdateEmitter: EventEmitter<any> = new EventEmitter();
+export class FormlyField extends FormlyCommon implements OnInit {
+  @Output() modelChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild("fieldComponent", {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
   private fieldComponentRef: ComponentRef<Field>;
@@ -38,11 +33,11 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
   constructor(
     elementRef: ElementRef,
     formlyPubSub: FormlyPubSub,
-    formlyConfig: FormlyConfig,
     renderer: Renderer,
+    private formlyConfig: FormlyConfig,
     private formlyFieldBuilder: FormlyFieldBuilder,
   ) {
-    super(elementRef, formlyPubSub, formlyConfig, renderer);
+    super(elementRef, formlyPubSub, renderer);
   }
 
   ngOnInit() {
@@ -62,36 +57,23 @@ export class FormlyField extends FormlyCommon implements OnInit, OnChanges {
     if (this.field && !this.field.template && !this.field.fieldGroup) {
       this.update = new FormlyEventEmitter();
       this.fieldComponentRef = this.formlyFieldBuilder.createChildFields(this.field, this, this.formlyConfig);
-      this.fieldComponentRef.instance.modelUpdateReceiver = this.modelUpdateEmitter;
-      this.fieldComponentRef.instance.changeFn.subscribe((event) => this.changeFunction(event));
+      this.fieldComponentRef.instance.formControl.valueChanges.subscribe((event) => {
+        this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
+      });
       this.formlyPubSub.setEmitter(this.field.key, this.update);
     }
   }
 
-  changeFunction(event: FormlyValueChangeEvent) {
-    if (this.field.key && this.field.key === event.key) {
-      this._model = event.value;
-      this.changeFn.emit(event);
-      this.formSubmit.emit(event);
-    } else if (this.field.key && this.field.key !== event.key) {
-      if (!this._model) {
+  changeModel(event: FormlyValueChangeEvent) {
+    if (this.field.key && this.field.key !== event.key) {
+      if (!this.model) {
         this.model = {};
       }
-      this._model[event.key] = event.value;
-      this.changeFn.emit(new FormlyValueChangeEvent(this.field.key, this._model));
-      this.formSubmit.emit(event);
-    } else {
-      this.changeFn.emit(event);
-      this.formSubmit.emit(event);
-    }
-  }
 
-  ngOnChanges(changes: {
-    [key: string]: SimpleChange;
-  }): any {
-    if (changes["model"]) {
-      // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
-      this.modelUpdateEmitter.emit(changes["model"].currentValue);
+      this.model[event.key] = event.value;
+      event = new FormlyValueChangeEvent(this.field.key, this.model);
     }
+
+    this.modelChange.emit(event);
   }
 }

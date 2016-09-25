@@ -1,7 +1,6 @@
 import {Component, Renderer, ElementRef, ViewChildren, QueryList} from "@angular/core";
-import {Field} from "./field";
-import {FormlyPubSub} from "./../services/formly.event.emitter";
 import {AbstractControl, FormBuilder} from "@angular/forms";
+import {Field} from "./field";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
@@ -10,7 +9,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
     <div class="form-group">
       <div [formGroup]="form" class="checkbox">
         <label class="custom-control custom-checkbox">
-          <input type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" [(ngModel)]="model"
+          <input type="checkbox" [formControlName]="key"
             *ngIf="!templateOptions.hidden" value="on"
             #inputElement class="custom-control-input">
             {{templateOptions.label}}
@@ -26,12 +25,11 @@ export class FormlyFieldCheckbox extends Field {
   inputComponent: QueryList<ElementRef>;
 
   constructor(
-    formlyPubSub: FormlyPubSub,
     renderer: Renderer,
     focusDispatcher: SingleFocusDispatcher,
     private formBuilder: FormBuilder,
   ) {
-    super(formlyPubSub, renderer, focusDispatcher);
+    super(renderer, focusDispatcher);
   }
 
   createControl(): AbstractControl {

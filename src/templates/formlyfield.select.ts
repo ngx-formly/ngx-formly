@@ -1,6 +1,4 @@
 import {Component, Renderer, QueryList, ViewChildren, ElementRef} from "@angular/core";
-import {FormlyPubSub} from "../services/formly.event.emitter";
-import {FormlyMessages} from "../services/formly.messages";
 import {Field} from "./field";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
@@ -9,8 +7,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
   template: `
         <div class="select form-group" [formGroup]="form">
           <label for="" class="form-control-label">{{templateOptions.label}}</label>
-          <select [id]="key" [formControlName]="key" (change)="inputChange($event, 'value')" class="form-control" [(ngModel)]="model"
-          (focus)="onInputFocus()"
+          <select [id]="key" [formControlName]="key" class="form-control" (focus)="onInputFocus()"
           #selectElement>
             <option value="" *ngIf="templateOptions.placeholder">{{templateOptions.placeholder}}</option>
             <option *ngFor="let opt of templateOptions.options" [value]="opt.value">{{opt.label}}</option>
@@ -23,8 +20,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
 export class FormlyFieldSelect extends Field {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(formlyPubSub: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
-    super(formlyPubSub, renderer, focusDispatcher);
+  constructor(renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
+    super(renderer, focusDispatcher);
   }
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {

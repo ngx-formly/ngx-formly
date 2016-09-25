@@ -1,9 +1,7 @@
 
 import {Component, Renderer, QueryList, ElementRef, ViewChildren} from "@angular/core";
-import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
-import {FormlyMessages} from "../services/formly.messages";
-import {Field} from "./field";
 import {FormBuilder, AbstractControl} from "@angular/forms";
+import {Field} from "./field";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
@@ -15,8 +13,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
                 <div *ngFor="let option of templateOptions.options" class="checkbox">
                     <label class="custom-control custom-checkbox">
                         <input type="checkbox" name="choose" value="{{option.value}}" [formControlName]="option.key"
-                          [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)"
-                          (focus)="onInputFocus()" class="custom-control-input">{{option.value}}
+                        (focus)="onInputFocus()" class="custom-control-input">
+                        {{option.value}}
                         <span class="custom-control-indicator"></span>
                     </label>
                 </div>
@@ -30,18 +28,11 @@ export class FormlyFieldMultiCheckbox extends Field {
   inputComponent: QueryList<ElementRef>;
 
   constructor(
-    formlyPubSub: FormlyPubSub,
     renderer: Renderer,
     focusDispatcher: SingleFocusDispatcher,
     private formBuilder: FormBuilder,
   ) {
-    super(formlyPubSub, renderer, focusDispatcher);
-  }
-
-  inputChange(e, val) {
-    this.model[val] = e.target.checked;
-    this.changeFn.emit(new FormlyValueChangeEvent(this.key, this.model));
-    this.formlyPubSub.setUpdated(true);
+    super(renderer, focusDispatcher);
   }
 
   createControl(): AbstractControl {
