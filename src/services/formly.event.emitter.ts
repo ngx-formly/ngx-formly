@@ -11,17 +11,7 @@ export class FormlyEventEmitter extends Subject<String> {
 }
 
 export class FormlyPubSub {
-  Stream = new FormlyEventEmitter();
   emitters = {};
-  updated = false;
-
-  getUpdated() {
-    return this.updated;
-  }
-
-  setUpdated(value) {
-    this.updated = value;
-  }
 
   setEmitter(key, emitter) {
     this.emitters[key] = emitter;

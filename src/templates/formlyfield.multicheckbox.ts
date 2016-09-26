@@ -1,9 +1,7 @@
 
 import {Component, Renderer, QueryList, ElementRef, ViewChildren} from "@angular/core";
-import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
-import {FormlyMessages} from "../services/formly.messages";
-import {Field} from "./field";
 import {FormBuilder, AbstractControl} from "@angular/forms";
+import {Field} from "./field";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
@@ -15,8 +13,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
                 <div *ngFor="let option of templateOptions.options" class="checkbox">
                     <label class="custom-control custom-checkbox">
                         <input type="checkbox" name="choose" value="{{option.value}}" [formControlName]="option.key"
-                          [(ngModel)]="model[option.key]" (change)="inputChange($event, option.key)"
-                          (focus)="onInputFocus()" class="custom-control-input">{{option.value}}
+                        (focus)="onInputFocus()" class="custom-control-input">
+                        {{option.value}}
                         <span class="custom-control-indicator"></span>
                     </label>
                 </div>
@@ -29,15 +27,12 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
 export class FormlyFieldMultiCheckbox extends Field {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(fm: FormlyMessages, private fps: FormlyPubSub, private formBuilder: FormBuilder, renderer: Renderer,
-              focusDispatcher: SingleFocusDispatcher) {
-    super(fm, fps, renderer, focusDispatcher);
-  }
-
-  inputChange(e, val) {
-    this.model[val] = e.target.checked;
-    this.changeFn.emit(new FormlyValueChangeEvent(this.key, this.model));
-    this.fps.setUpdated(true);
+  constructor(
+    renderer: Renderer,
+    focusDispatcher: SingleFocusDispatcher,
+    private formBuilder: FormBuilder,
+  ) {
+    super(renderer, focusDispatcher);
   }
 
   createControl(): AbstractControl {

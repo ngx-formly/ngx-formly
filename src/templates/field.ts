@@ -1,41 +1,22 @@
-import {Output, Input, EventEmitter, OnInit, AfterViewInit, Renderer} from "@angular/core";
-import {FormlyMessages} from "./../services/formly.messages";
-import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
+import {Input, OnInit, AfterViewInit, Renderer} from "@angular/core";
+import {FormGroup, FormControl, AbstractControl} from "@angular/forms";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
-import {FormControl, AbstractControl} from "@angular/forms";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
+import {FormlyEventEmitter} from "../services/formly.event.emitter";
 
 export abstract class Field implements OnInit, AfterViewInit {
-  @Input() form;
-  @Input() update;
+  @Input() form: FormGroup;
+  @Input() update: FormlyEventEmitter;
   @Input() templateOptions: FormlyTemplateOptions;
   @Input() key: string;
   @Input() field: FormlyFieldConfig;
   @Input() formModel: any;
   @Input() model: any;
 
-  @Output() changeFn: EventEmitter<any> = new EventEmitter();
-
-  messages;
   _control: AbstractControl;
   protected _focus: boolean;
 
-  // FIXME: See https://github.com/formly-js/ng2-formly/issues/45. This is a temporary fix.
-  _modelUpdateReceiver: EventEmitter<any>;
-  set modelUpdateReceiver(modelUpdateReceiver: EventEmitter<any>) {
-    this._modelUpdateReceiver = modelUpdateReceiver;
-    this._modelUpdateReceiver.subscribe((model: any) => {
-      this.model = model;
-    });
-  }
-
-  constructor(fm: FormlyMessages, protected ps: FormlyPubSub, protected renderer: Renderer,
-              protected focusDispatcher: SingleFocusDispatcher) {
-    this.messages = fm.getMessages();
-    this.ps.Stream.subscribe(form => {
-      this.form = form;
-    });
-
+  constructor(protected renderer: Renderer, protected focusDispatcher: SingleFocusDispatcher) {
     focusDispatcher.listen((key: String) => {
       if (this.key !== key) {
         this.focus = false;
@@ -45,16 +26,10 @@ export abstract class Field implements OnInit, AfterViewInit {
 
   ngOnInit() {
     if (this.update) {
-      this.update.subscribe((update) => {
-        this.templateOptions[update.key] = update.value;
+      this.update.subscribe((option: any) => {
+        this.templateOptions[option.key] = option.value;
       });
     }
-  }
-
-  inputChange(e, val) {
-    this.model = e.target[val];
-    this.changeFn.emit(new FormlyValueChangeEvent(this.key, e.target[val]));
-    this.ps.setUpdated(true);
   }
 
   get formControl(): AbstractControl {

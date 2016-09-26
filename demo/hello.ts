@@ -1,18 +1,11 @@
 import {NgModule, Component, Renderer, ViewChildren, QueryList, ElementRef} from "@angular/core";
-import {Validators, FormBuilder} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {BrowserModule} from "@angular/platform-browser";
-import {FormlyModule} from "./../src/core";
-import {ValidationService} from "./validation.service";
-import {FormlyMessages} from "./../src/services/formly.messages";
-import {FormlyEventEmitter} from "./../src/services/formly.event.emitter";
-import {FormlyConfig} from "./../src/services/formly.config";
+import {FormlyModule, FormlyMessages, FormlyConfig, FormlyFieldConfig} from "./../src/core";
 import {FormlyBootstrap, FormlyBootstrapModule} from "./../src/templates/formlyBootstrap";
-import {Field} from "./../src/templates/field";
-import {FormlyPubSub} from "./../src/services/formly.event.emitter";
-import {FormlyFieldConfig} from "./../src/components/formly.field.config";
-import {SingleFocusDispatcher} from "./../src/templates";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Field, SingleFocusDispatcher} from "./../src/templates";
+import {ValidationService} from "./validation.service";
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
@@ -20,7 +13,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   template: `
     <div [formGroup]="form">
       <div class="checkbox-toggle">
-          <input id="checkbox" type="checkbox" type="checkbox" [formControlName]="key" (change)="inputChange($event, 'checked')" value="on">
+          <input id="checkbox" type="checkbox" type="checkbox" [formControlName]="key" value="on">
           <label for="checkbox">
               <div></div>
           </label>
@@ -32,8 +25,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 export class FormlyFieldToggle extends Field {
   inputComponent: QueryList<ElementRef>;
 
-  constructor(fm: FormlyMessages, ps: FormlyPubSub, renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
-    super(fm, ps, renderer, focusDispatcher);
+  constructor(renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
+    super(renderer, focusDispatcher);
   }
 
   protected setNativeFocusProperty(newFocusValue: boolean): void {
@@ -48,8 +41,7 @@ export class FormlyFieldToggle extends Field {
   templateUrl: "../demo/template.html",
 })
 export class HelloApp {
-  form;
-  Stream;
+  form: FormGroup;
   author;
   env;
   _user;
@@ -79,8 +71,6 @@ export class HelloApp {
       name: "toggle",
       component: FormlyFieldToggle
     });
-
-    this.Stream = new FormlyEventEmitter();
 
     setTimeout(() => {
 
@@ -238,10 +228,6 @@ export class HelloApp {
           "others": true
         }
       };
-      this.Stream.emit({
-        model: this.user,
-        fields: this.userFields
-      });
     }, 0);
   }
 
@@ -250,24 +236,20 @@ export class HelloApp {
   }
 
   showEmail() {
-    this._user = Object.assign({}, this.user);
-    this._user.email = "mohammedzamakhan";
-    this._user.checked = !this.user.checked;
-    this.user = this._user;
-    this.Stream.emit({
-      model: this.user
-    });
+    this.form.get("email").setValue("mohammedzamakhan");
+    this.form.get("checked").setValue(!this.user.checked);
   }
+
   hide() {
     this.userFields[1].fieldGroup[0].hideExpression = !this.userFields[1].fieldGroup[0].hideExpression;
   }
 
-  changeEmail() {
-    this.Stream.emit({});
+  changeEmail(value) {
+    this.form.get("email").setValue(value);
   }
 
   resetForm() {
-    this.user = {
+    this.form.reset({
       email: "email@gmail.com",
       checked: true,
       select: "male",
@@ -278,7 +260,7 @@ export class HelloApp {
         "sports": false,
         "others": true
       }
-    };
+    });
   }
 
   submit(user) {

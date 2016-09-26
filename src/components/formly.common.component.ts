@@ -1,43 +1,28 @@
-import {EventEmitter, ElementRef, DoCheck, Renderer} from "@angular/core";
-import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
-import {FormlyPubSub} from "../services/formly.event.emitter";
-import {FormlyConfig} from "../services/formly.config";
-import {FormlyFieldConfig} from "./formly.field.config";
+import {ElementRef, DoCheck, Renderer} from "@angular/core";
 import {FormGroup} from "@angular/forms";
+import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
+import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
+import {FormlyFieldConfig} from "./formly.field.config";
 
 export class FormlyCommon implements DoCheck {
   formModel: any;
+  model: any;
   field: FormlyFieldConfig;
   form: FormGroup;
   _hide: any;
-  formSubmit = new EventEmitter();
-  update;
-  visibilityDelegate: FormlyFieldVisibilityDelegate;
-  expressionDelegate: FormlyFieldExpressionDelegate;
-  protected _model: any;
+  update: FormlyEventEmitter;
+  visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
+  expressionDelegate = new FormlyFieldExpressionDelegate(this);
 
   constructor(
     protected elementRef: ElementRef,
     protected formlyPubSub: FormlyPubSub,
-    protected formlyConfig: FormlyConfig,
     private renderer: Renderer
-  ) {
-    this.visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
-    this.expressionDelegate = new FormlyFieldExpressionDelegate(this);
-  }
+  ) {}
 
   ngDoCheck() {
     this.visibilityDelegate.checkVisibilityChange();
     this.expressionDelegate.checkExpressionChange();
-  }
-
-  get model(): any {
-    return this._model;
-  }
-
-  set model(value) {
-    this._model = value;
-    this.formlyPubSub.Stream.emit(this.form);
   }
 
   get hide() {
@@ -58,10 +43,7 @@ export class FormlyCommon implements DoCheck {
 
   private psEmit(fieldKey: string, eventKey: string, value: any) {
     if (this.formlyPubSub && this.formlyPubSub.getEmitter(fieldKey) && this.formlyPubSub.getEmitter(fieldKey).emit) {
-      this.formlyPubSub.getEmitter(fieldKey).emit({
-        key: eventKey,
-        value: value
-      });
+      this.formlyPubSub.getEmitter(fieldKey).emit(new FormlyValueChangeEvent(eventKey, value));
     }
   }
 }
