@@ -1,10 +1,10 @@
-import {Input, OnInit, AfterViewInit, Renderer} from "@angular/core";
+import {Input, OnInit} from "@angular/core";
 import {FormGroup, FormControl, AbstractControl} from "@angular/forms";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 import {FormlyEventEmitter} from "../services/formly.event.emitter";
 
-export abstract class Field implements OnInit, AfterViewInit {
+export abstract class Field implements OnInit {
   @Input() form: FormGroup;
   @Input() update: FormlyEventEmitter;
   @Input() templateOptions: FormlyTemplateOptions;
@@ -14,9 +14,9 @@ export abstract class Field implements OnInit, AfterViewInit {
   @Input() model: any;
 
   _control: AbstractControl;
-  protected _focus: boolean;
+  private _focus: boolean;
 
-  constructor(protected renderer: Renderer, protected focusDispatcher: SingleFocusDispatcher) {
+  constructor(protected focusDispatcher: SingleFocusDispatcher) {
     focusDispatcher.listen((key: String) => {
       if (this.key !== key) {
         this.focus = false;
@@ -29,6 +29,10 @@ export abstract class Field implements OnInit, AfterViewInit {
       this.update.subscribe((option: any) => {
         this.templateOptions[option.key] = option.value;
       });
+    }
+
+    if (this.templateOptions.focus) {
+      this.focus = true;
     }
   }
 
@@ -43,16 +47,9 @@ export abstract class Field implements OnInit, AfterViewInit {
     this._control = new FormControl({ value: this.model || "", disabled: this.templateOptions.disabled }, this.field.validation);
   }
 
-  ngAfterViewInit() {
-    if (this.templateOptions.focus) {
-      this.focus = true;
-    }
-  }
-
   set focus (newFocusValue: boolean) {
     if (!this._focus && newFocusValue) {
       this._focus = true;
-      this.setNativeFocusProperty(this._focus);
       this.focusDispatcher.notify(this.key);
       // TODO: Raise a Event which can be used for streaming
     } else if (this._focus && !newFocusValue) {
@@ -68,6 +65,4 @@ export abstract class Field implements OnInit, AfterViewInit {
   onInputFocus(): void {
     this.focus = true;
   }
-
-  protected abstract setNativeFocusProperty(newFocusValue: boolean): void;
 }
