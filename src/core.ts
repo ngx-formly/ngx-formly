@@ -3,6 +3,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FormlyForm} from "./components/formly.form";
 import {FormlyField} from "./components/formly.field";
+import {FormlyNgFocus} from "./components/formly.field.focus";
 import {FormlyConfig} from "./services/formly.config";
 import {FormlyMessage} from "./services/formly.messages";
 import {FormlyProviders} from "./services/formly.providers";
@@ -17,7 +18,7 @@ export {FormlyMessage, FormlyMessages} from "./services/formly.messages";
 export {FormlyFieldVisibilityDelegate} from "./services/formly.field.delegates"
 export {FormlyProviders} from "./services/formly.providers";
 
-export const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage];
+export const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage, FormlyNgFocus];
 
 @NgModule({
   declarations: FORMLY_DIRECTIVES,

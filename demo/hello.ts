@@ -1,4 +1,4 @@
-import {NgModule, Component, Renderer, ViewChildren, QueryList, ElementRef} from "@angular/core";
+import {NgModule, Component} from "@angular/core";
 import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {BrowserModule} from "@angular/platform-browser";
@@ -20,19 +20,10 @@ import {ValidationService} from "./validation.service";
       </div>
   </div>
   `,
-  queries: {inputComponent: new ViewChildren("inputElement")}
 })
 export class FormlyFieldToggle extends Field {
-  inputComponent: QueryList<ElementRef>;
-
-  constructor(renderer: Renderer, focusDispatcher: SingleFocusDispatcher) {
-    super(renderer, focusDispatcher);
-  }
-
-  protected setNativeFocusProperty(newFocusValue: boolean): void {
-    if (this.inputComponent.length > 0) {
-      this.renderer.invokeElementMethod(this.inputComponent.first.nativeElement, "focus", [newFocusValue]);
-    }
+  constructor(focusDispatcher: SingleFocusDispatcher) {
+    super(focusDispatcher);
   }
 }
 

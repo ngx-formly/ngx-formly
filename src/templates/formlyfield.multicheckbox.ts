@@ -1,5 +1,5 @@
 
-import {Component, Renderer, QueryList, ElementRef, ViewChildren} from "@angular/core";
+import {Component} from "@angular/core";
 import {FormBuilder, AbstractControl} from "@angular/forms";
 import {Field} from "./field";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
@@ -13,7 +13,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
                 <div *ngFor="let option of templateOptions.options" class="checkbox">
                     <label class="custom-control custom-checkbox">
                         <input type="checkbox" name="choose" value="{{option.value}}" [formControlName]="option.key"
-                        (focus)="onInputFocus()" class="custom-control-input">
+                        class="custom-control-input">
                         {{option.value}}
                         <span class="custom-control-indicator"></span>
                     </label>
@@ -22,17 +22,13 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
             </div>
         </div>
     `,
-  queries: {inputComponent: new ViewChildren("textAreaElement")}
 })
 export class FormlyFieldMultiCheckbox extends Field {
-  inputComponent: QueryList<ElementRef>;
-
   constructor(
-    renderer: Renderer,
     focusDispatcher: SingleFocusDispatcher,
     private formBuilder: FormBuilder,
   ) {
-    super(renderer, focusDispatcher);
+    super(focusDispatcher);
   }
 
   createControl(): AbstractControl {
@@ -41,11 +37,5 @@ export class FormlyFieldMultiCheckbox extends Field {
       return previous;
     }, {});
     return this._control = this.formBuilder.group(controlGroupConfig);
-  }
-
-  protected setNativeFocusProperty(newFocusValue: boolean): void {
-    if (this.inputComponent.length > 0) {
-      this.renderer.invokeElementMethod(this.inputComponent.first.nativeElement, "focus", [newFocusValue]);
-    }
   }
 }
