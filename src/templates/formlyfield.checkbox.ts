@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import {AbstractControl, FormBuilder} from "@angular/forms";
 import {Field} from "./field";
-import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
   selector: "formly-field-checkbox",
@@ -21,11 +20,8 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
   `,
 })
 export class FormlyFieldCheckbox extends Field {
-  constructor(
-    focusDispatcher: SingleFocusDispatcher,
-    private formBuilder: FormBuilder,
-  ) {
-    super(focusDispatcher);
+  constructor(private formBuilder: FormBuilder) {
+    super();
   }
 
   createControl(): AbstractControl {

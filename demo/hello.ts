@@ -4,7 +4,7 @@ import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormlyModule, FormlyMessages, FormlyConfig, FormlyFieldConfig} from "./../src/core";
 import {FormlyBootstrap, FormlyBootstrapModule} from "./../src/templates/formlyBootstrap";
-import {Field, SingleFocusDispatcher} from "./../src/templates";
+import {Field} from "./../src/templates";
 import {ValidationService} from "./validation.service";
 
 // Custom Input Field type 'toggle' Component Definition
@@ -22,9 +22,6 @@ import {ValidationService} from "./validation.service";
   `,
 })
 export class FormlyFieldToggle extends Field {
-  constructor(focusDispatcher: SingleFocusDispatcher) {
-    super(focusDispatcher);
-  }
 }
 
 @Component({

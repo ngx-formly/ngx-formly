@@ -1,6 +1,5 @@
 import {Component} from "@angular/core";
 import {Field} from "./field";
-import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Component({
   selector: "formly-field-radio",
@@ -11,7 +10,7 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
         <div *ngFor="let option of templateOptions.options" class="radio">
           <label class="custom-control custom-radio">
             <input type="radio" [value]="option.key" [formControlName]="key"
-            [formlyNgFocus]="focus" (focus)="onInputFocus()" class="custom-control-input">
+            [formlyNgFocus]="focus" (focus)="focus = true" class="custom-control-input">
             {{option.value}}
             <span class="custom-control-indicator"></span>
           </label>
@@ -21,7 +20,4 @@ import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher"
     </div>`,
 })
 export class FormlyFieldRadio extends Field {
-  constructor(focusDispatcher: SingleFocusDispatcher) {
-    super(focusDispatcher);
-  }
 }
