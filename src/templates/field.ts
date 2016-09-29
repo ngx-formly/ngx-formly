@@ -24,7 +24,7 @@ export abstract class Field implements OnInit {
 
   get formControl(): AbstractControl {
     if (!this._control) {
-     this.createControl();
+      this.createControl();
     }
     return this._control;
   }

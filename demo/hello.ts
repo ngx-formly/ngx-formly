@@ -60,6 +60,11 @@ export class HelloApp {
       component: FormlyFieldToggle
     });
 
+    fc.setValidator({
+      name: "required",
+      validation: Validators.required
+    });
+
     setTimeout(() => {
 
       this.userFields = [{
@@ -128,6 +133,7 @@ export class HelloApp {
           className: "col-xs-6",
           type: "input",
           key: "street",
+          validation: ["required"],
           templateOptions: {
             label: "Street",
             placeholder: "604 Causley Ave. ",
