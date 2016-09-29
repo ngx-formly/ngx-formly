@@ -8,7 +8,7 @@ import {Field} from "./field";
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
         <input [type]="templateOptions.type" [formControlName]="key" class="form-control" id="{{key}}"
           [placeholder]="templateOptions.placeholder"
-          [formlyNgFocus]="focus" (focus)="focus = true" [ngClass]="{'form-control-danger': valid}">
+          [formlyNgFocus]="templateOptions.focus" [ngClass]="{'form-control-danger': valid}">
         <small class="text-muted">{{templateOptions.description}}</small>
         <small class="text-muted text-danger" *ngIf="valid"><formly-message [form]="form" [controlName]="key"></formly-message></small>
       </div>

@@ -6,7 +6,7 @@ import {Field} from "./field";
   template: `
         <div class="select form-group" [formGroup]="form">
           <label for="" class="form-control-label">{{templateOptions.label}}</label>
-          <select [id]="key" [formControlName]="key" class="form-control" [formlyNgFocus]="focus" (focus)="focus = true">
+          <select [id]="key" [formControlName]="key" class="form-control" [formlyNgFocus]="templateOptions.focus">
             <option value="" *ngIf="templateOptions.placeholder">{{templateOptions.placeholder}}</option>
             <option *ngFor="let opt of templateOptions.options" [value]="opt.value">{{opt.label}}</option>
           </select>

@@ -10,7 +10,7 @@ import {Field} from "./field";
         <div *ngFor="let option of templateOptions.options" class="radio">
           <label class="custom-control custom-radio">
             <input type="radio" [value]="option.key" [formControlName]="key"
-            [formlyNgFocus]="focus" (focus)="focus = true" class="custom-control-input">
+            [formlyNgFocus]="templateOptions.focus" class="custom-control-input">
             {{option.value}}
             <span class="custom-control-indicator"></span>
           </label>

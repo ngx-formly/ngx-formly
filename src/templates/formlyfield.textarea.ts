@@ -8,7 +8,7 @@ import {Field} from "./field";
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
       <textarea name="{{key}}" [formControlName]="key" id="{{key}}" cols="{{templateOptions.cols}}"
         rows="{{templateOptions.rows}}" [placeholder]="templateOptions.placeholder" class="form-control"
-        [formlyNgFocus]="focus" (focus)="focus = true">
+        [formlyNgFocus]="templateOptions.focus">
       </textarea>
       <small class="text-muted">{{templateOptions.description}}</small>
     </fieldset>`,
