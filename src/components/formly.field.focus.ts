@@ -1,19 +1,31 @@
 import {Directive, ElementRef, Input, Renderer} from "@angular/core";
+import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Directive({selector: "[formlyNgFocus]"})
 export class FormlyNgFocus {
   _focus: boolean;
 
+  @Input() formControlName;
   @Input("formlyNgFocus")
   set focus(val: boolean) {
-    this._focus = val;
-    if (val) {
+    if (!this._focus && val) {
       this.renderer.invokeElementMethod(this.elementRef.nativeElement, "focus", []);
-    } else {
+      // TODO: Raise a Event which can be used for streaming
+      this.focusDispatcher.notify(this.formControlName);
+    }
+
+    if (this._focus && !val) {
       this.renderer.invokeElementMethod(this.elementRef.nativeElement, "blur", []);
     }
-  }
-  get focus() { return this._focus; }
 
-  constructor(private renderer: Renderer, private elementRef: ElementRef) {}
+    this._focus = val;
+  }
+
+  constructor(private renderer: Renderer, private elementRef: ElementRef, private focusDispatcher: SingleFocusDispatcher) {
+    focusDispatcher.listen((key: String) => {
+      if (this.formControlName !== key) {
+        this.focus = false;
+      }
+    });
+  }
 }
