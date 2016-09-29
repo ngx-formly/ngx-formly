@@ -13,17 +13,12 @@ export abstract class Field implements OnInit {
   @Input() model: any;
 
   _control: AbstractControl;
-  focus: boolean;
 
   ngOnInit() {
     if (this.update) {
       this.update.subscribe((option: any) => {
         this.templateOptions[option.key] = option.value;
       });
-    }
-
-    if (this.templateOptions.focus) {
-      this.focus = true;
     }
   }
 

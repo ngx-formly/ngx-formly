@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Input, Renderer} from "@angular/core";
+import {Directive, HostListener, ElementRef, Input, Renderer} from "@angular/core";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
 @Directive({selector: "[formlyNgFocus]"})
@@ -19,6 +19,13 @@ export class FormlyNgFocus {
     }
 
     this._focus = val;
+  }
+
+  @HostListener("focus") onFocus() {
+    if (!this._focus) {
+      this.focusDispatcher.notify(this.formControlName);
+      this._focus = true;
+    }
   }
 
   constructor(private renderer: Renderer, private elementRef: ElementRef, private focusDispatcher: SingleFocusDispatcher) {
