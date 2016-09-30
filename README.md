@@ -17,8 +17,6 @@ angular2-formly is an Angular 2 module which has a Components to help customize 
 The `formly-form` Component and the `FormlyConfig` service are very powerful and bring unmatched maintainability to your
 application's forms.
 
-***This is still a serious WIP.***
-
 Include the FormlyForm component import in the `directives` attribute of your `Component` and put this in your template
 ```html
 <form class="formly" role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
