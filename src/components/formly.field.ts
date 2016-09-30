@@ -2,6 +2,7 @@ import {
   Component, OnInit, EventEmitter, ElementRef, Output,
   ViewContainerRef, ViewChild, ComponentRef, Renderer
 } from "@angular/core";
+import {Validators} from "@angular/forms";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyFieldBuilder} from "../services/formly.field.builder";
@@ -55,6 +56,13 @@ export class FormlyField extends FormlyCommon implements OnInit {
 
   createChildFields() {
     if (this.field && !this.field.template && !this.field.fieldGroup) {
+      if (Array.isArray(this.field.validation)) {
+        let validators = [];
+        this.field.validation.map((validate) => {
+          validators.push(this.formlyConfig.getValidator(validate).validation);
+        });
+        this.field.validation = Validators.compose(validators);
+      }
       this.update = new FormlyEventEmitter();
       this.fieldComponentRef = this.formlyFieldBuilder.createChildFields(this.field, this, this.formlyConfig);
       this.fieldComponentRef.instance.formControl.valueChanges.subscribe((event) => {
