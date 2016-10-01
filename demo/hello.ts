@@ -46,6 +46,7 @@ export class HelloApp {
     fm.addStringMessage("invalidEmailAddress", "Invalid Email Address");
     fm.addStringMessage("maxlength", "Maximum Length Exceeded.");
     fm.addStringMessage("minlength", "Should have atleast 2 Characters");
+    fm.addStringMessage("not_matching", "Password Not Matching");
 
     this.author = {
       name: "Mohammed Zama Khan",
@@ -107,6 +108,19 @@ export class HelloApp {
             placeholder: "Password"
           },
           validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
+        }, {
+          className: "col-xs-4",
+          key: "confirmPassword",
+          type: "input",
+          templateOptions: {
+            type: "password",
+            label: "Password",
+            placeholder: "Confirm Password"
+          },
+          validation: ValidationService.confirmPassword(this.form, "password")
+        }, {
+          className: "section-label",
+          template: "<br/><hr/>"
         }, {
           className: "col-xs-4",
           key: "select",
