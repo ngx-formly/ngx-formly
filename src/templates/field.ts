@@ -11,8 +11,11 @@ export abstract class Field implements OnInit {
   @Input() field: FormlyFieldConfig;
   @Input() formModel: any;
   @Input() model: any;
+  @Input() formControl: AbstractControl;
 
-  _control: AbstractControl;
+  static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
+    return new FormControl({ value: model || "", disabled: field.templateOptions.disabled }, field.validation);
+  }
 
   ngOnInit() {
     if (this.update) {
@@ -20,16 +23,5 @@ export abstract class Field implements OnInit {
         this.templateOptions[option.key] = option.value;
       });
     }
-  }
-
-  get formControl(): AbstractControl {
-    if (!this._control) {
-      this.createControl();
-    }
-    return this._control;
-  }
-
-  createControl(): void {
-    this._control = new FormControl({ value: this.model || "", disabled: this.templateOptions.disabled }, this.field.validation);
   }
 }

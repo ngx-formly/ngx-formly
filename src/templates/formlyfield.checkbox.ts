@@ -1,6 +1,7 @@
 import {Component} from "@angular/core";
-import {AbstractControl, FormBuilder} from "@angular/forms";
+import {FormControl, AbstractControl} from "@angular/forms";
 import {Field} from "./field";
+import {FormlyFieldConfig} from "../components/formly.field.config";
 
 @Component({
   selector: "formly-field-checkbox",
@@ -20,11 +21,7 @@ import {Field} from "./field";
   `,
 })
 export class FormlyFieldCheckbox extends Field {
-  constructor(private formBuilder: FormBuilder) {
-    super();
-  }
-
-  createControl(): AbstractControl {
-    return this._control = this.formBuilder.control(this.model ? "on" : undefined);
+  static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
+    return new FormControl({ value: model ? "on" : undefined, disabled: field.templateOptions.disabled }, field.validation);
   }
 }

@@ -66,8 +66,6 @@ export class HelloApp {
       validation: Validators.required
     });
 
-    setTimeout(() => {
-
       this.userFields = [{
         type: "radio",
         key: "title",
@@ -236,7 +234,6 @@ export class HelloApp {
           "others": true
         }
       };
-    }, 0);
   }
 
   console(data) {

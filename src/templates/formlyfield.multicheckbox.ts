@@ -1,7 +1,8 @@
 
 import {Component} from "@angular/core";
-import {FormBuilder, AbstractControl} from "@angular/forms";
+import {FormGroup, FormControl, AbstractControl} from "@angular/forms";
 import {Field} from "./field";
+import {FormlyFieldConfig} from "../components/formly.field.config";
 
 @Component({
   selector: "formly-field-multicheckbox",
@@ -23,15 +24,12 @@ import {Field} from "./field";
     `,
 })
 export class FormlyFieldMultiCheckbox extends Field {
-  constructor(private formBuilder: FormBuilder) {
-    super();
-  }
-
-  createControl(): AbstractControl {
-    let controlGroupConfig = this.templateOptions.options.reduce((previous, option) => {
-      previous[option.key] = [this.model ? this.model[option.key] : undefined];
+  static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
+    let controlGroupConfig = field.templateOptions.options.reduce((previous, option) => {
+      previous[option.key] = new FormControl(model ? model[option.key] : undefined);
       return previous;
     }, {});
-    return this._control = this.formBuilder.group(controlGroupConfig);
+
+    return new FormGroup(controlGroupConfig);
   }
 }
