@@ -1,5 +1,5 @@
 import {Input} from "@angular/core";
-import {FormGroup, FormControl, AbstractControl} from "@angular/forms";
+import {FormGroup, AbstractControl} from "@angular/forms";
 import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.field.config";
 
 export abstract class Field {
@@ -10,8 +10,4 @@ export abstract class Field {
   @Input() formModel: any;
   @Input() model: any;
   @Input() formControl: AbstractControl;
-
-  static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
-    return new FormControl({ value: model || "", disabled: field.templateOptions.disabled }, field.validation);
-  }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit, ElementRef, Renderer, Input} from "@angular/core";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyFieldConfig} from "./formly.field.config";
@@ -52,7 +52,7 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
   private registerFormControls(fields) {
     fields.map(field => {
       if (field.key && field.type) {
-        let componenType: any = this.formlyConfig.getType(field.type);
+        let componenType: any = this.formlyConfig.getType(field.type).component;
         if (Array.isArray(field.validation)) {
           let validators = [];
           field.validation.map((validate) => {
@@ -61,7 +61,11 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
           field.validation = Validators.compose(validators);
         }
 
-        this.form.addControl(field.key, componenType.component.createControl(this.model[field.key] || "", field));
+        if (componenType.createControl) {
+          this.form.addControl(field.key, componenType.createControl(this.model[field.key] || "", field));
+        } else {
+          this.form.addControl(field.key, new FormControl({ value: this.model[field.key] || "", disabled: field.templateOptions.disabled }, field.validation));
+        }
       }
 
       if (field.fieldGroup) {

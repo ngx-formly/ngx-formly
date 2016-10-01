@@ -1,7 +1,10 @@
 import {Directive, HostListener, ElementRef, Input, Renderer} from "@angular/core";
 import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 
-@Directive({selector: "[formlyNgFocus]"})
+@Directive({
+  selector: "[formlyNgFocus]",
+  providers: [SingleFocusDispatcher]
+})
 export class FormlyNgFocus {
   _focus: boolean;
 
