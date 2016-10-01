@@ -59,12 +59,17 @@ export class FormlyField extends FormlyCommon implements OnInit {
 
   private createChildFields() {
     if (this.field && !this.field.template && !this.field.fieldGroup) {
-      this.update = new FormlyEventEmitter();
       this.fieldComponentRef = this.createFieldComponent();
       this.fieldComponentRef.instance.formControl.valueChanges.subscribe((event) => {
         this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
       });
-      this.formlyPubSub.setEmitter(this.field.key, this.update);
+
+      let update = new FormlyEventEmitter();
+      update.subscribe((option: any) => {
+        this.field.templateOptions[option.key] = option.value;
+      });
+
+      this.formlyPubSub.setEmitter(this.field.key, update);
     }
   }
 
@@ -80,7 +85,6 @@ export class FormlyField extends FormlyCommon implements OnInit {
         templateOptions: this.field.templateOptions,
         key: this.field.key,
         form: this.form,
-        update: this.update,
         field: this.field,
         formModel: this.formModel,
         formControl: this.form.get(this.field.key),
