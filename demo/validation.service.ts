@@ -1,3 +1,4 @@
+import {FormGroup} from "@angular/forms";
 export class ValidationService {
     static getValidatorErrorMessage(code: string) {
         let config = {
@@ -26,6 +27,24 @@ export class ValidationService {
         } else {
             return { "invalidEmailAddress": true };
         }
+    }
+
+    static confirmPassword(form: FormGroup, field) {
+      let fieldChanges = false;
+      return function innerFunction(control) {
+        if (!fieldChanges) {
+          form.get(field).valueChanges
+            .subscribe(() => {
+              control.updateValueAndValidity();
+            });
+          fieldChanges = true;
+        }
+        if (control.value === form.get(field).value) {
+          return null;
+        } else {
+          return {"not_matching": true};
+        }
+      };
     }
 
     static passwordValidator(control) {
