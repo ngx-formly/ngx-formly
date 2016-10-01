@@ -1,7 +1,7 @@
 import {ElementRef, DoCheck, Renderer} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
-import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
+import {FormlyPubSub, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyFieldConfig} from "./formly.field.config";
 
 export class FormlyCommon implements DoCheck {
@@ -10,7 +10,6 @@ export class FormlyCommon implements DoCheck {
   field: FormlyFieldConfig;
   form: FormGroup;
   _hide: any;
-  update: FormlyEventEmitter;
   visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
   expressionDelegate = new FormlyFieldExpressionDelegate(this);
 

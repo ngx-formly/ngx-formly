@@ -1,11 +1,10 @@
 import {
   Component, OnInit, EventEmitter, ElementRef, Output,
-  ViewContainerRef, ViewChild, ComponentRef, Renderer
+  ViewContainerRef, ViewChild, ComponentRef, Renderer,
+  ComponentFactoryResolver
 } from "@angular/core";
-import {Validators} from "@angular/forms";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
-import {FormlyFieldBuilder} from "../services/formly.field.builder";
 import {FormlyConfig} from "../services/formly.config";
 import {Field} from "../templates/field";
 
@@ -36,40 +35,13 @@ export class FormlyField extends FormlyCommon implements OnInit {
     formlyPubSub: FormlyPubSub,
     renderer: Renderer,
     private formlyConfig: FormlyConfig,
-    private formlyFieldBuilder: FormlyFieldBuilder,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {
     super(elementRef, formlyPubSub, renderer);
   }
 
   ngOnInit() {
-    // FIXME: setTimeout may not be good idea. This is a temporary fix for following issue
-    /* core.umd.js:5995 EXCEPTION: Error in ./FormlyFieldRadio class FormlyFieldRadio - inline template:1:4
-    caused by: Expression has changed after it was checked. Previous value: 'true'. Current value: 'false'.
-
-    This is caused in demo application because when email form control with validation error is added to form the
-    ngClassValid attribute of formGroup directive in radio button template changes from true to false. This whole thing
-    happens within changedetection and ngonInit lifecycle.
-
-    See https://github.com/angular/angular/issues/10131 for more information*/
-    setTimeout(() => this.createChildFields());
-  }
-
-  createChildFields() {
-    if (this.field && !this.field.template && !this.field.fieldGroup) {
-      if (Array.isArray(this.field.validation)) {
-        let validators = [];
-        this.field.validation.map((validate) => {
-          validators.push(this.formlyConfig.getValidator(validate).validation);
-        });
-        this.field.validation = Validators.compose(validators);
-      }
-      this.update = new FormlyEventEmitter();
-      this.fieldComponentRef = this.formlyFieldBuilder.createChildFields(this.field, this, this.formlyConfig);
-      this.fieldComponentRef.instance.formControl.valueChanges.subscribe((event) => {
-        this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
-      });
-      this.formlyPubSub.setEmitter(this.field.key, this.update);
-    }
+    this.createChildFields();
   }
 
   changeModel(event: FormlyValueChangeEvent) {
@@ -83,5 +55,41 @@ export class FormlyField extends FormlyCommon implements OnInit {
     }
 
     this.modelChange.emit(event);
+  }
+
+  private createChildFields() {
+    if (this.field && !this.field.template && !this.field.fieldGroup) {
+      this.fieldComponentRef = this.createFieldComponent();
+      this.fieldComponentRef.instance.formControl.valueChanges.subscribe((event) => {
+        this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
+      });
+
+      let update = new FormlyEventEmitter();
+      update.subscribe((option: any) => {
+        this.field.templateOptions[option.key] = option.value;
+      });
+
+      this.formlyPubSub.setEmitter(this.field.key, update);
+    }
+  }
+
+  private createFieldComponent(): ComponentRef<Field> {
+    // TODO support this.field.hideExpression as a callback/observable
+    this.hide = this.field.hideExpression ? true : false;
+
+    let type = this.formlyConfig.getType(this.field.type);
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(type.component);
+    let ref = <ComponentRef<Field>>this.fieldComponent.createComponent(componentFactory);
+    Object.assign(ref.instance, {
+        model: this.model,
+        templateOptions: this.field.templateOptions,
+        key: this.field.key,
+        form: this.form,
+        field: this.field,
+        formModel: this.formModel,
+        formControl: this.form.get(this.field.key),
+    });
+
+    return ref;
   }
 }

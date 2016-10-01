@@ -1,10 +1,9 @@
 import {Component, OnInit, ElementRef, Renderer, Input} from "@angular/core";
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
-import {FormlyFieldBuilder} from "../services/formly.field.builder";
-import {SingleFocusDispatcher} from "../services/formly.single.focus.dispatcher";
 import {FormlyCommon} from "./formly.common.component";
 import {FormlyFieldConfig} from "./formly.field.config";
+import {FormlyConfig} from "../services/formly.config";
 
 @Component({
   selector: "formly-form",
@@ -17,7 +16,6 @@ import {FormlyFieldConfig} from "./formly.field.config";
     </formly-field>
     <ng-content></ng-content>
   `,
-  providers: [FormlyPubSub, SingleFocusDispatcher, FormlyFieldBuilder],
   inputs: ["field", "formModel", "form", "hide", "model"]
 })
 export class FormlyForm extends FormlyCommon implements OnInit  {
@@ -27,6 +25,7 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
     elementRef: ElementRef,
     formlyPubSub: FormlyPubSub,
     renderer: Renderer,
+    private formlyConfig: FormlyConfig,
     private formBuilder: FormBuilder
   ) {
     super(elementRef, formlyPubSub, renderer);
@@ -42,9 +41,36 @@ export class FormlyForm extends FormlyCommon implements OnInit  {
     if (!this.form) {
       this.form = this.formBuilder.group({});
     }
+
+    this.registerFormControls(this.fields);
   }
 
   changeModel(event: FormlyValueChangeEvent) {
     this.model[event.key] = event.value;
+  }
+
+  private registerFormControls(fields) {
+    fields.map(field => {
+      if (field.key && field.type) {
+        let componenType: any = this.formlyConfig.getType(field.type).component;
+        if (Array.isArray(field.validation)) {
+          let validators = [];
+          field.validation.map((validate) => {
+            validators.push(this.formlyConfig.getValidator(validate).validation);
+          });
+          field.validation = Validators.compose(validators);
+        }
+
+        if (componenType.createControl) {
+          this.form.addControl(field.key, componenType.createControl(this.model[field.key] || "", field));
+        } else {
+          this.form.addControl(field.key, new FormControl({ value: this.model[field.key] || "", disabled: field.templateOptions.disabled }, field.validation));
+        }
+      }
+
+      if (field.fieldGroup) {
+        this.registerFormControls(field.fieldGroup);
+      }
+    });
   }
 }

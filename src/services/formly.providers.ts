@@ -3,5 +3,5 @@ import {FormlyMessages} from "./formly.messages";
 
 export const FormlyProviders = [
   FormlyPubSub,
-  FormlyMessages
+  FormlyMessages,
 ];
