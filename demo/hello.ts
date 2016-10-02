@@ -206,6 +206,13 @@ export class HelloApp {
       }, {
         key: "textAreaVal",
         type: "textarea",
+        modelOptions: {
+          debounce: {
+            default: 2000,
+            blur: 0
+          },
+          updateOn: "default blur"
+        },
         templateOptions: {
           rows: 5,
           cols: 20,

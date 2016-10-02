@@ -10,6 +10,7 @@ export interface FormlyFieldConfig {
   type?: string;
   expressionProperties?: any;
   focus?: boolean;
+  modelOptions?: any;
 }
 
 export interface FormlyTemplateOptions {
