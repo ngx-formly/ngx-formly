@@ -1,12 +1,13 @@
 import {
-  Component, OnInit, EventEmitter, ElementRef, Output,
-  ViewContainerRef, ViewChild, ComponentRef, Renderer,
-  ComponentFactoryResolver
+  Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck,
+  ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver
 } from "@angular/core";
-import {FormlyCommon} from "./formly.common.component";
+import {FormGroup} from "@angular/forms";
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
 import {FormlyConfig} from "../services/formly.config";
 import {Field} from "../templates/field";
+import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
+import {FormlyFieldConfig} from "./formly.field.config";
 
 @Component({
   selector: "formly-field",
@@ -22,22 +23,45 @@ import {Field} from "../templates/field";
       [ngClass]="f.className">
     </formly-field>
   `,
-  inputs: ["field", "formModel", "form", "hide", "model", "key"],
 })
-export class FormlyField extends FormlyCommon implements OnInit {
+export class FormlyField implements DoCheck, OnInit {
+  @Input() formModel: any;
+  @Input() model: any;
+  @Input() form: FormGroup;
+  @Input() field: FormlyFieldConfig;
+  @Input()
+  get hide() { return this._hide; }
+  set hide(value: boolean) {
+    this._hide = value;
+    this.renderer.setElementStyle(this.elementRef.nativeElement, "display", value ? "none" : "");
+    if (this.field.fieldGroup) {
+      for (let i = 0; i < this.field.fieldGroup.length; i++) {
+        this.psEmit(this.field.fieldGroup[i].key, "hidden", this._hide);
+      }
+    } else {
+      this.psEmit(this.field.key, "hidden", this._hide);
+    }
+  }
+
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild("fieldComponent", {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
   private fieldComponentRef: ComponentRef<Field>;
+  private visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
+  private expressionDelegate = new FormlyFieldExpressionDelegate(this);
+  private _hide;
 
   constructor(
-    elementRef: ElementRef,
-    formlyPubSub: FormlyPubSub,
-    renderer: Renderer,
+    private elementRef: ElementRef,
+    private formlyPubSub: FormlyPubSub,
+    private renderer: Renderer,
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver
-  ) {
-    super(elementRef, formlyPubSub, renderer);
+  ) {}
+
+  ngDoCheck() {
+    this.visibilityDelegate.checkVisibilityChange();
+    this.expressionDelegate.checkExpressionChange();
   }
 
   ngOnInit() {
@@ -91,5 +115,11 @@ export class FormlyField extends FormlyCommon implements OnInit {
     });
 
     return ref;
+  }
+
+  private psEmit(fieldKey: string, eventKey: string, value: any) {
+    if (this.formlyPubSub && this.formlyPubSub.getEmitter(fieldKey) && this.formlyPubSub.getEmitter(fieldKey).emit) {
+      this.formlyPubSub.getEmitter(fieldKey).emit(new FormlyValueChangeEvent(eventKey, value));
+    }
   }
 }
