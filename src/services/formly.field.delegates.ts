@@ -1,8 +1,8 @@
 import {evalExpression, expressionValueSetter} from "./formly.expression";
-import {FormlyCommon} from "../components/formly.common.component";
+import {FormlyField} from "../components/formly.field";
 
 export class FormlyFieldVisibilityDelegate {
-  constructor(private formlyCommon: FormlyCommon) {}
+  constructor(private formlyCommon: FormlyField) {}
 
   eval(expression: string | Function | boolean): boolean {
     // TODO support this.formlyCommon.field.hideExpression as a observable
@@ -30,7 +30,7 @@ export class FormlyFieldVisibilityDelegate {
 }
 
 export class FormlyFieldExpressionDelegate {
-  constructor(private formlyCommon: FormlyCommon) {}
+  constructor(private formlyCommon: FormlyField) {}
 
   hasExpression(): boolean {
     return (this.formlyCommon.field && this.formlyCommon.field.expressionProperties !== undefined);

@@ -1,7 +1,6 @@
-import {Component, OnInit, ElementRef, Renderer, Input} from "@angular/core";
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {FormlyPubSub, FormlyValueChangeEvent} from "./../services/formly.event.emitter";
-import {FormlyCommon} from "./formly.common.component";
+import {Component, OnInit, Input} from "@angular/core";
+import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
+import {FormlyValueChangeEvent} from "./../services/formly.event.emitter";
 import {FormlyFieldConfig} from "./formly.field.config";
 import {FormlyConfig} from "../services/formly.config";
 
@@ -10,26 +9,23 @@ import {FormlyConfig} from "../services/formly.config";
   template: `
     <formly-field *ngFor="let field of fields"
       [hide]="field.hideExpression" [model]="field.key?model[field.key]:model"
-      [key]="field.key" [form]="form" [field]="field" [formModel]="model"
+      [form]="form" [field]="field" [formModel]="model"
       (modelChange)="changeModel($event)"
       [ngClass]="field.className">
     </formly-field>
     <ng-content></ng-content>
   `,
-  inputs: ["field", "formModel", "form", "hide", "model"]
 })
-export class FormlyForm extends FormlyCommon implements OnInit  {
+export class FormlyForm implements OnInit  {
+  @Input() formModel: any;
+  @Input() model: any;
+  @Input() form: FormGroup;
   @Input() fields: FormlyFieldConfig[];
 
   constructor(
-    elementRef: ElementRef,
-    formlyPubSub: FormlyPubSub,
-    renderer: Renderer,
     private formlyConfig: FormlyConfig,
     private formBuilder: FormBuilder
-  ) {
-    super(elementRef, formlyPubSub, renderer);
-  }
+  ) {}
 
   ngOnInit() {
     if (!this.model) {

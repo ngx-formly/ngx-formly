@@ -8,7 +8,6 @@ import {FormlyConfig} from "./services/formly.config";
 import {FormlyMessage} from "./services/formly.messages";
 import {FormlyProviders} from "./services/formly.providers";
 
-export {FormlyCommon} from "./components/formly.common.component";
 export {FormlyField} from "./components/formly.field";
 export {FormlyFieldConfig} from "./components/formly.field.config";
 export {FormlyForm} from "./components/formly.form";
