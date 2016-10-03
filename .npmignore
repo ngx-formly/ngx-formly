@@ -4,7 +4,6 @@ demo
 node_modules
 src
 test
-typings
 .editorconfig
 .gitignore
 .npmignore
@@ -15,4 +14,3 @@ npm-debug.log
 tsconfig.build.json
 tsconfig.json
 tslint.json
-typings.json
