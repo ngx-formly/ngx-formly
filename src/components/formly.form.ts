@@ -42,13 +42,7 @@ export class FormlyForm implements OnInit  {
   }
 
   changeModel(event: FormlyValueChangeEvent) {
-    if (event.field.modelOptions && event.field.modelOptions.debounce && event.field.modelOptions.debounce.default) {
-      setTimeout(() => {
-        this.model[event.field.key] = event.value;
-      }, event.field.modelOptions.debounce.default);
-    } else {
-      this.model[event.field.key] = event.value;
-    }
+    this.model[event.field.key] = event.value;
   }
 
   private registerFormControls(fields) {
