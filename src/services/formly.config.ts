@@ -13,6 +13,10 @@ export class FormlyConfig {
   }
 
   getType(name: string): TypeOption {
+    if (!this.types[name]) {
+      throw new Error(`[Formly Error] There is no type by the name of "${name}"`);
+    }
+
     return this.types[name];
   }
 
@@ -21,6 +25,10 @@ export class FormlyConfig {
   }
 
   getValidator(name: string): ValidatorOption {
+    if (!this.validators[name]) {
+      throw new Error(`[Formly Error] There is no validator by the name of "${name}"`);
+    }
+
     return this.validators[name];
   }
 }
