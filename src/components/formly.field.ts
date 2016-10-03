@@ -8,6 +8,7 @@ import {FormlyConfig} from "../services/formly.config";
 import {Field} from "../templates/field";
 import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
 import {FormlyFieldConfig} from "./formly.field.config";
+import "rxjs/add/operator/debounceTime";
 
 @Component({
   selector: "formly-field",
@@ -83,10 +84,16 @@ export class FormlyField implements DoCheck, OnInit {
 
   private createChildFields() {
     if (this.field && !this.field.template && !this.field.fieldGroup) {
+      let debounce = 0;
+      if (this.field.modelOptions && this.field.modelOptions.debounce && this.field.modelOptions.debounce.default) {
+        debounce = this.field.modelOptions.debounce.default;
+      }
       this.fieldComponentRef = this.createFieldComponent();
-      this.fieldComponentRef.instance.formControl.valueChanges.subscribe((event) => {
-        this.changeModel(new FormlyValueChangeEvent(this.field, event));
-      });
+      this.fieldComponentRef.instance.formControl.valueChanges
+        .debounceTime(debounce)
+        .subscribe((event) => {
+          this.changeModel(new FormlyValueChangeEvent(this.field, event));
+        });
 
       let update = new FormlyEventEmitter();
       update.subscribe((option: any) => {
