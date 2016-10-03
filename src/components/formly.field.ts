@@ -69,13 +69,13 @@ export class FormlyField implements DoCheck, OnInit {
   }
 
   changeModel(event: FormlyValueChangeEvent) {
-    if (this.field.key && this.field.key !== event.key) {
+    if (this.field.key && this.field.key !== event.field.key) {
       if (!this.model) {
         this.model = {};
       }
 
-      this.model[event.key] = event.value;
-      event = new FormlyValueChangeEvent(this.field.key, this.model);
+      this.model[event.field.key] = event.value;
+      event = new FormlyValueChangeEvent(this.field, this.model);
     }
 
     this.modelChange.emit(event);
@@ -85,7 +85,7 @@ export class FormlyField implements DoCheck, OnInit {
     if (this.field && !this.field.template && !this.field.fieldGroup) {
       this.fieldComponentRef = this.createFieldComponent();
       this.fieldComponentRef.instance.formControl.valueChanges.subscribe((event) => {
-        this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
+        this.changeModel(new FormlyValueChangeEvent(this.field, event));
       });
 
       let update = new FormlyEventEmitter();
