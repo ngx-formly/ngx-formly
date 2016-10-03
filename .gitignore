@@ -2,7 +2,6 @@
 bundles
 lib
 node_modules
-typings
 npm-debug.log
 /demo/**/*.js
 /demo/**/*.js.map

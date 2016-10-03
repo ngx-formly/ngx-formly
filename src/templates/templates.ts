@@ -6,6 +6,15 @@ import {FormlyFieldTextArea} from "./formlyfield.textarea";
 import {FormlyFieldMultiCheckbox} from "./formlyfield.multicheckbox";
 import {TypeOption} from "../services/formly.config";
 
+export const FIELD_TYPE_COMPONENTS = [
+  FormlyFieldInput,
+  FormlyFieldCheckbox,
+  FormlyFieldRadio,
+  FormlyFieldSelect,
+  FormlyFieldTextArea,
+  FormlyFieldMultiCheckbox,
+];
+
 export const TemplateDirectives: [TypeOption] = [
   {
     name: "input",

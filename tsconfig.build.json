@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "module": "es2015",
     "target": "es5",
     "moduleResolution": "node",
     "declaration": true,
@@ -8,6 +9,7 @@
     "experimentalDecorators": true,
     "removeComments": true,
     "baseUrl": "src",
+    "outDir": "lib",
     "paths": [],
     "lib": ["dom", "es6"],
     "typeRoots": [
@@ -16,5 +18,9 @@
   },
   "files": [
     "src/index.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  }
 }

@@ -4,7 +4,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {FormlyConfig} from "../services/formly.config";
 import {FormlyModule} from "../core";
 import {FormlyMessages} from "../services/formly.messages";
-import {TemplateDirectives} from "./templates";
+import {TemplateDirectives, FIELD_TYPE_COMPONENTS} from "./templates";
 import {Injectable} from "@angular/core";
 
 @Injectable()
@@ -20,8 +20,8 @@ export class FormlyBootstrap {
 }
 
 @NgModule({
-  declarations: TemplateDirectives.map(type => type.component),
-  entryComponents: TemplateDirectives.map(type => type.component),
+  declarations: FIELD_TYPE_COMPONENTS,
+  entryComponents: FIELD_TYPE_COMPONENTS,
   providers: [
     FormlyBootstrap,
   ],
