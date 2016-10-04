@@ -1,5 +1,5 @@
 import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FormlyModule} from "../core";
 import {TemplateDirectives, FIELD_TYPE_COMPONENTS} from "./templates";
@@ -7,7 +7,7 @@ import {TemplateDirectives, FIELD_TYPE_COMPONENTS} from "./templates";
 @NgModule({
   declarations: FIELD_TYPE_COMPONENTS,
   imports: [
-    BrowserModule,
+    CommonModule,
     ReactiveFormsModule,
     FormlyModule.forRoot({
       types: TemplateDirectives,

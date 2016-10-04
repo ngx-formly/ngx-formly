@@ -1,5 +1,5 @@
 import {NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FormlyForm} from "./components/formly.form";
 import {FormlyField} from "./components/formly.field";
@@ -22,7 +22,7 @@ const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage, FormlyNgFocus
   declarations: FORMLY_DIRECTIVES,
   exports: FORMLY_DIRECTIVES,
   imports: [
-    BrowserModule,
+    CommonModule,
     ReactiveFormsModule
   ]
 })
