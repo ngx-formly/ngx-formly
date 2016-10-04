@@ -2,8 +2,8 @@ import {NgModule, Component} from "@angular/core";
 import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {BrowserModule} from "@angular/platform-browser";
-import {FormlyModule, FormlyMessages, FormlyConfig, FormlyFieldConfig} from "./../src/core";
-import {FormlyBootstrap, FormlyBootstrapModule} from "./../src/templates/formlyBootstrap";
+import {FormlyModule, FormlyFieldConfig} from "./../src/core";
+import {FormlyBootstrapModule} from "./../src/templates/formlyBootstrap";
 import {Field} from "./../src/templates";
 import {ValidationService} from "./validation.service";
 
@@ -36,35 +36,17 @@ export class HelloApp {
   user: any = {};
   private userFields: Array<FormlyFieldConfig> = [];
 
-  constructor(fm: FormlyMessages, fc: FormlyConfig, formlyBootstrap: FormlyBootstrap, protected fb: FormBuilder) {
-
-    if (!this.form) {
-      this.form = this.fb.group({});
-    }
-
-    fm.addStringMessage("required", "This field is required.");
-    fm.addStringMessage("invalidEmailAddress", "Invalid Email Address");
-    fm.addStringMessage("maxlength", "Maximum Length Exceeded.");
-    fm.addStringMessage("minlength", "Should have atleast 2 Characters");
-    fm.addStringMessage("not_matching", "Password Not Matching");
+  constructor(fb: FormBuilder) {
+    this.form = fb.group({});
 
     this.author = {
       name: "Mohammed Zama Khan",
       url: "https://www.github.com/mohammedzamakhan"
     };
     this.env = {
-      angularVersion: "2.0.0-rc.1",
+      angularVersion: "2.0.1",
       formlyVersion: "2.0.0-beta.6"
     };
-    fc.setType({
-      name: "toggle",
-      component: FormlyFieldToggle
-    });
-
-    fc.setValidator({
-      name: "required",
-      validation: Validators.required
-    });
 
       this.userFields = [{
         type: "radio",
@@ -286,13 +268,20 @@ export class HelloApp {
   ],
   imports: [
     BrowserModule,
-    FormlyModule,
+    FormlyModule.forRoot({
+      types: [{ name: "toggle", component: FormlyFieldToggle }],
+      validators: [{ name: "required", validation: Validators.required}],
+      validationMessages: [
+        { name: "required", message: "This field is required." },
+        { name: "invalidEmailAddress", message: "Invalid Email Address" },
+        { name: "maxlength", message: "Maximum Length Exceeded." },
+        { name: "minlength", message: "Should have atleast 2 Characters" },
+        { name: "not_matching", message: "Password Not Matching" },
+      ]
+    }),
     FormlyBootstrapModule,
     FormsModule,
     ReactiveFormsModule,
-  ],
-  entryComponents: [
-    FormlyFieldToggle,
   ],
   bootstrap: [HelloApp]
 })

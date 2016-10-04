@@ -5,6 +5,4 @@ export {FormlyFieldRadio} from "./templates/formlyfield.radio";
 export {FormlyFieldTextArea} from "./templates/formlyfield.textarea";
 export {FormlyFieldSelect} from "./templates/formlyfield.select";
 export {Field} from "./templates/field";
-export {TemplateDirectives} from "./templates/templates";
-export {FormlyBootstrap} from "./templates/formlyBootstrap";
 export {SingleFocusDispatcher} from "./services/formly.single.focus.dispatcher"
