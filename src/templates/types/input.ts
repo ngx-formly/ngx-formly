@@ -1,8 +1,8 @@
-import {Component} from "@angular/core";
-import {Field} from "./../field";
+import {Component} from '@angular/core';
+import {Field} from './../field';
 
 @Component({
-  selector: "formly-field-input",
+  selector: 'formly-field-input',
   template: `
     <input [type]="templateOptions.type" [formControl]="formControl" class="form-control" id="{{key}}"
       [placeholder]="templateOptions.placeholder"

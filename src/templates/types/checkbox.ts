@@ -1,10 +1,10 @@
-import {Component} from "@angular/core";
-import {FormControl, AbstractControl} from "@angular/forms";
-import {Field} from "./../field";
-import {FormlyFieldConfig} from "../../components/formly.field.config";
+import {Component} from '@angular/core';
+import {FormControl, AbstractControl} from '@angular/forms';
+import {Field} from './../field';
+import {FormlyFieldConfig} from '../../components/formly.field.config';
 
 @Component({
-  selector: "formly-field-checkbox",
+  selector: 'formly-field-checkbox',
   template: `
     <label class="custom-control custom-checkbox">
       <input type="checkbox" [formControl]="formControl"

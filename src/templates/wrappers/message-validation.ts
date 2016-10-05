@@ -1,8 +1,8 @@
-import {Component, ViewChild, ViewContainerRef} from "@angular/core";
-import {FieldWrapper} from "../field.wrapper";
+import {Component, ViewChild, ViewContainerRef} from '@angular/core';
+import {FieldWrapper} from '../field.wrapper';
 
 @Component({
-  selector: "formly-wrapper-validation-messages",
+  selector: 'formly-wrapper-validation-messages',
   template: `
     <template #fieldComponent></template>
     <div>

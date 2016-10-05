@@ -1,17 +1,17 @@
 import {
   Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck,
   ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver
-} from "@angular/core";
-import {FormGroup} from "@angular/forms";
-import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from "../services/formly.event.emitter";
-import {FormlyConfig} from "../services/formly.config";
-import {Field} from "../templates/field";
-import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from "../services/formly.field.delegates";
-import {FormlyFieldConfig} from "./formly.field.config";
-import "rxjs/add/operator/debounceTime";
+} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from '../services/formly.event.emitter';
+import {FormlyConfig} from '../services/formly.config';
+import {Field} from '../templates/field';
+import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from '../services/formly.field.delegates';
+import {FormlyFieldConfig} from './formly.field.config';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
-  selector: "formly-field",
+  selector: 'formly-field',
   template: `
     <template #fieldComponent></template>
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
@@ -34,19 +34,19 @@ export class FormlyField implements DoCheck, OnInit {
   get hide() { return this._hide; }
   set hide(value: boolean) {
     this._hide = value;
-    this.renderer.setElementStyle(this.elementRef.nativeElement, "display", value ? "none" : "");
+    this.renderer.setElementStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
     if (this.field.fieldGroup) {
       for (let i = 0; i < this.field.fieldGroup.length; i++) {
-        this.psEmit(this.field.fieldGroup[i].key, "hidden", this._hide);
+        this.psEmit(this.field.fieldGroup[i].key, 'hidden', this._hide);
       }
     } else {
-      this.psEmit(this.field.key, "hidden", this._hide);
+      this.psEmit(this.field.key, 'hidden', this._hide);
     }
   }
 
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild("fieldComponent", {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
+  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
   private visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
   private expressionDelegate = new FormlyFieldExpressionDelegate(this);
   private _hide;
