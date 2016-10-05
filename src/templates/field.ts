@@ -4,10 +4,12 @@ import {FormlyTemplateOptions, FormlyFieldConfig} from "../components/formly.fie
 
 export abstract class Field {
   @Input() form: FormGroup;
-  @Input() templateOptions: FormlyTemplateOptions;
-  @Input() key: string;
   @Input() field: FormlyFieldConfig;
   @Input() formModel: any;
   @Input() model: any;
-  @Input() formControl: AbstractControl;
+
+  get key() { return this.field.key; }
+  get formControl(): AbstractControl { return this.form.get(this.key); }
+  get templateOptions(): FormlyTemplateOptions { return this.field.templateOptions; }
+  get valid() { return this.formControl.touched && !this.formControl.valid; }
 }

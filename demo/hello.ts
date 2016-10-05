@@ -2,9 +2,7 @@ import {NgModule, Component} from "@angular/core";
 import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {BrowserModule} from "@angular/platform-browser";
-import {FormlyModule, FormlyFieldConfig} from "./../src/core";
-import {FormlyBootstrapModule} from "./../src/templates/formlyBootstrap";
-import {Field} from "./../src/templates";
+import {FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field} from "./../src/index";
 import {ValidationService} from "./validation.service";
 
 // Custom Input Field type 'toggle' Component Definition

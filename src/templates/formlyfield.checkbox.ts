@@ -6,18 +6,15 @@ import {FormlyFieldConfig} from "../components/formly.field.config";
 @Component({
   selector: "formly-field-checkbox",
   template: `
-    <div class="form-group">
-      <div [formGroup]="form" class="checkbox">
-        <label class="custom-control custom-checkbox">
-          <input type="checkbox" [formControlName]="key"
-            *ngIf="!templateOptions.hidden" value="on"
-            class="custom-control-input">
-            {{templateOptions.label}}
-            <span class="custom-control-indicator"></span>
-          </label>
-      </div>
-      <small class="text-muted">{{templateOptions.description}}</small>
-    </div>
+  <div>
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" [formControl]="formControl"
+        *ngIf="!templateOptions.hidden" value="on"
+        class="custom-control-input">
+        {{templateOptions.label}}
+        <span class="custom-control-indicator"></span>
+    </label>
+  </div>
   `,
 })
 export class FormlyFieldCheckbox extends Field {
