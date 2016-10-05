@@ -5,7 +5,9 @@ import {FieldWrapper} from "../field.wrapper";
   selector: "formly-wrapper-validation-messages",
   template: `
     <template #fieldComponent></template>
-    <small class="text-muted text-danger" *ngIf="valid"><formly-message [form]="form" [controlName]="key"></formly-message></small>
+    <div>
+      <small class="text-muted text-danger" *ngIf="valid"><formly-message [form]="form" [controlName]="key"></formly-message></small>
+    </div>
   `,
 })
 export class FormlyWrapperValidationMessages extends FieldWrapper {

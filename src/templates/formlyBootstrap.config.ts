@@ -6,13 +6,13 @@ import {
   FormlyFieldSelect,
   FormlyFieldTextArea,
   FormlyFieldMultiCheckbox,
-} from "./types";
+} from "./types/types";
 import {
   FormlyWrapperLabel,
   FormlyWrapperDescription,
   FormlyWrapperValidationMessages,
   FormlyWrapperFieldset,
-} from "./wrappers/index";
+} from "./wrappers/wrappers";
 
 export const FIELD_TYPE_COMPONENTS = [
   // types

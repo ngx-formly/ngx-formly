@@ -1,5 +1,5 @@
-export * from "./templates/types";
-export * from "./templates/wrappers/index";
+export * from "./templates/types/types";
+export * from "./templates/wrappers/wrappers";
 export {FormlyBootstrapModule} from "./templates/formlyBootstrap";
 export {Field} from "./templates/field";
 export {FieldWrapper} from "./templates/field.wrapper";

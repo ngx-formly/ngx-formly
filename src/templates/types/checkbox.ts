@@ -1,12 +1,11 @@
 import {Component} from "@angular/core";
 import {FormControl, AbstractControl} from "@angular/forms";
-import {Field} from "./field";
-import {FormlyFieldConfig} from "../components/formly.field.config";
+import {Field} from "./../field";
+import {FormlyFieldConfig} from "../../components/formly.field.config";
 
 @Component({
   selector: "formly-field-checkbox",
   template: `
-  <div>
     <label class="custom-control custom-checkbox">
       <input type="checkbox" [formControl]="formControl"
         *ngIf="!templateOptions.hidden" value="on"
@@ -14,7 +13,6 @@ import {FormlyFieldConfig} from "../components/formly.field.config";
         {{templateOptions.label}}
         <span class="custom-control-indicator"></span>
     </label>
-  </div>
   `,
 })
 export class FormlyFieldCheckbox extends Field {

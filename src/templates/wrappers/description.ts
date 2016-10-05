@@ -5,7 +5,9 @@ import {FieldWrapper} from "../field.wrapper";
   selector: "formly-wrapper-description",
   template: `
     <template #fieldComponent></template>
-    <small class="text-muted">{{templateOptions.description}}</small>
+    <div>
+      <small class="text-muted">{{templateOptions.description}}</small>
+    </div>
   `,
 })
 export class FormlyWrapperDescription extends FieldWrapper {

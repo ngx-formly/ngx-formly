@@ -1,8 +1,8 @@
 
 import {Component} from "@angular/core";
 import {FormGroup, FormControl, AbstractControl} from "@angular/forms";
-import {Field} from "./field";
-import {FormlyFieldConfig} from "../components/formly.field.config";
+import {Field} from "./../field";
+import {FormlyFieldConfig} from "../../components/formly.field.config";
 
 @Component({
   selector: "formly-field-multicheckbox",
