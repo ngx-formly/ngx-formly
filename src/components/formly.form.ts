@@ -48,7 +48,7 @@ export class FormlyForm implements OnInit  {
   private registerFormControls(fields) {
     fields.map(field => {
       if (field.key && field.type) {
-        let componenType: any = this.formlyConfig.getType(field.type).component;
+        let componentType: any = this.formlyConfig.getType(field.type).component;
         if (Array.isArray(field.validation)) {
           let validators = [];
           field.validation.map((validate) => {
@@ -57,8 +57,8 @@ export class FormlyForm implements OnInit  {
           field.validation = Validators.compose(validators);
         }
 
-        if (componenType.createControl) {
-          this.form.addControl(field.key, componenType.createControl(this.model[field.key] || '', field));
+        if (componentType.createControl) {
+          this.form.addControl(field.key, componentType.createControl(this.model[field.key] || '', field));
         } else {
           this.form.addControl(field.key, new FormControl({ value: this.model[field.key] || '', disabled: field.templateOptions.disabled }, field.validation));
         }

@@ -34,6 +34,10 @@ export class FormlyConfig {
       throw new Error(`[Formly Error] There is no type by the name of "${name}"`);
     }
 
+    if (!this.types[name].component && this.types[name].extends) {
+      this.types[name].component = this.getType(this.types[name].extends).component;
+    }
+
     return this.types[name];
   }
 
@@ -64,8 +68,9 @@ export class FormlyConfig {
 
 export interface TypeOption {
   name: string;
-  component: any;
+  component?: any;
   wrappers?: [string];
+  extends?: string;
 }
 
 export interface WrapperOption {
