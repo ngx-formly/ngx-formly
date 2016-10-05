@@ -2,19 +2,25 @@ import {NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS} from "@angu
 import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FormlyForm} from "./components/formly.form";
+import {FormlyFieldConfig} from "./components/formly.field.config";
 import {FormlyField} from "./components/formly.field";
 import {FormlyNgFocus} from "./components/formly.field.focus";
 import {FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN} from "./services/formly.config";
 import {FormlyMessage, FormlyMessages} from "./services/formly.messages";
-import {FormlyPubSub} from "./services/formly.event.emitter";
+import {FormlyPubSub, FormlyEventEmitter} from "./services/formly.event.emitter";
+import {FormlyFieldVisibilityDelegate} from "./services/formly.field.delegates";
 
-export {FormlyField} from "./components/formly.field";
-export {FormlyFieldConfig} from "./components/formly.field.config";
-export {FormlyForm} from "./components/formly.form";
-export {FormlyConfig} from "./services/formly.config";
-export {FormlyPubSub, FormlyEventEmitter} from "./services/formly.event.emitter";
-export {FormlyMessage, FormlyMessages} from "./services/formly.messages";
-export {FormlyFieldVisibilityDelegate} from "./services/formly.field.delegates";
+export {
+  FormlyField,
+  FormlyFieldConfig,
+  FormlyForm,
+  FormlyConfig,
+  FormlyPubSub,
+  FormlyMessage,
+  FormlyMessages,
+  FormlyFieldVisibilityDelegate,
+  FormlyEventEmitter,
+};
 
 const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage, FormlyNgFocus];
 

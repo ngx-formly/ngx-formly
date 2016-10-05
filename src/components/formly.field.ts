@@ -47,7 +47,6 @@ export class FormlyField implements DoCheck, OnInit {
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild("fieldComponent", {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
-  private fieldComponentRef: ComponentRef<Field>;
   private visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
   private expressionDelegate = new FormlyFieldExpressionDelegate(this);
   private _hide;
@@ -88,8 +87,8 @@ export class FormlyField implements DoCheck, OnInit {
       if (this.field.modelOptions && this.field.modelOptions.debounce && this.field.modelOptions.debounce.default) {
         debounce = this.field.modelOptions.debounce.default;
       }
-      this.fieldComponentRef = this.createFieldComponent();
-      this.fieldComponentRef.instance.formControl.valueChanges
+      let fieldComponentRef = this.createFieldComponent();
+      fieldComponentRef.instance.formControl.valueChanges
         .debounceTime(debounce)
         .subscribe((event) => {
           this.changeModel(new FormlyValueChangeEvent(this.field, event));
@@ -109,16 +108,25 @@ export class FormlyField implements DoCheck, OnInit {
     this.hide = this.field.hideExpression ? true : false;
 
     let type = this.formlyConfig.getType(this.field.type);
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(type.component);
-    let ref = <ComponentRef<Field>>this.fieldComponent.createComponent(componentFactory);
+    let fieldComponent = this.fieldComponent;
+    if (type.wrappers) {
+      type.wrappers.map(wrapperName => {
+        let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
+        fieldComponent = wrapperRef.instance.fieldComponent;
+      });
+    }
+
+    return this.createComponent(fieldComponent, type.component);
+  }
+
+  private createComponent(fieldComponent, component): ComponentRef<any> {
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    let ref = <ComponentRef<Field>>fieldComponent.createComponent(componentFactory);
     Object.assign(ref.instance, {
         model: this.model,
-        templateOptions: this.field.templateOptions,
-        key: this.field.key,
         form: this.form,
         field: this.field,
         formModel: this.formModel,
-        formControl: this.form.get(this.field.key),
     });
 
     return ref;
