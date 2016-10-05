@@ -1,8 +1,8 @@
-import {Component, ViewChild, ViewContainerRef} from "@angular/core";
-import {FieldWrapper} from "../field.wrapper";
+import {Component, ViewChild, ViewContainerRef} from '@angular/core';
+import {FieldWrapper} from '../field.wrapper';
 
 @Component({
-  selector: "formly-wrapper-fieldset",
+  selector: 'formly-wrapper-fieldset',
   template: `
     <div class="form-group" [ngClass]="{'has-danger': valid}">
       <template #fieldComponent></template>

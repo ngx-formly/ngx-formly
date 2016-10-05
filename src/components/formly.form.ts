@@ -1,11 +1,11 @@
-import {Component, OnInit, Input} from "@angular/core";
-import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
-import {FormlyValueChangeEvent} from "./../services/formly.event.emitter";
-import {FormlyFieldConfig} from "./formly.field.config";
-import {FormlyConfig} from "../services/formly.config";
+import {Component, OnInit, Input} from '@angular/core';
+import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormlyValueChangeEvent} from './../services/formly.event.emitter';
+import {FormlyFieldConfig} from './formly.field.config';
+import {FormlyConfig} from '../services/formly.config';
 
 @Component({
-  selector: "formly-form",
+  selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields"
       [hide]="field.hideExpression" [model]="field.key?model[field.key]:model"
@@ -58,9 +58,9 @@ export class FormlyForm implements OnInit  {
         }
 
         if (componenType.createControl) {
-          this.form.addControl(field.key, componenType.createControl(this.model[field.key] || "", field));
+          this.form.addControl(field.key, componenType.createControl(this.model[field.key] || '', field));
         } else {
-          this.form.addControl(field.key, new FormControl({ value: this.model[field.key] || "", disabled: field.templateOptions.disabled }, field.validation));
+          this.form.addControl(field.key, new FormControl({ value: this.model[field.key] || '', disabled: field.templateOptions.disabled }, field.validation));
         }
       }
 

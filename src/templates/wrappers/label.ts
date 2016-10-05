@@ -1,8 +1,8 @@
-import {Component, ViewChild, ViewContainerRef} from "@angular/core";
-import {FieldWrapper} from "../field.wrapper";
+import {Component, ViewChild, ViewContainerRef} from '@angular/core';
+import {FieldWrapper} from '../field.wrapper';
 
 @Component({
-  selector: "formly-wrapper-label",
+  selector: 'formly-wrapper-label',
   template: `
     <div>
       <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>

@@ -1,5 +1,5 @@
-import {Subject} from "rxjs/Subject";
-import {FormlyFieldConfig} from "./../components/formly.field.config";
+import {Subject} from 'rxjs/Subject';
+import {FormlyFieldConfig} from './../components/formly.field.config';
 
 export class FormlyValueChangeEvent {
   constructor(public field: FormlyFieldConfig, public value: any) {}

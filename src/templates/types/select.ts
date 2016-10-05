@@ -1,8 +1,8 @@
-import {Component} from "@angular/core";
-import {Field} from "./../field";
+import {Component} from '@angular/core';
+import {Field} from './../field';
 
 @Component({
-  selector: "formly-field-select",
+  selector: 'formly-field-select',
   template: `
     <select [id]="key" [formControl]="formControl" class="form-control" [formlyNgFocus]="templateOptions.focus">
       <option value="" *ngIf="templateOptions.placeholder">{{templateOptions.placeholder}}</option>

@@ -1,4 +1,4 @@
-import {ConfigOption} from "../services/formly.config";
+import {ConfigOption} from '../services/formly.config';
 import {
   FormlyFieldInput,
   FormlyFieldCheckbox,
@@ -6,13 +6,13 @@ import {
   FormlyFieldSelect,
   FormlyFieldTextArea,
   FormlyFieldMultiCheckbox,
-} from "./types/types";
+} from './types/types';
 import {
   FormlyWrapperLabel,
   FormlyWrapperDescription,
   FormlyWrapperValidationMessages,
   FormlyWrapperFieldset,
-} from "./wrappers/wrappers";
+} from './wrappers/wrappers';
 
 export const FIELD_TYPE_COMPONENTS = [
   // types
@@ -33,46 +33,46 @@ export const FIELD_TYPE_COMPONENTS = [
 export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
   types: [
     {
-      name: "input",
+      name: 'input',
       component: FormlyFieldInput,
-      wrappers: ["fieldset", "label", "description", "validation-message"],
+      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
     },
     {
-      name: "checkbox",
+      name: 'checkbox',
       component: FormlyFieldCheckbox,
-      wrappers: ["fieldset", "description", "validation-message"],
+      wrappers: ['fieldset', 'description', 'validation-message'],
     },
     {
-      name: "radio",
+      name: 'radio',
       component: FormlyFieldRadio,
-      wrappers: ["fieldset", "label", "description", "validation-message"],
+      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
     },
     {
-      name: "select",
+      name: 'select',
       component: FormlyFieldSelect,
-      wrappers: ["fieldset", "label", "description", "validation-message"],
+      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
     },
     {
-      name: "textarea",
+      name: 'textarea',
       component: FormlyFieldTextArea,
-      wrappers: ["fieldset", "label", "description", "validation-message"],
+      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
     },
     {
-      name: "multicheckbox",
+      name: 'multicheckbox',
       component: FormlyFieldMultiCheckbox,
-      wrappers: ["fieldset", "label", "description", "validation-message"],
+      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
     }
   ],
   wrappers: [
-    {name: "label", component: FormlyWrapperLabel},
-    {name: "description", component: FormlyWrapperDescription},
-    {name: "validation-message", component: FormlyWrapperValidationMessages},
-    {name: "fieldset", component: FormlyWrapperFieldset},
+    {name: 'label', component: FormlyWrapperLabel},
+    {name: 'description', component: FormlyWrapperDescription},
+    {name: 'validation-message', component: FormlyWrapperValidationMessages},
+    {name: 'fieldset', component: FormlyWrapperFieldset},
   ],
   validationMessages: [
-    {name: "required", message: "This field is required."},
-    {name: "invalidEmailAddress", message: "Invalid Email Address"},
-    {name: "maxlength", message: "Maximum Length Exceeded."},
-    {name: "minlength", message: "Should have atleast 2 Characters"},
+    {name: 'required', message: 'This field is required.'},
+    {name: 'invalidEmailAddress', message: 'Invalid Email Address'},
+    {name: 'maxlength', message: 'Maximum Length Exceeded.'},
+    {name: 'minlength', message: 'Should have atleast 2 Characters'},
   ],
 };

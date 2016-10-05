@@ -1,11 +1,11 @@
 
-import {Component} from "@angular/core";
-import {FormGroup, FormControl, AbstractControl} from "@angular/forms";
-import {Field} from "./../field";
-import {FormlyFieldConfig} from "../../components/formly.field.config";
+import {Component} from '@angular/core';
+import {FormGroup, FormControl, AbstractControl} from '@angular/forms';
+import {Field} from './../field';
+import {FormlyFieldConfig} from '../../components/formly.field.config';
 
 @Component({
-  selector: "formly-field-multicheckbox",
+  selector: 'formly-field-multicheckbox',
   template: `
     <div *ngFor="let option of templateOptions.options" class="checkbox">
         <label class="custom-control custom-checkbox">
