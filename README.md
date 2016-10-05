@@ -71,7 +71,7 @@ this.user = {
 - add the script to the HTML file (if necessary)
 ```html
 <!-- index.html -->
-<script src="node_modules/ng2-formly/bundles/ng2-formly.min.js"></script>
+<script src="node_modules/ng2-formly/bundles/ng2-formly.umd.min.js"></script>
 
 ```
 

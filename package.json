@@ -6,7 +6,7 @@
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
-  "main": "bundles/ng2-formly.js",
+  "main": "bundles/ng2-formly.umd.js",
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
@@ -22,8 +22,8 @@
     "build:lib": "npm run flow.compile:ngc -- --project tsconfig.build.json",
     "prebuild:bundles": "shx rm -rf ./bundles",
     "build:bundles": "npm run build:bundles:compile && npm run build:bundles:minify",
-    "build:bundles:compile": "node ./.config/bundle-system.js",
-    "build:bundles:minify": "uglifyjs bundles/ng2-formly.js --output bundles/ng2-formly.min.js --in-source-map bundles/ng2-formly.js.map --source-map bundles/ng2-formly.min.js.map"
+    "build:bundles:compile": "node ./node_modules/.bin/webpack --config .config/webpack.build.js",
+    "build:bundles:minify": "uglifyjs bundles/ng2-formly.umd.js --output bundles/ng2-formly.umd.min.js --in-source-map bundles/ng2-formly.umd.js.map --source-map bundles/ng2-formly.umd.min.js.map"
   },
   "keywords": [
     "angular",
@@ -51,6 +51,7 @@
     "@angular/platform-browser-dynamic": "^2.0.1",
     "@types/jasmine": "^2.2.34",
     "async": "^1.5.2",
+    "awesome-typescript-loader": "^2.2.4",
     "codelyzer": "0.0.28",
     "commitizen": "^2.7.6",
     "connect": "^3.4.0",
@@ -76,7 +77,8 @@
     "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",
     "typescript": "^2.0.3",
-    "uglify-js": "^2.6.2"
+    "uglify-js": "^2.6.2",
+    "webpack": "^1.13.2"
   },
   "dependencies": {
     "@angular/common": "^2.0.1",
