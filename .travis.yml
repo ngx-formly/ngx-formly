@@ -9,7 +9,7 @@ before_install:
 - npm install -g npm@latest
 
 before_script:
- - chmod +x .config/bundle-system.js
+ - chmod +x .config/webpack.build.js
 
 script:
 - npm run flow.compile
