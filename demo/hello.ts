@@ -1,8 +1,8 @@
-import {NgModule, Component} from '@angular/core';
+import {NgModule, Component, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup} from '@angular/forms';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field} from './../src/index';
+import {FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field, FieldWrapper} from './../src/index';
 import {ValidationService} from './validation.service';
 
 // Custom Input Field type 'toggle' Component Definition
@@ -20,6 +20,19 @@ import {ValidationService} from './validation.service';
   `,
 })
 export class FormlyFieldToggle extends Field {
+}
+
+@Component({
+  selector: 'formly-wrapper-horizontal',
+  template: `
+    <label attr.for="{{key}}" class="col-sm-4 form-control-label">{{templateOptions.label}}</label>
+    <div class="col-sm-8">
+      <template #fieldComponent></template>
+    </div>
+  `,
+})
+export class FormlyWrapperHorizontalLabel extends FieldWrapper {
+  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 }
 
 @Component({
@@ -175,7 +188,7 @@ export class HelloApp {
         }
       }, {
         key: 'otherInterest',
-        type: 'textarea',
+        type: 'horizontalInput',
         hideExpression: '!model.interest.others',
         templateOptions: {
           rows: 5,
@@ -262,12 +275,14 @@ export class HelloApp {
 
 @NgModule({
   declarations: [
-    HelloApp, FormlyFieldToggle
+    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel
   ],
   imports: [
     BrowserModule,
     FormlyModule.forRoot({
-      types: [{ name: 'toggle', component: FormlyFieldToggle }],
+      types: [
+        { name: 'toggle', component: FormlyFieldToggle },
+        { name: 'horizontalInput', extends: 'input', wrappers: ['formly-wrapper-horizontal']}],
       validators: [{ name: 'required', validation: Validators.required}],
       validationMessages: [
         { name: 'required', message: 'This field is required.' },
@@ -275,6 +290,9 @@ export class HelloApp {
         { name: 'maxlength', message: 'Maximum Length Exceeded.' },
         { name: 'minlength', message: 'Should have atleast 2 Characters' },
         { name: 'not_matching', message: 'Password Not Matching' },
+      ],
+      wrappers: [
+        { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel }
       ]
     }),
     FormlyBootstrapModule,
