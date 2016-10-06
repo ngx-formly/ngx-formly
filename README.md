@@ -112,7 +112,37 @@ export class HelloApp {
     }
 }
 
-bootstrap(HelloApp, [FormlyProviders]);
+@NgModule({
+  declarations: [
+    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel
+  ],
+  imports: [
+    BrowserModule,
+    FormlyModule.forRoot({
+      types: [
+        { name: 'horizontalInput', extends: 'input', wrappers: ['formly-wrapper-horizontal']}],
+      validators: [{ name: 'required', validation: Validators.required}],
+      validationMessages: [
+        { name: 'required', message: 'This field is required.' },
+        { name: 'invalidEmailAddress', message: 'Invalid Email Address' },
+        { name: 'maxlength', message: 'Maximum Length Exceeded.' },
+        { name: 'minlength', message: 'Should have atleast 2 Characters' },
+        { name: 'not_matching', message: 'Password Not Matching' },
+      ],
+      wrappers: [
+        { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel }
+      ]
+    }),
+    FormlyBootstrapModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  bootstrap: [HelloApp]
+})
+export class FormlyDemoModule {
+}
+
+platformBrowserDynamic().bootstrapModule(FormlyDemoModule);
 ```
 From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
 
