@@ -79,37 +79,36 @@ this.user = {
 
 ```ts
 import {Component} from '@angular/core';
-import {bootstrap} from '@angular/platform/browser';
-import {FormlyForm, FormlyConfig, FormlyMessages, TemplateDirectives, FormlyProviders} from 'ng2-formly'
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormlyFieldConfig} from "ng2-formly";
 
 @Component({
-    selector: 'hello-app',
-    template: `
+  selector: 'app-root',
+  template: `
         <h1>Hello, {{name}}!</h1>
         Say hello to: <input [value]="name" (input)="name = $event.target.value">
         <formly-form [model]="user" [fields]="userFields"></formly-form>
     `,
-    directives: [FormlyForm],
-    providers: [FormlyConfig, FormlyMessages]
 })
 export class HelloApp {
-    name: string = 'World';
-    user = {};
-    userFields;
-    constructor(fc: FormlyConfig) {
-        ['input', 'checkbox'].forEach((field) => {
-            fc.setType({
-                name: field,
-                component: TemplateDirectives[field]
-            })
-        });
 
-        this.userFields = [{
-            key: 'nameOfPerson',
-            type: 'input',
-            templateOptions: {}
-        }]
-    }
+  form: FormGroup;
+  userFields: FormlyFieldConfig[];
+  user: any = {}
+
+  constructor(fb: FormBuilder) {
+    this.form = fb.group({});
+
+    this.userFields = [{
+      key: 'nameOfPerson',
+      type: 'input',
+      templateOptions: {
+        label: "Say hello to",
+        placeholder: "Name of the person"
+      }
+
+    }]
+  }
 }
 
 @NgModule({
@@ -119,19 +118,6 @@ export class HelloApp {
   imports: [
     BrowserModule,
     FormlyModule.forRoot({
-      types: [
-        { name: 'horizontalInput', extends: 'input', wrappers: ['formly-wrapper-horizontal']}],
-      validators: [{ name: 'required', validation: Validators.required}],
-      validationMessages: [
-        { name: 'required', message: 'This field is required.' },
-        { name: 'invalidEmailAddress', message: 'Invalid Email Address' },
-        { name: 'maxlength', message: 'Maximum Length Exceeded.' },
-        { name: 'minlength', message: 'Should have atleast 2 Characters' },
-        { name: 'not_matching', message: 'Password Not Matching' },
-      ],
-      wrappers: [
-        { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel }
-      ]
     }),
     FormlyBootstrapModule,
     FormsModule,
