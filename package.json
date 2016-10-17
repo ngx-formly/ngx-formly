@@ -45,10 +45,20 @@
     "url": "https://github.com/formly-js/angular2-formly/issues"
   },
   "homepage": "https://github.com/formly-js/angular2-formly#readme",
+  "peerDependencies": {
+    "@angular/forms": "^2.0.0"
+  },
   "devDependencies": {
-    "@angular/compiler-cli": "^0.6.3",
-    "@angular/platform-browser": "^2.0.1",
-    "@angular/platform-browser-dynamic": "^2.0.1",
+    "@angular/common": "^2.1.0",
+    "@angular/compiler": "^2.1.0",
+    "@angular/core": "^2.1.0",
+    "@angular/compiler-cli": "^2.1.0",
+    "@angular/platform-browser": "^2.1.0",
+    "@angular/platform-browser-dynamic": "^2.1.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.0.0-rc.1",
+    "systemjs": "^0.19.39",
+    "zone.js": "^0.6.25",
     "@types/jasmine": "^2.2.34",
     "async": "^1.5.2",
     "awesome-typescript-loader": "^2.2.4",
@@ -74,21 +84,10 @@
     "serve-static": "^1.10.0",
     "shx": "^0.1.2",
     "systemjs-builder": "^0.15.32",
-    "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",
     "typescript": "^2.0.3",
     "uglify-js": "^2.6.2",
     "webpack": "^1.13.2"
-  },
-  "dependencies": {
-    "@angular/common": "^2.0.1",
-    "@angular/compiler": "^2.0.1",
-    "@angular/core": "^2.0.1",
-    "@angular/forms": "^2.0.1",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.0.0-beta.11",
-    "systemjs": "^0.19.39",
-    "zone.js": "^0.6.25"
   },
   "config": {
     "commitizen": {
