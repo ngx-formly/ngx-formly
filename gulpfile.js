@@ -45,23 +45,4 @@ gulp.task("tslint", function() {
     .pipe(tslint.report("verbose"));
 });
 
-gulp.task('play', ['ts2js'], function () {
-  var http = require('http');
-  var connect = require('connect');
-  var serveStatic = require('serve-static');
-  var open = require('open');
-
-  var port = 9000, app;
-
-  livereload.listen({quiet: true});
-
-  gulp.watch(PATHS.src, ['ts2js']);
-  gulp.watch(PATHS.demo, ['ts2js']);
-
-  app = connect().use(serveStatic(__dirname));
-  http.createServer(app).listen(port, function () {
-    open('http://localhost:' + port + '/demo');
-  });
-});
-
-gulp.task('default', ['play']);
+gulp.task('default', ['test']);

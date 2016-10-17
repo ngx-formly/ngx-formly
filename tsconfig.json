@@ -15,11 +15,15 @@
       "./node_modules/@types"
     ]
   },
+  "awesomeTypescriptLoaderOptions": {
+    "useWebpackText": true
+  },
   "exclude": [
     "node_modules"
   ],
   "files": [
     "src/index.ts",
     "./demo/hello.ts"
-  ]
+  ],
+  "compileOnSave": false
 }
