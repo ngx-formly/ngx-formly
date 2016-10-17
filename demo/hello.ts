@@ -1,3 +1,8 @@
+// polyfills
+import 'core-js/es6';
+import 'core-js/es7/reflect';
+import 'zone.js/dist/zone';
+
 import {NgModule, Component, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup} from '@angular/forms';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
@@ -37,7 +42,7 @@ export class FormlyWrapperHorizontalLabel extends FieldWrapper {
 
 @Component({
   selector: 'formly-demo-hello-app',
-  templateUrl: '../demo/template.html',
+  templateUrl: './template.html',
 })
 export class HelloApp {
   form: FormGroup;

@@ -23,7 +23,8 @@
     "prebuild:bundles": "shx rm -rf ./bundles",
     "build:bundles": "npm run build:bundles:compile && npm run build:bundles:minify",
     "build:bundles:compile": "node ./node_modules/.bin/webpack --config .config/webpack.build.js",
-    "build:bundles:minify": "uglifyjs bundles/ng2-formly.umd.js --output bundles/ng2-formly.umd.min.js --in-source-map bundles/ng2-formly.umd.js.map --source-map bundles/ng2-formly.umd.min.js.map"
+    "build:bundles:minify": "uglifyjs bundles/ng2-formly.umd.js --output bundles/ng2-formly.umd.min.js --in-source-map bundles/ng2-formly.umd.js.map --source-map bundles/ng2-formly.umd.min.js.map",
+    "demo": "NODE_ENV=dev node node_modules/.bin/webpack-dashboard --title ng2-formly-demo -- node_modules/.bin/webpack-dev-server --quiet --port 9000 --content-base demo --config .config/webpack.demo.js --open"
   },
   "keywords": [
     "angular",
@@ -51,20 +52,17 @@
   "devDependencies": {
     "@angular/common": "^2.1.0",
     "@angular/compiler": "^2.1.0",
-    "@angular/core": "^2.1.0",
     "@angular/compiler-cli": "^2.1.0",
+    "@angular/core": "^2.1.0",
     "@angular/platform-browser": "^2.1.0",
     "@angular/platform-browser-dynamic": "^2.1.0",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.0.0-rc.1",
-    "systemjs": "^0.19.39",
-    "zone.js": "^0.6.25",
     "@types/jasmine": "^2.2.34",
+    "angular2-template-loader": "^0.5.0",
     "async": "^1.5.2",
     "awesome-typescript-loader": "^2.2.4",
     "codelyzer": "0.0.28",
     "commitizen": "^2.7.6",
-    "connect": "^3.4.0",
+    "core-js": "^2.4.1",
     "cz-conventional-changelog": "^1.1.5",
     "del": "^2.2.0",
     "del-cli": "^0.2.0",
@@ -79,15 +77,19 @@
     "karma-jasmine": "^0.3.8",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-typescript-preprocessor": "^0.1.2",
-    "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
-    "serve-static": "^1.10.0",
+    "raw-loader": "^0.5.1",
+    "rxjs": "^5.0.0-rc.1",
     "shx": "^0.1.2",
+    "systemjs": "^0.19.39",
     "systemjs-builder": "^0.15.32",
     "tslint": "^3.7.4",
     "typescript": "^2.0.3",
     "uglify-js": "^2.6.2",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-dashboard": "^0.2.0",
+    "webpack-dev-server": "^1.16.2",
+    "zone.js": "^0.6.25"
   },
   "config": {
     "commitizen": {
