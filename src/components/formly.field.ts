@@ -19,7 +19,7 @@ import 'rxjs/add/operator/debounceTime';
     <formly-field *ngFor="let f of field.fieldGroup"
       [hide]="f.hideExpression"
       [model]="model?(f.key ? model[f.key]: model):''"
-      [form]="form" [field]="f" [formModel]="formModel"
+      [form]="field.key?form.get(field.key):form" [field]="f" [formModel]="formModel"
       (modelChange)="changeModel($event)"
       [ngClass]="f.className">
     </formly-field>
@@ -69,7 +69,7 @@ export class FormlyField implements DoCheck, OnInit {
   }
 
   changeModel(event: FormlyValueChangeEvent) {
-    if (this.field.key && this.field.key !== event.field.key) {
+    if (this.field.fieldGroup && this.field.key) {
       if (!this.model) {
         this.model = {};
       }
