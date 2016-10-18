@@ -232,6 +232,9 @@ export class HelloApp {
         select: 'male',
         title: 'mr',
         toggleVal: true,
+        address: {
+          street: '604 Causley Eve'
+        },
         interest: {
           movies: false,
           sports: false,
