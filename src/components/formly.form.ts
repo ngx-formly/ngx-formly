@@ -48,6 +48,11 @@ export class FormlyForm implements OnInit  {
   private registerFormControls(fields, form) {
     fields.map(field => {
       if (field.key && field.type) {
+        field.templateOptions = Object.assign({
+          label: '',
+          placeholder: '',
+          focus: false,
+        }, field.templateOptions);
         let componentType: any = this.formlyConfig.getType(field.type).component;
         if (Array.isArray(field.validation)) {
           let validators = [];
