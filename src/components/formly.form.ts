@@ -38,14 +38,14 @@ export class FormlyForm implements OnInit  {
       this.form = this.formBuilder.group({});
     }
 
-    this.registerFormControls(this.fields, this.form);
+    this.registerFormControls(this.fields, this.form, this.model);
   }
 
   changeModel(event: FormlyValueChangeEvent) {
     this.model[event.field.key] = event.value;
   }
 
-  private registerFormControls(fields, form) {
+  private registerFormControls(fields, form, model) {
     fields.map(field => {
       if (field.key && field.type) {
         field.templateOptions = Object.assign({
@@ -63,18 +63,21 @@ export class FormlyForm implements OnInit  {
         }
 
         if (componentType.createControl) {
-          form.addControl(field.key, componentType.createControl(this.model[field.key] || '', field));
+          form.addControl(field.key, componentType.createControl(model[field.key] || '', field));
         } else {
-          form.addControl(field.key, new FormControl({ value: this.model[field.key] || '', disabled: field.templateOptions.disabled }, field.validation));
+          form.addControl(field.key, new FormControl({ value: model[field.key] || '', disabled: field.templateOptions.disabled }, field.validation));
         }
       }
 
       if (field.fieldGroup) {
         if (field.key) {
-          form.addControl(field.key, new FormGroup({}, field.validation));
+          const nestedForm = new FormGroup({}, field.validation);
+          const nestedModel = model[field.key];
+          form.addControl(field.key, nestedForm, nestedModel);
+          this.registerFormControls(field.fieldGroup, nestedForm, nestedModel);
+        } else {
+          this.registerFormControls(field.fieldGroup, form, model);
         }
-
-        this.registerFormControls(field.fieldGroup, field.key ? form.get(field.key) : form);
       }
     });
   }
