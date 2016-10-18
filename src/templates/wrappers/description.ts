@@ -11,5 +11,5 @@ import {FieldWrapper} from '../field.wrapper';
   `,
 })
 export class FormlyWrapperDescription extends FieldWrapper {
-  @ViewChild("fieldComponent", {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
+  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 }

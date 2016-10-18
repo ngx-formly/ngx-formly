@@ -214,8 +214,7 @@ export class HelloApp {
         templateOptions: {
           rows: 5,
           cols: 20,
-          placeholder: 'Type a paragraph...',
-          label: 'Message',
+          label: 'Message (Type a paragraph...)',
           description: 'Please enter atleast 150 characters',
           focus: true
         }
