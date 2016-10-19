@@ -224,7 +224,23 @@ export class HelloApp {
         templateOptions: {
 
         }
-      }];
+      }, {
+        className: 'section-label',
+        template: '<hr/><div><strong>Nested property keys:</strong></div>'
+      }, {
+        key: 'nested.property.magic',
+        type: 'input',
+        templateOptions: {
+          label: 'Nested property'
+        }
+      }, {
+        key: 'nested.arrays.0',
+        type: 'input',
+        templateOptions: {
+          label: 'Array property'
+        }
+      },
+    ];
 
       this.user = {
         email: 'email@gmail.com',

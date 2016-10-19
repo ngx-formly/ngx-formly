@@ -1,8 +1,7 @@
 import {Subject} from 'rxjs/Subject';
-import {FormlyFieldConfig} from './../components/formly.field.config';
 
 export class FormlyValueChangeEvent {
-  constructor(public field: FormlyFieldConfig, public value: any) {}
+  constructor(public key: string, public value: any) {}
 }
 
 export class FormlyEventEmitter extends Subject<String> {

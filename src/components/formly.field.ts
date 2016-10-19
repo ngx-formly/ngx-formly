@@ -19,7 +19,7 @@ import 'rxjs/add/operator/debounceTime';
     <formly-field *ngFor="let f of field.fieldGroup"
       [hide]="f.hideExpression"
       [model]="model?(f.key ? model[f.key]: model):''"
-      [form]="field.key?form.get(field.key):form" [field]="f" [formModel]="formModel"
+      [form]="fieldGroupForm" [field]="f" [formModel]="formModel"
       (modelChange)="changeModel($event)"
       [ngClass]="f.className">
     </formly-field>
@@ -68,14 +68,17 @@ export class FormlyField implements DoCheck, OnInit {
     this.createChildFields();
   }
 
+  get fieldGroupForm() {
+    if (this.field.key && this.form.get(this.field.key)) {
+      return <FormGroup>this.form.get(this.field.key);
+    }
+
+    return this.form;
+  }
+
   changeModel(event: FormlyValueChangeEvent) {
     if (this.field.fieldGroup && this.field.key) {
-      if (!this.model) {
-        this.model = {};
-      }
-
-      this.model[event.field.key] = event.value;
-      event = new FormlyValueChangeEvent(this.field, this.model);
+      event = new FormlyValueChangeEvent(`${this.field.key}.${event.key}`, event.value);
     }
 
     this.modelChange.emit(event);
@@ -91,7 +94,7 @@ export class FormlyField implements DoCheck, OnInit {
       fieldComponentRef.instance.formControl.valueChanges
         .debounceTime(debounce)
         .subscribe((event) => {
-          this.changeModel(new FormlyValueChangeEvent(this.field, event));
+          this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
         });
 
       let update = new FormlyEventEmitter();
