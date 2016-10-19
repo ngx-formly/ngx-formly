@@ -42,43 +42,93 @@ export class FormlyForm implements OnInit  {
   }
 
   changeModel(event: FormlyValueChangeEvent) {
-    this.model[event.field.key] = event.value;
+    this.assignModelValue(this.model, event.key, event.value);
   }
 
-  private registerFormControls(fields, form, model) {
+  private registerFormControls(fields: FormlyFieldConfig[], form: FormGroup, model) {
     fields.map(field => {
       if (field.key && field.type) {
-        field.templateOptions = Object.assign({
-          label: '',
-          placeholder: '',
-          focus: false,
-        }, field.templateOptions);
-        let componentType: any = this.formlyConfig.getType(field.type).component;
-        if (Array.isArray(field.validation)) {
-          let validators = [];
-          field.validation.map((validate) => {
-            validators.push(this.formlyConfig.getValidator(validate).validation);
-          });
-          field.validation = Validators.compose(validators);
+        this.initFieldTemplateOptions(field);
+        this.initFieldValidation(field);
+
+        let path: any = field.key;
+        if (typeof path === 'string') {
+          path = path.split('.');
         }
 
-        if (componentType.createControl) {
-          form.addControl(field.key, componentType.createControl(model[field.key] || '', field));
+        if (path.length > 1) {
+          let nestedForm = <FormGroup>(form.get(path[0]) ? form.get(path[0]) : new FormGroup({}, field.validation));
+          if (!form.get(field.key)) {
+            form.addControl(path[0], nestedForm);
+          }
+          path.shift();
+          this.registerFormControls(
+            [Object.assign({}, field, {key: path})],
+            nestedForm,
+            model[path[0]] || isNaN(path[0]) ? {} : []
+          );
         } else {
-          form.addControl(field.key, new FormControl({ value: model[field.key] || '', disabled: field.templateOptions.disabled }, field.validation));
+          this.addFormControl(form, field, model[path[0]] || '');
         }
       }
 
       if (field.fieldGroup) {
         if (field.key) {
-          const nestedForm = new FormGroup({}, field.validation);
-          const nestedModel = model[field.key];
-          form.addControl(field.key, nestedForm, nestedModel);
+          const nestedForm = <FormGroup>(form.get(field.key) ? form.get(field.key) : new FormGroup({}, field.validation)),
+            nestedModel = model[field.key] || {};
+
+          if (!form.get(field.key)) {
+            form.addControl(field.key, nestedForm);
+          }
+
           this.registerFormControls(field.fieldGroup, nestedForm, nestedModel);
         } else {
           this.registerFormControls(field.fieldGroup, form, model);
         }
       }
     });
+  }
+
+  private initFieldTemplateOptions(field: FormlyFieldConfig) {
+    field.templateOptions = Object.assign({
+      label: '',
+      placeholder: '',
+      focus: false,
+    }, field.templateOptions);
+  }
+
+  private initFieldValidation(field: FormlyFieldConfig) {
+    if (Array.isArray(field.validation)) {
+      let validators = [];
+      field.validation.map((validate) => {
+        validators.push(this.formlyConfig.getValidator(validate).validation);
+      });
+      field.validation = Validators.compose(validators);
+    }
+  }
+
+  private addFormControl(form, field, model) {
+    const componentType: any = this.formlyConfig.getType(field.type).component;
+    if (componentType.createControl) {
+      form.addControl(field.key, componentType.createControl(model, field));
+    } else {
+      form.addControl(field.key, new FormControl({ value: model, disabled: field.templateOptions.disabled }, field.validation));
+    }
+  }
+
+  private assignModelValue(model, path, value) {
+    if (typeof path === 'string') {
+      path = path.split('.');
+    }
+
+    if (path.length > 1) {
+      const e = path.shift();
+      if (!model[e]) {
+        model[e] = isNaN(path[0]) ? {} : [];
+      }
+      this.assignModelValue(model[e], path, value);
+    } else {
+      model[path[0]] = value;
+    }
   }
 }
