@@ -42,7 +42,11 @@ export class FormlyMessage {
 
     for (let propertyName in formControl.errors) {
       if (formControl.errors.hasOwnProperty(propertyName)) {
-        return this.formlyMessages.getValidatorErrorMessage(propertyName);
+        let message = this.formlyMessages.getValidatorErrorMessage(propertyName);
+        if (typeof message === 'function') {
+          return message(formControl.errors[propertyName]);
+        }
+        return message;
       }
     }
   }
