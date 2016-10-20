@@ -311,7 +311,10 @@ export class HelloApp {
         { name: 'required', message: 'This field is required.' },
         { name: 'invalidEmailAddress', message: 'Invalid Email Address' },
         { name: 'maxlength', message: 'Maximum Length Exceeded.' },
-        { name: 'minlength', message: 'Should have atleast 2 Characters' },
+        { name: 'minlength', message: (err) => {
+            return `Should have atleast ${err.requiredLength} Characters`;
+          }
+        },
         { name: 'not_matching', message: 'Password Not Matching' },
       ],
       wrappers: [
