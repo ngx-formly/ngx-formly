@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Field} from './../field';
+import { FieldType } from '../field.type';
 
 @Component({
   selector: 'formly-field-select',
@@ -10,5 +10,5 @@ import {Field} from './../field';
     </select>
   `,
 })
-export class FormlyFieldSelect extends Field {
+export class FormlyFieldSelect extends FieldType {
 }

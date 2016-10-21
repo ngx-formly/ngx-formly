@@ -90,6 +90,12 @@ export class HelloApp {
             placeholder: 'Enter email',
             disabled: true
           },
+          lifecycle: {
+            onInit: function() {
+              this.templateOptions.label = 'Email Address *';
+              this.templateOptions.label = this.templateOptions.label.toUpperCase();
+            }
+          },
           validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
           expressionProperties: {
             'templateOptions.disabled': '!model.password'

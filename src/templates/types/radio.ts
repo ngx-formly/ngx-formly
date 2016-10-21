@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Field} from './../field';
+import { FieldType } from '../field.type';
 
 @Component({
   selector: 'formly-field-radio',
@@ -14,5 +14,5 @@ import {Field} from './../field';
     </div>
   `,
 })
-export class FormlyFieldRadio extends Field {
+export class FormlyFieldRadio extends FieldType {
 }
