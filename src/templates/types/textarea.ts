@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Field} from './../field';
+import { FieldType } from '../field.type';
 
 @Component({
   selector: 'formly-field-textarea',
@@ -10,5 +10,5 @@ import {Field} from './../field';
     </textarea>
   `,
 })
-export class FormlyFieldTextArea extends Field {
+export class FormlyFieldTextArea extends FieldType {
 }

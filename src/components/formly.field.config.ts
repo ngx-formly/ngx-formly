@@ -11,6 +11,7 @@ export interface FormlyFieldConfig {
   expressionProperties?: any;
   focus?: boolean;
   modelOptions?: any;
+  lifecycle?: FormlyLifeCycleOptions;
 }
 
 export interface FormlyTemplateOptions {
@@ -24,4 +25,15 @@ export interface FormlyTemplateOptions {
   description?: string;
   focus?: boolean;
   hidden?: boolean;
+}
+
+export interface FormlyLifeCycleOptions {
+  onInit?: Function;
+  onChanges?: Function;
+  doCheck?: Function;
+  afterContentInit?: Function;
+  afterContentChecked?: Function;
+  afterViewInit?: Function;
+  afterViewChecked?: Function;
+  onDestroy?: Function;
 }

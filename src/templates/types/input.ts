@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Field} from './../field';
+import { FieldType } from '../field.type';
 
 @Component({
   selector: 'formly-field-input',
@@ -9,5 +9,5 @@ import {Field} from './../field';
       [formlyNgFocus]="templateOptions.focus" [ngClass]="{'form-control-danger': valid}">
     `,
 })
-export class FormlyFieldInput extends Field {
+export class FormlyFieldInput extends FieldType {
 }
