@@ -25,6 +25,7 @@ export interface FormlyTemplateOptions {
   description?: string;
   focus?: boolean;
   hidden?: boolean;
+  [additionalProperties: string]: any;
 }
 
 export interface FormlyLifeCycleOptions {
