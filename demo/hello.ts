@@ -17,7 +17,7 @@ import {ValidationService} from './validation.service';
     <div [formGroup]="form">
       <div class="checkbox-toggle">
           <input id="checkbox" type="checkbox" type="checkbox" [formControlName]="key" value="on">
-          <label for="checkbox">
+          <label for="checkbox" [ngClass]="isAlert">
               <div></div>
           </label>
       </div>
@@ -25,6 +25,12 @@ import {ValidationService} from './validation.service';
   `,
 })
 export class FormlyFieldToggle extends Field {
+  get isAlert() {
+    if (this.templateOptions['isAlert']) {
+      return 'toggle-alert';
+    }
+    return '';
+  }
 }
 
 @Component({
@@ -228,7 +234,7 @@ export class HelloApp {
         key: 'toggleVal',
         type: 'toggle',
         templateOptions: {
-
+          isAlert: true
         }
       }, {
         className: 'section-label',
