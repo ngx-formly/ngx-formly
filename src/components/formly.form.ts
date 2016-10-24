@@ -49,10 +49,10 @@ export class FormlyForm implements OnInit, OnChanges {
 
         let path: any = field.key;
         if (typeof path === 'string') {
-          path = path.split('.');
           if (field.defaultValue) {
             this.defaultPath = path;
           }
+          path = path.split('.');
         }
 
         if (path.length > 1) {
