@@ -70,7 +70,7 @@ export class HelloApp {
       formlyVersion: '2.0.0-beta.7'
     };
 
-      this.userFields = [{
+    let userFields = [{
         type: 'radio',
         key: 'title',
         templateOptions: {
@@ -254,21 +254,22 @@ export class HelloApp {
       },
     ];
 
-      this.user = {
-        email: 'email@gmail.com',
-        checked: true,
-        select: 'male',
-        title: 'mr',
-        toggleVal: true,
-        address: {
-          street: '604 Causley Eve'
-        },
-        interest: {
-          movies: false,
-          sports: false,
-          others: true
-        }
-      };
+    setTimeout(() => this.userFields = userFields);
+    this.user = {
+      email: 'email@gmail.com',
+      checked: true,
+      select: 'male',
+      title: 'mr',
+      toggleVal: true,
+      address: {
+        street: '604 Causley Eve'
+      },
+      interest: {
+        movies: false,
+        sports: false,
+        others: true
+      }
+    };
   }
 
   console(data) {
