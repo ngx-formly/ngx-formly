@@ -21,6 +21,7 @@ export class FormlyForm implements OnInit, OnChanges {
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
+  private defaultPath;
 
   constructor(private formlyConfig: FormlyConfig) {}
 
@@ -49,6 +50,9 @@ export class FormlyForm implements OnInit, OnChanges {
         let path: any = field.key;
         if (typeof path === 'string') {
           path = path.split('.');
+          if (field.defaultValue) {
+            this.defaultPath = path;
+          }
         }
 
         if (path.length > 1) {
@@ -63,7 +67,11 @@ export class FormlyForm implements OnInit, OnChanges {
             model[path[0]] || isNaN(path[0]) ? {} : []
           );
         } else {
-          this.addFormControl(form, field, model[path[0]] || '');
+          this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
+          if (field.defaultValue && !model[path[0]]) {
+            this.assignModelValue(this.model, this.defaultPath, field.defaultValue);
+            this.defaultPath = undefined;
+          }
         }
       }
 

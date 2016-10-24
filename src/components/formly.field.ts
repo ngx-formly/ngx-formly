@@ -56,7 +56,7 @@ export class FormlyField implements DoCheck, OnInit {
     private formlyPubSub: FormlyPubSub,
     private renderer: Renderer,
     private formlyConfig: FormlyConfig,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
 
   ngDoCheck() {
