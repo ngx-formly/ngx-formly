@@ -1,6 +1,6 @@
 import {
   Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck,
-  ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver
+  ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver,
 } from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from '../services/formly.event.emitter';

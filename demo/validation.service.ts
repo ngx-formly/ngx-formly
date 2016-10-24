@@ -5,7 +5,7 @@ export class ValidationService {
             required: 'Required',
             invalidCreditCard: 'Is invalid credit card number',
             invalidEmailAddress: 'Invalid email address',
-            invalidPassword: 'Invalid password. Password must be at least 6 characters long, and contain a number.'
+            invalidPassword: 'Invalid password. Password must be at least 6 characters long, and contain a number.',
         };
 
         return config[code];

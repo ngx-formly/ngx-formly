@@ -10,6 +10,6 @@ import {BOOTSTRAP_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS} from './formlyBootstrap.
     CommonModule,
     ReactiveFormsModule,
     FormlyModule.forRoot(BOOTSTRAP_FORMLY_CONFIG),
-  ]
+  ],
 })
 export class FormlyBootstrapModule {}

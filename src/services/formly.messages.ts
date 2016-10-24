@@ -29,7 +29,7 @@ export class FormlyMessages {
 
 @Component({
   selector: 'formly-message',
-  template: `<div *ngIf="errorMessage">{{errorMessage}}</div>`
+  template: `<div *ngIf="errorMessage">{{errorMessage}}</div>`,
 })
 export class FormlyMessage {
   @Input() controlName: string;
