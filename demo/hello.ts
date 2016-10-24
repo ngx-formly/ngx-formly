@@ -156,6 +156,7 @@ export class HelloApp {
           type: 'input',
           key: 'street',
           validation: ['required'],
+          defaultValue: '204 Causley Ave. ',
           templateOptions: {
             label: 'Street',
             placeholder: '604 Causley Ave. ',
@@ -250,7 +251,8 @@ export class HelloApp {
         type: 'input',
         templateOptions: {
           label: 'Array property'
-        }
+        },
+        defaultValue: 'Default Value'
       },
     ];
 

@@ -12,6 +12,7 @@ export interface FormlyFieldConfig {
   focus?: boolean;
   modelOptions?: any;
   lifecycle?: FormlyLifeCycleOptions;
+  defaultValue?: any;
 }
 
 export interface FormlyTemplateOptions {
