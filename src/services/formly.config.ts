@@ -26,7 +26,17 @@ export class FormlyConfig {
   }
 
   setType(options: TypeOption) {
-    this.types[options.name] = options;
+    if (!this.types[options.name]) {
+      this.types[options.name] = <TypeOption>{};
+    }
+    this.types[options.name].component = options.component;
+    this.types[options.name].name = options.name;
+    this.types[options.name].extends = options.extends;
+    if (options.wrappers) {
+      options.wrappers.map((wrapper) => {
+        this.setTypeWrapper(options.name, wrapper);
+      });
+    }
   }
 
   getType(name: string): TypeOption {
@@ -43,6 +53,11 @@ export class FormlyConfig {
 
   setWrapper(options: WrapperOption) {
     this.wrappers[options.name] = options;
+    if (options.types) {
+      options.types.map((type) => {
+        this.setTypeWrapper(type, options.name);
+      });
+    }
   }
 
   getWrapper(name: string): WrapperOption {
@@ -55,6 +70,16 @@ export class FormlyConfig {
 
   setValidator(options: ValidatorOption) {
     this.validators[options.name] = options;
+  }
+
+  setTypeWrapper(type, name) {
+    if (!this.types[type]) {
+      this.types[type] = <TypeOption>{};
+    }
+    if (!this.types[type].wrappers) {
+      this.types[type].wrappers = <[string]>[];
+    }
+    this.types[type].wrappers.push(name);
   }
 
   getValidator(name: string): ValidatorOption {
@@ -76,6 +101,7 @@ export interface TypeOption {
 export interface WrapperOption {
   name: string;
   component: any;
+  types?: string[];
 }
 
 export interface ValidatorOption {

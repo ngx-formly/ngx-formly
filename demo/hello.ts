@@ -320,7 +320,7 @@ export class HelloApp {
     FormlyModule.forRoot({
       types: [
         { name: 'toggle', component: FormlyFieldToggle },
-        { name: 'horizontalInput', extends: 'input', wrappers: ['formly-wrapper-horizontal']}],
+        { name: 'horizontalInput', extends: 'input'}],
       validators: [{ name: 'required', validation: Validators.required}],
       validationMessages: [
         { name: 'required', message: 'This field is required.' },
@@ -333,7 +333,7 @@ export class HelloApp {
         { name: 'not_matching', message: 'Password Not Matching' },
       ],
       wrappers: [
-        { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel }
+        { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] }
       ]
     }),
     FormlyBootstrapModule,
