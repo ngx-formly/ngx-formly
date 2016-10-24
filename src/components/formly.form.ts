@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+import {Component, OnInit, OnChanges, Input, SimpleChanges} from '@angular/core';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {FormlyValueChangeEvent} from './../services/formly.event.emitter';
 import {FormlyFieldConfig} from './formly.field.config';
 import {FormlyConfig} from '../services/formly.config';
@@ -16,29 +16,24 @@ import {FormlyConfig} from '../services/formly.config';
     <ng-content></ng-content>
   `,
 })
-export class FormlyForm implements OnInit  {
+export class FormlyForm implements OnInit, OnChanges {
   @Input() formModel: any;
-  @Input() model: any;
-  @Input() form: FormGroup;
+  @Input() model: any = {};
+  @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
 
-  constructor(
-    private formlyConfig: FormlyConfig,
-    private formBuilder: FormBuilder
-  ) {}
+  constructor(private formlyConfig: FormlyConfig) {}
 
   ngOnInit() {
-    if (!this.model) {
-      this.model = {};
-    }
     if (!this.formModel) {
       this.formModel = this.model;
     }
-    if (!this.form) {
-      this.form = this.formBuilder.group({});
-    }
+  }
 
-    this.registerFormControls(this.fields, this.form, this.model);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['fields']) {
+      this.registerFormControls(this.fields, this.form, this.model);
+    }
   }
 
   changeModel(event: FormlyValueChangeEvent) {
