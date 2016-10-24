@@ -61,7 +61,7 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
       name: 'multicheckbox',
       component: FormlyFieldMultiCheckbox,
       wrappers: ['fieldset', 'label', 'description', 'validation-message'],
-    }
+    },
   ],
   wrappers: [
     {name: 'label', component: FormlyWrapperLabel},

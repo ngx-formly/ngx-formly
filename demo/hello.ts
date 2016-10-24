@@ -63,11 +63,11 @@ export class HelloApp {
 
     this.author = {
       name: 'Mohammed Zama Khan',
-      url: 'https://www.github.com/mohammedzamakhan'
+      url: 'https://www.github.com/mohammedzamakhan',
     };
     this.env = {
       angularVersion: '2.0.1',
-      formlyVersion: '2.0.0-beta.7'
+      formlyVersion: '2.0.0-beta.7',
     };
 
     let userFields = [{
@@ -76,14 +76,14 @@ export class HelloApp {
         templateOptions: {
           options: [{
             key: 'mr',
-            value: 'Mr.'
+            value: 'Mr.',
           }, {
             key: 'mrs',
-            value: 'Mrs'
+            value: 'Mrs',
           }],
           label: 'Title',
-          description: 'Select a title that suits your description'
-        }
+          description: 'Select a title that suits your description',
+        },
       }, {
         className: 'row',
         fieldGroup: [{
@@ -94,18 +94,18 @@ export class HelloApp {
             type: 'email',
             label: 'Email address',
             placeholder: 'Enter email',
-            disabled: true
+            disabled: true,
           },
           lifecycle: {
             onInit: function() {
               this.templateOptions.label = 'Email Address *';
               this.templateOptions.label = this.templateOptions.label.toUpperCase();
-            }
+            },
           },
           validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
           expressionProperties: {
-            'templateOptions.disabled': '!model.password'
-          }
+            'templateOptions.disabled': '!model.password',
+          },
         }, {
           className: 'col-xs-4',
           key: 'password',
@@ -113,9 +113,9 @@ export class HelloApp {
           templateOptions: {
             type: 'password',
             label: 'Password',
-            placeholder: 'Password'
+            placeholder: 'Password',
           },
-          validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
+          validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)]),
         }, {
           className: 'col-xs-4',
           key: 'confirmPassword',
@@ -123,12 +123,12 @@ export class HelloApp {
           templateOptions: {
             type: 'password',
             label: 'Password',
-            placeholder: 'Confirm Password'
+            placeholder: 'Confirm Password',
           },
-          validation: ValidationService.confirmPassword(this.form, 'password')
+          validation: ValidationService.confirmPassword(this.form, 'password'),
         }, {
           className: 'section-label',
-          template: '<br/><hr/>'
+          template: '<br/><hr/>',
         }, {
           className: 'col-xs-4',
           key: 'select',
@@ -136,18 +136,18 @@ export class HelloApp {
           templateOptions: {
             options: [{
               label: 'Male',
-              value: 'male'
+              value: 'male',
             }, {
               label: 'Female',
-              value: 'female'
+              value: 'female',
             }],
             label: 'Gender',
-            placeholder: 'Select Gender'
-          }
-        }]
+            placeholder: 'Select Gender',
+          },
+        }],
       }, {
         className: 'section-label',
-        template: '<hr/><div><strong>Address:</strong></div>'
+        template: '<hr/><div><strong>Address:</strong></div>',
       }, {
         key: 'address',
         className: 'row',
@@ -160,16 +160,16 @@ export class HelloApp {
           templateOptions: {
             label: 'Street',
             placeholder: '604 Causley Ave. ',
-            description: 'Enter a valid US Address'
-          }
+            description: 'Enter a valid US Address',
+          },
         }, {
           className: 'col-xs-3',
           type: 'input',
           key: 'city',
           templateOptions: {
             label: 'City',
-            placeholder: 'Arlington'
-          }
+            placeholder: 'Arlington',
+          },
         }, {
           className: 'col-xs-3',
           type: 'input',
@@ -177,33 +177,33 @@ export class HelloApp {
           templateOptions: {
             type: 'number',
             label: 'Zip',
-            placeholder: '76010'
-          }
-        }]
+            placeholder: '76010',
+          },
+        }],
       }, {
         key: 'checked',
         type: 'checkbox',
         templateOptions: {
           label: 'Check me out',
-          description: 'If you want to check me out, check this box'
-        }
+          description: 'If you want to check me out, check this box',
+        },
       }, {
         type: 'multicheckbox',
         key: 'interest',
         templateOptions: {
           options: [{
             key: 'sports',
-            value: 'Sports'
+            value: 'Sports',
           }, {
             key: 'movies',
-            value: 'Movies'
+            value: 'Movies',
           }, {
             key: 'others',
-            value: 'Others'
+            value: 'Others',
           }],
           label: 'Interest',
-          description: 'Select areas which you are interested'
-        }
+          description: 'Select areas which you are interested',
+        },
       }, {
         key: 'otherInterest',
         type: 'horizontalInput',
@@ -212,47 +212,47 @@ export class HelloApp {
           rows: 5,
           cols: 20,
           placeholder: 'Type a paragraph about your interest...',
-          label: 'Other Interest'
-        }
+          label: 'Other Interest',
+        },
       }, {
         key: 'textAreaVal',
         type: 'textarea',
         modelOptions: {
           debounce: {
             default: 2000,
-            blur: 0
+            blur: 0,
           },
-          updateOn: 'default blur'
+          updateOn: 'default blur',
         },
         templateOptions: {
           rows: 5,
           cols: 20,
           label: 'Message (Type a paragraph...)',
           description: 'Please enter atleast 150 characters',
-          focus: true
-        }
+          focus: true,
+        },
       }, {
         key: 'toggleVal',
         type: 'toggle',
         templateOptions: {
-          isAlert: true
-        }
+          isAlert: true,
+        },
       }, {
         className: 'section-label',
-        template: '<hr/><div><strong>Nested property keys:</strong></div>'
+        template: '<hr/><div><strong>Nested property keys:</strong></div>',
       }, {
         key: 'nested.property.magic',
         type: 'input',
         templateOptions: {
-          label: 'Nested property'
-        }
+          label: 'Nested property',
+        },
       }, {
         key: 'nested.arrays.0',
         type: 'input',
         templateOptions: {
-          label: 'Array property'
+          label: 'Array property',
         },
-        defaultValue: 'Default Value'
+        defaultValue: 'Default Value',
       },
     ];
 
@@ -264,13 +264,13 @@ export class HelloApp {
       title: 'mr',
       toggleVal: true,
       address: {
-        street: '604 Causley Eve'
+        street: '604 Causley Eve',
       },
       interest: {
         movies: false,
         sports: false,
-        others: true
-      }
+        others: true,
+      },
     };
   }
 
@@ -301,8 +301,8 @@ export class HelloApp {
       interest: {
         movies: false,
         sports: false,
-        others: true
-      }
+        others: true,
+      },
     });
   }
 
@@ -313,7 +313,7 @@ export class HelloApp {
 
 @NgModule({
   declarations: [
-    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel
+    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel,
   ],
   imports: [
     BrowserModule,
@@ -328,19 +328,19 @@ export class HelloApp {
         { name: 'maxlength', message: 'Maximum Length Exceeded.' },
         { name: 'minlength', message: (err) => {
             return `Should have atleast ${err.requiredLength} Characters`;
-          }
+          },
         },
         { name: 'not_matching', message: 'Password Not Matching' },
       ],
       wrappers: [
-        { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] }
-      ]
+        { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
+      ],
     }),
     FormlyBootstrapModule,
     FormsModule,
     ReactiveFormsModule,
   ],
-  bootstrap: [HelloApp]
+  bootstrap: [HelloApp],
 })
 export class FormlyDemoModule {
 }

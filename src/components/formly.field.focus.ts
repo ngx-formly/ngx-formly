@@ -3,7 +3,7 @@ import {SingleFocusDispatcher} from '../services/formly.single.focus.dispatcher'
 
 @Directive({
   selector: '[formlyNgFocus]',
-  providers: [SingleFocusDispatcher]
+  providers: [SingleFocusDispatcher],
 })
 export class FormlyNgFocus {
   _focus: boolean;
