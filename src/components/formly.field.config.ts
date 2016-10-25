@@ -3,6 +3,7 @@ export interface FormlyFieldConfig {
   id?: string;
   templateOptions?: FormlyTemplateOptions;
   validation?: any;
+  validators?: any;
   template?: string;
   fieldGroup?: Array<FormlyFieldConfig>;
   hideExpression?: boolean | string | (() => boolean);

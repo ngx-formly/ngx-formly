@@ -101,11 +101,27 @@ export class FormlyForm implements OnInit, OnChanges {
   }
 
   private initFieldValidation(field: FormlyFieldConfig) {
+    let validators = [];
+    if (field.validators) {
+      let validatorFn = function(form, fn, validator) {
+        return (changes) => {
+          if (fn(changes, form)) {
+            return null;
+          } else {
+            return {[validator]: true};
+          }
+        };
+      };
+      for (let validator in field.validators) {
+        validators.push(validatorFn(this.form, field.validators[validator], validator));
+      }
+    }
     if (Array.isArray(field.validation)) {
-      let validators = [];
       field.validation.map((validate) => {
         validators.push(this.formlyConfig.getValidator(validate).validation);
       });
+    }
+    if (field.validators || Array.isArray(field.validation)) {
       field.validation = Validators.compose(validators);
     }
   }

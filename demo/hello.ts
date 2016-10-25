@@ -4,7 +4,7 @@ import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
 
 import {NgModule, Component, ViewChild, ViewContainerRef} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field, FieldWrapper} from './../src/index';
@@ -70,7 +70,7 @@ export class HelloApp {
       formlyVersion: '2.0.0-beta.7',
     };
 
-    let userFields = [{
+    let userFields: Array<FormlyFieldConfig> = [{
         type: 'radio',
         key: 'title',
         templateOptions: {
@@ -178,6 +178,14 @@ export class HelloApp {
             type: 'number',
             label: 'Zip',
             placeholder: '76010',
+          },
+          validators: {
+            zipCode: (control: FormControl) => {
+              if (control.value.length === 5) {
+                return true;
+              }
+              return false;
+            },
           },
         }],
       }, {
@@ -331,6 +339,7 @@ export class HelloApp {
           },
         },
         { name: 'not_matching', message: 'Password Not Matching' },
+        { name: 'zipCode', message: 'ZIP code should be 5 characters'},
       ],
       wrappers: [
         { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
