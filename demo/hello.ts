@@ -66,8 +66,8 @@ export class HelloApp {
       url: 'https://www.github.com/mohammedzamakhan',
     };
     this.env = {
-      angularVersion: '2.0.1',
-      formlyVersion: '2.0.0-beta.7',
+      angularVersion: '2.1.1',
+      formlyVersion: '2.0.0-beta.8',
     };
 
     let userFields: Array<FormlyFieldConfig> = [{
