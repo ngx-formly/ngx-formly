@@ -1,6 +1,7 @@
 import { Inject, Component, Input, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FORMLY_CONFIG_TOKEN } from './formly.config';
+import { FormlyFieldConfig } from '../components/formly.field.config';
 
 @Injectable()
 export class FormlyMessages {
@@ -35,6 +36,8 @@ export class FormlyMessage {
   @Input() controlName: string;
   @Input() form: FormGroup;
 
+  @Input() field: FormlyFieldConfig;
+
   constructor(private formlyMessages: FormlyMessages) {}
 
   get errorMessage() {
@@ -44,7 +47,7 @@ export class FormlyMessage {
       if (formControl.errors.hasOwnProperty(propertyName)) {
         let message = this.formlyMessages.getValidatorErrorMessage(propertyName);
         if (typeof message === 'function') {
-          return message(formControl.errors[propertyName]);
+          return message(formControl.errors[propertyName], this.field);
         }
         return message;
       }
