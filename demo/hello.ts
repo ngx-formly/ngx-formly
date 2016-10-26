@@ -362,7 +362,7 @@ export class HelloApp {
         { name: 'horizontalInput', extends: 'input'}],
       validators: [{ name: 'required', validation: Validators.required}],
       validationMessages: [
-        { name: 'required', message: 'This field is required.' },
+        { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},
         { name: 'invalidEmailAddress', message: 'Invalid Email Address' },
         { name: 'maxlength', message: 'Maximum Length Exceeded.' },
         { name: 'minlength', message: (err) => {
