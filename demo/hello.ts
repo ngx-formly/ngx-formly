@@ -189,6 +189,12 @@ export class HelloApp {
             type: 'number',
             label: 'Zip',
             placeholder: '76010',
+            max: 99999,
+            min: 11111,
+            minLength: 5,
+            maxLength: 5,
+            pattern: '([0-9]{5})?',
+            required: true,
           },
           validators: {
             zipCode: (control: FormControl) => control.value.length === 5,
