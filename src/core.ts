@@ -29,8 +29,8 @@ const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage, FormlyNgFocus
   exports: FORMLY_DIRECTIVES,
   imports: [
     CommonModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+  ],
 })
 export class FormlyModule {
   static forRoot(config: ConfigOption): ModuleWithProviders {
@@ -41,8 +41,8 @@ export class FormlyModule {
         FormlyPubSub,
         FormlyMessages,
         { provide: FORMLY_CONFIG_TOKEN, useValue: config, multi: true },
-        { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true }
-      ]
+        { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
+      ],
     };
   }
 }

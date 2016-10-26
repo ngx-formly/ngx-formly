@@ -46,6 +46,7 @@ export class FormlyForm implements OnInit, OnChanges {
       if (field.key && field.type) {
         this.initFieldTemplateOptions(field);
         this.initFieldValidation(field);
+        this.initFieldAsyncValidation(field);
 
         let path: any = field.key;
         if (typeof path === 'string') {
@@ -100,6 +101,23 @@ export class FormlyForm implements OnInit, OnChanges {
     }, field.templateOptions);
   }
 
+  private initFieldAsyncValidation(field: FormlyFieldConfig) {
+    let validators = [];
+    if (Array.isArray(field.asyncValidation)) {
+      field.asyncValidation.map(validate => {
+        if (typeof validate === 'string') {
+          validators.push(this.formlyConfig.getValidator(validate).validation);
+        } else {
+          validators.push(validate);
+        }
+      });
+    }
+
+    if (validators.length) {
+      field.validation = Validators.composeAsync(validators);
+    }
+  }
+
   private initFieldValidation(field: FormlyFieldConfig) {
     let validators = [];
     if (field.validators) {
@@ -112,9 +130,13 @@ export class FormlyForm implements OnInit, OnChanges {
     }
 
     if (Array.isArray(field.validation)) {
-      field.validation.map(validate =>
-        validators.push(this.formlyConfig.getValidator(validate).validation)
-      );
+      field.validation.map(validate => {
+        if (typeof validate === 'string') {
+          validators.push(this.formlyConfig.getValidator(validate).validation);
+        } else {
+          validators.push(validate);
+        }
+      });
     }
 
     if (validators.length) {
@@ -127,7 +149,11 @@ export class FormlyForm implements OnInit, OnChanges {
     if (componentType.createControl) {
       form.addControl(field.key, componentType.createControl(model, field));
     } else {
-      form.addControl(field.key, new FormControl({ value: model, disabled: field.templateOptions.disabled }, field.validation));
+      form.addControl(field.key, new FormControl(
+        { value: model, disabled: field.templateOptions.disabled },
+        field.validation,
+        field.asyncValidation,
+      ));
     }
   }
 
