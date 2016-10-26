@@ -2,12 +2,12 @@ import {
   Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck,
   ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver,
 } from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent} from '../services/formly.event.emitter';
-import {FormlyConfig} from '../services/formly.config';
-import {Field} from '../templates/field';
-import {FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate} from '../services/formly.field.delegates';
-import {FormlyFieldConfig} from './formly.field.config';
+import { FormGroup } from '@angular/forms';
+import { FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent } from '../services/formly.event.emitter';
+import { FormlyConfig } from '../services/formly.config';
+import { Field } from '../templates/field';
+import { FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate } from '../services/formly.field.delegates';
+import { FormlyFieldConfig } from './formly.field.config';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({

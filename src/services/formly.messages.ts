@@ -1,6 +1,6 @@
-import {Inject, Component, Input, Injectable} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {FORMLY_CONFIG_TOKEN} from './formly.config';
+import { Inject, Component, Input, Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FORMLY_CONFIG_TOKEN } from './formly.config';
 
 @Injectable()
 export class FormlyMessages {

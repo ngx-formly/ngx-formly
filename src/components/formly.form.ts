@@ -1,8 +1,8 @@
-import {Component, OnInit, OnChanges, Input, SimpleChanges} from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
-import {FormlyValueChangeEvent} from './../services/formly.event.emitter';
-import {FormlyFieldConfig} from './formly.field.config';
-import {FormlyConfig} from '../services/formly.config';
+import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
+import { FormlyFieldConfig } from './formly.field.config';
+import { FormlyConfig } from '../services/formly.config';
 
 @Component({
   selector: 'formly-form',

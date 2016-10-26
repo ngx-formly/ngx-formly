@@ -3,12 +3,12 @@ import 'core-js/es6';
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
 
-import {NgModule, Component, ViewChild, ViewContainerRef} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {BrowserModule} from '@angular/platform-browser';
-import {FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field, FieldWrapper} from './../src/index';
-import {ValidationService} from './validation.service';
+import { NgModule, Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field, FieldWrapper } from './../src/index';
+import { ValidationService } from './validation.service';
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({

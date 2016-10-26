@@ -1,6 +1,6 @@
-import {Input} from '@angular/core';
-import {FormGroup, AbstractControl} from '@angular/forms';
-import {FormlyTemplateOptions, FormlyFieldConfig} from '../components/formly.field.config';
+import { Input } from '@angular/core';
+import { FormGroup, AbstractControl } from '@angular/forms';
+import { FormlyTemplateOptions, FormlyFieldConfig } from '../components/formly.field.config';
 
 export abstract class Field {
   @Input() form: FormGroup;
