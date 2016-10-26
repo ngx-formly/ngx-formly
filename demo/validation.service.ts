@@ -1,4 +1,5 @@
-import {FormGroup} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+
 export class ValidationService {
     static getValidatorErrorMessage(code: string) {
         let config = {

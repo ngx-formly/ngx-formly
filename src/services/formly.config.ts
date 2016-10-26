@@ -1,4 +1,4 @@
-import {Injectable, Inject, OpaqueToken} from '@angular/core';
+import { Injectable, Inject, OpaqueToken } from '@angular/core';
 
 export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
 

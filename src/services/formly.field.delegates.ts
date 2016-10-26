@@ -1,5 +1,5 @@
-import {evalExpression, expressionValueSetter} from './formly.expression';
-import {FormlyField} from '../components/formly.field';
+import { evalExpression, expressionValueSetter } from './formly.expression';
+import { FormlyField } from '../components/formly.field';
 
 export class FormlyFieldVisibilityDelegate {
   constructor(private formlyCommon: FormlyField) {}

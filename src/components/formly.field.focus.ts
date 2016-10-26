@@ -1,5 +1,5 @@
-import {Directive, HostListener, ElementRef, Input, Renderer} from '@angular/core';
-import {SingleFocusDispatcher} from '../services/formly.single.focus.dispatcher';
+import { Directive, HostListener, ElementRef, Input, Renderer } from '@angular/core';
+import { SingleFocusDispatcher } from '../services/formly.single.focus.dispatcher';
 
 @Directive({
   selector: '[formlyNgFocus]',

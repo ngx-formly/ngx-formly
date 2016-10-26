@@ -1,4 +1,4 @@
-import {Subject} from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
 
 export class FormlyValueChangeEvent {
   constructor(public key: string, public value: any) {}

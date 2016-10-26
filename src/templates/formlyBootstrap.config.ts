@@ -1,4 +1,4 @@
-import {ConfigOption} from '../services/formly.config';
+import { ConfigOption } from '../services/formly.config';
 import {
   FormlyFieldInput,
   FormlyFieldCheckbox,
