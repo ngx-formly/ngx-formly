@@ -158,7 +158,7 @@ export class FormlyForm implements OnInit, OnChanges {
     }
   }
 
-  private addFormControl(form, field, model) {
+  private addFormControl(form: FormGroup, field: FormlyFieldConfig, model) {
     const componentType: any = this.formlyConfig.getType(field.type).component;
     if (componentType.createControl) {
       form.addControl(field.key, componentType.createControl(model, field));
@@ -168,6 +168,9 @@ export class FormlyForm implements OnInit, OnChanges {
         field.validators ? field.validators.validation : undefined,
         field.asyncValidation,
       ));
+    }
+    if (field.validation && field.validation.show) {
+      form.get(field.key).markAsTouched();
     }
   }
 

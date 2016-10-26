@@ -118,6 +118,12 @@ export class HelloApp {
             description: 'Existing username: john',
             required: true,
           },
+          validation: {
+            show: true,
+          },
+          expressionProperties: {
+            'validation.show': 'model.checked === true ? true: null',
+          },
           validators: {
             validation: Validators.maxLength(8),
             custom: (control: FormControl) => control.value !== 'zama',

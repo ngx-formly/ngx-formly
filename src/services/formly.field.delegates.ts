@@ -47,8 +47,8 @@ export class FormlyFieldExpressionDelegate {
 
           // TODO Performance improvement for expression value Setter by caching built expression setter
           expressionValueSetter(key, expressionValue, this.formlyCommon
-            , ['model', 'fieldModel', 'templateOptions']
-            , [this.formlyCommon.formModel, this.formlyCommon.model, this.formlyCommon.field.templateOptions]);
+            , ['model', 'fieldModel', 'templateOptions', 'validation']
+            , [this.formlyCommon.formModel, this.formlyCommon.model, this.formlyCommon.field.templateOptions, this.formlyCommon.field.validation]);
         }
 
         // disable attribute binding is not supported (see https://github.com/angular/angular/issues/11324)
@@ -59,6 +59,12 @@ export class FormlyFieldExpressionDelegate {
             }
             if (formControl.status !== 'DISABLED' && this.formlyCommon.field.templateOptions.disabled) {
                 formControl.disable();
+            }
+            if (!formControl.dirty && formControl.invalid && this.formlyCommon.field.validation && !this.formlyCommon.field.validation.show) {
+              formControl.markAsUntouched();
+            }
+            if (!formControl.dirty && formControl.invalid && this.formlyCommon.field.validation && this.formlyCommon.field.validation.show) {
+              formControl.markAsTouched();
             }
         }
       }
