@@ -102,7 +102,9 @@ export class HelloApp {
               this.templateOptions.label = this.templateOptions.label.toUpperCase();
             },
           },
-          validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
+          validators: {
+            validation: Validators.compose([Validators.required, ValidationService.emailValidator]),
+          },
           expressionProperties: {
             'templateOptions.disabled': '!model.password',
           },
@@ -114,6 +116,11 @@ export class HelloApp {
             label: 'Username',
             placeholder: 'Username',
             description: 'Existing username: john',
+            required: true,
+          },
+          validators: {
+            validation: Validators.maxLength(8),
+            custom: (control: FormControl) => control.value !== 'zama',
           },
           asyncValidation: (control: FormControl) =>
             new Promise(resolve => resolve( control.value !== 'john' ? null : { uniqueUsername: true })),
@@ -126,7 +133,9 @@ export class HelloApp {
             label: 'Password',
             placeholder: 'Password',
           },
-          validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)]),
+          validators: {
+            validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)]),
+          },
         }, {
           className: 'col-xs-6',
           key: 'confirmPassword',
@@ -136,7 +145,9 @@ export class HelloApp {
             label: 'Password',
             placeholder: 'Confirm Password',
           },
-          validation: ValidationService.confirmPassword(this.form, 'password'),
+          validators: {
+            validation: ValidationService.confirmPassword(this.form, 'password'),
+          },
         }, {
           className: 'section-label',
           template: '<br/><hr/>',
@@ -166,7 +177,9 @@ export class HelloApp {
           className: 'col-xs-6',
           type: 'input',
           key: 'street',
-          validation: ['required'],
+          validators: {
+            validation: ['required'],
+          },
           defaultValue: '204 Causley Ave. ',
           templateOptions: {
             label: 'Street',

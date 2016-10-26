@@ -58,7 +58,7 @@ export class FormlyForm implements OnInit, OnChanges {
         }
 
         if (path.length > 1) {
-          let nestedForm = <FormGroup>(form.get(path[0]) ? form.get(path[0]) : new FormGroup({}, field.validation));
+          let nestedForm = <FormGroup>(form.get(path[0]) ? form.get(path[0]) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidation));
           if (!form.get(field.key)) {
             form.addControl(path[0], nestedForm);
           }
@@ -79,7 +79,7 @@ export class FormlyForm implements OnInit, OnChanges {
 
       if (field.fieldGroup) {
         if (field.key) {
-          const nestedForm = <FormGroup>(form.get(field.key) ? form.get(field.key) : new FormGroup({}, field.validation)),
+          const nestedForm = <FormGroup>(form.get(field.key) ? form.get(field.key) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidation)),
             nestedModel = model[field.key] || {};
 
           if (!form.get(field.key)) {
@@ -115,7 +115,7 @@ export class FormlyForm implements OnInit, OnChanges {
     }
 
     if (validators.length) {
-      field.validation = Validators.composeAsync(validators);
+      field.asyncValidation = Validators.composeAsync(validators);
     }
   }
 
@@ -131,12 +131,14 @@ export class FormlyForm implements OnInit, OnChanges {
           fn(control) ? null : {[validator]: true};
 
       for (let validator in field.validators) {
-        validators.push(validatorFn(field.validators[validator], validator));
+        if (validator !== 'validation') {
+          validators.push(validatorFn(field.validators[validator], validator));
+        }
       }
     }
 
-    if (Array.isArray(field.validation)) {
-      field.validation.map(validate => {
+    if (field.validators && Array.isArray(field.validators.validation)) {
+      field.validators.validation.map(validate => {
         if (typeof validate === 'string') {
           validators.push(this.formlyConfig.getValidator(validate).validation);
         } else {
@@ -146,7 +148,13 @@ export class FormlyForm implements OnInit, OnChanges {
     }
 
     if (validators.length) {
-      field.validation = Validators.compose(validators);
+      if (field.validators && !Array.isArray(field.validators.validation)) {
+        field.validators.validation = Validators.compose([field.validators.validation, ...validators]);
+      } else {
+        field.validators = {
+          validation: Validators.compose(validators),
+        };
+      }
     }
   }
 
@@ -157,7 +165,7 @@ export class FormlyForm implements OnInit, OnChanges {
     } else {
       form.addControl(field.key, new FormControl(
         { value: model, disabled: field.templateOptions.disabled },
-        field.validation,
+        field.validators ? field.validators.validation : undefined,
         field.asyncValidation,
       ));
     }

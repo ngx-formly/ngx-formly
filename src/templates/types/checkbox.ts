@@ -19,7 +19,7 @@ export class FormlyFieldCheckbox extends Field {
   static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
     return new FormControl(
       { value: model ? 'on' : undefined, disabled: field.templateOptions.disabled },
-      field.validation,
+      field.validators ? field.validators.validation : undefined,
       field.asyncValidation,
     );
   }
