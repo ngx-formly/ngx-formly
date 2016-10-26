@@ -87,7 +87,7 @@ export class HelloApp {
       }, {
         className: 'row',
         fieldGroup: [{
-          className: 'col-xs-4',
+          className: 'col-xs-6',
           key: 'email',
           type: 'input',
           templateOptions: {
@@ -107,7 +107,18 @@ export class HelloApp {
             'templateOptions.disabled': '!model.password',
           },
         }, {
-          className: 'col-xs-4',
+          className: 'col-xs-6',
+          key: 'username',
+          type: 'input',
+          templateOptions: {
+            label: 'Username',
+            placeholder: 'Username',
+            description: 'Existing username: john',
+          },
+          asyncValidation: (control: FormControl) =>
+            new Promise(resolve => resolve( control.value !== 'john' ? null : { uniqueUsername: true })),
+        }, {
+          className: 'col-xs-6',
           key: 'password',
           type: 'input',
           templateOptions: {
@@ -117,7 +128,7 @@ export class HelloApp {
           },
           validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)]),
         }, {
-          className: 'col-xs-4',
+          className: 'col-xs-6',
           key: 'confirmPassword',
           type: 'input',
           templateOptions: {
@@ -180,12 +191,7 @@ export class HelloApp {
             placeholder: '76010',
           },
           validators: {
-            zipCode: (control: FormControl) => {
-              if (control.value.length === 5) {
-                return true;
-              }
-              return false;
-            },
+            zipCode: (control: FormControl) => control.value.length === 5,
           },
         }],
       }, {
@@ -340,6 +346,7 @@ export class HelloApp {
         },
         { name: 'not_matching', message: 'Password Not Matching' },
         { name: 'zipCode', message: 'ZIP code should be 5 characters'},
+        { name: 'uniqueUsername', message: 'This username is already taken.'},
       ],
       wrappers: [
         { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
