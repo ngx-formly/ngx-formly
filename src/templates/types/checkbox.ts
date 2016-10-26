@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Renderer, ElementRef } from '@angular/core';
 import { FormControl, AbstractControl } from '@angular/forms';
-import { Field } from './../field';
 import { FormlyFieldConfig } from '../../components/formly.field.config';
+import { FieldType } from '../field.type';
 
 @Component({
   selector: 'formly-field-checkbox',
@@ -15,12 +15,15 @@ import { FormlyFieldConfig } from '../../components/formly.field.config';
     </label>
   `,
 })
-export class FormlyFieldCheckbox extends Field {
+export class FormlyFieldCheckbox extends FieldType {
   static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
     return new FormControl(
       { value: model ? 'on' : undefined, disabled: field.templateOptions.disabled },
       field.validators ? field.validators.validation : undefined,
       field.asyncValidation,
     );
+  }
+  constructor(private renderer: Renderer, elementRef: ElementRef) {
+    super(renderer, elementRef);
   }
 }

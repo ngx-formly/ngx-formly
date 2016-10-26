@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, Renderer, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../components/formly.field.config';
 import { FieldType } from '../field.type';
@@ -25,5 +25,8 @@ export class FormlyFieldMultiCheckbox extends FieldType {
     }, {});
 
     return new FormGroup(controlGroupConfig);
+  }
+  constructor(private renderer: Renderer, private elementRef: ElementRef) {
+    super(renderer, elementRef);
   }
 }

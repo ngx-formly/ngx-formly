@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer, ElementRef } from '@angular/core';
 import { FieldType } from '../field.type';
 
 @Component({
@@ -15,4 +15,7 @@ import { FieldType } from '../field.type';
   `,
 })
 export class FormlyFieldRadio extends FieldType {
+  constructor(private renderer: Renderer, private elementRef: ElementRef) {
+    super(renderer, elementRef);
+  }
 }
