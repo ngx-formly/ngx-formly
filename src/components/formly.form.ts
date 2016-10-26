@@ -22,6 +22,7 @@ export class FormlyForm implements OnInit, OnChanges {
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
   private defaultPath;
+  private validationOpts = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
 
   constructor(private formlyConfig: FormlyConfig) {}
 
@@ -120,9 +121,14 @@ export class FormlyForm implements OnInit, OnChanges {
 
   private initFieldValidation(field: FormlyFieldConfig) {
     let validators = [];
+    for (let option in field.templateOptions) {
+      this.validationOpts.filter(opt => opt === option).map((opt) => {
+        validators.push(this.getValidation(opt, field.templateOptions[opt]));
+      });
+    }
     if (field.validators) {
       let validatorFn = (fn, validator) => (control: FormControl) =>
-          fn(control, this.form) ? null : {[validator]: true};
+          fn(control) ? null : {[validator]: true};
 
       for (let validator in field.validators) {
         validators.push(validatorFn(field.validators[validator], validator));
@@ -171,5 +177,34 @@ export class FormlyForm implements OnInit, OnChanges {
     } else {
       model[path[0]] = value;
     }
+  }
+
+  private getValidation(opt, value) {
+    switch (opt) {
+      case this.validationOpts[0]:
+        return Validators[opt];
+      case this.validationOpts[1]:
+      case this.validationOpts[2]:
+      case this.validationOpts[3]:
+        return Validators[opt](value);
+      case this.validationOpts[4]:
+      case this.validationOpts[5]:
+        return (changes) => {
+          if (this.checkMinMax(opt, changes.value, value)) {
+            return null;
+          } else {
+            return {[opt]: true};
+          }
+        };
+    }
+  }
+
+  private checkMinMax(opt, changes, value) {
+    if (opt === this.validationOpts[4]) {
+        return parseInt(changes) > value;
+    } else {
+        return parseInt(changes) < value;
+    }
+
   }
 }

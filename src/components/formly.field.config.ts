@@ -28,6 +28,12 @@ export interface FormlyTemplateOptions {
   description?: string;
   focus?: boolean;
   hidden?: boolean;
+  max?: number;
+  min?: number;
+  minLength?: number;
+  maxLength?: number;
+  pattern?: string;
+  required?: Boolean;
   [additionalProperties: string]: any;
 }
 
