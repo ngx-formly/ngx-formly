@@ -41,7 +41,9 @@ this.userFields = [{
           label: 'Email address',
           placeholder: 'Enter email'
       },
-      validation: Validators.compose([Validators.required, ValidationService.emailValidator])
+      validators: {
+        validation: Validators.compose([Validators.required, ValidationService.emailValidator])
+      }
   }, {
       className: 'col-xs-6',
       key: 'password',
@@ -52,7 +54,9 @@ this.userFields = [{
           placeholder: 'Password',
           pattern: ''
       },
-      validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
+      validators: {
+        validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
+      }
   }]
 }];
 
