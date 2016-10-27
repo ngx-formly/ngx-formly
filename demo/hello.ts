@@ -348,6 +348,10 @@ export class HelloApp {
   submit(user) {
     console.log(user);
   }
+
+  controlsReady() {
+    this.form.controls['title'].valueChanges.subscribe(title => console.log('The title has a new value:', title));
+  }
 }
 
 @NgModule({
