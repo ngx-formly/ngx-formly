@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm } from './components/formly.form';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { FormlyField } from './components/formly.field';
-import { FormlyNgFocus } from './components/formly.field.focus';
+import { FormlyAttributes } from './components/formly.attributes';
 import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/formly.config';
 import { FormlyMessage, FormlyMessages } from './services/formly.messages';
 import { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
@@ -22,7 +22,7 @@ export {
   FormlyEventEmitter,
 };
 
-const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage, FormlyNgFocus];
+const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage, FormlyAttributes];
 
 @NgModule({
   declarations: FORMLY_DIRECTIVES,

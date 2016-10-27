@@ -1,4 +1,4 @@
-import { Component, Renderer, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../components/formly.field.config';
 import { FieldType } from '../field.type';
@@ -9,7 +9,7 @@ import { FieldType } from '../field.type';
     <label class="custom-control custom-checkbox">
       <input type="checkbox" [formControl]="formControl"
         *ngIf="!templateOptions.hidden" value="on"
-        class="custom-control-input">
+        [formlyAttributes]="templateOptions" class="custom-control-input">
         {{templateOptions.label}}
         <span class="custom-control-indicator"></span>
     </label>
@@ -22,8 +22,5 @@ export class FormlyFieldCheckbox extends FieldType {
       field.validators ? field.validators.validation : undefined,
       field.asyncValidation,
     );
-  }
-  constructor(private renderer: Renderer, elementRef: ElementRef) {
-    super(renderer, elementRef);
   }
 }

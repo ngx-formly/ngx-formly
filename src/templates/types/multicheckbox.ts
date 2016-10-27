@@ -1,5 +1,5 @@
 
-import { Component, Renderer, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../components/formly.field.config';
 import { FieldType } from '../field.type';
@@ -10,7 +10,7 @@ import { FieldType } from '../field.type';
     <div *ngFor="let option of templateOptions.options" class="checkbox">
         <label class="custom-control custom-checkbox">
             <input type="checkbox" name="choose" value="{{option.value}}" [formControl]="formControl.get(option.key)"
-            class="custom-control-input">
+            [formlyAttributes]="templateOptions" class="custom-control-input">
             {{option.value}}
             <span class="custom-control-indicator"></span>
         </label>
@@ -25,8 +25,5 @@ export class FormlyFieldMultiCheckbox extends FieldType {
     }, {});
 
     return new FormGroup(controlGroupConfig);
-  }
-  constructor(private renderer: Renderer, private elementRef: ElementRef) {
-    super(renderer, elementRef);
   }
 }
