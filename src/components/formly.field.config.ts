@@ -34,6 +34,8 @@ export interface FormlyTemplateOptions {
   maxLength?: number;
   pattern?: string;
   required?: Boolean;
+  tabindex?: number;
+  step?: number;
   [additionalProperties: string]: any;
 }
 

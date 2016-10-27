@@ -5,8 +5,8 @@ import { FieldType } from '../field.type';
   selector: 'formly-field-textarea',
   template: `
     <textarea name="{{key}}" [formControl]="formControl" id="{{key}}" cols="{{templateOptions.cols}}"
-      rows="{{templateOptions.rows}}" [placeholder]="templateOptions.placeholder" class="form-control"
-      [formlyNgFocus]="templateOptions.focus">
+      rows="{{templateOptions.rows}}" class="form-control"
+      [formlyAttributes]="templateOptions">
     </textarea>
   `,
 })

@@ -7,7 +7,7 @@ import { FieldType } from '../field.type';
     <div *ngFor="let option of templateOptions.options" class="radio">
       <label class="custom-control custom-radio">
         <input type="radio" [value]="option.key" [formControl]="form.get(key)"
-        [formlyNgFocus]="templateOptions.focus" class="custom-control-input">
+        [formlyAttributes]="templateOptions" class="custom-control-input">
         {{option.value}}
         <span class="custom-control-indicator"></span>
       </label>

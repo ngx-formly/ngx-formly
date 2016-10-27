@@ -3,7 +3,7 @@ import 'core-js/es6';
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
 
-import { NgModule, Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { NgModule, Component, ViewChild, ViewContainerRef, enableProdMode } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
@@ -148,8 +148,9 @@ export class HelloApp {
           type: 'input',
           templateOptions: {
             type: 'password',
-            label: 'Password',
+            label: 'Confirm Password',
             placeholder: 'Confirm Password',
+            tabindex: 1,
           },
           validators: {
             validation: ValidationService.confirmPassword(this.form, 'password'),
@@ -214,6 +215,7 @@ export class HelloApp {
             maxLength: 5,
             pattern: '([0-9]{5})?',
             required: true,
+            step: 500,
           },
           validators: {
             zipCode: (control: FormControl) => control.value.length === 5,
@@ -385,5 +387,5 @@ export class HelloApp {
 })
 export class FormlyDemoModule {
 }
-
+enableProdMode();
 platformBrowserDynamic().bootstrapModule(FormlyDemoModule);

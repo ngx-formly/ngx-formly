@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, AbstractControl } from '@angular/forms';
-import { Field } from './../field';
 import { FormlyFieldConfig } from '../../components/formly.field.config';
+import { FieldType } from '../field.type';
 
 @Component({
   selector: 'formly-field-checkbox',
@@ -9,13 +9,13 @@ import { FormlyFieldConfig } from '../../components/formly.field.config';
     <label class="custom-control custom-checkbox">
       <input type="checkbox" [formControl]="formControl"
         *ngIf="!templateOptions.hidden" value="on"
-        class="custom-control-input">
+        [formlyAttributes]="templateOptions" class="custom-control-input">
         {{templateOptions.label}}
         <span class="custom-control-indicator"></span>
     </label>
   `,
 })
-export class FormlyFieldCheckbox extends Field {
+export class FormlyFieldCheckbox extends FieldType {
   static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
     return new FormControl(
       { value: model ? 'on' : undefined, disabled: field.templateOptions.disabled },
