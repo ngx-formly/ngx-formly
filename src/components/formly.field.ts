@@ -8,6 +8,7 @@ import { FormlyConfig } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate } from '../services/formly.field.delegates';
 import { FormlyFieldConfig } from './formly.field.config';
+import { FormlyUtils } from './../services/formly.utils';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -16,12 +17,14 @@ import 'rxjs/add/operator/debounceTime';
     <template #fieldComponent></template>
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
 
-    <formly-field *ngFor="let f of field.fieldGroup"
+    <formly-field *ngFor="let f of field.fieldGroup; let i = index"
       [hide]="f.hideExpression"
       [model]="model?(f.key ? model[f.key]: model):''"
       [form]="fieldGroupForm" [field]="f" [formModel]="formModel"
       (modelChange)="changeModel($event)"
-      [ngClass]="f.className">
+      [ngClass]="f.className"
+      [index]="i"
+      [formId]="formId">
     </formly-field>
   `,
 })
@@ -30,6 +33,8 @@ export class FormlyField implements DoCheck, OnInit {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
+  @Input() index: string;
+  @Input() formId: string;
   @Input()
   get hide() { return this._hide; }
   set hide(value: boolean) {
@@ -42,6 +47,10 @@ export class FormlyField implements DoCheck, OnInit {
     } else {
       this.psEmit(this.field.key, 'hidden', this._hide);
     }
+  }
+
+  get id() {
+    return this.formlyUtils.getFieldId(this.formId, this.field, this.index);
   }
 
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
@@ -57,6 +66,7 @@ export class FormlyField implements DoCheck, OnInit {
     private renderer: Renderer,
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
+    private formlyUtils: FormlyUtils
   ) {}
 
   ngDoCheck() {

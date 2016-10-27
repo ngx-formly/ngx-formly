@@ -9,6 +9,7 @@ import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/form
 import { FormlyMessage, FormlyMessages } from './services/formly.messages';
 import { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
 import { FormlyFieldVisibilityDelegate } from './services/formly.field.delegates';
+import { FormlyUtils } from './services/formly.utils';
 
 export {
   FormlyField,
@@ -40,6 +41,7 @@ export class FormlyModule {
         FormlyConfig,
         FormlyPubSub,
         FormlyMessages,
+        FormlyUtils,
         { provide: FORMLY_CONFIG_TOKEN, useValue: config, multi: true },
         { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
       ],
