@@ -33,7 +33,7 @@ const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyMessage, FormlyNgFocus
   ],
 })
 export class FormlyModule {
-  static forRoot(config: ConfigOption): ModuleWithProviders {
+  static forRoot(config: ConfigOption = {}): ModuleWithProviders {
     return {
       ngModule: FormlyModule,
       providers: [
