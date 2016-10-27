@@ -68,10 +68,6 @@ export class FormlyConfig {
     return this.wrappers[name];
   }
 
-  setValidator(options: ValidatorOption) {
-    this.validators[options.name] = options;
-  }
-
   setTypeWrapper(type, name) {
     if (!this.types[type]) {
       this.types[type] = <TypeOption>{};
@@ -80,6 +76,10 @@ export class FormlyConfig {
       this.types[type].wrappers = <[string]>[];
     }
     this.types[type].wrappers.push(name);
+  }
+
+  setValidator(options: ValidatorOption) {
+    this.validators[options.name] = options;
   }
 
   getValidator(name: string): ValidatorOption {
