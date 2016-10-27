@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
@@ -21,6 +21,7 @@ export class FormlyForm implements OnInit, OnChanges {
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
+  @Output() controlsReady = new EventEmitter();
   private defaultPath;
   private validationOpts = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
 
@@ -35,6 +36,7 @@ export class FormlyForm implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
       this.registerFormControls(this.fields, this.form, this.model);
+      this.controlsReady.next();
     }
   }
 
