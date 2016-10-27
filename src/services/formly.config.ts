@@ -11,7 +11,7 @@ export class FormlyConfig {
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
 
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs) {
+  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = []) {
     configs.map(config => {
       if (config.types) {
         config.types.map(type => this.setType(type));
