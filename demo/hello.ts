@@ -67,7 +67,7 @@ export class HelloApp {
     };
     this.env = {
       angularVersion: '2.1.1',
-      formlyVersion: '2.0.0-beta.8',
+      formlyVersion: '2.0.0-beta.9',
     };
 
     let userFields: Array<FormlyFieldConfig> = [{
