@@ -4,34 +4,33 @@ import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyConfig } from '../services/formly.config';
 
+let formId = 0;
 @Component({
   selector: 'formly-form',
   template: `
-    <formly-field *ngFor="let field of fields"
+    <formly-field *ngFor="let field of fields; let i = index"
       [hide]="field.hideExpression" [model]="field.key?model[field.key]:model"
       [form]="form" [field]="field" [formModel]="model"
       (modelChange)="changeModel($event)"
-      [ngClass]="field.className">
+      [ngClass]="field.className"
+      [index]="i"
+      [formId]="formId">
     </formly-field>
     <ng-content></ng-content>
   `,
 })
 export class FormlyForm implements OnInit, OnChanges {
-  @Input() formModel: any;
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
+  formId;
   private defaultPath;
   private validationOpts = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
-
   constructor(private formlyConfig: FormlyConfig) {}
 
   ngOnInit() {
-    if (!this.formModel) {
-      this.formModel = this.model;
-    }
+    this.formId = `formly_${formId++}`;
   }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
       this.registerFormControls(this.fields, this.form, this.model);

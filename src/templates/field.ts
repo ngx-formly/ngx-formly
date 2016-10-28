@@ -12,4 +12,6 @@ export abstract class Field {
   get formControl(): AbstractControl { return this.form.get(this.key); }
   get templateOptions(): FormlyTemplateOptions { return this.field.templateOptions; }
   get valid() { return this.formControl.touched && !this.formControl.valid; }
+
+  get id() { return this.field.id; }
 }

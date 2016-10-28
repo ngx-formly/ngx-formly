@@ -110,6 +110,7 @@ export class HelloApp {
           },
         }, {
           className: 'col-xs-6',
+          id: 'username',
           key: 'username',
           type: 'input',
           templateOptions: {

@@ -5,7 +5,7 @@ import { FieldWrapper } from '../field.wrapper';
   selector: 'formly-wrapper-label',
   template: `
     <div>
-      <label attr.for="{{key}}" class="form-control-label">{{templateOptions.label}}</label>
+      <label attr.for="{{id}}" class="form-control-label">{{templateOptions.label}}</label>
       <template #fieldComponent></template>
     </div>
   `,

@@ -9,7 +9,7 @@ import { FieldType } from '../field.type';
   template: `
     <div *ngFor="let option of templateOptions.options" class="checkbox">
         <label class="custom-control custom-checkbox">
-            <input type="checkbox" name="choose" value="{{option.value}}" [formControl]="formControl.get(option.key)"
+            <input [id]="id" type="checkbox" name="choose" value="{{option.value}}" [formControl]="formControl.get(option.key)"
             [formlyAttributes]="templateOptions" class="custom-control-input">
             {{option.value}}
             <span class="custom-control-indicator"></span>
