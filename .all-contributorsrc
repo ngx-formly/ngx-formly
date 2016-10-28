@@ -1,0 +1,88 @@
+{
+  "projectName": "ng2-formly",
+  "projectOwner": "formly-js",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "mohammedzamakhan",
+      "name": "Zama Khan Mohammed",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2327532?v=3",
+      "profile": "https://www.linkedin.com/in/mohammedzamakhan",
+      "contributions": [
+        "doc",
+        "code",
+        "review",
+        "question",
+        "infra",
+        "tool"
+      ]
+    },
+    {
+      "login": "aitboudad",
+      "name": "Abdellatif Ait boudad",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1753742?v=3",
+      "profile": "https://github.com/aitboudad",
+      "contributions": [
+        "code",
+        "doc",
+        "test",
+        "review",
+        "question"
+      ]
+    },
+    {
+      "login": "divyakumarjain",
+      "name": "divyakumarjain",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2039134?v=3",
+      "profile": "https://github.com/divyakumarjain",
+      "contributions": [
+        "code",
+        "doc",
+        "plugin",
+        "review",
+        "question"
+      ]
+    },
+    {
+      "login": "Pouja",
+      "name": "Pouja",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2385144?v=3",
+      "profile": "https://github.com/Pouja",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "ckniffen",
+      "name": "Caleb Kniffen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/464895?v=3",
+      "profile": "http://twitter.com/ckniffty",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "Riron",
+      "name": "Riron",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5145523?v=3",
+      "profile": "https://github.com/Riron",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "thiagogjt",
+      "name": "Thiago Lacerda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/645187?v=3",
+      "profile": "https://github.com/thiagogjt",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ]
+}
