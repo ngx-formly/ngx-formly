@@ -1,13 +1,11 @@
-import { Inject, Component, Input, Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Inject, Injectable } from '@angular/core';
 import { FORMLY_CONFIG_TOKEN } from './formly.config';
-import { FormlyFieldConfig } from '../components/formly.field.config';
 
 @Injectable()
 export class FormlyMessages {
   messages = {};
 
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs) {
+  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = []) {
     configs.map(config => {
       if (config.validationMessages) {
         config.validationMessages.map(validation => this.addStringMessage(validation.name, validation.message));
@@ -25,32 +23,5 @@ export class FormlyMessages {
 
   getValidatorErrorMessage(prop) {
     return this.messages[prop];
-  }
-}
-
-@Component({
-  selector: 'formly-message',
-  template: `<div *ngIf="errorMessage">{{errorMessage}}</div>`,
-})
-export class FormlyMessage {
-  @Input() controlName: string;
-  @Input() form: FormGroup;
-
-  @Input() field: FormlyFieldConfig;
-
-  constructor(private formlyMessages: FormlyMessages) {}
-
-  get errorMessage() {
-    let formControl = this.form.get(this.controlName);
-
-    for (let propertyName in formControl.errors) {
-      if (formControl.errors.hasOwnProperty(propertyName)) {
-        let message = this.formlyMessages.getValidatorErrorMessage(propertyName);
-        if (typeof message === 'function') {
-          return message(formControl.errors[propertyName], this.field);
-        }
-        return message;
-      }
-    }
   }
 }
