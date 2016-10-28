@@ -1,8 +1,8 @@
 <img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
 
-
 # ng2-formly
 [![Angular Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
 [![Stories in Ready](https://badge.waffle.io/formly-js/ng2-formly.png?label=ready&title=Ready)](https://waffle.io/formly-js/ng2-formly)
 
 Status:
@@ -153,3 +153,14 @@ A special thanks to [Kent C. Dodds](https://twitter.com/kentcdodds) for giving m
 This library is maintained (with love) by me, [Mohammed Zama Khan](https://twitter.com/mohamedzamakhan).
 Thanks to all [contributors](https://github.com/formly-js/angular2-formly/graphs/contributors)!
 If you're trying to find angular-formly, go [here](https://github.com/formly-js/angular-formly)
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+| [<img src="https://avatars.githubusercontent.com/u/2327532?v=3" width="100px;"/><br /><sub>Zama Khan Mohammed</sub>](https://www.linkedin.com/in/mohammedzamakhan)<br />[📖](https://github.com/formly-js/ng2-formly/commits?author=mohammedzamakhan) [💻](https://github.com/formly-js/ng2-formly/commits?author=mohammedzamakhan) 👀 💁 🚇 🔧 | [<img src="https://avatars.githubusercontent.com/u/1753742?v=3" width="100px;"/><br /><sub>Abdellatif Ait boudad</sub>](https://github.com/aitboudad)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=aitboudad) [📖](https://github.com/formly-js/ng2-formly/commits?author=aitboudad) [⚠️](https://github.com/formly-js/ng2-formly/commits?author=aitboudad) 👀 💁 | [<img src="https://avatars.githubusercontent.com/u/2039134?v=3" width="100px;"/><br /><sub>divyakumarjain</sub>](https://github.com/divyakumarjain)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=divyakumarjain) [📖](https://github.com/formly-js/ng2-formly/commits?author=divyakumarjain) 🔌 👀 💁 | [<img src="https://avatars.githubusercontent.com/u/2385144?v=3" width="100px;"/><br /><sub>Pouja</sub>](https://github.com/Pouja)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=Pouja) 👀 | [<img src="https://avatars.githubusercontent.com/u/464895?v=3" width="100px;"/><br /><sub>Caleb Kniffen</sub>](http://twitter.com/ckniffty)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Ackniffen) | [<img src="https://avatars.githubusercontent.com/u/5145523?v=3" width="100px;"/><br /><sub>Riron</sub>](https://github.com/Riron)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3ARiron) | [<img src="https://avatars.githubusercontent.com/u/645187?v=3" width="100px;"/><br /><sub>Thiago Lacerda</sub>](https://github.com/thiagogjt)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Athiagogjt) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

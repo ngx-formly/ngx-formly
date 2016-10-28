@@ -10,6 +10,8 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
+    "contrib:add": "all-contributors add",
+    "contrib:generate": "all-contributors generate",
     "tsc": "./node_modules/.bin/tsc",
     "ngc": "./node_modules/.bin/ngc",
     "lint": "./node_modules/.bin/tslint 'src/**/*.ts' 'demo/**/*.ts'",
