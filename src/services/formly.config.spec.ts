@@ -2,7 +2,7 @@ import { FormlyConfig } from './formly.config';
 import { Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 
-describe('FormlyConfig', () => {
+describe('FormlyConfig service', () => {
   let config: FormlyConfig;
   beforeEach(() => {
     config = new FormlyConfig([{

@@ -6,7 +6,8 @@ import { FormlyFieldConfig } from './components/formly.field.config';
 import { FormlyField } from './components/formly.field';
 import { FormlyAttributes } from './components/formly.attributes';
 import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/formly.config';
-import { FormlyMessage, FormlyMessages } from './services/formly.messages';
+import { FormlyMessage } from './components/formly.message';
+import { FormlyMessages } from './services/formly.messages';
 import { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
 import { FormlyFieldVisibilityDelegate } from './services/formly.field.delegates';
 
