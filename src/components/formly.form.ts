@@ -31,6 +31,7 @@ export class FormlyForm implements OnInit, OnChanges {
   ngOnInit() {
     this.formId = `formly_${formId++}`;
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
       this.registerFormControls(this.fields, this.form, this.model);
@@ -57,15 +58,19 @@ export class FormlyForm implements OnInit, OnChanges {
         }
 
         if (path.length > 1) {
-          let nestedForm = <FormGroup>(form.get(path[0]) ? form.get(path[0]) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidation));
+          const rootPath = path.shift();
+          let nestedForm = <FormGroup>(form.get(rootPath) ? form.get(rootPath) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidation));
           if (!form.get(field.key)) {
-            form.addControl(path[0], nestedForm);
+            form.addControl(rootPath, nestedForm);
           }
-          path.shift();
+          if (!model[rootPath]) {
+            model[rootPath] = isNaN(rootPath) ? {} : [];
+          }
+
           this.registerFormControls(
             [Object.assign({}, field, {key: path})],
             nestedForm,
-            model[path[0]] || isNaN(path[0]) ? {} : []
+            model[rootPath]
           );
         } else {
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');

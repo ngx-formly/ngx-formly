@@ -313,6 +313,11 @@ export class HelloApp {
         sports: false,
         others: true,
       },
+      nested: {
+        property: {
+          magic: 'Nested property Content',
+        },
+      },
     };
   }
 
