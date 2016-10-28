@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyConfig } from '../services/formly.config';
@@ -93,6 +93,13 @@ export class FormlyForm implements OnInit, OnChanges {
           this.registerFormControls(field.fieldGroup, nestedForm, nestedModel);
         } else {
           this.registerFormControls(field.fieldGroup, form, model);
+        }
+      }
+      if (field.fieldArray) {
+        if (field.key) {
+          form.removeControl(field.key);
+          const arrayForm = <FormArray>new FormArray([], field.validators ? field.validators.validation : undefined, field.asyncValidation);
+          form.addControl(field.key, arrayForm);
         }
       }
     });

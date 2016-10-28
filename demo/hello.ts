@@ -9,6 +9,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field, FieldWrapper } from './../src/index';
 import { ValidationService } from './validation.service';
+import { RepeatComponent } from './repeatedSection';
 
 // Custom Input Field type 'toggle' Component Definition
 @Component({
@@ -295,6 +296,44 @@ export class HelloApp {
           label: 'Array property',
         },
         defaultValue: 'Default Value',
+      }, {
+        type: 'repeatSection',
+        key: 'investments',
+        fieldArray: {
+          className: 'row',
+          templateOptions: {
+            btnText: 'Add another investment',
+          },
+          fieldGroup: [
+            {
+              className: 'col-xs-4',
+              type: 'input',
+              key: 'investmentName',
+              templateOptions: {
+                label: 'Name of Investment:',
+                required: true,
+              },
+            },
+            {
+              type: 'input',
+              key: 'investmentDate',
+              className: 'col-xs-4',
+              templateOptions: {
+                label: 'Date of Investment:',
+                placeholder: 'dd/mm/yyyy such as 20/05/2015',
+                dateFormat: 'DD, d  MM, yy',
+              },
+            },
+            {
+              type: 'input',
+              key: 'stockIdentifier',
+              className: 'col-xs-4',
+              templateOptions: {
+                label: 'Stock Identifier:',
+              },
+            },
+          ],
+        },
       },
     ];
 
@@ -318,6 +357,17 @@ export class HelloApp {
           magic: 'Nested property Content',
         },
       },
+      investments: [
+        {
+          investmentName: 'Formly',
+          investmentDate: (new Date()).toDateString(),
+          stockIdentifier: 'FO',
+        }, {
+          investmentName: 'Formly Website',
+          investmentDate: (new Date()).toDateString(),
+          stockIdentifier: 'FW',
+        },
+      ],
     };
   }
 
@@ -360,14 +410,15 @@ export class HelloApp {
 
 @NgModule({
   declarations: [
-    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel,
+    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel, RepeatComponent,
   ],
   imports: [
     BrowserModule,
     FormlyModule.forRoot({
       types: [
         { name: 'toggle', component: FormlyFieldToggle },
-        { name: 'horizontalInput', extends: 'input'}],
+        { name: 'horizontalInput', extends: 'input'},
+        { name: 'repeatSection', component: RepeatComponent }],
       validators: [{ name: 'required', validation: Validators.required}],
       validationMessages: [
         { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},

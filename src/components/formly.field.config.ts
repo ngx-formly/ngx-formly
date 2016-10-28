@@ -7,6 +7,7 @@ export interface FormlyFieldConfig {
   asyncValidation?: any;
   template?: string;
   fieldGroup?: Array<FormlyFieldConfig>;
+  fieldArray?: FormlyFieldConfig;
   hideExpression?: boolean | string | (() => boolean);
   className?: string;
   type?: string;

@@ -95,7 +95,7 @@ export class FormlyField implements DoCheck, OnInit {
   }
 
   private createChildFields() {
-    if (this.field && !this.field.template && !this.field.fieldGroup) {
+    if (this.field && !this.field.template && !this.field.fieldGroup && !this.field.fieldArray) {
       let debounce = 0;
       if (this.field.modelOptions && this.field.modelOptions.debounce && this.field.modelOptions.debounce.default) {
         debounce = this.field.modelOptions.debounce.default;
@@ -113,6 +113,8 @@ export class FormlyField implements DoCheck, OnInit {
       });
 
       this.formlyPubSub.setEmitter(this.field.key, update);
+    } else if (this.field.fieldArray) {
+      this.createFieldComponent();
     }
   }
 
