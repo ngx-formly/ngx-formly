@@ -4,6 +4,7 @@
 # ng2-formly
 [![Angular Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
 [![Stories in Ready](https://badge.waffle.io/formly-js/ng2-formly.png?label=ready&title=Ready)](https://waffle.io/formly-js/ng2-formly)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
 
 Status:
 [![Build Status](https://travis-ci.org/formly-js/ng2-formly.svg?branch=master)](https://travis-ci.org/formly-js/ng2-formly)
@@ -145,6 +146,16 @@ See the [issues labeled enhancement](https://github.com/formly-js/angular2-forml
 
  - [Material2](https://github.com/formly-js/ng2-formly-template-material)
  - [Bootstrap](https://github.com/formly-js/ng2-formly-templates-bootstrap)
+ 
+## Contributors
+
+Thanks goes to these wonderful people:
+
+| [![Zama Khan Mohammed](https://avatars.githubusercontent.com/mohammedzamakhan?s=100)<br /><sub>Zama Khan Mohammed</sub>](https://github.com/mohammedzamakhan)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=mohammedzamakhan)[📖](https://github.com/formly-js/ng2-formly/commits?author=mohammedzamakhan) 👀 💁🔧🚇 | [![Abdellatif Ait boudad](https://avatars.githubusercontent.com/aitboudad?s=100)<br /><sub>Abdellatif Ait boudad</sub>](https://github.com/aitboudad)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=aitboudad)[📖](https://github.com/formly-js/ng2-formly/commits?author=aitboudad) ⚠️👀💁 | [![divyakumarjain](https://avatars.githubusercontent.com/divyakumarjain?s=100)<br /><sub>divyakumarjain</sub>](https://github.com/divyakumarjain)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=divyakumarjain)[📖](https://github.com/formly-js/ng2-formly/commits?author=divyakumarjain) 🔌👀💁 | [![Pouja](https://avatars.githubusercontent.com/Pouja?s=100)<br /><sub>Pouja</sub>](https://github.com/Pouja)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=Pouja) 👀 | [![ckniffen](https://avatars.githubusercontent.com/ckniffen?s=100)<br /><sub>Caleb Kniffen</sub>](https://github.com/ckniffen)<br /> [🐛](https://github.com/formly-js/ng2-formly/issues?author=ckniffen) | [![Riron](https://avatars.githubusercontent.com/Riron?s=100)<br /><sub>Riron</sub>](https://github.com/Riron)<br /> [🐛](https://github.com/formly-js/ng2-formly/issues?author=Riron) | [![thiagogjt](https://avatars.githubusercontent.com/thiagogjt?s=100)<br /><sub>Thiago Lacerda</sub>](https://github.com/thiagogjt)<br /> [🐛](https://github.com/formly-js/ng2-formly/issues?author=thiagogjt) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification.
+Contributions of any kind welcome!
 
 
 ## Thanks
