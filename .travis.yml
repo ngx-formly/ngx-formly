@@ -5,18 +5,19 @@ cache:
   directories:
     - $HOME/.npm
     - $HOME/.yarn-cache
-
+    - node_modules
 node_js:
-  - "5"
-  - "4"
-
+  - "6"
+  
+before_install:
+  - npm i -g yarn --cache-min 999999999
+  
 install:
-  - npm install yarn -g
-  - yarn install
+  - yarn
 
 script:
-- npm run lint
-- npm run test
+- yarn lint
+- yarn test
 
 branches:
   only:
