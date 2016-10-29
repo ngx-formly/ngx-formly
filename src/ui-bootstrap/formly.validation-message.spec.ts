@@ -1,9 +1,10 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { createGenericTestComponent } from '../test-utils';
+import { createGenericTestComponent } from '../core/test-utils';
 
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FormlyModule } from '../core';
+import { FormlyModule } from '../core/core';
+import { FormlyValidationMessage } from './formly.validation-message';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -15,13 +16,15 @@ function getFormlyValidationMessageElement(element: HTMLElement): HTMLDivElement
 describe('FormlyValidationMessage Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [FormlyModule.forRoot({
-        validationMessages: [
-          { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},
-          { name: 'maxlength', message: 'Maximum Length Exceeded.' },
-        ],
-      })],
+      declarations: [FormlyValidationMessage, TestComponent],
+      imports: [
+        FormlyModule.forRoot({
+          validationMessages: [
+            { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},
+            { name: 'maxlength', message: 'Maximum Length Exceeded.' },
+          ],
+        }),
+      ],
     });
   });
 

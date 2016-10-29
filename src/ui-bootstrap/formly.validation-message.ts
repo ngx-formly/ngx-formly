@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FormlyFieldConfig } from '../components/formly.field.config';
-import { FormlyValidationMessages } from '../services/formly.validation-messages';
+import { FormlyFieldConfig, FormlyValidationMessages } from '../core/core';
 
 @Component({
   selector: 'formly-validation-message',
