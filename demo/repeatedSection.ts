@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FieldType } from '../src/templates/field.type';
-import { FormlyFieldConfig } from '../src/components/formly.field.config';
+import { FieldType, FormlyFieldConfig } from '../src/index';
 
 @Component({
   selector: 'formly-repeat-section',

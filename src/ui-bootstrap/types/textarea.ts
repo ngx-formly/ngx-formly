@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from '../field.type';
+import { FieldType } from '../../core/core';
 
 @Component({
   selector: 'formly-field-textarea',

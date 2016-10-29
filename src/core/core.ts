@@ -6,11 +6,14 @@ import { FormlyFieldConfig } from './components/formly.field.config';
 import { FormlyField } from './components/formly.field';
 import { FormlyAttributes } from './components/formly.attributes';
 import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/formly.config';
-import { FormlyValidationMessage } from './templates/formly.validation-message';
 import { FormlyValidationMessages } from './services/formly.validation-messages';
 import { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
 import { FormlyFieldVisibilityDelegate } from './services/formly.field.delegates';
+export { SingleFocusDispatcher } from './services/formly.single.focus.dispatcher'
 import { FormlyUtils } from './services/formly.utils';
+import { Field } from './templates/field';
+import { FieldType } from './templates/field.type';
+import { FieldWrapper } from './templates/field.wrapper';
 
 export {
   FormlyField,
@@ -18,13 +21,16 @@ export {
   FormlyForm,
   FormlyConfig,
   FormlyPubSub,
-  FormlyValidationMessage,
   FormlyValidationMessages,
   FormlyFieldVisibilityDelegate,
   FormlyEventEmitter,
+
+  Field,
+  FieldType,
+  FieldWrapper,
 };
 
-const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyValidationMessage, FormlyAttributes];
+const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyAttributes];
 
 @NgModule({
   declarations: FORMLY_DIRECTIVES,
