@@ -2,17 +2,17 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test-utils';
 
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { FormlyModule } from '../core';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function getFormlyMessageElement(element: HTMLElement): HTMLDivElement {
-  return <HTMLDivElement>element.querySelector('formly-message');
+function getFormlyValidationMessageElement(element: HTMLElement): HTMLDivElement {
+  return <HTMLDivElement>element.querySelector('formly-validation-message');
 }
 
-describe('FormlyMessage Component', () => {
+describe('FormlyValidationMessage Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
@@ -26,9 +26,9 @@ describe('FormlyMessage Component', () => {
   });
 
   it('should not render message with a valid value', () => {
-    const fixture = createTestComponent('<formly-message [form]="form" [field]="field" [controlName]="field.key"></formly-message>');
-    const formlyMessageElm = getFormlyMessageElement(fixture.nativeElement);
-    fixture.componentInstance.form.get('title').setValue('12');
+    const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
+    const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
+    fixture.componentInstance.formControl.setValue('12');
     fixture.detectChanges();
 
     expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
@@ -36,17 +36,17 @@ describe('FormlyMessage Component', () => {
   });
 
   it('should render message with a dynamic validation message', () => {
-    const fixture = createTestComponent('<formly-message [form]="form" [field]="field" [controlName]="field.key"></formly-message>');
-    const formlyMessageElm = getFormlyMessageElement(fixture.nativeElement);
+    const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
+    const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
 
     expect(formlyMessageElm.textContent).toMatch(/Title is required/);
         expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
   });
 
   it('should render message with a simple validation message', () => {
-    const fixture = createTestComponent('<formly-message [form]="form" [field]="field" [controlName]="field.key"></formly-message>');
-    const formlyMessageElm = getFormlyMessageElement(fixture.nativeElement);
-    fixture.componentInstance.form.get('title').setValue('test');
+    const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
+    const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
+    fixture.componentInstance.formControl.setValue('test');
     fixture.detectChanges();
 
     expect(formlyMessageElm.textContent).toMatch(/Maximum Length Exceeded/);
@@ -54,10 +54,9 @@ describe('FormlyMessage Component', () => {
   });
 });
 
-@Component({selector: 'formly-message-test', template: '', entryComponents: []})
+@Component({selector: 'formly-validation-message-test', template: '', entryComponents: []})
 class TestComponent {
-  form = new FormGroup({ title: new FormControl(null, [Validators.required, Validators.maxLength(3)]) });
-  controlName;
+  formControl = new FormControl(null, [Validators.required, Validators.maxLength(3)]);
   field = {
     type: 'input',
     key: 'title',

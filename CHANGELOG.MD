@@ -1,3 +1,30 @@
+# 2.0.0-beta.10
+
+### BREAKING CHANGES
+* The service `FormlyMessages` is now renamed to `FormlyValidationMessages`.
+   Before:
+
+   ```ts
+   import {FormlyMessages} from 'ng2-formly';
+   ```
+   After:
+
+   ```ts
+   import {FormlyValidationMessages} from 'ng2-formly';
+   ```
+
+* The component `FormlyMessage` is now renamed to `FormlyValidationMessage`.
+   Before:
+
+   ```html
+   <formly-message [form]="form" [field]="field" [controlName]="key"></formly-message>
+   ```
+   After:
+
+   ```html
+   <formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>
+   ```
+
 # 2.0.0-beta.8
 
 ### Bug Fixes
@@ -10,7 +37,7 @@
 * **ValidationMessages** Messages should have info of fields ([#177](https://github.com/formly-js/ng2-formly/issues/177)) [f285b63](https://github.com/formly-js/ng2-formly/commit/f285b63)
 * **Validation** validation.show implementation ([#176](https://github.com/formly-js/ng2-formly/issues/176)) [80df918](https://github.com/formly-js/ng2-formly/commit/80df918)
 * **Validation** Some basic validations in templateOptions [56a4097](https://github.com/formly-js/ng2-formly/commit/56a4097)
-* **Validation**: add support for async-validation [c69fc74](https://github.com/formly-js/ng2-formly/commit/c69fc74) 
+* **Validation**: add support for async-validation [c69fc74](https://github.com/formly-js/ng2-formly/commit/c69fc74)
 * **Validation** add Validators API [eff65b9](https://github.com/formly-js/ng2-formly/commit/eff65b9)
 * **Validation** Dynamic Validation Messages fixes #136 [600a80b](https://github.com/formly-js/ng2-formly/commit/600a80b)
 * **Wrappers** Types property can be set to wrappers [fd2496c](https://github.com/formly-js/ng2-formly/commit/fd2496c)
@@ -33,7 +60,7 @@
 * **FormlyField**: add field fieldGroupForm [320bdac](https://github.com/formly-js/ng2-formly/commit/320bdac)
 * **Validation**: simplify init Field Validation. [0745f4a](https://github.com/formly-js/ng2-formly/commit/0745f4a)
 
-### Documentation 
+### Documentation
 * **bootstrap**: Update Documentation with bootstraping ng2-formly [09cd1b3](https://github.com/formly-js/ng2-formly/commit/09cd1b3)
 
 
