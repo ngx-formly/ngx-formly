@@ -1,9 +1,9 @@
-import { FormlyMessages } from './formly.messages';
+import { FormlyValidationMessages } from './formly.validation-messages';
 
-describe('FormlyMessages service', () => {
-  let formlyMessages: FormlyMessages;
+describe('FormlyValidationMessages service', () => {
+  let formlyMessages: FormlyValidationMessages;
   beforeEach(() => {
-    formlyMessages = new FormlyMessages([{
+    formlyMessages = new FormlyValidationMessages([{
       validationMessages: [
         { name: 'required', message: 'This field is required.' },
       ],

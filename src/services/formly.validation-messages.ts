@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { FORMLY_CONFIG_TOKEN } from './formly.config';
 
 @Injectable()
-export class FormlyMessages {
+export class FormlyValidationMessages {
   messages = {};
 
   constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = []) {

@@ -6,7 +6,7 @@ import { FieldWrapper } from '../field.wrapper';
   template: `
     <template #fieldComponent></template>
     <div>
-      <small class="text-muted text-danger" *ngIf="valid"><formly-message [form]="form" [field]="field" [controlName]="key"></formly-message></small>
+      <small class="text-muted text-danger" *ngIf="valid"><formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message></small>
     </div>
   `,
 })
