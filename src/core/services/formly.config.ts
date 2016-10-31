@@ -1,5 +1,7 @@
 import { Injectable, Inject, OpaqueToken } from '@angular/core';
 import { FormlyGroup } from '../components/formly.group';
+import { FormlyUtils } from './formly.utils';
+import { FormlyFieldConfig } from '../components/formly.field.config';
 
 export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
 
@@ -22,7 +24,7 @@ export class FormlyConfig {
     postWrapper: [],
   };
 
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
+  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = [], private formlyUtils: FormlyUtils) {
     configs.map(config => {
       if (config.types) {
         config.types.map(type => this.setType(type));
@@ -41,7 +43,7 @@ export class FormlyConfig {
 
   setType(options: TypeOption | TypeOption[]) {
     if (Array.isArray(options)) {
-      options.map(option => {
+      options.map((option) => {
         this.setType(option);
       });
     } else {
@@ -51,6 +53,7 @@ export class FormlyConfig {
       this.types[options.name].component = options.component;
       this.types[options.name].name = options.name;
       this.types[options.name].extends = options.extends;
+      this.types[options.name].defaultOptions = options.defaultOptions;
       if (options.wrappers) {
         options.wrappers.map((wrapper) => {
           this.setTypeWrapper(options.name, wrapper);
@@ -69,6 +72,36 @@ export class FormlyConfig {
     }
 
     return this.types[name];
+  }
+
+  getMergedField(field: FormlyFieldConfig = {}): any {
+    let name = field.type;
+    if (!this.types[name]) {
+      throw new Error(`[Formly Error] There is no type by the name of "${name}"`);
+    }
+
+    if (!this.types[name].component && this.types[name].extends) {
+      this.types[name].component = this.getType(this.types[name].extends).component;
+    }
+
+    if (this.types[name].defaultOptions) {
+      this.formlyUtils.reverseDeepMerge(field, this.types[name].defaultOptions);
+    }
+
+    let extendDefaults = this.types[name].extends && this.getType(this.types[name].extends).defaultOptions;
+    if (extendDefaults) {
+      this.formlyUtils.reverseDeepMerge(field, extendDefaults);
+    }
+
+    if (field && field.optionsTypes) {
+      field.optionsTypes.map(option => {
+        let defaultOptions = this.getType(option).defaultOptions;
+        if (defaultOptions) {
+          this.formlyUtils.reverseDeepMerge(field, defaultOptions);
+        }
+      });
+    }
+    this.formlyUtils.reverseDeepMerge(field, this.types[name]);
   }
 
   setWrapper(options: WrapperOption) {
@@ -120,6 +153,7 @@ export interface TypeOption {
   component?: any;
   wrappers?: string[];
   extends?: string;
+  defaultOptions?: any;
 }
 
 export interface WrapperOption {

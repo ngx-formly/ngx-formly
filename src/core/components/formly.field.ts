@@ -112,7 +112,7 @@ export class FormlyField implements DoCheck, OnInit {
     let postWrappers = this.runManipulators(fieldManipulators.postWrapper, this.field);
     if (!type.wrappers) type.wrappers = [];
     if (!this.field.wrappers) this.field.wrappers = [];
-    let wrappers = [...preWrappers, ...type.wrappers, ...this.field.wrappers, ...postWrappers];
+    let wrappers = [...preWrappers, ...this.field.wrappers, ...postWrappers];
     wrappers.map(wrapperName => {
       let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
       fieldComponent = wrapperRef.instance.fieldComponent;

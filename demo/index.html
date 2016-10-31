@@ -64,7 +64,11 @@
             background: white;
             width: 30px;
             height: 30px;
-            border-radius: 15px;
+            border-radius: 50%;
+        }
+        .checkbox-toggle--large label div {
+          width: 41px;
+          height: 41px;
         }
         .checkbox-toggle label:hover, .checkbox-toggle label > div:hover {
             cursor: pointer;
@@ -72,11 +76,18 @@
         .checkbox-toggle input[type="checkbox"]:checked + label > div {
             margin-left: 36px;
         }
+        .checkbox-toggle--large input[type="checkbox"]:checked + label > div {
+            margin-left: 55px;
+        }
         .checkbox-toggle label {
             border: 2px solid #ECEEEF;
             border-radius: 42px;
             height: 34px;
             width: 70px;
+        }
+        .checkbox-toggle--large label {
+          width: 100px;
+          height: 45px;
         }
 
     </style>
