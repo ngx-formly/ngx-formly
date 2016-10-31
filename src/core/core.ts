@@ -14,6 +14,7 @@ import { FormlyUtils } from './services/formly.utils';
 import { Field } from './templates/field';
 import { FieldType } from './templates/field.type';
 import { FieldWrapper } from './templates/field.wrapper';
+import { FormlyGroup } from './components/formly.group';
 
 export {
   FormlyField,
@@ -30,10 +31,11 @@ export {
   FieldWrapper,
 };
 
-const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyAttributes];
+const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup];
 
 @NgModule({
   declarations: FORMLY_DIRECTIVES,
+  entryComponents: [FormlyGroup],
   exports: FORMLY_DIRECTIVES,
   imports: [
     CommonModule,

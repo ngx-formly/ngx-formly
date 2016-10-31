@@ -1,4 +1,5 @@
 import { Injectable, Inject, OpaqueToken } from '@angular/core';
+import { FormlyGroup } from '../components/formly.group';
 
 export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
 
@@ -7,7 +8,12 @@ export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
  */
 @Injectable()
 export class FormlyConfig {
-  types: {[name: string]: TypeOption} = {};
+  types: {[name: string]: TypeOption} = {
+    'formly-group': {
+      name: 'formly-group',
+      component: FormlyGroup,
+    },
+  };
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
 

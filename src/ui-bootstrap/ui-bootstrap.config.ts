@@ -69,10 +69,4 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {name: 'validation-message', component: FormlyWrapperValidationMessages},
     {name: 'fieldset', component: FormlyWrapperFieldset},
   ],
-  validationMessages: [
-    {name: 'required', message: 'This field is required.'},
-    {name: 'invalidEmailAddress', message: 'Invalid Email Address'},
-    {name: 'maxlength', message: 'Maximum Length Exceeded.'},
-    {name: 'minlength', message: 'Should have atleast 2 Characters'},
-  ],
 };
