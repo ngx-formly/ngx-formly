@@ -48,6 +48,21 @@ export class FormlyWrapperHorizontalLabel extends FieldWrapper {
 }
 
 @Component({
+  selector: 'formly-wrapper-panel',
+  template: `
+    <div class="card">
+      <h3 class="card-header">{{templateOptions.title}}</h3>
+      <div class="card-block">
+        <template #fieldComponent></template>
+      </div>
+    </div>
+  `,
+})
+export class FormlyPanelWrapper extends FieldWrapper {
+  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
+}
+
+@Component({
   selector: 'formly-demo-hello-app',
   templateUrl: './template.html',
 })
@@ -182,6 +197,10 @@ export class HelloApp {
       }, {
         key: 'address',
         className: 'row',
+        wrappers: ['panel'],
+        templateOptions: {
+          title: 'Address',
+        },
         fieldGroup: [{
           className: 'col-xs-6',
           type: 'input',
@@ -410,7 +429,7 @@ export class HelloApp {
 
 @NgModule({
   declarations: [
-    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel, RepeatComponent,
+    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel, RepeatComponent, FormlyPanelWrapper,
   ],
   imports: [
     BrowserModule,
@@ -434,6 +453,7 @@ export class HelloApp {
       ],
       wrappers: [
         { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
+        { name: 'panel', component: FormlyPanelWrapper },
       ],
     }),
     FormlyBootstrapModule,

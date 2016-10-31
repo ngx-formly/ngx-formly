@@ -16,16 +16,6 @@ import 'rxjs/add/operator/debounceTime';
   template: `
     <template #fieldComponent></template>
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
-
-    <formly-field *ngFor="let f of field.fieldGroup; let i = index"
-      [hide]="f.hideExpression"
-      [model]="model?(f.key ? model[f.key]: model):''"
-      [form]="fieldGroupForm" [field]="f" [formModel]="formModel"
-      (modelChange)="changeModel($event)"
-      [ngClass]="f.className"
-      [index]="i"
-      [formId]="formId">
-    </formly-field>
   `,
 })
 export class FormlyField implements DoCheck, OnInit {
@@ -113,7 +103,7 @@ export class FormlyField implements DoCheck, OnInit {
       });
 
       this.formlyPubSub.setEmitter(this.field.key, update);
-    } else if (this.field.fieldArray) {
+    } else if (this.field.fieldGroup || this.field.fieldArray) {
       this.createFieldComponent();
     }
   }
@@ -121,11 +111,19 @@ export class FormlyField implements DoCheck, OnInit {
   private createFieldComponent(): ComponentRef<Field> {
     // TODO support this.field.hideExpression as a callback/observable
     this.hide = this.field.hideExpression ? true : false;
-
+    if (this.field.fieldGroup) {
+      this.field.type = this.field.type || 'formly-group';
+    }
     let type = this.formlyConfig.getType(this.field.type);
     let fieldComponent = this.fieldComponent;
     if (type.wrappers) {
       type.wrappers.map(wrapperName => {
+        let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
+        fieldComponent = wrapperRef.instance.fieldComponent;
+      });
+    }
+    if (this.field.wrappers) {
+      this.field.wrappers.map(wrapperName => {
         let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
         fieldComponent = wrapperRef.instance.fieldComponent;
       });
