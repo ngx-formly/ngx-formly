@@ -266,6 +266,7 @@ export class HelloApp {
       }, {
         type: 'multicheckbox',
         key: 'interest',
+        className: 'col-xs-6',
         templateOptions: {
           options: [{
             key: 'sports',
@@ -278,6 +279,24 @@ export class HelloApp {
             value: 'Others',
           }],
           label: 'Interest',
+          description: 'Select areas which you are interested',
+        },
+      }, {
+        type: 'multicheckbox',
+        key: 'hobbies',
+        className: 'col-xs-6',
+        templateOptions: {
+          options: [{
+            key: 'sports',
+            value: 'Sports',
+          }, {
+            key: 'movies',
+            value: 'Movies',
+          }, {
+            key: 'languages',
+            value: 'Languages',
+          }],
+          label: 'Hobbies',
           description: 'Select areas which you are interested',
         },
       }, {
@@ -386,6 +405,11 @@ export class HelloApp {
         sports: false,
         others: true,
       },
+      hobbies: {
+        movies: true,
+        sports: false,
+        languages: true,
+      },
       nested: {
         property: {
           magic: 'Nested property Content',
@@ -403,6 +427,7 @@ export class HelloApp {
         },
       ],
     };
+
   }
 
   console(data) {
