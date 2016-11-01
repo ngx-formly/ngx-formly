@@ -83,6 +83,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "danielcrisp",
+      "name": "danielcrisp",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1104814?v=3",
+      "profile": "https://github.com/danielcrisp",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }
