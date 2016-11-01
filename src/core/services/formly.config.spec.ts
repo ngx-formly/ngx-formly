@@ -35,6 +35,13 @@ describe('FormlyConfig service', () => {
       expect(config.getType('custom_input').name).toEqual('custom_input');
     });
 
+    it('should add type as an array', () => {
+      config.setType([{ name: 'custom_input1' }, { name: 'custom_input2' }]);
+
+      expect(config.getType('custom_input1').name).toEqual('custom_input1');
+      expect(config.getType('custom_input2').name).toEqual('custom_input2');
+    });
+
     it('should throw when type not found', () => {
       const config = new FormlyConfig([]);
       expect(() => config.getType('custom_input')).toThrowError('[Formly Error] There is no type by the name of "custom_input"');
