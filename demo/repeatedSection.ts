@@ -5,12 +5,12 @@ import { FieldType, FormlyFieldConfig } from '../src/index';
 @Component({
   selector: 'formly-repeat-section',
   template: `
-    <div *ngFor="let control of controls; let i = index;" class="row">
+    <div *ngFor="let control of controls; let i = index;">
       <formly-form
         [model]="model[i]"
         [fields]="fields"
         [form]="control"
-        uniqueKeys="true">
+        [ngClass]="field.fieldArray.className">
       </formly-form>
       <div class="col-md-2">
         <button class="btn btn-danger" (click)="remove(i)">Remove</button>

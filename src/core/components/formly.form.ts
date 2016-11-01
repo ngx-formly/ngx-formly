@@ -13,7 +13,7 @@ let formId = 0;
       [hide]="field.hideExpression" [model]="field.key?model[field.key]:model"
       [form]="form" [field]="field" [formModel]="model"
       (modelChange)="changeModel($event)"
-      [ngClass]="field.className">
+      [ngClass]="!field.fieldGroup ? field.className: undefined">
     </formly-field>
     <ng-content></ng-content>
   `,
