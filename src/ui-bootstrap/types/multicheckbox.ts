@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FieldType, FormlyFieldConfig } from '../../core/core';
@@ -8,7 +7,7 @@ import { FieldType, FormlyFieldConfig } from '../../core/core';
   template: `
     <div *ngFor="let option of templateOptions.options" class="checkbox">
         <label class="custom-control custom-checkbox">
-            <input [id]="id" type="checkbox" name="choose" value="{{option.value}}" [formControl]="formControl.get(option.key)"
+            <input [id]="id" type="checkbox" value="{{option.value}}" [formControl]="formControl.get(option.key)"
             [formlyAttributes]="field" class="custom-control-input">
             {{option.value}}
             <span class="custom-control-indicator"></span>

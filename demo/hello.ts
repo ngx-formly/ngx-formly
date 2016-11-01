@@ -88,7 +88,7 @@ export class HelloApp {
 
     let userFields: Array<FormlyFieldConfig> = [{
         type: 'radio',
-        key: 'title',
+        key: 'title1',
         templateOptions: {
           options: [{
             key: 'mr',
@@ -97,7 +97,21 @@ export class HelloApp {
             key: 'mrs',
             value: 'Mrs',
           }],
-          label: 'Title',
+          label: 'Title 1',
+          description: 'Select a title that suits your description',
+        },
+      }, {
+        type: 'radio',
+        key: 'title2',
+        templateOptions: {
+          options: [{
+            key: 'mr',
+            value: 'Mr.',
+          }, {
+            key: 'mrs',
+            value: 'Mrs',
+          }],
+          label: 'Title 2',
           description: 'Select a title that suits your description',
         },
       }, {
@@ -252,6 +266,7 @@ export class HelloApp {
       }, {
         type: 'multicheckbox',
         key: 'interest',
+        className: 'col-xs-6',
         templateOptions: {
           options: [{
             key: 'sports',
@@ -264,6 +279,24 @@ export class HelloApp {
             value: 'Others',
           }],
           label: 'Interest',
+          description: 'Select areas which you are interested',
+        },
+      }, {
+        type: 'multicheckbox',
+        key: 'hobbies',
+        className: 'col-xs-6',
+        templateOptions: {
+          options: [{
+            key: 'sports',
+            value: 'Sports',
+          }, {
+            key: 'movies',
+            value: 'Movies',
+          }, {
+            key: 'languages',
+            value: 'Languages',
+          }],
+          label: 'Hobbies',
           description: 'Select areas which you are interested',
         },
       }, {
@@ -361,7 +394,8 @@ export class HelloApp {
       email: 'email@gmail.com',
       checked: true,
       select: 'male',
-      title: 'mr',
+      title1: 'mr',
+      title2: 'mrs',
       toggleVal: true,
       address: {
         street: '604 Causley Eve',
@@ -370,6 +404,11 @@ export class HelloApp {
         movies: false,
         sports: false,
         others: true,
+      },
+      hobbies: {
+        movies: true,
+        sports: false,
+        languages: true,
       },
       nested: {
         property: {
@@ -388,6 +427,7 @@ export class HelloApp {
         },
       ],
     };
+
   }
 
   console(data) {
@@ -412,7 +452,8 @@ export class HelloApp {
       email: 'email@gmail.com',
       checked: true,
       select: 'male',
-      title: 'mr',
+      title1: 'mr',
+      title2: 'mrs',
       toggleVal: true,
       interest: {
         movies: false,

@@ -4,15 +4,16 @@ import { FieldType } from '../../core/core';
 @Component({
   selector: 'formly-field-radio',
   template: `
-    <div *ngFor="let option of templateOptions.options" class="radio">
-      <label class="custom-control custom-radio">
-        <input [id]="id" type="radio" [value]="option.key" [formControl]="form.get(key)"
-        [formlyAttributes]="field" class="custom-control-input">
-        {{option.value}}
-        <span class="custom-control-indicator"></span>
-      </label>
+    <div [formGroup]="form">
+      <div *ngFor="let option of templateOptions.options" class="radio">
+        <label class="custom-control custom-radio">
+          <input [id]="id" type="radio" [value]="option.key" [formControlName]="key"
+          [formlyAttributes]="field" class="custom-control-input">
+          {{option.value}}
+          <span class="custom-control-indicator"></span>
+        </label>
+      </div>
     </div>
   `,
 })
-export class FormlyFieldRadio extends FieldType {
-}
+export class FormlyFieldRadio extends FieldType {}
