@@ -3,64 +3,16 @@ import 'core-js/es6';
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
 
-import { NgModule, Component, ViewChild, ViewContainerRef, enableProdMode } from '@angular/core';
+import { NgModule, Component, enableProdMode } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, Field, FieldWrapper } from './../src/index';
+import { FormlyModule, FormlyFieldConfig, FormlyBootstrapModule } from './../src/index';
 import { ValidationService } from './validation.service';
 import { RepeatComponent } from './repeatedSection';
-
-// Custom Input Field type 'toggle' Component Definition
-@Component({
-  selector: 'formly-field-toggle',
-  template: `
-    <div [formGroup]="form">
-      <div class="checkbox-toggle">
-          <input id="checkbox" type="checkbox" type="checkbox" [formControlName]="key" value="on">
-          <label for="checkbox" [ngClass]="isAlert">
-              <div></div>
-          </label>
-      </div>
-  </div>
-  `,
-})
-export class FormlyFieldToggle extends Field {
-  get isAlert() {
-    if (this.templateOptions['isAlert']) {
-      return 'toggle-alert';
-    }
-    return '';
-  }
-}
-
-@Component({
-  selector: 'formly-wrapper-horizontal',
-  template: `
-    <label attr.for="{{key}}" class="col-sm-4 form-control-label">{{templateOptions.label}}</label>
-    <div class="col-sm-8">
-      <template #fieldComponent></template>
-    </div>
-  `,
-})
-export class FormlyWrapperHorizontalLabel extends FieldWrapper {
-  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
-}
-
-@Component({
-  selector: 'formly-wrapper-panel',
-  template: `
-    <div class="card">
-      <h3 class="card-header">{{templateOptions.title}}</h3>
-      <div class="card-block">
-        <template #fieldComponent></template>
-      </div>
-    </div>
-  `,
-})
-export class FormlyPanelWrapper extends FieldWrapper {
-  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
-}
+import { FormlyFieldToggle } from './toggle';
+import { FormlyWrapperHorizontalLabel } from './horizontal.wrapper';
+import { FormlyPanelWrapper } from './panel.wrapper';
 
 @Component({
   selector: 'formly-demo-hello-app',
@@ -117,7 +69,7 @@ export class HelloApp {
       }, {
         className: 'row',
         fieldGroup: [{
-          className: 'col-xs-6',
+          className: 'col-md-6',
           key: 'email',
           type: 'input',
           templateOptions: {
@@ -139,7 +91,7 @@ export class HelloApp {
             'templateOptions.disabled': '!model.password',
           },
         }, {
-          className: 'col-xs-6',
+          className: 'col-md-6',
           id: 'username',
           key: 'username',
           type: 'input',
@@ -162,7 +114,7 @@ export class HelloApp {
           asyncValidation: (control: FormControl) =>
             new Promise(resolve => resolve( control.value !== 'john' ? null : { uniqueUsername: true })),
         }, {
-          className: 'col-xs-6',
+          className: 'col-md-6',
           key: 'password',
           type: 'input',
           templateOptions: {
@@ -174,7 +126,7 @@ export class HelloApp {
             validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)]),
           },
         }, {
-          className: 'col-xs-6',
+          className: 'col-md-6',
           key: 'confirmPassword',
           type: 'input',
           templateOptions: {
@@ -190,7 +142,7 @@ export class HelloApp {
           className: 'section-label',
           template: '<br/><hr/>',
         }, {
-          className: 'col-xs-4',
+          className: 'col-md-4',
           key: 'select',
           type: 'select',
           templateOptions: {
@@ -216,7 +168,7 @@ export class HelloApp {
           title: 'Address',
         },
         fieldGroup: [{
-          className: 'col-xs-6',
+          className: 'col-md-6',
           type: 'input',
           key: 'street',
           validators: {
@@ -229,7 +181,7 @@ export class HelloApp {
             description: 'Enter a valid US Address',
           },
         }, {
-          className: 'col-xs-3',
+          className: 'col-md-3',
           type: 'input',
           key: 'city',
           templateOptions: {
@@ -237,7 +189,7 @@ export class HelloApp {
             placeholder: 'Arlington',
           },
         }, {
-          className: 'col-xs-3',
+          className: 'col-md-3',
           type: 'input',
           key: 'zip',
           templateOptions: {
@@ -266,7 +218,7 @@ export class HelloApp {
       }, {
         type: 'multicheckbox',
         key: 'interest',
-        className: 'col-xs-6',
+        className: 'col-md-6',
         templateOptions: {
           options: [{
             key: 'sports',
@@ -284,7 +236,7 @@ export class HelloApp {
       }, {
         type: 'multicheckbox',
         key: 'hobbies',
-        className: 'col-xs-6',
+        className: 'col-md-6',
         templateOptions: {
           options: [{
             key: 'sports',
@@ -358,7 +310,7 @@ export class HelloApp {
           },
           fieldGroup: [
             {
-              className: 'col-xs-4',
+              className: 'col-md-4',
               type: 'input',
               key: 'investmentName',
               templateOptions: {
@@ -369,7 +321,7 @@ export class HelloApp {
             {
               type: 'input',
               key: 'investmentDate',
-              className: 'col-xs-4',
+              className: 'col-md-4',
               templateOptions: {
                 label: 'Date of Investment:',
                 placeholder: 'dd/mm/yyyy such as 20/05/2015',
@@ -379,7 +331,7 @@ export class HelloApp {
             {
               type: 'input',
               key: 'stockIdentifier',
-              className: 'col-xs-4',
+              className: 'col-md-4',
               templateOptions: {
                 label: 'Stock Identifier:',
               },
