@@ -10,7 +10,7 @@ describe('FormlyConfig service', () => {
       wrappers: [{ name: 'layout', component: TestComponent }],
       types: [{ name: 'input' }],
       validators: [{ name: 'required', validation: Validators.required }],
-    }], new FormlyUtils());
+    }]);
   });
 
   describe('wrappers', () => {
@@ -22,7 +22,7 @@ describe('FormlyConfig service', () => {
     });
 
     it('should throw when wrapper not found', () => {
-      const config = new FormlyConfig([], new FormlyUtils());
+      const config = new FormlyConfig([]);
       expect(() => config.getWrapper('custom_wrapper')).toThrowError('[Formly Error] There is no wrapper by the name of "custom_wrapper"');
     });
   });
@@ -35,8 +35,15 @@ describe('FormlyConfig service', () => {
       expect(config.getType('custom_input').name).toEqual('custom_input');
     });
 
+    it('should add type as an array', () => {
+      config.setType([{ name: 'custom_input1' }, { name: 'custom_input2' }]);
+
+      expect(config.getType('custom_input1').name).toEqual('custom_input1');
+      expect(config.getType('custom_input2').name).toEqual('custom_input2');
+    });
+
     it('should throw when type not found', () => {
-      const config = new FormlyConfig([], new FormlyUtils());
+      const config = new FormlyConfig([]);
       expect(() => config.getType('custom_input')).toThrowError('[Formly Error] There is no type by the name of "custom_input"');
     });
   });
@@ -50,7 +57,7 @@ describe('FormlyConfig service', () => {
     });
 
     it('should throw when validator not found', () => {
-      const config = new FormlyConfig([], new FormlyUtils());
+      const config = new FormlyConfig([]);
       expect(() => config.getValidator('custom_validator')).toThrowError('[Formly Error] There is no validator by the name of "custom_validator"');
     });
   });

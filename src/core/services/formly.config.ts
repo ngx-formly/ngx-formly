@@ -1,6 +1,5 @@
 import { Injectable, Inject, OpaqueToken } from '@angular/core';
 import { FormlyGroup } from '../components/formly.group';
-import { FormlyUtils } from './formly.utils';
 
 export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
 
@@ -18,7 +17,7 @@ export class FormlyConfig {
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
 
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = [], private formlyUtils: FormlyUtils) {
+  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = []) {
     configs.map(config => {
       if (config.types) {
         config.types.map(type => this.setType(type));
@@ -37,7 +36,7 @@ export class FormlyConfig {
       options.map(option => {
         this.setType(option);
       });
-    } else if (this.formlyUtils.isObject(options)) {
+    } else {
       if (!this.types[options.name]) {
         this.types[options.name] = <TypeOption>{};
       }

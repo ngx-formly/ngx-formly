@@ -18,7 +18,7 @@ describe('Formly Form Component', () => {
   });
 
   it('should initialize inputs with default values', () => {
-    const formlyForm = new FormlyForm(new FormlyConfig([], new FormlyUtils()), new FormlyUtils());
+    const formlyForm = new FormlyForm(new FormlyConfig([]), new FormlyUtils());
 
     expect(formlyForm.model).toEqual({});
     expect(formlyForm.fields).toEqual([]);
