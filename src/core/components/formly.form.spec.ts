@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 import { FormlyForm } from './formly.form';
 import { FormlyModule } from '../core';
 import { FormlyConfig } from '../services/formly.config';
+import { FormlyUtils } from './../services/formly.utils';
 
 // tslint:disable-next-line
 const createTestComponent = (html: string) =>
@@ -17,7 +18,7 @@ describe('Formly Form Component', () => {
   });
 
   it('should initialize inputs with default values', () => {
-    const formlyForm = new FormlyForm(new FormlyConfig());
+    const formlyForm = new FormlyForm(new FormlyConfig(), new FormlyUtils());
 
     expect(formlyForm.model).toEqual({});
     expect(formlyForm.fields).toEqual([]);
