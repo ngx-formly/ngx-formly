@@ -8,4 +8,8 @@ export class FormlyUtils {
     if (!type && options.template) type = 'template';
     return [formId, type, options.key, index].join('_');
   }
-}
+
+  public isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+  }
+ }
