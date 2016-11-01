@@ -88,7 +88,7 @@ export class HelloApp {
 
     let userFields: Array<FormlyFieldConfig> = [{
         type: 'radio',
-        key: 'title',
+        key: 'title1',
         templateOptions: {
           options: [{
             key: 'mr',
@@ -97,7 +97,21 @@ export class HelloApp {
             key: 'mrs',
             value: 'Mrs',
           }],
-          label: 'Title',
+          label: 'Title 1',
+          description: 'Select a title that suits your description',
+        },
+      }, {
+        type: 'radio',
+        key: 'title2',
+        templateOptions: {
+          options: [{
+            key: 'mr',
+            value: 'Mr.',
+          }, {
+            key: 'mrs',
+            value: 'Mrs',
+          }],
+          label: 'Title 2',
           description: 'Select a title that suits your description',
         },
       }, {
@@ -361,7 +375,8 @@ export class HelloApp {
       email: 'email@gmail.com',
       checked: true,
       select: 'male',
-      title: 'mr',
+      title1: 'mr',
+      title2: 'mrs',
       toggleVal: true,
       address: {
         street: '604 Causley Eve',
@@ -412,7 +427,8 @@ export class HelloApp {
       email: 'email@gmail.com',
       checked: true,
       select: 'male',
-      title: 'mr',
+      title1: 'mr',
+      title2: 'mrs',
       toggleVal: true,
       interest: {
         movies: false,
