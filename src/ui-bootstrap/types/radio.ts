@@ -5,14 +5,14 @@ import { FieldType } from '../../core/core';
   selector: 'formly-field-radio',
   template: `
     <div [formGroup]="form">
-    <div *ngFor="let option of templateOptions.options; let i = index" class="radio">
-      <label class="custom-control custom-radio">
-        <input [id]="id" type="radio" [value]="option.key" [formControlName]="key"
-        [formlyAttributes]="templateOptions" class="custom-control-input">
-        {{option.value}}
-        <span class="custom-control-indicator"></span>
-      </label>
-    </div>
+      <div *ngFor="let option of templateOptions.options; let i = index" class="radio">
+        <label class="custom-control custom-radio">
+          <input [id]="id" type="radio" [value]="option.key" [formControlName]="key"
+          [formlyAttributes]="templateOptions" class="custom-control-input">
+          {{option.value}}
+          <span class="custom-control-indicator"></span>
+        </label>
+      </div>
     </div>
   `,
 })
