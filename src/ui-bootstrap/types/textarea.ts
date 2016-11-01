@@ -6,7 +6,7 @@ import { FieldType } from '../../core/core';
   template: `
     <textarea [id]="id" name="{{key}}" [formControl]="formControl" cols="{{templateOptions.cols}}"
       rows="{{templateOptions.rows}}" class="form-control"
-      [formlyAttributes]="templateOptions">
+      [formlyAttributes]="field">
     </textarea>
   `,
 })

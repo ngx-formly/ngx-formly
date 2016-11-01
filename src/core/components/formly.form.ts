@@ -3,18 +3,17 @@ import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyConfig } from '../services/formly.config';
+import { FormlyUtils } from './../services/formly.utils';
 
 let formId = 0;
 @Component({
   selector: 'formly-form',
   template: `
-    <formly-field *ngFor="let field of fields; let i = index"
+    <formly-field *ngFor="let field of fields"
       [hide]="field.hideExpression" [model]="field.key?model[field.key]:model"
       [form]="form" [field]="field" [formModel]="model"
       (modelChange)="changeModel($event)"
-      [ngClass]="field.className"
-      [index]="i"
-      [formId]="formId">
+      [ngClass]="field.className">
     </formly-field>
     <ng-content></ng-content>
   `,
@@ -26,7 +25,8 @@ export class FormlyForm implements OnInit, OnChanges {
   formId;
   private defaultPath;
   private validationOpts = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
-  constructor(private formlyConfig: FormlyConfig) {}
+
+  constructor(private formlyConfig: FormlyConfig, private formlyUtils: FormlyUtils) {}
 
   ngOnInit() {
     this.formId = `formly_${formId++}`;
@@ -43,11 +43,13 @@ export class FormlyForm implements OnInit, OnChanges {
   }
 
   private registerFormControls(fields: FormlyFieldConfig[], form: FormGroup, model) {
-    fields.map(field => {
+    fields.map((field, index) => {
+      field.id = this.formlyUtils.getFieldId(this.formId, field, index);
       if (field.key && field.type) {
         this.initFieldTemplateOptions(field);
         this.initFieldValidation(field);
         this.initFieldAsyncValidation(field);
+
 
         let path: any = field.key;
         if (typeof path === 'string') {
@@ -95,11 +97,11 @@ export class FormlyForm implements OnInit, OnChanges {
           this.registerFormControls(field.fieldGroup, form, model);
         }
       }
+
       if (field.fieldArray) {
         if (field.key) {
-          form.removeControl(field.key);
           const arrayForm = <FormArray>new FormArray([], field.validators ? field.validators.validation : undefined, field.asyncValidation);
-          form.addControl(field.key, arrayForm);
+          form.setControl(field.key, arrayForm);
         }
       }
     });
@@ -227,6 +229,5 @@ export class FormlyForm implements OnInit, OnChanges {
     } else {
         return parseInt(changes) < value;
     }
-
   }
 }

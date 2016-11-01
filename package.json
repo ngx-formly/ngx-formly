@@ -60,7 +60,7 @@
     "@angular/forms": "^2.1.2",
     "@angular/platform-browser": "^2.1.2",
     "@angular/platform-browser-dynamic": "^2.1.2",
-    "@types/jasmine": "^2.5.35",
+    "@types/jasmine": "^2.5.37",
     "@types/node": "^6.0.45",
     "angular2-template-loader": "^0.6.0",
     "awesome-typescript-loader": "^2.2.4",

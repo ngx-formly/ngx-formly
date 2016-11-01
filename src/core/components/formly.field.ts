@@ -8,7 +8,6 @@ import { FormlyConfig } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate } from '../services/formly.field.delegates';
 import { FormlyFieldConfig } from './formly.field.config';
-import { FormlyUtils } from './../services/formly.utils';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -23,8 +22,6 @@ export class FormlyField implements DoCheck, OnInit {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
-  @Input() index: string;
-  @Input() formId: string;
   @Input()
   get hide() { return this._hide; }
   set hide(value: boolean) {
@@ -39,10 +36,6 @@ export class FormlyField implements DoCheck, OnInit {
     }
   }
 
-  get id() {
-    return this.formlyUtils.getFieldId(this.formId, this.field, this.index);
-  }
-
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
@@ -55,8 +48,7 @@ export class FormlyField implements DoCheck, OnInit {
     private formlyPubSub: FormlyPubSub,
     private renderer: Renderer,
     private formlyConfig: FormlyConfig,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private formlyUtils: FormlyUtils
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
   ngDoCheck() {
@@ -135,6 +127,7 @@ export class FormlyField implements DoCheck, OnInit {
   private createComponent(fieldComponent, component): ComponentRef<any> {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
     let ref = <ComponentRef<Field>>fieldComponent.createComponent(componentFactory);
+
     Object.assign(ref.instance, {
         model: this.model,
         form: this.form,
