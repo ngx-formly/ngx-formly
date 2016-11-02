@@ -7,6 +7,7 @@ import { FormlyValidationMessage } from './formly.validation-message';
 import { FormlyConfig } from '../core/services/formly.config';
 import { TemplateDescription } from './run/description';
 import { TemplateValidation } from './run/validation';
+import { TemplateAddons } from './run/addon';
 
 @NgModule({
   declarations: [...FIELD_TYPE_COMPONENTS, FormlyValidationMessage],
@@ -15,11 +16,12 @@ import { TemplateValidation } from './run/validation';
     ReactiveFormsModule,
     FormlyModule.forRoot(BOOTSTRAP_FORMLY_CONFIG),
   ],
-  providers: [TemplateDescription, TemplateValidation],
+  providers: [TemplateDescription, TemplateValidation, TemplateAddons],
 })
 export class FormlyBootstrapModule {
-  constructor(private formlyConfig: FormlyConfig, private description: TemplateDescription, private validation: TemplateValidation) {
+  constructor(private formlyConfig: FormlyConfig, private description: TemplateDescription, private validation: TemplateValidation, private addons: TemplateAddons) {
     this.description.run(this.formlyConfig);
     this.validation.run(this.formlyConfig);
+    this.addons.run(this.formlyConfig);
   }
 }

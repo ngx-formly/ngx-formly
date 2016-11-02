@@ -333,6 +333,9 @@ export class HelloApp {
                 label: 'Date of Investment:',
                 placeholder: 'dd/mm/yyyy such as 20/05/2015',
                 dateFormat: 'DD, d  MM, yy',
+                addonLeft: {
+                  class: 'fa fa-usd',
+                },
               },
             },
             {
@@ -341,6 +344,9 @@ export class HelloApp {
               className: 'col-md-4',
               templateOptions: {
                 label: 'Stock Identifier:',
+                addonRight: {
+                  class: 'fa fa-code',
+                },
               },
             },
           ],

@@ -1,4 +1,5 @@
 import { ConfigOption } from '../core/services/formly.config';
+import { FormlyWrapperAddons } from './wrappers/addons';
 import {
   FormlyFieldInput,
   FormlyFieldCheckbox,
@@ -28,6 +29,7 @@ export const FIELD_TYPE_COMPONENTS = [
   FormlyWrapperDescription,
   FormlyWrapperValidationMessages,
   FormlyWrapperFieldset,
+  FormlyWrapperAddons,
 ];
 
 export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
@@ -68,5 +70,6 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {name: 'description', component: FormlyWrapperDescription},
     {name: 'validation-message', component: FormlyWrapperValidationMessages},
     {name: 'fieldset', component: FormlyWrapperFieldset},
+    {name: 'addons', component: FormlyWrapperAddons},
   ],
 };
