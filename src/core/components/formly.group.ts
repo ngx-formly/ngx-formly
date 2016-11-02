@@ -5,7 +5,7 @@ import { FieldType } from '../templates/field.type';
 @Component({
   selector: 'formly-group',
   template: `
-    <formly-form [fields]="field.fieldGroup" [model]="model" [form]="formlyGroup"></formly-form>
+    <formly-form [fields]="field.fieldGroup" [model]="model" [form]="formlyGroup" [ngClass]="field.className"></formly-form>
   `,
 })
 export class FormlyGroup extends FieldType {
