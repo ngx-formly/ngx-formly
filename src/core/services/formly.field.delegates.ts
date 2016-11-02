@@ -51,19 +51,19 @@ export class FormlyFieldExpressionDelegate {
             , [this.formlyCommon.formModel, this.formlyCommon.model, this.formlyCommon.field.templateOptions, this.formlyCommon.field.validation]);
         }
 
-        // disable attribute binding is not supported (see https://github.com/angular/angular/issues/11324)
-        let formControl = this.formlyCommon.form.get(this.formlyCommon.field.key);
+        const formControl = this.formlyCommon.form.get(this.formlyCommon.field.key),
+          field = this.formlyCommon.field;
         if (formControl) {
-            if (formControl.status === 'DISABLED' && !this.formlyCommon.field.templateOptions.disabled) {
+            if (formControl.status === 'DISABLED' && !field.templateOptions.disabled) {
                 formControl.enable();
             }
-            if (formControl.status !== 'DISABLED' && this.formlyCommon.field.templateOptions.disabled) {
+            if (formControl.status !== 'DISABLED' && field.templateOptions.disabled) {
                 formControl.disable();
             }
-            if (!formControl.dirty && formControl.invalid && this.formlyCommon.field.validation && !this.formlyCommon.field.validation.show) {
+            if (!formControl.dirty && formControl.invalid && field.validation && !field.validation.show) {
               formControl.markAsUntouched();
             }
-            if (!formControl.dirty && formControl.invalid && this.formlyCommon.field.validation && this.formlyCommon.field.validation.show) {
+            if (!formControl.dirty && formControl.invalid && field.validation && field.validation.show) {
               formControl.markAsTouched();
             }
         }
