@@ -121,6 +121,9 @@ export class HelloApp {
             type: 'password',
             label: 'Password',
             placeholder: 'Password',
+            keyup: (field, formControl: FormControl) => {
+              console.log(formControl.valid ? 'Valid' : 'Invalid');
+            },
           },
           validators: {
             validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)]),
