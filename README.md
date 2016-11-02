@@ -19,122 +19,97 @@ angular2-formly is an Angular 2 module which has a Components to help customize 
 The `formly-form` Component and the `FormlyConfig` service are very powerful and bring unmatched maintainability to your
 application's forms.
 
-Include the FormlyForm component import in the `directives` attribute of your `Component` and put this in your template
-```html
-<form class="formly" role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
-    <formly-form [model]="user" [fields]="userFields">
-        <button type="submit" class="btn btn-default">Button</button>
-    </formly-form>
-</form>
-```
-
-and in your TypeScript file define the the `model` and `fields` attributes
-```ts
-this.userFields = [{
-  className: 'row',
-  fieldGroup: [{
-      className: 'col-xs-6',
-      key: 'email',
-      type: 'input',
-      templateOptions: {
-          type: 'email',
-          label: 'Email address',
-          placeholder: 'Enter email'
-      },
-      validators: {
-        validation: Validators.compose([Validators.required, ValidationService.emailValidator])
-      }
-  }, {
-      className: 'col-xs-6',
-      key: 'password',
-      type: 'input',
-      templateOptions: {
-          type: 'password',
-          label: 'Password',
-          placeholder: 'Password',
-          pattern: ''
-      },
-      validators: {
-        validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)])
-      }
-  }]
-}];
-
-this.user = {
-  email: 'email@gmail.com',
-  checked: false
-};
-
-```
-
 ## Quick Start
-- install `ng2-formly`
 
+#### 1. Install ng2-formly
 ```bash
   npm install ng2-formly --save
 ```
-- add the script to the HTML file (if necessary)
-```html
-<!-- index.html -->
-<script src="node_modules/ng2-formly/bundles/ng2-formly.umd.min.js"></script>
 
+#### 2. Import the `FormlyModule`:
+
+```ts
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormlyModule, FormlyBootstrapModule} from 'ng2-formly';
+import {AppComponent} from './app';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FormlyModule.forRoot(),
+    FormlyBootstrapModule,
+  ],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}
 ```
 
-- and to your component add
+#### 3. Define the form config in your component:
 
 ```ts
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {FormlyFieldConfig} from "ng2-formly";
+import {Validators, FormGroup} from '@angular/forms';
+import {FormlyFieldConfig} from 'ng2-formly';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app',
   template: `
-        <h1>Hello, {{name}}!</h1>
-        Say hello to: <input [value]="name" (input)="name = $event.target.value">
-        <formly-form [model]="user" [fields]="userFields"></formly-form>
-    `,
+    <form class="formly" role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
+        <formly-form [model]="user" [fields]="userFields">
+            <button type="submit" class="btn btn-default">Button</button>
+        </formly-form>
+    </form>
+  `,
 })
 export class HelloApp {
-
-  form: FormGroup;
-  userFields: FormlyFieldConfig[];
-  user: any = {}
-
-  constructor(fb: FormBuilder) {
-    this.form = fb.group({});
-
-    this.userFields = [{
-      key: 'nameOfPerson',
-      type: 'input',
-      templateOptions: {
-        label: "Say hello to",
-        placeholder: "Name of the person"
-      }
-
+  form: FormGroup = new FormGroup({});
+  userFields: FormlyFieldConfig = [{
+    className: 'row',
+    fieldGroup: [{
+        className: 'col-xs-6',
+        key: 'email',
+        type: 'input',
+        templateOptions: {
+            type: 'email',
+            label: 'Email address',
+            placeholder: 'Enter email'
+        },
+        validators: {
+          validation: Validators.compose([Validators.required])
+        }
+    }, {
+        className: 'col-xs-6',
+        key: 'password',
+        type: 'input',
+        templateOptions: {
+            type: 'password',
+            label: 'Password',
+            placeholder: 'Password',
+            pattern: ''
+        },
+        validators: {
+          validation: Validators.compose([Validators.required])
+        }
     }]
+  }];
+
+  user = {
+    email: 'email@gmail.com',
+    checked: false
+  };
+
+  submit(user) {
+    console.log(user);
   }
 }
-
-@NgModule({
-  declarations: [
-    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel
-  ],
-  imports: [
-    BrowserModule,
-    FormlyModule.forRoot({
-    }),
-    FormlyBootstrapModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  bootstrap: [HelloApp]
-})
-export class FormlyDemoModule {
-}
-
-platformBrowserDynamic().bootstrapModule(FormlyDemoModule);
 ```
+
 From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
 
 ## Roadmap
