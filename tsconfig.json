@@ -9,7 +9,6 @@
     "sourceMap": true,
     "noImplicitAny": false,
     "baseUrl": "src",
-    "paths": [],
     "lib": ["dom", "es6"],
     "typeRoots": [
       "./node_modules/@types"
@@ -18,9 +17,6 @@
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true
   },
-  "exclude": [
-    "node_modules"
-  ],
   "include": [
     "src/**/*.ts",
     "demo/**/*.ts"

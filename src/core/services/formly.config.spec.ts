@@ -1,7 +1,6 @@
 import { FormlyConfig } from './formly.config';
 import { Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-import { FormlyUtils } from './formly.utils';
 
 describe('FormlyConfig service', () => {
   let config: FormlyConfig;

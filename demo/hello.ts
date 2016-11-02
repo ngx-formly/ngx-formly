@@ -205,7 +205,7 @@ export class HelloApp {
             step: 500,
           },
           validators: {
-            zipCode: (control: FormControl) => control.value.length === 5,
+            zipCode: (control: FormControl) => control.value && control.value.length === 5,
           },
         }],
       }, {

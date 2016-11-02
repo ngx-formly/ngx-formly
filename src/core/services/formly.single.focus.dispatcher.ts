@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 export type SingleFocusDispatcherListener = (key: string) => void;
 
