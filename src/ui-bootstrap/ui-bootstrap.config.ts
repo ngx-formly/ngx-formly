@@ -35,32 +35,32 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'input',
       component: FormlyFieldInput,
-      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
+      wrappers: ['fieldset', 'label'],
     },
     {
       name: 'checkbox',
       component: FormlyFieldCheckbox,
-      wrappers: ['fieldset', 'description', 'validation-message'],
+      wrappers: ['fieldset'],
     },
     {
       name: 'radio',
       component: FormlyFieldRadio,
-      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
+      wrappers: ['fieldset', 'label'],
     },
     {
       name: 'select',
       component: FormlyFieldSelect,
-      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
+      wrappers: ['fieldset', 'label'],
     },
     {
       name: 'textarea',
       component: FormlyFieldTextArea,
-      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
+      wrappers: ['fieldset', 'label'],
     },
     {
       name: 'multicheckbox',
       component: FormlyFieldMultiCheckbox,
-      wrappers: ['fieldset', 'label', 'description', 'validation-message'],
+      wrappers: ['fieldset', 'label'],
     },
   ],
   wrappers: [

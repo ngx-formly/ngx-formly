@@ -295,6 +295,10 @@ export class HelloApp {
         type: 'input',
         templateOptions: {
           label: 'Nested property',
+          title: 'Nested Property',
+          templateManipulators: {
+            preWrapper: [() => 'panel'],
+          },
         },
       }, {
         key: 'nested.arrays.0',

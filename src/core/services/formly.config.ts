@@ -17,6 +17,11 @@ export class FormlyConfig {
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
 
+  public templateManipulators = {
+    preWrapper: [],
+    postWrapper: [],
+  };
+
   constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = []) {
     configs.map(config => {
       if (config.types) {
@@ -106,7 +111,7 @@ export class FormlyConfig {
 export interface TypeOption {
   name: string;
   component?: any;
-  wrappers?: [string];
+  wrappers?: string[];
   extends?: string;
 }
 
