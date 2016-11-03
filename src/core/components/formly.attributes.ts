@@ -8,8 +8,9 @@ import { FormlyFieldConfig } from './formly.field.config';
 })
 export class FormlyAttributes implements OnInit, OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
-
+  @Input() formControl;
   private attributes = ['placeholder', 'tabindex', 'step'];
+  private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
   @HostListener('focus') onFocus() {
     if (!this.field.focus) {
@@ -38,6 +39,16 @@ export class FormlyAttributes implements OnInit, OnChanges {
         .map(attribute => {
           if (previousOptions[attribute] !== templateOptions[attribute]) {
             this.renderer.setElementAttribute(this.elementRef.nativeElement, attribute, templateOptions[attribute]);
+          }
+        });
+      this.statements
+        .filter(statement => {
+          if (previousOptions[statement] !== templateOptions[statement]) {
+            if (typeof templateOptions[statement] === 'function') {
+              this.renderer.listen(this.elementRef.nativeElement, statement, () => {
+                templateOptions[statement](this.field, this.formControl);
+              });
+            }
           }
         });
 

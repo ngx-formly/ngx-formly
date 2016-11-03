@@ -13,7 +13,13 @@ export interface FormlyFieldConfig {
   className?: string;
   type?: string;
   expressionProperties?: any;
-  focus?: boolean;
+  focus?: boolean | Function;
+  blur?: Function;
+  keyup?: Function;
+  keydown?: Function;
+  click?: Function;
+  change?: Function;
+  keypress?: Function;
   modelOptions?: any;
   lifecycle?: FormlyLifeCycleOptions;
   defaultValue?: any;
