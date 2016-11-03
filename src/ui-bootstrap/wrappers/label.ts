@@ -4,10 +4,8 @@ import { FieldWrapper } from '../../core/core';
 @Component({
   selector: 'formly-wrapper-label',
   template: `
-    <div>
-      <label [attr.for]="id" class="form-control-label">{{templateOptions.label}}</label>
-      <template #fieldComponent></template>
-    </div>
+    <label [attr.for]="id" class="form-control-label">{{templateOptions.label}}</label>
+    <template #fieldComponent></template>
   `,
 })
 export class FormlyWrapperLabel extends FieldWrapper {

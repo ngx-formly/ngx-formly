@@ -13,4 +13,5 @@ import { FormlyValidationMessage } from './formly.validation-message';
     FormlyModule.forRoot(BOOTSTRAP_FORMLY_CONFIG),
   ],
 })
-export class FormlyBootstrapModule {}
+export class FormlyBootstrapModule {
+}

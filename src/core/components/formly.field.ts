@@ -100,18 +100,16 @@ export class FormlyField implements DoCheck, OnInit {
     }
     let type = this.formlyConfig.getType(this.field.type);
     let fieldComponent = this.fieldComponent;
-    if (type.wrappers) {
-      type.wrappers.map(wrapperName => {
-        let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
-        fieldComponent = wrapperRef.instance.fieldComponent;
-      });
-    }
-    if (this.field.wrappers) {
-      this.field.wrappers.map(wrapperName => {
-        let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
-        fieldComponent = wrapperRef.instance.fieldComponent;
-      });
-    }
+    const fieldManipulators = this.getManipulators(this.field.templateOptions);
+    let preWrappers = this.runManipulators(fieldManipulators.preWrapper, this.field);
+    let postWrappers = this.runManipulators(fieldManipulators.postWrapper, this.field);
+    if (!type.wrappers) type.wrappers = [];
+    if (!this.field.wrappers) this.field.wrappers = [];
+    let wrappers = [...preWrappers, ...type.wrappers, ...this.field.wrappers, ...postWrappers];
+    wrappers.map(wrapperName => {
+      let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
+      fieldComponent = wrapperRef.instance.fieldComponent;
+    });
 
     return this.createComponent(fieldComponent, type.component);
   }
@@ -133,6 +131,34 @@ export class FormlyField implements DoCheck, OnInit {
   private psEmit(fieldKey: string, eventKey: string, value: any) {
     if (this.formlyPubSub && this.formlyPubSub.getEmitter(fieldKey) && this.formlyPubSub.getEmitter(fieldKey).emit) {
       this.formlyPubSub.getEmitter(fieldKey).emit(new FormlyValueChangeEvent(eventKey, value));
+    }
+  }
+
+  private getManipulators(options) {
+    let preWrapper = [];
+    let postWrapper = [];
+    if (options && options.templateManipulators) {
+      addManipulators(options.templateManipulators);
+    }
+    addManipulators(this.formlyConfig.templateManipulators);
+    return {preWrapper, postWrapper};
+
+    function addManipulators(manipulators) {
+      const {preWrapper: pre = [], postWrapper: post = []} = (manipulators || {});
+      preWrapper = preWrapper.concat(pre);
+      postWrapper = postWrapper.concat(post);
+    }
+  }
+
+  private runManipulators(manipulators: Function[], field: FormlyFieldConfig) {
+    let wrappers = [];
+    if (manipulators) {
+      manipulators.map(manipulator => {
+        if (manipulator(field)) {
+          wrappers.push(manipulator(field));
+        }
+      });
+      return wrappers;
     }
   }
 }
