@@ -1,5 +1,8 @@
 import { ConfigOption } from '../core/services/formly.config';
 import { FormlyWrapperAddons } from './wrappers/addons';
+import { TemplateDescription } from './run/description';
+import { TemplateValidation } from './run/validation';
+import { TemplateAddons } from './run/addon';
 import {
   FormlyFieldInput,
   FormlyFieldCheckbox,
@@ -71,5 +74,10 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {name: 'validation-message', component: FormlyWrapperValidationMessages},
     {name: 'fieldset', component: FormlyWrapperFieldset},
     {name: 'addons', component: FormlyWrapperAddons},
+  ],
+  manipulators: [
+    {class: TemplateDescription, method: 'run'},
+    {class: TemplateValidation, method: 'run'},
+    {class: TemplateAddons, method: 'run'},
   ],
 };

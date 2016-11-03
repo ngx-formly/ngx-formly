@@ -22,7 +22,7 @@ export class FormlyConfig {
     postWrapper: [],
   };
 
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = []) {
+  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
     configs.map(config => {
       if (config.types) {
         config.types.map(type => this.setType(type));
@@ -32,6 +32,9 @@ export class FormlyConfig {
       }
       if (config.wrappers) {
         config.wrappers.map(wrapper => this.setWrapper(wrapper));
+      }
+      if (config.manipulators) {
+        config.manipulators.map(manipulator => this.setManipulator(manipulator));
       }
     });
   }
@@ -106,6 +109,10 @@ export class FormlyConfig {
 
     return this.validators[name];
   }
+
+  setManipulator(manipulator) {
+    new manipulator.class()[manipulator.method](this);
+  }
 }
 
 export interface TypeOption {
@@ -131,9 +138,15 @@ export interface ValidationMessageOption {
   message: any;
 }
 
+export interface ManipulatorsOption {
+  class?: Function;
+  method?: string;
+}
+
 export interface ConfigOption {
   types?: [TypeOption];
   wrappers?: [WrapperOption];
   validators?: [ValidatorOption];
   validationMessages?: [ValidationMessageOption];
+  manipulators?: [ManipulatorsOption];
 }
