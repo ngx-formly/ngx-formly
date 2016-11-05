@@ -85,7 +85,7 @@
     "rxjs": "^5.0.0-rc.1",
     "shx": "^0.1.2",
     "tslint": "^3.7.4",
-    "typescript": "^2.0.6",
+    "typescript": "^2.0.7",
     "uglify-js": "^2.6.2",
     "webpack": "^1.13.2",
     "webpack-dashboard": "^0.2.0",
