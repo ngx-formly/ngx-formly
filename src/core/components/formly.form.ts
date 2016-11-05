@@ -34,6 +34,7 @@ export class FormlyForm implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
+      this.model = this.model || {};
       this.registerFormControls(this.fields, this.form, this.model);
     }
   }
@@ -98,11 +99,9 @@ export class FormlyForm implements OnInit, OnChanges {
         }
       }
 
-      if (field.fieldArray) {
-        if (field.key) {
-          const arrayForm = <FormArray>new FormArray([], field.validators ? field.validators.validation : undefined, field.asyncValidation);
-          form.setControl(field.key, arrayForm);
-        }
+      if (field.fieldArray && field.key) {
+        const arrayForm = <FormArray>new FormArray([], field.validators ? field.validators.validation : undefined, field.asyncValidation);
+        form.setControl(field.key, arrayForm);
       }
     });
   }

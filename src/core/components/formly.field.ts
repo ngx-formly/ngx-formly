@@ -61,10 +61,6 @@ export class FormlyField implements DoCheck, OnInit {
   }
 
   changeModel(event: FormlyValueChangeEvent) {
-    if (this.field.fieldGroup && this.field.key) {
-      event = new FormlyValueChangeEvent(`${this.field.key}.${event.key}`, event.value);
-    }
-
     this.modelChange.emit(event);
   }
 
@@ -75,11 +71,14 @@ export class FormlyField implements DoCheck, OnInit {
         debounce = this.field.modelOptions.debounce.default;
       }
       let fieldComponentRef = this.createFieldComponent();
-      fieldComponentRef.instance.formControl.valueChanges
-        .debounceTime(debounce)
-        .subscribe((event) => {
-          this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
-        });
+      let valueChanges = fieldComponentRef.instance.formControl.valueChanges;
+      if (debounce > 0) {
+        valueChanges = valueChanges.debounceTime(debounce);
+      }
+
+      valueChanges.subscribe((event) => this
+        .changeModel(new FormlyValueChangeEvent(this.field.key, event))
+      );
 
       let update = new FormlyEventEmitter();
       update.subscribe((option: any) => {
@@ -90,11 +89,12 @@ export class FormlyField implements DoCheck, OnInit {
     } else if (this.field.fieldGroup || this.field.fieldArray) {
       this.createFieldComponent();
     }
+
+    // TODO support this.field.hideExpression as a callback/observable
+    this.hide = this.field.hideExpression ? true : false;
   }
 
   private createFieldComponent(): ComponentRef<Field> {
-    // TODO support this.field.hideExpression as a callback/observable
-    this.hide = this.field.hideExpression ? true : false;
     if (this.field.fieldGroup) {
       this.field.type = this.field.type || 'formly-group';
     }
