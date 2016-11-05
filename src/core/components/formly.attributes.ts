@@ -9,7 +9,7 @@ import { FormlyFieldConfig } from './formly.field.config';
 export class FormlyAttributes implements OnInit, OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() formControl;
-  private attributes = ['placeholder', 'tabindex', 'step'];
+  private attributes = ['placeholder', 'tabindex', 'step', 'aria-describedby'];
   private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
   @HostListener('focus') onFocus() {
@@ -37,7 +37,9 @@ export class FormlyAttributes implements OnInit, OnChanges {
       this.attributes
         .filter(attribute => templateOptions[attribute] !== '' || templateOptions[attribute] !== undefined)
         .map(attribute => {
-          if (previousOptions[attribute] !== templateOptions[attribute]) {
+          if (attribute === 'aria-describedby') {
+            this.renderer.setElementAttribute(this.elementRef.nativeElement, attribute, this.field.id + '-message');
+          } else if (previousOptions[attribute] !== templateOptions[attribute]) {
             this.renderer.setElementAttribute(this.elementRef.nativeElement, attribute, templateOptions[attribute]);
           }
         });
