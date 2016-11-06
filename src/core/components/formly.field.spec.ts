@@ -9,6 +9,7 @@ import {
   FieldWrapper,
 } from '../core';
 import { FormlyValueChangeEvent } from '../services/formly.event.emitter';
+import { FormlyFieldConfig } from './formly.field.config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -25,7 +26,9 @@ function getLabelWrapper(element: HTMLElement): HTMLElement {
   return <HTMLElement>element.querySelector('label');
 }
 
-let testComponentInputs;
+let testComponentInputs: {field?: FormlyFieldConfig,
+form?: any,
+model?: any};
 
 describe('FormlyField Component', () => {
   beforeEach(() => {
@@ -50,6 +53,15 @@ describe('FormlyField Component', () => {
           }],
           manipulators: [
             { class: Manipulator, method: 'run' },
+          ],
+          defaultOptions: [
+            {
+              name: 'ipAddress',
+              templateOptions: {
+                label: 'IP Address',
+                placeholder: '127.0.0.1',
+              },
+            },
           ],
         }),
       ],
@@ -127,6 +139,22 @@ describe('FormlyField Component', () => {
     const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
 
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
+  });
+
+  it('should use default option', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        hideExpression: true,
+        optionsType: ['ipAddress'],
+      },
+      form: new FormGroup({title: new FormControl()}),
+    };
+
+    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+
+    expect(fixture.componentInstance.field.templateOptions.label).toEqual('IP Address');
   });
 
   describe('model changes', () => {

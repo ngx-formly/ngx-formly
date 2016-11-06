@@ -146,19 +146,9 @@ export class HelloApp {
           template: '<br/><hr/>',
         }, {
           className: 'col-md-4',
-          key: 'select',
           type: 'select',
-          templateOptions: {
-            options: [{
-              label: 'Male',
-              value: 'male',
-            }, {
-              label: 'Female',
-              value: 'female',
-            }],
-            label: 'Gender',
-            placeholder: 'Select Gender',
-          },
+          optionsType: ['gender'],
+          key: 'select',
         }],
       }, {
         className: 'section-label',
@@ -460,6 +450,22 @@ export class HelloApp {
       wrappers: [
         { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
         { name: 'panel', component: FormlyPanelWrapper },
+      ],
+      defaultOptions: [
+        {
+          name: 'gender',
+          templateOptions: {
+            options: [{
+              label: 'Male',
+              value: 'male',
+            }, {
+              label: 'Female',
+              value: 'female',
+            }],
+            label: 'Gender',
+            placeholder: 'Select Gender',
+          },
+        },
       ],
     }),
     FormlyBootstrapModule,

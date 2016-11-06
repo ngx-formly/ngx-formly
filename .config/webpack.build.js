@@ -3,7 +3,7 @@ function libExternal(root, ns) {
 }
 
 module.exports = {
-  entry: "./src/index",
+  entry: './src/index',
   devtool: 'source-map',
   output: {
     path: __dirname + "/../bundles",

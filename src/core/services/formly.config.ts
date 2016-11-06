@@ -1,5 +1,6 @@
 import { Injectable, Inject, OpaqueToken } from '@angular/core';
 import { FormlyGroup } from '../components/formly.group';
+import { FormlyTemplateOptions } from '../components/formly.field.config';
 
 export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
 
@@ -16,6 +17,7 @@ export class FormlyConfig {
   };
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
+  typeOptions: {[name: string]: TemplateDefaultOption} = {};
 
   public templateManipulators = {
     preWrapper: [],
@@ -35,6 +37,9 @@ export class FormlyConfig {
       }
       if (config.manipulators) {
         config.manipulators.map(manipulator => this.setManipulator(manipulator));
+      }
+      if (config.defaultOptions) {
+        config.defaultOptions.map(defaultOptions => this.setDefaultOptions(defaultOptions));
       }
     });
   }
@@ -113,6 +118,17 @@ export class FormlyConfig {
   setManipulator(manipulator) {
     new manipulator.class()[manipulator.method](this);
   }
+
+  setDefaultOptions(defaultOptions: TemplateDefaultOption) {
+    this.typeOptions[defaultOptions.name] = defaultOptions;
+  }
+  getDefaultOptions(optionsName: string) {
+    if (!this.typeOptions[optionsName]) {
+      throw new Error(`[Formly Error] There is no wrapper by the name of "${optionsName}"`);
+    }
+
+    return this.typeOptions[optionsName];
+  }
 }
 
 export interface TypeOption {
@@ -143,10 +159,16 @@ export interface ManipulatorsOption {
   method?: string;
 }
 
+export interface TemplateDefaultOption {
+  name: string;
+  templateOptions?: FormlyTemplateOptions;
+}
+
 export interface ConfigOption {
   types?: [TypeOption];
   wrappers?: [WrapperOption];
   validators?: [ValidatorOption];
   validationMessages?: [ValidationMessageOption];
   manipulators?: [ManipulatorsOption];
+  defaultOptions?: [TemplateDefaultOption];
 }

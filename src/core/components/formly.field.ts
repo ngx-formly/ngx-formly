@@ -57,7 +57,21 @@ export class FormlyField implements DoCheck, OnInit {
   }
 
   ngOnInit() {
+    this.initDefaultOptions();
     this.createFieldComponents();
+  }
+
+  initDefaultOptions() {
+    if (this.hasOptionType()) {
+      this.field.optionsType.forEach( (optionType) => {
+        let defaultOptions = this.formlyConfig.getDefaultOptions(optionType);
+        this.field.templateOptions = Object.assign({}, defaultOptions.templateOptions, this.field.templateOptions);
+      });
+    }
+  }
+
+  hasOptionType() {
+    return this.field && this.field.optionsType && this.field.optionsType.length > 0;
   }
 
   changeModel(event: FormlyValueChangeEvent) {

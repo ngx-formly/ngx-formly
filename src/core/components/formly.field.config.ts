@@ -23,9 +23,13 @@ export interface FormlyFieldConfig {
   modelOptions?: any;
   lifecycle?: FormlyLifeCycleOptions;
   defaultValue?: any;
+  optionsType?: string[];
 }
 
 export interface FormlyTemplateOptions {
+  templateManipulators?: any;
+  postWrapper?: Boolean;
+  preWrapper?: Boolean;
   type?: string;
   label?: string;
   placeholder?: string;
