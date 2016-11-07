@@ -36,6 +36,8 @@ export class FormlyForm implements OnInit, OnChanges {
     if (changes['fields']) {
       this.model = this.model || {};
       this.registerFormControls(this.fields, this.form, this.model);
+    } else if (changes['model'] && this.fields && this.fields.length > 0) {
+      this.form.setValue(this.model);
     }
   }
 
