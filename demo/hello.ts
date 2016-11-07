@@ -409,7 +409,7 @@ export class HelloApp {
   }
 
   changeEmail(value) {
-    this.form.get('email').setValue(value);
+    this.user.email = value;
   }
 
   resetForm() {
