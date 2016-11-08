@@ -307,6 +307,7 @@ export class HelloApp {
           label: 'Array property',
         },
         defaultValue: 'Default Value',
+        parsers: [(value) => (value || '').toUpperCase()],
       }, {
         type: 'repeatSection',
         key: 'investments',

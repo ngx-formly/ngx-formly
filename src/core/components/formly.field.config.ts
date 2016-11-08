@@ -23,6 +23,7 @@ export interface FormlyFieldConfig {
   modelOptions?: any;
   lifecycle?: FormlyLifeCycleOptions;
   defaultValue?: any;
+  parsers?: [(value: any, index: number) => {}];
 }
 
 export interface FormlyTemplateOptions {
