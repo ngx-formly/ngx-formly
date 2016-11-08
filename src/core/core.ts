@@ -6,6 +6,7 @@ import { FormlyFieldConfig } from './components/formly.field.config';
 import { FormlyField } from './components/formly.field';
 import { FormlyAttributes } from './components/formly.attributes';
 import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/formly.config';
+import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyValidationMessages } from './services/formly.validation-messages';
 import { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
 import { FormlyFieldVisibilityDelegate } from './services/formly.field.delegates';
@@ -17,6 +18,7 @@ import { FieldWrapper } from './templates/field.wrapper';
 import { FormlyGroup } from './components/formly.group';
 
 export {
+  FormlyFormBuilder,
   FormlyField,
   FormlyFieldConfig,
   FormlyForm,
@@ -47,6 +49,7 @@ export class FormlyModule {
     return {
       ngModule: FormlyModule,
       providers: [
+        FormlyFormBuilder,
         FormlyConfig,
         FormlyPubSub,
         FormlyValidationMessages,
