@@ -12,7 +12,6 @@
   "scripts": {
     "contrib:add": "all-contributors add",
     "contrib:generate": "all-contributors generate",
-    "tsc": "./node_modules/.bin/tsc",
     "ngc": "./node_modules/.bin/ngc",
     "lint": "./node_modules/.bin/tslint 'src/**/*.ts' 'demo/**/*.ts'",
     "commit": "npm run build && git-cz",
@@ -24,7 +23,7 @@
     "build:bundles": "npm run build:bundles:compile && npm run build:bundles:minify",
     "build:bundles:compile": "node ./node_modules/.bin/webpack --config .config/webpack.build.js",
     "build:bundles:minify": "uglifyjs bundles/ng2-formly.umd.js --output bundles/ng2-formly.umd.min.js --in-source-map bundles/ng2-formly.umd.js.map --source-map bundles/ng2-formly.umd.min.js.map",
-    "demo": "NODE_ENV=dev node node_modules/.bin/webpack-dashboard --title ng2-formly-demo -- node_modules/.bin/webpack-dev-server --quiet --port 9000 --content-base demo --config .config/webpack.demo.js --open",
+    "demo": "node_modules/.bin/webpack-dashboard --title ng2-formly-demo -- node_modules/.bin/webpack-dev-server --quiet --port 9000 --content-base demo --config .config/webpack.demo.js --open",
     "test": "./node_modules/.bin/karma start",
     "posttest": "remap-istanbul -i coverage/json/coverage-final.json -o coverage/report/coverage-final.json",
     "test-watch": "./node_modules/.bin/karma start --no-single-run --auto-watch"
