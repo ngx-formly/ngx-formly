@@ -23,7 +23,6 @@ export class FormlyForm implements OnChanges {
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
   @Input() options: any;
-  formId;
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,

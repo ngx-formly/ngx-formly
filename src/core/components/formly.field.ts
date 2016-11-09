@@ -78,8 +78,8 @@ export class FormlyField implements DoCheck, OnInit {
         valueChanges = valueChanges.debounceTime(debounce);
       }
       if (this.field.parsers && this.field.parsers.length > 0) {
-        this.field.parsers.map(formatterFn => {
-          valueChanges = valueChanges.map(formatterFn);
+        this.field.parsers.map(parserFn => {
+          valueChanges = valueChanges.map(parserFn);
         });
       }
 
