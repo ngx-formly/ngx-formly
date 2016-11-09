@@ -7,8 +7,8 @@
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
   "main": "bundles/ng2-formly.umd.js",
-  "module": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "module": "lib/src/index.js",
+  "typings": "lib/src/index.d.ts",
   "scripts": {
     "contrib:add": "all-contributors add",
     "contrib:generate": "all-contributors generate",
