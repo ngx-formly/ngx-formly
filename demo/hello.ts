@@ -99,7 +99,7 @@ export class HelloApp {
           templateOptions: {
             label: 'Username',
             placeholder: 'Username',
-            description: 'Existing username: john',
+            description: 'Existing username: john, tom, paul',
             required: true,
           },
           validation: {
@@ -110,10 +110,13 @@ export class HelloApp {
           },
           validators: {
             validation: Validators.maxLength(8),
-            custom: (control: FormControl) => control.value !== 'zama',
+            custom: (control: FormControl) => control.value !== 'tom',
           },
-          asyncValidation: (control: FormControl) =>
+          asyncValidaors: {
+            validation: (control: FormControl) =>
             new Promise(resolve => resolve( control.value !== 'john' ? null : { uniqueUsername: true })),
+            uniqueUserName: (control: FormControl) => new Promise(resolve => resolve( control.value !== 'paul')),
+          },
         }, {
           className: 'col-md-6',
           key: 'password',

@@ -4,7 +4,7 @@ export interface FormlyFieldConfig {
   templateOptions?: FormlyTemplateOptions;
   validation?: any;
   validators?: any;
-  asyncValidation?: any;
+  asyncValidaors?: any;
   template?: string;
   wrappers?: string[];
   fieldGroup?: Array<FormlyFieldConfig>;
