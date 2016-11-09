@@ -33,6 +33,8 @@ export class FormlyForm implements OnChanges {
     if (changes['fields']) {
       this.model = this.model || {};
       this.formlyBuilder.buildForm(this.form, this.fields, this.model);
+    } else if (changes['model'] && this.fields && this.fields.length > 0) {
+      this.form.patchValue(this.model);
     }
   }
 

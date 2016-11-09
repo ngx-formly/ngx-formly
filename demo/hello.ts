@@ -417,7 +417,7 @@ export class HelloApp {
   }
 
   changeEmail(value) {
-    this.form.get('email').setValue(value);
+    this.user = Object.assign({}, this.user, { email: value });
   }
 
   toggleReadOnly(value) {
