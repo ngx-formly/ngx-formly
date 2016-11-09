@@ -24,6 +24,7 @@ export class HelloApp {
   env;
   _user;
   user: any = {};
+  options;
   private userFields: Array<FormlyFieldConfig> = [];
 
   constructor(fb: FormBuilder) {
@@ -394,6 +395,12 @@ export class HelloApp {
       ],
     };
 
+    this.options = {
+      formState: {
+        readOnly: true,
+      },
+    };
+
   }
 
   console(data) {
@@ -411,6 +418,10 @@ export class HelloApp {
 
   changeEmail(value) {
     this.form.get('email').setValue(value);
+  }
+
+  toggleReadOnly(value) {
+    this.options.formState.readOnly = value;
   }
 
   resetForm() {
