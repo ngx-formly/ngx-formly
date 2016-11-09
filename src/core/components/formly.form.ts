@@ -12,7 +12,8 @@ import { FormlyUtils } from './../services/formly.utils';
       [hide]="field.hideExpression" [model]="field.key?model[field.key]:model"
       [form]="form" [field]="field" [formModel]="model"
       (modelChange)="changeModel($event)"
-      [ngClass]="!field.fieldGroup ? field.className: undefined">
+      [ngClass]="!field.fieldGroup ? field.className: undefined"
+      [options]="options">
     </formly-field>
     <ng-content></ng-content>
   `,
@@ -21,6 +22,7 @@ export class FormlyForm implements OnChanges {
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
+  @Input() options: any;
   formId;
 
   constructor(

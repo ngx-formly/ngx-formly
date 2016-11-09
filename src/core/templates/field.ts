@@ -7,6 +7,7 @@ export abstract class Field {
   @Input() field: FormlyFieldConfig;
   @Input() formModel: any;
   @Input() model: any;
+  @Input() options;
 
   get key() { return this.field.key; }
   get formControl(): AbstractControl { return this.form.get(this.key); }

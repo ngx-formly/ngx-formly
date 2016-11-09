@@ -3,13 +3,18 @@
     <p>This is a small subset of the things that formly can do :-) See the other examples and the documentation for more.</p>
     <hr>
     <form class="formly" role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
-        <formly-form [model]="user" [fields]="userFields" [form]="form">
+        <formly-form [model]="user" [fields]="userFields" [form]="form" [options]="options">
             <button type="submit" class="btn btn-primary">Button</button>
         </formly-form>
     </form>
     <hr>
     <h3>Outside Formly</h3>
     <input type="text" [ngModel]="user.email" (ngModelChange)="changeEmail($event)" class="form-control">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" [ngModel]="options.formState.readOnly" (ngModelChange)="toggleReadOnly($event)">
+        Read Only
+        <span class="custom-control-indicator"></span>
+    </label>
     <br><strong>FORM DATA:</strong><br><pre>{{user | json}}</pre><br>
     <hr>
     <button (click)="showEmail()" class="btn btn-success">Change Email</button>

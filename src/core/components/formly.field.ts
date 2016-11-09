@@ -23,6 +23,7 @@ export class FormlyField implements DoCheck, OnInit {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
+  @Input() options;
   @Input()
   get hide() { return this._hide; }
   set hide(value: boolean) {
@@ -129,6 +130,7 @@ export class FormlyField implements DoCheck, OnInit {
         form: this.form,
         field: this.field,
         formModel: this.formModel,
+        options: this.options,
     });
 
     return ref;
