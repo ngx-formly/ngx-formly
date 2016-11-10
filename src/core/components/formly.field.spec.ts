@@ -182,16 +182,6 @@ describe('FormlyField Component', () => {
       };
     });
 
-    it('should render type wrapper', () => {
-      testComponentInputs.field.type = 'other';
-
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
-      const elm = getFormlyFieldElement(fixture.nativeElement);
-
-      expect(getLabelWrapper(elm).innerText).toEqual('Title');
-      expect(getInputField(elm).getAttribute('placeholder')).toEqual('Title');
-    });
-
     it('should render field wrapper', () => {
       testComponentInputs.field.wrappers = ['label'];
 
@@ -228,6 +218,25 @@ describe('FormlyField Component', () => {
 
       expect(getLabelWrapper(elm).innerText).toEqual('Title');
     });
+  });
+
+  it('should render options Types', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        optionsTypes: ['other'],
+        templateOptions: {
+          placeholder: 'Title',
+        },
+      },
+      form: new FormGroup({title: new FormControl()}),
+    };
+
+    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+    expect(getLabelWrapper(fixture.nativeElement)).toEqual(null);
+    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
+    expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');
   });
 });
 

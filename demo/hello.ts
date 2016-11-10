@@ -290,6 +290,7 @@ export class HelloApp {
         type: 'toggle',
         templateOptions: {
           isAlert: true,
+          isLarge: false,
         },
       }, {
         className: 'section-label',
@@ -333,14 +334,10 @@ export class HelloApp {
             {
               type: 'input',
               key: 'investmentDate',
-              className: 'col-md-4',
+              className: 'col-xs-4',
+              optionsTypes: ['dateFormat'],
               templateOptions: {
                 label: 'Date of Investment:',
-                placeholder: 'dd/mm/yyyy such as 20/05/2015',
-                dateFormat: 'DD, d  MM, yy',
-                addonLeft: {
-                  class: 'fa fa-usd',
-                },
               },
             },
             {
@@ -388,11 +385,11 @@ export class HelloApp {
       investments: [
         {
           investmentName: 'Formly',
-          investmentDate: (new Date()).toDateString(),
+          investmentDate: '02-11-2001',
           stockIdentifier: 'FO',
         }, {
           investmentName: 'Formly Website',
-          investmentDate: (new Date()).toDateString(),
+          investmentDate: '02-11-2001',
           stockIdentifier: 'FW',
         },
       ],
@@ -456,9 +453,20 @@ export class HelloApp {
     BrowserModule,
     FormlyModule.forRoot({
       types: [
-        { name: 'toggle', component: FormlyFieldToggle },
+        { name: 'toggle', component: FormlyFieldToggle, defaultOptions: { templateOptions: { isAlert: false, isLarge: true }}},
         { name: 'horizontalInput', extends: 'input'},
-        { name: 'repeatSection', component: RepeatComponent }],
+        { name: 'repeatSection', component: RepeatComponent },
+        { name: 'dateFormat', defaultOptions: { templateOptions: {
+          placeholder: 'dd/mm/yyyy such as 20/05/2015',
+          dateFormat: 'DD, d  MM, yy',
+          addonLeft: {
+            class: 'fa fa-usd',
+          },
+        },
+        validators: {
+          date: control => control.value.match(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/) },
+        },
+      }],
       validators: [{ name: 'required', validation: Validators.required}],
       validationMessages: [
         { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},

@@ -24,4 +24,56 @@ export class FormlyUtils {
       model[path[0]] = value;
     }
   }
- }
+
+  reverseDeepMerge(dest, source = undefined) {
+    let args = Array.prototype.slice.call(arguments);
+    if (!args[1]) {
+      return dest;
+    }
+    args.forEach((src, index) => {
+      if (!index) {
+        return;
+      }
+      for (let srcArg in src) {
+        if (this.isNullOrUndefined(dest[srcArg]) || this.isBlankString(dest[srcArg])) {
+          if (this.isFunction(src[srcArg])) {
+            dest[srcArg] = src[srcArg];
+          } else {
+            dest[srcArg] = this.clone(src[srcArg]);
+          }
+        } else if (this.objAndSameType(dest[srcArg], src[srcArg])) {
+          this.reverseDeepMerge(dest[srcArg], src[srcArg]);
+        }
+      }
+    });
+    return dest;
+  }
+
+  isNullOrUndefined(value) {
+    return value === undefined || value === null;
+  }
+
+  isBlankString(value) {
+    return value === '';
+  }
+
+  isFunction(value) {
+    return typeof(value) === 'function';
+  }
+
+  objAndSameType(obj1, obj2) {
+    return this.isObject(obj1) && this.isObject(obj2) &&
+      Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
+  }
+
+  isObject(x) {
+    return x != null && typeof x === 'object';
+  }
+
+  clone(value) {
+    if (!this.isObject(value)) {
+      return value;
+    }
+    return Array.isArray(value) ? value.slice(0) : Object.assign({}, value);
+  }
+}

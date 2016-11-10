@@ -52,6 +52,10 @@ export class FormlyFormBuilder {
             model[rootPath]
           );
         } else {
+
+          this.formlyConfig.getMergedField(field);
+          this.initFieldValidation(field);
+          this.initFieldAsyncValidation(field);
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
           if (field.defaultValue && !model[path[0]]) {
             this.formlyUtils.assignModelValue(this.model, this.defaultPath, field.defaultValue);
@@ -175,9 +179,8 @@ export class FormlyFormBuilder {
   }
 
   private addFormControl(form: FormGroup, field: FormlyFieldConfig, model) {
-    const componentType: any = this.formlyConfig.getType(field.type).component;
-    if (componentType.createControl) {
-      form.addControl(field.key, componentType.createControl(model, field));
+    if (field.component.createControl) {
+      form.addControl(field.key, field.component.createControl(model, field));
     } else {
       form.addControl(field.key, new FormControl(
         { value: model, disabled: field.templateOptions.disabled },
