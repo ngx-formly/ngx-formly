@@ -21,7 +21,7 @@ export class FormlyFormBuilder {
 
   private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model) {
     fields.map((field, index) => {
-      field.id = this.formlyUtils.getFieldId(`formly_${this.formId++}`, field, index);
+      field.id = this.formlyUtils.getFieldId(`formly_${this.formId}`, field, index);
       if (field.key && field.type) {
         this.initFieldTemplateOptions(field);
         this.initFieldValidation(field);
@@ -62,10 +62,15 @@ export class FormlyFormBuilder {
 
       if (field.fieldGroup) {
         if (field.key) {
-          const nestedForm = <FormGroup>(form.get(field.key) ? form.get(field.key) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidaors ? field.asyncValidaors.validation : undefined)),
+          let nestedForm = <FormGroup>form.get(field.key),
             nestedModel = model[field.key] || {};
 
-          if (!form.get(field.key)) {
+          if (!nestedForm) {
+            nestedForm = new FormGroup(
+              {},
+              field.validators ? field.validators.validation : undefined,
+              field.asyncValidaors ? field.asyncValidaors.validation : undefined,
+            );
             form.addControl(field.key, nestedForm);
           }
 
@@ -76,7 +81,11 @@ export class FormlyFormBuilder {
       }
 
       if (field.fieldArray && field.key) {
-        const arrayForm = <FormArray>new FormArray([], field.validators ? field.validators.validation : undefined, field.asyncValidaors ? field.asyncValidaors.validation : undefined);
+        const arrayForm = new FormArray(
+          [],
+          field.validators ? field.validators.validation : undefined,
+          field.asyncValidaors ? field.asyncValidaors.validation : undefined,
+        );
         form.setControl(field.key, arrayForm);
       }
     });
@@ -130,11 +139,9 @@ export class FormlyFormBuilder {
 
   private initFieldValidation(field: FormlyFieldConfig) {
     let validators = [];
-    for (let option in field.templateOptions) {
-      this.validationOpts.filter(opt => opt === option).map((opt) => {
-        validators.push(this.getValidation(opt, field.templateOptions[opt]));
-      });
-    }
+    this.validationOpts.filter(opt => field.templateOptions[opt]).map((opt) => {
+      validators.push(this.getValidation(opt, field.templateOptions[opt]));
+    });
     if (field.validators) {
       let validatorFn = (fn, validator) => (control: FormControl) =>
           fn(control) ? null : {[validator]: true};
