@@ -1,3 +1,8 @@
+# 2.0.0-beta.12
+### BREAKING CHANGES
+* **asyncValidation** asyncValidation property in asyncValidators property
+asyncValidations have been moved to asyncValidators.validtion.
+
 # 2.0.0-beta.10
 
 ### BREAKING CHANGES
