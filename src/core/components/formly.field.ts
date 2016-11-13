@@ -73,19 +73,22 @@ export class FormlyField implements DoCheck, OnInit {
         debounce = this.field.modelOptions.debounce.default;
       }
       let fieldComponentRef = this.createFieldComponent();
-      let valueChanges = fieldComponentRef.instance.formControl.valueChanges;
-      if (debounce > 0) {
-        valueChanges = valueChanges.debounceTime(debounce);
-      }
-      if (this.field.parsers && this.field.parsers.length > 0) {
-        this.field.parsers.map(parserFn => {
-          valueChanges = valueChanges.map(parserFn);
-        });
-      }
 
-      valueChanges.subscribe((event) => this
-        .changeModel(new FormlyValueChangeEvent(this.field.key, event))
-      );
+      if (this.field.key) {
+        let valueChanges = fieldComponentRef.instance.formControl.valueChanges;
+        if (debounce > 0) {
+          valueChanges = valueChanges.debounceTime(debounce);
+        }
+        if (this.field.parsers && this.field.parsers.length > 0) {
+          this.field.parsers.map(parserFn => {
+            valueChanges = valueChanges.map(parserFn);
+          });
+        }
+
+        valueChanges.subscribe((event) => this
+          .changeModel(new FormlyValueChangeEvent(this.field.key, event))
+        );
+      }
 
       let update = new FormlyEventEmitter();
       update.subscribe((option: any) => {
