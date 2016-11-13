@@ -182,6 +182,14 @@ describe('FormlyField Component', () => {
       };
     });
 
+    it('should render field without wrapper or key', () => {
+      delete testComponentInputs.field.key;
+
+      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+      const elm = getFormlyFieldElement(fixture.nativeElement);
+      expect(getInputField(elm)).toBeDefined();
+    });
+
     it('should render field wrapper', () => {
       testComponentInputs.field.wrappers = ['label'];
 
