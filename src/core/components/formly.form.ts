@@ -33,7 +33,7 @@ export class FormlyForm implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
       this.model = this.model || {};
-      this.formlyBuilder.buildForm(this.form, this.fields, this.model);
+      this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.setOptions(this.options);
       this.updateInitialValue();
     } else if (changes['model'] && this.fields && this.fields.length > 0) {

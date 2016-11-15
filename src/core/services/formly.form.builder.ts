@@ -13,13 +13,27 @@ export class FormlyFormBuilder {
 
   constructor(private formlyConfig: FormlyConfig, private formlyUtils: FormlyUtils) {}
 
-  buildForm(form: FormGroup, fields: FormlyFieldConfig[], model) {
+  buildForm(form: FormGroup, fields: FormlyFieldConfig[], model, options) {
     this.model = model;
     this.formId++;
-    this.registerFormControls(form, fields, model);
+    let fieldTransforms = (options && options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
+    if (!Array.isArray(fieldTransforms)) {
+      fieldTransforms = [fieldTransforms];
+    }
+
+    fieldTransforms.forEach(fieldTransform => {
+      if (fieldTransform) {
+        fields = fieldTransform(fields, model, form, options);
+        if (!fields) {
+          throw new Error('fieldTransform must return an array of fields');
+        }
+      }
+    });
+
+    this.registerFormControls(form, fields, model, options);
   }
 
-  private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model) {
+  private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model, options) {
     fields.map((field, index) => {
       field.id = this.formlyUtils.getFieldId(`formly_${this.formId}`, field, index);
       if (field.key && field.type) {
@@ -49,7 +63,8 @@ export class FormlyFormBuilder {
           this.buildForm(
             nestedForm,
             [Object.assign({}, field, {key: path})],
-            model[rootPath]
+            model[rootPath],
+            {}
           );
         } else {
 
@@ -78,9 +93,9 @@ export class FormlyFormBuilder {
             form.addControl(field.key, nestedForm);
           }
 
-          this.buildForm(nestedForm, field.fieldGroup, nestedModel);
+          this.buildForm(nestedForm, field.fieldGroup, nestedModel, {});
         } else {
-          this.buildForm(form, field.fieldGroup, model);
+          this.buildForm(form, field.fieldGroup, model, {});
         }
       }
 
