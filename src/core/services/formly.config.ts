@@ -24,6 +24,10 @@ export class FormlyConfig {
     postWrapper: [],
   };
 
+  public extras = {
+    fieldTransform: undefined,
+  };
+
   constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = [], private formlyUtils: FormlyUtils) {
     configs.map(config => {
       if (config.types) {
