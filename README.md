@@ -8,6 +8,7 @@
 Status:
 [![Build Status](https://travis-ci.org/formly-js/ng2-formly.svg?branch=master)](https://travis-ci.org/formly-js/ng2-formly)
 [![npm version](https://badge.fury.io/js/ng2-formly.svg)](https://badge.fury.io/js/ng2-formly)
+[![devDependencies Status](https://david-dm.org/formly-js/ng2-formly/dev-status.svg)](https://david-dm.org/formly-js/ng2-formly?type=dev)
 [![Package Quality](http://npm.packagequality.com/shield/ng2-formly.png)](http://packagequality.com/#?package=ng2-formly)
 [![Known Vulnerabilities](https://snyk.io/test/github/formly-js/ng2-formly/badge.svg)](https://snyk.io/test/github/formly-js/ng2-formly)
 [![codecov.io](http://codecov.io/github/formly-js/ng2-formly/coverage.svg?branch=master)](http://codecov.io/github/formly-js/ng2-formly?branch=master)
