@@ -21,14 +21,14 @@ describe('FormlyFormBuilder service', () => {
   describe('initialise default TemplateOptions', () => {
     it('should not set the default value if the specified key or type is undefined', () => {
       field = { key: 'title' };
-      builder.buildForm(form, [field], {});
+      builder.buildForm(form, [field], {}, {});
 
       expect(field.templateOptions).toEqual(undefined);
     });
 
     it('should set the default value if the specified key and type is defined', () => {
       field = { key: 'title', type: 'input', templateOptions: { placeholder: 'Title' } };
-      builder.buildForm(form, [field], {});
+      builder.buildForm(form, [field], {}, {});
 
       expect(field.templateOptions).toEqual({ label: '', placeholder: 'Title', focus: false });
     });
@@ -37,14 +37,14 @@ describe('FormlyFormBuilder service', () => {
   describe('generate field id', () => {
     it('should not generate id if it is defined', () => {
       field = { key: 'title', id: 'title_id' };
-      builder.buildForm(form, [field], {});
+      builder.buildForm(form, [field], {}, {});
 
       expect(field.id).toEqual('title_id');
     });
 
     it('should generate id if it is not defined', () => {
     field = { key: 'title' };
-      builder.buildForm(form, [field], {});
+      builder.buildForm(form, [field], {}, {});
 
       expect(field.id).toEqual('formly_1__title_0');
     });
@@ -53,8 +53,8 @@ describe('FormlyFormBuilder service', () => {
       let field1 = { key: 'title' },
        field2 = { key: 'title' };
 
-      builder.buildForm(form, [field1], {});
-      builder.buildForm(form, [field2], {});
+      builder.buildForm(form, [field1], {}, {});
+      builder.buildForm(form, [field2], {}, {});
 
       expect(field1['id']).not.toEqual(field2['id']);
     });
@@ -83,7 +83,7 @@ describe('FormlyFormBuilder service', () => {
       it('should show error when option `show` is true', () => {
         field.validators = { validation: ['required'] };
         field.validation = { show: true };
-        builder.buildForm(form, [field], {});
+        builder.buildForm(form, [field], {}, {});
 
         expect(form.get('title').touched).toBeTruthy();
       });
@@ -91,7 +91,7 @@ describe('FormlyFormBuilder service', () => {
       it('should not show error when option `show` is false', () => {
         field.validators = { validation: ['required'] };
         field.validation = { show: false };
-        builder.buildForm(form, [field], {});
+        builder.buildForm(form, [field], {}, {});
 
         expect(form.get('title').touched).toBeFalsy();
       });
@@ -101,14 +101,14 @@ describe('FormlyFormBuilder service', () => {
       describe('with validation option', () => {
         it(`using pre-defined type`, () => {
           field.validators = { validation: ['required'] };
-          builder.buildForm(form, [field], {});
+          builder.buildForm(form, [field], {}, {});
 
           expectValidators(null, 'test');
         });
 
         it(`using custom type`, () => {
           field.validators = { validation: [Validators.required] };
-          builder.buildForm(form, [field], {});
+          builder.buildForm(form, [field], {}, {});
 
           expectValidators(null, 'test');
         });
@@ -116,7 +116,7 @@ describe('FormlyFormBuilder service', () => {
 
       it(`without validation option`, () => {
         field.validators = { required: (form) => form.value };
-        builder.buildForm(form, [field], {});
+        builder.buildForm(form, [field], {}, {});
 
         expectValidators(null, 'test', {required: true});
       });
@@ -135,7 +135,7 @@ describe('FormlyFormBuilder service', () => {
       options.map(option => {
         it(`${option.name}`, () => {
           field.templateOptions = { [option.name]: option.value };
-          builder.buildForm(form, [field], {});
+          builder.buildForm(form, [field], {}, {});
 
           expectValidators(option.invalid, option.valid);
         });
