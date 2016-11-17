@@ -10,6 +10,7 @@ Status:
 [![npm version](https://badge.fury.io/js/ng2-formly.svg)](https://badge.fury.io/js/ng2-formly)
 [![Package Quality](http://npm.packagequality.com/shield/ng2-formly.png)](http://packagequality.com/#?package=ng2-formly)
 [![Known Vulnerabilities](https://snyk.io/test/github/formly-js/ng2-formly/badge.svg)](https://snyk.io/test/github/formly-js/ng2-formly)
+[![codecov.io](http://codecov.io/github/formly-js/ng2-formly/coverage.svg?branch=master)](http://codecov.io/github/formly-js/ng2-formly?branch=master)
 
 Links:
 [![Gitter](https://badges.gitter.im/formly-js/angular2-formly.svg)](https://gitter.im/formly-js/angular2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
