@@ -12,7 +12,7 @@ import { Field } from '../src/core/templates/field';
       </div>
   </div>
   <div *ngIf="options?.formState?.readOnly">
-    {{model}}
+    {{model[key]}}
   </div>
   `,
 })
