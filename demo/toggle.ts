@@ -3,7 +3,7 @@ import { Field } from '../src/core/templates/field';
 @Component({
   selector: 'formly-field-toggle',
   template: `
-    <div [formGroup]="form" *ngIf="!options?.formState?.readOnly">
+    <div [formGroup]="form" *ngIf="!formState.readOnly">
       <div class="checkbox-toggle" [ngClass]="isLarge">
           <input id="checkbox" type="checkbox" type="checkbox" [formControlName]="key" value="on">
           <label for="checkbox" [ngClass]="isAlert">
@@ -11,7 +11,7 @@ import { Field } from '../src/core/templates/field';
           </label>
       </div>
   </div>
-  <div *ngIf="options?.formState?.readOnly">
+  <div *ngIf="formState.readOnly">
     {{model[key]}}
   </div>
   `,
