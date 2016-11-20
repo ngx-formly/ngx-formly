@@ -34,8 +34,8 @@ export class FormlyForm implements OnChanges {
     if (changes['fields']) {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
+      this.setOptions();
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-      this.setOptions(this.options);
       this.updateInitialValue();
     } else if (changes['model'] && this.fields && this.fields.length > 0) {
       this.form.patchValue(this.model);
@@ -54,11 +54,10 @@ export class FormlyForm implements OnChanges {
     this.formlyUtils.assignModelValue(this.model, event.key, event.value);
   }
 
-  setOptions(options) {
-    if (options) {
-      options.resetModel = this.resetModel.bind(this);
-      options.updateInitialValue = this.updateInitialValue.bind(this);
-    }
+  setOptions() {
+    this.options = this.options || {};
+    this.options.resetModel = this.resetModel.bind(this);
+    this.options.updateInitialValue = this.updateInitialValue.bind(this);
   }
 
   private resetModel() {
