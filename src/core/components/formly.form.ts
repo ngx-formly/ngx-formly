@@ -9,7 +9,7 @@ import { FormlyUtils } from './../services/formly.utils';
   selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields"
-      [hide]="field.hideExpression" [model]="field.key?model[field.key]:model"
+      [hide]="field.hideExpression" [model]="fieldModel(field)"
       [form]="form" [field]="field" [formModel]="model"
       (modelChange)="changeModel($event)"
       [ngClass]="!field.fieldGroup ? field.className: undefined"
@@ -33,12 +33,21 @@ export class FormlyForm implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
       this.model = this.model || {};
+      this.form = this.form || (new FormGroup({}));
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.setOptions(this.options);
       this.updateInitialValue();
     } else if (changes['model'] && this.fields && this.fields.length > 0) {
       this.form.patchValue(this.model);
     }
+  }
+
+  fieldModel(field: FormlyFieldConfig) {
+    if (field.key && (field.fieldGroup || field.fieldArray) && this.model[field.key]) {
+      return this.model[field.key];
+    }
+
+    return this.model;
   }
 
   changeModel(event: FormlyValueChangeEvent) {
