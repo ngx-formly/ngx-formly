@@ -44,7 +44,17 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress', 'mocha'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ["mocha"],
+    reporters: ['mocha', 'coverage', 'remap-coverage'],
+
+    coverageReporter: {
+        type: 'in-memory'
+    },
+
+    remapCoverageReporter: {
+        'text-summary': null,
+        json: './coverage/report/coverage-final.json',
+        html: './coverage/html'
+    },
 
     // web server port
     port: 9876,
@@ -68,20 +78,5 @@ module.exports = function (config) {
     singleRun: true
   };
 
-  if (!isTestWatch) {
-    _config.reporters.push("coverage");
-
-    _config.coverageReporter = {
-      dir: 'coverage/',
-      reporters: [{
-        type: 'json',
-        dir: 'coverage',
-        subdir: 'json',
-        file: 'coverage-final.json'
-      }]
-    };
-  }
-
   config.set(_config);
-
 };
