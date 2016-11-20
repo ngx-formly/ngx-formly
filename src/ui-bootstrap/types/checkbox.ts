@@ -7,9 +7,9 @@ import { FieldType, FormlyFieldConfig } from '../../core/core';
   template: `
     <label class="custom-control custom-checkbox">
       <input [id]="id" type="checkbox" [formControl]="formControl"
-        *ngIf="!templateOptions.hidden" value="on"
+        *ngIf="!to.hidden" value="on"
         [formlyAttributes]="field" class="custom-control-input">
-        {{templateOptions.label}}
+        {{to.label}}
         <span class="custom-control-indicator"></span>
     </label>
   `,

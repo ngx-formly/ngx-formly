@@ -4,7 +4,7 @@ import { FieldWrapper } from '../src/core/templates/field.wrapper';
   selector: 'formly-wrapper-horizontal',
   template: `
     <div class="row">
-      <label attr.for="{{key}}" class="col-sm-4 form-control-label">{{templateOptions.label}}</label>
+      <label attr.for="{{key}}" class="col-sm-4 form-control-label">{{to.label}}</label>
       <div class="col-sm-8">
         <template #fieldComponent></template>
       </div>

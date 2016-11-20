@@ -6,19 +6,19 @@ import { FieldWrapper } from '../../core/core';
   template: `
     <div class="input-group">
     <div class="input-group-addon"
-         *ngIf="templateOptions.addonLeft"
-         [ngStyle]="{cursor: templateOptions.addonLeft.onClick ? 'pointer' : 'inherit'}"
+         *ngIf="to.addonLeft"
+         [ngStyle]="{cursor: to.addonLeft.onClick ? 'pointer' : 'inherit'}"
          (click)="click($event)">
-        <i [ngClass]="templateOptions.addonLeft.class" *ngIf="templateOptions.addonLeft.class"></i>
-        <span *ngIf="templateOptions.addonLeft.text">{{templateOptions.addonLeft.text}}</span>
+        <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
+        <span *ngIf="to.addonLeft.text">{{to.addonLeft.text}}</span>
     </div>
     <template #fieldComponent></template>
     <div class="input-group-addon"
-         *ngIf="templateOptions.addonRight"
-         [ngStyle]="{cursor: templateOptions.addonRight.onClick ? 'pointer' : 'inherit'}"
+         *ngIf="to.addonRight"
+         [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
          (click)="click($event)">
-        <i [ngClass]="templateOptions.addonRight.class" *ngIf="templateOptions.addonRight.class"></i>
-        <span *ngIf="templateOptions.addonRight.text">{{templateOptions.addonRight.text}}</span>
+        <i [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
+        <span *ngIf="to.addonRight.text">{{to.addonRight.text}}</span>
     </div>
 </div>
   `,
@@ -27,8 +27,8 @@ export class FormlyWrapperAddons extends FieldWrapper {
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 
   click($event) {
-    if (this.templateOptions['addonLeft'].onClick) {
-      this.templateOptions['addonLeft'].onClick(this.templateOptions, this, $event);
+    if (this.to['addonLeft'].onClick) {
+      this.to['addonLeft'].onClick(this.to, this, $event);
     }
   }
 }

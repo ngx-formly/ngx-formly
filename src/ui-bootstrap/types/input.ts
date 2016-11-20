@@ -10,6 +10,6 @@ import { FieldType } from '../../core/core';
 })
 export class FormlyFieldInput extends FieldType {
   get type() {
-    return this.templateOptions.type ? this.templateOptions.type : 'text';
+    return this.to.type || 'text';
   }
 }

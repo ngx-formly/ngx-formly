@@ -18,14 +18,14 @@ import { Field } from '../src/core/templates/field';
 })
 export class FormlyFieldToggle extends Field {
   get isAlert() {
-    if (this.templateOptions['isAlert']) {
+    if (this.to['isAlert']) {
       return 'toggle-alert';
     }
     return '';
   }
 
   get isLarge() {
-    if (this.templateOptions['isLarge']) {
+    if (this.to['isLarge']) {
       return 'checkbox-toggle--large';
     }
     return '';

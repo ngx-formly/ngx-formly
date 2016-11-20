@@ -1,4 +1,5 @@
-import { FormlyConfig } from '../../core/services/formly.config';
+import { FormlyConfig } from '../../core/core';
+
 export class TemplateAddons {
   run(fc: FormlyConfig) {
     fc.templateManipulators.postWrapper.push((field) => {
