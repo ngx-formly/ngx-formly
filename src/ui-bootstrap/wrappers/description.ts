@@ -6,7 +6,7 @@ import { FieldWrapper } from '../../core/core';
   template: `
     <template #fieldComponent></template>
     <div>
-      <small class="text-muted">{{templateOptions.description}}</small>
+      <small class="text-muted">{{to.description}}</small>
     </div>
   `,
 })

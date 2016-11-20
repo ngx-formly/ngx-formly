@@ -11,7 +11,18 @@ export abstract class Field {
 
   get key() { return this.field.key; }
   get formControl(): AbstractControl { return this.form.get(this.key); }
-  get templateOptions(): FormlyTemplateOptions { return this.field.templateOptions; }
+
+  /**
+   * @deprecated Use `to` instead.
+   **/
+  get templateOptions(): FormlyTemplateOptions {
+    console.warn(`${this.constructor['name']}: 'templateOptions' is deprecated. Use 'to' instead.`);
+
+    return this.to;
+  }
+
+  get to(): FormlyTemplateOptions { return this.field.templateOptions; }
+
   get valid() { return this.formControl.touched && !this.formControl.valid; }
 
   get id() { return this.field.id; }

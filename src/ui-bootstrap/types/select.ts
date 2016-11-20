@@ -5,8 +5,8 @@ import { FieldType } from '../../core/core';
   selector: 'formly-field-select',
   template: `
     <select [id]="id" [formControl]="formControl" class="form-control" [formlyAttributes]="field">
-      <option value="" *ngIf="templateOptions.placeholder">{{templateOptions.placeholder}}</option>
-      <option *ngFor="let option of templateOptions.options" [value]="option.value">{{option.label}}</option>
+      <option value="" *ngIf="to.placeholder">{{to.placeholder}}</option>
+      <option *ngFor="let option of to.options" [value]="option.value">{{option.label}}</option>
     </select>
   `,
 })

@@ -1,7 +1,8 @@
-import { FormlyConfig } from '../../core/services/formly.config';
+import { FormlyFieldConfig, FormlyConfig } from '../../core/core';
+
 export class TemplateDescription {
   run(fc: FormlyConfig) {
-    fc.templateManipulators.postWrapper.push((field) => {
+    fc.templateManipulators.postWrapper.push((field: FormlyFieldConfig) => {
       if (field && field.templateOptions && field.templateOptions.description) {
         return 'description';
       }

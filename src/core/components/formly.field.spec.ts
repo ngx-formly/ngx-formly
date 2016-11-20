@@ -266,7 +266,7 @@ class FormlyFieldText extends FieldType {}
 @Component({
   selector: 'formly-wrapper-label',
   template: `
-    <label [attr.for]="id">{{templateOptions.label}}</label>
+    <label [attr.for]="id">{{to.label}}</label>
     <template #fieldComponent></template>
   `,
 })

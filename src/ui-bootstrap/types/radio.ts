@@ -5,7 +5,7 @@ import { FieldType } from '../../core/core';
   selector: 'formly-field-radio',
   template: `
     <div [formGroup]="form">
-      <div *ngFor="let option of templateOptions.options" class="radio">
+      <div *ngFor="let option of to.options" class="radio">
         <label class="custom-control custom-radio">
           <input [id]="id" type="radio" [value]="option.key" [formControlName]="key"
           [formlyAttributes]="field" class="custom-control-input">

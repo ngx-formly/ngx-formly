@@ -5,7 +5,7 @@ import { FieldType, FormlyFieldConfig } from '../../core/core';
 @Component({
   selector: 'formly-field-multicheckbox',
   template: `
-    <div *ngFor="let option of templateOptions.options" class="checkbox">
+    <div *ngFor="let option of to.options" class="checkbox">
         <label class="custom-control custom-checkbox">
             <input [id]="id" type="checkbox" [value]="option.value" [formControl]="formControl.get(option.key)"
             [formlyAttributes]="field" class="custom-control-input">

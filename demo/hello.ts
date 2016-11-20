@@ -81,8 +81,8 @@ export class HelloApp {
           },
           lifecycle: {
             onInit: function() {
-              this.templateOptions.label = 'Email Address *';
-              this.templateOptions.label = this.templateOptions.label.toUpperCase();
+              this.to.label = 'Email Address *';
+              this.to.label = this.to.label.toUpperCase();
             },
           },
           validators: {
