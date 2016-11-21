@@ -5,7 +5,7 @@ export interface FormlyFieldConfig {
   optionsTypes?: any;
   validation?: any;
   validators?: any;
-  asyncValidaors?: any;
+  asyncValidators?: any;
   template?: string;
   component?: any;
   wrappers?: string[];

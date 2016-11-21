@@ -114,11 +114,22 @@ describe('FormlyFormBuilder service', () => {
         });
       });
 
-      it(`without validation option`, () => {
-        field.validators = { required: (form) => form.value };
-        builder.buildForm(form, [field], {}, {});
+      describe('without validation option', () => {
+        it(`using function`, () => {
+          field.validators = { required: (form) => form.value };
+          builder.buildForm(form, [field], {}, {});
 
-        expectValidators(null, 'test', {required: true});
+          expectValidators(null, 'test', {required: true});
+        });
+
+        it(`using expression property`, () => {
+          field.validators = {
+            required: { expression: (form) => form.value },
+          };
+          builder.buildForm(form, [field], {}, {});
+
+          expectValidators(null, 'test', {required: true});
+        });
       });
     });
 
