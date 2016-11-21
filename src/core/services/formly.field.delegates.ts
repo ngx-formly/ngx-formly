@@ -9,7 +9,7 @@ export class FormlyFieldVisibilityDelegate {
     if (expression instanceof Function) {
       return expression();
     } else if (typeof expression === 'string') {
-      return evalExpression(expression, this.formlyCommon, ['model', 'fieldModel'], [this.formlyCommon.formModel, this.formlyCommon.model]);
+      return evalExpression(expression, this.formlyCommon, ['model', 'formState'], [this.formlyCommon.model, this.formlyCommon.options.formState]);
     } else {
       return expression ? true : false;
     }
@@ -43,12 +43,12 @@ export class FormlyFieldExpressionDelegate {
       if (expressionProperties) {
         for (let key in expressionProperties) {
           // TODO Performance improvement for expression Evaluation by caching built expression
-          let expressionValue = evalExpression(expressionProperties[key], this.formlyCommon, ['model', 'fieldValue'], [this.formlyCommon.formModel, this.formlyCommon.model]);
+          let expressionValue = evalExpression(expressionProperties[key], this.formlyCommon, ['model', 'formState'], [this.formlyCommon.model, this.formlyCommon.options.formState]);
 
           // TODO Performance improvement for expression value Setter by caching built expression setter
           expressionValueSetter(key, expressionValue, this.formlyCommon
-            , ['model', 'fieldModel', 'templateOptions', 'validation']
-            , [this.formlyCommon.formModel, this.formlyCommon.model, this.formlyCommon.field.templateOptions, this.formlyCommon.field.validation]);
+            , ['model', 'templateOptions', 'validation']
+            , [this.formlyCommon.model, this.formlyCommon.field.templateOptions, this.formlyCommon.field.validation]);
         }
 
         const formControl = this.formlyCommon.form.get(this.formlyCommon.field.key),

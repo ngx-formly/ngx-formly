@@ -5,7 +5,6 @@ import { FormlyTemplateOptions, FormlyFieldConfig } from '../components/formly.f
 export abstract class Field {
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
-  @Input() formModel: any;
   @Input() model: any;
   @Input() options;
 

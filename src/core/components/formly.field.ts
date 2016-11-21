@@ -19,7 +19,6 @@ import 'rxjs/add/operator/map';
   `,
 })
 export class FormlyField implements DoCheck, OnInit {
-  @Input() formModel: any;
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
@@ -132,7 +131,6 @@ export class FormlyField implements DoCheck, OnInit {
         model: this.model,
         form: this.form,
         field: this.field,
-        formModel: this.formModel,
         options: this.options,
     });
 
