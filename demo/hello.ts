@@ -107,6 +107,7 @@ export class HelloApp {
           },
           expressionProperties: {
             'validation.show': 'model.checked === true ? true: null',
+            'templateOptions.disabled': '!formState.readOnly',
           },
           validators: {
             validation: Validators.maxLength(8),

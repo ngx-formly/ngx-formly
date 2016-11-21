@@ -16,6 +16,7 @@
         <span class="custom-control-indicator"></span>
     </label>
     <br><strong>FORM DATA:</strong><br><pre>{{user | json}}</pre><br>
+    <br><strong>FORM STATE:</strong><br><pre>{{options.formState | json}}</pre><br>
     <hr>
     <button (click)="showEmail()" class="btn btn-success">Change Email</button>
     <button (click)="resetForm()" class="btn btn-danger">Reset</button>

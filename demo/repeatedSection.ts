@@ -9,6 +9,7 @@ import { FieldType, FormlyFieldConfig } from '../src/index';
       <formly-form
         [model]="model[i]"
         [fields]="fields"
+        [options]="options"
         [form]="control"
         [ngClass]="field.fieldArray.className">
       </formly-form>
