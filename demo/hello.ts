@@ -112,7 +112,7 @@ export class HelloApp {
             validation: Validators.maxLength(8),
             custom: (control: FormControl) => control.value !== 'tom',
           },
-          asyncValidaors: {
+          asyncValidators: {
             validation: (control: FormControl) =>
             new Promise(resolve => resolve( control.value !== 'john' ? null : { uniqueUsername: true })),
             uniqueUserName: (control: FormControl) => new Promise(resolve => resolve( control.value !== 'paul')),
@@ -194,6 +194,12 @@ export class HelloApp {
           templateOptions: {
             label: 'City',
             placeholder: 'Arlington',
+          },
+          validators: {
+            city: {
+              expression: (control: FormControl) => control.value && control.value.length > 3,
+              message: `City: Should have atleast 3 Characters`,
+            },
           },
         }, {
           className: 'col-md-3',
