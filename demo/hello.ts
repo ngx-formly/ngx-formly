@@ -164,8 +164,25 @@ export class HelloApp {
             label: 'Gender',
             placeholder: 'Select Gender',
           },
+        } , {
+          className: 'col-md-4',
+          key: 'selectSuperHero',
+          type: 'select',
+          templateOptions: {
+            options: [
+              {name: 'Iron Man', value: 'iron_man', gender: 'Male'},
+              {name: 'Captain America', value: 'captain_america', gender: 'Male'},
+              {name: 'Black Widow', value: 'black_widow', gender: 'Female'},
+              {name: 'Hulk', value: 'hulk', gender: 'Male'},
+              {name: 'Captain Marvel', value: 'captain_marvel', gender: 'Female'},
+            ],
+            label: 'Gender',
+            labelProp: 'name',
+            groupProp: 'gender',
+            placeholder: 'Select Gender',
+          },
         }],
-      }, {
+      },  {
         className: 'section-label',
         template: '<hr/><div><strong>Address:</strong></div>',
       }, {
@@ -369,6 +386,7 @@ export class HelloApp {
       email: 'email@gmail.com',
       checked: true,
       select: 'male',
+      selectSuperHero: 'captain_america',
       title1: 'mr',
       title2: 'mrs',
       toggleVal: true,
