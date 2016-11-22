@@ -355,6 +355,7 @@ export class HelloApp {
                 label: 'Stock Identifier:',
                 addonRight: {
                   class: 'fa fa-code',
+                  onClick: (to, fieldType, $event) => console.log(to, fieldType, $event),
                 },
               },
             },
