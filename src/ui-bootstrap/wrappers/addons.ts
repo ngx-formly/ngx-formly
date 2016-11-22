@@ -8,7 +8,7 @@ import { FieldWrapper } from '../../core/core';
     <div class="input-group-addon"
          *ngIf="to.addonLeft"
          [ngStyle]="{cursor: to.addonLeft.onClick ? 'pointer' : 'inherit'}"
-         (click)="click($event)">
+         (click)="addonLeftClick($event)">
         <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
         <span *ngIf="to.addonLeft.text">{{to.addonLeft.text}}</span>
     </div>
@@ -16,7 +16,7 @@ import { FieldWrapper } from '../../core/core';
     <div class="input-group-addon"
          *ngIf="to.addonRight"
          [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
-         (click)="click($event)">
+         (click)="addonRightClick($event)">
         <i [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
         <span *ngIf="to.addonRight.text">{{to.addonRight.text}}</span>
     </div>
@@ -26,7 +26,13 @@ import { FieldWrapper } from '../../core/core';
 export class FormlyWrapperAddons extends FieldWrapper {
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 
-  click($event) {
+  addonRightClick($event) {
+    if (this.to['addonRight'].onClick) {
+      this.to['addonRight'].onClick(this.to, this, $event);
+    }
+  }
+
+  addonLeftClick($event) {
     if (this.to['addonLeft'].onClick) {
       this.to['addonLeft'].onClick(this.to, this, $event);
     }

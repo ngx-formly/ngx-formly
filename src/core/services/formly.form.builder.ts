@@ -201,7 +201,7 @@ export class FormlyFormBuilder {
   }
 
   private addFormControl(form: FormGroup, field: FormlyFieldConfig, model) {
-    if (field.component.createControl) {
+    if (field.component && field.component.createControl) {
       form.addControl(field.key, field.component.createControl(model, field));
     } else {
       form.addControl(field.key, new FormControl(
