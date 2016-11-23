@@ -15,13 +15,7 @@ export interface FormlyFieldConfig {
   className?: string;
   type?: string;
   expressionProperties?: any;
-  focus?: boolean | Function;
-  blur?: Function;
-  keyup?: Function;
-  keydown?: Function;
-  click?: Function;
-  change?: Function;
-  keypress?: Function;
+  focus?: boolean;
   modelOptions?: any;
   lifecycle?: FormlyLifeCycleOptions;
   defaultValue?: any;
@@ -37,7 +31,6 @@ export interface FormlyTemplateOptions {
   rows?: number;
   cols?: number;
   description?: string;
-  focus?: boolean;
   hidden?: boolean;
   max?: number;
   min?: number;
@@ -47,6 +40,13 @@ export interface FormlyTemplateOptions {
   required?: Boolean;
   tabindex?: number;
   step?: number;
+  focus?: Function;
+  blur?: Function;
+  keyup?: Function;
+  keydown?: Function;
+  click?: Function;
+  change?: Function;
+  keypress?: Function;
   [additionalProperties: string]: any;
 }
 
