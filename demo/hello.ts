@@ -13,6 +13,7 @@ import { RepeatComponent } from './repeatedSection';
 import { FormlyFieldToggle } from './toggle';
 import { FormlyWrapperHorizontalLabel } from './horizontal.wrapper';
 import { FormlyPanelWrapper } from './panel.wrapper';
+import { SuperHerosService } from './super-heros';
 
 @Component({
   selector: 'formly-demo-hello-app',
@@ -27,7 +28,7 @@ export class HelloApp {
   options;
   private userFields: Array<FormlyFieldConfig> = [];
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private sh: SuperHerosService) {
     this.form = fb.group({});
 
     this.author = {
@@ -169,17 +170,16 @@ export class HelloApp {
           key: 'selectSuperHero',
           type: 'select',
           templateOptions: {
-            options: [
-              {name: 'Iron Man', value: 'iron_man', gender: 'Male'},
-              {name: 'Captain America', value: 'captain_america', gender: 'Male'},
-              {name: 'Black Widow', value: 'black_widow', gender: 'Female'},
-              {name: 'Hulk', value: 'hulk', gender: 'Male'},
-              {name: 'Captain Marvel', value: 'captain_marvel', gender: 'Female'},
-            ],
+            options: [],
             label: 'Gender',
             labelProp: 'name',
             groupProp: 'gender',
             placeholder: 'Select Gender',
+          },
+          lifecycle: {
+            onInit: () => {
+              this.userFields[2].fieldGroup[6].templateOptions.options = this.sh.get();
+            },
           },
         }],
       },  {
@@ -475,6 +475,7 @@ export class HelloApp {
   declarations: [
     HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel, RepeatComponent, FormlyPanelWrapper,
   ],
+  providers: [SuperHerosService],
   imports: [
     BrowserModule,
     FormlyModule.forRoot({
