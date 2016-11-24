@@ -12,6 +12,7 @@ describe('FormlyFormBuilder service', () => {
     builder = new FormlyFormBuilder(
       new FormlyConfig([{
         types: [{ name: 'input', component: TestComponent }],
+        wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
         validators: [{ name: 'required', validation: Validators.required }],
       }], new FormlyUtils()),
       new FormlyUtils()
@@ -57,6 +58,16 @@ describe('FormlyFormBuilder service', () => {
       builder.buildForm(form, [field2], {}, {});
 
       expect(field1['id']).not.toEqual(field2['id']);
+    });
+  });
+
+  describe('merge field options', () => {
+    it('nested property key', () => {
+      field = { key: 'nested.title', type: 'input' };
+      builder.buildForm(form, [field], {}, {});
+
+      expect(field.key).toEqual('nested.title');
+      expect(field.wrappers).toEqual(['label']);
     });
   });
 
