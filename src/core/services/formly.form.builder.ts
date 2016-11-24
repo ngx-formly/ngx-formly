@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FormlyUtils } from './formly.utils';
+import { getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class FormlyFormBuilder {
   private formId = 0;
   private model;
 
-  constructor(private formlyConfig: FormlyConfig, private formlyUtils: FormlyUtils) {}
+  constructor(private formlyConfig: FormlyConfig) {}
 
   buildForm(form: FormGroup, fields: FormlyFieldConfig[], model, options) {
     this.model = model;
@@ -35,7 +35,7 @@ export class FormlyFormBuilder {
 
   private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model, options) {
     fields.map((field, index) => {
-      field.id = this.formlyUtils.getFieldId(`formly_${this.formId}`, field, index);
+      field.id = getFieldId(`formly_${this.formId}`, field, index);
       if (field.key && field.type) {
         this.initFieldTemplateOptions(field);
         this.initFieldValidation(field);
@@ -71,7 +71,7 @@ export class FormlyFormBuilder {
           this.initFieldAsyncValidation(field);
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
           if (field.defaultValue && !model[path[0]]) {
-            this.formlyUtils.assignModelValue(this.model, this.defaultPath, field.defaultValue);
+            assignModelValue(this.model, this.defaultPath, field.defaultValue);
             this.defaultPath = undefined;
           }
         }
@@ -123,7 +123,7 @@ export class FormlyFormBuilder {
         if (validatorName !== 'validation') {
           validators.push((control: FormControl) => {
             let validator = field.asyncValidators[validatorName];
-            if (this.formlyUtils.isObject(validator)) {
+            if (isObject(validator)) {
               validator = validator.expression;
             }
 
@@ -167,7 +167,7 @@ export class FormlyFormBuilder {
         if (validatorName !== 'validation') {
           validators.push((control: FormControl) => {
             let validator = field.validators[validatorName];
-            if (this.formlyUtils.isObject(validator)) {
+            if (isObject(validator)) {
               validator = validator.expression;
             }
 

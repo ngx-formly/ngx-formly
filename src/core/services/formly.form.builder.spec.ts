@@ -1,5 +1,4 @@
 import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from './../core';
-import { FormlyUtils } from './formly.utils';
 import { FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 
@@ -14,8 +13,7 @@ describe('FormlyFormBuilder service', () => {
         types: [{ name: 'input', component: TestComponent }],
         wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
         validators: [{ name: 'required', validation: Validators.required }],
-      }], new FormlyUtils()),
-      new FormlyUtils()
+      }])
     );
   });
 
