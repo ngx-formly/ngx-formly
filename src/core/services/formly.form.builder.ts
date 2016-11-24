@@ -60,12 +60,10 @@ export class FormlyFormBuilder {
             model[rootPath] = isNaN(rootPath) ? {} : [];
           }
 
-          this.buildForm(
-            nestedForm,
-            [Object.assign({}, field, {key: path})],
-            model[rootPath],
-            {}
-          );
+          const originalKey = field.key;
+          field.key = path;
+          this.buildForm(nestedForm, [field], model[rootPath], {});
+          field.key = originalKey;
         } else {
 
           this.formlyConfig.getMergedField(field);
