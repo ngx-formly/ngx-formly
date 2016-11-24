@@ -7,7 +7,7 @@ export class FormlyFieldVisibilityDelegate {
   eval(expression: string | Function | boolean): boolean {
     // TODO support this.formlyCommon.field.hideExpression as a observable
     if (expression instanceof Function) {
-      return expression();
+      return expression.apply(this.formlyCommon, [this.formlyCommon.model, this.formlyCommon.options.formState]);
     } else if (typeof expression === 'string') {
       return evalExpression(expression, this.formlyCommon, ['model', 'formState'], [this.formlyCommon.model, this.formlyCommon.options.formState]);
     } else {
