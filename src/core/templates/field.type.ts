@@ -40,7 +40,7 @@ export abstract class FieldType extends Field implements OnInit, OnChanges, DoCh
 
   private lifeCycleHooks(type) {
     if (this.lifecycle && this.lifecycle[type]) {
-      this.lifecycle[type].bind(this)();
+      this.lifecycle[type].bind(this)(this.form, this.field, this.model, this.options);
     }
   }
 }

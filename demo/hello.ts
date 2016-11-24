@@ -177,8 +177,8 @@ export class HelloApp {
             placeholder: 'Select Gender',
           },
           lifecycle: {
-            onInit: () => {
-              this.userFields[2].fieldGroup[6].templateOptions.options = this.sh.get();
+            onInit: (form, field) => {
+              field.templateOptions.options = this.sh.get();
             },
           },
         }],

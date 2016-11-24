@@ -1,3 +1,4 @@
+import { FormGroup } from '@angular/forms';
 export interface FormlyFieldConfig {
   key?: string;
   id?: string;
@@ -50,13 +51,17 @@ export interface FormlyTemplateOptions {
   [additionalProperties: string]: any;
 }
 
+export interface FormlyLifeCycleFn {
+    (form?: FormGroup, field?: FormlyFieldConfig, model?, options?): void;
+}
+
 export interface FormlyLifeCycleOptions {
-  onInit?: Function;
-  onChanges?: Function;
-  doCheck?: Function;
-  afterContentInit?: Function;
-  afterContentChecked?: Function;
-  afterViewInit?: Function;
-  afterViewChecked?: Function;
-  onDestroy?: Function;
+  onInit?: FormlyLifeCycleFn;
+  onChanges?: FormlyLifeCycleFn;
+  doCheck?: FormlyLifeCycleFn;
+  afterContentInit?: FormlyLifeCycleFn;
+  afterContentChecked?: FormlyLifeCycleFn;
+  afterViewInit?: FormlyLifeCycleFn;
+  afterViewChecked?: FormlyLifeCycleFn;
+  onDestroy?: FormlyLifeCycleFn;
 }
