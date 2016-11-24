@@ -302,12 +302,12 @@ export class HelloApp {
           },
           updateOn: 'default blur',
         },
+        focus: true,
         templateOptions: {
           rows: 5,
           cols: 20,
           label: 'Message (Type a paragraph...)',
           description: 'Please enter atleast 150 characters',
-          focus: true,
         },
       }, {
         key: 'toggleVal',

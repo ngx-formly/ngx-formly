@@ -26,7 +26,7 @@ export class FormlyAttributes implements OnInit, OnChanges {
 
   ngOnInit() {
     this.focusDispatcher.listen((key: String) =>
-      this.field.templateOptions.focus = this.field.key === key);
+      this.field.focus = this.field.key === key);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -54,9 +54,9 @@ export class FormlyAttributes implements OnInit, OnChanges {
           }
         });
 
-      if (templateOptions.focus || (previousOptions.focus !== undefined && previousOptions.focus !== templateOptions.focus)) {
-        this.renderer.invokeElementMethod(this.elementRef.nativeElement, templateOptions.focus ? 'focus' : 'blur', []);
-        if (templateOptions.focus) {
+      if (this.field.focus || (changes['field'].previousValue.focus !== undefined && changes['field'].previousValue.focus !== this.field.focus)) {
+        this.renderer.invokeElementMethod(this.elementRef.nativeElement, this.field.focus ? 'focus' : 'blur', []);
+        if (this.field.focus) {
           // TODO: Raise a Event which can be used for streaming
           this.focusDispatcher.notify(this.field.key);
         }
