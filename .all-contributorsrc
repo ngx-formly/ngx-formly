@@ -103,6 +103,24 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "jrgleason",
+      "name": "Jackie Gleason",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1319151?v=3",
+      "profile": "http://JackieRGleason.com",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "ampsarfraz",
+      "name": "ampsarfraz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23452573?v=3",
+      "profile": "https://github.com/ampsarfraz",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
