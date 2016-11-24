@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { FormlyUtils } from './../services/formly.utils';
+import { assignModelValue } from './../utils';
 
 @Component({
   selector: 'formly-form',
@@ -24,10 +24,7 @@ export class FormlyForm implements OnChanges {
   @Input() options: any;
   private initialModel: any;
 
-  constructor(
-    private formlyBuilder: FormlyFormBuilder,
-    private formlyUtils: FormlyUtils,
-  ) {}
+  constructor(private formlyBuilder: FormlyFormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
@@ -42,7 +39,11 @@ export class FormlyForm implements OnChanges {
   }
 
   fieldModel(field: FormlyFieldConfig) {
-    if (field.key && (field.fieldGroup || field.fieldArray) && this.model[field.key]) {
+    if (field.key && (field.fieldGroup || field.fieldArray)) {
+      if (!this.model[field.key]) {
+        this.model[field.key] = {};
+      }
+
       return this.model[field.key];
     }
 
@@ -50,7 +51,7 @@ export class FormlyForm implements OnChanges {
   }
 
   changeModel(event: FormlyValueChangeEvent) {
-    this.formlyUtils.assignModelValue(this.model, event.key, event.value);
+    assignModelValue(this.model, event.key, event.value);
   }
 
   setOptions() {

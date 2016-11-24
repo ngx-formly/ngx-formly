@@ -1,6 +1,6 @@
 import { Injectable, Inject, OpaqueToken } from '@angular/core';
 import { FormlyGroup } from '../components/formly.group';
-import { FormlyUtils } from './formly.utils';
+import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
 export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
@@ -28,7 +28,7 @@ export class FormlyConfig {
     fieldTransform: undefined,
   };
 
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = [], private formlyUtils: FormlyUtils) {
+  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
     configs.map(config => {
       if (config.types) {
         config.types.map(type => this.setType(type));
@@ -89,23 +89,23 @@ export class FormlyConfig {
     }
 
     if (this.types[name].defaultOptions) {
-      this.formlyUtils.reverseDeepMerge(field, this.types[name].defaultOptions);
+      reverseDeepMerge(field, this.types[name].defaultOptions);
     }
 
     let extendDefaults = this.types[name].extends && this.getType(this.types[name].extends).defaultOptions;
     if (extendDefaults) {
-      this.formlyUtils.reverseDeepMerge(field, extendDefaults);
+      reverseDeepMerge(field, extendDefaults);
     }
 
     if (field && field.optionsTypes) {
       field.optionsTypes.map(option => {
         let defaultOptions = this.getType(option).defaultOptions;
         if (defaultOptions) {
-          this.formlyUtils.reverseDeepMerge(field, defaultOptions);
+          reverseDeepMerge(field, defaultOptions);
         }
       });
     }
-    this.formlyUtils.reverseDeepMerge(field, this.types[name]);
+    reverseDeepMerge(field, this.types[name]);
   }
 
   setWrapper(options: WrapperOption) {

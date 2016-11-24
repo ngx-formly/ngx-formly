@@ -10,12 +10,11 @@ import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyValidationMessages } from './services/formly.validation-messages';
 import { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
 import { FormlyFieldVisibilityDelegate } from './services/formly.field.delegates';
-export { SingleFocusDispatcher } from './services/formly.single.focus.dispatcher'
-import { FormlyUtils } from './services/formly.utils';
 import { Field } from './templates/field';
 import { FieldType } from './templates/field.type';
 import { FieldWrapper } from './templates/field.wrapper';
 import { FormlyGroup } from './components/formly.group';
+import { SingleFocusDispatcher } from './services/formly.single.focus.dispatcher';
 
 export {
   FormlyAttributes,
@@ -28,6 +27,7 @@ export {
   FormlyValidationMessages,
   FormlyFieldVisibilityDelegate,
   FormlyEventEmitter,
+  SingleFocusDispatcher,
 
   Field,
   FieldType,
@@ -54,7 +54,6 @@ export class FormlyModule {
         FormlyConfig,
         FormlyPubSub,
         FormlyValidationMessages,
-        FormlyUtils,
         { provide: FORMLY_CONFIG_TOKEN, useValue: config, multi: true },
         { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
       ],
