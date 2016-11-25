@@ -4,24 +4,16 @@ import { FormlyField } from '../components/formly.field';
 export class FormlyFieldVisibilityDelegate {
   constructor(private formlyCommon: FormlyField) {}
 
-  eval(expression: string | Function | boolean): boolean {
-    // TODO support this.formlyCommon.field.hideExpression as a observable
-    if (expression instanceof Function) {
-      return expression.apply(this.formlyCommon, [this.formlyCommon.model, this.formlyCommon.options.formState]);
-    } else if (typeof expression === 'string') {
-      return evalExpression(expression, this.formlyCommon, ['model', 'formState'], [this.formlyCommon.model, this.formlyCommon.options.formState]);
-    } else {
-      return expression ? true : false;
-    }
-  }
-
   hasHideExpression(): boolean {
     return (this.formlyCommon.field && this.formlyCommon.field.hideExpression !== undefined) && this.formlyCommon.field.hideExpression ? true : false;
   }
 
   checkVisibilityChange() {
     if (this.hasHideExpression()) {
-      let hideExpressionResult: boolean = this.eval(this.formlyCommon.field.hideExpression);
+      let hideExpressionResult: boolean = evalExpression(this.formlyCommon.field.hideExpression
+        , this.formlyCommon, ['model', 'formState']
+        , [this.formlyCommon.model, this.formlyCommon.options.formState]);
+
       if (hideExpressionResult !== this.formlyCommon.hide) {
         this.formlyCommon.hide = hideExpressionResult;
       }
