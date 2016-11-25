@@ -74,3 +74,28 @@ export function clone(value) {
   }
   return Array.isArray(value) ? value.slice(0) : Object.assign({}, value);
 }
+
+export function evalStringExpression(expression: string, argNames: string[]) {
+  try {
+    return Function.bind.apply(Function, [void 0].concat(argNames.concat(`return ${expression};`)))();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function evalExpressionValueSetter(expression: string, argNames: string[]) {
+  try {
+    return Function.bind
+      .apply(Function, [void 0].concat(argNames.concat(`${expression} = expressionValue;`)))();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function evalExpression(expression: string | Function | boolean, thisArg: any, argVal: any[]): boolean {
+  if (expression instanceof Function) {
+    return expression.apply(thisArg, argVal);
+  } else {
+    return expression ? true : false;
+  }
+}

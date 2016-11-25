@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { getFieldId, assignModelValue, isObject } from './../utils';
+import { evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
 @Injectable()
@@ -67,6 +67,7 @@ export class FormlyFormBuilder {
         } else {
 
           this.formlyConfig.getMergedField(field);
+          this.initFieldExpression(field);
           this.initFieldValidation(field);
           this.initFieldAsyncValidation(field);
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
@@ -106,6 +107,25 @@ export class FormlyFormBuilder {
         form.setControl(field.key, arrayForm);
       }
     });
+  }
+
+  private initFieldExpression(field: FormlyFieldConfig) {
+    if (field.expressionProperties) {
+      for (let key in field.expressionProperties) {
+        if (typeof field.expressionProperties[key] === 'string') {
+          // cache built expression
+          field.expressionProperties[key] = {
+            expression: evalStringExpression(field.expressionProperties[key], ['model', 'formState']),
+            expressionValueSetter: evalExpressionValueSetter(key, ['expressionValue', 'model', 'templateOptions', 'validation']),
+          };
+        }
+      }
+    }
+
+    if (typeof field.hideExpression === 'string') {
+      // cache built expression
+      field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
+    }
   }
 
   private initFieldTemplateOptions(field: FormlyFieldConfig) {

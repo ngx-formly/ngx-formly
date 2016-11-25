@@ -9,7 +9,6 @@ import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/form
 import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyValidationMessages } from './services/formly.validation-messages';
 import { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
-import { FormlyFieldVisibilityDelegate } from './services/formly.field.delegates';
 import { Field } from './templates/field';
 import { FieldType } from './templates/field.type';
 import { FieldWrapper } from './templates/field.wrapper';
@@ -25,7 +24,6 @@ export {
   FormlyConfig,
   FormlyPubSub,
   FormlyValidationMessages,
-  FormlyFieldVisibilityDelegate,
   FormlyEventEmitter,
   SingleFocusDispatcher,
 
