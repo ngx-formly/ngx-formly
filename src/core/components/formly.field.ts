@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent } from '../services/formly.event.emitter';
 import { FormlyConfig } from '../services/formly.config';
 import { Field } from '../templates/field';
-import { FormlyFieldExpressionDelegate, FormlyFieldVisibilityDelegate } from '../services/formly.field.delegates';
+import { evalExpression } from '../utils';
 import { FormlyFieldConfig } from './formly.field.config';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
@@ -40,8 +40,6 @@ export class FormlyField implements DoCheck, OnInit {
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
-  private visibilityDelegate = new FormlyFieldVisibilityDelegate(this);
-  private expressionDelegate = new FormlyFieldExpressionDelegate(this);
   private _hide;
 
   constructor(
@@ -53,8 +51,8 @@ export class FormlyField implements DoCheck, OnInit {
   ) {}
 
   ngDoCheck() {
-    this.visibilityDelegate.checkVisibilityChange();
-    this.expressionDelegate.checkExpressionChange();
+    this.checkExpressionChange();
+    this.checkVisibilityChange();
   }
 
   ngOnInit() {
@@ -168,6 +166,60 @@ export class FormlyField implements DoCheck, OnInit {
         }
       });
       return wrappers;
+    }
+  }
+
+  private checkVisibilityChange() {
+    if (this.field && this.field.hideExpression !== undefined && this.field.hideExpression) {
+      const hideExpressionResult: boolean = evalExpression(
+        this.field.hideExpression,
+        this,
+        [this.model, this.options.formState]
+      );
+
+      if (hideExpressionResult !== this.hide) {
+        this.hide = hideExpressionResult;
+      }
+    }
+  }
+
+  private checkExpressionChange() {
+    if (this.field && this.field.expressionProperties !== undefined) {
+      const expressionProperties = this.field.expressionProperties;
+
+      if (expressionProperties) {
+        for (let key in expressionProperties) {
+
+          const expressionValue = evalExpression(
+            expressionProperties[key].expression,
+            this,
+            [this.model, this.options.formState]
+          );
+
+          evalExpression(
+            expressionProperties[key].expressionValueSetter,
+            this,
+            [expressionValue, this.model, this.field.templateOptions, this.field.validation]
+          );
+        }
+
+        const formControl = this.form.get(this.field.key),
+          field = this.field;
+        if (formControl) {
+            if (formControl.status === 'DISABLED' && !field.templateOptions.disabled) {
+                formControl.enable();
+            }
+            if (formControl.status !== 'DISABLED' && field.templateOptions.disabled) {
+                formControl.disable();
+            }
+            if (!formControl.dirty && formControl.invalid && field.validation && !field.validation.show) {
+              formControl.markAsUntouched();
+            }
+            if (!formControl.dirty && formControl.invalid && field.validation && field.validation.show) {
+              formControl.markAsTouched();
+            }
+        }
+      }
     }
   }
 }
