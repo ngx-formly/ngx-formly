@@ -110,12 +110,50 @@ describe('FormlyField Component', () => {
     expect(getInputField(fixture.nativeElement, 1).getAttribute('placeholder')).toEqual('Title2');
   });
 
-  it('should hide field', () => {
+  it('should hide field when passed a boolean', () => {
     testComponentInputs = {
       field: {
         key: 'title',
         type: 'text',
         hideExpression: true,
+        templateOptions: {
+          label: 'Title',
+          placeholder: 'Title',
+        },
+      },
+      form: new FormGroup({title: new FormControl()}),
+    };
+
+    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+
+    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
+  });
+
+  it('should hide field when passed a string', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        hideExpression: 'true',
+        templateOptions: {
+          label: 'Title',
+          placeholder: 'Title',
+        },
+      },
+      form: new FormGroup({title: new FormControl()}),
+    };
+
+    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+
+    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
+  });
+
+  it('should hide field when passed a function', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        hideExpression: () => true,
         templateOptions: {
           label: 'Title',
           placeholder: 'Title',
