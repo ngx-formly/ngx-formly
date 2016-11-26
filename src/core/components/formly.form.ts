@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { assignModelValue, getKeyPath, getFieldModel} from './../utils';
+import { assignModelValue, getFieldModel } from './../utils';
 
 @Component({
   selector: 'formly-form',
@@ -39,9 +39,9 @@ export class FormlyForm implements OnChanges {
   }
 
   fieldModel(field: FormlyFieldConfig) {
-    return getFieldModel(this.model,field,true);
+    return getFieldModel(this.model, field, true);
   }
-  
+
   changeModel(event: FormlyValueChangeEvent) {
     assignModelValue(this.model, event.key, event.value);
   }
