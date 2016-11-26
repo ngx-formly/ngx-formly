@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId } from './utils';
+import {reverseDeepMerge, assignModelValue, getFieldId, getKeyPath, getFieldModel} from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 
 describe('FormlyUtils service', () => {
@@ -34,4 +34,183 @@ describe('FormlyUtils service', () => {
       expect(id).toBe('formly_1_input_email_2');
     });
   });
+
+  describe('getKeyPath',() => {
+
+    it('should get an empty key path for an empty key', () => {
+      let keyPath = getKeyPath({});
+      expect(keyPath).toEqual([])
+      keyPath = getKeyPath({key:null});
+      expect(keyPath).toEqual([]);
+      keyPath = getKeyPath({key:''});
+      expect(keyPath).toEqual([]);
+    })
+
+    it('should get the correct key path of length 1 for a simple string', () => {
+      let keyPath = getKeyPath({key:'property'});
+      expect(keyPath).toEqual(['property']);
+    });
+
+    it('should get the correct key path of length 2 for a simple string with an index', () => {
+      let keyPath = getKeyPath({key:'property[2]'});
+      expect(keyPath).toEqual(['property',2]);
+    });
+
+    it('should get the correct key path of length 3 for a simple nested property', () => {
+      let keyPath = getKeyPath({key:'property1.property2.property3'});
+      expect(keyPath).toEqual(['property1','property2','property3']);
+    });
+
+    it('should get the correct key path of length 4 with one index for a nested property containing 1 index property', () => {
+      let keyPath = getKeyPath({key:'property1.property2[4].property3'});
+      expect(keyPath).toEqual(['property1','property2',4,'property3']);
+    });
+
+    it('should get the correct key path of length 5 with one index for a complex array key', () => {
+      let keyPath = getKeyPath({key:['property1.property2[4].property3','property4']});
+      expect(keyPath).toEqual(['property1','property2',4,'property3','property4']);
+    });
+
+    it('should get the correct key path if the path contains a numeric path element', () => {
+      let keyPath = getKeyPath({key:['property1.2.property2']});
+      expect(keyPath).toEqual(['property1',2,'property2']);
+    });
+
+    it('should attach the key path to the field config', () => {
+      let fieldConfig = {key:'property1.property2[4].property3'};
+      getKeyPath(fieldConfig);
+      expect(fieldConfig['_formlyKeyPath']).toEqual(['property1','property2',4,'property3']);
+    });
+
+  });
+
+});
+
+
+describe ('getFieldModel', () => {
+
+  it('should extract te correct simple property', () => {
+
+    let config : FormlyFieldConfig = {key:'property1'};
+    let model : any = {property1:3};
+    let fieldModel : any = getFieldModel(model,config,true);
+    expect(fieldModel).toEqual(3);
+
+  });
+
+
+  it('should extract te correct nested property', () => {
+
+    let config : FormlyFieldConfig = {key:'property1.property2[2]'};
+    let model : any = {property1:{property2:[1,1,2]}};
+    let fieldModel : any = getFieldModel(model,config,true);
+    expect(fieldModel).toEqual(2);
+
+    config = {key:'property1.property2[2].property3'};
+    model = {property1:{property2:[1,1,{property3:"test"}]}};
+    fieldModel = getFieldModel(model,config,true);
+    expect(fieldModel).toEqual("test");
+
+    config = {key:'property1.property2.property3'};
+    model = {property1:{property2:{property3:"test"}}};
+    fieldModel = getFieldModel(model,config,true);
+    expect(fieldModel).toEqual("test");
+
+
+  });
+
+  it('should create the necessary empty objects in a simple property path', () => {
+
+    let config : FormlyFieldConfig = {key:'property1'};
+    let model : any = {};
+    let fieldModel : any = getFieldModel(model,config,true);
+    expect(model).toEqual({});
+
+    config = {key:'property1',fieldGroup:[]};
+    model = {};
+    fieldModel  = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{}});
+
+    config = {key:'property1',fieldArray:{}};
+    model  = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:[]});
+
+  });
+
+  it('should create the necessary empty objects in a nested property path', () => {
+
+    let config : FormlyFieldConfig = {key:'property1.property2'};
+    let model : any  = {};
+    let fieldModel : any = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{}});
+
+    config = {key:'property1.property2',fieldGroup:[]};
+    model  = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:{}}});
+
+    config = {key:'property1.property2',fieldArray:{}};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:[]}});
+
+    config = {key:'property1.property2.property3'};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:{}}});
+
+    config = {key:'property1.property2.property3',fieldGroup:[]};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:{property3:{}}}});
+
+    config = {key:'property1.property2.property3',fieldArray:{}};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:{property3:[]}}});
+
+    config  = {key:'property1.property2[2]'};
+    model  = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:[]}});
+
+    config = {key:'property1.property2[2]',fieldGroup:[]};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:[undefined,undefined,{}]}});
+
+    config = {key:'property1.property2[2]',fieldArray:{}};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:[undefined,undefined,[]]}});
+
+    config = {key:'property1.property2[2].property3',fieldGroup:[]};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:[undefined,undefined,{property3:{}}]}});
+
+    config = {key:'property1.property2[2].property3',fieldArray:{}};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:[undefined,undefined,{property3:[]}]}});
+
+    config = {key:'property1.property2[2].property3'};
+    model = {};
+    fieldModel = getFieldModel(model,config,true);
+    expect(model).toEqual({property1:{property2:[undefined,undefined,{}]}});
+
+
+
+
+
+
+
+  });
+
+
+
+
+
+
 });
