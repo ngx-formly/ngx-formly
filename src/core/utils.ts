@@ -23,6 +23,25 @@ export function assignModelValue(model, path, value) {
   }
 }
 
+export function getValueForKey(model, path) {
+  if (typeof path === 'string') {
+    path = path.split('.');
+  }
+  if (path.length > 1) {
+    const e = path.shift();
+    if (!model[e]) {
+      model[e] = isNaN(path[0]) ? {} : [];
+    }
+    getValueForKey(model[e], path);
+  } else {
+    return model[path[0]];
+  }
+}
+
+export function getKey(controlKey: string, actualKey: string) {
+  return actualKey ? actualKey + '.' + controlKey : controlKey;
+}
+
 export function reverseDeepMerge(dest, source = undefined) {
   let args = Array.prototype.slice.call(arguments);
   if (!args[1]) {

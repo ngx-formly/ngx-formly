@@ -13,7 +13,7 @@ export class FormlyFormBuilder {
 
   constructor(private formlyConfig: FormlyConfig) {}
 
-  buildForm(form: FormGroup, fields: FormlyFieldConfig[], model, options) {
+  buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model, options) {
     this.model = model;
     this.formId++;
     let fieldTransforms = (options && options.fieldTransform) || this.formlyConfig.extras.fieldTransform;

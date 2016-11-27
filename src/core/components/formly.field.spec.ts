@@ -299,7 +299,7 @@ class TestComponent {
   selector: 'formly-field-text',
   template: `<input type="text" [formControl]="formControl" [formlyAttributes]="field">`,
 })
-class FormlyFieldText extends FieldType {}
+export class FormlyFieldText extends FieldType {}
 
 @Component({
   selector: 'formly-wrapper-label',
