@@ -1,16 +1,20 @@
 const webpack = require('webpack');
 const DashboardPlugin = require('webpack-dashboard/plugin');
+const path = require('path');
 
 module.exports = {
-  context: __dirname + '/../demo',
+  entry: {
+    app: './hello.ts',
+    vendor: ['@angular/core'],
+  },
+  devtool: 'source-map',
+  context: path.join(__dirname, '..', 'demo'),
   resolve: {
     extensions: ['', '.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
-      'ng2-formly': 'src/index.ts'
-    }
+      'ng2-formly': 'src/index.ts',
+    },
   },
-  devtool: 'source-map',
-  entry: './hello.ts',
   module: {
     loaders: [
       { test: /\.ts$/, loaders: ['awesome-typescript-loader', 'angular2-template-loader'] },
@@ -18,10 +22,14 @@ module.exports = {
     ]
   },
   plugins: [
-    new DashboardPlugin()
+    new DashboardPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.js',
+    }),
   ],
   output: {
-    path: `${__dirname}/build/`,
+    path: path.join(__dirname, '..', 'build'),
     publicPath: '/build/',
     filename: 'demo.js',
   },
