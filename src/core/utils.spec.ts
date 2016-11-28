@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 
 describe('FormlyUtils service', () => {
@@ -21,6 +21,23 @@ describe('FormlyUtils service', () => {
     });
   });
 
+  describe('getValueForKey', () => {
+    it('should properly get value', () => {
+      let model = {
+        value: 2,
+      };
+      expect(getValueForKey(model, 'path.to.save')).toBe(undefined);
+      expect(getValueForKey(model, 'value')).toBe(2);
+    });
+  });
+
+  describe('getKey', () => {
+    it('should properly get key', () => {
+      expect(getKey('key', 'path.to.save')).toBe('path.to.save.key');
+      expect(getKey('key', undefined)).toBe('key');
+    });
+  });
+
   describe('getFieldId', () => {
     it('should properly get the field id if id is set in options', () => {
       let options: FormlyFieldConfig = {id: '1'};
@@ -32,6 +49,16 @@ describe('FormlyUtils service', () => {
       let options: FormlyFieldConfig = {type: 'input', key: 'email'};
       let id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_input_email_2');
+    });
+  });
+
+  describe('evalExpression', () => {
+    it('should evaluate the value correctly', () => {
+      let expression = () => { return this.model.val; };
+      this.model = {
+        val: 2,
+      };
+      expect(evalExpression(expression, this, [this.model])).toBe(2);
     });
   });
 });
