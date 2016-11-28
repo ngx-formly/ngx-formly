@@ -1,5 +1,5 @@
 import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from './../core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 
 describe('FormlyFormBuilder service', () => {
@@ -30,6 +30,15 @@ describe('FormlyFormBuilder service', () => {
       builder.buildForm(form, [field], {}, {});
 
       expect(field.templateOptions).toEqual({ label: '', placeholder: 'Title', focus: false });
+    });
+
+    it('should set the default value if the specified key and type is defined for fieldGroup', () => {
+      field = {
+        key: 'fieldgroup',
+        fieldGroup: [{ key: 'title', type: 'input', templateOptions: { placeholder: 'Title' } }],
+      };
+      builder.buildForm(form, [field], {}, {});
+      expect(field.fieldGroup[0].templateOptions).toEqual({ label: '', placeholder: 'Title', focus: false });
     });
   });
 
@@ -82,6 +91,14 @@ describe('FormlyFormBuilder service', () => {
 
       formControl.patchValue(validValue);
       expect(formControl.valid).toBeTruthy();
+    };
+
+    const expectAsyncValidators = (value) => {
+      const formControl = form.get('title');
+      expect(typeof field.asyncValidators.validation).toBe('function');
+
+      formControl.patchValue(value);
+      expect(formControl.status).toBe('PENDING');
     };
 
     beforeEach(() => {
@@ -139,6 +156,23 @@ describe('FormlyFormBuilder service', () => {
 
           expectValidators(null, 'test', {required: true});
         });
+      });
+    });
+
+    describe('asyncValidators', () => {
+      it(`uses asyncValidator objects`, () => {
+        field.asyncValidators = { custom: (control: FormControl) => new Promise(resolve => resolve( control.value !== 'test'))};
+        builder.buildForm(form, [field], {}, {});
+
+        expectAsyncValidators('test');
+      });
+
+      it(`uses asyncValidator objects`, () => {
+        field.asyncValidators = { validation: [(control: FormControl) =>
+        new Promise(resolve => resolve( control.value !== 'john' ? null : { uniqueUsername: true }))] };
+        builder.buildForm(form, [field], {}, {});
+
+        expectAsyncValidators('test');
       });
     });
 
