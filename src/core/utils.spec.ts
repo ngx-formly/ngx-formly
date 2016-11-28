@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getKeyPath, getFieldModel } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 
 describe('FormlyUtils service', () => {
@@ -18,6 +18,23 @@ describe('FormlyUtils service', () => {
       let model = {};
       assignModelValue(model, 'path.to.save', 2);
       expect(model['path']['to']['save']).toBe(2);
+    });
+  });
+
+  describe('getValueForKey', () => {
+    it('should properly get value', () => {
+      let model = {
+        value: 2,
+      };
+      expect(getValueForKey(model, 'path.to.save')).toBe(undefined);
+      expect(getValueForKey(model, 'value')).toBe(2);
+    });
+  });
+
+  describe('getKey', () => {
+    it('should properly get key', () => {
+      expect(getKey('key', 'path.to.save')).toBe('path.to.save.key');
+      expect(getKey('key', undefined)).toBe('key');
     });
   });
 
@@ -123,17 +140,17 @@ describe ('getFieldModel', () => {
 
     let config: FormlyFieldConfig = {key: 'property1'};
     let model: any = {};
-    let fieldModel: any = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({});
 
     config = {key: 'property1', fieldGroup: []};
     model = {};
-    fieldModel  = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {}});
 
     config = {key: 'property1', fieldArray: {}};
     model  = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: []});
 
   });
@@ -142,75 +159,73 @@ describe ('getFieldModel', () => {
 
     let config: FormlyFieldConfig = {key: 'property1.property2'};
     let model: any  = {};
-    let fieldModel: any = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {}});
 
     config = {key: 'property1.property2', fieldGroup: []};
     model  = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: {}}});
 
     config = {key: 'property1.property2', fieldArray: {}};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: []}});
 
     config = {key: 'property1.property2.property3'};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: {}}});
 
     config = {key: 'property1.property2.property3', fieldGroup: []};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: {property3: {}}}});
 
     config = {key: 'property1.property2.property3', fieldArray: {}};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: {property3: []}}});
 
     config  = {key: 'property1.property2[2]'};
     model  = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: []}});
 
     config = {key: 'property1.property2[2]', fieldGroup: []};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: [undefined, undefined, {}]}});
 
     config = {key: 'property1.property2[2]', fieldArray: {}};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: [undefined, undefined, []]}});
 
     config = {key: 'property1.property2[2].property3', fieldGroup: []};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: [undefined, undefined, {property3: {}}]}});
 
     config = {key: 'property1.property2[2].property3', fieldArray: {}};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: [undefined, undefined, {property3: []}]}});
 
     config = {key: 'property1.property2[2].property3'};
     model = {};
-    fieldModel = getFieldModel(model, config, true);
+    getFieldModel(model, config, true);
     expect(model).toEqual({property1: {property2: [undefined, undefined, {}]}});
-
-
-
-
-
-
 
   });
 
-
-
-
-
-
+  describe('evalExpression', () => {
+    it('should evaluate the value correctly', () => {
+      let expression = () => { return this.model.val; };
+      this.model = {
+        val: 2,
+      };
+      expect(evalExpression(expression, this, [this.model])).toBe(2);
+    });
+  });
 });

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FieldType, FormlyFieldConfig } from '../src/index';
+import { clone } from '../src/core/utils';
 
 @Component({
   selector: 'formly-repeat-section',
@@ -9,7 +10,7 @@ import { FieldType, FormlyFieldConfig } from '../src/index';
       <formly-form
         [model]="model[i]"
         [fields]="fields"
-        [options]="options"
+        [options]="newOptions"
         [form]="control"
         [ngClass]="field.fieldArray.className">
       </formly-form>
@@ -23,6 +24,10 @@ import { FieldType, FormlyFieldConfig } from '../src/index';
   `,
 })
 export class RepeatComponent extends FieldType implements OnInit {
+
+  get newOptions() {
+    return clone(this.options);
+  }
   get controls() {
     return this.form.controls[this.field.key]['controls'];
   }

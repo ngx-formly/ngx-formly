@@ -1,9 +1,9 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { assignModelValue, getFieldModel } from './../utils';
+import { assignModelValue, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
 
 @Component({
   selector: 'formly-form',
@@ -39,7 +39,10 @@ export class FormlyForm implements OnChanges {
   }
 
   fieldModel(field: FormlyFieldConfig) {
-    return getFieldModel(this.model, field, true);
+    if (field.key && (field.fieldGroup || field.fieldArray)) {
+      return getFieldModel(this.model, field, true);
+    }
+    return this.model;
   }
 
   changeModel(event: FormlyValueChangeEvent) {
@@ -54,9 +57,45 @@ export class FormlyForm implements OnChanges {
 
   private resetModel() {
     this.form.patchValue(this.initialModel);
+    this.resetFormGroup(this.form);
+  }
+
+  private resetFormGroup(form: FormGroup, actualKey?: string) {
+    for (let controlKey in form.controls) {
+      if (form.controls[controlKey] instanceof FormGroup) {
+        this.resetFormGroup(<FormGroup>form.controls[controlKey], getKey(controlKey, actualKey));
+      }
+      if (form.controls[controlKey] instanceof FormArray) {
+        this.resetArray(<FormArray>form.controls[controlKey], getKey(controlKey, actualKey));
+      }
+    }
+  }
+
+  private resetArray(formArray: FormArray, key: string) {
+    for (let i in formArray.controls) {
+      if  (formArray.controls[i] instanceof FormGroup && getValueForKey(this.initialModel, key)[i]) {
+        formArray.controls[i].patchValue(getValueForKey(this.initialModel, key)[i]);
+      } else if (formArray.controls[i] instanceof FormGroup && !getValueForKey(this.initialModel, key)[i]) {
+        formArray.removeAt(parseInt(i, 10));
+        getValueForKey(this.model, key).splice(i, 1);
+      }
+    }
+    if (formArray.controls.length < getValueForKey(this.initialModel, key).length) {
+      let remaining = getValueForKey(this.initialModel, key).length - formArray.controls.length;
+      let initialLength = formArray.controls.length;
+      for (let i = 0; i < remaining; i++) {
+        let pos = initialLength + i;
+        formArray.setControl(pos, new FormGroup({}));
+        setTimeout(() => {
+          getValueForKey(this.model, key).push(getValueForKey(this.initialModel, key)[pos]);
+          formArray.controls[pos].setValue(getValueForKey(this.initialModel, key)[pos]);
+        });
+      }
+    }
   }
 
   private updateInitialValue() {
-    this.initialModel = Object.assign({}, this.form.value);
+    let obj = reverseDeepMerge(this.form.value, this.model);
+    this.initialModel = JSON.parse(JSON.stringify(obj));
   }
 }
