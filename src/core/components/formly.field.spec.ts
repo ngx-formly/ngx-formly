@@ -284,6 +284,27 @@ describe('FormlyField Component', () => {
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
     expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');
   });
+
+  it('expression properties', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        optionsTypes: ['other'],
+        templateOptions: {
+          placeholder: 'Title',
+        },
+        expressionProperties: {
+          'templateOptions.disabled': 'model.title !== undefined',
+          'templateOptions.placeholder': 'Updated',
+          'validation.show': true,
+        },
+      },
+      form: new FormGroup({title: new FormControl()}),
+    };
+
+    createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+  });
 });
 
 @Component({selector: 'formly-formly-field-test', template: '', entryComponents: []})
