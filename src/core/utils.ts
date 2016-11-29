@@ -7,6 +7,63 @@ export function getFieldId(formId: string, options: FormlyFieldConfig, index: st
   return [formId, type, options.key, index].join('_');
 }
 
+export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fieldArray?: any}): (string|number)[] {
+  /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
+  if (field['_formlyKeyPath'] !== undefined) {
+    return field['_formlyKeyPath'];
+  }
+  let keyPath: (string|number)[] = [];
+  if (field.key) {
+    /* Also allow for an array key, hence the type check  */
+    let pathElements = typeof field.key === 'string' ? field.key.split('.') : field.key;
+    for (let pathElement of pathElements) {
+      if (typeof pathElement === 'string') {
+        /* replace paths of the form names[2] by names.2, cfr. angular formly */
+        pathElement = pathElement.replace(/\[(\w+)\]/g, '.$1');
+        keyPath = keyPath.concat(pathElement.split('.'));
+      } else {
+        keyPath.push(pathElement);
+      }
+    }
+    for (let i = 0; i < keyPath.length; i++) {
+      let pathElement = keyPath[i];
+      if (typeof pathElement === 'string' && stringIsInteger(pathElement))  {
+        keyPath[i] = parseInt(pathElement);
+      }
+    }
+  }
+  field['_formlyKeyPath'] = keyPath;
+  return keyPath;
+}
+
+function stringIsInteger(str: string) {
+  return !isNullOrUndefined(str) && /^\d+$/.test(str);
+}
+
+export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmptyObjects: boolean): any {
+  let keyPath: (string|number)[] = getKeyPath(field);
+  let value: any = model;
+  for (let i = 0; i < keyPath.length; i++) {
+    let path = keyPath[i];
+    let pathValue = value[path];
+    if (isNullOrUndefined(pathValue) && constructEmptyObjects) {
+      if (i < keyPath.length - 1) {
+        /* TODO? : It would be much nicer if we could construct object instances of the correct class, for instance by using factories. */
+        value[path] = typeof keyPath[i + 1] === 'number' ? [] : {};
+      } else if (field.fieldGroup) {
+        value[path] = {};
+      } else if (field.fieldArray) {
+        value[path] = [];
+      }
+    }
+    value = value[path];
+    if (!value) {
+      break;
+    }
+  }
+  return value;
+}
+
 export function assignModelValue(model, path, value) {
   if (typeof path === 'string') {
     path = path.split('.');

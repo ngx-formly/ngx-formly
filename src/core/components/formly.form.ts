@@ -3,8 +3,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { assignModelValue } from './../utils';
-import { reverseDeepMerge, getKey, getValueForKey } from '../utils';
+import { assignModelValue, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
 
 @Component({
   selector: 'formly-form',
@@ -41,13 +40,8 @@ export class FormlyForm implements OnChanges {
 
   fieldModel(field: FormlyFieldConfig) {
     if (field.key && (field.fieldGroup || field.fieldArray)) {
-      if (!this.model[field.key]) {
-        this.model[field.key] = {};
-      }
-
-      return this.model[field.key];
+      return getFieldModel(this.model, field, true);
     }
-
     return this.model;
   }
 
