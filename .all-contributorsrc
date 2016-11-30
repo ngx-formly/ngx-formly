@@ -121,6 +121,25 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "Krustie101",
+      "name": "Krustie101",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1636728?v=3",
+      "profile": "https://github.com/Krustie101",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "ultimafirez",
+      "name": "ultimafirez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21162369?v=3",
+      "profile": "https://github.com/ultimafirez",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
