@@ -21,7 +21,7 @@ export class FormlyAttributes implements OnInit, OnChanges {
   constructor(
     private renderer: Renderer,
     private elementRef: ElementRef,
-    private focusDispatcher: SingleFocusDispatcher
+    private focusDispatcher: SingleFocusDispatcher,
   ) {}
 
   ngOnInit() {
