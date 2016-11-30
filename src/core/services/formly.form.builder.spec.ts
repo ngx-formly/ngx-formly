@@ -13,7 +13,7 @@ describe('FormlyFormBuilder service', () => {
         types: [{ name: 'input', component: TestComponent }],
         wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
         validators: [{ name: 'required', validation: Validators.required }],
-      }])
+      }]),
     );
   });
 

@@ -47,7 +47,7 @@ export class FormlyField implements DoCheck, OnInit {
     private formlyPubSub: FormlyPubSub,
     private renderer: Renderer,
     private formlyConfig: FormlyConfig,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
 
   ngDoCheck() {
@@ -83,7 +83,7 @@ export class FormlyField implements DoCheck, OnInit {
         }
 
         valueChanges.subscribe((event) => this
-          .changeModel(new FormlyValueChangeEvent(this.field.key, event))
+          .changeModel(new FormlyValueChangeEvent(this.field.key, event)),
         );
       }
 
@@ -174,7 +174,7 @@ export class FormlyField implements DoCheck, OnInit {
       const hideExpressionResult: boolean = evalExpression(
         this.field.hideExpression,
         this,
-        [this.model, this.options.formState]
+        [this.model, this.options.formState],
       );
 
       if (hideExpressionResult !== this.hide) {
@@ -193,13 +193,13 @@ export class FormlyField implements DoCheck, OnInit {
           const expressionValue = evalExpression(
             expressionProperties[key].expression,
             this,
-            [this.model, this.options.formState]
+            [this.model, this.options.formState],
           );
 
           evalExpression(
             expressionProperties[key].expressionValueSetter,
             this,
-            [expressionValue, this.model, this.field.templateOptions, this.field.validation]
+            [expressionValue, this.model, this.field.templateOptions, this.field.validation],
           );
         }
 

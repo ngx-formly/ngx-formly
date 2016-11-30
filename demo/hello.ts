@@ -26,7 +26,7 @@ export class HelloApp {
   _user;
   user: any = {};
   options;
-  private userFields: Array<FormlyFieldConfig> = [];
+  userFields: Array<FormlyFieldConfig> = [];
 
   constructor(fb: FormBuilder, private sh: SuperHerosService) {
     this.form = fb.group({});

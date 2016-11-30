@@ -1,12 +1,8 @@
 {
-    "rulesDirectory": "node_modules/codelyzer",
+    "rulesDirectory": ["node_modules/codelyzer"],
     "rules": {
-        "directive-selector-name": [true, "camelCase"],
-        "component-selector-name": [true, "kebab-case"],
-        "directive-selector-type": [true, "attribute"],
-        "component-selector-type": [true, "element"],
-        "directive-selector-prefix": [true, "formly"],
-        "component-selector-prefix": [true, "formly"],
+        "directive-selector": [true, "attribute", "formly", "camelCase"],
+        "component-selector": [true, "element", "formly", "kebab-case"],
         "use-input-property-decorator": true,
         "use-output-property-decorator": true,
         "use-host-property-decorator": true,
@@ -38,7 +34,6 @@
           "static-before-instance",
           "variables-before-functions"
         ],
-        "no-unused-variable": true,
         "no-duplicate-variable": true,
         "no-eval": true,
         "no-internal-module": true,
