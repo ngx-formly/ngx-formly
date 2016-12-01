@@ -72,7 +72,9 @@ export class FormlyFormBuilder {
           this.initFieldAsyncValidation(field);
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
           if (field.defaultValue && !model[path[0]]) {
-            assignModelValue(this.model, this.defaultPath, field.defaultValue);
+            let path = this.defaultPath.split('.');
+            path = path.pop();
+            assignModelValue(this.model, path, field.defaultValue);
             this.defaultPath = undefined;
           }
         }
