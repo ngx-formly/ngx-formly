@@ -1,9 +1,9 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
 import { FormlyFieldConfig } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { assignModelValue, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
+import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
 
 @Component({
   selector: 'formly-form',
@@ -55,41 +55,83 @@ export class FormlyForm implements OnChanges {
     this.options.updateInitialValue = this.updateInitialValue.bind(this);
   }
 
-  private resetModel() {
-    this.form.patchValue(this.initialModel);
-    this.resetFormGroup(this.form);
+  private resetModel(model?: any) {
+    model = isNullOrUndefined(model) ? this.initialModel : model;
+    this.form.patchValue(model);
+    this.resetFormGroup(model, this.form);
+    this.resetFormModel(model, this.model);
   }
 
-  private resetFormGroup(form: FormGroup, actualKey?: string) {
+  private resetFormModel(model: any, formModel: any, path?: (string | number)[]) {
+    if (!isObject(model) && !Array.isArray(model)) {
+      return;
+    }
+
+    // removes
+    for (let key in formModel) {
+      if (!(key in model) || isNullOrUndefined(model[key])) {
+        if (!this.form.get((path || []).concat(key))) {
+          // don't remove if bound to a control
+          delete formModel[key];
+        }
+      }
+    }
+
+    // inserts and updates
+    for (let key in model) {
+      if (!isNullOrUndefined(model[key])) {
+        if (key in formModel) {
+          this.resetFormModel(model[key], formModel[key], (path || []).concat(key));
+        }
+        else {
+          formModel[key] = model[key];
+        }
+      }
+    }
+  }
+
+  private resetFormGroup(model: any, form: FormGroup, actualKey?: string) {
     for (let controlKey in form.controls) {
+      let key = getKey(controlKey, actualKey);
       if (form.controls[controlKey] instanceof FormGroup) {
-        this.resetFormGroup(<FormGroup>form.controls[controlKey], getKey(controlKey, actualKey));
+        this.resetFormGroup(model, <FormGroup>form.controls[controlKey], key);
       }
       if (form.controls[controlKey] instanceof FormArray) {
-        this.resetArray(<FormArray>form.controls[controlKey], getKey(controlKey, actualKey));
+        this.resetArray(model, <FormArray>form.controls[controlKey], key);
+      }
+      if (form.controls[controlKey] instanceof FormControl) {
+        form.controls[controlKey].setValue(getValueForKey(model, key));
       }
     }
   }
 
-  private resetArray(formArray: FormArray, key: string) {
-    for (let i in formArray.controls) {
-      if  (formArray.controls[i] instanceof FormGroup && getValueForKey(this.initialModel, key)[i]) {
-        formArray.controls[i].patchValue(getValueForKey(this.initialModel, key)[i]);
-      } else if (formArray.controls[i] instanceof FormGroup && !getValueForKey(this.initialModel, key)[i]) {
-        formArray.removeAt(parseInt(i, 10));
-        getValueForKey(this.model, key).splice(i, 1);
+  private resetArray(model: any, formArray: FormArray, key: string) {
+    let newValue = getValueForKey(model, key);
+
+    // removes and updates
+    for (let i = formArray.controls.length - 1; i >= 0; i--) {
+      if (formArray.controls[i] instanceof FormGroup) {
+        if (newValue && !isNullOrUndefined(newValue[i])) {
+          this.resetFormGroup(newValue[i], <FormGroup>formArray.controls[i]);
+        }
+        else {
+          formArray.removeAt(i);
+          let value = getValueForKey(this.model, key);
+          if (Array.isArray(value)) {
+            value.splice(i, 1);
+          }
+        }
       }
     }
-    if (formArray.controls.length < getValueForKey(this.initialModel, key).length) {
-      let remaining = getValueForKey(this.initialModel, key).length - formArray.controls.length;
+
+    // inserts
+    if (Array.isArray(newValue) && formArray.controls.length < newValue.length) {
+      let remaining = newValue.length - formArray.controls.length;
       let initialLength = formArray.controls.length;
       for (let i = 0; i < remaining; i++) {
         let pos = initialLength + i;
-        formArray.setControl(pos, new FormGroup({}));
-        setTimeout(() => {
-          getValueForKey(this.model, key).push(getValueForKey(this.initialModel, key)[pos]);
-          formArray.controls[pos].setValue(getValueForKey(this.initialModel, key)[pos]);
-        });
+        getValueForKey(this.model, key).push(newValue[pos]);
+        formArray.controls.push(new FormGroup({}));
       }
     }
   }

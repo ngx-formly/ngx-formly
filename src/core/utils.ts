@@ -89,7 +89,7 @@ export function getValueForKey(model, path) {
     if (!model[e]) {
       model[e] = isNaN(path[0]) ? {} : [];
     }
-    getValueForKey(model[e], path);
+    return getValueForKey(model[e], path);
   } else {
     return model[path[0]];
   }
