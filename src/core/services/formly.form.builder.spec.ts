@@ -68,6 +68,18 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 
+  describe('form control creation and addition', () => {
+    it('should let component create the form control', () =>  {
+      let field = { key: 'title', type: 'input', component: new TestComponentThatCreatesControl() };
+
+      builder.buildForm(form, [field], {}, {});
+
+      let control: FormControl = <FormControl> form.get('title');
+      expect(control).not.toBeNull();
+      expect(control.value).toEqual('created by component');
+    });
+  });
+
   describe('merge field options', () => {
     it('nested property key', () => {
       field = { key: 'nested.title', type: 'input' };
@@ -200,4 +212,12 @@ describe('FormlyFormBuilder service', () => {
 
 @Component({selector: 'formly-test-cmp', template: '', entryComponents: []})
 class TestComponent {
+}
+
+class TestComponentThatCreatesControl {
+
+  createControl(model, field) {
+    return new FormControl('created by component');
+  }
+
 }
