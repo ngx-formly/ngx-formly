@@ -230,9 +230,9 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-awesome-typescript-loader@^3.0.0-beta.9:
-  version "3.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-3.0.0-beta.9.tgz#f5279ca7e440e3cda0fd149c470efcd9b1de207a"
+awesome-typescript-loader@^3.0.0-beta.5:
+  version "3.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-3.0.0-beta.5.tgz#b578028c57fb62a7b108eec5215c0ed45fd9047e"
   dependencies:
     colors "^1.1.2"
     enhanced-resolve "^2.3.0"
