@@ -53,7 +53,7 @@ export class FormlyFormBuilder {
         if (path.length > 1) {
           const rootPath = path.shift();
           let nestedForm = <FormGroup>(form.get(rootPath) ? form.get(rootPath) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidators ? field.asyncValidators.validation : undefined));
-          if (!form.get(field.key)) {
+          if (!form.get(rootPath)) {
             form.addControl(rootPath, nestedForm);
           }
           if (!model[rootPath]) {
@@ -61,6 +61,7 @@ export class FormlyFormBuilder {
           }
 
           const originalKey = field.key;
+          // Should this reassignment not be refactored?
           field.key = path;
           this.buildForm(nestedForm, [field], model[rootPath], {});
           field.key = originalKey;
@@ -221,10 +222,14 @@ export class FormlyFormBuilder {
   }
 
   private addFormControl(form: FormGroup, field: FormlyFieldConfig, model) {
+    /* Although the type of the key property in FormlyFieldConfig is declared to be a string,
+     the recurstion of this FormBuilder uses an Array.
+     This should probably be addressed somehow. */
+    let name: string = typeof field.key === 'string' ? field.key : field.key[0];
     if (field.component && field.component.createControl) {
-      form.addControl(field.key, field.component.createControl(model, field));
+      form.addControl(name, field.component.createControl(model, field));
     } else {
-      form.addControl(field.key, new FormControl(
+      form.addControl(name, new FormControl(
         { value: model, disabled: field.templateOptions.disabled },
         field.validators ? field.validators.validation : undefined,
         field.asyncValidators ? field.asyncValidators.validation : undefined,

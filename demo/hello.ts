@@ -330,6 +330,24 @@ export class HelloApp {
           },
         },
       }, {
+        key: 'nested.property.title',
+        type: 'radio',
+        templateOptions: {
+          options: [{
+            key: 'mr',
+            value: 'Mr.',
+          }, {
+            key: 'mrs',
+            value: 'Mrs',
+          }, {
+            key: 'miss',
+            value: 'Miss',
+          }],
+          label: 'Nested Title',
+          description: 'Select a title that suits your description',
+        },
+      },
+      {
         key: 'nested.arrays.0',
         type: 'input',
         templateOptions: {
