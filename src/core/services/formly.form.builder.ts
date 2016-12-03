@@ -102,12 +102,14 @@ export class FormlyFormBuilder {
       }
 
       if (field.fieldArray && field.key) {
-        const arrayForm = new FormArray(
-          [],
-          field.validators ? field.validators.validation : undefined,
-          field.asyncValidators ? field.asyncValidators.validation : undefined,
-        );
-        form.setControl(field.key, arrayForm);
+        if (!(form.get(field.key) instanceof FormArray)) {
+          const arrayForm = new FormArray(
+            [],
+            field.validators ? field.validators.validation : undefined,
+            field.asyncValidators ? field.asyncValidators.validation : undefined,
+          );
+          form.setControl(field.key, arrayForm);
+        }
       }
     });
   }

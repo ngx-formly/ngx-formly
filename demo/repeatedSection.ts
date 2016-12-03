@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { FieldType, FormlyFieldConfig } from '../src/index';
 import { clone } from '../src/core/utils';
 
@@ -28,8 +28,9 @@ export class RepeatComponent extends FieldType implements OnInit {
   get newOptions() {
     return clone(this.options);
   }
-  get controls() {
-    return this.form.controls[this.field.key]['controls'];
+
+  get controls(): AbstractControl[] {
+    return (<FormArray>this.form.get(this.field.key)).controls;
   }
 
   get fields(): FormlyFieldConfig[] {
@@ -40,18 +41,19 @@ export class RepeatComponent extends FieldType implements OnInit {
     if (this.model) {
       this.model.map(() => {
         let formGroup = new FormGroup({});
-        this.form.controls[this.field.key]['controls'].push(formGroup);
+        this.controls.push(formGroup);
       });
     }
   }
+
   add() {
     let formGroup = new FormGroup({});
     this.model.push({});
-    this.form.controls[this.field.key]['controls'].push(formGroup);
+    this.controls.push(formGroup);
   }
 
   remove(i) {
-    this.form.controls[this.field.key]['controls'].splice(i, 1);
+    this.controls.splice(i, 1);
     this.model.splice(i, 1);
   }
 }

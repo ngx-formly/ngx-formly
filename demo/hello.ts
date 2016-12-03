@@ -484,6 +484,41 @@ export class HelloApp {
     });
   }
 
+  resetModelWithModel() {
+    this.options.resetModel({
+      checked: true,
+      title1: 'mrs',
+      toggleVal: false,
+      interest: {
+        sports: true,
+      },
+      investments: [
+        {
+          investmentName: 'Formly',
+          investmentDate: '02-11-2001',
+          stockIdentifier: 'FO',
+        }, {
+          investmentName: 'Formly Website',
+          investmentDate: '02-11-2001',
+          stockIdentifier: 'FW',
+        }, {
+          investmentName: 'Alphabet',
+          investmentDate: '12-02-2016',
+          stockIdentifier: 'GOOGL',
+        },
+      ],
+      nested: {
+        property: {
+          magic: 'look what I can do',
+        },
+        arrays: {
+          0: 'why not?',
+        },
+      },
+      unbound: 'not bound in formly',
+    });
+  }
+
   submit(user) {
     console.log(user);
   }

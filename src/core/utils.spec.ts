@@ -25,9 +25,15 @@ describe('FormlyUtils service', () => {
     it('should properly get value', () => {
       let model = {
         value: 2,
+        'looks.nested': 'foo',
+        nested: {
+          value: 'bar',
+        },
       };
       expect(getValueForKey(model, 'path.to.save')).toBe(undefined);
       expect(getValueForKey(model, 'value')).toBe(2);
+      expect(getValueForKey(model, 'looks.nested')).toBe(undefined);
+      expect(getValueForKey(model, 'nested.value')).toBe('bar');
     });
   });
 
