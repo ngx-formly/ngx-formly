@@ -1,5 +1,6 @@
 .idea
-.config
+.config\karma-shim.js
+.config\webpack.test.js
 demo
 node_modules
 coverage
@@ -11,6 +12,5 @@ test
 gulpfile.js
 karma.conf.js
 npm-debug.log
-tsconfig.build.json
 tsconfig.json
 tslint.json
