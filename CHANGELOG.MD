@@ -2,7 +2,14 @@
 
 ## [Unreleased](https://github.com/formly-js/ng2-formly/tree/HEAD)
 
-[Full Changelog](https://github.com/formly-js/ng2-formly/compare/v2.0.0-beta.13...HEAD)
+[Full Changelog](https://github.com/formly-js/ng2-formly/compare/v2.0.0-beta.14...HEAD)
+
+**Merged pull requests:**
+
+- chore\(upgrade\) update version to beta 14 [\#315](https://github.com/formly-js/ng2-formly/pull/315) ([mohammedzamakhan](https://github.com/mohammedzamakhan))
+
+## [v2.0.0-beta.14](https://github.com/formly-js/ng2-formly/tree/v2.0.0-beta.14) (2016-12-07)
+[Full Changelog](https://github.com/formly-js/ng2-formly/compare/v2.0.0-beta.13...v2.0.0-beta.14)
 
 **Implemented enhancements:**
 
@@ -34,6 +41,7 @@
 
 **Merged pull requests:**
 
+- chore\(changelog\) update change log [\#314](https://github.com/formly-js/ng2-formly/pull/314) ([mohammedzamakhan](https://github.com/mohammedzamakhan))
 - add code tag for @jrgleason [\#310](https://github.com/formly-js/ng2-formly/pull/310) ([mohammedzamakhan](https://github.com/mohammedzamakhan))
 - These need to be added if we want to build locally issue \#308 [\#309](https://github.com/formly-js/ng2-formly/pull/309) ([jrgleason](https://github.com/jrgleason))
 - Make the test pass [\#306](https://github.com/formly-js/ng2-formly/pull/306) ([mohammedzamakhan](https://github.com/mohammedzamakhan))
