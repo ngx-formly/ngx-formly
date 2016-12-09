@@ -36,11 +36,12 @@ export class FormlyFormBuilder {
   private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model, options) {
     fields.map((field, index) => {
       field.id = getFieldId(`formly_${this.formId}`, field, index);
+
+      this.initFieldExpression(field);
       if (field.key && field.type) {
         this.initFieldTemplateOptions(field);
         this.initFieldValidation(field);
         this.initFieldAsyncValidation(field);
-
 
         let path: any = field.key;
         if (typeof path === 'string') {
@@ -66,11 +67,7 @@ export class FormlyFormBuilder {
           this.buildForm(nestedForm, [field], model[rootPath], {});
           field.key = originalKey;
         } else {
-
           this.formlyConfig.getMergedField(field);
-          this.initFieldExpression(field);
-          this.initFieldValidation(field);
-          this.initFieldAsyncValidation(field);
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
           if (field.defaultValue && !model[path[0]]) {
             let path = this.defaultPath.split('.');
