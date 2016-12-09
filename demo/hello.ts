@@ -43,6 +43,7 @@ export class HelloApp {
     let userFields: Array<FormlyFieldConfig> = [{
         type: 'radio',
         key: 'title1',
+        formControl: new FormControl('mrs'),
         templateOptions: {
           options: [{
             key: 'mr',

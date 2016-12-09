@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
@@ -234,7 +234,9 @@ export class FormlyFormBuilder {
      the recurstion of this FormBuilder uses an Array.
      This should probably be addressed somehow. */
     let name: string = typeof field.key === 'string' ? field.key : field.key[0];
-    if (field.component && field.component.createControl) {
+    if (field.formControl instanceof AbstractControl) {
+      form.addControl(name, field.formControl);
+    } else if (field.component && field.component.createControl) {
       form.addControl(name, field.component.createControl(model, field));
     } else {
       form.addControl(name, new FormControl(

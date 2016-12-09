@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 export interface FormlyFieldConfig {
   key?: string;
   id?: string;
@@ -13,6 +13,7 @@ export interface FormlyFieldConfig {
   fieldGroup?: Array<FormlyFieldConfig>;
   fieldArray?: FormlyFieldConfig;
   hide?: boolean;
+  formControl?: AbstractControl;
   hideExpression?: boolean | string | ((model, formState) => boolean);
   className?: string;
   type?: string;
