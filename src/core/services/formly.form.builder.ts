@@ -65,7 +65,7 @@ export class FormlyFormBuilder {
           const originalKey = field.key;
           // Should this reassignment not be refactored?
           field.key = path;
-          this.buildForm(nestedForm, [field], model[rootPath], {});
+          this.buildForm(nestedForm, [field], model[rootPath], options);
           field.key = originalKey;
         } else {
           this.formlyConfig.getMergedField(field);
@@ -93,9 +93,9 @@ export class FormlyFormBuilder {
             this.addControl(form, field.key, nestedForm, field);
           }
 
-          this.buildForm(nestedForm, field.fieldGroup, nestedModel, {});
+          this.buildForm(nestedForm, field.fieldGroup, nestedModel, options);
         } else {
-          this.buildForm(form, field.fieldGroup, model, {});
+          this.buildForm(form, field.fieldGroup, model, options);
         }
       }
 
