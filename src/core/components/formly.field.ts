@@ -25,7 +25,6 @@ export class FormlyField implements DoCheck, OnInit {
   @Input() options: any = {};
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
-  private hide;
 
   constructor(
     private elementRef: ElementRef,
@@ -42,6 +41,9 @@ export class FormlyField implements DoCheck, OnInit {
 
   ngOnInit() {
     this.createFieldComponents();
+    if (this.field.hide === true) {
+      this.toggleHide(true);
+    }
   }
 
   changeModel(event: FormlyValueChangeEvent) {
@@ -152,61 +154,57 @@ export class FormlyField implements DoCheck, OnInit {
   }
 
   private checkVisibilityChange() {
-    if (this.field && this.field.hideExpression !== undefined && this.field.hideExpression) {
+    if (this.field && this.field.hideExpression) {
       const hideExpressionResult: boolean = evalExpression(
         this.field.hideExpression,
         this,
         [this.model, this.options.formState],
       );
 
-      if (hideExpressionResult !== this.hide) {
+      if (hideExpressionResult !== this.field.hide) {
         this.toggleHide(hideExpressionResult);
       }
     }
   }
 
   private checkExpressionChange() {
-    if (this.field && this.field.expressionProperties !== undefined) {
+    if (this.field && this.field.expressionProperties) {
       const expressionProperties = this.field.expressionProperties;
 
-      if (expressionProperties) {
-        for (let key in expressionProperties) {
+      for (let key in expressionProperties) {
+        const expressionValue = evalExpression(
+          expressionProperties[key].expression,
+          this,
+          [this.model, this.options.formState],
+        );
 
-          const expressionValue = evalExpression(
-            expressionProperties[key].expression,
-            this,
-            [this.model, this.options.formState],
-          );
+        evalExpression(
+          expressionProperties[key].expressionValueSetter,
+          this,
+          [expressionValue, this.model, this.field.templateOptions, this.field.validation],
+        );
+      }
 
-          evalExpression(
-            expressionProperties[key].expressionValueSetter,
-            this,
-            [expressionValue, this.model, this.field.templateOptions, this.field.validation],
-          );
+      const formControl = this.form.get(this.field.key);
+      if (formControl) {
+        if (formControl.status === 'DISABLED' && !this.field.templateOptions.disabled) {
+            formControl.enable();
         }
-
-        const formControl = this.form.get(this.field.key),
-          field = this.field;
-        if (formControl) {
-            if (formControl.status === 'DISABLED' && !field.templateOptions.disabled) {
-                formControl.enable();
-            }
-            if (formControl.status !== 'DISABLED' && field.templateOptions.disabled) {
-                formControl.disable();
-            }
-            if (!formControl.dirty && formControl.invalid && field.validation && !field.validation.show) {
-              formControl.markAsUntouched();
-            }
-            if (!formControl.dirty && formControl.invalid && field.validation && field.validation.show) {
-              formControl.markAsTouched();
-            }
+        if (formControl.status !== 'DISABLED' && this.field.templateOptions.disabled) {
+            formControl.disable();
+        }
+        if (!formControl.dirty && formControl.invalid && this.field.validation && !this.field.validation.show) {
+          formControl.markAsUntouched();
+        }
+        if (!formControl.dirty && formControl.invalid && this.field.validation && this.field.validation.show) {
+          formControl.markAsTouched();
         }
       }
     }
   }
 
   private toggleHide(value: boolean) {
-    this.hide = value;
+    this.field.hide = value;
     this.renderer.setElementStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
     if (this.field.fieldGroup) {
       for (let i = 0; i < this.field.fieldGroup.length; i++) {

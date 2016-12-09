@@ -12,6 +12,7 @@ export interface FormlyFieldConfig {
   wrappers?: string[];
   fieldGroup?: Array<FormlyFieldConfig>;
   fieldArray?: FormlyFieldConfig;
+  hide?: boolean;
   hideExpression?: boolean | string | ((model, formState) => boolean);
   className?: string;
   type?: string;
