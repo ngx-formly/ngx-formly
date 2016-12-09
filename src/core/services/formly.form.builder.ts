@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, isObject } from './../utils';
+import { evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
 @Injectable()
@@ -37,9 +37,10 @@ export class FormlyFormBuilder {
     fields.map((field, index) => {
       field.id = getFieldId(`formly_${this.formId}`, field, index);
 
-      this.initFieldExpression(field);
+      this.initFieldTemplateOptions(field);
+      this.initFieldExpression(field, model, options);
+
       if (field.key && field.type) {
-        this.initFieldTemplateOptions(field);
         this.initFieldValidation(field);
         this.initFieldAsyncValidation(field);
 
@@ -111,7 +112,9 @@ export class FormlyFormBuilder {
     });
   }
 
-  private initFieldExpression(field: FormlyFieldConfig) {
+  private initFieldExpression(field: FormlyFieldConfig, model, options) {
+    options.formState = options.formState || {};
+
     if (field.expressionProperties) {
       for (let key in field.expressionProperties) {
         if (typeof field.expressionProperties[key] === 'string') {
@@ -121,6 +124,9 @@ export class FormlyFormBuilder {
             expressionValueSetter: evalExpressionValueSetter(key, ['expressionValue', 'model', 'templateOptions', 'validation']),
           };
         }
+
+        const expressionValue = evalExpression(field.expressionProperties[key].expression, { field }, [model, options.formState]);
+        evalExpression(field.expressionProperties[key].expressionValueSetter, { field }, [expressionValue, model, field.templateOptions || {}, field.validation]);
       }
     }
 
@@ -131,11 +137,13 @@ export class FormlyFormBuilder {
   }
 
   private initFieldTemplateOptions(field: FormlyFieldConfig) {
-    field.templateOptions = Object.assign({
-      label: '',
-      placeholder: '',
-      focus: false,
-    }, field.templateOptions);
+    if (field.key && field.type) {
+      field.templateOptions = Object.assign({
+        label: '',
+        placeholder: '',
+        focus: false,
+      }, field.templateOptions);
+    }
   }
 
   private initFieldAsyncValidation(field: FormlyFieldConfig) {

@@ -59,6 +59,20 @@ describe('FormlyFormBuilder service', () => {
       expect(typeof isDisabled.expressionValueSetter).toBe('function');
       expect(typeof field.hideExpression).toBe('function');
     });
+
+    it('should execute field expression during form build', () => {
+      field = {
+        key: 'title',
+        hideExpression: '!model',
+        expressionProperties: {
+          'templateOptions.disabled': 'undefined !== model',
+        },
+        templateOptions: { disabled: false },
+      };
+
+      builder.buildForm(form, [field], {}, {});
+      expect(field.templateOptions.disabled).toBeTruthy();
+    });
   });
 
   describe('generate field id', () => {

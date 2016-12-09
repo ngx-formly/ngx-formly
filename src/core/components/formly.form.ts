@@ -9,8 +9,8 @@ import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey
   selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields"
-      [hide]="field.hideExpression" [model]="fieldModel(field)"
-      [form]="form" [field]="field" (modelChange)="changeModel($event)"
+      [model]="fieldModel(field)" [form]="form"
+      [field]="field" (modelChange)="changeModel($event)"
       [ngClass]="!field.fieldGroup ? field.className: undefined"
       [options]="options">
     </formly-field>

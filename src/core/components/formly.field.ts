@@ -23,24 +23,9 @@ export class FormlyField implements DoCheck, OnInit {
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
   @Input() options: any = {};
-  @Input()
-  get hide() { return this._hide; }
-  set hide(value: boolean) {
-    this._hide = value;
-    this.renderer.setElementStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
-    if (this.field.fieldGroup) {
-      for (let i = 0; i < this.field.fieldGroup.length; i++) {
-        this.psEmit(this.field.fieldGroup[i].key, 'hidden', this._hide);
-      }
-    } else {
-      this.psEmit(this.field.key, 'hidden', this._hide);
-    }
-  }
-
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
-
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
-  private _hide;
+  private hide;
 
   constructor(
     private elementRef: ElementRef,
@@ -96,9 +81,6 @@ export class FormlyField implements DoCheck, OnInit {
     } else if (this.field.fieldGroup || this.field.fieldArray) {
       this.createFieldComponent();
     }
-
-    // TODO support this.field.hideExpression as a callback/observable
-    this.hide = this.field.hideExpression ? true : false;
   }
 
   private createFieldComponent(): ComponentRef<Field> {
@@ -178,7 +160,7 @@ export class FormlyField implements DoCheck, OnInit {
       );
 
       if (hideExpressionResult !== this.hide) {
-        this.hide = hideExpressionResult;
+        this.toggleHide(hideExpressionResult);
       }
     }
   }
@@ -220,6 +202,18 @@ export class FormlyField implements DoCheck, OnInit {
             }
         }
       }
+    }
+  }
+
+  private toggleHide(value: boolean) {
+    this.hide = value;
+    this.renderer.setElementStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
+    if (this.field.fieldGroup) {
+      for (let i = 0; i < this.field.fieldGroup.length; i++) {
+        this.psEmit(this.field.fieldGroup[i].key, 'hidden', value);
+      }
+    } else {
+      this.psEmit(this.field.key, 'hidden', value);
     }
   }
 }
