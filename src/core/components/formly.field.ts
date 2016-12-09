@@ -185,7 +185,7 @@ export class FormlyField implements DoCheck, OnInit {
         );
       }
 
-      const formControl = this.form.get(this.field.key);
+      const formControl = this.field.formControl;
       if (formControl) {
         if (formControl.status === 'DISABLED' && !this.field.templateOptions.disabled) {
             formControl.enable();
