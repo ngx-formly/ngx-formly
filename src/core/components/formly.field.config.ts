@@ -14,7 +14,7 @@ export interface FormlyFieldConfig {
   fieldArray?: FormlyFieldConfig;
   hide?: boolean;
   formControl?: AbstractControl;
-  hideExpression?: boolean | string | ((model, formState) => boolean);
+  hideExpression?: boolean | string | ((model: any, formState: any) => boolean);
   className?: string;
   type?: string;
   expressionProperties?: any;
