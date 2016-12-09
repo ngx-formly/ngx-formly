@@ -57,6 +57,7 @@ export class HelloApp {
       }, {
         type: 'radio',
         key: 'title2',
+        hide: true,
         templateOptions: {
           options: [{
             key: 'mr',

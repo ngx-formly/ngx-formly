@@ -133,6 +133,7 @@ export class FormlyFormBuilder {
     if (typeof field.hideExpression === 'string') {
       // cache built expression
       field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
+      field.hide = evalExpression(field.hideExpression, { field }, [model, options.formState]);
     }
   }
 
