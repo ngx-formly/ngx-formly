@@ -90,7 +90,7 @@ export class FormlyFormBuilder {
               field.validators ? field.validators.validation : undefined,
               field.asyncValidators ? field.asyncValidators.validation : undefined,
             );
-            form.addControl(field.key, nestedForm);
+            this.addControl(form, field.key, nestedForm, field);
           }
 
           this.buildForm(nestedForm, field.fieldGroup, nestedModel, {});
@@ -106,7 +106,7 @@ export class FormlyFormBuilder {
             field.validators ? field.validators.validation : undefined,
             field.asyncValidators ? field.asyncValidators.validation : undefined,
           );
-          form.setControl(field.key, arrayForm);
+          this.addControl(form, field.key, arrayForm, field);
         }
       }
     });
@@ -233,18 +233,22 @@ export class FormlyFormBuilder {
     /* Although the type of the key property in FormlyFieldConfig is declared to be a string,
      the recurstion of this FormBuilder uses an Array.
      This should probably be addressed somehow. */
-    let name: string = typeof field.key === 'string' ? field.key : field.key[0];
+    let name: string = typeof field.key === 'string' ? field.key : field.key[0],
+      formControl: AbstractControl;
+
     if (field.formControl instanceof AbstractControl) {
-      form.addControl(name, field.formControl);
+      formControl = field.formControl;
     } else if (field.component && field.component.createControl) {
-      form.addControl(name, field.component.createControl(model, field));
+      formControl = field.component.createControl(model, field);
     } else {
-      form.addControl(name, new FormControl(
+      formControl = new FormControl(
         { value: model, disabled: field.templateOptions.disabled },
         field.validators ? field.validators.validation : undefined,
         field.asyncValidators ? field.asyncValidators.validation : undefined,
-      ));
+      );
     }
+
+    this.addControl(form, name, formControl, field);
     if (field.validation && field.validation.show) {
       form.get(field.key).markAsTouched();
     }
@@ -275,6 +279,15 @@ export class FormlyFormBuilder {
         return parseInt(changes) > value;
     } else {
         return parseInt(changes) < value;
+    }
+  }
+
+  private addControl(form: FormGroup, key: string, formControl: AbstractControl, field: FormlyFieldConfig) {
+    field.formControl = formControl;
+    if (formControl instanceof FormArray) {
+      form.setControl(key, formControl);
+    } else {
+      form.addControl(key, formControl);
     }
   }
 }

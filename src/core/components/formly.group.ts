@@ -16,8 +16,8 @@ export class FormlyGroup extends FieldType {
   }
 
   get formlyGroup(): AbstractControl {
-    if (this.field.key) {
-      return this.form.get(this.field.key);
+    if (this.field.formControl) {
+      return this.field.formControl;
     } else {
       return this.form;
     }

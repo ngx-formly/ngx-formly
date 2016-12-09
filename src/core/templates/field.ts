@@ -9,7 +9,7 @@ export abstract class Field {
   @Input() options;
 
   get key() { return this.field.key; }
-  get formControl(): AbstractControl { return this.form.get(this.key); }
+  get formControl(): AbstractControl { return this.field.formControl || this.form.get(this.key); }
 
   /**
    * @deprecated Use `to` instead.
