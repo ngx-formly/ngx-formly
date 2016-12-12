@@ -9,6 +9,7 @@ export interface FormlyFieldConfig {
   asyncValidators?: any;
   template?: string;
   component?: any;
+  wrapper?: string[] | string;
   wrappers?: string[];
   fieldGroup?: Array<FormlyFieldConfig>;
   fieldArray?: FormlyFieldConfig;
