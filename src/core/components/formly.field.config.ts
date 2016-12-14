@@ -8,7 +8,7 @@ export interface FormlyFieldConfig {
     messages?: {
       [messageProperties: string]: string | Function;
     };
-    show: boolean;
+    show?: boolean;
     [additionalProperties: string]: any;
   };
   validators?: any;
