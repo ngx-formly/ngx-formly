@@ -209,6 +209,15 @@ export class FormlyField implements DoCheck, OnInit {
 
   private toggleHide(value: boolean) {
     this.field.hide = value;
+
+    if (this.field.formControl) {
+      if (value === true && this.form.get(this.field.key)) {
+        this.form.removeControl(this.field.key);
+      } else if (value === false && !this.form.get(this.field.key)) {
+        this.form.addControl(this.field.key, this.field.formControl);
+      }
+    }
+
     this.renderer.setElementStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
     if (this.field.fieldGroup) {
       for (let i = 0; i < this.field.fieldGroup.length; i++) {
