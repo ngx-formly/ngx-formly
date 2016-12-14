@@ -201,6 +201,11 @@ export class HelloApp {
           validators: {
             validation: ['required'],
           },
+          validation: {
+            messages: {
+              required: 'WOW!! Enter the Street',
+            },
+          },
           defaultValue: '204 Causley Ave. ',
           templateOptions: {
             label: 'Street',
@@ -214,6 +219,11 @@ export class HelloApp {
           templateOptions: {
             label: 'City',
             placeholder: 'Arlington',
+          },
+          validation: {
+            messages: {
+              city: 'City: atleast 3',
+            },
           },
           validators: {
             city: {

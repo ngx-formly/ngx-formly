@@ -4,7 +4,13 @@ export interface FormlyFieldConfig {
   id?: string;
   templateOptions?: FormlyTemplateOptions;
   optionsTypes?: any;
-  validation?: any;
+  validation?: {
+    messages?: {
+      [messageProperties: string]: string | Function;
+    };
+    show: boolean;
+    [additionalProperties: string]: any;
+  };
   validators?: any;
   asyncValidators?: any;
   template?: string;
