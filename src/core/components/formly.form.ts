@@ -22,6 +22,8 @@ export class FormlyForm implements OnChanges {
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
   @Input() options: any;
+  /** @internal */
+  @Input() buildForm: boolean = true;
   private initialModel: any;
 
   constructor(private formlyBuilder: FormlyFormBuilder) {}
@@ -31,7 +33,9 @@ export class FormlyForm implements OnChanges {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
-      this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+      if (this.buildForm !== false) {
+        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+      }
       this.updateInitialValue();
     } else if (changes['model'] && this.fields && this.fields.length > 0) {
       this.form.patchValue(this.model);
