@@ -96,7 +96,7 @@ export class FormlyField implements DoCheck, OnInit {
     let postWrappers = this.runManipulators(fieldManipulators.postWrapper, this.field);
     if (!type.wrappers) type.wrappers = [];
     if (this.field.wrapper) {
-       console.warn(`wrapper is deprecated. Use 'wrappers' instead.`);
+       console.warn(`${this.field.key}: wrapper is deprecated. Use 'wrappers' instead.`);
        this.field.wrappers = Array.isArray(this.field.wrapper) ? this.field.wrapper : [this.field.wrapper];
     }
     if (!this.field.wrappers) this.field.wrappers = [];
