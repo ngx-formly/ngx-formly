@@ -3,6 +3,7 @@ import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '
 import { FormlyConfig } from './formly.config';
 import { evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
+import { getKeyPath } from '../utils';
 
 @Injectable()
 export class FormlyFormBuilder {
@@ -49,17 +50,17 @@ export class FormlyFormBuilder {
           if (field.defaultValue) {
             this.defaultPath = path;
           }
-          path = path.split('.');
+          path = getKeyPath({key: field.key});
         }
 
         if (path.length > 1) {
           const rootPath = path.shift();
-          let nestedForm = <FormGroup>(form.get(rootPath) ? form.get(rootPath) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidators ? field.asyncValidators.validation : undefined));
-          if (!form.get(rootPath)) {
+          let nestedForm = <FormGroup>(form.get(rootPath.toString()) ? form.get(rootPath.toString()) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidators ? field.asyncValidators.validation : undefined));
+          if (!form.get(rootPath.toString())) {
             form.addControl(rootPath, nestedForm);
           }
           if (!model[rootPath]) {
-            model[rootPath] = isNaN(rootPath) ? {} : [];
+            model[rootPath] = isNaN(path[0]) ? {} : [];
           }
 
           const originalKey = field.key;
@@ -71,7 +72,7 @@ export class FormlyFormBuilder {
           this.formlyConfig.getMergedField(field);
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
           if (field.defaultValue && !model[path[0]]) {
-            let path = this.defaultPath.split('.');
+            let path: any = getKeyPath({key: this.defaultPath});
             path = path.pop();
             assignModelValue(this.model, path, field.defaultValue);
             this.defaultPath = undefined;

@@ -66,7 +66,7 @@ export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmp
 
 export function assignModelValue(model, path, value) {
   if (typeof path === 'string') {
-    path = path.split('.');
+    path = getKeyPath({key: path});
   }
 
   if (path.length > 1) {
@@ -82,7 +82,7 @@ export function assignModelValue(model, path, value) {
 
 export function getValueForKey(model, path) {
   if (typeof path === 'string') {
-    path = path.split('.');
+    path = getKeyPath({key: path});
   }
   if (path.length > 1) {
     const e = path.shift();
