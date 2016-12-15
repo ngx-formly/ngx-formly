@@ -6,7 +6,7 @@ import { clone } from '../src/core/utils';
 @Component({
   selector: 'formly-repeat-section',
   template: `
-    <div *ngFor="let control of controls; let i = index;">
+    <div *ngFor="let control of formControl.controls; let i = index;">
       <formly-form
         [model]="model[i]"
         [fields]="fields"
@@ -29,10 +29,6 @@ export class RepeatComponent extends FieldType implements OnInit {
     return clone(this.options);
   }
 
-  get controls(): AbstractControl[] {
-    return (<FormArray>this.form.get(this.field.key)).controls;
-  }
-
   get fields(): FormlyFieldConfig[] {
     return this.field.fieldArray.fieldGroup;
   }
@@ -40,20 +36,18 @@ export class RepeatComponent extends FieldType implements OnInit {
   ngOnInit() {
     if (this.model) {
       this.model.map(() => {
-        let formGroup = new FormGroup({});
-        this.controls.push(formGroup);
+        (<FormArray>this.formControl).push(new FormGroup({}));
       });
     }
   }
 
   add() {
-    let formGroup = new FormGroup({});
     this.model.push({});
-    this.controls.push(formGroup);
+    (<FormArray>this.formControl).push(new FormGroup({}));
   }
 
   remove(i) {
-    this.controls.splice(i, 1);
+    (<FormArray>this.formControl).removeAt(i);
     this.model.splice(i, 1);
   }
 }
