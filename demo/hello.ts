@@ -360,12 +360,20 @@ export class HelloApp {
         },
       },
       {
-        key: 'nested.arrays.0',
+        key: 'nested.arrays.0.item',
+        type: 'input',
+        templateOptions: {
+          label: 'Array with dots',
+        },
+        defaultValue: 'Default Value A',
+        parsers: [(value) => (value || '').toUpperCase()],
+      }, {
+        key: 'nested.arrays[1].item',
         type: 'input',
         templateOptions: {
           label: 'Array property',
         },
-        defaultValue: 'Default Value',
+        defaultValue: 'Default Value B',
         parsers: [(value) => (value || '').toUpperCase()],
       }, {
         type: 'repeatSection',
@@ -432,11 +440,6 @@ export class HelloApp {
         movies: true,
         sports: false,
         languages: true,
-      },
-      nested: {
-        property: {
-          magic: 'Nested property Content',
-        },
       },
       investments: [
         {
