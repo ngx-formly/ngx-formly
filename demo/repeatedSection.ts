@@ -9,9 +9,9 @@ import { clone } from '../src/core/utils';
     <div *ngFor="let control of formControl.controls; let i = index;">
       <formly-form
         [model]="model[i]"
-        [fields]="fields"
+        [fields]="fields[i]"
         [options]="newOptions"
-        [form]="control"
+        [form]="this.formControl.at(i)"
         [ngClass]="field.fieldArray.className">
       </formly-form>
       <div class="col-md-2">
@@ -24,30 +24,34 @@ import { clone } from '../src/core/utils';
   `,
 })
 export class RepeatComponent extends FieldType implements OnInit {
+  fields = [];
 
   get newOptions() {
     return clone(this.options);
-  }
-
-  get fields(): FormlyFieldConfig[] {
-    return this.field.fieldArray.fieldGroup;
   }
 
   ngOnInit() {
     if (this.model) {
       this.model.map(() => {
         (<FormArray>this.formControl).push(new FormGroup({}));
+        this.fields.push(
+          JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup)),
+        );
       });
     }
   }
 
   add() {
     this.model.push({});
+    this.fields.push(
+      JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup)),
+    );
     (<FormArray>this.formControl).push(new FormGroup({}));
   }
 
   remove(i) {
     (<FormArray>this.formControl).removeAt(i);
     this.model.splice(i, 1);
+    this.fields.splice(i, 1);
   }
 }

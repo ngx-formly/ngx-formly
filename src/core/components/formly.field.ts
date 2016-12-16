@@ -56,8 +56,8 @@ export class FormlyField implements DoCheck, OnInit {
       if (this.field.modelOptions && this.field.modelOptions.debounce && this.field.modelOptions.debounce.default) {
         debounce = this.field.modelOptions.debounce.default;
       }
-      let fieldComponentRef = this.createFieldComponent();
 
+      const fieldComponentRef = this.createFieldComponent();
       if (this.field.key) {
         let valueChanges = fieldComponentRef.instance.formControl.valueChanges;
         if (debounce > 0) {
@@ -100,7 +100,7 @@ export class FormlyField implements DoCheck, OnInit {
        this.field.wrappers = Array.isArray(this.field.wrapper) ? this.field.wrapper : [this.field.wrapper];
     }
     if (!this.field.wrappers) this.field.wrappers = [];
-    let wrappers = [...preWrappers, ...this.field.wrappers, ...postWrappers];
+    const wrappers = [...preWrappers, ...this.field.wrappers, ...postWrappers];
     wrappers.map(wrapperName => {
       let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
       fieldComponent = wrapperRef.instance.fieldComponent;
