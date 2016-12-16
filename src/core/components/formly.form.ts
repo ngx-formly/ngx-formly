@@ -101,7 +101,7 @@ export class FormlyForm implements OnChanges {
         this.resetFormGroup(model, <FormGroup>form.controls[controlKey], key);
       }
       if (form.controls[controlKey] instanceof FormArray) {
-        this.resetArray(model, <FormArray>form.controls[controlKey], key);
+        this.resetFormArray(model, <FormArray>form.controls[controlKey], key);
       }
       if (form.controls[controlKey] instanceof FormControl) {
         form.controls[controlKey].setValue(getValueForKey(model, key));
@@ -109,14 +109,14 @@ export class FormlyForm implements OnChanges {
     }
   }
 
-  private resetArray(model: any, formArray: FormArray, key: string) {
+  private resetFormArray(model: any, formArray: FormArray, key: string) {
     let newValue = getValueForKey(model, key);
 
     // removes and updates
-    for (let i = formArray.controls.length - 1; i >= 0; i--) {
-      if (formArray.controls[i] instanceof FormGroup) {
+    for (let i = formArray.length - 1; i >= 0; i--) {
+      if (formArray.at(i) instanceof FormGroup) {
         if (newValue && !isNullOrUndefined(newValue[i])) {
-          this.resetFormGroup(newValue[i], <FormGroup>formArray.controls[i]);
+          this.resetFormGroup(newValue[i], <FormGroup>formArray.at(i));
         }
         else {
           formArray.removeAt(i);
@@ -129,13 +129,13 @@ export class FormlyForm implements OnChanges {
     }
 
     // inserts
-    if (Array.isArray(newValue) && formArray.controls.length < newValue.length) {
-      let remaining = newValue.length - formArray.controls.length;
-      let initialLength = formArray.controls.length;
+    if (Array.isArray(newValue) && formArray.length < newValue.length) {
+      let remaining = newValue.length - formArray.length;
+      let initialLength = formArray.length;
       for (let i = 0; i < remaining; i++) {
         let pos = initialLength + i;
         getValueForKey(this.model, key).push(newValue[pos]);
-        formArray.controls.push(new FormGroup({}));
+        formArray.push(new FormGroup({}));
       }
     }
   }
