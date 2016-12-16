@@ -34,6 +34,9 @@ export class RepeatComponent extends FieldType implements OnInit {
     if (this.model) {
       this.model.map(() => {
         (<FormArray>this.formControl).push(new FormGroup({}));
+        this.fields.push(
+          JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup)),
+        );
       });
     }
   }
@@ -41,7 +44,7 @@ export class RepeatComponent extends FieldType implements OnInit {
   add() {
     this.model.push({});
     this.fields.push(
-      JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup))
+      JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup)),
     );
     (<FormArray>this.formControl).push(new FormGroup({}));
   }
