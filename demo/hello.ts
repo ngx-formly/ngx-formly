@@ -559,7 +559,7 @@ export class HelloApp {
           },
         },
         validators: {
-          date: control => control.value.match(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/) },
+          date: control => !control.value || control.value.match(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/) },
         },
       }],
       validators: [{ name: 'required', validation: Validators.required}],
