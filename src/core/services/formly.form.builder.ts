@@ -42,6 +42,7 @@ export class FormlyFormBuilder {
       this.initFieldExpression(field, model, options);
 
       if (field.key && field.type) {
+        this.formlyConfig.getMergedField(field);
         this.initFieldValidation(field);
         this.initFieldAsyncValidation(field);
 
@@ -55,7 +56,7 @@ export class FormlyFormBuilder {
 
         if (path.length > 1) {
           const rootPath = path.shift();
-          let nestedForm = <FormGroup>(form.get(rootPath.toString()) ? form.get(rootPath.toString()) : new FormGroup({}, field.validators ? field.validators.validation : undefined, field.asyncValidators ? field.asyncValidators.validation : undefined));
+          let nestedForm = <FormGroup>(form.get(rootPath.toString()) ? form.get(rootPath.toString()) : new FormGroup({}));
           if (!form.get(rootPath.toString())) {
             form.addControl(rootPath, nestedForm);
           }
@@ -69,7 +70,6 @@ export class FormlyFormBuilder {
           this.buildForm(nestedForm, [field], model[rootPath], options);
           field.key = originalKey;
         } else {
-          this.formlyConfig.getMergedField(field);
           this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
           if (field.defaultValue && !model[path[0]]) {
             let path: any = getKeyPath({key: this.defaultPath});
