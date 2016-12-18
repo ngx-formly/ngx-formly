@@ -3,9 +3,9 @@ module.exports = {
   devtool: 'source-map',
   output: {
     path: __dirname + '/../bundles',
-    filename: 'ng2-formly.umd.js',
+    filename: 'ng-formly.umd.js',
     libraryTarget: 'umd',
-    library: 'ng2-formly'
+    library: 'ng-formly'
   },
   externals: [
     /^\@angular\//,

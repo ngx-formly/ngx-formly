@@ -1,17 +1,17 @@
 <img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
 
-# ng2-formly
+# ng-formly
 [![Angular Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
-[![Stories in Ready](https://badge.waffle.io/formly-js/ng2-formly.png?label=ready&title=Ready)](https://waffle.io/formly-js/ng2-formly)
+[![Stories in Ready](https://badge.waffle.io/formly-js/ng-formly.png?label=ready&title=Ready)](https://waffle.io/formly-js/ng-formly)
 
 Status:
-[![Build Status](https://travis-ci.org/formly-js/ng2-formly.svg?branch=master)](https://travis-ci.org/formly-js/ng2-formly)
-[![npm version](https://badge.fury.io/js/ng2-formly.svg)](https://badge.fury.io/js/ng2-formly)
-[![devDependencies Status](https://david-dm.org/formly-js/ng2-formly/dev-status.svg)](https://david-dm.org/formly-js/ng2-formly?type=dev)
-[![Package Quality](http://npm.packagequality.com/shield/ng2-formly.png)](http://packagequality.com/#?package=ng2-formly)
-[![Known Vulnerabilities](https://snyk.io/test/github/formly-js/ng2-formly/badge.svg)](https://snyk.io/test/github/formly-js/ng2-formly)
-[![codecov.io](http://codecov.io/github/formly-js/ng2-formly/coverage.svg?branch=master)](http://codecov.io/github/formly-js/ng2-formly?branch=master)
+[![Build Status](https://travis-ci.org/formly-js/ng-formly.svg?branch=master)](https://travis-ci.org/formly-js/ng-formly)
+[![npm version](https://badge.fury.io/js/ng-formly.svg)](https://badge.fury.io/js/ng-formly)
+[![devDependencies Status](https://david-dm.org/formly-js/ng-formly/dev-status.svg)](https://david-dm.org/formly-js/ng-formly?type=dev)
+[![Package Quality](http://npm.packagequality.com/shield/ng-formly.png)](http://packagequality.com/#?package=ng-formly)
+[![Known Vulnerabilities](https://snyk.io/test/github/formly-js/ng-formly/badge.svg)](https://snyk.io/test/github/formly-js/ng-formly)
+[![codecov.io](http://codecov.io/github/formly-js/ng-formly/coverage.svg?branch=master)](http://codecov.io/github/formly-js/ng-formly?branch=master)
 
 Links:
 [![Gitter](https://badges.gitter.im/formly-js/angular2-formly.svg)](https://gitter.im/formly-js/angular2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -24,9 +24,9 @@ application's forms.
 
 ## Quick Start
 
-#### 1. Install ng2-formly
+#### 1. Install ng-formly
 ```bash
-  npm install ng2-formly --save
+  npm install ng-formly --save
 ```
 
 #### 2. Import the `FormlyModule`:
@@ -35,7 +35,7 @@ application's forms.
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormlyModule, FormlyBootstrapModule} from 'ng2-formly';
+import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
 import {AppComponent} from './app';
 
 @NgModule({
@@ -58,7 +58,7 @@ export class AppModule {
 ```ts
 import {Component} from '@angular/core';
 import {Validators, FormGroup} from '@angular/forms';
-import {FormlyFieldConfig} from 'ng2-formly';
+import {FormlyFieldConfig} from 'ng-formly';
 
 @Component({
   selector: 'app',
@@ -121,8 +121,8 @@ See the [issues labeled enhancement](https://github.com/formly-js/angular2-forml
 
 ## Supported templates
 
- - [Material2](https://github.com/formly-js/ng2-formly-template-material)
- - [Bootstrap](https://github.com/formly-js/ng2-formly-templates-bootstrap)
+ - [Material2](https://github.com/formly-js/ng-formly-template-material)
+ - [Bootstrap](https://github.com/formly-js/ng-formly-templates-bootstrap)
 
 
 ## Thanks
@@ -137,9 +137,9 @@ If you're trying to find angular-formly, go [here](https://github.com/formly-js/
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars.githubusercontent.com/u/2327532?v=3" width="100px;"/><br /><sub>Zama Khan Mohammed</sub>](https://www.linkedin.com/in/mohammedzamakhan)<br />[📖](https://github.com/formly-js/ng2-formly/commits?author=mohammedzamakhan) [💻](https://github.com/formly-js/ng2-formly/commits?author=mohammedzamakhan) 👀 💁 🚇 🔧 | [<img src="https://avatars.githubusercontent.com/u/1753742?v=3" width="100px;"/><br /><sub>Abdellatif Ait boudad</sub>](https://github.com/aitboudad)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=aitboudad) [📖](https://github.com/formly-js/ng2-formly/commits?author=aitboudad) [⚠️](https://github.com/formly-js/ng2-formly/commits?author=aitboudad) 👀 💁 | [<img src="https://avatars.githubusercontent.com/u/2039134?v=3" width="100px;"/><br /><sub>divyakumarjain</sub>](https://github.com/divyakumarjain)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=divyakumarjain) [📖](https://github.com/formly-js/ng2-formly/commits?author=divyakumarjain) 🔌 👀 💁 | [<img src="https://avatars.githubusercontent.com/u/2385144?v=3" width="100px;"/><br /><sub>Pouja</sub>](https://github.com/Pouja)<br />[💻](https://github.com/formly-js/ng2-formly/commits?author=Pouja) 👀 | [<img src="https://avatars.githubusercontent.com/u/464895?v=3" width="100px;"/><br /><sub>Caleb Kniffen</sub>](http://twitter.com/ckniffty)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Ackniffen) | [<img src="https://avatars.githubusercontent.com/u/5145523?v=3" width="100px;"/><br /><sub>Riron</sub>](https://github.com/Riron)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3ARiron) | [<img src="https://avatars.githubusercontent.com/u/645187?v=3" width="100px;"/><br /><sub>Thiago Lacerda</sub>](https://github.com/thiagogjt)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Athiagogjt) |
+| [<img src="https://avatars.githubusercontent.com/u/2327532?v=3" width="100px;"/><br /><sub>Zama Khan Mohammed</sub>](https://www.linkedin.com/in/mohammedzamakhan)<br />[📖](https://github.com/formly-js/ng-formly/commits?author=mohammedzamakhan) [💻](https://github.com/formly-js/ng-formly/commits?author=mohammedzamakhan) 👀 💁 🚇 🔧 | [<img src="https://avatars.githubusercontent.com/u/1753742?v=3" width="100px;"/><br /><sub>Abdellatif Ait boudad</sub>](https://github.com/aitboudad)<br />[💻](https://github.com/formly-js/ng-formly/commits?author=aitboudad) [📖](https://github.com/formly-js/ng-formly/commits?author=aitboudad) [⚠️](https://github.com/formly-js/ng-formly/commits?author=aitboudad) 👀 💁 | [<img src="https://avatars.githubusercontent.com/u/2039134?v=3" width="100px;"/><br /><sub>divyakumarjain</sub>](https://github.com/divyakumarjain)<br />[💻](https://github.com/formly-js/ng-formly/commits?author=divyakumarjain) [📖](https://github.com/formly-js/ng-formly/commits?author=divyakumarjain) 🔌 👀 💁 | [<img src="https://avatars.githubusercontent.com/u/2385144?v=3" width="100px;"/><br /><sub>Pouja</sub>](https://github.com/Pouja)<br />[💻](https://github.com/formly-js/ng-formly/commits?author=Pouja) 👀 | [<img src="https://avatars.githubusercontent.com/u/464895?v=3" width="100px;"/><br /><sub>Caleb Kniffen</sub>](http://twitter.com/ckniffty)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3Ackniffen) | [<img src="https://avatars.githubusercontent.com/u/5145523?v=3" width="100px;"/><br /><sub>Riron</sub>](https://github.com/Riron)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3ARiron) | [<img src="https://avatars.githubusercontent.com/u/645187?v=3" width="100px;"/><br /><sub>Thiago Lacerda</sub>](https://github.com/thiagogjt)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3Athiagogjt) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="https://avatars.githubusercontent.com/u/1104814?v=3" width="100px;"/><br /><sub>danielcrisp</sub>](https://github.com/danielcrisp)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Adanielcrisp) [💻](https://github.com/formly-js/ng2-formly/commits?author=danielcrisp) | [<img src="https://avatars.githubusercontent.com/u/7455769?v=3" width="100px;"/><br /><sub>Tony Franzese</sub>](https://github.com/franzeal)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Afranzeal) [💻](https://github.com/formly-js/ng2-formly/commits?author=franzeal) | [<img src="https://avatars.githubusercontent.com/u/1319151?v=3" width="100px;"/><br /><sub>Jackie Gleason</sub>](http://JackieRGleason.com)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Ajrgleason) [💻](https://github.com/formly-js/ng2-formly/commits?author=jrgleason) | [<img src="https://avatars.githubusercontent.com/u/23452573?v=3" width="100px;"/><br /><sub>ampsarfraz</sub>](https://github.com/ampsarfraz)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Aampsarfraz) | [<img src="https://avatars.githubusercontent.com/u/1636728?v=3" width="100px;"/><br /><sub>Krustie101</sub>](https://github.com/Krustie101)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3AKrustie101) [💻](https://github.com/formly-js/ng2-formly/commits?author=Krustie101) | [<img src="https://avatars.githubusercontent.com/u/21162369?v=3" width="100px;"/><br /><sub>ultimafirez</sub>](https://github.com/ultimafirez)<br />[🐛](https://github.com/formly-js/ng2-formly/issues?q=author%3Aultimafirez) |
+| [<img src="https://avatars.githubusercontent.com/u/1104814?v=3" width="100px;"/><br /><sub>danielcrisp</sub>](https://github.com/danielcrisp)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3Adanielcrisp) [💻](https://github.com/formly-js/ng-formly/commits?author=danielcrisp) | [<img src="https://avatars.githubusercontent.com/u/7455769?v=3" width="100px;"/><br /><sub>Tony Franzese</sub>](https://github.com/franzeal)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3Afranzeal) [💻](https://github.com/formly-js/ng-formly/commits?author=franzeal) | [<img src="https://avatars.githubusercontent.com/u/1319151?v=3" width="100px;"/><br /><sub>Jackie Gleason</sub>](http://JackieRGleason.com)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3Ajrgleason) [💻](https://github.com/formly-js/ng-formly/commits?author=jrgleason) | [<img src="https://avatars.githubusercontent.com/u/23452573?v=3" width="100px;"/><br /><sub>ampsarfraz</sub>](https://github.com/ampsarfraz)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3Aampsarfraz) | [<img src="https://avatars.githubusercontent.com/u/1636728?v=3" width="100px;"/><br /><sub>Krustie101</sub>](https://github.com/Krustie101)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3AKrustie101) [💻](https://github.com/formly-js/ng-formly/commits?author=Krustie101) | [<img src="https://avatars.githubusercontent.com/u/21162369?v=3" width="100px;"/><br /><sub>ultimafirez</sub>](https://github.com/ultimafirez)<br />[🐛](https://github.com/formly-js/ng-formly/issues?q=author%3Aultimafirez) |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

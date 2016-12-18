@@ -12,7 +12,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
-      'ng2-formly': 'src/index.ts',
+      'ng-formly': 'src/index.ts',
     },
   },
   module: {
