@@ -4,7 +4,7 @@ import { FieldType } from '../../core/core';
 @Component({
   selector: 'formly-field-input',
   template: `
-    <input [type]="type" [formControl]="formControl" class="form-control" [id]="id"
+    <input [type]="type" [formControl]="formControl" class="form-control"
       [formlyAttributes]="field" [ngClass]="{'form-control-danger': valid}">
     `,
 })

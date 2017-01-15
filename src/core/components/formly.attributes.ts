@@ -1,4 +1,4 @@
-import { Directive, HostListener, ElementRef, Input, Renderer, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, HostListener, ElementRef, Input, Renderer, OnInit, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { SingleFocusDispatcher } from '../services/formly.single.focus.dispatcher';
 import { FormlyFieldConfig } from './formly.field.config';
 
@@ -9,7 +9,7 @@ import { FormlyFieldConfig } from './formly.field.config';
 export class FormlyAttributes implements OnInit, OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() formControl;
-  private attributes = ['placeholder', 'tabindex', 'step', 'aria-describedby'];
+  private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'aria-describedby'];
   private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
   @HostListener('focus') onFocus() {
@@ -31,28 +31,17 @@ export class FormlyAttributes implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['field']) {
-      const previousOptions = changes['field'].previousValue.templateOptions || {},
-        templateOptions = this.field.templateOptions;
-
       this.attributes
-        .filter(attribute => templateOptions[attribute] !== '' || templateOptions[attribute] !== undefined)
-        .map(attribute => {
-          if (attribute === 'aria-describedby') {
-            this.renderer.setElementAttribute(this.elementRef.nativeElement, attribute, this.field.id + '-message');
-          } else if (previousOptions[attribute] !== templateOptions[attribute]) {
-            this.renderer.setElementAttribute(this.elementRef.nativeElement, attribute, templateOptions[attribute]);
-          }
-        });
+        .filter(attr => this.canApplyRender(changes['field'], attr))
+        .map(attr => this.renderer.setElementAttribute(
+          this.elementRef.nativeElement, attr, this.getPropValue(this.field, attr),
+        ));
+
       this.statements
-        .filter(statement => {
-          if (previousOptions[statement] !== templateOptions[statement]) {
-            if (typeof templateOptions[statement] === 'function') {
-              this.renderer.listen(this.elementRef.nativeElement, statement, () => {
-                templateOptions[statement](this.field, this.formControl);
-              });
-            }
-          }
-        });
+        .filter(statement => this.canApplyRender(changes['field'], statement))
+        .map(statement => this.renderer.listen(
+          this.elementRef.nativeElement, statement, this.getStatementValue(statement),
+        ));
 
       if (this.field.focus || (changes['field'].previousValue.focus !== undefined && changes['field'].previousValue.focus !== this.field.focus)) {
         this.renderer.invokeElementMethod(this.elementRef.nativeElement, this.field.focus ? 'focus' : 'blur', []);
@@ -62,5 +51,39 @@ export class FormlyAttributes implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  private getPropValue(field: FormlyFieldConfig, prop: string) {
+    field = field || {};
+    if (field.id && prop === 'aria-describedby') {
+      return field.id + '-message';
+    }
+
+    if (field.templateOptions && field.templateOptions[prop]) {
+      return field.templateOptions[prop];
+    }
+
+    return field[prop];
+  }
+
+  private getStatementValue(statement: string) {
+    const fn = this.field.templateOptions[statement];
+
+    return () => fn(this.field, this.formControl);
+  }
+
+  private canApplyRender(fieldChange: SimpleChange, prop): Boolean {
+    const currentValue = this.getPropValue(this.field, prop),
+      previousValue = this.getPropValue(fieldChange.previousValue, prop);
+
+    if (previousValue !== currentValue) {
+      if (this.statements.indexOf(prop) !== -1) {
+        return typeof currentValue === 'function';
+      }
+
+      return true;
+    }
+
+    return false;
   }
 }

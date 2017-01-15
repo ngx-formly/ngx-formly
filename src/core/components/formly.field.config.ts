@@ -2,6 +2,7 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 export interface FormlyFieldConfig {
   key?: string;
   id?: string;
+  name?: string;
   templateOptions?: FormlyTemplateOptions;
   optionsTypes?: any;
   validation?: {
