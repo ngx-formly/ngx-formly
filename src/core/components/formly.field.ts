@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck,
+  Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck, OnDestroy,
   ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -18,13 +18,16 @@ import 'rxjs/add/operator/map';
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
   `,
 })
-export class FormlyField implements DoCheck, OnInit {
+export class FormlyField implements DoCheck, OnInit, OnDestroy {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
   @Input() options: any = {};
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
+
+  private componentRefs = [];
+  private _subscriptions = [];
 
   constructor(
     private elementRef: ElementRef,
@@ -43,6 +46,16 @@ export class FormlyField implements DoCheck, OnInit {
     this.createFieldComponents();
     if (this.field.hide === true) {
       this.toggleHide(true);
+    }
+  }
+
+  ngOnDestroy() {
+    this.componentRefs.map(componentRef => componentRef.destroy());
+    this._subscriptions.map(subscriber => subscriber.unsubscribe());
+    this._subscriptions = this.componentRefs = [];
+
+    if (this.field.key) {
+      this.formlyPubSub.removeEmitter(this.field.key);
     }
   }
 
@@ -69,15 +82,15 @@ export class FormlyField implements DoCheck, OnInit {
           });
         }
 
-        valueChanges.subscribe((event) => this
+        this._subscriptions.push(valueChanges.subscribe((event) => this
           .changeModel(new FormlyValueChangeEvent(this.field.key, event)),
-        );
+        ));
       }
 
       let update = new FormlyEventEmitter();
-      update.subscribe((option: any) => {
+      this._subscriptions.push(update.subscribe((option: any) => {
         this.field.templateOptions[option.key] = option.value;
-      });
+      }));
 
       this.formlyPubSub.setEmitter(this.field.key, update);
     } else if (this.field.fieldGroup || this.field.fieldArray) {
@@ -119,6 +132,8 @@ export class FormlyField implements DoCheck, OnInit {
         field: this.field,
         options: this.options,
     });
+
+    this.componentRefs.push(ref);
 
     return ref;
   }

@@ -20,4 +20,8 @@ export class FormlyPubSub {
   getEmitter(key) {
     return this.emitters[key];
   }
+
+  removeEmitter(key) {
+    delete this.emitters[key];
+  }
 }
