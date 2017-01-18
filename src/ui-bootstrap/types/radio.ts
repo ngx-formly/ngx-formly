@@ -7,7 +7,7 @@ import { FieldType } from '../../core/core';
     <div [formGroup]="form">
       <div *ngFor="let option of to.options" class="radio">
         <label class="custom-control custom-radio">
-          <input [id]="id" [name]="id" type="radio" [value]="option.key" [formControl]="formControl"
+          <input [name]="id" type="radio" [value]="option.key" [formControl]="formControl"
           [formlyAttributes]="field" class="custom-control-input">
           {{option.value}}
           <span class="custom-control-indicator"></span>

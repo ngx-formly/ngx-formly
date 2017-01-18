@@ -32,6 +32,9 @@ describe('FormlyAttributes Component', () => {
         expect(elm.getAttribute('placeholder')).toBe('Title');
         expect(elm.getAttribute('tabindex')).toBe('5');
         expect(elm.getAttribute('step')).toBe('2');
+        expect(elm.getAttribute('name')).toBe('title-name');
+        expect(elm.getAttribute('id')).toBe('title-id');
+        expect(elm.getAttribute('aria-describedby')).toBe('title-id-message');
         expect(fixture.componentInstance.field.focus).toBeFalsy();
       });
 
@@ -87,8 +90,11 @@ class TestComponent {
   field: FormlyFieldConfig = {
     focus: false,
     key: 'title',
+    name: 'title-name',
+    id: 'title-id',
     templateOptions: {
       placeholder: 'Title',
+      'aria-describedby': true,
       tabindex: 5,
       step: 2,
     },
