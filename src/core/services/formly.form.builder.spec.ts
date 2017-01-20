@@ -42,6 +42,49 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 
+  describe('field defaultValue', () => {
+    it('should not set the defaultValue if the model value is defined', () => {
+      let model = { title: 'title' };
+      field = {
+        key: 'title',
+        type: 'input',
+        defaultValue: 'test',
+      };
+      builder.buildForm(form, [field], model, {});
+
+      expect(model['title']).toEqual('title');
+    });
+
+    it('should set the defaultValue if the model value is not defined', () => {
+      let model = {};
+      field = {
+        key: 'title',
+        type: 'input',
+        defaultValue: 'test',
+      };
+      builder.buildForm(form, [field], model, {});
+
+      expect(model['title']).toEqual('test');
+    });
+
+    it('should set the defaultValue for nested form', () => {
+      let model = {};
+      field = {
+        key: 'address',
+        fieldGroup: [
+          {
+            key: 'city',
+            type: 'input',
+            defaultValue: 'foo',
+          },
+        ],
+      };
+      builder.buildForm(form, [field], model, {});
+
+      expect(model['address']).toEqual({ city: 'foo' });
+    });
+  });
+
   describe('field expression', () => {
     it('should built field expression', () => {
       field = {
