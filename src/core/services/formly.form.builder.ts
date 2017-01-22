@@ -10,12 +10,10 @@ export class FormlyFormBuilder {
   private defaultPath;
   private validationOpts = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
   private formId = 0;
-  private model;
 
   constructor(private formlyConfig: FormlyConfig) {}
 
   buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model, options) {
-    this.model = model;
     this.formId++;
     let fieldTransforms = (options && options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
     if (!Array.isArray(fieldTransforms)) {
@@ -74,7 +72,7 @@ export class FormlyFormBuilder {
           if (field.defaultValue && !model[path[0]]) {
             let path: any = getKeyPath({key: this.defaultPath});
             path = path.pop();
-            assignModelValue(this.model, path, field.defaultValue);
+            assignModelValue(model, path, field.defaultValue);
             this.defaultPath = undefined;
           }
         }
@@ -82,6 +80,9 @@ export class FormlyFormBuilder {
 
       if (field.fieldGroup) {
         if (field.key) {
+          if (!model.hasOwnProperty(field.key)) {
+            model[field.key] = {};
+          }
           let nestedForm = <FormGroup>form.get(field.key),
             nestedModel = model[field.key] || {};
 
