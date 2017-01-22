@@ -10,15 +10,15 @@ module.exports = {
   devtool: 'source-map',
   context: path.join(__dirname, '..', 'demo'),
   resolve: {
-    extensions: ['', '.ts', '.webpack.js', '.web.js', '.js'],
+    extensions: ['.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
       'ng-formly': 'src/index.ts',
     },
   },
   module: {
-    loaders: [
-      { test: /\.ts$/, loaders: ['awesome-typescript-loader', 'angular2-template-loader'] },
-      { test: /\.html$/, loader: 'raw' },
+    rules: [
+      { test: /\.ts$/, use: ['awesome-typescript-loader', 'angular2-template-loader'] },
+      { test: /\.html$/, use: ['raw-loader'] },
     ]
   },
   plugins: [

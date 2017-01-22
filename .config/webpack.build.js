@@ -12,13 +12,13 @@ module.exports = {
     /^rxjs\//
   ],
   resolve: {
-    extensions: ['', '.ts', '.js']
+    extensions: ['.ts', '.js']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
+        use: ['awesome-typescript-loader'],
       }
     ]
   }
