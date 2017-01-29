@@ -8,10 +8,11 @@ cache:
     - node_modules
 node_js:
   - "6"
-  
+
 before_install:
   - npm i -g yarn --cache-min 999999999
-  
+  - node node_modules/phantomjs-prebuilt/install.js
+
 install:
   - yarn
 
