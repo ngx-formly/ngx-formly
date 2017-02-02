@@ -54,7 +54,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     this._subscriptions.map(subscriber => subscriber.unsubscribe());
     this._subscriptions = this.componentRefs = [];
 
-    if (this.field.key) {
+    if (this.field && this.field.key) {
       this.formlyPubSub.removeEmitter(this.field.key);
     }
   }

@@ -25,8 +25,7 @@
     "build:bundles:minify": "uglifyjs bundles/ng-formly.umd.js --output bundles/ng-formly.umd.min.js --in-source-map bundles/ng-formly.umd.js.map --source-map bundles/ng-formly.umd.min.js.map",
     "demo": "node_modules/.bin/webpack-dashboard --title ng-formly-demo -- node_modules/.bin/webpack-dev-server --quiet --port 9000 --content-base demo --config .config/webpack.demo.js --open",
     "test": "./node_modules/.bin/karma start",
-    "test-watch": "./node_modules/.bin/karma start --no-single-run --auto-watch",
-    "postinstall": "node node_modules/phantomjs-prebuilt/install.js"
+    "test-watch": "./node_modules/.bin/karma start --no-single-run --auto-watch"
   },
   "keywords": [
     "angular",
