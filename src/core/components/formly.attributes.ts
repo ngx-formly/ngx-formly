@@ -1,54 +1,45 @@
 import { Directive, HostListener, ElementRef, Input, Renderer, OnInit, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { SingleFocusDispatcher } from '../services/formly.single.focus.dispatcher';
 import { FormlyFieldConfig } from './formly.field.config';
 
 @Directive({
   selector: '[formlyAttributes]',
-  providers: [SingleFocusDispatcher],
 })
-export class FormlyAttributes implements OnInit, OnChanges {
+export class FormlyAttributes implements OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() formControl;
   private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'aria-describedby'];
   private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
   @HostListener('focus') onFocus() {
-    if (!this.field.focus) {
-      this.focusDispatcher.notify(this.field.key);
-    }
+    this.field.focus = true;
+  }
+
+  @HostListener('blur') onBlur() {
+    this.field.focus = false;
   }
 
   constructor(
     private renderer: Renderer,
     private elementRef: ElementRef,
-    private focusDispatcher: SingleFocusDispatcher,
   ) {}
-
-  ngOnInit() {
-    this.focusDispatcher.listen((key: String) =>
-      this.field.focus = this.field.key === key);
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['field']) {
+      const fieldChanges = changes['field'];
       this.attributes
-        .filter(attr => this.canApplyRender(changes['field'], attr))
+        .filter(attr => this.canApplyRender(fieldChanges, attr))
         .map(attr => this.renderer.setElementAttribute(
           this.elementRef.nativeElement, attr, this.getPropValue(this.field, attr),
         ));
 
       this.statements
-        .filter(statement => this.canApplyRender(changes['field'], statement))
+        .filter(statement => this.canApplyRender(fieldChanges, statement))
         .map(statement => this.renderer.listen(
           this.elementRef.nativeElement, statement, this.getStatementValue(statement),
         ));
 
-      if (this.field.focus || (changes['field'].previousValue.focus !== undefined && changes['field'].previousValue.focus !== this.field.focus)) {
+      if ((fieldChanges.previousValue || {}).focus !== (fieldChanges.currentValue || {}).focus) {
         this.renderer.invokeElementMethod(this.elementRef.nativeElement, this.field.focus ? 'focus' : 'blur', []);
-        if (this.field.focus) {
-          // TODO: Raise a Event which can be used for streaming
-          this.focusDispatcher.notify(this.field.key);
-        }
       }
     }
   }
