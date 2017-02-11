@@ -73,14 +73,15 @@ describe('FormlyAttributes Component', () => {
       expect(document.activeElement === elm).toBeFalsy();
     });
 
-    it('should change field focus when the element is focused', () => {
+    it('should change field focus when the element is focused or blurred', () => {
       const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
       const directive = fixture.debugElement.query(By.directive(FormlyAttributes));
 
       directive.triggerEventHandler('focus', {});
-      fixture.detectChanges();
-
       expect(fixture.componentInstance.field.focus).toBeTruthy();
+
+      directive.triggerEventHandler('blur', {});
+      expect(fixture.componentInstance.field.focus).toBeFalsy();
     });
   });
 });

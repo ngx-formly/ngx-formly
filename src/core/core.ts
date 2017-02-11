@@ -13,7 +13,6 @@ import { Field } from './templates/field';
 import { FieldType } from './templates/field.type';
 import { FieldWrapper } from './templates/field.wrapper';
 import { FormlyGroup } from './components/formly.group';
-import { SingleFocusDispatcher } from './services/formly.single.focus.dispatcher';
 
 export {
   FormlyAttributes,
@@ -25,7 +24,6 @@ export {
   FormlyPubSub,
   FormlyValidationMessages,
   FormlyEventEmitter,
-  SingleFocusDispatcher,
 
   Field,
   FieldType,
