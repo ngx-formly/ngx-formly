@@ -182,9 +182,9 @@ export interface ManipulatorsOption {
 }
 
 export interface ConfigOption {
-  types?: [TypeOption];
-  wrappers?: [WrapperOption];
-  validators?: [ValidatorOption];
-  validationMessages?: [ValidationMessageOption];
-  manipulators?: [ManipulatorsOption];
+  types?: TypeOption[];
+  wrappers?: WrapperOption[];
+  validators?: ValidatorOption[];
+  validationMessages?: ValidationMessageOption[];
+  manipulators?: ManipulatorsOption[];
 }
