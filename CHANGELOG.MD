@@ -1,11 +1,31 @@
 # Change Log
 
-# Breaking Change
-`ng2-formly` has been renamed to `ng-formly`. The current version is RC.0 🔥🔥🔥
-
 ## [Unreleased](https://github.com/formly-js/ng-formly/tree/HEAD)
 
-[Full Changelog](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.14...HEAD)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/v1.0.0-rc.0...HEAD)
+
+**Closed issues:**
+
+- Advanced Layout : Display a field value in a html section set inside the FormlyFieldConfig Array [\#374](https://github.com/formly-js/ng-formly/issues/374)
+- Top-level repo needs to export everything from src/index.ts [\#372](https://github.com/formly-js/ng-formly/issues/372)
+- Problem adding a new property inside field [\#365](https://github.com/formly-js/ng-formly/issues/365)
+- Disable submit button [\#359](https://github.com/formly-js/ng-formly/issues/359)
+- Can not get formly working as component using webpack admin template [\#358](https://github.com/formly-js/ng-formly/issues/358)
+- Disable submit button in ng2-formly [\#357](https://github.com/formly-js/ng-formly/issues/357)
+- How use only formly-field without fomrly-form. [\#356](https://github.com/formly-js/ng-formly/issues/356)
+
+**Merged pull requests:**
+
+- fix\(\#372\): export everything from ./src/index.ts [\#373](https://github.com/formly-js/ng-formly/pull/373) ([beeman](https://github.com/beeman))
+- feat\(FormlyAttributes\): change field focus when element is blurred. [\#371](https://github.com/formly-js/ng-formly/pull/371) ([aitboudad](https://github.com/aitboudad))
+- fix\(FormlyField\): check field before removing the emitter. [\#368](https://github.com/formly-js/ng-formly/pull/368) ([aitboudad](https://github.com/aitboudad))
+- feat\(webpack\): Upgrade to webpack v2 [\#364](https://github.com/formly-js/ng-formly/pull/364) ([aitboudad](https://github.com/aitboudad))
+- fix\(field\): fixed assign default value for nested form. [\#363](https://github.com/formly-js/ng-formly/pull/363) ([aitboudad](https://github.com/aitboudad))
+- feat\(FormlyField\): destroy all componentRefs + \_subscriptions. [\#361](https://github.com/formly-js/ng-formly/pull/361) ([aitboudad](https://github.com/aitboudad))
+- feat\(FormlyAttributes\): render field id and name. [\#360](https://github.com/formly-js/ng-formly/pull/360) ([aitboudad](https://github.com/aitboudad))
+
+## [v1.0.0-rc.0](https://github.com/formly-js/ng-formly/tree/v1.0.0-rc.0) (2016-12-18)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.14...v1.0.0-rc.0)
 
 **Implemented enhancements:**
 
@@ -33,6 +53,7 @@
 
 **Merged pull requests:**
 
+- chore\(upgrade\) upgrade to RC [\#355](https://github.com/formly-js/ng-formly/pull/355) ([mohammedzamakhan](https://github.com/mohammedzamakhan))
 - fix\(RepeatComponent\): fixed resetModel with FormArrays [\#354](https://github.com/formly-js/ng-formly/pull/354) ([aitboudad](https://github.com/aitboudad))
 - fix\(date-validation\): allow empty value. [\#352](https://github.com/formly-js/ng-formly/pull/352) ([aitboudad](https://github.com/aitboudad))
 - fix\(validation\): merge field default options before init validation. [\#351](https://github.com/formly-js/ng-formly/pull/351) ([aitboudad](https://github.com/aitboudad))
