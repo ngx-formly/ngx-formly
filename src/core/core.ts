@@ -15,6 +15,7 @@ import { FieldWrapper } from './templates/field.wrapper';
 import { FormlyGroup } from './components/formly.group';
 
 export {
+  ConfigOption,
   FormlyAttributes,
   FormlyFormBuilder,
   FormlyField,
