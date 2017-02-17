@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck, OnDestroy,
+  Component, OnInit, EventEmitter, ElementRef, Input, Output, OnDestroy,
   ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
   `,
 })
-export class FormlyField implements DoCheck, OnInit, OnDestroy {
+export class FormlyField implements OnInit, OnDestroy {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
@@ -35,15 +35,16 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     private renderer: Renderer,
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
-  ) {}
-
-  ngDoCheck() {
-    this.checkExpressionChange();
-    this.checkVisibilityChange();
+  ) {
+    this._subscriptions.push(this.formlyPubSub.expressionSubject.subscribe(() => {
+      this.checkExpressionChange();
+      this.checkVisibilityChange();
+    }));
   }
 
   ngOnInit() {
     this.createFieldComponents();
+    this.formlyPubSub.expressionSubject.next();
     if (this.field.hide === true) {
       this.toggleHide(true);
     }
@@ -82,9 +83,10 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
           });
         }
 
-        this._subscriptions.push(valueChanges.subscribe((event) => this
-          .changeModel(new FormlyValueChangeEvent(this.field.key, event)),
-        ));
+        this._subscriptions.push(valueChanges.subscribe((event) => {
+          this.changeModel(new FormlyValueChangeEvent(this.field.key, event));
+          this.formlyPubSub.expressionSubject.next();
+        }));
       }
 
       let update = new FormlyEventEmitter();

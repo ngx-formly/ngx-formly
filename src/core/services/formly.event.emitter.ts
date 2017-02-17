@@ -12,6 +12,8 @@ export class FormlyEventEmitter extends Subject<String> {
 
 export class FormlyPubSub {
   emitters = {};
+  /** @internal */
+  expressionSubject = new Subject();
 
   setEmitter(key, emitter) {
     this.emitters[key] = emitter;
