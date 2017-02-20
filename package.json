@@ -67,7 +67,7 @@
     "commitizen": "^2.9.5",
     "core-js": "^2.4.1",
     "cz-conventional-changelog": "^1.2.0",
-    "istanbul-instrumenter-loader": "^1.2.0",
+    "istanbul-instrumenter-loader": "^2.0.0",
     "jasmine": "^2.5.3",
     "karma": "^1.4.0",
     "karma-chrome-launcher": "^2.0.0",
