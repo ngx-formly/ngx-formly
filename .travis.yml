@@ -11,10 +11,12 @@ node_js:
 
 before_install:
   - npm i -g yarn --cache-min 999999999
-  - node node_modules/phantomjs-prebuilt/install.js
 
 install:
   - yarn
+
+before_script:
+  - node node_modules/phantomjs-prebuilt/install.js
 
 script:
 - yarn lint

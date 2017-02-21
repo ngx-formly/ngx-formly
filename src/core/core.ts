@@ -56,4 +56,14 @@ export class FormlyModule {
       ],
     };
   }
+
+  static forChild(config: ConfigOption = {}): ModuleWithProviders {
+    return {
+      ngModule: FormlyModule,
+      providers: [
+        { provide: FORMLY_CONFIG_TOKEN, useValue: config, multi: true },
+        { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
+      ],
+    };
+  }
 }
