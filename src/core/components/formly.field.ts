@@ -8,8 +8,8 @@ import { FormlyConfig } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { evalExpression } from '../utils';
 import { FormlyFieldConfig } from './formly.field.config';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
+import { debounceTime } from 'rxjs/operator/debounceTime';
+import { map } from 'rxjs/operator/map';
 
 @Component({
   selector: 'formly-field',
@@ -74,11 +74,11 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
       if (this.field.key) {
         let valueChanges = fieldComponentRef.instance.formControl.valueChanges;
         if (debounce > 0) {
-          valueChanges = valueChanges.debounceTime(debounce);
+          valueChanges = debounceTime.call(valueChanges, debounce);
         }
         if (this.field.parsers && this.field.parsers.length > 0) {
           this.field.parsers.map(parserFn => {
-            valueChanges = valueChanges.map(parserFn);
+            valueChanges = map.call(valueChanges, parserFn);
           });
         }
 
