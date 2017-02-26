@@ -5,7 +5,7 @@ import { FieldWrapper } from '../../core/core';
   selector: 'formly-wrapper-fieldset',
   template: `
     <div class="form-group" [ngClass]="{'has-danger': valid}">
-      <template #fieldComponent></template>
+      <ng-container #fieldComponent></ng-container>
     </div>
   `,
 })

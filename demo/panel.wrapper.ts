@@ -6,7 +6,7 @@ import { FieldWrapper } from '../src/core/templates/field.wrapper';
     <div class="card">
       <h3 class="card-header">{{to.title}}</h3>
       <div class="card-block">
-        <template #fieldComponent></template>
+        <ng-container #fieldComponent></ng-container>
       </div>
     </div>
   `,

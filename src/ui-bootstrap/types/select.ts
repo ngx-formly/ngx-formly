@@ -19,14 +19,14 @@ export class SelectOption {
   template: `
     <select [formControl]="formControl" class="form-control" [formlyAttributes]="field">
       <option value="" *ngIf="to.placeholder">{{to.placeholder}}</option>
-      <template ngFor let-item [ngForOf]="selectOptions">
+      <ng-container *ngFor="let item of selectOptions">
        <optgroup *ngIf="item.group" label="{{item.label}}">
          <option *ngFor="let child of item.group" [value]="child.value">
            {{child.label}}
          </option>
        </optgroup>
        <option *ngIf="!item.group" [value]="item.value">{{item.label}}</option>
-    </template>
+      </ng-container>
     </select>
   `,
 })
