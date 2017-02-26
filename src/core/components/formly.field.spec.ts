@@ -326,7 +326,7 @@ export class FormlyFieldText extends FieldType {}
   selector: 'formly-wrapper-label',
   template: `
     <label [attr.for]="id">{{to.label}}</label>
-    <template #fieldComponent></template>
+    <ng-container #fieldComponent></ng-container>
   `,
 })
 export class FormlyWrapperLabel extends FieldWrapper {

@@ -4,7 +4,7 @@ import { FieldWrapper } from '../../core/core';
 @Component({
   selector: 'formly-wrapper-description',
   template: `
-    <template #fieldComponent></template>
+    <ng-container #fieldComponent></ng-container>
     <div>
       <small class="text-muted">{{to.description}}</small>
     </div>
