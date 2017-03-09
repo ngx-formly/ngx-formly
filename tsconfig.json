@@ -3,13 +3,14 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "declaration": true,
+    "declaration": false,
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
     "noImplicitAny": false,
     "baseUrl": "src",
     "lib": ["dom", "es6"],
+    "importHelpers": true,
     "typeRoots": [
       "./node_modules/@types"
     ]

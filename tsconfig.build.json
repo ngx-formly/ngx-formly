@@ -12,6 +12,7 @@
     "outDir": "lib/src",
     "paths": [],
     "lib": ["dom", "es6"],
+    "importHelpers": true,
     "typeRoots": [
       "./node_modules/@types"
     ]
