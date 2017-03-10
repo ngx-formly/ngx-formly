@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '
 import { FormlyConfig } from './formly.config';
 import { evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
-import { getKeyPath } from '../utils';
+import { getKeyPath, isUndefined } from '../utils';
 
 @Injectable()
 export class FormlyFormBuilder {
@@ -45,7 +45,7 @@ export class FormlyFormBuilder {
         this.formlyConfig.getMergedField(field);
         let path: any = field.key;
         if (typeof path === 'string') {
-          if (field.defaultValue) {
+          if (!isUndefined(field.defaultValue)) {
             this.defaultPath = path;
           }
           path = getKeyPath({key: field.key});
@@ -67,13 +67,13 @@ export class FormlyFormBuilder {
           this.buildForm(nestedForm, [field], model[rootPath], options);
           field.key = originalKey;
         } else {
-          this.addFormControl(form, field, model[path[0]] || field.defaultValue || '');
-          if (field.defaultValue && !model[path[0]]) {
-            let path: any = getKeyPath({key: this.defaultPath});
-            path = path.pop();
-            assignModelValue(model, path, field.defaultValue);
+          if (!isUndefined(field.defaultValue) && isUndefined(model[path[0]])) {
+            let modelPath: any = getKeyPath({key: this.defaultPath});
+            modelPath = modelPath.pop();
+            assignModelValue(model, modelPath, field.defaultValue);
             this.defaultPath = undefined;
           }
+          this.addFormControl(form, field, model[path[0]]);
         }
       }
 

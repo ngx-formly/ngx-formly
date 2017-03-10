@@ -60,11 +60,11 @@ describe('FormlyFormBuilder service', () => {
       field = {
         key: 'title',
         type: 'input',
-        defaultValue: 'test',
+        defaultValue: false,
       };
       builder.buildForm(form, [field], model, {});
 
-      expect(model['title']).toEqual('test');
+      expect(model['title']).toBeFalsy();
     });
 
     it('should set the defaultValue for nested form', () => {

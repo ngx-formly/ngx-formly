@@ -127,6 +127,10 @@ export function isNullOrUndefined(value) {
   return value === undefined || value === null;
 }
 
+export function isUndefined(value) {
+  return value === undefined;
+}
+
 export function isBlankString(value) {
   return value === '';
 }
