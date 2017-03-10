@@ -38,12 +38,11 @@ export class FormlyFormBuilder {
 
       this.initFieldTemplateOptions(field);
       this.initFieldExpression(field, model, options);
+      this.initFieldValidation(field);
+      this.initFieldAsyncValidation(field);
 
       if (field.key && field.type) {
         this.formlyConfig.getMergedField(field);
-        this.initFieldValidation(field);
-        this.initFieldAsyncValidation(field);
-
         let path: any = field.key;
         if (typeof path === 'string') {
           if (field.defaultValue) {
@@ -192,7 +191,7 @@ export class FormlyFormBuilder {
 
   private initFieldValidation(field: FormlyFieldConfig) {
     let validators = [];
-    this.validationOpts.filter(opt => field.templateOptions[opt]).map((opt) => {
+    this.validationOpts.filter(opt => field.templateOptions && field.templateOptions[opt]).map((opt) => {
       validators.push(this.getValidation(opt, field.templateOptions[opt]));
     });
     if (field.validators) {
