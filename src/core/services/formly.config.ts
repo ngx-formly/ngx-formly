@@ -29,20 +29,22 @@ export class FormlyConfig {
   };
 
   constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
-    configs.map(config => {
-      if (config.types) {
-        config.types.map(type => this.setType(type));
-      }
-      if (config.validators) {
-        config.validators.map(validator => this.setValidator(validator));
-      }
-      if (config.wrappers) {
-        config.wrappers.map(wrapper => this.setWrapper(wrapper));
-      }
-      if (config.manipulators) {
-        config.manipulators.map(manipulator => this.setManipulator(manipulator));
-      }
-    });
+    configs.map(config => this.addConfig(config));
+  }
+
+  addConfig(config: ConfigOption) {
+    if (config.types) {
+      config.types.map(type => this.setType(type));
+    }
+    if (config.validators) {
+      config.validators.map(validator => this.setValidator(validator));
+    }
+    if (config.wrappers) {
+      config.wrappers.map(wrapper => this.setWrapper(wrapper));
+    }
+    if (config.manipulators) {
+      config.manipulators.map(manipulator => this.setManipulator(manipulator));
+    }
   }
 
   setType(options: TypeOption | TypeOption[]) {
