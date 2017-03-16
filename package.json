@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/formly-js/ng-formly#readme",
   "peerDependencies": {
-    "@angular/forms": "^2.2.0"
+    "@angular/forms": "^2.2.0 || >=4.0.0-rc <5.0.0"
   },
   "devDependencies": {
     "@angular/common": "^2.4.8",
