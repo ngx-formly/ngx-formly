@@ -11,7 +11,7 @@ import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey
     <formly-field *ngFor="let field of fields"
       [model]="fieldModel(field)" [form]="form"
       [field]="field" (modelChange)="changeModel($event)"
-      [ngClass]="field.className"
+      [ngClass]="!field.fieldGroup ? field.className: undefined"
       [options]="options">
     </formly-field>
     <ng-content></ng-content>
