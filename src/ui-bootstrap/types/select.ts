@@ -5,6 +5,7 @@ export class SelectOption {
   label: string;
   value?: string;
   group?: SelectOption[];
+  disabled?: boolean;
 
   constructor(label: string, value?: string, children?: SelectOption[]) {
     this.label = label;
@@ -21,11 +22,11 @@ export class SelectOption {
       <option value="" *ngIf="to.placeholder">{{to.placeholder}}</option>
       <ng-container *ngFor="let item of selectOptions">
        <optgroup *ngIf="item.group" label="{{item.label}}">
-         <option *ngFor="let child of item.group" [value]="child.value">
+         <option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
            {{child.label}}
          </option>
        </optgroup>
-       <option *ngIf="!item.group" [value]="item.value">{{item.label}}</option>
+       <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{item.label}}</option>
       </ng-container>
     </select>
   `,
@@ -34,7 +35,7 @@ export class FormlyFieldSelect extends FieldType {
   get labelProp(): string { return this.to['labelProp'] || 'label'; }
   get valueProp(): string { return this.to['valueProp'] || 'value'; }
   get groupProp(): string { return this.to['groupProp'] || 'group'; }
-
+  
   get selectOptions() {
     let options: SelectOption[] = [];
     this.to.options.map((option: SelectOption) => {
