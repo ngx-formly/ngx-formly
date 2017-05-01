@@ -174,7 +174,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
 
   private checkVisibilityChange() {
     if (this.field && this.field.hideExpression) {
-      const hideExpressionResult: boolean = evalExpression(
+      const hideExpressionResult: boolean = !!evalExpression(
         this.field.hideExpression,
         this,
         [this.model, this.options.formState],
