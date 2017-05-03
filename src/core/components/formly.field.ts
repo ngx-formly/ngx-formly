@@ -38,14 +38,16 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
   ) {}
 
   ngDoCheck() {
-    this.checkExpressionChange();
-    this.checkVisibilityChange();
+    setTimeout(() => {
+      this.checkExpressionChange();
+      this.checkVisibilityChange();
+    });
   }
 
   ngOnInit() {
     this.createFieldComponents();
     if (this.field.hide === true) {
-      this.toggleHide(true);
+      setTimeout(() => this.toggleHide(true));
     }
   }
 
