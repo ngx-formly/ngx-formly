@@ -224,12 +224,11 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
 
   private toggleHide(value: boolean) {
     this.field.hide = value;
-
     if (this.field.formControl) {
       if (value === true && this.form.get(this.field.key)) {
-        this.form.removeControl(this.field.key);
+        setTimeout(() => this.form.removeControl(this.field.key));
       } else if (value === false && !this.form.get(this.field.key)) {
-        this.form.addControl(this.field.key, this.field.formControl);
+        setTimeout(() => this.form.addControl(this.field.key, this.field.formControl));
       }
     }
 

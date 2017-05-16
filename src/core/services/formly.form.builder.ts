@@ -285,6 +285,9 @@ export class FormlyFormBuilder {
 
   private addControl(form: FormGroup, key: string, formControl: AbstractControl, field: FormlyFieldConfig) {
     field.formControl = formControl;
+    if (field.hide) {
+      return;
+    }
     if (formControl instanceof FormArray) {
       form.setControl(key, formControl);
     } else {
