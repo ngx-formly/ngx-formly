@@ -8,8 +8,12 @@
     "removeComments": true,
     "sourceMap": true,
     "noImplicitAny": false,
+    "noUnusedLocals": true,
     "baseUrl": "src",
     "lib": ["dom", "es6"],
+    "paths": {
+        "ng-formly": ["./index"]
+    },
     "typeRoots": [
       "./node_modules/@types"
     ]

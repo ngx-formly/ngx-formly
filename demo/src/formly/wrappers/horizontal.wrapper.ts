@@ -1,5 +1,5 @@
 import { Component, ViewContainerRef, ViewChild } from '@angular/core';
-import { FieldWrapper } from '../src/core/templates/field.wrapper';
+import { FieldWrapper } from 'ng-formly';
 @Component({
   selector: 'formly-wrapper-horizontal',
   template: `

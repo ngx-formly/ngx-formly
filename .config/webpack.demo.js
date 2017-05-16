@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    app: './hello.ts',
+    app: './src/bootstrap.ts',
     vendor: ['@angular/core'],
   },
   devtool: 'source-map',
@@ -12,7 +12,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
-      'ng-formly': 'src/index.ts',
+      'ng-formly':  path.join(__dirname, '..', 'src'),
     },
   },
   module: {

@@ -1,4 +1,4 @@
-import { Directive, HostListener, ElementRef, Input, Renderer, OnInit, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Directive, HostListener, ElementRef, Input, Renderer, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { FormlyFieldConfig } from './formly.field.config';
 
 @Directive({

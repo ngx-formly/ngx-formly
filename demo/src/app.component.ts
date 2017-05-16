@@ -1,25 +1,13 @@
-// polyfills
-import 'core-js/es6';
-import 'core-js/es7/reflect';
-import 'zone.js/dist/zone';
-
-import { NgModule, Component, enableProdMode } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormlyModule, FormlyFieldConfig, FormlyBootstrapModule, ConfigOption } from './../src/index';
-import { ValidationService } from './validation.service';
-import { RepeatComponent } from './repeatedSection';
-import { FormlyFieldToggle } from './toggle';
-import { FormlyWrapperHorizontalLabel } from './horizontal.wrapper';
-import { FormlyPanelWrapper } from './panel.wrapper';
-import { SuperHerosService } from './super-heros';
+import { Component } from '@angular/core';
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormlyFieldConfig } from 'ng-formly';
+import { ValidationService, SuperHerosService } from './services';
 
 @Component({
   selector: 'formly-demo-hello-app',
-  templateUrl: './template.html',
+  templateUrl: './app.component.html',
 })
-export class HelloApp {
+export class AppComponent {
   form: FormGroup;
   author;
   env;
@@ -539,56 +527,4 @@ export class HelloApp {
   }
 }
 
-export const NgFormlyConfig: ConfigOption = {
-  types: [
-    { name: 'toggle', component: FormlyFieldToggle, defaultOptions: { templateOptions: { isAlert: false, isLarge: true }}},
-    { name: 'horizontalInput', extends: 'input'},
-    { name: 'repeatSection', component: RepeatComponent },
-    { name: 'dateFormat', defaultOptions: { templateOptions: {
-      placeholder: 'dd/mm/yyyy such as 20/05/2015',
-      dateFormat: 'DD, d  MM, yy',
-      addonLeft: {
-        class: 'fa fa-usd',
-      },
-    },
-    validators: {
-      date: control => !control.value || control.value.match(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/) },
-    },
-  }],
-  validators: [{ name: 'required', validation: Validators.required}],
-  validationMessages: [
-    { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},
-    { name: 'invalidEmailAddress', message: 'Invalid Email Address' },
-    { name: 'maxlength', message: 'Maximum Length Exceeded.' },
-    { name: 'minlength', message: (err) => {
-        return `Should have atleast ${err.requiredLength} Characters`;
-      },
-    },
-    { name: 'not_matching', message: 'Password Not Matching' },
-    { name: 'zipCode', message: 'ZIP code should be 5 characters'},
-    { name: 'uniqueUsername', message: 'This username is already taken.'},
-  ],
-  wrappers: [
-    { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
-    { name: 'panel', component: FormlyPanelWrapper },
-  ],
-};
 
-@NgModule({
-  declarations: [
-    HelloApp, FormlyFieldToggle, FormlyWrapperHorizontalLabel, RepeatComponent, FormlyPanelWrapper,
-  ],
-  providers: [SuperHerosService],
-  imports: [
-    BrowserModule,
-    FormlyModule.forRoot(NgFormlyConfig),
-    FormlyBootstrapModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  bootstrap: [HelloApp],
-})
-export class FormlyDemoModule {
-}
-enableProdMode();
-platformBrowserDynamic().bootstrapModule(FormlyDemoModule);

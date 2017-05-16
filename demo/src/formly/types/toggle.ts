@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Field } from '../src/core/templates/field';
+import { Field } from 'ng-formly';
 @Component({
   selector: 'formly-field-toggle',
   template: `
