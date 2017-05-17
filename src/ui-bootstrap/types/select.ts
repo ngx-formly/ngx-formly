@@ -35,7 +35,7 @@ export class FormlyFieldSelect extends FieldType {
   get labelProp(): string { return this.to['labelProp'] || 'label'; }
   get valueProp(): string { return this.to['valueProp'] || 'value'; }
   get groupProp(): string { return this.to['groupProp'] || 'group'; }
-  
+
   get selectOptions() {
     let options: SelectOption[] = [];
     this.to.options.map((option: SelectOption) => {
