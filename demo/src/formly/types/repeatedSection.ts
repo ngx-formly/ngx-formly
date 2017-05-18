@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { FieldType } from 'ng-formly';
-import { clone } from '../../../../src/core/utils';
 
 @Component({
   selector: 'formly-repeat-section',
@@ -27,7 +26,7 @@ export class RepeatComponent extends FieldType implements OnInit {
   _fields = [];
 
   get newOptions() {
-    return clone(this.options);
+    return Object.assign({}, this.options);
   }
 
   ngOnInit() {
