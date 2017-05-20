@@ -112,17 +112,19 @@ describe('FormlyField Component', () => {
   });
 
   it('should hide field when passed a boolean', () => {
+    const form = new FormGroup({title: new FormControl()});
     testComponentInputs = {
       field: {
         key: 'title',
         type: 'text',
         hideExpression: true,
+        formControl: form.get('title'),
         templateOptions: {
           label: 'Title',
           placeholder: 'Title',
         },
       },
-      form: new FormGroup({title: new FormControl()}),
+      form,
     };
 
     const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
@@ -131,17 +133,19 @@ describe('FormlyField Component', () => {
   });
 
   it('should hide field when passed a string', () => {
+    const form = new FormGroup({title: new FormControl()});
     testComponentInputs = {
       field: {
         key: 'title',
         type: 'text',
         hideExpression: 'true',
+        formControl: form.get('title'),
         templateOptions: {
           label: 'Title',
           placeholder: 'Title',
         },
       },
-      form: new FormGroup({title: new FormControl()}),
+      form,
     };
 
     const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
@@ -150,23 +154,52 @@ describe('FormlyField Component', () => {
   });
 
   it('should hide field when passed a function', () => {
+    const form = new FormGroup({title: new FormControl()});
     testComponentInputs = {
       field: {
         key: 'title',
         type: 'text',
         hideExpression: () => true,
+        formControl: form.get('title'),
         templateOptions: {
           label: 'Title',
           placeholder: 'Title',
         },
       },
-      form: new FormGroup({title: new FormControl()}),
+      form,
     };
 
     const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
 
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
   });
+
+  it('should hide/display field when passed a function with nested field key', fakeAsync(() => {
+    const form = new FormGroup({address: new FormGroup({city: new FormControl()})});
+    testComponentInputs = {
+      field: {
+        key: 'address.city',
+        type: 'text',
+        hideExpression: evalStringExpression('model.address.city !== "agadir"', ['model', 'formState']),
+        formControl: form.get('address.city'),
+        templateOptions: {
+          label: 'Title',
+          placeholder: 'Title',
+        },
+      },
+      form,
+      model: { address: {} },
+    };
+
+    const fixture = createTestComponent('<formly-field [form]="form" [field]="field" [model]="model"></formly-field>');
+    tick(1);
+    expect(form.get('address.city')).toBeNull();
+
+    testComponentInputs.model.address.city = 'agadir';
+    fixture.detectChanges();
+    tick(1);
+    expect(form.get('address.city')).not.toBeNull();
+  }));
 
   describe('model changes', () => {
     beforeEach(() => {

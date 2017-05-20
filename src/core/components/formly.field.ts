@@ -2,7 +2,7 @@ import {
   Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck, OnDestroy,
   ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent } from '../services/formly.event.emitter';
 import { FormlyConfig } from '../services/formly.config';
 import { Field } from '../templates/field';
@@ -229,9 +229,9 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     this.field.hide = value;
     if (this.field.formControl) {
       if (value === true && this.form.get(this.field.key)) {
-        setTimeout(() => this.form.removeControl(this.field.key));
+        setTimeout(() => this.removeFieldControl());
       } else if (value === false && !this.form.get(this.field.key)) {
-        setTimeout(() => this.form.addControl(this.field.key, this.field.formControl));
+        setTimeout(() => this.addFieldControl());
       }
     }
 
@@ -242,6 +242,37 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
       }
     } else {
       this.psEmit(this.field.key, 'hidden', value);
+    }
+  }
+
+  private get fieldKey() {
+    return this.field.key.split('.').pop();
+  }
+
+  private get fieldParentFormControl(): FormArray|FormGroup {
+      const paths = this.field.key.split('.');
+      paths.pop(); // remove last path
+
+      return (paths.length > 0 ? this.form.get(paths) : this.form) as any;
+  }
+
+  private addFieldControl() {
+    const parent = this.fieldParentFormControl;
+
+    if (parent instanceof FormArray) {
+      parent.push(this.field.formControl);
+    } else if (parent instanceof FormGroup) {
+      parent.addControl(this.fieldKey, this.field.formControl);
+    }
+  }
+
+  private removeFieldControl() {
+    const parent = this.fieldParentFormControl;
+
+    if (parent instanceof FormArray) {
+      parent.removeAt(this.fieldKey as any);
+    } else if (parent instanceof FormGroup) {
+      parent.removeControl(this.fieldKey);
     }
   }
 }
