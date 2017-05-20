@@ -9,6 +9,7 @@ import {
   FieldWrapper,
 } from '../core';
 import { FormlyValueChangeEvent } from '../services/formly.event.emitter';
+import { evalStringExpression, evalExpressionValueSetter } from './../utils';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -293,17 +294,21 @@ describe('FormlyField Component', () => {
         optionsTypes: ['other'],
         templateOptions: {
           placeholder: 'Title',
+          disabled: true,
         },
         expressionProperties: {
-          'templateOptions.disabled': 'model.title !== undefined',
-          'templateOptions.placeholder': 'Updated',
-          'validation.show': true,
+          'templateOptions.disabled': {
+            expression: evalStringExpression('model.title !== undefined', ['model', 'formState']),
+            expressionValueSetter: evalExpressionValueSetter('templateOptions.disabled', ['expressionValue', 'model', 'templateOptions', 'validation']),
+          },
         },
       },
       form: new FormGroup({title: new FormControl()}),
+      model: {},
     };
 
-    createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+    createTestComponent('<formly-field [form]="form" [field]="field" [model]="model"></formly-field>');
+    expect(testComponentInputs.field.templateOptions.disabled).toEqual(false);
   });
 });
 
