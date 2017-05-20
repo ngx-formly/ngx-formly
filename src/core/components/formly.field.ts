@@ -197,11 +197,14 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
           [this.model, this.options.formState],
         );
 
-        evalExpression(
-          expressionProperties[key].expressionValueSetter,
-          this,
-          [expressionValue, this.model, this.field.templateOptions, this.field.validation],
-        );
+        if (expressionProperties[key].expressionValue !== expressionValue) {
+          expressionProperties[key].expressionValue = expressionValue;
+          evalExpression(
+            expressionProperties[key].expressionValueSetter,
+            this,
+            [expressionValue, this.model, this.field.templateOptions, this.field.validation],
+          );
+        }
       }
 
       const formControl = this.field.formControl;

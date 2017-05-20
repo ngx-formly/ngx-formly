@@ -127,6 +127,7 @@ export class FormlyFormBuilder {
         }
 
         const expressionValue = evalExpression(field.expressionProperties[key].expression, { field }, [model, options.formState]);
+        field.expressionProperties[key].expressionValue = expressionValue;
         evalExpression(field.expressionProperties[key].expressionValueSetter, { field }, [expressionValue, model, field.templateOptions || {}, field.validation]);
       }
     }
