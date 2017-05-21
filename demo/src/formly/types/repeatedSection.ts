@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { FieldType } from 'ng-formly';
+import { FieldType, FormlyFormBuilder } from 'ng-formly';
 
 @Component({
   selector: 'formly-repeat-section',
@@ -23,33 +23,42 @@ import { FieldType } from 'ng-formly';
   `,
 })
 export class RepeatComponent extends FieldType implements OnInit {
+  formControl: FormArray;
   _fields = [];
+
+  constructor(private builder: FormlyFormBuilder) {
+    super();
+  }
 
   get newOptions() {
     return Object.assign({}, this.options);
   }
 
+  get newFields() {
+    return JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup));
+  }
+
   ngOnInit() {
     if (this.model) {
-      this.model.map(() => {
-        (<FormArray>this.formControl).push(new FormGroup({}));
-        this._fields.push(
-          JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup)),
-        );
-      });
+      this.model.map(() => this.add());
     }
   }
 
   add() {
-    this.model.push({});
-    this._fields.push(
-      JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup)),
-    );
-    (<FormArray>this.formControl).push(new FormGroup({}));
+    const form = new FormGroup({}),
+      i = this._fields.length;
+
+    if (!this.model[i]) {
+      this.model.push({});
+    }
+
+    this._fields.push(this.newFields);
+    this.builder.buildForm(form, this._fields[i], this.model[i], this.newOptions);
+    this.formControl.push(form);
   }
 
   remove(i) {
-    (<FormArray>this.formControl).removeAt(i);
+    this.formControl.removeAt(i);
     this.model.splice(i, 1);
     this._fields.splice(i, 1);
   }
@@ -59,7 +68,7 @@ export class RepeatComponent extends FieldType implements OnInit {
       return this._fields[i];
     }
 
-    this._fields.splice(i, 0, JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup)));
+    this._fields.splice(i, 0, this.newFields);
 
     return this._fields[i];
   }
