@@ -50,6 +50,9 @@
   "peerDependencies": {
     "@angular/forms": "^2.2.0 || >=4.0.0-rc <5.0.0"
   },
+  "dependencies": {
+    "tslib": "^1.7.1"
+  },
   "devDependencies": {
     "@angular/common": "^2.4.10",
     "@angular/compiler": "^2.4.10",
