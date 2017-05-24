@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         test: /\.ts$/,
-        use: ['awesome-typescript-loader?inlineSourceMap=true&sourceMap=false', 'angular2-template-loader'],
+        use: ['awesome-typescript-loader?inlineSourceMap=true&sourceMap=false&declaration=false', 'angular2-template-loader'],
         exclude: [/node_modules/]
       },
       { test: /\.html$/, use: ['raw-loader'] },

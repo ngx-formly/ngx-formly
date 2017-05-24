@@ -1,2 +1,2 @@
-export * from './core/core'
-export * from './ui-bootstrap/ui-bootstrap'
+export * from './core/core';
+export * from './ui-bootstrap/ui-bootstrap';
