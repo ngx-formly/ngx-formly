@@ -11,6 +11,7 @@
     "noUnusedLocals": false,
     "baseUrl": "src",
     "lib": ["dom", "es6"],
+    "importHelpers": true,
     "paths": {
         "ng-formly": ["./index"]
     },
