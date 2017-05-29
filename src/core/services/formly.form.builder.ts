@@ -15,6 +15,12 @@ export class FormlyFormBuilder {
 
   buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model, options) {
     this.formId++;
+
+    options = options || {};
+    if (!options.showError) {
+      options.showError = this.formlyConfig.extras.showError;
+    }
+
     let fieldTransforms = (options && options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
     if (!Array.isArray(fieldTransforms)) {
       fieldTransforms = [fieldTransforms];

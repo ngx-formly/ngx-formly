@@ -445,6 +445,7 @@ export class AppComponent {
     this.options = {
       formState: {
         readOnly: true,
+        submitted: false,
       },
     };
 
@@ -523,6 +524,7 @@ export class AppComponent {
   }
 
   submit(user) {
+    this.options.formState.submitted = true;
     console.log(user);
   }
 }

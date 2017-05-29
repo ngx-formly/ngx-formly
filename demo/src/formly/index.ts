@@ -1,5 +1,5 @@
 import { Validators } from '@angular/forms';
-import { ConfigOption } from 'ng-formly';
+import { ConfigOption, Field } from 'ng-formly';
 import { RepeatComponent } from './types/repeatedSection';
 import { FormlyFieldToggle } from './types/toggle';
 import { FormlyWrapperHorizontalLabel } from './wrappers/horizontal.wrapper';
@@ -38,6 +38,11 @@ export const NgFormlyConfig: ConfigOption = {
     { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
     { name: 'panel', component: FormlyPanelWrapper },
   ],
+  extras: {
+    showError: (field: Field) => {
+      return (field.formState.submitted || field.formControl.touched) && !field.formControl.valid;
+    },
+  },
 };
 
 export const FORMLY_COMPONENTS = [
