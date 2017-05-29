@@ -22,7 +22,7 @@ export abstract class Field {
 
   get to(): FormlyTemplateOptions { return this.field.templateOptions; }
 
-  get valid(): boolean { return this.formControl.touched && !this.formControl.valid; }
+  get valid(): boolean { return this.options.showError(this); }
 
   get id(): string { return this.field.id; }
 

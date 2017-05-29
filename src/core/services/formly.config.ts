@@ -1,5 +1,6 @@
 import { Injectable, Inject, OpaqueToken } from '@angular/core';
 import { FormlyGroup } from '../components/formly.group';
+import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
@@ -19,13 +20,16 @@ export class FormlyConfig {
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
 
-  public templateManipulators = {
+  templateManipulators = {
     preWrapper: [],
     postWrapper: [],
   };
 
-  public extras = {
+  extras = {
     fieldTransform: undefined,
+    showError: function(field: Field) {
+      return field.formControl.touched && !field.formControl.valid;
+    },
   };
 
   constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
@@ -44,6 +48,9 @@ export class FormlyConfig {
     }
     if (config.manipulators) {
       config.manipulators.map(manipulator => this.setManipulator(manipulator));
+    }
+    if (config.extras) {
+      this.extras = { ...this.extras, ...config.extras };
     }
   }
 
@@ -189,4 +196,8 @@ export interface ConfigOption {
   validators?: ValidatorOption[];
   validationMessages?: ValidationMessageOption[];
   manipulators?: ManipulatorsOption[];
+  extras?: {
+    fieldTransform?: any,
+    showError?: (field: Field) => boolean;
+  };
 }
