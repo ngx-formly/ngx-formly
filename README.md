@@ -121,8 +121,8 @@ See the [issues labeled enhancement](https://github.com/formly-js/angular2-forml
 
 ## Supported templates
 
- - [Material2](https://github.com/formly-js/ng-formly-template-material)
- - [Bootstrap](https://github.com/formly-js/ng-formly-templates-bootstrap)
+ - [Material2](https://github.com/formly-js/ng-formly/issues/335)
+ - [Bootstrap](https://github.com/formly-js/ng-formly/tree/master/src/ui-bootstrap)
 
 
 ## Thanks
