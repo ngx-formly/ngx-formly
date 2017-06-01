@@ -18,6 +18,7 @@ export interface FormlyFieldConfig {
   component?: any;
   wrapper?: string[] | string;
   wrappers?: string[];
+  fieldGroupClassName?: string;
   fieldGroup?: Array<FormlyFieldConfig>;
   fieldArray?: FormlyFieldConfig;
   hide?: boolean;

@@ -11,7 +11,7 @@ import { FieldType, FormlyFormBuilder } from 'ng-formly/core';
         [fields]="fields(i)"
         [options]="newOptions"
         [form]="this.formControl.at(i)"
-        [ngClass]="field.fieldArray.className">
+        [ngClass]="field.fieldArray.fieldGroupClassName">
       </formly-form>
       <div class="col-md-2">
         <button class="btn btn-danger" (click)="remove(i)">Remove</button>
