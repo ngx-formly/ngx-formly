@@ -1,4 +1,4 @@
-import { FormlyFieldConfig, FormlyConfig } from '../../core/core';
+import { FormlyFieldConfig, FormlyConfig } from '../../core';
 
 export class TemplateValidation {
   run(fc: FormlyConfig) {

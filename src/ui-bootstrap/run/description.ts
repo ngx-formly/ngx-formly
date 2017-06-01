@@ -1,4 +1,4 @@
-import { FormlyFieldConfig, FormlyConfig } from '../../core/core';
+import { FormlyFieldConfig, FormlyConfig } from '../../core';
 
 export class TemplateDescription {
   run(fc: FormlyConfig) {

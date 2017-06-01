@@ -35,7 +35,8 @@ application's forms.
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
+import {FormlyModule} from 'ng-formly/core';
+import {FormlyBootstrapModule} from 'ng-formly/ui-bootstrap';
 import {AppComponent} from './app';
 
 @NgModule({
@@ -58,7 +59,7 @@ export class AppModule {
 ```ts
 import {Component} from '@angular/core';
 import {Validators, FormGroup} from '@angular/forms';
-import {FormlyFieldConfig} from 'ng-formly';
+import {FormlyFieldConfig} from 'ng-formly/core';
 
 @Component({
   selector: 'app',
@@ -122,8 +123,14 @@ See the [issues labeled enhancement](https://github.com/formly-js/angular2-forml
 ## Supported templates
 
  - [Material2](https://github.com/formly-js/ng-formly/issues/335)
- - [Bootstrap](https://github.com/formly-js/ng-formly/tree/master/src/ui-bootstrap)
+    ```ts
+      import {FormlyMaterialModule} from 'ng-formly/ui-material';
+    ```
 
+ - [Bootstrap](https://github.com/formly-js/ng-formly/tree/master/src/ui-bootstrap)
+    ```ts
+      import {FormlyBootstrapModule} from 'ng-formly/ui-bootstrap';
+    ```
 
 ## Thanks
 

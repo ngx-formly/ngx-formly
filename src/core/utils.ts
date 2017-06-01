@@ -1,4 +1,4 @@
-import { FormlyFieldConfig } from './core';
+import { FormlyFieldConfig } from './index';
 
 export function getFieldId(formId: string, options: FormlyFieldConfig, index: string|number) {
   if (options.id) return options.id;

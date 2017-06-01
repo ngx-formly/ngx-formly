@@ -1,5 +1,5 @@
 import { Validators } from '@angular/forms';
-import { ConfigOption, Field } from 'ng-formly';
+import { ConfigOption, Field } from 'ng-formly/core';
 import { RepeatComponent } from './types/repeatedSection';
 import { FormlyFieldToggle } from './types/toggle';
 import { FormlyWrapperHorizontalLabel } from './wrappers/horizontal.wrapper';

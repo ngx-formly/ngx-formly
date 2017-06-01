@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from '../../core/core';
+import { FieldType } from '../../core';
 
 export class SelectOption {
   label: string;

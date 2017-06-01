@@ -3,7 +3,7 @@ import { createGenericTestComponent } from '../core/test-utils';
 
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FormlyModule, FormlyFieldConfig } from '../core/core';
+import { FormlyModule, FormlyFieldConfig } from '../core';
 import { FormlyValidationMessage } from './formly.validation-message';
 
 const createTestComponent = (html: string) =>
