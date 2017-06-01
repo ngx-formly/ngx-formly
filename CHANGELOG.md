@@ -1,11 +1,18 @@
 # Change Log
 
-## [Unreleased](https://github.com/formly-js/ng-formly/tree/HEAD)
+## [1.0.0-rc.8](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.8) (2017-06-01)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.6...1.0.0-rc.8)
 
-[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.7...HEAD)
+**Closed issues:**
+
+- Please update CHANGELOG.md [\#438](https://github.com/formly-js/ng-formly/issues/438)
 
 **Merged pull requests:**
 
+- fix\(FormlyForm\): allow className even if fieldGroup is set [\#442](https://github.com/formly-js/ng-formly/pull/442) ([aitboudad](https://github.com/aitboudad))
+- feat\(options form\): allow using custom resetModel + updateInitialValue [\#441](https://github.com/formly-js/ng-formly/pull/441) ([aitboudad](https://github.com/aitboudad))
+-  chore\(CHANGELOG\): Update changelog [\#440](https://github.com/formly-js/ng-formly/pull/440) ([aitboudad](https://github.com/aitboudad))
+- feat\(bootstrap\): split bootstrap from the core [\#439](https://github.com/formly-js/ng-formly/pull/439) ([aitboudad](https://github.com/aitboudad))
 - chore\(readme\):  fix bootstrap template repo link [\#369](https://github.com/formly-js/ng-formly/pull/369) ([blowsie](https://github.com/blowsie))
 
 ## [1.0.0-rc.7](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.7) (2017-05-29)
@@ -13,9 +20,9 @@
 
 **Closed issues:**
 
-- Custom type "extends" Input type but not "extends" Input features [\#415](https://github.com/formly-js/ng-formly/issues/415)
 - hideExpression not working correctly when using formState [\#430](https://github.com/formly-js/ng-formly/issues/430)
 - the validation of repeatSection custom type doesnt not affect the main Form valid status [\#426](https://github.com/formly-js/ng-formly/issues/426)
+- Custom type "extends" Input type but not "extends" Input features [\#415](https://github.com/formly-js/ng-formly/issues/415)
 - Required validation should be ignored when hideExpression applies \(true\) [\#406](https://github.com/formly-js/ng-formly/issues/406)
 - Repeat section validation does not impact main form. [\#384](https://github.com/formly-js/ng-formly/issues/384)
 
