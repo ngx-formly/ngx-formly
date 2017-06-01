@@ -55,8 +55,12 @@ export class FormlyForm implements OnChanges {
 
   setOptions() {
     this.options = this.options || {};
-    this.options.resetModel = this.resetModel.bind(this);
-    this.options.updateInitialValue = this.updateInitialValue.bind(this);
+    if (!this.options.resetModel) {
+      this.options.resetModel = this.resetModel.bind(this);
+    }
+    if (!this.options.updateInitialValue) {
+      this.options.updateInitialValue = this.updateInitialValue.bind(this);
+    }
   }
 
   private resetModel(model?: any) {
