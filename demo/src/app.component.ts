@@ -59,7 +59,7 @@ export class AppComponent {
           description: 'Select a title that suits your description',
         },
       }, {
-        className: 'row',
+        fieldGroupClassName: 'row',
         fieldGroup: [{
           className: 'col-md-6',
           key: 'email',
@@ -177,7 +177,7 @@ export class AppComponent {
         template: '<hr/><div><strong>Address:</strong></div>',
       }, {
         key: 'address',
-        className: 'row',
+        fieldGroupClassName: 'row',
         wrappers: ['panel'],
         templateOptions: {
           title: 'Address',
@@ -367,7 +367,7 @@ export class AppComponent {
         type: 'repeatSection',
         key: 'investments',
         fieldArray: {
-          className: 'row',
+          fieldGroupClassName: 'row',
           templateOptions: {
             btnText: 'Add another investment',
           },
