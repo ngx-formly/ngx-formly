@@ -1,7 +1,83 @@
 # Change Log
 
-## [v1.0.0-rc.2](https://github.com/formly-js/ng-formly/tree/HEAD)
+## [Unreleased](https://github.com/formly-js/ng-formly/tree/HEAD)
 
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.7...HEAD)
+
+**Merged pull requests:**
+
+- chore\(readme\):  fix bootstrap template repo link [\#369](https://github.com/formly-js/ng-formly/pull/369) ([blowsie](https://github.com/blowsie))
+
+## [1.0.0-rc.7](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.7) (2017-05-29)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.6...1.0.0-rc.7)
+
+**Closed issues:**
+
+- Custom type "extends" Input type but not "extends" Input features [\#415](https://github.com/formly-js/ng-formly/issues/415)
+- hideExpression not working correctly when using formState [\#430](https://github.com/formly-js/ng-formly/issues/430)
+- the validation of repeatSection custom type doesnt not affect the main Form valid status [\#426](https://github.com/formly-js/ng-formly/issues/426)
+- Required validation should be ignored when hideExpression applies \(true\) [\#406](https://github.com/formly-js/ng-formly/issues/406)
+- Repeat section validation does not impact main form. [\#384](https://github.com/formly-js/ng-formly/issues/384)
+
+**Merged pull requests:**
+
+- feat\(validation\): introduce showError to check form validation [\#434](https://github.com/formly-js/ng-formly/pull/434) ([aitboudad](https://github.com/aitboudad))
+- build\(ts\): enable --importHelpers. [\#433](https://github.com/formly-js/ng-formly/pull/433) ([aitboudad](https://github.com/aitboudad))
+- chore\(npm\): update deps. [\#432](https://github.com/formly-js/ng-formly/pull/432) ([aitboudad](https://github.com/aitboudad))
+- fix\(\#426\): update Validity when form is builded [\#427](https://github.com/formly-js/ng-formly/pull/427) ([aitboudad](https://github.com/aitboudad))
+
+## [1.0.0-rc.6](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.6) (2017-05-20)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.5...1.0.0-rc.6)
+
+**Closed issues:**
+
+- On demo "import { clone } from '../../../../src/core/utils';" doesn't exist.  [\#421](https://github.com/formly-js/ng-formly/issues/421)
+- Support for Angular 4 and Roadmap for the future developments [\#419](https://github.com/formly-js/ng-formly/issues/419)
+- Browse File Button [\#418](https://github.com/formly-js/ng-formly/issues/418)
+- How to handle dynamic options in 'select' type [\#414](https://github.com/formly-js/ng-formly/issues/414)
+
+**Merged pull requests:**
+
+- feat\(expressionProperties\): eval evalExpression only when the express changed [\#425](https://github.com/formly-js/ng-formly/pull/425) ([aitboudad](https://github.com/aitboudad))
+- fix\(hideExpression\): ensure adding/removing form control for nested keys. [\#424](https://github.com/formly-js/ng-formly/pull/424) ([aitboudad](https://github.com/aitboudad))
+- fix\(\#421\): avoid using internal function in RepeatComponent. [\#422](https://github.com/formly-js/ng-formly/pull/422) ([aitboudad](https://github.com/aitboudad))
+- Add disabled feature to select type [\#407](https://github.com/formly-js/ng-formly/pull/407) ([francisco-sanchez-molina](https://github.com/francisco-sanchez-molina))
+
+## [1.0.0-rc.5](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.5) (2017-05-16)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.4...1.0.0-rc.5)
+
+**Closed issues:**
+
+- How to determine if there is error in the form? [\#413](https://github.com/formly-js/ng-formly/issues/413)
+- Forms do not render, console says "TypeError: Cannot read property 'templateOptions' of undefined" [\#411](https://github.com/formly-js/ng-formly/issues/411)
+
+**Merged pull requests:**
+
+- fix\(\#406\): workaround for hideExpression. [\#417](https://github.com/formly-js/ng-formly/pull/417) ([aitboudad](https://github.com/aitboudad))
+- refactor\(Demo\): improve the folder structure [\#416](https://github.com/formly-js/ng-formly/pull/416) ([aitboudad](https://github.com/aitboudad))
+
+## [1.0.0-rc.4](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.4) (2017-05-01)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/v1.0.0-rc.2...1.0.0-rc.4)
+
+**Closed issues:**
+
+- Formly duplicates provided classNames [\#404](https://github.com/formly-js/ng-formly/issues/404)
+- Focus on input Element [\#403](https://github.com/formly-js/ng-formly/issues/403)
+- Focus on a particular element in ng2-formly [\#402](https://github.com/formly-js/ng-formly/issues/402)
+- Multiple Checkbox example [\#400](https://github.com/formly-js/ng-formly/issues/400)
+- Angular 4 compatibility [\#399](https://github.com/formly-js/ng-formly/issues/399)
+- Watchers are not supported. [\#398](https://github.com/formly-js/ng-formly/issues/398)
+- lifecycle.onChanges event is not working [\#397](https://github.com/formly-js/ng-formly/issues/397)
+- ngonchange is not working in ng2-formly [\#395](https://github.com/formly-js/ng-formly/issues/395)
+- Share values of inputs between multiple ones [\#394](https://github.com/formly-js/ng-formly/issues/394)
+- Sample for loading form layout from service [\#362](https://github.com/formly-js/ng-formly/issues/362)
+
+**Merged pull requests:**
+
+- fix\(\#406\): ensure hideExpression to return boolean value. [\#410](https://github.com/formly-js/ng-formly/pull/410) ([aitboudad](https://github.com/aitboudad))
+- Revert "feat\(FormlyField\): allow setting className for fieldGroup [\#405](https://github.com/formly-js/ng-formly/pull/405) ([aitboudad](https://github.com/aitboudad))
+
+## [v1.0.0-rc.2](https://github.com/formly-js/ng-formly/tree/v1.0.0-rc.2) (2017-03-17)
 [Full Changelog](https://github.com/formly-js/ng-formly/compare/v1.0.0-rc.1...v1.0.0-rc.2)
 
 **Closed issues:**
@@ -15,6 +91,7 @@
 
 **Merged pull requests:**
 
+- chore\(upgrade\) update version to rc-2. [\#393](https://github.com/formly-js/ng-formly/pull/393) ([aitboudad](https://github.com/aitboudad))
 - feat\(FormlyField\): allow setting className for field which contains fieldGroup [\#392](https://github.com/formly-js/ng-formly/pull/392) ([aitboudad](https://github.com/aitboudad))
 - feat\(FormlyConfig\): introduce `addConfig` method [\#388](https://github.com/formly-js/ng-formly/pull/388) ([aitboudad](https://github.com/aitboudad))
 - fix\(field\): ignore assigning defaultValue only when it's undefined. [\#387](https://github.com/formly-js/ng-formly/pull/387) ([aitboudad](https://github.com/aitboudad))
