@@ -1,5 +1,5 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { FieldWrapper } from '../../core/core';
+import { FieldWrapper } from '../../core';
 
 @Component({
   selector: 'formly-wrapper-label',

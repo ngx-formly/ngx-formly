@@ -7,7 +7,7 @@ import {
   FormlyModule,
   FieldType,
   FieldWrapper,
-} from '../core';
+} from '../index';
 import { FormlyValueChangeEvent } from '../services/formly.event.emitter';
 import { evalStringExpression, evalExpressionValueSetter } from './../utils';
 

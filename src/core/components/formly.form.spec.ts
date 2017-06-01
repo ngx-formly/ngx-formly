@@ -3,7 +3,7 @@ import { createGenericTestComponent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
 import { Component, OnInit } from '@angular/core';
-import { FormlyModule } from '../core';
+import { FormlyModule } from '../index';
 import { FormGroup } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 import { clone } from '../utils';
