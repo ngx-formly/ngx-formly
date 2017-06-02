@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { FormlyFieldConfig } from 'ng-formly/core';
+import { FormlyFieldConfig } from 'ng-formly';
 import { ValidationService, SuperHerosService } from './services';
 
 @Component({

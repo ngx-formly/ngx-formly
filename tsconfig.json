@@ -13,7 +13,7 @@
     "lib": ["dom", "es6"],
     "importHelpers": true,
     "paths": {
-        "ng-formly/*": ["./*"]
+        "ng-formly": ["./index"]
     },
     "typeRoots": [
       "./node_modules/@types"

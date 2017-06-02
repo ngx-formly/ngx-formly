@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { FieldType, FormlyFormBuilder } from 'ng-formly/core';
+import { FieldType, FormlyFormBuilder } from 'ng-formly';
 
 @Component({
   selector: 'formly-repeat-section',
