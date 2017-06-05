@@ -1,6 +1,16 @@
 import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 
+class FooBar {
+
+  foo = 'foo';
+  bar = 'bar';
+
+  get foobar(): string {
+    return '';
+  }
+}
+
 describe('FormlyUtils service', () => {
   describe('reverseDeepMerge', () => {
     it('should properly reverse deep merge', () => {
@@ -11,6 +21,18 @@ describe('FormlyUtils service', () => {
       expect(foo['foo']).toEqual('bar');
       expect(foo['foobar']).toEqual('foobar');
     });
+
+    it('should properly reverse deep merge even with readonly attributes', () => {
+      let foo = new FooBar();
+      let bar = new FooBar();
+      foo.foo = 'bar';
+
+      reverseDeepMerge(foo, bar);
+
+      expect(foo['foo']).toEqual('bar');
+      expect(foo['foobar']).toEqual('');
+    });
+
   });
 
   describe('assignModelValue', () => {

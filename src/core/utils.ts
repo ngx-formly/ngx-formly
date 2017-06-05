@@ -113,7 +113,13 @@ export function reverseDeepMerge(dest, source = undefined) {
         if (isFunction(src[srcArg])) {
           dest[srcArg] = src[srcArg];
         } else {
-          dest[srcArg] = clone(src[srcArg]);
+          try {
+            dest[srcArg] = clone(src[srcArg]);
+          }  catch (e) {
+            if (e instanceof TypeError) {
+              // Setting a readonly attribute
+            }
+          }
         }
       } else if (objAndSameType(dest[srcArg], src[srcArg])) {
         reverseDeepMerge(dest[srcArg], src[srcArg]);
