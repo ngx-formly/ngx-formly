@@ -1,7 +1,28 @@
 # Change Log
 
+## [Unreleased](https://github.com/formly-js/ng-formly/tree/HEAD)
+
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.9...HEAD)
+
+**Closed issues:**
+
+- Type Configuration Validation [\#435](https://github.com/formly-js/ng-formly/issues/435)
+- Dependency between fields of different groups [\#445](https://github.com/formly-js/ng-formly/issues/445)
+- radio buttons is exclusive in different Fields [\#444](https://github.com/formly-js/ng-formly/issues/444)
+
+## [1.0.0-rc.9](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.9) (2017-06-02)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.8...1.0.0-rc.9)
+
+**Closed issues:**
+
+- Problem with updating the data [\#437](https://github.com/formly-js/ng-formly/issues/437)
+
+**Merged pull requests:**
+
+- docs\(import\): use `ng-formly` instead of `ng-formly/core` [\#443](https://github.com/formly-js/ng-formly/pull/443) ([aitboudad](https://github.com/aitboudad))
+
 ## [1.0.0-rc.8](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.8) (2017-06-01)
-[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.6...1.0.0-rc.8)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.7...1.0.0-rc.8)
 
 **Closed issues:**
 
