@@ -283,10 +283,14 @@ export class FormlyFormBuilder {
   }
 
   private checkMinMax(opt, changes, value) {
+    if (changes == null || changes === '' ) {
+      return true;
+    }
+
     if (opt === this.validationOpts[4]) {
-        return parseInt(changes) > value;
+        return parseInt(changes) >= value;
     } else {
-        return parseInt(changes) < value;
+        return parseInt(changes) <= value;
     }
   }
 
