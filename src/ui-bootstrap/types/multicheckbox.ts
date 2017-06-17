@@ -22,6 +22,10 @@ export class FormlyFieldMultiCheckbox extends FieldType {
       return previous;
     }, {});
 
-    return new FormGroup(controlGroupConfig);
+    return new FormGroup(
+      controlGroupConfig,
+      field.validators ? field.validators.validation : undefined,
+      field.asyncValidators ? field.asyncValidators.validation : undefined,
+    );
   }
 }
