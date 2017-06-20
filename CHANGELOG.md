@@ -1,14 +1,25 @@
 # Change Log
 
-## [Unreleased](https://github.com/formly-js/ng-formly/tree/HEAD)
 
-[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.9...HEAD)
+## [1.0.0-rc.10](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.10) (2017-06-20)
+[Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.9...1.0.0-rc.10)
+
+**Fixed bugs:**
+
+- multicheckbox validation issue [\#448](https://github.com/formly-js/ng-formly/issues/448)
 
 **Closed issues:**
 
-- Type Configuration Validation [\#435](https://github.com/formly-js/ng-formly/issues/435)
+- what is the latest version? [\#446](https://github.com/formly-js/ng-formly/issues/446)
 - Dependency between fields of different groups [\#445](https://github.com/formly-js/ng-formly/issues/445)
 - radio buttons is exclusive in different Fields [\#444](https://github.com/formly-js/ng-formly/issues/444)
+- Type Configuration Validation [\#435](https://github.com/formly-js/ng-formly/issues/435)
+
+**Merged pull requests:**
+
+- fix\(FormlyFieldMultiCheckbox\): supply validators to control [\#450](https://github.com/formly-js/ng-formly/pull/450) ([franzeal](https://github.com/franzeal))
+- fix\(validation\) allow null/empty and equal values in min/max validation [\#449](https://github.com/formly-js/ng-formly/pull/449) ([Tom-V](https://github.com/Tom-V))
+- chore\(CHANGELOG\): Update changelog [\#447](https://github.com/formly-js/ng-formly/pull/447) ([aitboudad](https://github.com/aitboudad))
 
 ## [1.0.0-rc.9](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.9) (2017-06-02)
 [Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.8...1.0.0-rc.9)
