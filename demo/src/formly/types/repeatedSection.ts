@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { FieldType, FormlyFormBuilder } from 'ng-formly';
+import * as clonedeep from 'lodash.clonedeep';
 
 @Component({
   selector: 'formly-repeat-section',
@@ -35,7 +36,7 @@ export class RepeatComponent extends FieldType implements OnInit {
   }
 
   get newFields() {
-    return JSON.parse(JSON.stringify(this.field.fieldArray.fieldGroup));
+    return clonedeep(this.field.fieldArray.fieldGroup);
   }
 
   ngOnInit() {

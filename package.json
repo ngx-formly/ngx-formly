@@ -81,6 +81,7 @@
     "karma-remap-coverage": "^0.1.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.3",
+    "lodash.clonedeep": "^4.5.0",
     "phantomjs-prebuilt": "^2.1.14",
     "raw-loader": "^0.5.1",
     "remap-istanbul": "^0.9.5",
