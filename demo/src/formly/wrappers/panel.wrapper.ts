@@ -4,7 +4,7 @@ import { FieldWrapper } from 'ng-formly';
   selector: 'formly-wrapper-panel',
   template: `
     <div class="card">
-      <h3 class="card-header">{{to.title}}</h3>
+      <h3 class="card-header">{{ to.title }}</h3>
       <div class="card-block">
         <ng-container #fieldComponent></ng-container>
       </div>

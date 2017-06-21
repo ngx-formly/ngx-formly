@@ -4,7 +4,7 @@ import { FieldWrapper } from '../../core';
 @Component({
   selector: 'formly-wrapper-label',
   template: `
-    <label [attr.for]="id" class="form-control-label">{{to.label}}</label>
+    <label [attr.for]="id" class="form-control-label">{{ to.label }}</label>
     <ng-container #fieldComponent></ng-container>
   `,
 })

@@ -15,8 +15,8 @@
         Read Only
         <span class="custom-control-indicator"></span>
     </label>
-    <br><strong>FORM DATA:</strong><br><pre>{{user | json}}</pre><br>
-    <br><strong>FORM STATE:</strong><br><pre>{{options.formState | json}}</pre><br>
+    <br><strong>FORM DATA:</strong><br><pre>{{ user | json }}</pre><br>
+    <br><strong>FORM STATE:</strong><br><pre>{{ options.formState | json }}</pre><br>
     <hr>
     <button (click)="showEmail()" class="btn btn-success">Change Email</button>
     <button (click)="resetForm()" class="btn btn-danger">Reset</button>
@@ -34,14 +34,14 @@
             project made with ♥ by
             <strong>
           <span *ngIf="!author.name || !author.url">
-            {{vm.author.name || 'anonymous'}}
+            {{ vm.author.name || 'anonymous' }}
           </span>
                 <a ng-if="vm.author.url" href="{{author.url}}">
-                    {{author.name}}
+                    {{ author.name }}
                 </a>
             </strong>
             <br />
-            This example is running angular version "{{env.angularVersion}}" and formly version "{{env.formlyVersion}}"
+            This example is running angular version "{{ env.angularVersion }}" and formly version "{{ env.formlyVersion }}"
         </small>
     </div>
 </div>

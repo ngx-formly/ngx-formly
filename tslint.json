@@ -7,6 +7,7 @@
         "use-output-property-decorator": true,
         "use-host-property-decorator": true,
         "no-attribute-parameter-decorator": true,
+        "angular-whitespace": [true, "check-interpolation", "check-pipe"],
         "no-input-rename": false,
         "no-output-rename": true,
         "no-forward-ref" : true,
