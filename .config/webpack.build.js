@@ -1,3 +1,5 @@
+const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
+
 module.exports = {
   entry: './src/index',
   devtool: 'source-map',
@@ -21,5 +23,8 @@ module.exports = {
         use: ['awesome-typescript-loader?declaration=false'],
       }
     ]
-  }
+  },
+  plugins: [
+    new ModuleConcatenationPlugin(),
+  ]
 };
