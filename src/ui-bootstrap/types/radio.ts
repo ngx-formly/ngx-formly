@@ -9,7 +9,7 @@ import { FieldType } from '../../core';
         <label class="custom-control custom-radio">
           <input [name]="id" type="radio" [value]="option.key" [formControl]="formControl"
           [formlyAttributes]="field" class="custom-control-input">
-          {{option.value}}
+          {{ option.value }}
           <span class="custom-control-indicator"></span>
         </label>
       </div>

@@ -12,7 +12,7 @@ import { Field } from 'ng-formly';
       </div>
   </div>
   <div *ngIf="formState.readOnly">
-    {{model[key]}}
+    {{ model[key] }}
   </div>
   `,
 })

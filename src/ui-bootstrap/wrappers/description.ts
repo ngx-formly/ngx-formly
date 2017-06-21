@@ -6,7 +6,7 @@ import { FieldWrapper } from '../../core';
   template: `
     <ng-container #fieldComponent></ng-container>
     <div>
-      <small class="text-muted">{{to.description}}</small>
+      <small class="text-muted">{{ to.description }}</small>
     </div>
   `,
 })

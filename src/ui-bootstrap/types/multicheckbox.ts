@@ -9,7 +9,7 @@ import { FieldType, FormlyFieldConfig } from '../../core';
         <label class="custom-control custom-checkbox">
             <input type="checkbox" [value]="option.value" [formControl]="formControl.get(option.key)"
             [formlyAttributes]="field" class="custom-control-input">
-            {{option.value}}
+            {{ option.value }}
             <span class="custom-control-indicator"></span>
         </label>
     </div>

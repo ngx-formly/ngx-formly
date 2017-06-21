@@ -4,7 +4,7 @@ import { FormlyFieldConfig, FormlyValidationMessages } from '../core';
 
 @Component({
   selector: 'formly-validation-message',
-  template: `{{errorMessage}}`,
+  template: `{{ errorMessage }}`,
 })
 export class FormlyValidationMessage {
   @Input() fieldForm: FormControl;

@@ -10,7 +10,7 @@ import { FieldWrapper } from '../../core';
          [ngStyle]="{cursor: to.addonLeft.onClick ? 'pointer' : 'inherit'}"
          (click)="addonLeftClick($event)">
         <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
-        <span *ngIf="to.addonLeft.text">{{to.addonLeft.text}}</span>
+        <span *ngIf="to.addonLeft.text">{{ to.addonLeft.text }}</span>
     </div>
     <ng-container #fieldComponent></ng-container>
     <div class="input-group-addon"
@@ -18,7 +18,7 @@ import { FieldWrapper } from '../../core';
          [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
          (click)="addonRightClick($event)">
         <i [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
-        <span *ngIf="to.addonRight.text">{{to.addonRight.text}}</span>
+        <span *ngIf="to.addonRight.text">{{ to.addonRight.text }}</span>
     </div>
 </div>
   `,
