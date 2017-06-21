@@ -389,6 +389,9 @@ export class AppComponent {
               templateOptions: {
                 label: 'Date of Investment:',
               },
+              validators: {
+                validation: Validators.compose([Validators.required]),
+              },
             },
             {
               type: 'input',
