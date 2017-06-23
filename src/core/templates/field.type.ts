@@ -1,46 +1,47 @@
 import { Field } from './field';
-import { OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, OnDestroy, AfterViewChecked } from '@angular/core';
+import { OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, OnDestroy, AfterViewChecked, SimpleChanges } from '@angular/core';
+import { FormlyLifeCycleOptions, FormlyLifeCycleFn } from './../components/formly.field.config';
 
 export abstract class FieldType extends Field implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
   ngOnInit() {
-    this.lifeCycleHooks('onInit');
+    this.lifeCycleHooks(this.lifecycle.onInit);
   }
 
-  ngOnChanges(changes) {
-    this.lifeCycleHooks('onChanges');
+  ngOnChanges(changes: SimpleChanges) {
+    this.lifeCycleHooks(this.lifecycle.onChanges);
   }
 
   ngDoCheck() {
-    this.lifeCycleHooks('doCheck');
+    this.lifeCycleHooks(this.lifecycle.doCheck);
   }
 
   ngAfterContentInit() {
-    this.lifeCycleHooks('afterContentInit');
+    this.lifeCycleHooks(this.lifecycle.afterContentInit);
   }
 
   ngAfterContentChecked() {
-    this.lifeCycleHooks('afterContentChecked');
+    this.lifeCycleHooks(this.lifecycle.afterContentChecked);
   }
 
   ngAfterViewInit() {
-    this.lifeCycleHooks('afterViewInit');
+    this.lifeCycleHooks(this.lifecycle.afterViewInit);
   }
 
   ngAfterViewChecked() {
-    this.lifeCycleHooks('afterViewChecked');
+    this.lifeCycleHooks(this.lifecycle.afterViewChecked);
   }
 
   ngOnDestroy() {
-    this.lifeCycleHooks('onDestroy');
+    this.lifeCycleHooks(this.lifecycle.onDestroy);
   }
 
-  private get lifecycle() {
-    return this.field.lifecycle;
+  private get lifecycle(): FormlyLifeCycleOptions {
+    return this.field.lifecycle || {};
   }
 
-  private lifeCycleHooks(type) {
-    if (this.lifecycle && this.lifecycle[type]) {
-      this.lifecycle[type].bind(this)(this.form, this.field, this.model, this.options);
+  private lifeCycleHooks(callback: FormlyLifeCycleFn) {
+    if (callback) {
+      callback.bind(this)(this.form, this.field, this.model, this.options);
     }
   }
 }

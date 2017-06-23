@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormlyModule } from '../index';
 import { FormGroup } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
-import { clone } from '../utils';
 import { FormlyFieldConfig } from './formly.field.config';
 
 const createTestComponent = (html: string) =>
@@ -92,7 +91,7 @@ class TestComponent {
 })
 export class RepeatComponent extends FieldType implements OnInit {
   get newOptions() {
-    return clone(this.options);
+    return { ...this.options };
   }
   get controls() {
     return this.form.controls[this.field.key]['controls'];

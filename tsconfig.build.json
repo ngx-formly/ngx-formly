@@ -10,7 +10,7 @@
     "removeComments": true,
     "baseUrl": "src",
     "outDir": "lib/src",
-    "paths": [],
+    "paths": {},
     "lib": ["dom", "es6"],
     "importHelpers": true,
     "typeRoots": [

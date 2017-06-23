@@ -20,12 +20,18 @@ export class FormlyConfig {
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
 
-  templateManipulators = {
+  templateManipulators: {
+    preWrapper: ManipulatorWrapper[];
+    postWrapper: ManipulatorWrapper[];
+  } = {
     preWrapper: [],
     postWrapper: [],
   };
 
-  extras = {
+  extras: {
+    fieldTransform?: any,
+    showError?: (field: Field) => boolean;
+  } = {
     fieldTransform: undefined,
     showError: function(field: Field) {
       return field.formControl.touched && !field.formControl.valid;
@@ -134,7 +140,7 @@ export class FormlyConfig {
     return this.wrappers[name];
   }
 
-  setTypeWrapper(type, name) {
+  setTypeWrapper(type: string, name: string) {
     if (!this.types[type]) {
       this.types[type] = <TypeOption>{};
     }
@@ -156,11 +162,10 @@ export class FormlyConfig {
     return this.validators[name];
   }
 
-  setManipulator(manipulator) {
+  setManipulator(manipulator: ManipulatorOption) {
     new manipulator.class()[manipulator.method](this);
   }
 }
-
 export interface TypeOption {
   name: string;
   component?: any;
@@ -185,9 +190,13 @@ export interface ValidationMessageOption {
   message: any;
 }
 
-export interface ManipulatorsOption {
-  class?: Function;
+export interface ManipulatorOption {
+  class?: { new (): any };
   method?: string;
+}
+
+export interface ManipulatorWrapper {
+  (f: FormlyFieldConfig): string;
 }
 
 export interface ConfigOption {
@@ -195,9 +204,9 @@ export interface ConfigOption {
   wrappers?: WrapperOption[];
   validators?: ValidatorOption[];
   validationMessages?: ValidationMessageOption[];
-  manipulators?: ManipulatorsOption[];
+  manipulators?: ManipulatorOption[];
   extras?: {
     fieldTransform?: any,
-    showError?: (field: Field) => boolean;
+    showError?: (field: FormlyFieldConfig) => boolean;
   };
 }

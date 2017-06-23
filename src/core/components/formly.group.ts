@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
-import { clone } from '../utils';
 
 @Component({
   selector: 'formly-group',
@@ -12,7 +11,7 @@ import { clone } from '../utils';
 export class FormlyGroup extends FieldType {
 
   get newOptions() {
-    return clone(this.options);
+    return { ...this.options };
   }
 
   get formlyGroup(): AbstractControl {

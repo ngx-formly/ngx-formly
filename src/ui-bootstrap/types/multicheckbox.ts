@@ -6,12 +6,12 @@ import { FieldType, FormlyFieldConfig } from '../../core';
   selector: 'formly-field-multicheckbox',
   template: `
     <div *ngFor="let option of to.options" class="checkbox">
-        <label class="custom-control custom-checkbox">
-            <input type="checkbox" [value]="option.value" [formControl]="formControl.get(option.key)"
-            [formlyAttributes]="field" class="custom-control-input">
-            {{ option.value }}
-            <span class="custom-control-indicator"></span>
-        </label>
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" [value]="option.value" [formControl]="formControl.get(option.key)"
+        [formlyAttributes]="field" class="custom-control-input">
+        {{ option.value }}
+        <span class="custom-control-indicator"></span>
+      </label>
     </div>
   `,
 })

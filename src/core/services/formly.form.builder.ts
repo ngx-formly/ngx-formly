@@ -13,7 +13,7 @@ export class FormlyFormBuilder {
 
   constructor(private formlyConfig: FormlyConfig) {}
 
-  buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model, options) {
+  buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: any) {
     this.formId++;
 
     options = options || {};
@@ -38,7 +38,7 @@ export class FormlyFormBuilder {
     this.registerFormControls(form, fields, model, options);
   }
 
-  private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model, options) {
+  private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model: any, options: any) {
     fields.map((field, index) => {
       field.id = getFieldId(`formly_${this.formId}`, field, index);
 
@@ -237,7 +237,7 @@ export class FormlyFormBuilder {
     }
   }
 
-  private addFormControl(form: FormGroup, field: FormlyFieldConfig, model) {
+  private addFormControl(form: FormGroup, field: FormlyFieldConfig, model: any) {
     /* Although the type of the key property in FormlyFieldConfig is declared to be a string,
      the recurstion of this FormBuilder uses an Array.
      This should probably be addressed somehow. */
@@ -264,14 +264,16 @@ export class FormlyFormBuilder {
 
   private getValidation(opt, value) {
     switch (opt) {
-      case this.validationOpts[0]:
-        return Validators[opt];
-      case this.validationOpts[1]:
-      case this.validationOpts[2]:
-      case this.validationOpts[3]:
-        return Validators[opt](value);
-      case this.validationOpts[4]:
-      case this.validationOpts[5]:
+      case 'required':
+        return Validators.required;
+      case 'pattern':
+        return Validators.pattern(value);
+      case 'minLength':
+        return Validators.minLength(value);
+      case 'maxLength':
+        return Validators.maxLength(value);
+      case 'min':
+      case 'max':
         return (changes) => {
           if (this.checkMinMax(opt, changes.value, value)) {
             return null;
@@ -287,11 +289,11 @@ export class FormlyFormBuilder {
       return true;
     }
 
-    if (opt === this.validationOpts[4]) {
+    if (opt === 'min') {
         return parseInt(changes) >= value;
-    } else {
-        return parseInt(changes) <= value;
     }
+
+    return parseInt(changes) <= value;
   }
 
   private addControl(form: FormGroup, key: string, formControl: AbstractControl, field: FormlyFieldConfig) {
