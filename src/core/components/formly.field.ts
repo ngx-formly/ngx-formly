@@ -4,9 +4,10 @@ import {
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent } from '../services/formly.event.emitter';
-import { FormlyConfig } from '../services/formly.config';
+import { FormlyConfig, ManipulatorWrapper, TypeOption } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { evalExpression } from '../utils';
+import { Subscription } from 'rxjs/Subscription';
 import { FormlyFieldConfig } from './formly.field.config';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { map } from 'rxjs/operator/map';
@@ -26,8 +27,8 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 
-  private componentRefs = [];
-  private _subscriptions = [];
+  private componentRefs: ComponentRef<Field>[] = [];
+  private _subscriptions: Subscription[] = [];
 
   constructor(
     private elementRef: ElementRef,
@@ -88,7 +89,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
       }
 
       let update = new FormlyEventEmitter();
-      this._subscriptions.push(update.subscribe((option: any) => {
+      this._subscriptions.push(update.subscribe((option) => {
         this.field.templateOptions[option.key] = option.value;
       }));
 
@@ -102,18 +103,10 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     if (this.field.fieldGroup) {
       this.field.type = this.field.type || 'formly-group';
     }
-    let type = this.formlyConfig.getType(this.field.type);
+    const type = this.formlyConfig.getType(this.field.type),
+      wrappers = this.getFieldWrappers(type);
+
     let fieldComponent = this.fieldComponent;
-    const fieldManipulators = this.getManipulators(this.field.templateOptions);
-    let preWrappers = this.runManipulators(fieldManipulators.preWrapper, this.field);
-    let postWrappers = this.runManipulators(fieldManipulators.postWrapper, this.field);
-    if (!type.wrappers) type.wrappers = [];
-    if (this.field.wrapper) {
-       console.warn(`${this.field.key}: wrapper is deprecated. Use 'wrappers' instead.`);
-       this.field.wrappers = Array.isArray(this.field.wrapper) ? this.field.wrapper : [this.field.wrapper];
-    }
-    if (!this.field.wrappers) this.field.wrappers = [];
-    const wrappers = [...preWrappers, ...this.field.wrappers, ...postWrappers];
     wrappers.map(wrapperName => {
       let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
       fieldComponent = wrapperRef.instance.fieldComponent;
@@ -122,7 +115,44 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     return this.createComponent(fieldComponent, type.component);
   }
 
-  private createComponent(fieldComponent, component): ComponentRef<any> {
+  private getFieldWrappers(type: TypeOption) {
+    let templateManipulators = {
+      preWrapper: [],
+      postWrapper: [],
+    };
+
+    if (this.field.templateOptions) {
+      this.mergeTemplateManipulators(templateManipulators, this.field.templateOptions.templateManipulators);
+    }
+
+    this.mergeTemplateManipulators(templateManipulators, this.formlyConfig.templateManipulators);
+
+    let preWrappers = templateManipulators.preWrapper.map(m => m(this.field)).filter(type => type),
+      postWrappers = templateManipulators.postWrapper.map(m => m(this.field)).filter(type => type);
+
+    if (!this.field.wrappers) this.field.wrappers = [];
+    if (!type.wrappers) type.wrappers = [];
+    if (this.field.wrapper) {
+       console.warn(`${this.field.key}: wrapper is deprecated. Use 'wrappers' instead.`);
+       this.field.wrappers = Array.isArray(this.field.wrapper) ? this.field.wrapper : [this.field.wrapper];
+    }
+
+    return [...preWrappers, ...this.field.wrappers, ...postWrappers];
+  }
+
+  private mergeTemplateManipulators(source, target) {
+    target = target || {};
+    if (target.preWrapper) {
+      source.preWrapper = source.preWrapper.concat(target.preWrapper);
+    }
+    if (target.postWrapper) {
+      source.postWrapper = source.postWrapper.concat(target.postWrapper);
+    }
+
+    return source;
+  }
+
+  private createComponent(fieldComponent: ViewContainerRef, component: any): ComponentRef<any> {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
     let ref = <ComponentRef<Field>>fieldComponent.createComponent(componentFactory);
 
@@ -141,34 +171,6 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
   private psEmit(fieldKey: string, eventKey: string, value: any) {
     if (this.formlyPubSub && this.formlyPubSub.getEmitter(fieldKey) && this.formlyPubSub.getEmitter(fieldKey).emit) {
       this.formlyPubSub.getEmitter(fieldKey).emit(new FormlyValueChangeEvent(eventKey, value));
-    }
-  }
-
-  private getManipulators(options) {
-    let preWrapper = [];
-    let postWrapper = [];
-    if (options && options.templateManipulators) {
-      addManipulators(options.templateManipulators);
-    }
-    addManipulators(this.formlyConfig.templateManipulators);
-    return {preWrapper, postWrapper};
-
-    function addManipulators(manipulators) {
-      const {preWrapper: pre = [], postWrapper: post = []} = (manipulators || {});
-      preWrapper = preWrapper.concat(pre);
-      postWrapper = postWrapper.concat(post);
-    }
-  }
-
-  private runManipulators(manipulators: Function[], field: FormlyFieldConfig) {
-    let wrappers = [];
-    if (manipulators) {
-      manipulators.map(manipulator => {
-        if (manipulator(field)) {
-          wrappers.push(manipulator(field));
-        }
-      });
-      return wrappers;
     }
   }
 

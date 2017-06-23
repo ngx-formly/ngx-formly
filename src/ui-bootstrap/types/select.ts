@@ -14,7 +14,6 @@ export class SelectOption {
   }
 }
 
-
 @Component({
   selector: 'formly-field-select',
   template: `
@@ -32,9 +31,9 @@ export class SelectOption {
   `,
 })
 export class FormlyFieldSelect extends FieldType {
-  get labelProp(): string { return this.to['labelProp'] || 'label'; }
-  get valueProp(): string { return this.to['valueProp'] || 'value'; }
-  get groupProp(): string { return this.to['groupProp'] || 'group'; }
+  get labelProp(): string { return this.to.labelProp || 'label'; }
+  get valueProp(): string { return this.to.valueProp || 'value'; }
+  get groupProp(): string { return this.to.groupProp || 'group'; }
 
   get selectOptions() {
     let options: SelectOption[] = [];

@@ -123,19 +123,19 @@ export function reverseDeepMerge(dest, source = undefined) {
   return dest;
 }
 
-export function isNullOrUndefined(value) {
+export function isNullOrUndefined(value: any) {
   return value === undefined || value === null;
 }
 
-export function isUndefined(value) {
+export function isUndefined(value: any) {
   return value === undefined;
 }
 
-export function isBlankString(value) {
+export function isBlankString(value: any) {
   return value === '';
 }
 
-export function isFunction(value) {
+export function isFunction(value: any) {
   return typeof(value) === 'function';
 }
 
@@ -144,11 +144,11 @@ export function objAndSameType(obj1, obj2) {
     Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
 }
 
-export function isObject(x) {
+export function isObject(x: any) {
   return x != null && typeof x === 'object';
 }
 
-export function clone(value) {
+export function clone(value: any) {
   if (!isObject(value)) {
     return value;
   }

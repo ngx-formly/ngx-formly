@@ -4,7 +4,7 @@ export interface FormlyFieldConfig {
   id?: string;
   name?: string;
   templateOptions?: FormlyTemplateOptions;
-  optionsTypes?: any;
+  optionsTypes?: string[];
   validation?: {
     messages?: {
       [messageProperties: string]: string | Function;
@@ -63,7 +63,7 @@ export interface FormlyTemplateOptions {
 }
 
 export interface FormlyLifeCycleFn {
-    (form?: FormGroup, field?: FormlyFieldConfig, model?, options?): void;
+    (form?: FormGroup, field?: FormlyFieldConfig, model?: any, options?: any): void;
 }
 
 export interface FormlyLifeCycleOptions {

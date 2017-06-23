@@ -4,24 +4,24 @@ export class FormlyValueChangeEvent {
   constructor(public key: string, public value: any) {}
 }
 
-export class FormlyEventEmitter extends Subject<String> {
-  emit(value) {
+export class FormlyEventEmitter extends Subject<FormlyValueChangeEvent> {
+  emit(value: FormlyValueChangeEvent) {
     super.next(value);
   }
 }
 
 export class FormlyPubSub {
-  emitters = {};
+  emitters: { [name: string]: FormlyEventEmitter } = {};
 
-  setEmitter(key, emitter) {
+  setEmitter(key: string, emitter: FormlyEventEmitter) {
     this.emitters[key] = emitter;
   }
 
-  getEmitter(key) {
+  getEmitter(key: string) {
     return this.emitters[key];
   }
 
-  removeEmitter(key) {
+  removeEmitter(key: string) {
     delete this.emitters[key];
   }
 }

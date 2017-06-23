@@ -1,4 +1,5 @@
 import { Directive, HostListener, ElementRef, Input, Renderer, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from './formly.field.config';
 
 @Directive({
@@ -6,7 +7,7 @@ import { FormlyFieldConfig } from './formly.field.config';
 })
 export class FormlyAttributes implements OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
-  @Input() formControl;
+  @Input() formControl: AbstractControl;
   private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'aria-describedby'];
   private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
@@ -63,7 +64,7 @@ export class FormlyAttributes implements OnChanges {
     return () => fn(this.field, this.formControl);
   }
 
-  private canApplyRender(fieldChange: SimpleChange, prop): Boolean {
+  private canApplyRender(fieldChange: SimpleChange, prop: string): Boolean {
     const currentValue = this.getPropValue(this.field, prop),
       previousValue = this.getPropValue(fieldChange.previousValue, prop);
 

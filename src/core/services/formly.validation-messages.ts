@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
-import { FORMLY_CONFIG_TOKEN } from './formly.config';
+import { FORMLY_CONFIG_TOKEN, ConfigOption } from './formly.config';
 
 @Injectable()
 export class FormlyValidationMessages {
-  messages = {};
+  messages: { [name: string]: string; } = {};
 
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs = []) {
+  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
     configs.map(config => {
       if (config.validationMessages) {
         config.validationMessages.map(validation => this.addStringMessage(validation.name, validation.message));
@@ -13,15 +13,15 @@ export class FormlyValidationMessages {
     });
   }
 
-  addStringMessage(validator, message) {
-    this.messages[validator] = message;
+  addStringMessage(name: string, message: string) {
+    this.messages[name] = message;
   }
 
   getMessages() {
     return this.messages;
   }
 
-  getValidatorErrorMessage(prop) {
-    return this.messages[prop];
+  getValidatorErrorMessage(name: string) {
+    return this.messages[name];
   }
 }

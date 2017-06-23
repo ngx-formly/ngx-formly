@@ -12,20 +12,22 @@ export class FormlyValidationMessage {
 
   constructor(private formlyMessages: FormlyValidationMessages) {}
 
-  get errorMessage() {
+  get errorMessage(): string {
     for (let error in this.fieldForm.errors) {
       if (this.fieldForm.errors.hasOwnProperty(error)) {
-        let message = this.formlyMessages.getValidatorErrorMessage(error);
+        let message: string|Function = this.formlyMessages.getValidatorErrorMessage(error);
 
         if (this.field.validation && this.field.validation.messages && this.field.validation.messages[error]) {
           message = this.field.validation.messages[error];
         }
 
-        ['validators', 'asyncValidators'].map(validators => {
-          if (this.field[validators] && this.field[validators][error] && this.field[validators][error].message) {
-            message = this.field.validators[error].message;
-          }
-        });
+        if (this.field.validators && this.field.validators[error] && this.field.validators[error].message) {
+          message = this.field.validators[error].message;
+        }
+
+        if (this.field.asyncValidators && this.field.asyncValidators[error] && this.field.asyncValidators[error].message) {
+          message = this.field.asyncValidators[error].message;
+        }
 
         if (typeof message === 'function') {
           return message(this.fieldForm.errors[error], this.field);

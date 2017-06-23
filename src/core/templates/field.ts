@@ -6,7 +6,7 @@ export abstract class Field {
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
   @Input() model: any;
-  @Input() options;
+  @Input() options: any;
 
   get key() { return this.field.key; }
   get formControl(): AbstractControl { return this.field.formControl || this.form.get(this.key); }
@@ -15,7 +15,7 @@ export abstract class Field {
    * @deprecated Use `to` instead.
    **/
   get templateOptions(): FormlyTemplateOptions {
-    console.warn(`${this.constructor['name']}: 'templateOptions' is deprecated. Use 'to' instead.`);
+    console.warn(`${this.constructor.name}: 'templateOptions' is deprecated. Use 'to' instead.`);
 
     return this.to;
   }
