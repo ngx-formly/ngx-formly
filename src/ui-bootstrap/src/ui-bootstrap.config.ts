@@ -1,4 +1,4 @@
-import { ConfigOption } from '../core/services/formly.config';
+import { ConfigOption } from '../../core/src/services/formly.config';
 import { FormlyWrapperAddons } from './wrappers/addons';
 import { TemplateDescription } from './run/description';
 import { TemplateValidation } from './run/validation';

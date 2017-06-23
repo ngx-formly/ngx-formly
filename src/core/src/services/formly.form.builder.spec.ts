@@ -1,4 +1,4 @@
-import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from '../index';
+import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from '../core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 

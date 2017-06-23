@@ -3,7 +3,7 @@ import { createGenericTestComponent } from '../test-utils';
 
 import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
-import { FormlyModule } from '../index';
+import { FormlyModule } from '../core';
 import { FormlyAttributes } from './formly.attributes';
 import { FormlyFieldConfig } from './formly.field.config';
 

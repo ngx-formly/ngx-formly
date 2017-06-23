@@ -1,9 +1,9 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { createGenericTestComponent } from '../core/test-utils';
+import { createGenericTestComponent } from '../../core/src/test-utils';
 
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FormlyModule, FormlyFieldConfig } from '../core';
+import { FormlyModule, FormlyFieldConfig } from '../../core';
 import { FormlyValidationMessage } from './formly.validation-message';
 
 const createTestComponent = (html: string) =>

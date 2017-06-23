@@ -1,12 +1,1 @@
-export { FormlyForm } from './components/formly.form';
-export { FormlyFieldConfig } from './components/formly.field.config';
-export { FormlyField } from './components/formly.field';
-export { FormlyAttributes } from './components/formly.attributes';
-export { FormlyConfig, ConfigOption } from './services/formly.config';
-export { FormlyFormBuilder } from './services/formly.form.builder';
-export { FormlyValidationMessages } from './services/formly.validation-messages';
-export { FormlyPubSub, FormlyEventEmitter } from './services/formly.event.emitter';
-export { Field } from './templates/field';
-export { FieldType } from './templates/field.type';
-export { FieldWrapper } from './templates/field.wrapper';
-export { FormlyModule } from './core.module';
+export * from './public_api';
