@@ -1,7 +1,7 @@
 .idea
 .vscode
-bundles
-lib
+.ng_build
+dist
 node_modules
 npm-debug.log
 yarn-error.log

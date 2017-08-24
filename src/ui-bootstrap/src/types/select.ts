@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from '../../../core';
+import { FieldType } from '@ngx-formly/core';
 
 export class SelectOption {
   label: string;

@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "entryFile": "index.ts",
+      "externals": {
+        "@ngx-formly/core": "@ngx-formly/core"
+      }
+  },
+  "dest": "../../dist/boostrap",
+  "workingDirectory": "../../.ng_build"
+}
