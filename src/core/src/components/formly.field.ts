@@ -1,6 +1,6 @@
 import {
   Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck, OnDestroy,
-  ViewContainerRef, ViewChild, ComponentRef, Renderer, ComponentFactoryResolver,
+  ViewContainerRef, ViewChild, ComponentRef, Renderer2, ComponentFactoryResolver,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent } from '../services/formly.event.emitter';
@@ -33,7 +33,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
   constructor(
     private elementRef: ElementRef,
     private formlyPubSub: FormlyPubSub,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
@@ -237,7 +237,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
       }
     }
 
-    this.renderer.setElementStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
+    this.renderer.setStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
     if (this.field.fieldGroup) {
       for (let i = 0; i < this.field.fieldGroup.length; i++) {
         this.psEmit(this.field.fieldGroup[i].key, 'hidden', value);
