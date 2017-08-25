@@ -12,7 +12,7 @@ import { FieldWrapper } from '@ngx-formly/core';
         <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
         <span *ngIf="to.addonLeft.text">{{ to.addonLeft.text }}</span>
       </div>
-      <ng-container #fieldComponent></ng-container>
+      <ng-template #fieldComponent></ng-template>
       <div class="input-group-addon"
         *ngIf="to.addonRight"
         [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"

@@ -5,7 +5,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-label',
   template: `
     <label [attr.for]="id" class="form-control-label">{{ to.label }}</label>
-    <ng-container #fieldComponent></ng-container>
+    <ng-template #fieldComponent></ng-template>
   `,
 })
 export class FormlyWrapperLabel extends FieldWrapper {
