@@ -1,4 +1,4 @@
-import { Directive, HostListener, ElementRef, Input, Renderer, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, SimpleChange, Renderer2 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from './formly.field.config';
 
@@ -20,7 +20,7 @@ export class FormlyAttributes implements OnChanges {
   }
 
   constructor(
-    private renderer: Renderer,
+    private renderer: Renderer2,
     private elementRef: ElementRef,
   ) {}
 
@@ -29,7 +29,7 @@ export class FormlyAttributes implements OnChanges {
       const fieldChanges = changes['field'];
       this.attributes
         .filter(attr => this.canApplyRender(fieldChanges, attr))
-        .map(attr => this.renderer.setElementAttribute(
+        .map(attr => this.renderer.setAttribute(
           this.elementRef.nativeElement, attr, this.getPropValue(this.field, attr),
         ));
 
@@ -39,8 +39,8 @@ export class FormlyAttributes implements OnChanges {
           this.elementRef.nativeElement, statement, this.getStatementValue(statement),
         ));
 
-      if ((fieldChanges.previousValue || {}).focus !== (fieldChanges.currentValue || {}).focus) {
-        this.renderer.invokeElementMethod(this.elementRef.nativeElement, this.field.focus ? 'focus' : 'blur', []);
+      if ((fieldChanges.previousValue || {}).focus !== (fieldChanges.currentValue || {}).focus && this.elementRef.nativeElement.focus) {
+        this.elementRef.nativeElement[this.field.focus ? 'focus' : 'blur']();
       }
     }
   }
@@ -55,7 +55,7 @@ export class FormlyAttributes implements OnChanges {
       return field.templateOptions[prop];
     }
 
-    return field[prop];
+    return field[prop] || '';
   }
 
   private getStatementValue(statement: string) {
