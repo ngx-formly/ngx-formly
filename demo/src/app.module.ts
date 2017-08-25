@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormlyModule, FormlyBootstrapModule } from 'ng-formly';
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 import { NgFormlyConfig, FORMLY_COMPONENTS } from './formly';
 import { SuperHerosService } from './services';

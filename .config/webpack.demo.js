@@ -12,7 +12,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
-      'ng-formly':  path.join(__dirname, '..', 'src'),
+      '@ngx-formly/core':  path.join(__dirname, '..', 'src/core'),
+      '@ngx-formly/bootstrap':  path.join(__dirname, '..', 'src/ui-bootstrap'),
     },
   },
   module: {

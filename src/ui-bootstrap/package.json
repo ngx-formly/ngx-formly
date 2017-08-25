@@ -1,0 +1,10 @@
+{
+  "name": "@ngx-formly/bootstrap",
+  "version": "FORMLY-VERSION",
+  "description": "",
+  "license": "MIT",
+  "dependencies": {
+    "tslib": "^1.7.1",
+    "@ngx-formly/core": "FORMLY-VERSION"
+  }
+}

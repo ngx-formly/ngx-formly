@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { FieldType, FormlyFormBuilder } from 'ng-formly';
+import { FieldType, FormlyFormBuilder } from '@ngx-formly/core';
 import * as clonedeep from 'lodash.clonedeep';
 
 @Component({

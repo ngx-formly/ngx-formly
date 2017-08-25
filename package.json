@@ -1,6 +1,6 @@
 {
-  "name": "ng-formly",
-  "version": "1.0.0-rc.10",
+  "name": "@ngx-formly/platform",
+  "version": "2.0.0-alpha.1",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -12,20 +12,16 @@
   "scripts": {
     "contrib:add": "all-contributors add",
     "contrib:generate": "all-contributors generate",
-    "ngc": "./node_modules/.bin/ngc",
-    "lint": "./node_modules/.bin/tslint 'src/**/*.ts' 'demo/**/*.ts'",
+    "lint": "tslint 'src/**/*.ts' 'demo/**/*.ts'",
+    "postinstall": "patch --forward node_modules/ng-packagr/lib/steps/ngc.js .config/ng-packagr.patch || true",
     "commit": "npm run build && git-cz",
     "prepublish": "npm run build",
-    "build": "npm run build:lib && npm run build:bundles",
-    "prebuild:lib": "shx rm -rf ./lib",
-    "build:lib": "npm run ngc -- --project tsconfig.build.json",
-    "prebuild:bundles": "shx rm -rf ./bundles",
-    "build:bundles": "npm run build:bundles:compile && npm run build:bundles:minify",
-    "build:bundles:compile": "./node_modules/.bin/webpack --config .config/webpack.build.js",
-    "build:bundles:minify": "uglifyjs bundles/ng-formly.umd.js --output bundles/ng-formly.umd.min.js --in-source-map bundles/ng-formly.umd.js.map --source-map bundles/ng-formly.umd.min.js.map",
+    "build": "npm run build-core && npm run build-bootstrap && node .config/build.js",
+    "build-core": "ng-packagr -p src/core/ng-package.json",
+    "build-bootstrap": "ng-packagr -p src/ui-bootstrap/ng-package.json",
     "demo": "node_modules/.bin/webpack-dashboard --title ng-formly-demo -- node_modules/.bin/webpack-dev-server --quiet --port 9000 --content-base demo --config .config/webpack.demo.js --open",
-    "test": "./node_modules/.bin/karma start",
-    "test-watch": "./node_modules/.bin/karma start --no-single-run --auto-watch"
+    "test": "karma start",
+    "test-watch": "karma start --no-single-run --auto-watch"
   },
   "keywords": [
     "angular",
@@ -54,13 +50,13 @@
     "tslib": "^1.7.1"
   },
   "devDependencies": {
-    "@angular/common": "^2.4.10",
-    "@angular/compiler": "^2.4.10",
-    "@angular/compiler-cli": "^2.4.10",
-    "@angular/core": "^2.4.10",
-    "@angular/forms": "^2.4.10",
-    "@angular/platform-browser": "^2.4.10",
-    "@angular/platform-browser-dynamic": "^2.4.10",
+    "@angular/common": "^4.3.6",
+    "@angular/compiler": "^4.3.6",
+    "@angular/compiler-cli": "^4.3.6",
+    "@angular/core": "^4.3.6",
+    "@angular/forms": "^4.3.6",
+    "@angular/platform-browser": "^4.3.6",
+    "@angular/platform-browser-dynamic": "^4.3.6",
     "@types/jasmine": "2.5.40",
     "@types/node": "^7.0.22",
     "angular2-template-loader": "^0.6.2",
@@ -82,18 +78,18 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.3",
     "lodash.clonedeep": "^4.5.0",
+    "ng-packagr": "^1.0.0-pre.16",
     "phantomjs-prebuilt": "^2.1.14",
     "raw-loader": "^0.5.1",
     "remap-istanbul": "^0.9.5",
-    "rxjs": "^5.4.1",
+    "rxjs": "^5.4.3",
     "shx": "^0.2.2",
     "tslint": "^5.4.3",
-    "typescript": "^2.3.3",
-    "uglify-js": "^2.8.22",
+    "typescript": "^2.4.2",
     "webpack": "^3.0.0",
     "webpack-dashboard": "^0.4.0",
     "webpack-dev-server": "^2.5.0",
-    "zone.js": "^0.8.12"
+    "zone.js": "^0.8.17"
   },
   "config": {
     "commitizen": {
