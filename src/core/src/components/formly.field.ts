@@ -15,7 +15,7 @@ import { map } from 'rxjs/operator/map';
 @Component({
   selector: 'formly-field',
   template: `
-    <ng-container #fieldComponent></ng-container>
+    <ng-template #fieldComponent></ng-template>
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
   `,
 })
