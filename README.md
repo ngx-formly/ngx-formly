@@ -24,18 +24,24 @@ application's forms.
 
 ## Quick Start
 
-#### 1. Install ng-formly
+#### 1. Install @ngx-formly/core package:
 ```bash
-  npm install ng-formly --save
+  npm install @ngx-formly/core --save
 ```
 
-#### 2. Import the `FormlyModule`:
+#### 2. Choose and install your UI (pre-defined types/templates) package:
+```bash
+  npm install @ngx-formly/bootstrap --save
+```
+
+#### 3. Import the `FormlyModule` and ui module:
 
 ```ts
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
+import {FormlyModule} from '@ngx-formly/core';
+import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 import {AppComponent} from './app';
 
 @NgModule({
@@ -58,7 +64,7 @@ export class AppModule {
 ```ts
 import {Component} from '@angular/core';
 import {Validators, FormGroup} from '@angular/forms';
-import {FormlyFieldConfig} from 'ng-formly';
+import {FormlyFieldConfig} from '@ngx-formly/core';
 
 @Component({
   selector: 'app',
@@ -125,7 +131,7 @@ See the [issues labeled enhancement](https://github.com/formly-js/angular2-forml
 
  - [Bootstrap](https://github.com/formly-js/ng-formly/tree/master/src/ui-bootstrap)
     ```ts
-      import {FormlyBootstrapModule} from 'ng-formly';
+      import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
     ```
 
 ## Thanks
