@@ -86,9 +86,7 @@ export class FormlyConfig {
       throw new Error(`[Formly Error] There is no type by the name of "${name}"`);
     }
 
-    if (!this.types[name].component && this.types[name].extends) {
-      this.types[name].component = this.getType(this.types[name].extends).component;
-    }
+    this.mergeExtendedType(name);
 
     return this.types[name];
   }
@@ -99,10 +97,7 @@ export class FormlyConfig {
       throw new Error(`[Formly Error] There is no type by the name of "${name}"`);
     }
 
-    if (!this.types[name].component && this.types[name].extends) {
-      this.types[name].component = this.getType(this.types[name].extends).component;
-    }
-
+    this.mergeExtendedType(name);
     if (this.types[name].defaultOptions) {
       reverseDeepMerge(field, this.types[name].defaultOptions);
     }
@@ -164,6 +159,21 @@ export class FormlyConfig {
 
   setManipulator(manipulator: ManipulatorOption) {
     new manipulator.class()[manipulator.method](this);
+  }
+
+  private mergeExtendedType(name: string) {
+    if (!this.types[name].extends) {
+      return;
+    }
+
+    const extendedType = this.getType(this.types[name].extends);
+    if (!this.types[name].component) {
+      this.types[name].component = extendedType.component;
+    }
+
+    if (!this.types[name].wrappers) {
+      this.types[name].wrappers = extendedType.wrappers;
+    }
   }
 }
 export interface TypeOption {
