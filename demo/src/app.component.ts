@@ -251,6 +251,7 @@ export class AppComponent {
         key: 'interest',
         className: 'col-md-6',
         templateOptions: {
+          disabled: true,
           options: [{
             key: 'sports',
             value: 'Sports',

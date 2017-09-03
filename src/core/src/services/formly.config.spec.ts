@@ -45,6 +45,22 @@ describe('FormlyConfig service', () => {
       const config = new FormlyConfig();
       expect(() => config.getType('custom_input')).toThrowError('[Formly Error] There is no type by the name of "custom_input"');
     });
+
+    it('should extends component + wrappers when not defined', () => {
+      const config = new FormlyConfig();
+      config.setType([
+        { name: 'custom_input1', component: TestComponent, wrappers: ['label'] },
+        { name: 'custom_input2', extends: 'custom_input1' },
+      ]);
+
+      expect(config.getType('custom_input2')).toEqual({
+        name: 'custom_input2',
+        component: TestComponent,
+        wrappers: ['label'],
+        extends: 'custom_input1',
+        defaultOptions: undefined,
+      });
+    });
   });
 
   describe('validators', () => {
