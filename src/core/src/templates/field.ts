@@ -9,16 +9,8 @@ export abstract class Field {
   @Input() options: any;
 
   get key() { return this.field.key; }
+
   get formControl(): AbstractControl { return this.field.formControl || this.form.get(this.key); }
-
-  /**
-   * @deprecated Use `to` instead.
-   **/
-  get templateOptions(): FormlyTemplateOptions {
-    console.warn(`${this.constructor.name}: 'templateOptions' is deprecated. Use 'to' instead.`);
-
-    return this.to;
-  }
 
   get to(): FormlyTemplateOptions { return this.field.templateOptions; }
 
