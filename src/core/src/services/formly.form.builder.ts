@@ -250,10 +250,14 @@ export class FormlyFormBuilder {
       formControl = field.component.createControl(model, field);
     } else {
       formControl = new FormControl(
-        { value: model, disabled: field.templateOptions.disabled },
+        model,
         field.validators ? field.validators.validation : undefined,
         field.asyncValidators ? field.asyncValidators.validation : undefined,
       );
+    }
+
+    if (field.templateOptions.disabled) {
+      formControl.disable();
     }
 
     this.addControl(form, name, formControl, field);
