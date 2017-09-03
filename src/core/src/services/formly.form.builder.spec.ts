@@ -106,6 +106,7 @@ describe('FormlyFormBuilder service', () => {
     it('should execute field expression during form build', () => {
       field = {
         key: 'title',
+        type: 'input',
         hideExpression: '!model',
         expressionProperties: {
           'templateOptions.disabled': 'undefined !== model',
@@ -115,6 +116,7 @@ describe('FormlyFormBuilder service', () => {
 
       builder.buildForm(form, [field], {}, {});
       expect(field.templateOptions.disabled).toBeTruthy();
+      expect(field.formControl.status).toEqual('DISABLED');
     });
   });
 
