@@ -1,6 +1,6 @@
 const fs = require("fs"),
   packages = [
-    'boostrap',
+    'bootstrap',
     'core',
   ];
 
