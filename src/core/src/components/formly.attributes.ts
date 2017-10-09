@@ -25,8 +25,8 @@ export class FormlyAttributes implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['field']) {
-      const fieldChanges = changes['field'];
+    if (changes.field) {
+      const fieldChanges = changes.field;
       this.attributes
         .filter(attr => this.canApplyRender(fieldChanges, attr))
         .map(attr => this.renderer.setAttribute(

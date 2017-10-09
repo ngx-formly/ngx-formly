@@ -62,9 +62,7 @@ export class FormlyConfig {
 
   setType(options: TypeOption | TypeOption[]) {
     if (Array.isArray(options)) {
-      options.map((option) => {
-        this.setType(option);
-      });
+      options.map((option) => this.setType(option));
     } else {
       if (!this.types[options.name]) {
         this.types[options.name] = <TypeOption>{};
@@ -74,9 +72,7 @@ export class FormlyConfig {
       this.types[options.name].extends = options.extends;
       this.types[options.name].defaultOptions = options.defaultOptions;
       if (options.wrappers) {
-        options.wrappers.map((wrapper) => {
-          this.setTypeWrapper(options.name, wrapper);
-        });
+        options.wrappers.map((wrapper) => this.setTypeWrapper(options.name, wrapper));
       }
     }
   }

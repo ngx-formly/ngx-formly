@@ -8,7 +8,6 @@ import {
   FieldType,
   FieldWrapper,
 } from '../core';
-import { FormlyValueChangeEvent } from '../services/formly.event.emitter';
 import { evalStringExpression, evalExpressionValueSetter } from './../utils';
 
 const createTestComponent = (html: string) =>
@@ -221,7 +220,7 @@ describe('FormlyField Component', () => {
       spyOn(fixture.componentInstance, 'changeModel');
       fixture.componentInstance.form.get('title').setValue('address');
 
-      expect(fixture.componentInstance.changeModel).toHaveBeenCalledWith(new FormlyValueChangeEvent('title', 'address'));
+      expect(fixture.componentInstance.changeModel).toHaveBeenCalledWith({ key: 'title', value: 'address' });
     });
 
     it('should change model value after debounce time', fakeAsync(() => {
@@ -235,7 +234,7 @@ describe('FormlyField Component', () => {
 
       expect(fixture.componentInstance.changeModel).not.toHaveBeenCalled();
       tick(6);
-      expect(fixture.componentInstance.changeModel).toHaveBeenCalledWith(new FormlyValueChangeEvent('title', 'address'));
+      expect(fixture.componentInstance.changeModel).toHaveBeenCalledWith({ key: 'title', value: 'address' });
     }));
   });
 

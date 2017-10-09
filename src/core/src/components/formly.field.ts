@@ -3,12 +3,12 @@ import {
   ViewContainerRef, ViewChild, ComponentRef, Renderer2, ComponentFactoryResolver,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormlyPubSub, FormlyEventEmitter, FormlyValueChangeEvent } from '../services/formly.event.emitter';
 import { FormlyConfig, ManipulatorWrapper, TypeOption } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { evalExpression } from '../utils';
+import { FormlyFieldConfig, FormlyOptions, FormlyValueChangeEvent } from './formly.field.config';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { FormlyFieldConfig } from './formly.field.config';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { map } from 'rxjs/operator/map';
 
@@ -23,7 +23,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
-  @Input() options: any = {};
+  @Input() options: FormlyOptions = {};
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 
@@ -32,7 +32,6 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
 
   constructor(
     private elementRef: ElementRef,
-    private formlyPubSub: FormlyPubSub,
     private renderer: Renderer2,
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -54,14 +53,6 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     this.componentRefs.map(componentRef => componentRef.destroy());
     this._subscriptions.map(subscriber => subscriber.unsubscribe());
     this._subscriptions = this.componentRefs = [];
-
-    if (this.field && this.field.key) {
-      this.formlyPubSub.removeEmitter(this.field.key);
-    }
-  }
-
-  changeModel(event: FormlyValueChangeEvent) {
-    this.modelChange.emit(event);
   }
 
   private createFieldComponents() {
@@ -83,17 +74,10 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
           });
         }
 
-        this._subscriptions.push(valueChanges.subscribe((event) => this
-          .changeModel(new FormlyValueChangeEvent(this.field.key, event)),
+        this._subscriptions.push(valueChanges.subscribe((event) =>
+          this.modelChange.emit({ key: this.field.key, value: event }),
         ));
       }
-
-      let update = new FormlyEventEmitter();
-      this._subscriptions.push(update.subscribe((option) => {
-        this.field.templateOptions[option.key] = option.value;
-      }));
-
-      this.formlyPubSub.setEmitter(this.field.key, update);
     } else if (this.field.fieldGroup || this.field.fieldArray) {
       this.createFieldComponent();
     }
@@ -164,12 +148,6 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     return ref;
   }
 
-  private psEmit(fieldKey: string, eventKey: string, value: any) {
-    if (this.formlyPubSub && this.formlyPubSub.getEmitter(fieldKey) && this.formlyPubSub.getEmitter(fieldKey).emit) {
-      this.formlyPubSub.getEmitter(fieldKey).emit(new FormlyValueChangeEvent(eventKey, value));
-    }
-  }
-
   private checkVisibilityChange() {
     if (this.field && this.field.hideExpression) {
       const hideExpressionResult: boolean = !!evalExpression(
@@ -228,12 +206,10 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     }
 
     this.renderer.setStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
-    if (this.field.fieldGroup) {
-      for (let i = 0; i < this.field.fieldGroup.length; i++) {
-        this.psEmit(this.field.fieldGroup[i].key, 'hidden', value);
-      }
-    } else {
-      this.psEmit(this.field.key, 'hidden', value);
+
+    this.field.templateOptions.hidden = value;
+    if (this.options.fieldChanges) {
+      this.options.fieldChanges.next(<FormlyValueChangeEvent> { field: this.field, type: 'hidden', value });
     }
   }
 
