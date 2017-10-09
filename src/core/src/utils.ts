@@ -172,7 +172,7 @@ export function evalExpressionValueSetter(expression: string, argNames: string[]
   }
 }
 
-export function evalExpression(expression: string | Function | boolean, thisArg: any, argVal: any[]): boolean {
+export function evalExpression(expression: string | Function | boolean, thisArg: any, argVal: any[]): any {
   if (expression instanceof Function) {
     return expression.apply(thisArg, argVal);
   } else {
