@@ -277,27 +277,10 @@ export class FormlyFormBuilder {
       case 'maxLength':
         return Validators.maxLength(value);
       case 'min':
+        return Validators.min(value);
       case 'max':
-        return (changes) => {
-          if (this.checkMinMax(opt, changes.value, value)) {
-            return null;
-          } else {
-            return {[opt]: true};
-          }
-        };
+        return Validators.max(value);
     }
-  }
-
-  private checkMinMax(opt, changes, value) {
-    if (changes == null || changes === '' ) {
-      return true;
-    }
-
-    if (opt === 'min') {
-        return parseInt(changes) >= value;
-    }
-
-    return parseInt(changes) <= value;
   }
 
   private addControl(form: FormGroup, key: string, formControl: AbstractControl, field: FormlyFieldConfig) {
