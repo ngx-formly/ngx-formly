@@ -40,7 +40,7 @@ export const NgFormlyConfig: ConfigOption = {
   ],
   extras: {
     showError: (field: Field) => {
-      return (field.formState.submitted || field.formControl.touched) && !field.formControl.valid;
+      return (field.formState.submitted || field.formControl.touched || (field.field.validation && field.field.validation.show)) && !field.formControl.valid;
     },
   },
 };
