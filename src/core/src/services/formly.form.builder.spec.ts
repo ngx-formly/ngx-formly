@@ -29,7 +29,7 @@ describe('FormlyFormBuilder service', () => {
       field = { key: 'title', type: 'input', templateOptions: { placeholder: 'Title' } };
       builder.buildForm(form, [field], {}, {});
 
-      expect(field.templateOptions).toEqual({ label: '', placeholder: 'Title', focus: false });
+      expect(field.templateOptions).toEqual(<any> { label: '', placeholder: 'Title', focus: false });
     });
 
     it('should set the default value if the specified key and type is defined for fieldGroup', () => {
@@ -38,7 +38,7 @@ describe('FormlyFormBuilder service', () => {
         fieldGroup: [{ key: 'title', type: 'input', templateOptions: { placeholder: 'Title' } }],
       };
       builder.buildForm(form, [field], {}, {});
-      expect(field.fieldGroup[0].templateOptions).toEqual({ label: '', placeholder: 'Title', focus: false });
+      expect(field.fieldGroup[0].templateOptions).toEqual(<any> { label: '', placeholder: 'Title', focus: false });
     });
   });
 
