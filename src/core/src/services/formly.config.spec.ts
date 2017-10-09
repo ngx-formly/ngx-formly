@@ -9,6 +9,9 @@ describe('FormlyConfig service', () => {
       wrappers: [{ name: 'layout', component: TestComponent }],
       types: [{ name: 'input' }],
       validators: [{ name: 'required', validation: Validators.required }],
+      validationMessages: [
+        { name: 'required', message: 'This field is required.' },
+      ],
     }]);
   });
 
@@ -74,6 +77,18 @@ describe('FormlyConfig service', () => {
     it('should throw when validator not found', () => {
       const config = new FormlyConfig();
       expect(() => config.getValidator('custom_validator')).toThrowError('[Formly Error] There is no validator by the name of "custom_validator"');
+    });
+  });
+
+  describe('message validation', () => {
+    it('get validator error message', () => {
+      expect(config.getValidatorMessage('required')).toEqual('This field is required.');
+      expect(config.getValidatorMessage('maxlength')).toEqual(undefined);
+    });
+
+    it('add validator error message', () => {
+      config.addValidatorMessage('maxlength', 'Maximum Length Exceeded.');
+      expect(config.getValidatorMessage('maxlength')).toEqual('Maximum Length Exceeded.');
     });
   });
 });

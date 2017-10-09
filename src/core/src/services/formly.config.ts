@@ -19,6 +19,7 @@ export class FormlyConfig {
   };
   validators: {[name: string]: ValidatorOption} = {};
   wrappers: {[name: string]: WrapperOption} = {};
+  messages: { [name: string]: string; } = {};
 
   templateManipulators: {
     preWrapper: ManipulatorWrapper[];
@@ -54,6 +55,9 @@ export class FormlyConfig {
     }
     if (config.manipulators) {
       config.manipulators.map(manipulator => this.setManipulator(manipulator));
+    }
+    if (config.validationMessages) {
+      config.validationMessages.map(validation => this.addValidatorMessage(validation.name, validation.message));
     }
     if (config.extras) {
       this.extras = { ...this.extras, ...config.extras };
@@ -151,6 +155,14 @@ export class FormlyConfig {
     }
 
     return this.validators[name];
+  }
+
+  addValidatorMessage(name: string, message: string) {
+    this.messages[name] = message;
+  }
+
+  getValidatorMessage(name: string) {
+    return this.messages[name];
   }
 
   setManipulator(manipulator: ManipulatorOption) {
