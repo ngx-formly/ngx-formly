@@ -1,7 +1,6 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { FormlyValueChangeEvent } from './../services/formly.event.emitter';
-import { FormlyFieldConfig } from './formly.field.config';
+import { FormlyFieldConfig, FormlyOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
 
@@ -21,7 +20,7 @@ export class FormlyForm implements OnChanges {
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
-  @Input() options: any;
+  @Input() options: FormlyOptions;
   /** @internal */
   @Input() buildForm: boolean = true;
   private initialModel: any;
@@ -29,7 +28,7 @@ export class FormlyForm implements OnChanges {
   constructor(private formlyBuilder: FormlyFormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['fields']) {
+    if (changes.fields) {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
@@ -37,7 +36,7 @@ export class FormlyForm implements OnChanges {
         this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       }
       this.updateInitialValue();
-    } else if (changes['model'] && this.fields && this.fields.length > 0) {
+    } else if (changes.model && this.fields && this.fields.length > 0) {
       this.form.patchValue(this.model);
     }
   }
@@ -49,7 +48,7 @@ export class FormlyForm implements OnChanges {
     return this.model;
   }
 
-  changeModel(event: FormlyValueChangeEvent) {
+  changeModel(event: { key: string, value: any }) {
     assignModelValue(this.model, event.key, event.value);
   }
 

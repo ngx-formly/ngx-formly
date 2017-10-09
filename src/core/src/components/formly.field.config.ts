@@ -1,4 +1,7 @@
 import { FormGroup, AbstractControl } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
+import { Field } from './../templates/field';
+
 export interface FormlyFieldConfig {
   key?: string;
   id?: string;
@@ -76,3 +79,19 @@ export interface FormlyLifeCycleOptions {
   afterViewChecked?: FormlyLifeCycleFn;
   onDestroy?: FormlyLifeCycleFn;
 }
+
+export interface FormlyOptions {
+  updateInitialValue?: () => void;
+  resetModel?: (model?: any) => void;
+  formState?: any;
+  fieldChanges?: Subject<FormlyValueChangeEvent>;
+  fieldTransform?: any;
+  showError?: (field: Field) => boolean;
+}
+
+export interface FormlyValueChangeEvent {
+  field: FormlyFieldConfig;
+  type: string;
+  value: any;
+}
+

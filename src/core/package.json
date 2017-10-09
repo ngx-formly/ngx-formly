@@ -7,6 +7,6 @@
     "tslib": "^1.7.1"
   },
   "peerDependencies": {
-    "@angular/forms": "^4.0"
+    "@angular/forms": ">=4.0.0"
   }
 }
