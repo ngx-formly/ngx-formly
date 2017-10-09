@@ -213,12 +213,6 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
         if (formControl.status !== 'DISABLED' && this.field.templateOptions.disabled) {
             formControl.disable();
         }
-        if (!formControl.dirty && formControl.invalid && this.field.validation && !this.field.validation.show) {
-          formControl.markAsUntouched();
-        }
-        if (!formControl.dirty && formControl.invalid && this.field.validation && this.field.validation.show) {
-          formControl.markAsTouched();
-        }
       }
     }
   }

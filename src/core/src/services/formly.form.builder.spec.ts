@@ -199,17 +199,19 @@ describe('FormlyFormBuilder service', () => {
       it('should show error when option `show` is true', () => {
         field.validators = { validation: ['required'] };
         field.validation = { show: true };
-        builder.buildForm(form, [field], {}, {});
+        const options: any = {};
+        builder.buildForm(form, [field], {}, options);
 
-        expect(form.get('title').touched).toBeTruthy();
+        expect(options.showError({ field: field, formControl: form })).toBeTruthy();
       });
 
       it('should not show error when option `show` is false', () => {
         field.validators = { validation: ['required'] };
         field.validation = { show: false };
-        builder.buildForm(form, [field], {}, {});
+        const options: any = {};
+        builder.buildForm(form, [field], {}, options);
 
-        expect(form.get('title').touched).toBeFalsy();
+        expect(options.showError({ field: field, formControl: form })).toBeFalsy();
       });
     });
 
