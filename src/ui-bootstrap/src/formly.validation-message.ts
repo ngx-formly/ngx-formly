@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FormlyFieldConfig, FormlyValidationMessages } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-validation-message',
@@ -10,12 +10,12 @@ export class FormlyValidationMessage {
   @Input() fieldForm: FormControl;
   @Input() field: FormlyFieldConfig;
 
-  constructor(private formlyMessages: FormlyValidationMessages) {}
+  constructor(private formlyConfig: FormlyConfig) {}
 
   get errorMessage(): string {
     for (let error in this.fieldForm.errors) {
       if (this.fieldForm.errors.hasOwnProperty(error)) {
-        let message: string|Function = this.formlyMessages.getValidatorErrorMessage(error);
+        let message: string | Function = this.formlyConfig.getValidatorMessage(error);
 
         if (this.field.validation && this.field.validation.messages && this.field.validation.messages[error]) {
           message = this.field.validation.messages[error];
