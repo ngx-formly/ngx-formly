@@ -72,7 +72,7 @@ import {FormlyFieldConfig} from 'ng-formly';
 })
 export class HelloApp {
   form: FormGroup = new FormGroup({});
-  userFields: FormlyFieldConfig = [{
+  userFields: Array<FormlyFieldConfig> = [{
     className: 'row',
     fieldGroup: [{
         className: 'col-xs-6',
