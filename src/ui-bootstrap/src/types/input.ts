@@ -5,7 +5,7 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-input',
   template: `
     <input [type]="type" [formControl]="formControl" class="form-control"
-      [formlyAttributes]="field" [ngClass]="{'form-control-danger': valid}">
+      [formlyAttributes]="field" [class.is-invalid]="valid">
     `,
 })
 export class FormlyFieldInput extends FieldType {
