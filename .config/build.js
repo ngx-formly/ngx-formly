@@ -1,7 +1,8 @@
 const fs = require("fs"),
   packages = [
-    'bootstrap',
     'core',
+    'bootstrap',
+    'material',
   ];
 
 // update `FORMLY-VERSION` in package.json for all sub-packages

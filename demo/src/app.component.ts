@@ -46,6 +46,7 @@ export class AppComponent {
       }, {
         type: 'radio',
         key: 'title2',
+        className: 'col-12',
         hide: true,
         templateOptions: {
           options: [{
@@ -60,8 +61,9 @@ export class AppComponent {
         },
       }, {
         fieldGroupClassName: 'row',
+        className: 'col-12',
         fieldGroup: [{
-          className: 'col-md-6',
+          className: 'col-sm-6',
           key: 'email',
           type: 'input',
           templateOptions: {
@@ -83,7 +85,7 @@ export class AppComponent {
             'templateOptions.disabled': '!model.password',
           },
         }, {
-          className: 'col-md-6',
+          className: 'col-sm-6',
           id: 'username',
           key: 'username',
           type: 'input',
@@ -110,7 +112,7 @@ export class AppComponent {
             uniqueUserName: (control: FormControl) => new Promise(resolve => resolve( control.value !== 'paul')),
           },
         }, {
-          className: 'col-md-6',
+          className: 'col-sm-6',
           key: 'password',
           type: 'input',
           templateOptions: {
@@ -125,7 +127,7 @@ export class AppComponent {
             validation: Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(2)]),
           },
         }, {
-          className: 'col-md-6',
+          className: 'col-sm-6',
           key: 'confirmPassword',
           type: 'input',
           templateOptions: {
@@ -141,7 +143,7 @@ export class AppComponent {
           className: 'section-label',
           template: '<br/><hr/>',
         }, {
-          className: 'col-md-4',
+          className: 'col-sm-4',
           key: 'select',
           type: 'select',
           templateOptions: {
@@ -156,7 +158,7 @@ export class AppComponent {
             placeholder: 'Select Gender',
           },
         } , {
-          className: 'col-md-4',
+          className: 'col-sm-4',
           key: 'selectSuperHero',
           type: 'select',
           templateOptions: {
@@ -178,12 +180,13 @@ export class AppComponent {
       }, {
         key: 'address',
         fieldGroupClassName: 'row',
+        className: 'col-12',
         wrappers: ['panel'],
         templateOptions: {
           title: 'Address',
         },
         fieldGroup: [{
-          className: 'col-md-6',
+          className: 'col-sm-6',
           type: 'input',
           key: 'street',
           validators: {
@@ -201,7 +204,7 @@ export class AppComponent {
             description: 'Enter a valid US Address',
           },
         }, {
-          className: 'col-md-3',
+          className: 'col-sm-3',
           type: 'input',
           key: 'city',
           templateOptions: {
@@ -220,7 +223,7 @@ export class AppComponent {
             },
           },
         }, {
-          className: 'col-md-3',
+          className: 'col-sm-3',
           type: 'input',
           key: 'zip',
           templateOptions: {
@@ -249,7 +252,7 @@ export class AppComponent {
       }, {
         type: 'multicheckbox',
         key: 'interest',
-        className: 'col-md-6',
+        className: 'col-sm-6',
         templateOptions: {
           disabled: true,
           options: [{
@@ -268,7 +271,7 @@ export class AppComponent {
       }, {
         type: 'multicheckbox',
         key: 'hobbies',
-        className: 'col-md-6',
+        className: 'col-sm-6',
         templateOptions: {
           options: [{
             key: 'sports',
@@ -374,7 +377,7 @@ export class AppComponent {
           },
           fieldGroup: [
             {
-              className: 'col-md-4',
+              className: 'col-sm-4',
               type: 'input',
               key: 'investmentName',
               templateOptions: {
@@ -385,7 +388,7 @@ export class AppComponent {
             {
               type: 'input',
               key: 'investmentDate',
-              className: 'col-xs-4',
+              className: 'col-sm-4',
               optionsTypes: ['dateFormat'],
               templateOptions: {
                 label: 'Date of Investment:',
@@ -397,7 +400,7 @@ export class AppComponent {
             {
               type: 'input',
               key: 'stockIdentifier',
-              className: 'col-md-4',
+              className: 'col-sm-4',
               templateOptions: {
                 label: 'Stock Identifier:',
                 addonRight: {
