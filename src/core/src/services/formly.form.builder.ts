@@ -262,7 +262,7 @@ export class FormlyFormBuilder {
 
     this.addControl(form, name, formControl, field);
     if (field.validation && field.validation.show) {
-      form.get(field.key).markAsTouched();
+      formControl.markAsTouched();
     }
   }
 
