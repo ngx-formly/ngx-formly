@@ -3,11 +3,10 @@ import {
   ViewContainerRef, ViewChild, ComponentRef, Renderer2, ComponentFactoryResolver,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormlyConfig, ManipulatorWrapper, TypeOption } from '../services/formly.config';
+import { FormlyConfig, TypeOption } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { evalExpression } from '../utils';
 import { FormlyFieldConfig, FormlyOptions, FormlyValueChangeEvent } from './formly.field.config';
-import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { map } from 'rxjs/operator/map';

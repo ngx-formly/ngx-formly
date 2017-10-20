@@ -189,7 +189,7 @@ export interface TypeOption {
   component?: any;
   wrappers?: string[];
   extends?: string;
-  defaultOptions?: any;
+  defaultOptions?: FormlyFieldConfig;
 }
 
 export interface WrapperOption {

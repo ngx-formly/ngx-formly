@@ -15,11 +15,11 @@ import * as clonedeep from 'lodash.clonedeep';
         [ngClass]="field.fieldArray.fieldGroupClassName">
       </formly-form>
       <div class="col-md-2">
-        <button class="btn btn-danger" (click)="remove(i)">Remove</button>
+        <button class="btn btn-danger" type="button" (click)="remove(i)">Remove</button>
       </div>
     </div>
     <div style="margin:30px 0;">
-      <button class="btn btn-primary" (click)="add()">Add More Investments</button>
+      <button class="btn btn-primary" type="button" (click)="add()">Add More Investments</button>
     </div>
   `,
 })

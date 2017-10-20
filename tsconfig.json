@@ -14,7 +14,8 @@
     "importHelpers": true,
     "paths": {
       "@ngx-formly/core": ["./core/index"],
-      "@ngx-formly/bootstrap": ["./ui-bootstrap/index"]
+      "@ngx-formly/bootstrap": ["./ui-bootstrap/index"],
+      "@ngx-formly/material": ["./ui-material/index"]
     },
     "typeRoots": [
       "./node_modules/@types"

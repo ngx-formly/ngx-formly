@@ -1,0 +1,11 @@
+{
+  "name": "@ngx-formly/material",
+  "version": "FORMLY-VERSION",
+  "description": "",
+  "license": "MIT",
+  "dependencies": {
+    "tslib": "^1.7.1",
+    "@ngx-formly/core": "FORMLY-VERSION",
+    "@angular/material": "2.0.0-beta.12"
+  }
+}

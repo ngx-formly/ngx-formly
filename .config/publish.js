@@ -2,6 +2,7 @@ const execSync = require('child_process').execSync,
   packages = [
     'core',
     'bootstrap',
+    'material',
   ];
 
 packages.map(package => {
