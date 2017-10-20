@@ -156,6 +156,42 @@ describe('FormlyFormBuilder service', () => {
       expect(control).not.toBeNull();
       expect(control.value).toEqual('created by component');
     });
+
+    it('should add form control to form When `hide` is false', () => {
+      field = {
+        key: 'title',
+        type: 'input',
+        hideExpression: 'false',
+        validation: {
+          show: true,
+        },
+      };
+
+      builder.buildForm(form, [field], {}, {});
+      let control: FormControl = <FormControl> form.get('title');
+
+      expect(field.hide).toBeFalsy();
+      expect(field.formControl).not.toBeNull();
+      expect(control).not.toBeNull();
+    });
+
+    it('should not add form control to form when `hide` is true', () => {
+      field = {
+        key: 'title',
+        type: 'input',
+        hideExpression: 'true',
+        validation: {
+          show: true,
+        },
+      };
+
+      builder.buildForm(form, [field], {}, {});
+      let control: FormControl = <FormControl> form.get('title');
+
+      expect(field.hide).toBeTruthy();
+      expect(field.formControl).not.toBeNull();
+      expect(control).toBeNull();
+    });
   });
 
   describe('merge field options', () => {
