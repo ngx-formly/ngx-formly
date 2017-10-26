@@ -14,15 +14,6 @@ export abstract class Field {
 
   get to(): FormlyTemplateOptions { return this.field.templateOptions; }
 
-  /**
-   * @deprecated Use `showError` instead.
-   **/
-  get valid(): boolean {
-    console.warn(`${this.constructor.name}: 'valid' is deprecated. Use 'showError' instead.`);
-
-    return this.showError;
-  }
-
   get showError(): boolean { return this.options.showError(this); }
 
   get id(): string { return this.field.id; }
