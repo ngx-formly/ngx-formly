@@ -1,5 +1,5 @@
 {
-  "name": "@ngx-formly/platform",
+  "name": "@ngx-formly/common",
   "version": "2.0.0-alpha.8",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
@@ -21,7 +21,7 @@
     "build:core": "ng-packagr -p src/core/ng-package.json",
     "build:bootstrap": "ng-packagr -p src/ui-bootstrap/ng-package.json",
     "build:material": "ng-packagr -p src/ui-material/ng-package.json",
-    "build-publish": "npm run build && node .config/publish.js",
+    "release": "standard-version --prerelease alpha && npm run build && node .config/publish.js",
     "demo": "node_modules/.bin/webpack-dashboard --title ng-formly-demo -- node_modules/.bin/webpack-dev-server --quiet --port 9000 --content-base demo --config .config/webpack.demo.js --open",
     "test": "karma start",
     "test-watch": "karma start --no-single-run --auto-watch"
@@ -87,8 +87,9 @@
     "ng-packagr": "^1.3.0",
     "raw-loader": "^0.5.1",
     "remap-istanbul": "^0.9.5",
-    "rxjs": "^5.4.3",
+    "rxjs": "~5.4.3",
     "shx": "^0.2.2",
+    "standard-version": "^4.2.0",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3",
     "webpack": "^3.8.1",
