@@ -24,94 +24,81 @@ application's forms.
 
 ## Quick Start
 
-#### 1. Install @ngx-formly/core package:
+#### 1. Install @angular/forms and @ngx-formly/core packages:
 ```bash
-  npm install @ngx-formly/core --save
+  npm install @angular/forms @ngx-formly/core --save
 ```
 
 #### 2. Choose and install your UI (pre-defined types/templates) package:
+
+- [Material2](https://github.com/angular/material2):
+  1. Ensure you have already installed material2 https://material.angular.io/guide/getting-started
+  2. Install `@ngx-formly/material`
+```bash
+  npm install @ngx-formly/material --save
+```
+
+- [Bootstrap](https://getbootstrap.com):
+
 ```bash
   npm install @ngx-formly/bootstrap --save
 ```
 
-#### 3. Import the `FormlyModule` and ui module:
+#### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
 
 ```ts
 import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {BrowserModule} from '@angular/platform-browser';
+import {ReactiveFormsModule} from '@angular/forms';
 import {FormlyModule} from '@ngx-formly/core';
 import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
-import {AppComponent} from './app';
+
+// for material2 import `FormlyMaterialModule`:
+// import {FormlyMaterialModule} from '@ngx-formly/material';
 
 @NgModule({
   imports: [
-    BrowserModule,
-    FormsModule,
+    ...,
     ReactiveFormsModule,
     FormlyModule.forRoot(),
     FormlyBootstrapModule,
+
+    // for material2 use:
+    // FormlyMaterialModule
   ],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
 ```
 
 #### 3. Define the form config in your component:
 
 ```ts
 import {Component} from '@angular/core';
-import {Validators, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {FormlyFieldConfig} from '@ngx-formly/core';
 
 @Component({
   selector: 'app',
   template: `
-    <form class="formly" role="form" novalidate [formGroup]="form" (ngSubmit)="submit(user)">
-        <formly-form [model]="user" [fields]="userFields">
-            <button type="submit" class="btn btn-default">Button</button>
-        </formly-form>
+    <form [formGroup]="form" (ngSubmit)="submit(userModel)">
+      <formly-form [model]="userModel" [fields]="userFields">
+        <button type="submit" class="btn btn-default">Submit</button>
+      </formly-form>
     </form>
   `,
 })
-export class HelloApp {
-  form: FormGroup = new FormGroup({});
+export class AppComponent {
+  form = new FormGroup({});
+  userModel = { email: 'email@gmail.com' };
   userFields: Array<FormlyFieldConfig> = [{
-    className: 'row',
-    fieldGroup: [{
-        className: 'col-xs-6',
-        key: 'email',
-        type: 'input',
-        templateOptions: {
-            type: 'email',
-            label: 'Email address',
-            placeholder: 'Enter email'
-        },
-        validators: {
-          validation: Validators.compose([Validators.required])
-        }
-    }, {
-        className: 'col-xs-6',
-        key: 'password',
-        type: 'input',
-        templateOptions: {
-            type: 'password',
-            label: 'Password',
-            placeholder: 'Password',
-            pattern: ''
-        },
-        validators: {
-          validation: Validators.compose([Validators.required])
-        }
-    }]
+    key: 'email',
+    type: 'input',
+    templateOptions: {
+      type: 'email',
+      label: 'Email address',
+      placeholder: 'Enter email',
+      required: true,
+    }
   }];
-
-  user = {
-    email: 'email@gmail.com',
-    checked: false
-  };
 
   submit(user) {
     console.log(user);
@@ -124,18 +111,6 @@ From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms
 ## Roadmap
 
 See the [issues labeled enhancement](https://github.com/formly-js/angular2-formly/labels/enhancement)
-
-## Supported templates
-
- - [Material2](https://github.com/formly-js/ng-formly/tree/master/src/ui-material)
-    ```ts
-      import {FormlyMaterialModule} from '@ngx-formly/material';
-    ```
-
- - [Bootstrap](https://github.com/formly-js/ng-formly/tree/master/src/ui-bootstrap)
-    ```ts
-      import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
-    ```
 
 ## Thanks
 
