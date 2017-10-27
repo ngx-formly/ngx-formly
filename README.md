@@ -24,6 +24,8 @@ application's forms.
 
 ## Quick Start
 
+Follow these steps to get started with ng-formly. Also check out our [guides and demos](https://ng2.angular-formly.com/guides/introductory-example.html) for further examples.
+
 #### 1. Install @angular/forms and @ngx-formly/core packages:
 ```bash
   npm install @angular/forms @ngx-formly/core --save
