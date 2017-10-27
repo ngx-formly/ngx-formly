@@ -22,7 +22,7 @@
     "build:bootstrap": "ng-packagr -p src/ui-bootstrap/ng-package.json",
     "build:material": "ng-packagr -p src/ui-material/ng-package.json",
     "release": "standard-version --prerelease alpha && npm run build && node .config/publish.js",
-    "demo": "node_modules/.bin/webpack-dashboard --title ng-formly-demo -- node_modules/.bin/webpack-dev-server --quiet --port 9000 --content-base demo --config .config/webpack.demo.js --open",
+    "demo": "ng serve --port 4100 --open",
     "test": "karma start",
     "test-watch": "karma start --no-single-run --auto-watch"
   },
@@ -30,6 +30,7 @@
     "angular",
     "forms",
     "ng-formly",
+    "ngx-formly",
     "formly",
     "angular 2",
     "angular 2 forms",
@@ -37,7 +38,7 @@
     "form library"
   ],
   "license": "MIT",
-  "description": "ng-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms. The formly-form Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
+  "description": "@ngx-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms. The formly-form Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formly-js/ng-formly.git"
@@ -55,6 +56,7 @@
   "devDependencies": {
     "@angular/animations": "^4.4.6",
     "@angular/cdk": "^2.0.0-beta.12",
+    "@angular/cli": "^1.4.9",
     "@angular/common": "^4.4.6",
     "@angular/compiler": "^4.4.6",
     "@angular/compiler-cli": "^4.4.6",
@@ -93,8 +95,6 @@
     "tslint": "^5.7.0",
     "typescript": "^2.5.3",
     "webpack": "^3.8.1",
-    "webpack-dashboard": "^1.0.0-5",
-    "webpack-dev-server": "^2.9.3",
     "zone.js": "^0.8.18"
   },
   "config": {

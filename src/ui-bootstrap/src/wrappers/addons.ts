@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -22,6 +22,8 @@ import { FieldWrapper } from '@ngx-formly/core';
       </div>
     </div>
   `,
+  styles: [`.input-group formly-field-input { display: inline-flex; }`],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FormlyWrapperAddons extends FieldWrapper {
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
