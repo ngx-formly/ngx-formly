@@ -4,7 +4,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ValidationService, SuperHerosService } from './services';
 
 @Component({
-  selector: 'formly-demo-hello-app',
+  selector: 'formly-app',
   templateUrl: './app.component.html',
 })
 export class AppComponent {

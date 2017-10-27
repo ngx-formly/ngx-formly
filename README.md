@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
 
-# ng-formly
+# @ngx-formly
 [![Angular Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
 [![Stories in Ready](https://badge.waffle.io/formly-js/ng-formly.png?label=ready&title=Ready)](https://waffle.io/formly-js/ng-formly)
@@ -18,7 +18,7 @@ Links:
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 
-angular2-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms.
+@ngx-formly is an Angular module which has a Components to help customize and render JavaScript/JSON configured forms.
 The `formly-form` Component and the `FormlyConfig` service are very powerful and bring unmatched maintainability to your
 application's forms.
 
