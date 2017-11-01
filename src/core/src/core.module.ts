@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS } from '@angular/core';
+import { NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS, isDevMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm } from './components/formly.form';
@@ -44,5 +44,11 @@ export class FormlyModule {
         { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
       ],
     };
+  }
+
+  constructor() {
+    if (isDevMode()) {
+      console.warn(`'ng-formy' is deprecated, use '@ngx-formly/core' instead`);
+    }
   }
 }

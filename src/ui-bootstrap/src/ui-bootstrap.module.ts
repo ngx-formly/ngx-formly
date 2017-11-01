@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '../../core';
@@ -14,4 +14,9 @@ import { FormlyValidationMessage } from './formly.validation-message';
   ],
 })
 export class FormlyBootstrapModule {
+  constructor() {
+    if (isDevMode()) {
+      console.warn(`'ng-formy' is deprecated, use '@ngx-formly/bootstrap' instead`);
+    }
+  }
 }
