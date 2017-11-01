@@ -1,5 +1,14 @@
 # Change Log
 
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.14...1.0.0) (2017-11-01)
+
+
+
+# Change Log
+
 
 ## [1.0.0-rc.10](https://github.com/formly-js/ng-formly/tree/1.0.0-rc.10) (2017-06-20)
 [Full Changelog](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.9...1.0.0-rc.10)
