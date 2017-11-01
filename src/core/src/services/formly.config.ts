@@ -1,10 +1,10 @@
-import { Injectable, Inject, OpaqueToken } from '@angular/core';
+import { Injectable, Inject, InjectionToken } from '@angular/core';
 import { FormlyGroup } from '../components/formly.group';
 import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
-export const FORMLY_CONFIG_TOKEN = new OpaqueToken('FORMLY_CONFIG_TOKEN');
+export const FORMLY_CONFIG_TOKEN = new InjectionToken<FormlyConfig>('FORMLY_CONFIG_TOKEN');
 
 /**
  * Maintains list of formly field directive types. This can be used to register new field templates.
