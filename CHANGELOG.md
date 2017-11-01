@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/formly-js/ng-formly/compare/v1.0.0...v1) (2017-11-01)
+
+
+### Features
+
+* added support for Angular version 5. ([d650634](https://github.com/formly-js/ng-formly/commit/d650634))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.14...1.0.0) (2017-11-01)
 
