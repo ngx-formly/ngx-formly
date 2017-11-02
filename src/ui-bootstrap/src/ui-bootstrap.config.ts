@@ -61,6 +61,12 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
       name: 'textarea',
       component: FormlyFieldTextArea,
       wrappers: ['fieldset', 'label'],
+      defaultOptions: {
+        templateOptions: {
+          cols: 1,
+          rows: 1,
+        },
+      },
     },
     {
       name: 'multicheckbox',

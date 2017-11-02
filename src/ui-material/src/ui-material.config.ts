@@ -33,6 +33,12 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       name: 'textarea',
       component: FormlyFieldTextArea,
       wrappers: ['form-field'],
+      defaultOptions: {
+        templateOptions: {
+          cols: 1,
+          rows: 1,
+        },
+      },
     },
     {
       name: 'select',
