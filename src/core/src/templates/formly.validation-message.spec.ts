@@ -1,10 +1,9 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { createGenericTestComponent } from '../../core/src/test-utils';
+import { createGenericTestComponent } from '../test-utils';
 
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyValidationMessage } from './formly.validation-message';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -16,7 +15,7 @@ function getFormlyValidationMessageElement(element: HTMLElement): HTMLDivElement
 describe('FormlyValidationMessage Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FormlyValidationMessage, TestComponent],
+      declarations: [TestComponent],
       imports: [
         FormlyModule.forRoot({
           validationMessages: [

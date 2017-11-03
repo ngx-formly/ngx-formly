@@ -7,8 +7,9 @@ import { FormlyAttributes } from './components/formly.attributes';
 import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/formly.config';
 import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyGroup } from './components/formly.group';
+import { FormlyValidationMessage } from './templates/formly.validation-message';
 
-const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup];
+const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage];
 
 @NgModule({
   declarations: FORMLY_DIRECTIVES,

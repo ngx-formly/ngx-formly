@@ -10,10 +10,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { MATERIAL_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-material.config';
-import { FormlyValidationMessage } from './formly.validation-message';
 
 @NgModule({
-  declarations: [...FIELD_TYPE_COMPONENTS, FormlyValidationMessage],
+  declarations: FIELD_TYPE_COMPONENTS,
   imports: [
     CommonModule,
     ReactiveFormsModule,

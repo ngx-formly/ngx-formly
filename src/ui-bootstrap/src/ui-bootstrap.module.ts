@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { BOOTSTRAP_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-bootstrap.config';
-import { FormlyValidationMessage } from './formly.validation-message';
 
 @NgModule({
-  declarations: [...FIELD_TYPE_COMPONENTS, FormlyValidationMessage],
+  declarations: FIELD_TYPE_COMPONENTS,
   imports: [
     CommonModule,
     ReactiveFormsModule,
