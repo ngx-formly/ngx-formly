@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.1"></a>
+# [2.0.0-beta.1](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.0...v2.0.0-beta.1) (2017-11-03)
+
+
+### Bug Fixes
+
+* **textarea:**  set default value for rows and cols ([#546](https://github.com/formly-js/ng-formly/issues/546)) ([2a0f783](https://github.com/formly-js/ng-formly/commit/2a0f783))
+
+
+### Features
+
+* **validation:** move FormlyValidationMessage into core module ([#547](https://github.com/formly-js/ng-formly/issues/547)) ([da502f2](https://github.com/formly-js/ng-formly/commit/da502f2))
+
+
+
 <a name="2.0.0-beta.0"></a>
 # [2.0.0-beta.0](https://github.com/formly-js/ng-formly/compare/1.0.0-rc.14...2.0.0-beta.0) (2017-11-01)
 
