@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '
 import { FormlyConfig } from './formly.config';
 import { evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig, FormlyOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
-import { getKeyPath, isUndefined } from '../utils';
+import { getKeyPath, isUndefined, isFunction } from '../utils';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
@@ -128,10 +128,10 @@ export class FormlyFormBuilder {
 
     if (field.expressionProperties) {
       for (let key in field.expressionProperties) {
-        if (typeof field.expressionProperties[key] === 'string') {
+        if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
           // cache built expression
           field.expressionProperties[key] = {
-            expression: evalStringExpression(field.expressionProperties[key], ['model', 'formState']),
+            expression: isFunction(field.expressionProperties[key]) ? field.expressionProperties[key] : evalStringExpression(field.expressionProperties[key], ['model', 'formState']),
             expressionValueSetter: evalExpressionValueSetter(key, ['expressionValue', 'model', 'templateOptions', 'validation']),
           };
         }
