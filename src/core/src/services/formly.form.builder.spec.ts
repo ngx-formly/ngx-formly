@@ -92,14 +92,19 @@ describe('FormlyFormBuilder service', () => {
         hideExpression: '!model',
         expressionProperties: {
           'templateOptions.disabled': '!model',
+          'templateOptions.label': (model) => !model ? 'Title *' : 'Title',
         },
       };
 
       builder.buildForm(form, [field], {}, {});
-      const isDisabled = field.expressionProperties['templateOptions.disabled'];
+      const disabledExpression = field.expressionProperties['templateOptions.disabled'];
+      expect(typeof disabledExpression.expression).toBe('function');
+      expect(typeof disabledExpression.expressionValueSetter).toBe('function');
 
-      expect(typeof isDisabled.expression).toBe('function');
-      expect(typeof isDisabled.expressionValueSetter).toBe('function');
+      const labelExpression = field.expressionProperties['templateOptions.label'];
+      expect(typeof labelExpression.expression).toBe('function');
+      expect(typeof labelExpression.expressionValueSetter).toBe('function');
+
       expect(typeof field.hideExpression).toBe('function');
     });
 
@@ -110,6 +115,7 @@ describe('FormlyFormBuilder service', () => {
         hideExpression: '!model',
         expressionProperties: {
           'templateOptions.disabled': 'undefined !== model',
+          'templateOptions.label': (model) => !model ? 'Title *' : 'Title',
         },
         templateOptions: { disabled: false },
       };
@@ -117,6 +123,8 @@ describe('FormlyFormBuilder service', () => {
       builder.buildForm(form, [field], {}, {});
       expect(field.templateOptions.disabled).toBeTruthy();
       expect(field.formControl.status).toEqual('DISABLED');
+
+      expect(field.templateOptions.label).toEqual('Title');
     });
   });
 

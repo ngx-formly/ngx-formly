@@ -32,7 +32,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **#536:** use standard-version for CHANGELOG generation ([#538](https://github.com/formly-js/ng-formly/issues/538)) ([9061311](https://github.com/formly-js/ng-formly/commit/9061311))
 * **bootstrap:** support Bootstrap 4 Beta ([#529](https://github.com/formly-js/ng-formly/issues/529)) ([2b70567](https://github.com/formly-js/ng-formly/commit/2b70567))
-* **core:** rename package to `[@ngx-formly](https://github.com/ngx-formly)` + follow Angular Package Format. ([#497](https://github.com/formly-js/ng-formly/issues/497)) ([2197a51](https://github.com/formly-js/ng-formly/commit/2197a51))
+* **core:** rename package to `@ngx-formly` + follow Angular Package Format. ([#497](https://github.com/formly-js/ng-formly/issues/497)) ([2197a51](https://github.com/formly-js/ng-formly/commit/2197a51))
 * **demo:** use angular-cli for demo-example ([#542](https://github.com/formly-js/ng-formly/issues/542)) ([b8d6483](https://github.com/formly-js/ng-formly/commit/b8d6483))
 * **field:** remove deprecated `valid` prop. ([#537](https://github.com/formly-js/ng-formly/issues/537)) ([88a9652](https://github.com/formly-js/ng-formly/commit/88a9652))
 * **fieldChanges:** remove FormlyPubSub in favor of fieldChanges option. ([#525](https://github.com/formly-js/ng-formly/issues/525)) ([e78916f](https://github.com/formly-js/ng-formly/commit/e78916f))
