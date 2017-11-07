@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.3"></a>
+# [2.0.0-beta.3](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2017-11-07)
+
+
+### Bug Fixes
+
+* **#551:** ensure templateOptions is defined ([#553](https://github.com/formly-js/ng-formly/issues/553)) ([48f4a36](https://github.com/formly-js/ng-formly/commit/48f4a36))
+* **#551:** fixed assign object to string for `assignModelValue` ([#552](https://github.com/formly-js/ng-formly/issues/552)) ([7b37c56](https://github.com/formly-js/ng-formly/commit/7b37c56))
+
+
+
 <a name="2.0.0-beta.2"></a>
 # [2.0.0-beta.2](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2017-11-07)
 
