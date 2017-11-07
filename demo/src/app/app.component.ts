@@ -14,7 +14,7 @@ export class AppComponent {
   _user;
   user: any = {};
   options;
-  userFields: Array<FormlyFieldConfig> = [];
+  userFields: FormlyFieldConfig[] = [];
 
   constructor(fb: FormBuilder, private sh: SuperHerosService) {
     this.form = fb.group({});
@@ -28,7 +28,7 @@ export class AppComponent {
       formlyVersion: '1.0.0-rc.2',
     };
 
-    let userFields: Array<FormlyFieldConfig> = [{
+    let userFields: FormlyFieldConfig[] = [{
         type: 'radio',
         key: 'title1',
         formControl: new FormControl('mrs'),
