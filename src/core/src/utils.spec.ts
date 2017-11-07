@@ -20,6 +20,11 @@ describe('FormlyUtils service', () => {
       assignModelValue(model, 'path.to.save', 2);
       expect(model['path']['to']['save']).toBe(2);
     });
+    it('should properly assign object to string value', () => {
+      let model = { path: 'test' };
+      assignModelValue(model, 'path.to.save', 2);
+      expect(model['path']['to']['save']).toBe(2);
+    });
   });
 
   describe('getValueForKey', () => {

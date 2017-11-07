@@ -71,7 +71,7 @@ export function assignModelValue(model, path, value) {
 
   if (path.length > 1) {
     const e = path.shift();
-    if (!model[e]) {
+    if (!model[e] || !isObject(model[e])) {
       model[e] = isNaN(path[0]) ? {} : [];
     }
     assignModelValue(model[e], path, value);
