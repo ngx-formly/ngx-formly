@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.2"></a>
+# [2.0.0-beta.2](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2017-11-07)
+
+
+### Bug Fixes
+
+* **clone:** create clone of date instead of empty object. ([#549](https://github.com/formly-js/ng-formly/issues/549)) ([0dea289](https://github.com/formly-js/ng-formly/commit/0dea289))
+
+
+### Features
+
+* **field:** allow passing function for field expression. ([#548](https://github.com/formly-js/ng-formly/issues/548)) ([5e630fe](https://github.com/formly-js/ng-formly/commit/5e630fe))
+* **material2:** update to 5.0.0-rc0 ([#550](https://github.com/formly-js/ng-formly/issues/550)) ([10baf1e](https://github.com/formly-js/ng-formly/commit/10baf1e))
+
+
+
 <a name="2.0.0-beta.1"></a>
 # [2.0.0-beta.1](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.0...v2.0.0-beta.1) (2017-11-03)
 
