@@ -22,7 +22,7 @@ describe('FormlyFormBuilder service', () => {
       field = { key: 'title' };
       builder.buildForm(form, [field], {}, {});
 
-      expect(field.templateOptions).toEqual(undefined);
+      expect(field.templateOptions).toEqual({});
     });
 
     it('should set the default value if the specified key and type is defined', () => {

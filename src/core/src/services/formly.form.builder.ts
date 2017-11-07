@@ -150,6 +150,7 @@ export class FormlyFormBuilder {
   }
 
   private initFieldTemplateOptions(field: FormlyFieldConfig) {
+    field.templateOptions = field.templateOptions || {};
     if (field.key && field.type) {
       field.templateOptions = Object.assign({
         label: '',
