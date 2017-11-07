@@ -152,6 +152,11 @@ export function clone(value: any) {
   if (!isObject(value)) {
     return value;
   }
+
+  if (Object.prototype.toString.call(value) === '[object Date]') {
+    return new Date(value.getTime());
+  }
+
   return Array.isArray(value) ? value.slice(0) : Object.assign({}, value);
 }
 
