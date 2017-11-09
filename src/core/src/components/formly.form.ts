@@ -144,7 +144,7 @@ export class FormlyForm implements OnChanges {
   }
 
   private updateInitialValue() {
-    let obj = reverseDeepMerge(this.form.value, this.model);
-    this.initialModel = JSON.parse(JSON.stringify(obj));
+    const initialModel = reverseDeepMerge(this.form.value, this.model);
+    this.initialModel = JSON.parse(JSON.stringify(initialModel));
   }
 }

@@ -115,7 +115,14 @@ export class FormlyConfig {
         }
       });
     }
-    reverseDeepMerge(field, this.types[name]);
+
+    if (!field.component) {
+      field.component = this.types[name].component;
+    }
+
+    if (!field.wrappers) {
+      field.wrappers = this.types[name].wrappers;
+    }
   }
 
   setWrapper(options: WrapperOption) {
