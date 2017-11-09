@@ -99,15 +99,8 @@ export function getKey(controlKey: string, actualKey: string) {
   return actualKey ? actualKey + '.' + controlKey : controlKey;
 }
 
-export function reverseDeepMerge(dest, source = undefined) {
-  let args = Array.prototype.slice.call(arguments);
-  if (!args[1]) {
-    return dest;
-  }
-  args.forEach((src, index) => {
-    if (!index) {
-      return;
-    }
+export function reverseDeepMerge(dest, ...args) {
+  args.forEach(src => {
     for (let srcArg in src) {
       if (isNullOrUndefined(dest[srcArg]) || isBlankString(dest[srcArg])) {
         if (isFunction(src[srcArg])) {
