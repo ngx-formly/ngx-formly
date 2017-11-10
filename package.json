@@ -23,6 +23,8 @@
     "build:material": "ng-packagr -p src/ui-material/ng-package.json",
     "release": "standard-version --prerelease beta && npm run build && node .config/publish.js",
     "demo": "ng serve --port 4100 --open",
+    "build:demo": "ng build --prod --no-aot --base-href=\"/ng-formly/\"",
+    "gh-pages": "npm run build:demo && ngh --dir dist/app --repo=https://GH_TOKEN@github.com/formly-js/ng-formly.git",
     "test": "karma start",
     "test-watch": "karma start --no-single-run --auto-watch"
   },
@@ -68,6 +70,7 @@
     "@angular/platform-browser-dynamic": "4.4.6",
     "@types/jasmine": "2.6.0",
     "@types/node": "^7.0.22",
+    "angular-cli-ghpages": "^0.5.1",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^3.2.3",
     "codecov": "^2.3.0",
