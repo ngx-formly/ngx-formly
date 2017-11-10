@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "demo/src",
-      "outDir": "dist",
+      "outDir": "dist/app",
       "assets": [
         "assets",
         "favicon.ico"
@@ -17,7 +17,7 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "app",
+      "prefix": "demo",
       "styles": [
         "styles.css"
       ],

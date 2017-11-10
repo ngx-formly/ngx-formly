@@ -24,6 +24,7 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && yarn gh-pages
 
 branches:
   only:
@@ -33,3 +34,7 @@ addons:
   apt:
     packages:
       - google-chrome-stable
+
+env:
+  global:
+    secure: GywEi6rCdMo68c+2aSxF31yAtciDWgQ4A++zUXKXqFFlMRrzsSlgo0+US+eT/+Kaz5CZIXIKJiWRmbPdhgJKs1rkVE7CJiZokdDdgfoEy8xAmlMhjbYN44Y0j5S9bIlhwqR9kW9kNg2sj5/Kv88bjSXehmT+RdOFfGN5gkxTzhs=
