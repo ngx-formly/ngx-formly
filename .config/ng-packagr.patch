@@ -1,18 +1,25 @@
-commit b8996dd950f9177a8c50cbf5120ba972944ef1af
+commit 6584682c53ef5002b2cd8b24085b704c0ec69697
 Author: Abdellatif Ait boudad <a.aitboudad@gmail.com>
-Date:   Mon Aug 7 16:12:26 2017 +0100
+Date:   Fri Nov 10 17:38:37 2017 +0000
 
-    www
+    patch
 
 diff --git a/ngc.js b/ngc.js
-index fac23e1..14e373e 100644
+index cb48466..2f62191 100644
 --- a/ngc.js
 +++ b/ngc.js
-@@ -7,6 +7,7 @@ var path = require('path');
- exports.prepareTsConfig = function (ngPkg, outFile) {
-     return json_1.readJson(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'))
-         .then(function (tsConfig) {
-+        tsConfig['compilerOptions']['paths'] = { "@ngx-formly/core": ["../../dist/core"] };
-         tsConfig['angularCompilerOptions']['flatModuleId'] = ngPkg.packageJson.name;
-         tsConfig['angularCompilerOptions']['flatModuleOutFile'] = ngPkg.flatModuleFileName + ".js";
-         tsConfig['files'] = [ngPkg.ngPackageJson.lib.entryFile];
+@@ -21,6 +21,7 @@ function prepareTsConfig(ngPkg, outFile) {
+         compilerOptions.flatModuleId = ngPkg.fullPackageName;
+         compilerOptions.flatModuleOutFile = `${ngPkg.flatModuleFileName}.js`;
+         tsConfig['files'] = [ngPkg.entryFile];
++        tsConfig['compilerOptions']['paths'] = { "@ngx-formly/core": ["../../../../../dist/core"] };
+         yield fs_extra_1.writeJson(outFile, tsConfig);
+     });
+ }
+@@ -42,4 +43,4 @@ function ngc(ngPkg, basePath) {
+     });
+ }
+ exports.ngc = ngc;
+-//# sourceMappingURL=ngc.js.map
+\ No newline at end of file
++//# sourceMappingURL=ngc.js.map
