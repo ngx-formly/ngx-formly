@@ -42,7 +42,7 @@ export class FormlyFormBuilder {
     this.registerFormControls(form, fields, model, options);
   }
 
-  private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model: any, options: any) {
+  private registerFormControls(form: FormGroup, fields: FormlyFieldConfig[], model: any, options: FormlyFormOptions) {
     fields.map((field, index) => {
       field.id = getFieldId(`formly_${this.formId}`, field, index);
 
@@ -123,7 +123,7 @@ export class FormlyFormBuilder {
     });
   }
 
-  private initFieldExpression(field: FormlyFieldConfig, model, options) {
+  private initFieldExpression(field: FormlyFieldConfig, model, options: FormlyFormOptions) {
     options.formState = options.formState || {};
 
     if (field.expressionProperties) {

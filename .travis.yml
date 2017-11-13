@@ -21,6 +21,7 @@ install:
 script:
 - yarn lint
 - yarn test
+- yarn build:demo
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

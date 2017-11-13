@@ -163,7 +163,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
 
   private checkExpressionChange() {
     if (this.field && this.field.expressionProperties) {
-      const expressionProperties = this.field.expressionProperties as any;
+      const expressionProperties = this.field.expressionProperties;
 
       for (let key in expressionProperties) {
         const expressionValue = evalExpression(
