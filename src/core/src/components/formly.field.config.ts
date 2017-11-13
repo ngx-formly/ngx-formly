@@ -76,7 +76,7 @@ export interface FormlyFieldConfig {
   /**
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
-  expressionProperties?: string | ((model: any, formState: any) => boolean);
+  expressionProperties?: { [property: string]: string | ((model: any, formState: any) => boolean) } | any;
 
   /**
    * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.
