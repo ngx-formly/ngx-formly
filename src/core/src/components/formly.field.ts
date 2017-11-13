@@ -6,7 +6,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig, TypeOption } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { evalExpression } from '../utils';
-import { FormlyFieldConfig, FormlyOptions, FormlyValueChangeEvent } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
 import { Subscription } from 'rxjs/Subscription';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { map } from 'rxjs/operator/map';
@@ -22,7 +22,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
-  @Input() options: FormlyOptions = {};
+  @Input() options: FormlyFormOptions = {};
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 
@@ -163,7 +163,7 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
 
   private checkExpressionChange() {
     if (this.field && this.field.expressionProperties) {
-      const expressionProperties = this.field.expressionProperties;
+      const expressionProperties = this.field.expressionProperties as any;
 
       for (let key in expressionProperties) {
         const expressionValue = evalExpression(

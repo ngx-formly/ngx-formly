@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { FormlyFieldConfig, FormlyOptions } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
 
@@ -20,7 +20,7 @@ export class FormlyForm implements OnChanges {
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
-  @Input() options: FormlyOptions;
+  @Input() options: FormlyFormOptions;
   /** @internal */
   @Input() buildForm: boolean = true;
   private initialModel: any;

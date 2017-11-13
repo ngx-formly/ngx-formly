@@ -9,12 +9,10 @@ import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyGroup } from './components/formly.group';
 import { FormlyValidationMessage } from './templates/formly.validation-message';
 
-const FORMLY_DIRECTIVES = [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage];
-
 @NgModule({
-  declarations: FORMLY_DIRECTIVES,
+  declarations: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage],
   entryComponents: [FormlyGroup],
-  exports: FORMLY_DIRECTIVES,
+  exports: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage],
   imports: [
     CommonModule,
     ReactiveFormsModule,
