@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
-import { FormlyFieldConfig, FormlyOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
 import { Subject } from 'rxjs/Subject';
 
@@ -14,7 +14,7 @@ export class FormlyFormBuilder {
 
   constructor(private formlyConfig: FormlyConfig) {}
 
-  buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyOptions) {
+  buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     this.formId++;
 
     options = options || {};
@@ -127,7 +127,7 @@ export class FormlyFormBuilder {
     options.formState = options.formState || {};
 
     if (field.expressionProperties) {
-      for (let key in field.expressionProperties) {
+      for (let key in field.expressionProperties as any) {
         if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
           // cache built expression
           field.expressionProperties[key] = {
