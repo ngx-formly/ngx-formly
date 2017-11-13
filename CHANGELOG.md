@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.4"></a>
+# [2.0.0-beta.4](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2017-11-13)
+
+
+### Bug Fixes
+
+* **#420:** allow reset wrappers ([#557](https://github.com/formly-js/ng-formly/issues/557)) ([c870baa](https://github.com/formly-js/ng-formly/commit/c870baa))
+* **demo:** ensure demo is build without error. ([#564](https://github.com/formly-js/ng-formly/issues/564)) ([b21c0e2](https://github.com/formly-js/ng-formly/commit/b21c0e2))
+
+
+### Features
+
+* **travis:** deploy to gh-pages ([#559](https://github.com/formly-js/ng-formly/issues/559)) ([fcbfd2f](https://github.com/formly-js/ng-formly/commit/fcbfd2f))
+
+
+
 <a name="2.0.0-beta.3"></a>
 # [2.0.0-beta.3](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2017-11-07)
 
