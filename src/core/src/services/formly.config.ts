@@ -35,7 +35,7 @@ export class FormlyConfig {
   } = {
     fieldTransform: undefined,
     showError: function(field: Field) {
-      return (field.formControl.touched || (field.field.validation && field.field.validation.show)) && !field.formControl.valid;
+      return (field.formControl.dirty || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show)) && field.formControl.invalid;
     },
   };
 

@@ -1,12 +1,12 @@
 import { Input } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { FormlyTemplateOptions, FormlyFieldConfig } from '../components/formly.field.config';
+import { FormlyTemplateOptions, FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 
 export abstract class Field {
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
   @Input() model: any;
-  @Input() options: any;
+  @Input() options: FormlyFormOptions;
 
   get key() { return this.field.key; }
 

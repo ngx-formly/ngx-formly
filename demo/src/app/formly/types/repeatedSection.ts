@@ -10,7 +10,7 @@ import * as clonedeep from 'lodash.clonedeep';
       <formly-form
         [model]="model[i]"
         [fields]="fields(i)"
-        [options]="newOptions"
+        [options]="options"
         [form]="this.formControl.at(i)"
         [ngClass]="field.fieldArray.fieldGroupClassName">
       </formly-form>
@@ -29,10 +29,6 @@ export class RepeatComponent extends FieldType implements OnInit {
 
   constructor(private builder: FormlyFormBuilder) {
     super();
-  }
-
-  get newOptions() {
-    return Object.assign({}, this.options);
   }
 
   get newFields() {
@@ -54,7 +50,7 @@ export class RepeatComponent extends FieldType implements OnInit {
     }
 
     this._fields.push(this.newFields);
-    this.builder.buildForm(form, this._fields[i], this.model[i], this.newOptions);
+    this.builder.buildForm(form, this._fields[i], this.model[i], this.options);
     this.formControl.push(form);
   }
 

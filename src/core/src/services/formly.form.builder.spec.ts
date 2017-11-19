@@ -254,7 +254,7 @@ describe('FormlyFormBuilder service', () => {
         const options: any = {};
         builder.buildForm(form, [field], {}, options);
 
-        expect(options.showError({ field: field, formControl: form })).toBeTruthy();
+        expect(options.showError({ field, options, formControl: form })).toBeTruthy();
       });
 
       it('should not show error when option `show` is false', () => {
@@ -263,7 +263,7 @@ describe('FormlyFormBuilder service', () => {
         const options: any = {};
         builder.buildForm(form, [field], {}, options);
 
-        expect(options.showError({ field: field, formControl: form })).toBeFalsy();
+        expect(options.showError({ field, options, formControl: form })).toBeFalsy();
       });
     });
 

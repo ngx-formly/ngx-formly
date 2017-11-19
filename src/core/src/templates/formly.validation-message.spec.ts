@@ -27,7 +27,7 @@ describe('FormlyValidationMessage Component', () => {
     });
   });
 
-  it('should not render message with a valid value', () => {
+  it('should not display message error when form is valid', () => {
     const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
     const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
     fixture.componentInstance.formControl.setValue('12');
@@ -37,7 +37,7 @@ describe('FormlyValidationMessage Component', () => {
     expect(formlyMessageElm.textContent).not.toMatch(/Title is required/);
   });
 
-  describe('render validation message', () => {
+  describe('display message error when form is invalid', () => {
     it('with a simple validation message', () => {
       const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
       const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);

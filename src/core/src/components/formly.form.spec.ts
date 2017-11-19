@@ -82,7 +82,7 @@ class TestComponent {
       <formly-form
         [model]="model[i]"
         [fields]="fields"
-        [options]="newOptions"
+        [options]="options"
         [form]="control">
       </formly-form>
       <button (click)="remove(i)">Remove</button>
@@ -90,9 +90,6 @@ class TestComponent {
   `,
 })
 export class RepeatComponent extends FieldType implements OnInit {
-  get newOptions() {
-    return { ...this.options };
-  }
   get controls() {
     return this.form.controls[this.field.key]['controls'];
   }
