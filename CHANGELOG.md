@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.5"></a>
+# [2.0.0-beta.5](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2017-11-19)
+
+
+### Features
+
+* **#566:** Show errors on submit ([#567](https://github.com/formly-js/ng-formly/issues/567)) ([75c8b0b](https://github.com/formly-js/ng-formly/commit/75c8b0b))
+* **demo:** simplify `repeat` field type. ([#568](https://github.com/formly-js/ng-formly/issues/568)) ([b96215d](https://github.com/formly-js/ng-formly/commit/b96215d))
+
+
+
 <a name="2.0.0-beta.4"></a>
 # [2.0.0-beta.4](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2017-11-13)
 
