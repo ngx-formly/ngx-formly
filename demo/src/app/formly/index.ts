@@ -17,10 +17,6 @@ export function minlengthValidationMessage(err, field) {
   return `Should have atleast ${err.requiredLength} characters`;
 }
 
-export function showErrorOption(field: Field) {
-  return (field.formState.submitted || field.formControl.touched || (field.field.validation && field.field.validation.show)) && !field.formControl.valid;
-}
-
 export const NgFormlyConfig: ConfigOption = {
   types: [
     { name: 'toggle', component: FormlyFieldToggle, defaultOptions: { templateOptions: { isAlert: false, isLarge: true }}},
@@ -56,9 +52,6 @@ export const NgFormlyConfig: ConfigOption = {
     { name: 'formly-wrapper-horizontal', component: FormlyWrapperHorizontalLabel, types: ['horizontalInput'] },
     { name: 'panel', component: FormlyPanelWrapper },
   ],
-  extras: {
-    showError: showErrorOption,
-  },
 };
 
 export const FORMLY_COMPONENTS = [

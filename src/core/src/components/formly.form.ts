@@ -1,5 +1,5 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, FormArray } from '@angular/forms';
+import { Component, OnChanges, Input, SimpleChanges, Optional } from '@angular/core';
+import { FormControl, FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
@@ -25,7 +25,11 @@ export class FormlyForm implements OnChanges {
   @Input() buildForm: boolean = true;
   private initialModel: any;
 
-  constructor(private formlyBuilder: FormlyFormBuilder) {}
+  constructor(
+    private formlyBuilder: FormlyFormBuilder,
+    @Optional() private parentForm: NgForm,
+    @Optional() private parentFormGroup: FormGroupDirective,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.fields) {
@@ -57,6 +61,11 @@ export class FormlyForm implements OnChanges {
     if (!this.options.resetModel) {
       this.options.resetModel = this.resetModel.bind(this);
     }
+
+    if (!this.options.parentForm) {
+      this.options.parentForm = this.parentFormGroup || this.parentForm;
+    }
+
     if (!this.options.updateInitialValue) {
       this.options.updateInitialValue = this.updateInitialValue.bind(this);
     }

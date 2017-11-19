@@ -1,5 +1,5 @@
 import { FormlyConfig } from './formly.config';
-import { Validators } from '@angular/forms';
+import { Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 
 describe('FormlyConfig service', () => {
@@ -13,6 +13,16 @@ describe('FormlyConfig service', () => {
         { name: 'required', message: 'This field is required.' },
       ],
     }]);
+  });
+
+  describe('extra option: showError', () => {
+    it('should return true when form is submitted and form is invalid', () => {
+      const field = {},
+        formControl = new FormControl(null, Validators.required),
+        options = { parentForm: { submitted: true } };
+
+      expect(config.extras.showError({ options, formControl, field } as any)).toBeTruthy();
+    });
   });
 
   describe('wrappers', () => {
