@@ -15,6 +15,6 @@
   "dependencies": {
     "tslib": "^1.7.1",
     "@ngx-formly/core": "FORMLY-VERSION",
-    "@angular/material": "^5.0.0-rc0"
+    "@angular/material": ">=5.0.0-rc"
   }
 }
