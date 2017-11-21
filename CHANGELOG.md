@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.6"></a>
+# [2.0.0-beta.6](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2017-11-21)
+
+
+### Features
+
+* **material:** allow rc versions ([#570](https://github.com/formly-js/ng-formly/issues/570)) ([f532054](https://github.com/formly-js/ng-formly/commit/f532054))
+
+
+
 <a name="2.0.0-beta.5"></a>
 # [2.0.0-beta.5](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2017-11-19)
 
