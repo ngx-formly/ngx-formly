@@ -300,11 +300,8 @@ export class AppComponent {
         key: 'textAreaVal',
         type: 'textarea',
         modelOptions: {
-          debounce: {
-            default: 2000,
-            blur: 0,
-          },
-          updateOn: 'default blur',
+          debounce: { default: 2000 },
+          // updateOn: 'default blur',
         },
         focus: true,
         templateOptions: {

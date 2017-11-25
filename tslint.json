@@ -17,8 +17,6 @@
         "component-class-suffix": false,
         "directive-class-suffix": false,
         "import-destructuring-spacing": true,
-        "templates-use-public": true,
-        "invoke-injectable": true,
         "class-name": true,
         "comment-format": [
             true,
