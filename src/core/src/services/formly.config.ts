@@ -1,4 +1,5 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
 import { FormlyGroup } from '../components/formly.group';
 import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
@@ -17,9 +18,9 @@ export class FormlyConfig {
       component: FormlyGroup,
     },
   };
-  validators: {[name: string]: ValidatorOption} = {};
-  wrappers: {[name: string]: WrapperOption} = {};
-  messages: { [name: string]: string; } = {};
+  validators: { [name: string]: ValidatorOption } = {};
+  wrappers: { [name: string]: WrapperOption } = {};
+  messages: { [name: string]: string | ((error, field: FormlyFieldConfig) => string); } = {};
 
   templateManipulators: {
     preWrapper: ManipulatorWrapper[];
@@ -164,7 +165,7 @@ export class FormlyConfig {
     return this.validators[name];
   }
 
-  addValidatorMessage(name: string, message: string) {
+  addValidatorMessage(name: string, message: string | ((error, field: FormlyFieldConfig) => string)) {
     this.messages[name] = message;
   }
 
@@ -207,12 +208,12 @@ export interface WrapperOption {
 
 export interface ValidatorOption {
   name: string;
-  validation: any;
+  validation: string | ValidationErrors;
 }
 
 export interface ValidationMessageOption {
   name: string;
-  message: any;
+  message: string | ((error, field: FormlyFieldConfig) => string);
 }
 
 export interface ManipulatorOption {

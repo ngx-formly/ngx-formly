@@ -1,4 +1,4 @@
-import { FormGroup, AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
+import { FormGroup, AbstractControl, FormGroupDirective, NgForm, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 import { Field } from './../templates/field';
 
@@ -32,7 +32,7 @@ export interface FormlyFieldConfig {
    */
   validation?: {
     messages?: {
-      [messageProperties: string]: string | Function;
+      [messageProperties: string]: string | ((error, field: FormlyFieldConfig) => string);
     };
     show?: boolean;
     [additionalProperties: string]: any;
@@ -42,12 +42,22 @@ export interface FormlyFieldConfig {
    * Used to set validation rules for a particular field.
    * Should be an object of key - value pairs. The value can either be an expression to evaluate or a function to run.
    * Each should return a boolean value, returning true when the field is valid. See Validation for more information.
+   *
+   * {
+   *   validation?: (string | ValidatorFn)[] | ValidatorFn;
+   *   [key: string]: ((control: AbstractControl) => boolean) | ({ expression: (control: AbstractControl) => boolean, message: string });
+   * }
    */
   validators?: any;
 
   /**
    * Use this one for anything that needs to validate asynchronously.
    * Pretty much exactly the same as the validators api, except it must be a function that returns a promise.
+   *
+   * {
+   *   validation?: (string | AsyncValidatorFn)[] | AsyncValidatorFn;
+   *   [key: string]: ((control: AbstractControl) => Promise<boolean>) | ({ expression: (control: AbstractControl) => Promise<boolean>, message: string });
+   * }
    */
   asyncValidators?: any;
 
@@ -121,7 +131,11 @@ export interface FormlyFieldConfig {
    * An object with a few useful properties to control the model changes
    * - `debounce`: integer value which contains the debounce model update value in milliseconds. A value of 0 triggers an immediate update.
    */
-  modelOptions?: any;
+  modelOptions?: {
+    debounce?: {
+      default: number;
+    };
+  };
 
   lifecycle?: FormlyLifeCycleOptions;
 
@@ -165,7 +179,7 @@ export interface FormlyTemplateOptions {
 }
 
 export interface FormlyLifeCycleFn {
-    (form?: FormGroup, field?: FormlyFieldConfig, model?: any, options?: any): void;
+  (form?: FormGroup, field?: FormlyFieldConfig, model?: any, options?: FormlyFormOptions): void;
 }
 
 export interface FormlyLifeCycleOptions {
@@ -184,7 +198,7 @@ export interface FormlyFormOptions {
   resetModel?: (model?: any) => void;
   formState?: any;
   fieldChanges?: Subject<FormlyValueChangeEvent>;
-  fieldTransform?: any;
+  fieldTransform?: (fields: FormlyFieldConfig[], model: any, form: FormGroup, options: FormlyFormOptions) => FormlyFieldConfig[];
   showError?: (field: Field) => boolean;
   parentForm?: FormGroupDirective | NgForm | null;
 }
