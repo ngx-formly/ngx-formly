@@ -6,7 +6,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   template: `
     <ng-template #fieldComponent></ng-template>
     <div>
-      <small class="invalid-feedback" [style.display]="'block'" *ngIf="showError" role="alert" [id]="validationId">
+      <small class="text-danger invalid-feedback" [style.display]="'block'" *ngIf="showError" role="alert" [id]="validationId">
         <formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>
       </small>
     </div>

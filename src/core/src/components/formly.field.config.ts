@@ -1,4 +1,4 @@
-import { FormGroup, AbstractControl, FormGroupDirective, NgForm, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
+import { FormGroup, AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 import { Field } from './../templates/field';
 

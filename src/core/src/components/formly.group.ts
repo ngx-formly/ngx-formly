@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 
 @Component({
