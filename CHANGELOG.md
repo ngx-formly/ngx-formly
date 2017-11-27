@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.7"></a>
+# [2.0.0-beta.7](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2017-11-27)
+
+
+### Bug Fixes
+
+* **FormlyConfig:** allow using function in validation messages. ([#573](https://github.com/formly-js/ng-formly/issues/573)) ([745478d](https://github.com/formly-js/ng-formly/commit/745478d))
+
+
+### Features
+
+* **bootstrap:** support version 3 ([#574](https://github.com/formly-js/ng-formly/issues/574)) ([a447bf8](https://github.com/formly-js/ng-formly/commit/a447bf8))
+
+
+
 <a name="2.0.0-beta.6"></a>
 # [2.0.0-beta.6](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2017-11-21)
 
