@@ -5,7 +5,7 @@
         "component-selector": [true, "element", "formly", "kebab-case"],
         "use-input-property-decorator": true,
         "use-output-property-decorator": true,
-        "use-host-property-decorator": true,
+        "use-host-property-decorator": false,
         "no-attribute-parameter-decorator": true,
         "angular-whitespace": [true, "check-interpolation", "check-pipe"],
         "no-input-rename": false,
