@@ -16,10 +16,19 @@ describe('FormlyConfig service', () => {
   });
 
   describe('extra option: showError', () => {
-    it('should return true when form is submitted and form is invalid', () => {
+    it('should showError when form is submitted and form is invalid', () => {
       const field = {},
         formControl = new FormControl(null, Validators.required),
         options = { parentForm: { submitted: true } };
+
+      expect(config.extras.showError({ options, formControl, field } as any)).toBeTruthy();
+    });
+    it('should showError when field is touched and form is invalid', () => {
+      const field = {},
+        formControl = new FormControl(null, Validators.required),
+        options = { parentForm: { submitted: false } };
+
+      formControl.markAsTouched();
 
       expect(config.extras.showError({ options, formControl, field } as any)).toBeTruthy();
     });
