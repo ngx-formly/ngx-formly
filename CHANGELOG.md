@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.8"></a>
+# [2.0.0-beta.8](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2017-11-28)
+
+
+### Bug Fixes
+
+* **validation:** display errors on blur. ([#576](https://github.com/formly-js/ng-formly/issues/576)) ([680f6a3](https://github.com/formly-js/ng-formly/commit/680f6a3))
+
+
+
 <a name="2.0.0-beta.7"></a>
 # [2.0.0-beta.7](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2017-11-27)
 
