@@ -5,7 +5,7 @@ import {
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig, TypeOption } from '../services/formly.config';
 import { Field } from '../templates/field';
-import { evalExpression } from '../utils';
+import { evalExpression, getFieldModel } from '../utils';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
 import { Subscription } from 'rxjs/Subscription';
 import { debounceTime } from 'rxjs/operator/debounceTime';
@@ -224,7 +224,11 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
   }
 
   private addFieldControl() {
-    const parent = this.fieldParentFormControl;
+    const parent = this.fieldParentFormControl,
+      model = getFieldModel(this.model, this.field, false);
+    if (this.field.formControl.value !== model) {
+      this.field.formControl.patchValue(model);
+    }
 
     if (parent instanceof FormArray) {
       parent.push(this.field.formControl);

@@ -27,7 +27,7 @@
     "build:demo": "ng build --prod --no-aot --base-href=\"/ng-formly/\"",
     "gh-pages": "npm run build:demo && npm run build:docs && ngh --dir dist/app --repo=https://GH_TOKEN@github.com/formly-js/ng-formly.git",
     "test": "karma start",
-    "test-watch": "karma start --no-single-run --auto-watch"
+    "test:watch": "karma start --no-single-run --auto-watch"
   },
   "keywords": [
     "angular",

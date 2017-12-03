@@ -198,6 +198,7 @@ describe('FormlyField Component', () => {
     fixture.detectChanges();
     tick(1);
     expect(form.get('address.city')).not.toBeNull();
+    expect(form.get('address.city').value).toEqual('agadir');
   }));
 
   describe('model changes', () => {
