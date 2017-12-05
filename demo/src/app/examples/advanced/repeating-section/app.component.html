@@ -1,0 +1,15 @@
+<div>
+  This demonstrates using
+  <code>formly-form</code> inside of a custom type in order to accomplish repeating fields.
+</div>
+
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
+      <button type="submit" class="btn btn-primary submit-button" [disabled]="!form.valid">Submit</button>
+    </formly-form>
+  </form>
+</div>
+
+<h2>Form Data</h2>
+<pre>{{ model | json }}</pre>

@@ -6,14 +6,11 @@
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
-  "main": "bundles/ng-formly.umd.js",
-  "module": "lib/src/index.js",
-  "typings": "lib/src/index.d.ts",
   "scripts": {
     "contrib:add": "all-contributors add",
     "contrib:generate": "all-contributors generate",
-    "lint": "tslint 'src/**/*.ts' 'demo/**/*.ts'",
-    "lint-fix": "tslint --fix 'src/**/*.ts' 'app/**/*.ts' --type-check -p tsconfig.json",
+    "lint": "tslint 'src/**/*.ts' 'demo/**/*.ts' -p tsconfig.json",
+    "lint:fix": "tslint --fix 'src/**/*.ts' 'app/**/*.ts' -p tsconfig.json",
     "postinstall": "patch --forward node_modules/ng-packagr/lib/steps/ngc.js .config/ng-packagr.patch || true",
     "commit": "npm run build && git-cz",
     "prepublish": "npm run build",
@@ -24,8 +21,8 @@
     "release": "standard-version --prerelease beta && npm run build && node .config/publish.js",
     "demo": "ng serve --port 4100 --open",
     "build:docs": "compodoc -p tsconfig.doc.json -n 'Angular Formly' --hideGenerator --disableCoverage --disablePrivate --disableProtected --disableInternal --disableLifeCycleHooks --customFavicon='demo/src/favicon.ico' -d ./dist/app/docs",
-    "build:demo": "ng build --prod --no-aot --base-href=\"/ng-formly/\"",
-    "gh-pages": "npm run build:demo && npm run build:docs && ngh --dir dist/app --repo=https://GH_TOKEN@github.com/formly-js/ng-formly.git",
+    "build:demo": "ng build --prod --no-aot --base-href=\"/ngx-formly/\"",
+    "gh-pages": "npm run build:demo && npm run build:docs && ngh --dir dist/app --repo=https://GH_TOKEN@github.com/formly-js/ngx-formly.git",
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch"
   },
@@ -41,15 +38,15 @@
     "form library"
   ],
   "license": "MIT",
-  "description": "@ngx-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms. The formly-form Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
+  "description": "@ngx-formly i@angular/animationss an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms. The formly-form Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/formly-js/ng-formly.git"
+    "url": "git+https://github.com/formly-js/ngx-formly.git"
   },
   "bugs": {
-    "url": "https://github.com/formly-js/ng-formly/issues"
+    "url": "https://github.com/formly-js/ngx-formly/issues"
   },
-  "homepage": "https://github.com/formly-js/ng-formly#readme",
+  "homepage": "https://github.com/formly-js/ngx-formly#readme",
   "peerDependencies": {
     "@angular/forms": ">=4.0.0"
   },
@@ -58,7 +55,7 @@
   },
   "devDependencies": {
     "@angular/animations": "4.4.6",
-    "@angular/cdk": "^5.0.0-rc0",
+    "@angular/cdk": "2.0.0-beta.12",
     "@angular/cli": "^1.5.4",
     "@angular/common": "4.4.6",
     "@angular/compiler": "4.4.6",
@@ -66,11 +63,12 @@
     "@angular/core": "4.4.6",
     "@angular/forms": "4.4.6",
     "@angular/http": "4.4.6",
-    "@angular/material": "^5.0.0-rc0",
+    "@angular/material": "2.0.0-beta.12",
     "@angular/platform-browser": "4.4.6",
     "@angular/platform-browser-dynamic": "4.4.6",
     "@angular/router": "4.4.6",
-    "@compodoc/compodoc": "^1.0.4",
+    "@compodoc/compodoc": "^1.0.5",
+    "@ngx-loading-bar/router": "^1.0.0-alpha.18",
     "@types/jasmine": "2.6.0",
     "@types/node": "^7.0.22",
     "angular-cli-ghpages": "^0.5.2",
@@ -93,6 +91,8 @@
     "karma-webpack": "^2.0.6",
     "lodash.clonedeep": "^4.5.0",
     "ng-packagr": "^1.5.0",
+    "ng-snippets-loader": "^0.2.5",
+    "prismjs-loader": "^0.0.4",
     "raw-loader": "^0.5.1",
     "remap-istanbul": "^0.9.5",
     "rxjs": "^5.5.2",
