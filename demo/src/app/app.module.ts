@@ -1,25 +1,26 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormlyModule } from '@ngx-formly/core';
-import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 
-import { NgFormlyConfig, FORMLY_COMPONENTS } from './formly';
-import { SuperHerosService } from './services';
+import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FORMLY_COMPONENTS,
   ],
-  providers: [SuperHerosService],
   imports: [
     BrowserModule,
-    FormlyModule.forRoot(NgFormlyConfig),
-    FormlyBootstrapModule,
-    FormsModule,
-    ReactiveFormsModule,
+    BrowserAnimationsModule,
+
+    SharedModule,
+    LoadingBarRouterModule,
+    RouterModule.forRoot([
+      { path: '', pathMatch: 'full', redirectTo: 'examples/introduction' },
+      { path: 'examples', loadChildren: './examples/examples.module#ExamplesModule' },
+    ]),
   ],
   bootstrap: [AppComponent],
 })

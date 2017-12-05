@@ -1,0 +1,14 @@
+<div>
+  This demonstrates how to use formState in your fields.
+</div>
+
+<code>formState.disabled</code>:<button class="btn btn-sm btn-default" (click)="toggleDisabled()">Toggle</button>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
+    <button type="submit" class="btn btn-primary submit-button" [disabled]="!form.valid">Submit</button>
+  </formly-form>
+</form>
+
+<h2>Form Data</h2>
+<pre>{{ model | json }}</pre>
