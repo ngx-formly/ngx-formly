@@ -17,7 +17,11 @@
     <mat-tab-group>
       <mat-tab *ngFor="let f of example" [label]="f.file">
         <div class="docs-example-source-wrapper">
-          <pre class="docs-example-source" [innerHtml]="f.content" ></pre>
+          <button mat-icon-button type="button" class="docs-example-source-copy" title="Copy example source" aria-label="Copy example source to clipboard"
+            (click)="copySource(textContent)">
+            <mat-icon class="fa fa-copy"></mat-icon>
+          </button>
+          <pre class="docs-example-source" [innerHtml]="f.content" #textContent></pre>
         </div>
       </mat-tab>
     </mat-tab-group>
