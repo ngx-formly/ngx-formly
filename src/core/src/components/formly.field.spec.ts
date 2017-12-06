@@ -8,7 +8,6 @@ import {
   FieldType,
   FieldWrapper,
 } from '../core';
-import { evalStringExpression, evalExpressionValueSetter } from './../utils';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -109,97 +108,6 @@ describe('FormlyField Component', () => {
     expect(getInputField(fixture.nativeElement, 0).getAttribute('placeholder')).toEqual('Title1');
     expect(getInputField(fixture.nativeElement, 1).getAttribute('placeholder')).toEqual('Title2');
   });
-
-  it('should hide field when passed a boolean', () => {
-    const form = new FormGroup({title: new FormControl()});
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        hideExpression: true,
-        formControl: form.get('title'),
-        templateOptions: {
-          label: 'Title',
-          placeholder: 'Title',
-        },
-      },
-      form,
-    };
-
-    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
-
-    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
-  });
-
-  it('should hide field when passed a string', () => {
-    const form = new FormGroup({title: new FormControl()});
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        hideExpression: 'true',
-        formControl: form.get('title'),
-        templateOptions: {
-          label: 'Title',
-          placeholder: 'Title',
-        },
-      },
-      form,
-    };
-
-    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
-
-    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
-  });
-
-  it('should hide field when passed a function', () => {
-    const form = new FormGroup({title: new FormControl()});
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        hideExpression: () => true,
-        formControl: form.get('title'),
-        templateOptions: {
-          label: 'Title',
-          placeholder: 'Title',
-        },
-      },
-      form,
-    };
-
-    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
-
-    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
-  });
-
-  it('should hide/display field when passed a function with nested field key', fakeAsync(() => {
-    const form = new FormGroup({address: new FormGroup({city: new FormControl()})});
-    testComponentInputs = {
-      field: {
-        key: 'address.city',
-        type: 'text',
-        hideExpression: evalStringExpression('model.address.city !== "agadir"', ['model', 'formState']),
-        formControl: form.get('address.city'),
-        templateOptions: {
-          label: 'Title',
-          placeholder: 'Title',
-        },
-      },
-      form,
-      model: { address: {} },
-    };
-
-    const fixture = createTestComponent('<formly-field [form]="form" [field]="field" [model]="model"></formly-field>');
-    tick(1);
-    expect(form.get('address.city')).toBeNull();
-
-    testComponentInputs.model.address.city = 'agadir';
-    fixture.detectChanges();
-    tick(1);
-    expect(form.get('address.city')).not.toBeNull();
-    expect(form.get('address.city').value).toEqual('agadir');
-  }));
 
   describe('model changes', () => {
     beforeEach(() => {
@@ -317,31 +225,6 @@ describe('FormlyField Component', () => {
     expect(getLabelWrapper(fixture.nativeElement)).toEqual(null);
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
     expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');
-  });
-
-  it('expression properties', () => {
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        optionsTypes: ['other'],
-        templateOptions: {
-          placeholder: 'Title',
-          disabled: true,
-        },
-        expressionProperties: {
-          'templateOptions.disabled': {
-            expression: evalStringExpression('model.title !== undefined', ['model', 'formState']),
-            expressionValueSetter: evalExpressionValueSetter('templateOptions.disabled', ['expressionValue', 'model', 'templateOptions', 'validation']),
-          },
-        },
-      },
-      form: new FormGroup({title: new FormControl()}),
-      model: {},
-    };
-
-    createTestComponent('<formly-field [form]="form" [field]="field" [model]="model"></formly-field>');
-    expect(testComponentInputs.field.templateOptions.disabled).toEqual(false);
   });
 });
 

@@ -18,6 +18,7 @@ export class FormlyFormBuilder {
     this.formId++;
 
     options = options || {};
+    options.formState = options.formState || {};
     if (!options.showError) {
       options.showError = this.formlyConfig.extras.showError;
     }
@@ -124,8 +125,6 @@ export class FormlyFormBuilder {
   }
 
   private initFieldExpression(field: FormlyFieldConfig, model, options: FormlyFormOptions) {
-    options.formState = options.formState || {};
-
     if (field.expressionProperties) {
       for (let key in field.expressionProperties as any) {
         if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
@@ -142,9 +141,12 @@ export class FormlyFormBuilder {
       }
     }
 
-    if (typeof field.hideExpression === 'string') {
-      // cache built expression
-      field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
+    if (field.hideExpression) {
+      if (typeof field.hideExpression === 'string') {
+        // cache built expression
+        field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
+      }
+
       field.hide = evalExpression(field.hideExpression, { field }, [model, options.formState]);
     }
   }
