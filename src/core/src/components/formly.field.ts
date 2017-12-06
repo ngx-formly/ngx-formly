@@ -173,22 +173,24 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
         );
 
         if (expressionProperties[key].expressionValue !== expressionValue) {
-          expressionProperties[key].expressionValue = expressionValue;
-          evalExpression(
-            expressionProperties[key].expressionValueSetter,
-            this,
-            [expressionValue, this.model, this.field.templateOptions, this.field.validation],
-          );
+          setTimeout(() => {
+            expressionProperties[key].expressionValue = expressionValue;
+            evalExpression(
+              expressionProperties[key].expressionValueSetter,
+              this,
+              [expressionValue, this.model, this.field.templateOptions, this.field.validation],
+            );
+          });
         }
       }
 
       const formControl = this.field.formControl;
       if (formControl) {
         if (formControl.status === 'DISABLED' && !this.field.templateOptions.disabled) {
-            formControl.enable();
+          setTimeout(() => formControl.enable());
         }
         if (formControl.status !== 'DISABLED' && this.field.templateOptions.disabled) {
-            formControl.disable();
+          setTimeout(() => formControl.disable());
         }
       }
     }
