@@ -51,7 +51,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
-          floatPlaceholder: 'always',
+          floatLabel: 'always',
         },
       },
     },
@@ -61,7 +61,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
-          floatPlaceholder: 'always',
+          floatLabel: 'always',
         },
       },
     },
@@ -71,7 +71,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
-          floatPlaceholder: 'always',
+          floatLabel: 'always',
         },
       },
     },
