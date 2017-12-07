@@ -10,8 +10,9 @@ import { takeUntil } from 'rxjs/operator/takeUntil';
   selector: 'formly-wrapper-mat-form-field',
   template: `
     <!-- fix https://github.com/angular/material2/pull/7083 by setting width to 100% -->
-    <mat-form-field [floatPlaceholder]="to.floatPlaceholder" [style.width]="'100%'">
+    <mat-form-field [floatLabel]="to.floatLabel" [style.width]="'100%'">
       <ng-container #fieldComponent></ng-container>
+      <mat-label *ngIf="to.label && field.type !== 'checkbox'">{{ to.label }}</mat-label>
       <mat-placeholder *ngIf="to.placeholder">{{ to.placeholder }}</mat-placeholder>
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
       <mat-error [id]="null">
@@ -62,6 +63,10 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
     this.focused = !!this.field.focus;
     this.formField._control = this;
     this.field['__formField__'] = this.formField;
+    if (this.to.floatPlaceholder) {
+      this.to.floatLabel = this.to.floatPlaceholder;
+      console.warn(`${this.field.key}: Passing 'floatPlaceholder' is deprecated, Use 'floatLabel' instead.`);
+    }
   }
 
   focusMonitor(elements = []) {
