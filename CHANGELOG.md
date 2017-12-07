@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.0"></a>
+# [2.0.0-rc.0](https://github.com/formly-js/ngx-formly/compare/v2.0.0-beta.8...v2.0.0-rc.0) (2017-12-07)
+
+
+### Bug Fixes
+
+* **core:** remove usage of setTimeout. ([#586](https://github.com/formly-js/ngx-formly/issues/586)) ([c3de20c](https://github.com/formly-js/ngx-formly/commit/c3de20c))
+* **core:** take account of model changes when using hideExpression. ([#581](https://github.com/formly-js/ngx-formly/issues/581)) ([672679e](https://github.com/formly-js/ngx-formly/commit/672679e)), closes [#580](https://github.com/formly-js/ngx-formly/issues/580)
+* **hideExpression:** use getFieldModel only for simple field ([#588](https://github.com/formly-js/ngx-formly/issues/588)) ([9a5eeac](https://github.com/formly-js/ngx-formly/commit/9a5eeac))
+
+
+### Features
+
+* **demo:** add copy to clipboard to example-viewer. ([#585](https://github.com/formly-js/ngx-formly/issues/585)) ([a307a7c](https://github.com/formly-js/ngx-formly/commit/a307a7c))
+* **demo:** add preview code + more examples. ([#583](https://github.com/formly-js/ngx-formly/issues/583)) ([6a86dd4](https://github.com/formly-js/ngx-formly/commit/6a86dd4))
+* **material:** use stable version `5.0.0` ([#587](https://github.com/formly-js/ngx-formly/issues/587)) ([023386d](https://github.com/formly-js/ngx-formly/commit/023386d))
+
+
+
 <a name="2.0.0-beta.8"></a>
 # [2.0.0-beta.8](https://github.com/formly-js/ng-formly/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2017-11-28)
 
