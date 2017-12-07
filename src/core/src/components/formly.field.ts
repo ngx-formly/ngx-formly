@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, EventEmitter, ElementRef, Input, Output, DoCheck, OnDestroy,
+  Component, OnInit, EventEmitter, ElementRef, Input, Output, OnDestroy,
   ViewContainerRef, ViewChild, ComponentRef, Renderer2, ComponentFactoryResolver,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
@@ -18,7 +18,7 @@ import { map } from 'rxjs/operator/map';
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
   `,
 })
-export class FormlyField implements DoCheck, OnInit, OnDestroy {
+export class FormlyField implements OnInit, OnDestroy {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
@@ -36,11 +36,6 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
 
-  ngDoCheck() {
-    this.checkExpressionChange();
-    this.checkVisibilityChange();
-  }
-
   ngOnInit() {
     this.createFieldComponents();
     if (this.field.hide === true) {
@@ -52,6 +47,53 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     this.componentRefs.map(componentRef => componentRef.destroy());
     this._subscriptions.map(subscriber => subscriber.unsubscribe());
     this._subscriptions = this.componentRefs = [];
+  }
+
+  checkVisibilityChange() {
+    if (this.field && this.field.hideExpression) {
+      const hideExpressionResult: boolean = !!evalExpression(
+        this.field.hideExpression,
+        this,
+        [this.model, this.options.formState],
+      );
+
+      if (hideExpressionResult !== this.field.hide) {
+        this.toggleHide(hideExpressionResult);
+      }
+    }
+  }
+
+  checkExpressionChange() {
+    if (this.field && this.field.expressionProperties) {
+      const expressionProperties = this.field.expressionProperties;
+
+      for (let key in expressionProperties) {
+        const expressionValue = evalExpression(
+          expressionProperties[key].expression,
+          this,
+          [this.model, this.options.formState],
+        );
+
+        if (expressionProperties[key].expressionValue !== expressionValue) {
+          expressionProperties[key].expressionValue = expressionValue;
+          evalExpression(
+            expressionProperties[key].expressionValueSetter,
+            this,
+            [expressionValue, this.model, this.field.templateOptions, this.field.validation],
+          );
+        }
+      }
+
+      const formControl = this.field.formControl;
+      if (formControl) {
+        if (formControl.status === 'DISABLED' && !this.field.templateOptions.disabled) {
+          formControl.enable();
+        }
+        if (formControl.status !== 'DISABLED' && this.field.templateOptions.disabled) {
+          formControl.disable();
+        }
+      }
+    }
   }
 
   private createFieldComponents() {
@@ -147,60 +189,13 @@ export class FormlyField implements DoCheck, OnInit, OnDestroy {
     return ref;
   }
 
-  private checkVisibilityChange() {
-    if (this.field && this.field.hideExpression) {
-      const hideExpressionResult: boolean = !!evalExpression(
-        this.field.hideExpression,
-        this,
-        [this.model, this.options.formState],
-      );
-
-      if (hideExpressionResult !== this.field.hide) {
-        this.toggleHide(hideExpressionResult);
-      }
-    }
-  }
-
-  private checkExpressionChange() {
-    if (this.field && this.field.expressionProperties) {
-      const expressionProperties = this.field.expressionProperties;
-
-      for (let key in expressionProperties) {
-        const expressionValue = evalExpression(
-          expressionProperties[key].expression,
-          this,
-          [this.model, this.options.formState],
-        );
-
-        if (expressionProperties[key].expressionValue !== expressionValue) {
-          expressionProperties[key].expressionValue = expressionValue;
-          evalExpression(
-            expressionProperties[key].expressionValueSetter,
-            this,
-            [expressionValue, this.model, this.field.templateOptions, this.field.validation],
-          );
-        }
-      }
-
-      const formControl = this.field.formControl;
-      if (formControl) {
-        if (formControl.status === 'DISABLED' && !this.field.templateOptions.disabled) {
-            formControl.enable();
-        }
-        if (formControl.status !== 'DISABLED' && this.field.templateOptions.disabled) {
-            formControl.disable();
-        }
-      }
-    }
-  }
-
   private toggleHide(value: boolean) {
     this.field.hide = value;
     if (this.field.formControl) {
       if (value === true && this.form.get(this.field.key)) {
-        setTimeout(() => this.removeFieldControl());
+        this.removeFieldControl();
       } else if (value === false && !this.form.get(this.field.key)) {
-        setTimeout(() => this.addFieldControl());
+        this.addFieldControl();
       }
     }
 

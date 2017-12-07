@@ -1,7 +1,8 @@
-import { Component, OnChanges, Input, SimpleChanges, Optional } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
+import { FormlyField } from './formly.field';
 import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
 
 @Component({
@@ -16,13 +17,16 @@ import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey
     <ng-content></ng-content>
   `,
 })
-export class FormlyForm implements OnChanges {
+export class FormlyForm implements DoCheck, OnChanges {
+  @ViewChildren(FormlyField) formlyFields: QueryList<FormlyField>;
+
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
   @Input() options: FormlyFormOptions;
   /** @internal */
   @Input() buildForm: boolean = true;
+
   private initialModel: any;
 
   constructor(
@@ -30,6 +34,10 @@ export class FormlyForm implements OnChanges {
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
   ) {}
+
+  ngDoCheck() {
+    this.checkExpressionChange();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.fields) {
@@ -54,6 +62,18 @@ export class FormlyForm implements OnChanges {
 
   changeModel(event: { key: string, value: any }) {
     assignModelValue(this.model, event.key, event.value);
+    this.checkExpressionChange();
+  }
+
+  checkExpressionChange() {
+    if (!this.formlyFields || this.formlyFields.length === 0) {
+      return;
+    }
+
+    this.formlyFields.map(field => {
+      field.checkExpressionChange();
+      field.checkVisibilityChange();
+    });
   }
 
   setOptions() {

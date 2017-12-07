@@ -37,7 +37,7 @@ export class RepeatTypeComponent extends FieldType implements OnInit {
 
   ngOnInit() {
     if (this.model) {
-      this.model.map(() => this.add());
+      setTimeout(() => this.model.map(() => this.add()));
     }
   }
 
