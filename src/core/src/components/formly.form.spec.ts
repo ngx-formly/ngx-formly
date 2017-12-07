@@ -99,6 +99,28 @@ describe('Formly Form Component', () => {
       expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
     });
 
+    it('should apply model changes when form is enabled', () => {
+      const form = new FormGroup({});
+      testComponentInputs.form = form;
+      testComponentInputs.model = {};
+      testComponentInputs.fields = [{
+        key: 'address',
+        hideExpression: () => true,
+        fieldGroup: [{
+          key: 'city',
+          type: 'text',
+        }],
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(form.get('address')).toBeNull();
+
+      testComponentInputs.fields[0].hideExpression = () => false;
+      testComponentInputs.model.address.city = 'test';
+      fixture.detectChanges();
+      expect(form.get('address.city').value).toEqual('test');
+    });
+
     it('should hide/display field using a function with nested field key', fakeAsync(() => {
       const form = new FormGroup({});
       testComponentInputs.form = form;

@@ -220,7 +220,7 @@ export class FormlyField implements OnInit, OnDestroy {
 
   private addFieldControl() {
     const parent = this.fieldParentFormControl,
-      model = getFieldModel(this.model, this.field, false);
+      model = (this.field.fieldGroup || this.field.fieldArray) ? this.model : getFieldModel(this.model, this.field, false);
     if (this.field.formControl.value !== model) {
       this.field.formControl.patchValue(model);
     }
