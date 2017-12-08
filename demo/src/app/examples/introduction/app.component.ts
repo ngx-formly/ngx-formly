@@ -21,6 +21,7 @@ export class AppComponent {
       templateOptions: {
         label: 'Text',
         placeholder: 'Formly is terrific!',
+        required: true,
       },
     },
     {
@@ -84,6 +85,8 @@ export class AppComponent {
   ];
 
   submit() {
-    alert(JSON.stringify(this.model));
+    if (this.form.valid) {
+      alert(JSON.stringify(this.model));
+    }
   }
 }

@@ -13,6 +13,9 @@ import { FormlyFieldCustomInput } from './custom-input.component';
     ReactiveFormsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
+      validationMessages: [
+        { name: 'required', message: 'This field is required' },
+      ],
       types: [
         { name: 'custom', component: FormlyFieldCustomInput, wrappers: ['fieldset', 'label'] },
       ],
