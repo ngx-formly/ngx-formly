@@ -40,6 +40,8 @@ function stringIsInteger(str: string) {
   return !isNullOrUndefined(str) && /^\d+$/.test(str);
 }
 
+export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
+
 export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmptyObjects: boolean): any {
   let keyPath: (string|number)[] = getKeyPath(field);
   let value: any = model;

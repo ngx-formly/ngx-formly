@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
+import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
 import { Subject } from 'rxjs/Subject';
@@ -9,7 +9,6 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class FormlyFormBuilder {
   private defaultPath;
-  private validationOpts = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
   private formId = 0;
 
   constructor(private formlyConfig: FormlyConfig) {}
@@ -205,9 +204,20 @@ export class FormlyFormBuilder {
 
   private initFieldValidation(field: FormlyFieldConfig) {
     let validators = [];
-    this.validationOpts.filter(opt => field.templateOptions && field.templateOptions[opt]).map((opt) => {
-      validators.push(this.getValidation(opt, field.templateOptions[opt]));
-    });
+    FORMLY_VALIDATORS
+      .filter(opt => (field.templateOptions && field.templateOptions[opt])
+        || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]),
+      )
+      .map((opt) => {
+        validators.push((control: FormControl) => {
+          if (!field.templateOptions[opt]) {
+            return null;
+          }
+
+          return this.getValidation(opt, field.templateOptions[opt])(control);
+        });
+      });
+
     if (field.validators) {
       for (let validatorName in field.validators) {
         if (validatorName !== 'validation') {

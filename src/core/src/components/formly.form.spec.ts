@@ -140,26 +140,69 @@ describe('Formly Form Component', () => {
     }));
   });
 
-  it('expression properties', () => {
-    testComponentInputs = {
-      fields: [{
+  describe('expressionProperties', () => {
+    let field, model, form: FormGroup;
+
+    beforeEach(() => {
+      form = new FormGroup({});
+      model = {};
+      field = {
         key: 'title',
         type: 'text',
-        optionsTypes: ['other'],
         templateOptions: {
           placeholder: 'Title',
-          disabled: true,
         },
-        expressionProperties: {
-          'templateOptions.disabled': 'model.title !== undefined',
-        },
-      }],
-      form: new FormGroup({}),
-      model: {},
-    };
+      };
+      testComponentInputs = { fields: [field], model, form };
+    });
 
-    createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
-    expect(testComponentInputs.fields[0].templateOptions.disabled).toEqual(false);
+    it('templateOptions.disabled', () => {
+      field.expressionProperties = {
+        'templateOptions.disabled': 'model.title !== undefined',
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(field.templateOptions.disabled).toEqual(false);
+      expect(form.get('title').enabled).toEqual(true);
+
+      model.title = 'test';
+      fixture.detectChanges();
+
+      expect(field.templateOptions.disabled).toEqual(true);
+      expect(form.get('title').enabled).toEqual(false);
+    });
+
+    const options = [
+      { name: 'required', value: true, invalid: null },
+      { name: 'pattern', value: '[0-9]{5}', invalid: 'ddd' },
+      { name: 'minLength', value: 5, invalid: '123' },
+      { name: 'maxLength', value: 10, invalid: '12345678910' },
+      { name: 'min', value: 5, invalid: 3 },
+      { name: 'max', value: 10, invalid: 11 },
+    ];
+
+    options.map(option => {
+      it(`templateOptions.${option.name}`, () => {
+        let enableExpression = true;
+        field.expressionProperties = {
+          [`templateOptions.${option.name}`]: () => {
+            return enableExpression ? option.value : false;
+          },
+        };
+        model.title = option.invalid;
+        const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+
+        expect(field.templateOptions[option.name]).toEqual(option.value);
+        expect(form.valid).toEqual(false);
+
+        enableExpression = false;
+        fixture.detectChanges();
+
+        expect(field.templateOptions[option.name]).toEqual(false);
+        form.updateValueAndValidity();
+        expect(form.valid).toEqual(true);
+      });
+    });
   });
 });
 
