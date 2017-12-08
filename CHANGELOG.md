@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.1"></a>
+# [2.0.0-rc.1](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.0...v2.0.0-rc.1) (2017-12-08)
+
+
+### Bug Fixes
+
+* **core:** change form validity when expressionProperty change. ([#590](https://github.com/formly-js/ngx-formly/issues/590)) ([290761c](https://github.com/formly-js/ngx-formly/commit/290761c)), closes [#582](https://github.com/formly-js/ngx-formly/issues/582)
+
+
+
 <a name="2.0.0-rc.0"></a>
 # [2.0.0-rc.0](https://github.com/formly-js/ngx-formly/compare/v2.0.0-beta.8...v2.0.0-rc.0) (2017-12-07)
 
