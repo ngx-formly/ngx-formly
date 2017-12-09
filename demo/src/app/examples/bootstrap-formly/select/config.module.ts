@@ -14,7 +14,13 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Advanced Layout',
+            title: 'Select',
+            description: `
+              <div>
+                Here are all of the options you have available to you with the
+                <code>select</code> type from <code>@ngx-formly/bootstrap</code>
+              </div>
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +33,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class AdvancedLayoutModule { }
+export class ConfigModule { }

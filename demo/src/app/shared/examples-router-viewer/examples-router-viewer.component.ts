@@ -5,7 +5,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 @Component({
   selector: 'formly-examples-viewer',
   template: `
-    <formly-example-viewer *ngFor="let example of examples" [title]="example.title" [example]="example.files">
+    <formly-example-viewer *ngFor="let example of examples" [title]="example.title" [description]="example.description" [example]="example.files">
       <ng-template [portalHost]="example.portalHost"></ng-template>
     </formly-example-viewer>
   `,

@@ -14,13 +14,15 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Bootstrap Horizontal',
+            title: 'Disable submit button',
+            description: `
+              This is an example of how to disable the submit button when the form is invalid.
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
               { file: 'app.component.ts', content: require('!!prismjs-loader?lang=typescript!./app.component.ts') },
               { file: 'app.module.ts', content: require('!!prismjs-loader?lang=typescript!./app.module.ts') },
-              { file: 'horizontal-wrapper.ts', content: require('!!prismjs-loader?lang=typescript!./horizontal-wrapper.ts') },
             ],
           }],
         },
@@ -28,4 +30,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class BootstrapHorizontalModule { }
+export class ConfigModule { }

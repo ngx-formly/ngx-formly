@@ -14,7 +14,8 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Reset Model',
+            title: 'Expression Properties',
+            description: `Expression Properties allows you to dynamically change many properties of a field.`,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +28,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class ResetModelModule { }
+export class ConfigModule { }

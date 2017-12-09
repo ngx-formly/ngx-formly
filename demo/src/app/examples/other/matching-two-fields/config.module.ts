@@ -14,7 +14,8 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Cascaded Select',
+            title: 'Disable submit button',
+            description: `This is an example of how to add confirm password field using custom validation`,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +28,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class CascadedSelectModule { }
+export class ConfigModule { }

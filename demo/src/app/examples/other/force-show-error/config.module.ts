@@ -14,7 +14,10 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Input add-ons',
+            title: 'Force showing error state',
+            description: `
+              Using <code>validation.show = true</code> you can force the validation state to be set to true.
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +30,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class InputAddOnsModule { }
+export class ConfigModule { }

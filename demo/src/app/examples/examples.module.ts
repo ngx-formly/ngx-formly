@@ -11,47 +11,47 @@ import { ExamplesComponent } from './examples.component';
       { path: '', component: ExamplesComponent, children: [
         { path: '', pathMatch: 'full', redirectTo: 'introduction' },
         // Intro
-        { path: 'introduction', loadChildren: './introduction/introduction.module#IntroductionModule' },
+        { path: 'introduction', loadChildren: './introduction/config.module#ConfigModule' },
 
         // Field Options
         { path: 'field-options', children: [
-          { path: 'expression-properties', loadChildren: './field-options/expression-properties/expression-properties.module#ExpressionPropertiesModule' },
-          { path: 'default-value', loadChildren: './field-options/default-value/default-value.module#DefaultValueModule' },
-          { path: 'hide-fields', loadChildren: './field-options/hide-fields/hide-fields.module#HideFieldsModule' },
-          { path: 'model-options', loadChildren: './field-options/model-options/model-options.module#ModelOptionsModule' },
+          { path: 'expression-properties', loadChildren: './field-options/expression-properties/config.module#ConfigModule' },
+          { path: 'default-value', loadChildren: './field-options/default-value/config.module#ConfigModule' },
+          { path: 'hide-fields', loadChildren: './field-options/hide-fields/config.module#ConfigModule' },
+          { path: 'model-options', loadChildren: './field-options/model-options/config.module#ConfigModule' },
         ]},
 
         // Form Options
         { path: 'form-options', children: [
-          { path: 'reset-model', loadChildren: './form-options/reset-model/reset-model.module#ResetModelModule' },
-          { path: 'form-state', loadChildren: './form-options/form-state/form-state.module#FormStateModule' },
+          { path: 'reset-model', loadChildren: './form-options/reset-model/config.module#ConfigModule' },
+          { path: 'form-state', loadChildren: './form-options/form-state/config.module#ConfigModule' },
         ]},
 
         // Bootstrap Formly
         { path: 'bootstrap-formly', children: [
-          { path: 'table-rows', loadChildren: './bootstrap-formly/table-rows/table-rows.module#TableRowsModule' },
-          { path: 'select', loadChildren: './bootstrap-formly/select/select.module#SelectModule' },
+          { path: 'table-rows', loadChildren: './bootstrap-formly/table-rows/config.module#ConfigModule' },
+          { path: 'select', loadChildren: './bootstrap-formly/select/config.module#ConfigModule' },
         ]},
 
         // Bootstrap Specific
         { path: 'bootstrap-specific', children: [
-          { path: 'advanced-layout', loadChildren: './bootstrap-specific/advanced-layout/advanced-layout.module#AdvancedLayoutModule' },
-          { path: 'bootstrap-horizontal', loadChildren: './bootstrap-specific/bootstrap-horizontal/bootstrap-horizontal.module#BootstrapHorizontalModule' },
-          { path: 'input-add-ons', loadChildren: './bootstrap-specific/input-add-ons/input-add-ons.module#InputAddOnsModule' },
+          { path: 'advanced-layout', loadChildren: './bootstrap-specific/advanced-layout/config.module#ConfigModule' },
+          { path: 'bootstrap-horizontal', loadChildren: './bootstrap-specific/bootstrap-horizontal/config.module#ConfigModule' },
+          { path: 'input-add-ons', loadChildren: './bootstrap-specific/input-add-ons/config.module#ConfigModule' },
         ]},
 
         // Advanced
         { path: 'advanced', children: [
-          { path: 'repeating-section', loadChildren: './advanced/repeating-section/repeating-section.module#RepeatingSectionModule' },
+          { path: 'repeating-section', loadChildren: './advanced/repeating-section/config.module#ConfigModule' },
         ]},
 
         // Other
         { path: 'other', children: [
-          { path: 'cascaded-select', loadChildren: './other/cascaded-select/cascaded-select.module#CascadedSelectModule' },
-          { path: 'disable-submit-button', loadChildren: './other/disable-submit-button/disable-submit-button.module#DisableSubmitButtonModule' },
-          { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/advanced-layout-flex.module#AdvancedLayoutFlexModule' },
-          { path: 'matching-two-fields', loadChildren: './other/matching-two-fields/matching-two-fields.module#MatchingTwoFieldsModule' },
-          { path: 'force-show-error', loadChildren: './other/force-show-error/force-show-error.module#ForceShowErrorModule' },
+          { path: 'cascaded-select', loadChildren: './other/cascaded-select/config.module#ConfigModule' },
+          { path: 'disable-submit-button', loadChildren: './other/disable-submit-button/config.module#ConfigModule' },
+          { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/config.module#ConfigModule' },
+          { path: 'matching-two-fields', loadChildren: './other/matching-two-fields/config.module#ConfigModule' },
+          { path: 'force-show-error', loadChildren: './other/force-show-error/config.module#ConfigModule' },
         ]},
       ] },
     ]),

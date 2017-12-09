@@ -1,17 +1,3 @@
-<h1>Reset and Update Initial Values</h1>
-<div>
-  Just try this:
-  <ol>
-    <li>Fill out some fields</li>
-    <li>Click "Reset"</li>
-    <li>Fill out fields again</li>
-    <li>Click "Update Initial Values"</li>
-    <li>Click "Reset"</li>
-    <li>Change some fields</li>
-    <li>Click "Reset"</li>
-  </ol>
-</div>
-
 <form [formGroup]="form" (ngSubmit)="submit()">
   <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
     <button type="submit" class="btn btn-primary submit-button">Submit</button>

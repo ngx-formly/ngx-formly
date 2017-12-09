@@ -14,12 +14,15 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Advanced Layout (Flex)',
+            title: 'Hide Fields',
+            description: `
+              <code>hideExpression</code> is used to set the
+              <code>hide</code> property of your field.
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
               { file: 'app.component.ts', content: require('!!prismjs-loader?lang=typescript!./app.component.ts') },
-              { file: 'app.component.css', content: require('!!prismjs-loader?lang=css!./app.component.css') },
               { file: 'app.module.ts', content: require('!!prismjs-loader?lang=typescript!./app.module.ts') },
             ],
           }],
@@ -28,4 +31,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class AdvancedLayoutFlexModule { }
+export class ConfigModule { }
