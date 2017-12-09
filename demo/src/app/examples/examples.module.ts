@@ -48,6 +48,7 @@ import { ExamplesComponent } from './examples.component';
         // Other
         { path: 'other', children: [
           { path: 'cascaded-select', loadChildren: './other/cascaded-select/cascaded-select.module#CascadedSelectModule' },
+          { path: 'disable-submit-button', loadChildren: './other/disable-submit-button/disable-submit-button.module#DisableSubmitButtonModule' },
         ]},
       ] },
     ]),
