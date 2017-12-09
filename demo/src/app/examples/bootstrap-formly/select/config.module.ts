@@ -16,10 +16,8 @@ import { AppComponent } from './app.component';
           examples: [{
             title: 'Select',
             description: `
-              <div>
-                Here are all of the options you have available to you with the
-                <code>select</code> type from <code>@ngx-formly/bootstrap</code>
-              </div>
+              Here are all of the options you have available to you with the
+              <code>select</code> type from <code>@ngx-formly/bootstrap</code>
             `,
             component: AppComponent,
             files: [

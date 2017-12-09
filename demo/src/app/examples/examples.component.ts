@@ -52,6 +52,7 @@ export class ExamplesComponent {
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
       { href: './other/matching-two-fields', text: 'Matching Two Fields' },
       { href: './other/force-show-error', text: 'Force showing error state' },
+      { href: './other/toggle-required', text: 'Toggle required field' },
     ]},
   ];
 }

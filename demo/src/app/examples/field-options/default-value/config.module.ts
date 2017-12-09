@@ -16,15 +16,13 @@ import { AppComponent } from './app.component';
           examples: [{
             title: 'Default Value',
             description: `
-              <div>
-                There are two ways to initialize the form with default values.
-                <ol>
-                  <li>Default the model (preferred)</li>
-                  <li>Use the
-                    <code>defaultValue</code> option on the field</li>
-                </ol>
-                Both methods are demonstrated below.
-              </div>
+              There are two ways to initialize the form with default values.
+              <ol>
+                <li>Default the model (preferred)</li>
+                <li>Use the
+                  <code>defaultValue</code> option on the field</li>
+              </ol>
+              Both methods are demonstrated below.
             `,
             component: AppComponent,
             files: [
