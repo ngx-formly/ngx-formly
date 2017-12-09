@@ -18,7 +18,7 @@ export class SelectOption {
   selector: 'formly-field-select',
   template: `
     <select [formControl]="formControl" class="form-control" [class.is-invalid]="showError" [formlyAttributes]="field">
-      <option value="" *ngIf="to.placeholder">{{ to.placeholder }}</option>
+      <option value="">{{ to.placeholder }}</option>
       <ng-container *ngFor="let item of selectOptions">
        <optgroup *ngIf="item.group" label="{{item.label}}">
          <option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
@@ -38,6 +38,8 @@ export class FormlyFieldSelect extends FieldType {
   get selectOptions() {
     let options: SelectOption[] = [];
     this.to.options.map((option: SelectOption) => {
+      option = { label: option[this.labelProp], value: option[this.valueProp] };
+
       if (!option[this.groupProp]) {
         options.push(option);
       } else {
@@ -45,15 +47,12 @@ export class FormlyFieldSelect extends FieldType {
           return filteredOption.label === option[this.groupProp];
         });
         if (filteredOption[0]) {
-          filteredOption[0].group.push({
-            label: option[this.labelProp],
-            value: option[this.valueProp],
-          });
+          filteredOption[0].group.push(option);
         }
         else {
           options.push({
             label: option[this.groupProp],
-            group: [{ value: option[this.valueProp], label: option[this.labelProp] }],
+            group: [option],
           });
         }
       }
