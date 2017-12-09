@@ -50,6 +50,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'cascaded-select', loadChildren: './other/cascaded-select/cascaded-select.module#CascadedSelectModule' },
           { path: 'disable-submit-button', loadChildren: './other/disable-submit-button/disable-submit-button.module#DisableSubmitButtonModule' },
           { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/advanced-layout-flex.module#AdvancedLayoutFlexModule' },
+          { path: 'matching-two-fields', loadChildren: './other/matching-two-fields/matching-two-fields.module#MatchingTwoFieldsModule' },
         ]},
       ] },
     ]),
