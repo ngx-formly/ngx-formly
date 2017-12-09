@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormlyModule } from '../core';
 import { FormGroup } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
-import { FormlyFieldConfig } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -199,9 +199,54 @@ describe('Formly Form Component', () => {
         fixture.detectChanges();
 
         expect(field.templateOptions[option.name]).toEqual(false);
-        form.updateValueAndValidity();
         expect(form.valid).toEqual(true);
       });
+    });
+  });
+
+  describe('options', () => {
+    let field, model, form: FormGroup, options: FormlyFormOptions;
+    beforeEach(() => {
+      form = new FormGroup({});
+      model = {};
+      options = {};
+      field = {
+        key: 'title',
+        type: 'text',
+        templateOptions: {
+          placeholder: 'Title',
+        },
+      };
+      testComponentInputs = { fields: [field], model, form, options };
+    });
+
+    it('resetForm', () => {
+      // initial value
+      model.title = 'test';
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+      form.get('title').setValue('edit title');
+      fixture.detectChanges();
+
+      expect(model.title).toEqual('edit title');
+
+      options.resetModel();
+      expect(model.title).toEqual('test');
+    });
+
+    it('updateInitialValue', () => {
+      // initial value
+      model.title = 'test';
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+      form.get('title').setValue('edit title');
+      fixture.detectChanges();
+
+      expect(model.title).toEqual('edit title');
+      options.updateInitialValue();
+
+      options.resetModel();
+      expect(model.title).toEqual('edit title');
     });
   });
 });

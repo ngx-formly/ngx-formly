@@ -93,7 +93,12 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   private resetModel(model?: any) {
     model = isNullOrUndefined(model) ? this.initialModel : model;
-    this.form.patchValue(model);
+    if (this.options.parentForm) {
+      this.options.parentForm.resetForm(model);
+    } else {
+      this.form.reset(model);
+    }
+
     this.resetFormGroup(model, this.form);
     this.resetFormModel(model, this.model);
   }
