@@ -49,6 +49,7 @@ export class ExamplesComponent {
     { title: 'Other', links: [
       { href: './other/cascaded-select', text: 'Cascaded Select' },
       { href: './other/disable-submit-button', text: 'Disable submit button' },
+      { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
     ]},
   ];
 }
