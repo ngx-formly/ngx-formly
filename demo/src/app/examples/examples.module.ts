@@ -44,6 +44,11 @@ import { ExamplesComponent } from './examples.component';
         { path: 'advanced', children: [
           { path: 'repeating-section', loadChildren: './advanced/repeating-section/repeating-section.module#RepeatingSectionModule' },
         ]},
+
+        // Other
+        { path: 'other', children: [
+          { path: 'cascaded-select', loadChildren: './other/cascaded-select/cascaded-select.module#CascadedSelectModule' },
+        ]},
       ] },
     ]),
   ],

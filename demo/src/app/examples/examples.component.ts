@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'formly-demo-examples',
   template: `
-  <mat-sidenav-container style="min-height: 100% !important;">
+  <mat-sidenav-container style="min-height: 90% !important;">
     <mat-sidenav mode="side" opened="true" [style.width.px]="250">
       <mat-nav-list *ngFor="let nav of navs">
         <h3 mat-subheader>{{ nav.title }}</h3>
@@ -45,6 +45,9 @@ export class ExamplesComponent {
     ]},
     { title: 'Advanced', links: [
       { href: './advanced/repeating-section', text: 'Repeating Section' },
+    ]},
+    { title: 'Other', links: [
+      { href: './other/cascaded-select', text: 'Cascaded Select' },
     ]},
   ];
 }
