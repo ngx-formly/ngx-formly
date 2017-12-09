@@ -14,7 +14,18 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Disable submit button',
+            title: 'Default Value',
+            description: `
+              <div>
+                There are two ways to initialize the form with default values.
+                <ol>
+                  <li>Default the model (preferred)</li>
+                  <li>Use the
+                    <code>defaultValue</code> option on the field</li>
+                </ol>
+                Both methods are demonstrated below.
+              </div>
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +38,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class MatchingTwoFieldsModule { }
+export class ConfigModule { }

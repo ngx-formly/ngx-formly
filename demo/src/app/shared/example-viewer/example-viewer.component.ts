@@ -8,6 +8,7 @@ import { CopierService } from '../copier/copier.service';
 })
 export class ExampleViewerComponent {
   @Input() title;
+  @Input() description;
   @Input() example: { file: string; content: string }[];
 
   /** Whether the source for the example is being displayed. */

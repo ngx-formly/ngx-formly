@@ -14,7 +14,8 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Hide Fields',
+            title: 'Input add-ons',
+            description: `This example demonstrates how to use input add-ons to decorate your input fields.`,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +28,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class HideFieldsModule { }
+export class ConfigModule { }

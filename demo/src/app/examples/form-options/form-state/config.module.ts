@@ -14,7 +14,8 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Default Value',
+            title: 'Form State',
+            description: `This demonstrates how to use formState in your fields.`,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +28,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class DefaultValueModule { }
+export class ConfigModule { }

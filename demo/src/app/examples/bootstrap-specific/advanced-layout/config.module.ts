@@ -14,7 +14,14 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'modelOptions',
+            title: 'Advanced Layout',
+            description: `
+              <div>
+                This is an example of using
+                <code>formGroup</code>s and the
+                <code>className</code> property to have an advanced layout.
+              </div>
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +34,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class ModelOptionsModule { }
+export class ConfigModule { }

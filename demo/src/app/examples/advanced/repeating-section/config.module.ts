@@ -14,12 +14,19 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Select',
+            title: 'Repeating Section',
+            description: `
+              <div>
+                This demonstrates using
+                <code>formly-form</code> inside of a custom type in order to accomplish repeating fields.
+              </div>
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
               { file: 'app.component.ts', content: require('!!prismjs-loader?lang=typescript!./app.component.ts') },
               { file: 'app.module.ts', content: require('!!prismjs-loader?lang=typescript!./app.module.ts') },
+              { file: 'repeat-section.type.ts', content: require('!!prismjs-loader?lang=typescript!./repeat-section.type.ts') },
             ],
           }],
         },
@@ -27,4 +34,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class SelectModule { }
+export class ConfigModule { }

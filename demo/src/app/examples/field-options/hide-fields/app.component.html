@@ -1,10 +1,3 @@
-<div>
-  <p>
-    <code>hideExpression</code> is used to set the
-    <code>hide</code> property of your field.
-  </p>
-</div>
-
 <form [formGroup]="form" (ngSubmit)="submit()">
   <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
     <button type="submit" class="btn btn-primary submit-button" [disabled]="!form.valid">Submit</button>

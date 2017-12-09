@@ -14,13 +14,27 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Repeating Section',
+            title: 'Reset Model',
+            description: `
+              <h3>Reset and Update Initial Values</h3>
+              <div>
+                Just try this:
+                <ol>
+                  <li>Fill out some fields</li>
+                  <li>Click "Reset"</li>
+                  <li>Fill out fields again</li>
+                  <li>Click "Update Initial Values"</li>
+                  <li>Click "Reset"</li>
+                  <li>Change some fields</li>
+                  <li>Click "Reset"</li>
+                </ol>
+              </div>
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
               { file: 'app.component.ts', content: require('!!prismjs-loader?lang=typescript!./app.component.ts') },
               { file: 'app.module.ts', content: require('!!prismjs-loader?lang=typescript!./app.module.ts') },
-              { file: 'repeat-section.type.ts', content: require('!!prismjs-loader?lang=typescript!./repeat-section.type.ts') },
             ],
           }],
         },
@@ -28,4 +42,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class RepeatingSectionModule { }
+export class ConfigModule { }

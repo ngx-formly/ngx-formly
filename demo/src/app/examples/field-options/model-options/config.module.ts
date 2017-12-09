@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedModule, ExamplesRouterViewerComponent } from '../../shared';
+import { SharedModule, ExamplesRouterViewerComponent } from '../../../shared';
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
 
@@ -14,13 +14,13 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Introduction Example',
+            title: 'modelOptions',
+            description: ``,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
               { file: 'app.component.ts', content: require('!!prismjs-loader?lang=typescript!./app.component.ts') },
               { file: 'app.module.ts', content: require('!!prismjs-loader?lang=typescript!./app.module.ts') },
-              { file: 'custom-input.component.ts', content: require('!!prismjs-loader?lang=typescript!./custom-input.component.ts') },
             ],
           }],
         },
@@ -28,4 +28,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class IntroductionModule { }
+export class ConfigModule { }

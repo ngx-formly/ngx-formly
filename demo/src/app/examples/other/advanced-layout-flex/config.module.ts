@@ -14,11 +14,19 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Form State',
+            title: 'Advanced Layout (Flex)',
+            description: `
+              <div>
+                This is an example of using
+                <code>formGroup</code>s and the
+                <code>className</code> property to have an advanced layout.
+              </div>
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
               { file: 'app.component.ts', content: require('!!prismjs-loader?lang=typescript!./app.component.ts') },
+              { file: 'app.component.css', content: require('!!prismjs-loader?lang=css!./app.component.css') },
               { file: 'app.module.ts', content: require('!!prismjs-loader?lang=typescript!./app.module.ts') },
             ],
           }],
@@ -27,4 +35,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class FormStateModule { }
+export class ConfigModule { }

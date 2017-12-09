@@ -14,7 +14,14 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Expression Properties',
+            title: 'Table Rows',
+            description: `
+              With angular-formly-bootstrap-templates, you can specify
+                <code>rows</code> for the
+                <code>textarea</code> type. You can also specify
+                <code>cols</code> but that doesn't matter because the
+                <code>.form-control</code> class will make the textarea have a width of 100% anyway.
+            `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
@@ -27,4 +34,4 @@ import { AppComponent } from './app.component';
     ]),
   ],
 })
-export class ExpressionPropertiesModule { }
+export class ConfigModule { }
