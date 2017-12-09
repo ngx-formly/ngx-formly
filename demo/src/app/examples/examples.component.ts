@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
     <mat-sidenav mode="side" opened="true" [style.width.px]="250">
       <mat-nav-list *ngFor="let nav of navs" dense>
         <h3 mat-subheader>{{ nav.title }}</h3>
+        <mat-divider></mat-divider>
+
         <a *ngFor="let link of nav.links" mat-list-item [routerLink]="link.href">
           {{ link.text }}
         </a>
