@@ -28,6 +28,11 @@
 
   <div class="docs-example-viewer-body">
     <div class="alert alert-info" *ngIf="description" [innerHtml]="description"></div>
-    <ng-content></ng-content>
+    <ng-template #demo></ng-template>
+
+    <div *ngIf="demoComponentRef">
+      <h3>Form Data</h3>
+      <pre>{{ demoComponentRef.instance.model | json }}</pre>
+    </div>
   </div>
 </div>

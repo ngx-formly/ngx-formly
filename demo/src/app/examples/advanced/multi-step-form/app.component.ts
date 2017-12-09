@@ -5,7 +5,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 export interface StepType {
   label: string;
   fields: FormlyFieldConfig[];
-} 
+}
 
 @Component({
   selector: 'formly-app-example',
@@ -38,8 +38,7 @@ export class AppComponent {
             required: true,
           },
         },
-
-      ]
+      ],
     },
     {
       label: 'Destination',
@@ -52,7 +51,7 @@ export class AppComponent {
             required: true,
           },
         },
-      ]
+      ],
     },
     {
       label: 'Day of the trip',
@@ -66,8 +65,8 @@ export class AppComponent {
             required: true,
           },
         },
-      ]
-    }
+      ],
+    },
   ];
 
   form = new FormArray(this.steps.map(() => new FormGroup({})));
@@ -77,9 +76,7 @@ export class AppComponent {
   }
 
   nextStep(step) {
-    if (this.form.at(step).valid) {
-      this.activedStep = step + 1;
-    }
+    this.activedStep = step + 1;
   }
 
   submit() {

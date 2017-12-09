@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PortalModule } from '@angular/cdk/portal';
 
 import { ExampleViewerComponent } from './example-viewer/example-viewer.component';
 import { ExamplesRouterViewerComponent } from './examples-router-viewer/examples-router-viewer.component';
@@ -16,7 +15,6 @@ import { CopierService } from './copier/copier.service';
 @NgModule({
   imports: [
     CommonModule,
-    PortalModule,
     MatTooltipModule,
     MatTabsModule,
     MatIconModule,
@@ -24,7 +22,6 @@ import { CopierService } from './copier/copier.service';
   ],
   exports: [
     CommonModule,
-    PortalModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
