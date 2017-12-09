@@ -51,6 +51,7 @@ export class ExamplesComponent {
       { href: './other/disable-submit-button', text: 'Disable submit button' },
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
       { href: './other/matching-two-fields', text: 'Matching Two Fields' },
+      { href: './other/force-show-error', text: 'Force showing error state' },
     ]},
   ];
 }
