@@ -8,7 +8,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class AppComponent implements OnInit {
   form = new FormGroup({});
-  model = {};
+  model: any = {};
   options: FormlyFormOptions = {
     formState: {
       disabled: true,

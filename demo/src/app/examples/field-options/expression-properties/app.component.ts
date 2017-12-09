@@ -8,7 +8,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class AppComponent {
   form = new FormGroup({});
-  model = {};
+  model: any = {};
   fields: FormlyFieldConfig[] = [
     {
       key: 'text',
