@@ -16,11 +16,9 @@ import { AppComponent } from './app.component';
           examples: [{
             title: 'Advanced Layout',
             description: `
-              <div>
-                This is an example of using
-                <code>formGroup</code>s and the
-                <code>className</code> property to have an advanced layout.
-              </div>
+              This is an example of using
+              <code>formGroup</code>s and the
+              <code>className</code> property to have an advanced layout.
             `,
             component: AppComponent,
             files: [

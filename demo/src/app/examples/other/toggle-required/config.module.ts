@@ -14,17 +14,20 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Repeating Section',
+            title: 'Toggle required field',
             description: `
-              This demonstrates using
-              <code>formly-form</code> inside of a custom type in order to accomplish repeating fields.
+              This is an example of how to toggle <code>required</code> of a field. It uses:
+              <ul>
+                <li><code>expressionProperties</code>: to have formly add <code>required</code> to the input field</li>
+                <li><code>validation.show</code>: to show validation errors even when they the field has not been touched</li>
+                <li><code>validationMessages</code>: to add a globally available validation message</li>
+              </ul>
             `,
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
               { file: 'app.component.ts', content: require('!!prismjs-loader?lang=typescript!./app.component.ts') },
               { file: 'app.module.ts', content: require('!!prismjs-loader?lang=typescript!./app.module.ts') },
-              { file: 'repeat-section.type.ts', content: require('!!prismjs-loader?lang=typescript!./repeat-section.type.ts') },
             ],
           }],
         },

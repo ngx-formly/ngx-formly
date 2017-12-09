@@ -52,6 +52,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/config.module#ConfigModule' },
           { path: 'matching-two-fields', loadChildren: './other/matching-two-fields/config.module#ConfigModule' },
           { path: 'force-show-error', loadChildren: './other/force-show-error/config.module#ConfigModule' },
+          { path: 'toggle-required', loadChildren: './other/toggle-required/config.module#ConfigModule' },
         ]},
       ] },
     ]),
