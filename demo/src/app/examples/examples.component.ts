@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
   <mat-sidenav-container style="min-height: 90% !important;">
     <mat-sidenav mode="side" opened="true" [style.width.px]="250">
-      <mat-nav-list *ngFor="let nav of navs">
+      <mat-nav-list *ngFor="let nav of navs" dense>
         <h3 mat-subheader>{{ nav.title }}</h3>
         <a *ngFor="let link of nav.links" mat-list-item [routerLink]="link.href">
           {{ link.text }}
@@ -45,6 +45,7 @@ export class ExamplesComponent {
     ]},
     { title: 'Advanced', links: [
       { href: './advanced/repeating-section', text: 'Repeating Section' },
+      { href: './advanced/multi-step-form', text: 'Multi-Step Form' },
     ]},
     { title: 'Other', links: [
       { href: './other/cascaded-select', text: 'Cascaded Select' },

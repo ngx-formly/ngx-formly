@@ -43,6 +43,7 @@ import { ExamplesComponent } from './examples.component';
         // Advanced
         { path: 'advanced', children: [
           { path: 'repeating-section', loadChildren: './advanced/repeating-section/config.module#ConfigModule' },
+          { path: 'multi-step-form', loadChildren: './advanced/multi-step-form/config.module#ConfigModule' },
         ]},
 
         // Other
