@@ -57,6 +57,21 @@ export class AppComponent {
         labelProp: 'label',
       },
     },
+    {
+      key: 'multiselect',
+      type: 'select',
+      templateOptions: {
+        label: 'Multi-select',
+        multiple: true,
+        options: [
+          {label: 'Iron Man', value: 'iron_man'},
+          {label: 'Captain America', value: 'captain_america'},
+          {label: 'Black Widow', value: 'black_widow'},
+          {label: 'Hulk', value: 'hulk'},
+          {label: 'Captain Marvel', value: 'captain_marvel'},
+        ],
+      },
+    },
   ];
 
   submit() {
