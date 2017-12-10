@@ -8,7 +8,6 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class FormlyFormBuilder {
-  private defaultPath;
   private formId = 0;
 
   constructor(private formlyConfig: FormlyConfig) {}
@@ -55,9 +54,6 @@ export class FormlyFormBuilder {
         this.formlyConfig.getMergedField(field);
         let path: any = field.key;
         if (typeof path === 'string') {
-          if (!isUndefined(field.defaultValue)) {
-            this.defaultPath = path;
-          }
           path = getKeyPath({key: field.key});
         }
 
@@ -78,10 +74,7 @@ export class FormlyFormBuilder {
           field.key = originalKey;
         } else {
           if (!isUndefined(field.defaultValue) && isUndefined(model[path[0]])) {
-            let modelPath: any = getKeyPath({key: this.defaultPath});
-            modelPath = modelPath.pop();
-            assignModelValue(model, modelPath, field.defaultValue);
-            this.defaultPath = undefined;
+            assignModelValue(model, path[0], field.defaultValue);
           }
           this.addFormControl(form, field, model[path[0]]);
         }

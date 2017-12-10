@@ -67,6 +67,18 @@ describe('FormlyFormBuilder service', () => {
       expect(model['title']).toBeFalsy();
     });
 
+    it('should set the defaultValue for nested key', () => {
+      let model = {};
+      field = {
+        key: 'address.city',
+        type: 'input',
+        defaultValue: 'foo',
+      };
+      builder.buildForm(form, [field], model, {});
+
+      expect(model['address']).toEqual({ city: 'foo' });
+    });
+
     it('should set the defaultValue for nested form', () => {
       let model = {};
       field = {
