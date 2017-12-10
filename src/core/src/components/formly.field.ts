@@ -1,6 +1,6 @@
 import {
-  Component, OnInit, EventEmitter, ElementRef, Input, Output, OnDestroy,
-  ViewContainerRef, ViewChild, ComponentRef, Renderer2, ComponentFactoryResolver,
+  Component, OnInit, EventEmitter, Input, Output, OnDestroy,
+  ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig, TypeOption } from '../services/formly.config';
@@ -17,6 +17,9 @@ import { map } from 'rxjs/operator/map';
     <ng-template #fieldComponent></ng-template>
     <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
   `,
+  host: {
+    '[style.display]': 'field.hide ? "none":""',
+  },
 })
 export class FormlyField implements OnInit, OnDestroy {
   @Input() model: any;
@@ -30,8 +33,6 @@ export class FormlyField implements OnInit, OnDestroy {
   private _subscriptions: Subscription[] = [];
 
   constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
@@ -203,8 +204,6 @@ export class FormlyField implements OnInit, OnDestroy {
         this.addFieldControl();
       }
     }
-
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', value ? 'none' : '');
 
     this.field.templateOptions.hidden = value;
     if (this.options.fieldChanges) {
