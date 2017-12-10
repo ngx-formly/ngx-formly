@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Repeating Section',
+            title: 'Multi-Step Form',
             description: `
               This is an example of multi-step form using <a href="https://material.angular.io/components/stepper/overview" target="_blank">Material Stepper</a>
             `,
