@@ -17,8 +17,12 @@ export class SelectOption {
 @Component({
   selector: 'formly-field-select',
   template: `
-    <select [formControl]="formControl" class="form-control" [class.is-invalid]="showError" [formlyAttributes]="field">
-      <option value="">{{ to.placeholder }}</option>
+    <select class="form-control"
+      [formControl]="formControl"
+      [class.is-invalid]="showError"
+      [multiple]="to.multiple"
+      [formlyAttributes]="field">
+      <option value="" *ngIf="!to.multiple">{{ to.placeholder }}</option>
       <ng-container *ngFor="let item of selectOptions">
        <optgroup *ngIf="item.group" label="{{item.label}}">
          <option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
