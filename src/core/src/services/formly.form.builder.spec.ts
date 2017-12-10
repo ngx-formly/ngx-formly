@@ -42,6 +42,18 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 
+  describe('initialise form', () => {
+    it('should create nested form control when field key is nested', () => {
+      const model = { address: { city: 'test' } };
+      field = { key: 'address.city', type: 'input' };
+      builder.buildForm(form, [field], model, {});
+
+      expect(form.get('address.city')).toBeDefined();
+      expect(form.get('address.city').value).toEqual('test');
+      expect(model).toEqual({ address: { city: 'test' } });
+    });
+  });
+
   describe('field defaultValue', () => {
     it('should not set the defaultValue if the model value is defined', () => {
       let model = { title: 'title' };

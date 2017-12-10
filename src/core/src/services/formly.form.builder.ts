@@ -55,26 +55,24 @@ export class FormlyFormBuilder {
 
       if (field.key && field.type) {
         this.formlyConfig.getMergedField(field);
-        let paths: any = field.key;
-        if (typeof paths === 'string') {
-          paths = getKeyPath({key: field.key});
-        }
-
-        let rootForm = form;
+        const paths: any = getKeyPath({ key: field.key });
+        let rootForm = form, rootModel = model;
         paths.forEach((path, index) => {
           // is last item
           if (index === paths.length - 1) {
-            this.addFormControl(rootForm, field, model[paths[0]]);
+            this.addFormControl(rootForm, field, rootModel, path);
           } else {
-            let nestedForm = <FormGroup>(rootForm.get(path) ? rootForm.get(path) : new FormGroup({}));
-            if (!rootForm.get(path)) {
+            let nestedForm = rootForm.get(path.toString()) as FormGroup;
+            if (!nestedForm) {
+              nestedForm = new FormGroup({});
               rootForm.addControl(path, nestedForm);
             }
-            if (!model[path]) {
-              model[path] = isNaN(paths[0]) ? {} : [];
+            if (!rootModel[path]) {
+              rootModel[path] = isNaN(path) ? {} : [];
             }
 
             rootForm = nestedForm;
+            rootModel = rootModel[path];
           }
         });
       }
@@ -246,20 +244,15 @@ export class FormlyFormBuilder {
     }
   }
 
-  private addFormControl(form: FormGroup, field: FormlyFieldConfig, model: any) {
-    /* Although the type of the key property in FormlyFieldConfig is declared to be a string,
-     the recurstion of this FormBuilder uses an Array.
-     This should probably be addressed somehow. */
-    let name: string = typeof field.key === 'string' ? field.key : field.key[0],
-      formControl: AbstractControl;
-
+  private addFormControl(form: FormGroup, field: FormlyFieldConfig, model: any, path: string) {
+    let formControl: AbstractControl;
     if (field.formControl instanceof AbstractControl) {
       formControl = field.formControl;
     } else if (field.component && field.component.createControl) {
-      formControl = field.component.createControl(model, field);
+      formControl = field.component.createControl(model[path], field);
     } else {
       formControl = new FormControl(
-        model,
+        model[path],
         field.validators ? field.validators.validation : undefined,
         field.asyncValidators ? field.asyncValidators.validation : undefined,
       );
@@ -269,7 +262,7 @@ export class FormlyFormBuilder {
       formControl.disable();
     }
 
-    this.addControl(form, name, formControl, field);
+    this.addControl(form, path, formControl, field);
   }
 
   private getValidation(opt, value) {
