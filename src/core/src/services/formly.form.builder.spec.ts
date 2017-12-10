@@ -138,6 +138,22 @@ describe('FormlyFormBuilder service', () => {
 
       expect(field.templateOptions.label).toEqual('Title');
     });
+
+    it('should execute field with nested keys expression during form build ', () => {
+      field = {
+        key: 'address.city',
+        type: 'input',
+        hideExpression: '!model',
+        expressionProperties: {
+          'templateOptions.disabled': '!model.address.city',
+        },
+        templateOptions: { disabled: false },
+      };
+
+      builder.buildForm(form, [field], { address: {} }, {});
+      expect(field.templateOptions.disabled).toBeTruthy();
+      expect(field.formControl.status).toEqual('DISABLED');
+    });
   });
 
   describe('generate field id', () => {

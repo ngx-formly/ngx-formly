@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, isObject } from './../utils';
+import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, getValueForKey, isObject } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
 import { Subject } from 'rxjs/Subject';
@@ -45,6 +45,9 @@ export class FormlyFormBuilder {
     fields.map((field, index) => {
       field.id = getFieldId(`formly_${this.formId}`, field, index);
 
+      if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
+        assignModelValue(model, field.key, field.defaultValue);
+      }
       this.initFieldTemplateOptions(field);
       this.initFieldExpression(field, model, options);
       this.initFieldValidation(field);
@@ -52,32 +55,28 @@ export class FormlyFormBuilder {
 
       if (field.key && field.type) {
         this.formlyConfig.getMergedField(field);
-        let path: any = field.key;
-        if (typeof path === 'string') {
-          path = getKeyPath({key: field.key});
+        let paths: any = field.key;
+        if (typeof paths === 'string') {
+          paths = getKeyPath({key: field.key});
         }
 
-        if (path.length > 1) {
-          const rootPath = path.shift();
-          let nestedForm = <FormGroup>(form.get(rootPath.toString()) ? form.get(rootPath.toString()) : new FormGroup({}));
-          if (!form.get(rootPath.toString())) {
-            form.addControl(rootPath, nestedForm);
-          }
-          if (!model[rootPath]) {
-            model[rootPath] = isNaN(path[0]) ? {} : [];
-          }
+        let rootForm = form;
+        paths.forEach((path, index) => {
+          // is last item
+          if (index === paths.length - 1) {
+            this.addFormControl(rootForm, field, model[paths[0]]);
+          } else {
+            let nestedForm = <FormGroup>(rootForm.get(path) ? rootForm.get(path) : new FormGroup({}));
+            if (!rootForm.get(path)) {
+              rootForm.addControl(path, nestedForm);
+            }
+            if (!model[path]) {
+              model[path] = isNaN(paths[0]) ? {} : [];
+            }
 
-          const originalKey = field.key;
-          // Should this reassignment not be refactored?
-          field.key = path;
-          this.buildForm(nestedForm, [field], model[rootPath], options);
-          field.key = originalKey;
-        } else {
-          if (!isUndefined(field.defaultValue) && isUndefined(model[path[0]])) {
-            assignModelValue(model, path[0], field.defaultValue);
+            rootForm = nestedForm;
           }
-          this.addFormControl(form, field, model[path[0]]);
-        }
+        });
       }
 
       if (field.fieldGroup) {
