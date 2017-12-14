@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.2"></a>
+# [2.0.0-rc.2](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2017-12-14)
+
+
+### Bug Fixes
+
+* **core:** assign correctly model value in field expression during build. ([#596](https://github.com/formly-js/ngx-formly/issues/596)) ([77d62ae](https://github.com/formly-js/ngx-formly/commit/77d62ae))
+* **core:** ensure nested form group is created for nested key. ([#597](https://github.com/formly-js/ngx-formly/issues/597)) ([3213f98](https://github.com/formly-js/ngx-formly/commit/3213f98))
+* **core:** mark form unsubmitted on reset form. ([#591](https://github.com/formly-js/ngx-formly/issues/591)) ([082de94](https://github.com/formly-js/ngx-formly/commit/082de94))
+
+
+### Features
+
+* **bootstrap,material:** add multi-select support ([#598](https://github.com/formly-js/ngx-formly/issues/598)) ([97d8956](https://github.com/formly-js/ngx-formly/commit/97d8956))
+
+
+
 <a name="2.0.0-rc.1"></a>
 # [2.0.0-rc.1](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.0...v2.0.0-rc.1) (2017-12-08)
 
