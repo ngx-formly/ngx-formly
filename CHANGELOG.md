@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.3"></a>
+# [2.0.0-rc.3](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2017-12-19)
+
+
+### Bug Fixes
+
+* **bootstrap:** ensure to set a string value when select is not multiple. ([#602](https://github.com/formly-js/ngx-formly/issues/602)) ([6c591f8](https://github.com/formly-js/ngx-formly/commit/6c591f8)), closes [#601](https://github.com/formly-js/ngx-formly/issues/601)
+
+
+
 <a name="2.0.0-rc.2"></a>
 # [2.0.0-rc.2](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2017-12-14)
 
