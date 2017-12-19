@@ -1,0 +1,106 @@
+// The margin between two sections
+$margin-promotion-sections: 10px;
+$margin-promotion-sections-small: 15px;
+
+.docs-header-background {
+  overflow: hidden;
+}
+
+.docs-header-section {
+  text-align: center;
+  padding-top: $margin-promotion-sections;
+}
+
+.docs-header-headline {
+  h1 {
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 56px;
+    margin: 15px 5px;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    margin: 15px 0 25px 0;
+  }
+}
+
+.docs-homepage-promo {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+
+  h2 {
+    font-size: 25px;
+    font-weight: 400;
+    margin: 0 0 16px 0;
+    padding: 0;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    margin: 0 0 24px 0;
+    padding: 0;
+  }
+}
+
+
+.docs-homepage-row {
+  display: flex;
+  max-width: 920px;
+  margin: $margin-promotion-sections 0;
+}
+
+.docs-homepage-row .docs-svg-image{
+  max-width: 90%;
+}
+
+.docs-homepage-reverse-row {
+  flex-direction: row-reverse;
+}
+
+.docs-header-start,
+.docs-homepage-bottom-start {
+  text-align: center;
+  margin: 60px 0;
+}
+
+.docs-homepage-promo-img,
+.docs-homepage-promo-desc {
+  width: 50%;
+}
+
+.docs-homepage-promo-img {
+  text-align: center;
+}
+
+.docs-homepage-promo-desc {
+  line-height: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/**
+  * Rules for when the device is detected to be a small screen.
+  */
+@media (max-width: 720px) {
+  .docs-header-section {
+    padding-top: $margin-promotion-sections-small;
+  }
+
+  .docs-header-start,
+  .docs-homepage-bottom-start {
+    margin: $margin-promotion-sections-small 0;
+  }
+
+  .docs-homepage-row {
+    margin: $margin-promotion-sections-small 0;
+  }
+}
