@@ -6,7 +6,7 @@
 [![Stories in Ready](https://badge.waffle.io/formly-js/ng-formly.png?label=ready&title=Ready)](https://waffle.io/formly-js/ng-formly)
 
 Status:
-[![Build Status](https://travis-ci.org/formly-js/ng-formly.svg?branch=master)](https://travis-ci.org/formly-js/ng-formly)
+[![Build Status](https://travis-ci.org/formly-js/ngx-formly.svg?branch=master)](https://travis-ci.org/formly-js/ngx-formly)
 [![npm version](https://badge.fury.io/js/ng-formly.svg)](https://badge.fury.io/js/ng-formly)
 [![devDependencies Status](https://david-dm.org/formly-js/ng-formly/dev-status.svg)](https://david-dm.org/formly-js/ng-formly?type=dev)
 [![Package Quality](http://npm.packagequality.com/shield/ng-formly.png)](http://packagequality.com/#?package=ng-formly)
