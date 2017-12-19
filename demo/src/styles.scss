@@ -1,6 +1,19 @@
+// bootstrap
+@import '~bootstrap/scss/bootstrap-grid';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/root';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/forms';
+
+// prism
 @import '~prismjs/themes/prism.css';
+
+// material
 @import '~@angular/material/theming';
+
 @import './app/shared/example-viewer/example-viewer-theme';
+@import './app/home/home-theme.scss';
 @include mat-core();
 
 // Define a theme.
@@ -12,6 +25,7 @@ $theme: mat-light-theme($primary, $accent);
 // Include all theme styles for the components.
 @include angular-material-theme($theme);
 @include example-viewer-theme($theme);
+@include home-page-theme($theme);
 
 pre {
     display: block;
@@ -25,15 +39,4 @@ pre {
     background-color: #f5f5f5;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-// loading-bar
-@import '~@ngx-loading-bar/core/loading-bar.css';
-#loading-bar {
-  .bar { background: #fafafa; }
-  .peg { box-shadow: #fafafa 1px 0 6px 1px; }
-}
-#loading-bar-spinner .spinner-icon {
-  border-top-color:  #fafafa;
-  border-left-color: #fafafa;
 }

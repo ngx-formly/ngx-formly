@@ -41,14 +41,13 @@ Follow these steps to get started with ng-formly. Also check out our [demos](htt
 ```
 
 - [Bootstrap](https://getbootstrap.com):
-
-```bash
-  npm install @ngx-formly/bootstrap --save
-```
+  ```bash
+    npm install @ngx-formly/bootstrap --save
+  ```
 
 #### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
 
-```ts
+```typescript
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FormlyModule} from '@ngx-formly/core';
@@ -73,7 +72,7 @@ export class AppModule {}
 
 #### 3. Define the form config in your component:
 
-```ts
+```typescript
 import {Component} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {FormlyFieldConfig} from '@ngx-formly/core';

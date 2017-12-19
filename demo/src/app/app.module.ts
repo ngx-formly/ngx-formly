@@ -6,10 +6,12 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -18,7 +20,8 @@ import { AppComponent } from './app.component';
     SharedModule,
     LoadingBarRouterModule,
     RouterModule.forRoot([
-      { path: '', pathMatch: 'full', redirectTo: 'examples/introduction' },
+      { path: '', component: HomeComponent },
+      { path: 'guide', loadChildren: './guides/guides.module#GuidesModule' },
       { path: 'examples', loadChildren: './examples/examples.module#ExamplesModule' },
     ]),
   ],

@@ -1,11 +1,12 @@
-<ngx-loading-bar></ngx-loading-bar>
+<ngx-loading-bar [color]="'#fafafa'"></ngx-loading-bar>
 <mat-sidenav-container fullscreen>
-  <mat-toolbar color="primary">
+  <mat-toolbar color="primary" class="mat-elevation-z6">
     <a mat-button routerLink="">
       <img style="height: 26px; margin: 0 4px 3px 0;" src="https://material.angular.io/assets/img/homepage/angular-white-transparent.svg" alt="">
       FORMLY
     </a>
 
+    <a mat-button routerLink="guides">Guides</a>
     <a mat-button routerLink="examples">Examples</a>
 
     <span class="spacer" [style.flex]="'1 1 auto'"></span>
