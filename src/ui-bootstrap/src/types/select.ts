@@ -17,12 +17,11 @@ export class SelectOption {
 @Component({
   selector: 'formly-field-select',
   template: `
-    <select class="form-control"
+    <select *ngIf="to.multiple; else singleSelect" class="form-control"
       [formControl]="formControl"
       [class.is-invalid]="showError"
-      [multiple]="to.multiple"
+      [multiple]="true"
       [formlyAttributes]="field">
-      <option value="" *ngIf="!to.multiple">{{ to.placeholder }}</option>
       <ng-container *ngFor="let item of selectOptions">
        <optgroup *ngIf="item.group" label="{{item.label}}">
          <option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
@@ -32,6 +31,23 @@ export class SelectOption {
        <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
       </ng-container>
     </select>
+
+    <ng-template #singleSelect>
+      <select class="form-control"
+        [formControl]="formControl"
+        [class.is-invalid]="showError"
+        [formlyAttributes]="field">
+        <option value="">{{ to.placeholder }}</option>
+        <ng-container *ngFor="let item of selectOptions">
+         <optgroup *ngIf="item.group" label="{{item.label}}">
+           <option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
+             {{ child.label }}
+           </option>
+         </optgroup>
+         <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
+        </ng-container>
+      </select>
+    </ng-template>
   `,
 })
 export class FormlyFieldSelect extends FieldType {
