@@ -6,8 +6,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 @Component({
   selector: 'formly-field-mat-multicheckbox',
   template: `
-    <ng-container *ngFor="let option of to.options">
-      <mat-checkbox [formControl]="formControl.get(option.key)" [formlyAttributes]="field">{{ option.value }}</mat-checkbox>
+    <ng-container *ngFor="let option of to.options; let i = index;">
+      <mat-checkbox [id]="id + '_' + i" [formControl]="formControl.get(option.key)" [formlyAttributes]="field">{{ option.value }}</mat-checkbox>
     </ng-container>
   `,
 })
