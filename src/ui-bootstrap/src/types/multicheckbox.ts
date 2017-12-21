@@ -5,10 +5,13 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-multicheckbox',
   template: `
-    <div *ngFor="let option of to.options" class="checkbox">
+    <div *ngFor="let option of to.options; let i = index;" class="checkbox">
       <label class="custom-control custom-checkbox">
-        <input type="checkbox" [value]="option.value" [formControl]="formControl.get(option.key)"
-        [formlyAttributes]="field" class="custom-control-input">
+        <input type="checkbox"
+          [value]="option.value"
+          [id]="id + '_' + i"
+          [formControl]="formControl.get(option.key)"
+          [formlyAttributes]="field" class="custom-control-input">
         {{ option.value }}
         <span class="custom-control-indicator"></span>
       </label>
