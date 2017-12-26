@@ -12,7 +12,11 @@ import { takeUntil } from 'rxjs/operator/takeUntil';
     <!-- fix https://github.com/angular/material2/pull/7083 by setting width to 100% -->
     <mat-form-field [floatLabel]="to.floatLabel" [style.width]="'100%'">
       <ng-container #fieldComponent></ng-container>
-      <mat-label *ngIf="to.label && field.type !== 'checkbox'">{{ to.label }}</mat-label>
+      <mat-label *ngIf="to.label && field.type !== 'checkbox'">
+        {{ to.label }}
+        <span *ngIf="to.required" class="mat-form-field-required-marker">*</span>
+      </mat-label>
+
       <mat-placeholder *ngIf="to.placeholder">{{ to.placeholder }}</mat-placeholder>
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
       <mat-error [id]="null">
