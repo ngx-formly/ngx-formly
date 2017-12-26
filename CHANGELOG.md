@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.4"></a>
+# [2.0.0-rc.4](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.3...v2.0.0-rc.4) (2017-12-26)
+
+
+### Bug Fixes
+
+* **bootstrap,material:** ensure ids is unique for radio and checkbox types. ([#608](https://github.com/formly-js/ngx-formly/issues/608)) ([d47d7d1](https://github.com/formly-js/ngx-formly/commit/d47d7d1)), closes [#607](https://github.com/formly-js/ngx-formly/issues/607)
+* **select:** ensure selectOption is updated when using expression. ([#612](https://github.com/formly-js/ngx-formly/issues/612)) ([bb84077](https://github.com/formly-js/ngx-formly/commit/bb84077))
+
+
+### Features
+
+* **material:** Add an asterisk to field when required. ([#609](https://github.com/formly-js/ngx-formly/issues/609)) ([71202af](https://github.com/formly-js/ngx-formly/commit/71202af)), closes [#604](https://github.com/formly-js/ngx-formly/issues/604)
+
+
+
 <a name="2.0.0-rc.3"></a>
 # [2.0.0-rc.3](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2017-12-19)
 
