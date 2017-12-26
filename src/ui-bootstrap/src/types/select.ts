@@ -22,14 +22,14 @@ export class SelectOption {
       [class.is-invalid]="showError"
       [multiple]="true"
       [formlyAttributes]="field">
-      <ng-container *ngFor="let item of selectOptions">
-       <optgroup *ngIf="item.group" label="{{item.label}}">
-         <option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
-           {{ child.label }}
-         </option>
-       </optgroup>
-       <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
-      </ng-container>
+        <ng-container *ngFor="let item of selectOptions">
+         <optgroup *ngIf="item.group" label="{{item.label}}">
+            <option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
+              {{ child[labelProp] }}
+            </option>
+          </optgroup>
+          <option *ngIf="!item.group" [value]="item[valueProp]" [disabled]="item.disabled">{{ item[labelProp] }}</option>
+        </ng-container>
     </select>
 
     <ng-template #singleSelect>
@@ -39,12 +39,12 @@ export class SelectOption {
         [formlyAttributes]="field">
         <option value="">{{ to.placeholder }}</option>
         <ng-container *ngFor="let item of selectOptions">
-         <optgroup *ngIf="item.group" label="{{item.label}}">
-           <option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
-             {{ child.label }}
-           </option>
-         </optgroup>
-         <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
+          <optgroup *ngIf="item.group" label="{{item.label}}">
+            <option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
+              {{ child[labelProp] }}
+            </option>
+          </optgroup>
+          <option *ngIf="!item.group" [value]="item[valueProp]" [disabled]="item.disabled">{{ item[labelProp] }}</option>
         </ng-container>
       </select>
     </ng-template>
@@ -56,27 +56,25 @@ export class FormlyFieldSelect extends FieldType {
   get groupProp(): string { return this.to.groupProp || 'group'; }
 
   get selectOptions() {
-    let options: SelectOption[] = [];
-    this.to.options.map((option: SelectOption) => {
-      option = { label: option[this.labelProp], value: option[this.valueProp] };
+    const options: SelectOption[] = [],
+      groups: { [key: string]: SelectOption[] } = {};
 
+    this.to.options.map((option: SelectOption) => {
       if (!option[this.groupProp]) {
         options.push(option);
       } else {
-        let filteredOption: SelectOption[] = options.filter((filteredOption) => {
-          return filteredOption.label === option[this.groupProp];
-        });
-        if (filteredOption[0]) {
-          filteredOption[0].group.push(option);
-        }
-        else {
+        if (groups[option[this.groupProp]]) {
+          groups[option[this.groupProp]].push(option);
+        } else {
+          groups[option[this.groupProp]] = [option];
           options.push({
             label: option[this.groupProp],
-            group: [option],
+            group: groups[option[this.groupProp]],
           });
         }
       }
     });
+
     return options;
   }
 }

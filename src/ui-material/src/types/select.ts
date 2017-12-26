@@ -22,11 +22,11 @@ export class SelectOption {
     <mat-select [formControl]="formControl" [formlyAttributes]="field" [multiple]="to.multiple" [errorStateMatcher]="errorStateMatcher">
       <ng-container *ngFor="let item of selectOptions">
         <mat-optgroup *ngIf="item.group" label="{{item.label}}">
-          <mat-option *ngFor="let child of item.group" [value]="child.value" [disabled]="item.disabled">
-            {{ child.label }}
+          <mat-option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
+            {{ child[labelProp] }}
           </mat-option>
         </mat-optgroup>
-        <mat-option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</mat-option>
+        <mat-option *ngIf="!item.group" [value]="item[valueProp]" [disabled]="item.disabled">{{ item[labelProp] }}</mat-option>
       </ng-container>
     </mat-select>
   `,
@@ -35,40 +35,44 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
   @ViewChild(MatSelect) matSelect: MatSelect;
   errorStateMatcher = new FormlyErrorStateMatcher(this);
 
-  selectOptions;
-
   get labelProp(): string { return this.to.labelProp || 'label'; }
   get valueProp(): string { return this.to.valueProp || 'value'; }
   get groupProp(): string { return this.to.groupProp || 'group'; }
 
-  ngOnInit() {
-    if (this.field['__formField__']) {
-      this.field['__formField__']._control = this.matSelect;
+  private _selectOptions: SelectOption[] = [];
+  private _oldOptions: SelectOption[] = [];
+  get selectOptions() {
+    if (this.to.options.length === this._oldOptions.length
+      && this._oldOptions.every(opt => !!this.to.options.find(o => o[this.valueProp] === opt[this.valueProp]))
+    ) {
+      return this._selectOptions;
     }
 
-    let options: SelectOption[] = [];
+    this._oldOptions = [...this.to.options];
+    this._selectOptions = [];
+    const groups: { [key: string]: SelectOption[] } = {};
     this.to.options.map((option: SelectOption) => {
       if (!option[this.groupProp]) {
-        options.push(option);
+        this._selectOptions.push(option);
       } else {
-        let filteredOption: SelectOption[] = options.filter((filteredOption) => {
-          return filteredOption.label === option[this.groupProp];
-        });
-        if (filteredOption[0]) {
-          filteredOption[0].group.push({
-            label: option[this.labelProp],
-            value: option[this.valueProp],
-          });
-        }
-        else {
-          options.push({
+        if (groups[option[this.groupProp]]) {
+          groups[option[this.groupProp]].push(option);
+        } else {
+          groups[option[this.groupProp]] = [option];
+          this._selectOptions.push({
             label: option[this.groupProp],
-            group: [{ value: option[this.valueProp], label: option[this.labelProp] }],
+            group: groups[option[this.groupProp]],
           });
         }
       }
     });
 
-    this.selectOptions = options;
+    return this._selectOptions;
+  }
+
+  ngOnInit() {
+    if (this.field['__formField__']) {
+      this.field['__formField__']._control = this.matSelect;
+    }
   }
 }
