@@ -334,7 +334,7 @@ describe('FormlyFormBuilder service', () => {
 
         it(`using expression property`, () => {
           field.validators = {
-            required: { expression: (form) => form.value },
+            required: { expression: (form, field) => field.key === 'title' ? form.value : false },
           };
           builder.buildForm(form, [field], {}, {});
 
