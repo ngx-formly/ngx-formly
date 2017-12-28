@@ -56,6 +56,7 @@ export class ExamplesComponent {
       { href: './other/matching-two-fields', text: 'Matching Two Fields' },
       { href: './other/force-show-error', text: 'Force showing error state' },
       { href: './other/toggle-required', text: 'Toggle required field' },
+      { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
     ]},
   ];
 }

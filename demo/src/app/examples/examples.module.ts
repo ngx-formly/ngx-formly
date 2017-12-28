@@ -54,6 +54,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'matching-two-fields', loadChildren: './other/matching-two-fields/config.module#ConfigModule' },
           { path: 'force-show-error', loadChildren: './other/force-show-error/config.module#ConfigModule' },
           { path: 'toggle-required', loadChildren: './other/toggle-required/config.module#ConfigModule' },
+          { path: 'nested-formly-forms', loadChildren: './other/nested-formly-forms/config.module#ConfigModule' },
         ]},
       ] },
     ]),
