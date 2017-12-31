@@ -6,7 +6,7 @@ import { MatRadioButton } from '@angular/material/radio';
   selector: 'formly-field-mat-radio',
   template: `
     <mat-radio-group [formControl]="formControl" [formlyAttributes]="field">
-      <mat-radio-button *ngFor="let option of to.options" [value]="option.key">
+      <mat-radio-button *ngFor="let option of to.options; let i = index;" [id]="id + '_' + i" [value]="option.key">
         {{ option.value }}
       </mat-radio-button>
     </mat-radio-group>

@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operator/takeUntil';
   selector: 'formly-wrapper-mat-form-field',
   template: `
     <!-- fix https://github.com/angular/material2/pull/7083 by setting width to 100% -->
-    <mat-form-field [floatLabel]="to.floatLabel" [style.width]="'100%'">
+    <mat-form-field [hideRequiredMarker]="true" [floatLabel]="to.floatLabel" [style.width]="'100%'">
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="to.label && field.type !== 'checkbox'">
         {{ to.label }}

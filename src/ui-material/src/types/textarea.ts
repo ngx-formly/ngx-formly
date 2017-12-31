@@ -4,7 +4,7 @@ import { FormlyFieldInput } from './input';
 @Component({
   selector: 'formly-field-mat-textarea',
   template: `
-    <textarea matInput [name]="key" [formControl]="formControl" [errorStateMatcher]="errorStateMatcher" [cols]="to.cols"
+    <textarea matInput [id]="id" [name]="key" [formControl]="formControl" [errorStateMatcher]="errorStateMatcher" [cols]="to.cols"
       [rows]="to.rows" [formlyAttributes]="field">
     </textarea>
   `,
