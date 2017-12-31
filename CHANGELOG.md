@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.6"></a>
+# [2.0.0-rc.6](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.5...v2.0.0-rc.6) (2017-12-31)
+
+
+### Bug Fixes
+
+* **material:** force setting formly id ([#622](https://github.com/formly-js/ngx-formly/issues/622)) ([a4fa0bf](https://github.com/formly-js/ngx-formly/commit/a4fa0bf))
+
+
+
 <a name="2.0.0-rc.5"></a>
 # [2.0.0-rc.5](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.4...v2.0.0-rc.5) (2017-12-28)
 
