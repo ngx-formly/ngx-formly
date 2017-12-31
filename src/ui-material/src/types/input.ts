@@ -8,6 +8,7 @@ import { FormlyErrorStateMatcher } from '../formly.error-state-matcher';
   template: `
     <input matInput
       [type]="type"
+      [id]="id"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field">

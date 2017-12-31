@@ -19,7 +19,7 @@ export class SelectOption {
 @Component({
   selector: 'formly-field-mat-select',
   template: `
-    <mat-select [formControl]="formControl" [formlyAttributes]="field" [multiple]="to.multiple" [errorStateMatcher]="errorStateMatcher">
+    <mat-select [id]="id" [formControl]="formControl" [formlyAttributes]="field" [multiple]="to.multiple" [errorStateMatcher]="errorStateMatcher">
       <ng-container *ngFor="let item of selectOptions">
         <mat-optgroup *ngIf="item.group" label="{{item.label}}">
           <mat-option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
