@@ -5,7 +5,10 @@ import { MatCheckbox } from '@angular/material/checkbox';
 @Component({
   selector: 'formly-field-mat-checkbox',
   template: `
-    <mat-checkbox [formControl]="formControl" [id]="id" [formlyAttributes]="field">{{ to.label }}</mat-checkbox>
+    <mat-checkbox [formControl]="formControl" [id]="id" [formlyAttributes]="field">
+      {{ to.label }}
+      {{ to.required ? '*' : '' }}
+    </mat-checkbox>
   `,
 })
 export class FormlyFieldCheckbox extends FieldType implements AfterViewInit {
