@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.8"></a>
+# [2.0.0-rc.8](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.7...v2.0.0-rc.8) (2018-01-05)
+
+
+### Bug Fixes
+
+* **core:** add default wrappers when type is set ([#630](https://github.com/formly-js/ngx-formly/issues/630)) ([2dd41ab](https://github.com/formly-js/ngx-formly/commit/2dd41ab))
+
+
+
 <a name="2.0.0-rc.7"></a>
 # [2.0.0-rc.7](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2018-01-05)
 
