@@ -258,6 +258,13 @@ describe('FormlyFormBuilder service', () => {
       expect(field.key).toEqual('nested.title');
       expect(field.wrappers).toEqual([]);
     });
+
+    it('should add default wrappers if type is provided', () => {
+      field = { type: 'input' };
+      builder.buildForm(form, [field], {}, {});
+
+      expect(field.wrappers).toEqual(['label']);
+    });
   });
 
   describe('initialise field validators', () => {

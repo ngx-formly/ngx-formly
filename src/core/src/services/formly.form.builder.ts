@@ -141,13 +141,15 @@ export class FormlyFormBuilder {
 
   private initFieldOptions(field: FormlyFieldConfig) {
     field.templateOptions = field.templateOptions || {};
-    if (field.key && field.type) {
+    if (field.type) {
       this.formlyConfig.getMergedField(field);
-      field.templateOptions = Object.assign({
-        label: '',
-        placeholder: '',
-        focus: false,
-      }, field.templateOptions);
+      if (field.key) {
+        field.templateOptions = Object.assign({
+          label: '',
+          placeholder: '',
+          focus: false,
+        }, field.templateOptions);
+      }
     }
   }
 
