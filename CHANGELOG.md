@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.7"></a>
+# [2.0.0-rc.7](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2018-01-05)
+
+
+### Bug Fixes
+
+* **core:** avoid calling deepMerge for readonly property. ([#626](https://github.com/formly-js/ngx-formly/issues/626)) ([6b7987f](https://github.com/formly-js/ngx-formly/commit/6b7987f))
+* **material:** ensure calls to lifecycle hooks ([#628](https://github.com/formly-js/ngx-formly/issues/628)) ([09a7149](https://github.com/formly-js/ngx-formly/commit/09a7149))
+* **material,bootstrap:** Add asterisk for checkbox. ([#624](https://github.com/formly-js/ngx-formly/issues/624)) ([f8ed354](https://github.com/formly-js/ngx-formly/commit/f8ed354)), closes [#623](https://github.com/formly-js/ngx-formly/issues/623)
+
+
+
 <a name="2.0.0-rc.6"></a>
 # [2.0.0-rc.6](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.5...v2.0.0-rc.6) (2017-12-31)
 
