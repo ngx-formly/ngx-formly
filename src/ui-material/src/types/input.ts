@@ -26,5 +26,6 @@ export class FormlyFieldInput extends FieldType implements OnInit {
     if (this.field['__formField__']) {
       this.field['__formField__']._control = this.matInput;
     }
+    super.ngOnInit();
   }
 }

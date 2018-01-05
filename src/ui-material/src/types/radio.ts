@@ -21,5 +21,6 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit {
         this.matRadioButtons.map(matRadioButton => matRadioButton._inputElement.nativeElement),
       );
     }
+    super.ngAfterViewInit();
   }
 }

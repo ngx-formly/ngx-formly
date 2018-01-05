@@ -33,5 +33,6 @@ export class FormlyFieldMultiCheckbox extends FieldType implements AfterViewInit
         this.matCheckboxes.map(matCheckbox => matCheckbox._inputElement.nativeElement),
       );
     }
+    super.ngAfterViewInit();
   }
 }
