@@ -57,6 +57,7 @@ export class ExamplesComponent {
       { href: './other/force-show-error', text: 'Force showing error state' },
       { href: './other/toggle-required', text: 'Toggle required field' },
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
+      { href: './other/button', text: 'Button Type' },
     ]},
   ];
 }

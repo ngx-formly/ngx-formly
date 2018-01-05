@@ -55,6 +55,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'force-show-error', loadChildren: './other/force-show-error/config.module#ConfigModule' },
           { path: 'toggle-required', loadChildren: './other/toggle-required/config.module#ConfigModule' },
           { path: 'nested-formly-forms', loadChildren: './other/nested-formly-forms/config.module#ConfigModule' },
+          { path: 'button', loadChildren: './other/button/config.module#ConfigModule' },
         ]},
       ] },
     ]),
