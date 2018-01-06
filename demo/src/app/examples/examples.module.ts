@@ -27,6 +27,15 @@ import { ExamplesComponent } from './examples.component';
           { path: 'form-state', loadChildren: './form-options/form-state/config.module#ConfigModule' },
         ]},
 
+        // validation
+        { path: 'validation', children: [
+          { path: 'built-in-validations', loadChildren: './validation/built-in-validations/config.module#ConfigModule' },
+          { path: 'disable-submit-button', loadChildren: './validation/disable-submit-button/config.module#ConfigModule' },
+          { path: 'matching-two-fields', loadChildren: './validation/matching-two-fields/config.module#ConfigModule' },
+          { path: 'force-show-error', loadChildren: './validation/force-show-error/config.module#ConfigModule' },
+          { path: 'toggle-required', loadChildren: './validation/toggle-required/config.module#ConfigModule' },
+        ]},
+
         // Bootstrap Formly
         { path: 'bootstrap-formly', children: [
           { path: 'table-rows', loadChildren: './bootstrap-formly/table-rows/config.module#ConfigModule' },
@@ -49,11 +58,7 @@ import { ExamplesComponent } from './examples.component';
         // Other
         { path: 'other', children: [
           { path: 'cascaded-select', loadChildren: './other/cascaded-select/config.module#ConfigModule' },
-          { path: 'disable-submit-button', loadChildren: './other/disable-submit-button/config.module#ConfigModule' },
           { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/config.module#ConfigModule' },
-          { path: 'matching-two-fields', loadChildren: './other/matching-two-fields/config.module#ConfigModule' },
-          { path: 'force-show-error', loadChildren: './other/force-show-error/config.module#ConfigModule' },
-          { path: 'toggle-required', loadChildren: './other/toggle-required/config.module#ConfigModule' },
           { path: 'nested-formly-forms', loadChildren: './other/nested-formly-forms/config.module#ConfigModule' },
           { path: 'button', loadChildren: './other/button/config.module#ConfigModule' },
         ]},

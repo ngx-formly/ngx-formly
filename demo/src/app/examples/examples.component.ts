@@ -35,6 +35,13 @@ export class ExamplesComponent {
       { href: './form-options/reset-model', text: 'Reset Model' },
       { href: './form-options/form-state', text: 'Form State' },
     ]},
+    { title: 'Validation', links: [
+      { href: './validation/built-in-validations', text: 'Built-in validations' },
+      { href: './validation/matching-two-fields', text: 'Matching Two Fields' },
+      { href: './validation/force-show-error', text: 'Force showing error state' },
+      { href: './validation/toggle-required', text: 'Toggle required field' },
+      { href: './validation/disable-submit-button', text: 'Disable submit button' },
+    ]},
     { title: 'Bootstrap Formly', links: [
       { href: './bootstrap-formly/table-rows', text: 'Table Rows' },
       { href: './bootstrap-formly/select', text: 'Select' },
@@ -51,11 +58,7 @@ export class ExamplesComponent {
     ]},
     { title: 'Other', links: [
       { href: './other/cascaded-select', text: 'Cascaded Select' },
-      { href: './other/disable-submit-button', text: 'Disable submit button' },
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
-      { href: './other/matching-two-fields', text: 'Matching Two Fields' },
-      { href: './other/force-show-error', text: 'Force showing error state' },
-      { href: './other/toggle-required', text: 'Toggle required field' },
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
       { href: './other/button', text: 'Button Type' },
     ]},
