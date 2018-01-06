@@ -34,6 +34,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'matching-two-fields', loadChildren: './validation/matching-two-fields/config.module#ConfigModule' },
           { path: 'force-show-error', loadChildren: './validation/force-show-error/config.module#ConfigModule' },
           { path: 'toggle-required', loadChildren: './validation/toggle-required/config.module#ConfigModule' },
+          { path: 'unique-value-async-validation', loadChildren: './validation/unique-value-async-validation/config.module#ConfigModule' },
         ]},
 
         // Bootstrap Formly
