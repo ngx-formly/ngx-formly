@@ -14,8 +14,7 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Disable submit button',
-            description: `This is an example of how to add confirm password field using custom validation`,
+            title: 'List of default / built-in validations',
             component: AppComponent,
             files: [
               { file: 'app.component.html', content: require('!!prismjs-loader?lang=html!./app.component.html') },
