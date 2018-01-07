@@ -4,7 +4,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 @Component({
   selector: 'formly-wrapper-label',
   template: `
-    <label [attr.for]="id" class="form-control-label">
+    <label [attr.for]="id" class="form-control-label control-label">
       {{ to.label }}
       {{ to.required ? '*' : '' }}
     </label>
