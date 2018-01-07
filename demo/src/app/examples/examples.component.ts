@@ -37,6 +37,8 @@ export class ExamplesComponent {
     ]},
     { title: 'Validation', links: [
       { href: './validation/built-in-validations', text: 'Built-in validations' },
+      { href: './validation/custom-validation', text: 'Custom validation' },
+      { href: './validation/validation-message', text: 'Validation message' },
       { href: './validation/unique-value-async-validation', text: 'Async validation of unique value' },
       { href: './validation/matching-two-fields', text: 'Matching Two Fields' },
       { href: './validation/force-show-error', text: 'Force showing error state' },
