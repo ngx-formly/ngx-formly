@@ -45,7 +45,7 @@ export interface FormlyFieldConfig {
    *
    * {
    *   validation?: (string | ValidatorFn)[] | ValidatorFn;
-   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => boolean) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean, message: string });
+   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => boolean) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean, message: string | ((error, field: FormlyFieldConfig) => string) });
    * }
    */
   validators?: any;
@@ -164,7 +164,7 @@ export interface FormlyTemplateOptions {
   min?: number;
   minLength?: number;
   maxLength?: number;
-  pattern?: string;
+  pattern?: string|RegExp;
   required?: boolean;
   tabindex?: number;
   step?: number;

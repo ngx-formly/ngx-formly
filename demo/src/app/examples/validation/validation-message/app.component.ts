@@ -16,52 +16,35 @@ export class AppComponent {
       key: 'name',
       type: 'input',
       templateOptions: {
-        label: 'Name (required)',
+        label: 'Name (custom validation message declared in ngModule)',
         required: true,
-      },
-    },
-    {
-      key: 'age',
-      type: 'input',
-      templateOptions: {
-        label: 'Age (min= 18, max= 40)',
-        type: 'number',
-        min: 18,
-        max: 40,
-        required: true,
-      },
-    },
-    {
-      key: 'password',
-      type: 'input',
-      templateOptions: {
-        label: 'Password (minLength = 6)',
-        type: 'password',
-        required: true,
-        minLength: 6,
-      },
-    },
-    {
-      key: 'comment',
-      type: 'textarea',
-      templateOptions: {
-        label: 'Comment (maxLength = 100)',
-        required: true,
-        maxLength: 100,
-        rows: 5,
+        maxLength: 5,
       },
     },
     {
       key: 'ip',
       type: 'input',
       templateOptions: {
-        label: 'IP Address (pattern = /(\d{1,3}\.){3}\d{1,3}/)',
-        pattern: /(\d{1,3}\.){3}\d{1,3}/,
+        label: 'IP Address (custom validation message through `validation` property)',
         required: true,
       },
       validation: {
         messages: {
           pattern: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
+        },
+      },
+    },
+    {
+      key: 'ip',
+      type: 'input',
+      templateOptions: {
+        label: 'IP Address (custom validation message through `validators` property)',
+        required: true,
+      },
+      validators: {
+        ip: {
+          expression: (c) => /(\d{1,3}\.){3}\d{1,3}/.test(c.value),
+          message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
         },
       },
     },
