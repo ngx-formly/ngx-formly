@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.9"></a>
+# [2.0.0-rc.9](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.8...v2.0.0-rc.9) (2018-01-09)
+
+
+### Bug Fixes
+
+* **bootstrap:** add missing `control-label` class for label ([#637](https://github.com/formly-js/ngx-formly/issues/637)) ([c9c6c61](https://github.com/formly-js/ngx-formly/commit/c9c6c61)), closes [#633](https://github.com/formly-js/ngx-formly/issues/633)
+
+
+
 <a name="2.0.0-rc.8"></a>
 # [2.0.0-rc.8](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.7...v2.0.0-rc.8) (2018-01-05)
 
