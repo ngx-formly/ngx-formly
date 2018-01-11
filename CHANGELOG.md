@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.10"></a>
+# [2.0.0-rc.10](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.9...v2.0.0-rc.10) (2018-01-11)
+
+
+### Bug Fixes
+
+* **core:** take account of hideExpression for fieldGroup with empty key ([#639](https://github.com/formly-js/ngx-formly/issues/639)) ([3261878](https://github.com/formly-js/ngx-formly/commit/3261878))
+
+
+
 <a name="2.0.0-rc.9"></a>
 # [2.0.0-rc.9](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.8...v2.0.0-rc.9) (2018-01-09)
 
