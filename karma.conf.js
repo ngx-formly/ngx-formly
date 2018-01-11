@@ -71,7 +71,7 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    customLaunchers: { ChromeHeadless: { base: 'Chrome', flags: ['--headless', '--disable-gpu', '--remote-debugging-port=9222'] } },
+    customLaunchers: { ChromeHeadless: { base: 'Chrome', flags: ['--headless', '--no-sandbox', '--disable-gpu', '--remote-debugging-port=9222'] } },
     browsers: isTestWatch ? ['Chrome'] : ['ChromeHeadless'],
 
     // Continuous Integration mode

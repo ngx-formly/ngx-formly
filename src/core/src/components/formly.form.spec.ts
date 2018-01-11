@@ -138,6 +138,39 @@ describe('Formly Form Component', () => {
       expect(form.get('address.city')).not.toBeNull();
       expect(form.get('address.city').value).toEqual('agadir');
     }));
+
+    it('should hide/display child fields when field has empty key', fakeAsync(() => {
+      const form = new FormGroup({});
+      testComponentInputs.form = form;
+      testComponentInputs.model = {};
+      testComponentInputs.fields = [{
+        hideExpression: () => true,
+        fieldGroup: [{
+          fieldGroup: [
+            {
+              key: 'city',
+              type: 'text',
+            },
+            {
+              key: 'zipCode',
+              type: 'text',
+              hideExpression: () => false,
+            },
+          ],
+        }],
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      tick(1);
+      expect(form.get('city')).toBeNull();
+      // TODO: zipCode should be null too
+      expect(form.get('zipCode')).not.toBeNull();
+
+      testComponentInputs.fields[0].hideExpression = () => false;
+      fixture.detectChanges();
+      expect(form.get('city')).not.toBeNull();
+      expect(form.get('zipCode')).not.toBeNull();
+    }));
   });
 
   describe('expressionProperties', () => {
@@ -181,7 +214,7 @@ describe('Formly Form Component', () => {
       { name: 'max', value: 10, invalid: 11 },
     ];
 
-    options.map(option => {
+    options.forEach(option => {
       it(`templateOptions.${option.name}`, () => {
         let enableExpression = true;
         field.expressionProperties = {
@@ -289,8 +322,8 @@ export class RepeatComponent extends FieldType implements OnInit {
 
   ngOnInit() {
     if (this.model) {
-      this.model.map(() => {
-        let formGroup = new FormGroup({});
+      this.model.forEach(() => {
+        const formGroup = new FormGroup({});
         this.form.controls[this.field.key]['controls'].push(formGroup);
       });
     }

@@ -29,13 +29,13 @@ export class FormlyAttributes implements OnChanges {
       const fieldChanges = changes.field;
       this.attributes
         .filter(attr => this.canApplyRender(fieldChanges, attr))
-        .map(attr => this.renderer.setAttribute(
+        .forEach(attr => this.renderer.setAttribute(
           this.elementRef.nativeElement, attr, this.getPropValue(this.field, attr),
         ));
 
       this.statements
         .filter(statement => this.canApplyRender(fieldChanges, statement))
-        .map(statement => this.renderer.listen(
+        .forEach(statement => this.renderer.listen(
           this.elementRef.nativeElement, statement, this.getStatementValue(statement),
         ));
 

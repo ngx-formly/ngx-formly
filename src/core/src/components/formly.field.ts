@@ -45,8 +45,8 @@ export class FormlyField implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.componentRefs.map(componentRef => componentRef.destroy());
-    this._subscriptions.map(subscriber => subscriber.unsubscribe());
+    this.componentRefs.forEach(componentRef => componentRef.destroy());
+    this._subscriptions.forEach(subscriber => subscriber.unsubscribe());
     this._subscriptions = this.componentRefs = [];
   }
 
@@ -116,7 +116,7 @@ export class FormlyField implements OnInit, OnDestroy {
           valueChanges = debounceTime.call(valueChanges, debounce);
         }
         if (this.field.parsers && this.field.parsers.length > 0) {
-          this.field.parsers.map(parserFn => {
+          this.field.parsers.forEach(parserFn => {
             valueChanges = map.call(valueChanges, parserFn);
           });
         }
@@ -138,7 +138,7 @@ export class FormlyField implements OnInit, OnDestroy {
       wrappers = this.getFieldWrappers(type);
 
     let fieldComponent = this.fieldComponent;
-    wrappers.map(wrapperName => {
+    wrappers.forEach(wrapperName => {
       let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
       fieldComponent = wrapperRef.instance.fieldComponent;
     });
