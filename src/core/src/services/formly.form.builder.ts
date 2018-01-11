@@ -82,11 +82,16 @@ export class FormlyFormBuilder {
           model[field.key] = model[field.key] || {};
           this.buildForm(field.formControl as FormGroup, field.fieldGroup, model[field.key], options);
         } else {
+          // if `hideExpression` is set in that case we have to deal
+          // with toggle FormControl for each field in fieldGroup separately
           if (field.hideExpression) {
             field.fieldGroup.forEach(f => {
-              if (!f.hideExpression) {
-                f.hideExpression = () => field.hide;
+              let hideExpression: any = f.hideExpression || (() => false);
+              if (typeof hideExpression === 'string') {
+                hideExpression = evalStringExpression(hideExpression, ['model', 'formState']);
               }
+
+              f.hideExpression = (model, formState) => field.hide || hideExpression(model, formState);
             });
           }
           this.buildForm(form, field.fieldGroup, model, options);

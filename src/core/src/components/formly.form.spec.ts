@@ -163,8 +163,7 @@ describe('Formly Form Component', () => {
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
       tick(1);
       expect(form.get('city')).toBeNull();
-      // TODO: zipCode should be null too
-      expect(form.get('zipCode')).not.toBeNull();
+      expect(form.get('zipCode')).toBeNull();
 
       testComponentInputs.fields[0].hideExpression = () => false;
       fixture.detectChanges();
