@@ -383,7 +383,7 @@ describe('FormlyFormBuilder service', () => {
         { name: 'max', value: 4, valid: '', invalid: 5 },
       ];
 
-      options.map(option => {
+      options.forEach(option => {
         it(`${option.name}`, () => {
           field.templateOptions = { [option.name]: option.value };
           builder.buildForm(form, [field], {}, {});

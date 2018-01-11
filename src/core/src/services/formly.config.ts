@@ -41,24 +41,24 @@ export class FormlyConfig {
   };
 
   constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
-    configs.map(config => this.addConfig(config));
+    configs.forEach(config => this.addConfig(config));
   }
 
   addConfig(config: ConfigOption) {
     if (config.types) {
-      config.types.map(type => this.setType(type));
+      config.types.forEach(type => this.setType(type));
     }
     if (config.validators) {
-      config.validators.map(validator => this.setValidator(validator));
+      config.validators.forEach(validator => this.setValidator(validator));
     }
     if (config.wrappers) {
-      config.wrappers.map(wrapper => this.setWrapper(wrapper));
+      config.wrappers.forEach(wrapper => this.setWrapper(wrapper));
     }
     if (config.manipulators) {
-      config.manipulators.map(manipulator => this.setManipulator(manipulator));
+      config.manipulators.forEach(manipulator => this.setManipulator(manipulator));
     }
     if (config.validationMessages) {
-      config.validationMessages.map(validation => this.addValidatorMessage(validation.name, validation.message));
+      config.validationMessages.forEach(validation => this.addValidatorMessage(validation.name, validation.message));
     }
     if (config.extras) {
       this.extras = { ...this.extras, ...config.extras };
@@ -67,7 +67,7 @@ export class FormlyConfig {
 
   setType(options: TypeOption | TypeOption[]) {
     if (Array.isArray(options)) {
-      options.map((option) => this.setType(option));
+      options.forEach((option) => this.setType(option));
     } else {
       if (!this.types[options.name]) {
         this.types[options.name] = <TypeOption>{};
@@ -77,7 +77,7 @@ export class FormlyConfig {
       this.types[options.name].extends = options.extends;
       this.types[options.name].defaultOptions = options.defaultOptions;
       if (options.wrappers) {
-        options.wrappers.map((wrapper) => this.setTypeWrapper(options.name, wrapper));
+        options.wrappers.forEach((wrapper) => this.setTypeWrapper(options.name, wrapper));
       }
     }
   }
@@ -109,7 +109,7 @@ export class FormlyConfig {
     }
 
     if (field && field.optionsTypes) {
-      field.optionsTypes.map(option => {
+      field.optionsTypes.forEach(option => {
         let defaultOptions = this.getType(option).defaultOptions;
         if (defaultOptions) {
           reverseDeepMerge(field, defaultOptions);
@@ -129,7 +129,7 @@ export class FormlyConfig {
   setWrapper(options: WrapperOption) {
     this.wrappers[options.name] = options;
     if (options.types) {
-      options.types.map((type) => {
+      options.types.forEach((type) => {
         this.setTypeWrapper(type, options.name);
       });
     }
