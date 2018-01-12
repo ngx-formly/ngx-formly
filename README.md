@@ -45,6 +45,11 @@ Follow these steps to get started with ng-formly. Also check out our [demos](htt
     npm install @ngx-formly/bootstrap --save
   ```
 
+- [Ionic](https://ionicframework.com):
+  ```bash
+    npm install @ngx-formly/ionic --save
+  ```
+
 #### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
 
 ```typescript
