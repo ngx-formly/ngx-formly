@@ -9,6 +9,7 @@ module.exports = {
         'core',
         'material',
         'bootstrap',
+        'ionic',
         'demo',
         'guides'
       ]

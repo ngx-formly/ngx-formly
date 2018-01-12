@@ -9,6 +9,7 @@ module.exports = {
       '@ngx-formly/core': path.join(__dirname, '..', 'src/core'),
       '@ngx-formly/bootstrap': path.join(__dirname, '..', 'src/ui-bootstrap'),
       '@ngx-formly/material': path.join(__dirname, '..', 'src/ui-material'),
+      '@ngx-formly/ionic': path.join(__dirname, '..', 'src/ui-ionic'),
     },
   },
   devtool: 'inline-source-map',
