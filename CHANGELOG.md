@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.11"></a>
+# [2.0.0-rc.11](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.10...v2.0.0-rc.11) (2018-01-13)
+
+
+### Bug Fixes
+
+* **core:** ensure key is set when toggle `hide`. ([#650](https://github.com/formly-js/ngx-formly/issues/650)) ([e69ea08](https://github.com/formly-js/ngx-formly/commit/e69ea08))
+* **core:** wrap hideExpression for field in fieldGroup. ([#647](https://github.com/formly-js/ngx-formly/issues/647)) ([b949ced](https://github.com/formly-js/ngx-formly/commit/b949ced))
+* **material:** ensure calls to change event. ([#651](https://github.com/formly-js/ngx-formly/issues/651)) ([a2d52a8](https://github.com/formly-js/ngx-formly/commit/a2d52a8)), closes [#390](https://github.com/formly-js/ngx-formly/issues/390)
+
+
+
 <a name="2.0.0-rc.10"></a>
 # [2.0.0-rc.10](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.9...v2.0.0-rc.10) (2018-01-11)
 
