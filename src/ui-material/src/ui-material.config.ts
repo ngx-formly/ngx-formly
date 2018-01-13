@@ -62,6 +62,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       defaultOptions: {
         templateOptions: {
           floatLabel: 'always',
+          align: 'start', // start or end
         },
       },
     },
