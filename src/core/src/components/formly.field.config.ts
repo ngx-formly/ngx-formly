@@ -168,13 +168,13 @@ export interface FormlyTemplateOptions {
   required?: boolean;
   tabindex?: number;
   step?: number;
-  focus?: Function;
-  blur?: Function;
-  keyup?: Function;
-  keydown?: Function;
-  click?: Function;
-  change?: Function;
-  keypress?: Function;
+  focus?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  blur?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  keyup?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  keydown?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  click?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  change?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  keypress?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
   [additionalProperties: string]: any;
 }
 

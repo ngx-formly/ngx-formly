@@ -5,7 +5,13 @@ import { MatCheckbox } from '@angular/material/checkbox';
 @Component({
   selector: 'formly-field-mat-checkbox',
   template: `
-    <mat-checkbox [formControl]="formControl" [id]="id" [formlyAttributes]="field">
+    <mat-checkbox
+      [formControl]="formControl"
+      [id]="id"
+      [formlyAttributes]="field"
+      (change)="to.change ? to.change(field, formControl):''"
+      [indeterminate]="model[id] === undefined"
+      [align]="to.align">
       {{ to.label }}
       {{ to.required ? '*' : '' }}
     </mat-checkbox>
