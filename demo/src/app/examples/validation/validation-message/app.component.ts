@@ -27,6 +27,7 @@ export class AppComponent {
       templateOptions: {
         label: 'IP Address (custom validation message through `validation` property)',
         required: true,
+        pattern: /(\d{1,3}\.){3}\d{1,3}/,
       },
       validation: {
         messages: {
@@ -35,7 +36,7 @@ export class AppComponent {
       },
     },
     {
-      key: 'ip',
+      key: 'ip2',
       type: 'input',
       templateOptions: {
         label: 'IP Address (custom validation message through `validators` property)',
