@@ -5,20 +5,20 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-addons',
   template: `
     <div class="input-group">
-      <div class="input-group-addon"
+      <div class="input-group-addon input-group-prepend"
         *ngIf="to.addonLeft"
         [ngStyle]="{cursor: to.addonLeft.onClick ? 'pointer' : 'inherit'}"
         (click)="addonLeftClick($event)">
-        <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
-        <span *ngIf="to.addonLeft.text">{{ to.addonLeft.text }}</span>
+        <i class="input-group-text" [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
+        <span *ngIf="to.addonLeft.text" class="input-group-text">{{ to.addonLeft.text }}</span>
       </div>
       <ng-template #fieldComponent></ng-template>
-      <div class="input-group-addon"
+      <div class="input-group-addon input-group-append"
         *ngIf="to.addonRight"
         [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
         (click)="addonRightClick($event)">
-        <i [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
-        <span *ngIf="to.addonRight.text">{{ to.addonRight.text }}</span>
+        <i class="input-group-text" [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
+        <span *ngIf="to.addonRight.text" class="input-group-text">{{ to.addonRight.text }}</span>
       </div>
     </div>
   `,
