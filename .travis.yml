@@ -21,6 +21,7 @@ install:
 script:
 - yarn lint
 - yarn test
+- yarn bundlesize
 - yarn build:demo
 
 after_success:

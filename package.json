@@ -14,6 +14,7 @@
     "postinstall": "patch --forward node_modules/ng-packagr/lib/steps/ngc.js .config/ng-packagr.patch || true",
     "commit": "npm run build && git-cz",
     "prepublish": "npm run build",
+    "bundlesize": "bundlesize",
     "build": "npm run build:core && npm run build:bootstrap && npm run build:material && node .config/build.js",
     "build:core": "ng-packagr -p src/core/ng-package.json",
     "build:bootstrap": "ng-packagr -p src/ui-bootstrap/ng-package.json",
@@ -76,6 +77,7 @@
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^3.4.0",
     "bootstrap": "4.0.0-beta.3",
+    "bundlesize": "^0.15.3",
     "codecov": "^3.0.0",
     "codelyzer": "^4.0.1",
     "commitizen": "^2.9.6",
@@ -111,5 +113,19 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/core/@ngx-formly/core.es5.js",
+      "maxSize": "15 kB"
+    },
+    {
+      "path": "./dist/bootstrap/@ngx-formly/bootstrap.es5.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/material/@ngx-formly/material.es5.js",
+      "maxSize": "5 kB"
+    }
+  ]
 }
