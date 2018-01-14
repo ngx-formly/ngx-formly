@@ -23,7 +23,7 @@ export class SelectOption {
       [formControl]="formControl"
       [formlyAttributes]="field"
       [multiple]="to.multiple"
-      (selectionChange)="to.change ? to.change(field, formControl):''"
+      (selectionChange)="to.change && to.change(field, formControl)"
       [errorStateMatcher]="errorStateMatcher">
       <ng-container *ngFor="let item of selectOptions">
         <mat-optgroup *ngIf="item.group" label="{{item.label}}">

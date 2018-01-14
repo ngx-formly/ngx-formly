@@ -51,11 +51,21 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
       name: 'radio',
       component: FormlyFieldRadio,
       wrappers: ['fieldset', 'label'],
+      defaultOptions: {
+        templateOptions: {
+          options: [],
+        },
+      },
     },
     {
       name: 'select',
       component: FormlyFieldSelect,
       wrappers: ['fieldset', 'label'],
+      defaultOptions: {
+        templateOptions: {
+          options: [],
+        },
+      },
     },
     {
       name: 'textarea',
@@ -72,6 +82,11 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
       name: 'multicheckbox',
       component: FormlyFieldMultiCheckbox,
       wrappers: ['fieldset', 'label'],
+      defaultOptions: {
+        templateOptions: {
+          options: [],
+        },
+      },
     },
   ],
   wrappers: [

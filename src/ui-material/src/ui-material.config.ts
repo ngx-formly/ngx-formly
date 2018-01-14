@@ -44,6 +44,11 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       name: 'select',
       component: FormlyFieldSelect,
       wrappers: ['form-field'],
+      defaultOptions: {
+        templateOptions: {
+          options: [],
+        },
+      },
     },
     {
       name: 'radio',
@@ -52,6 +57,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       defaultOptions: {
         templateOptions: {
           floatLabel: 'always',
+          options: [],
         },
       },
     },
@@ -73,6 +79,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       defaultOptions: {
         templateOptions: {
           floatLabel: 'always',
+          options: [],
         },
       },
     },
