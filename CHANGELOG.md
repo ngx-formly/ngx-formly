@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.12"></a>
+# [2.0.0-rc.12](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.11...v2.0.0-rc.12) (2018-01-14)
+
+
+### Bug Fixes
+
+* **material:** remove underline for radio and checkbox field. ([#652](https://github.com/formly-js/ngx-formly/issues/652)) ([a66d8b1](https://github.com/formly-js/ngx-formly/commit/a66d8b1)), closes [#616](https://github.com/formly-js/ngx-formly/issues/616)
+
+
+
 <a name="2.0.0-rc.11"></a>
 # [2.0.0-rc.11](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.10...v2.0.0-rc.11) (2018-01-13)
 
