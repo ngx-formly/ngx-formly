@@ -64,6 +64,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/config.module#ConfigModule' },
           { path: 'nested-formly-forms', loadChildren: './other/nested-formly-forms/config.module#ConfigModule' },
           { path: 'button', loadChildren: './other/button/config.module#ConfigModule' },
+          { path: 'json-powered', loadChildren: './other/json-powered/config.module#ConfigModule' },
         ]},
       ] },
     ]),
