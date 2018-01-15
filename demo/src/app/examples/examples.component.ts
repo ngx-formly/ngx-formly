@@ -64,6 +64,7 @@ export class ExamplesComponent {
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
       { href: './other/button', text: 'Button Type' },
+      { href: './other/json-powered', text: 'JSON powered' },
     ]},
   ];
 }

@@ -1,0 +1,56 @@
+[
+  {
+    "key": "firstName",
+    "type": "input",
+    "templateOptions": {
+      "label": "First Name"
+    }
+  },
+  {
+    "key": "lastName",
+    "type": "input",
+    "templateOptions": {
+      "label": "Last Name"
+    }
+  },
+  {
+    "key": "mac",
+    "type": "input",
+    "templateOptions": {
+      "label": "Mac Address",
+      "pattern": "([0-9A-F]{2}[:-]){5}([0-9A-F]{2})"
+    }
+  },
+  {
+    "key": "color",
+    "type": "radio",
+    "templateOptions": {
+      "label": "Color Preference (try this out)",
+      "options": [
+        {
+          "name": "No Preference",
+          "value": null
+        },
+        {
+          "name": "Green",
+          "value": "green"
+        },
+        {
+          "name": "Blue",
+          "value": "blue"
+        }
+      ]
+    }
+  },
+  {
+    "key": "reason",
+    "type": "textarea",
+    "templateOptions": {
+      "label": "Why?"
+    },
+    "expressionProperties": {
+      "templateOptions.label": "'Why did you choose ' + model.color + '?'"
+    },
+    "hideExpression": "!model.color"
+  }
+]
