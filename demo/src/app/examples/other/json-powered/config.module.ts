@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Buttons',
+            title: 'JSON powered',
             description: `
               This is an example of powering a form strictly by JSON. The common use case for this
               would be to persist the form configuration in the database and then send the configuration

@@ -1,6 +1,6 @@
 import {
-  Component, OnInit, EventEmitter, Input, Output, OnDestroy,
-  ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver,
+  Component, OnInit, OnChanges, EventEmitter, Input, Output, OnDestroy,
+  ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver, SimpleChanges,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig, TypeOption } from '../services/formly.config';
@@ -21,7 +21,7 @@ import { map } from 'rxjs/operator/map';
     '[style.display]': 'field.hide ? "none":""',
   },
 })
-export class FormlyField implements OnInit, OnDestroy {
+export class FormlyField implements OnInit, OnChanges, OnDestroy {
   @Input() model: any;
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
@@ -42,6 +42,17 @@ export class FormlyField implements OnInit, OnDestroy {
     if (this.field.hide === true) {
       this.toggleHide(true);
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.componentRefs.forEach(ref => {
+      Object.assign(ref.instance, {
+        model: this.model,
+        form: this.form,
+        field: this.field,
+        options: this.options,
+      });
+    });
   }
 
   ngOnDestroy() {
