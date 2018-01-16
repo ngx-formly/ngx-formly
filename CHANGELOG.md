@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.13"></a>
+# [2.0.0-rc.13](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.12...v2.0.0-rc.13) (2018-01-16)
+
+
+### Bug Fixes
+
+* **bootstrap, material:** add default value for select options. ([#655](https://github.com/formly-js/ngx-formly/issues/655)) ([e9819ec](https://github.com/formly-js/ngx-formly/commit/e9819ec))
+* **core:** take account of model changes in wrappers and types. ([#664](https://github.com/formly-js/ngx-formly/issues/664)) ([e17cead](https://github.com/formly-js/ngx-formly/commit/e17cead)), closes [#658](https://github.com/formly-js/ngx-formly/issues/658)
+* **bootstrap:** add missing addons style. ([#657](https://github.com/formly-js/ngx-formly/issues/657)) ([25fdbf7](https://github.com/formly-js/ngx-formly/commit/25fdbf7)), closes [#656](https://github.com/formly-js/ngx-formly/issues/656)
+
+
+
 <a name="2.0.0-rc.12"></a>
 # [2.0.0-rc.12](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.11...v2.0.0-rc.12) (2018-01-14)
 
