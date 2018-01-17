@@ -54,20 +54,22 @@ export class FormlyFormBuilder {
       this.initFieldAsyncValidation(field);
 
       if (field.key && field.type) {
-        const paths: any[] = getKeyPath({ key: field.key });
+        const paths = getKeyPath({ key: field.key });
         let rootForm = form, rootModel = model;
         paths.forEach((path, index) => {
+          // FormGroup/FormArray only allow string value for path
+          const formPath = path.toString();
           // is last item
           if (index === paths.length - 1) {
-            this.addFormControl(rootForm, field, rootModel, path);
+            this.addFormControl(rootForm, field, rootModel, formPath);
           } else {
-            let nestedForm = rootForm.get(path.toString()) as FormGroup;
+            let nestedForm = rootForm.get(formPath) as FormGroup;
             if (!nestedForm) {
               nestedForm = new FormGroup({});
-              rootForm.addControl(path, nestedForm);
+              rootForm.addControl(formPath, nestedForm);
             }
             if (!rootModel[path]) {
-              rootModel[path] = isNaN(path) ? {} : [];
+              rootModel[path] = typeof path === 'string' ? {} : [];
             }
 
             rootForm = nestedForm;
