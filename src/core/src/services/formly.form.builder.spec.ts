@@ -52,6 +52,14 @@ describe('FormlyFormBuilder service', () => {
       expect(form.get('address.city').value).toEqual('test');
       expect(model).toEqual({ address: { city: 'test' } });
     });
+
+    it('should create nested form control for nested integer field key', () => {
+      const model = { a: ['foo', 'bar']};
+      field = { key: 'a.1', type: 'input' };
+      builder.buildForm(form, [field], model, {});
+
+      expect(form.get('a.1').value).toEqual('bar');
+    });
   });
 
   describe('field defaultValue', () => {
