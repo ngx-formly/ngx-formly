@@ -65,6 +65,7 @@ export class ExamplesComponent {
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
       { href: './other/button', text: 'Button Type' },
       { href: './other/json-powered', text: 'JSON powered' },
+      { href: './other/input-file', text: 'File input' },
     ]},
   ];
 }
