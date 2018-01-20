@@ -65,6 +65,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'nested-formly-forms', loadChildren: './other/nested-formly-forms/config.module#ConfigModule' },
           { path: 'button', loadChildren: './other/button/config.module#ConfigModule' },
           { path: 'json-powered', loadChildren: './other/json-powered/config.module#ConfigModule' },
+          { path: 'input-file', loadChildren: './other/input-file/config.module#ConfigModule' },
         ]},
       ] },
     ]),
