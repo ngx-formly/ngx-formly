@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.14"></a>
+# [2.0.0-rc.14](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.13...v2.0.0-rc.14) (2018-01-22)
+
+
+### Bug Fixes
+
+* **core:** ensure passing a string path for FormGroup. ([#666](https://github.com/formly-js/ngx-formly/issues/666)) ([f5f2378](https://github.com/formly-js/ngx-formly/commit/f5f2378)), closes [#665](https://github.com/formly-js/ngx-formly/issues/665)
+
+
+
 <a name="2.0.0-rc.13"></a>
 # [2.0.0-rc.13](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.12...v2.0.0-rc.13) (2018-01-16)
 
