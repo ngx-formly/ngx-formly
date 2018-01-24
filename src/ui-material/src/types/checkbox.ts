@@ -10,7 +10,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
       [id]="id"
       [formlyAttributes]="field"
       (change)="to.change && to.change(field, formControl)"
-      [indeterminate]="model[id] === undefined"
+      [indeterminate]="model[key] === undefined"
       [align]="to.align">
       {{ to.label }}
       {{ to.required ? '*' : '' }}
