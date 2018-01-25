@@ -1,18 +1,21 @@
-import { Component, Input, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, ElementRef, AfterViewInit } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
+import { startWith } from 'rxjs/operators/startWith';
+import JSONFormatter from 'json-formatter-js';
 
 @Component({
   selector: 'formly-example-viewer',
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
 })
-export class ExampleViewerComponent implements OnInit, OnDestroy {
+export class ExampleViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() title;
   @Input() description;
   @Input() component;
   @Input() example: { file: string; content: string }[];
 
   @ViewChild('demo', {read: ViewContainerRef}) demoRef: ViewContainerRef;
+  @ViewChild('modelPreview') modelPreviewRef: ElementRef;
   demoComponentRef: ComponentRef<any>;
 
   /** Whether the source for the example is being displayed. */
@@ -23,6 +26,23 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.component);
     this.demoComponentRef = this.demoRef.createComponent(componentFactory);
+  }
+
+  ngAfterViewInit() {
+    if (!this.demoComponentRef.instance.form) {
+      return;
+    }
+
+    this.demoComponentRef.instance.form.valueChanges.pipe(
+      startWith(this.demoComponentRef.instance.model),
+    )
+    .subscribe(v => {
+      if (this.modelPreviewRef && this.modelPreviewRef.nativeElement) {
+        const formatter = new JSONFormatter(this.demoComponentRef.instance.model, 5, { hoverPreviewEnabled: true });
+        this.modelPreviewRef.nativeElement.innerHTML = '';
+        this.modelPreviewRef.nativeElement.appendChild(formatter.render());
+      }
+    });
   }
 
   ngOnDestroy() {
