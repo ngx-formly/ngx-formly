@@ -76,7 +76,7 @@
     "angular-cli-ghpages": "^0.5.2",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^3.4.0",
-    "bootstrap": "4.0.0-beta.3",
+    "bootstrap": "^4.0.0",
     "bundlesize": "^0.15.3",
     "codecov": "^3.0.0",
     "codelyzer": "^4.0.1",
