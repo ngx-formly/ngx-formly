@@ -46,6 +46,11 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
       name: 'checkbox',
       component: FormlyFieldCheckbox,
       wrappers: ['fieldset'],
+      defaultOptions: {
+        templateOptions: {
+          indeterminate: true,
+        },
+      },
     },
     {
       name: 'radio',

@@ -7,7 +7,7 @@ import { FieldType } from '@ngx-formly/core';
     <label class="custom-control custom-checkbox">
       <input type="checkbox" [formControl]="formControl"
         [attr.invalid]="showError"
-        [indeterminate]="model[key] === undefined"
+        [indeterminate]="to.indeterminate && model[key] === undefined"
         [formlyAttributes]="field" class="custom-control-input">
         {{ to.label }}
         {{ to.required ? '*' : '' }}
