@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.16"></a>
+# [2.0.0-rc.16](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.15...v2.0.0-rc.16) (2018-01-25)
+
+
+### Features
+
+* **bootstrap, material:** allow disable indeterminate state for checkbox. ([#678](https://github.com/formly-js/ngx-formly/issues/678)) ([78b0775](https://github.com/formly-js/ngx-formly/commit/78b0775)), closes [#674](https://github.com/formly-js/ngx-formly/issues/674)
+
+
+
 <a name="2.0.0-rc.15"></a>
 # [2.0.0-rc.15](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.14...v2.0.0-rc.15) (2018-01-24)
 
