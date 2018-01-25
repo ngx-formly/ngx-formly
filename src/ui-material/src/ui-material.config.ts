@@ -67,6 +67,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
+          indeterminate: true,
           floatLabel: 'always',
           align: 'start', // start or end
         },
