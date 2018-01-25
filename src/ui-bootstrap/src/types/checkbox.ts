@@ -4,15 +4,16 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-checkbox',
   template: `
-    <label class="custom-control custom-checkbox">
+    <div class="custom-control custom-checkbox">
       <input type="checkbox" [formControl]="formControl"
         [attr.invalid]="showError"
         [indeterminate]="to.indeterminate && model[key] === undefined"
         [formlyAttributes]="field" class="custom-control-input">
-        {{ to.label }}
-        {{ to.required ? '*' : '' }}
-        <span class="custom-control-indicator"></span>
-    </label>
+        <label class="custom-control-label" [attr.for]="id">
+          {{ to.label }}
+          {{ to.required ? '*' : '' }}
+        </label>
+    </div>
   `,
 })
 export class FormlyFieldCheckbox extends FieldType {}
