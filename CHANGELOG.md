@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.17"></a>
+# [2.0.0-rc.17](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.16...v2.0.0-rc.17) (2018-01-26)
+
+
+### Bug Fixes
+
+* **bootstrap:** add missing bs4 label class for radio and multicheckbox. ([#682](https://github.com/formly-js/ngx-formly/issues/682)) ([cc0b607](https://github.com/formly-js/ngx-formly/commit/cc0b607)), closes [#679](https://github.com/formly-js/ngx-formly/issues/679)
+
+
+### Features
+
+* **bootstrap:** support bootstrap 4.0.0 ([#680](https://github.com/formly-js/ngx-formly/issues/680)) ([064e030](https://github.com/formly-js/ngx-formly/commit/064e030)), closes [#679](https://github.com/formly-js/ngx-formly/issues/679)
+
+
 <a name="2.0.0-rc.16"></a>
 # [2.0.0-rc.16](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.15...v2.0.0-rc.16) (2018-01-25)
 
