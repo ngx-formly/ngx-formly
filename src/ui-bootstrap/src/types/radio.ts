@@ -14,7 +14,8 @@ import { FieldType } from '@ngx-formly/core';
             [value]="option.key"
             [formControl]="formControl"
             [formlyAttributes]="field" class="custom-control-input">
-          {{ option.value }}
+
+          <span class="custom-control-label">{{ option.value }}</span>
           <span class="custom-control-indicator"></span>
         </label>
       </div>
