@@ -32,7 +32,7 @@ export interface FormlyFieldConfig {
    */
   validation?: {
     messages?: {
-      [messageProperties: string]: string | ((error, field: FormlyFieldConfig) => string);
+      [messageProperties: string]: string | ((error: any, field: FormlyFieldConfig) => string);
     };
     show?: boolean;
     [additionalProperties: string]: any;
