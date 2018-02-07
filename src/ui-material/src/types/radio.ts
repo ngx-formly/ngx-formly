@@ -19,7 +19,7 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const formField = this.field['__formField__'];
+    const formField = (<any>this.field)['__formField__'];
     if (formField) {
       formField._control.focusMonitor(
         this.matRadioButtons.map(matRadioButton => matRadioButton._inputElement.nativeElement),

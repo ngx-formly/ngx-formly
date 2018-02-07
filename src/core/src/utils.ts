@@ -9,8 +9,8 @@ export function getFieldId(formId: string, options: FormlyFieldConfig, index: st
 
 export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fieldArray?: any}): (string|number)[] {
   /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
-  if (field['_formlyKeyPath'] !== undefined) {
-    return field['_formlyKeyPath'];
+  if ((<any> field)['_formlyKeyPath'] !== undefined) {
+    return (<any> field)['_formlyKeyPath'];
   }
   let keyPath: (string|number)[] = [];
   if (field.key) {
@@ -32,7 +32,7 @@ export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fiel
       }
     }
   }
-  field['_formlyKeyPath'] = keyPath;
+  (<any> field)['_formlyKeyPath'] = keyPath;
   return keyPath;
 }
 
@@ -66,7 +66,7 @@ export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmp
   return value;
 }
 
-export function assignModelValue(model, path, value) {
+export function assignModelValue(model: any, path: string | (string | number)[], value: any) {
   if (typeof path === 'string') {
     path = getKeyPath({key: path});
   }
@@ -74,7 +74,7 @@ export function assignModelValue(model, path, value) {
   if (path.length > 1) {
     const e = path.shift();
     if (!model[e] || !isObject(model[e])) {
-      model[e] = isNaN(path[0]) ? {} : [];
+      model[e] = typeof path[0] === 'string' ? {} : [];
     }
     assignModelValue(model[e], path, value);
   } else {
@@ -82,14 +82,14 @@ export function assignModelValue(model, path, value) {
   }
 }
 
-export function getValueForKey(model, path) {
+export function getValueForKey(model: any, path: string | (string | number)[]): any {
   if (typeof path === 'string') {
     path = getKeyPath({key: path});
   }
   if (path.length > 1) {
     const e = path.shift();
     if (!model[e]) {
-      model[e] = isNaN(path[0]) ? {} : [];
+      model[e] = typeof path[0] === 'string' ? {} : [];
     }
     return getValueForKey(model[e], path);
   } else {
@@ -101,7 +101,7 @@ export function getKey(controlKey: string, actualKey: string) {
   return actualKey ? actualKey + '.' + controlKey : controlKey;
 }
 
-export function reverseDeepMerge(dest, ...args) {
+export function reverseDeepMerge(dest: any, ...args: any[]) {
   args.forEach(src => {
     for (let srcArg in src) {
       if (isNullOrUndefined(dest[srcArg]) || isBlankString(dest[srcArg])) {
@@ -134,7 +134,7 @@ export function isFunction(value: any) {
   return typeof(value) === 'function';
 }
 
-export function objAndSameType(obj1, obj2) {
+export function objAndSameType(obj1: any, obj2: any) {
   return isObject(obj1) && isObject(obj2) &&
     Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
 }

@@ -1,9 +1,9 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
-import { ValidationErrors } from '@angular/forms';
+import { ValidationErrors, FormGroup } from '@angular/forms';
 import { FormlyGroup } from '../components/formly.group';
 import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
-import { FormlyFieldConfig } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 
 export const FORMLY_CONFIG_TOKEN = new InjectionToken<FormlyConfig>('FORMLY_CONFIG_TOKEN');
 
@@ -20,7 +20,7 @@ export class FormlyConfig {
   };
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
-  messages: { [name: string]: string | ((error, field: FormlyFieldConfig) => string); } = {};
+  messages: { [name: string]: string | ((error: any, field: FormlyFieldConfig) => string); } = {};
 
   templateManipulators: {
     preWrapper: ManipulatorWrapper[];
@@ -31,7 +31,7 @@ export class FormlyConfig {
   };
 
   extras: {
-    fieldTransform?: any,
+    fieldTransform?: ((fields: FormlyFieldConfig[], model: any, form: FormGroup, options: FormlyFormOptions) => FormlyFieldConfig[])[],
     showError?: (field: Field) => boolean;
   } = {
     fieldTransform: undefined,
@@ -165,7 +165,7 @@ export class FormlyConfig {
     return this.validators[name];
   }
 
-  addValidatorMessage(name: string, message: string | ((error, field: FormlyFieldConfig) => string)) {
+  addValidatorMessage(name: string, message: string | ((error: any, field: FormlyFieldConfig) => string)) {
     this.messages[name] = message;
   }
 
@@ -213,7 +213,7 @@ export interface ValidatorOption {
 
 export interface ValidationMessageOption {
   name: string;
-  message: string | ((error, field: FormlyFieldConfig) => string);
+  message: string | ((error: any, field: FormlyFieldConfig) => string);
 }
 
 export interface ManipulatorOption {
@@ -223,6 +223,11 @@ export interface ManipulatorOption {
 
 export interface ManipulatorWrapper {
   (f: FormlyFieldConfig): string;
+}
+
+export interface TemplateManipulators {
+  preWrapper?: ManipulatorWrapper[];
+  postWrapper?: ManipulatorWrapper[];
 }
 
 export interface ConfigOption {

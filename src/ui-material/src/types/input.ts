@@ -23,8 +23,8 @@ export class FormlyFieldInput extends FieldType implements OnInit {
   }
 
   ngOnInit() {
-    if (this.field['__formField__']) {
-      this.field['__formField__']._control = this.matInput;
+    if ((<any> this.field)['__formField__']) {
+      (<any> this.field)['__formField__']._control = this.matInput;
     }
     super.ngOnInit();
   }

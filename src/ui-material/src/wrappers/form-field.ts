@@ -66,19 +66,19 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
   ngOnInit() {
     this.focused = !!this.field.focus;
     this.formField._control = this;
-    this.field['__formField__'] = this.formField;
+    (<any> this.field)['__formField__'] = this.formField;
     if (this.to.floatPlaceholder) {
       this.to.floatLabel = this.to.floatPlaceholder;
       console.warn(`${this.field.key}: Passing 'floatPlaceholder' is deprecated, Use 'floatLabel' instead.`);
     }
   }
 
-  focusMonitor(elements = []) {
+  focusMonitor(elements: any[] = []) {
     elements.map(element => {
       takeUntil.call(
         this._focusMonitor.monitor(element, this.renderer, false),
         this.destroy$,
-      ).subscribe(focusOrigin => {
+      ).subscribe((focusOrigin: any) => {
         if (this.focused !== !!focusOrigin) {
           this.ngZone.run(() => {
             this.focused = !!focusOrigin;
@@ -93,7 +93,7 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
   onContainerClick() {}
 
   ngOnDestroy() {
-    delete this.field['__formField__'];
+    delete (<any> this.field)['__formField__'];
     this.stateChanges.complete();
     this.destroy$.complete();
   }
