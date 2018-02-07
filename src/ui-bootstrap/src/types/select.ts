@@ -6,6 +6,7 @@ export class SelectOption {
   value?: string;
   group?: SelectOption[];
   disabled?: boolean;
+  [key: string]: any;
 
   constructor(label: string, value?: string, children?: SelectOption[]) {
     this.label = label;

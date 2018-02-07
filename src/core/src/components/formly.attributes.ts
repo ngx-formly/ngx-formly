@@ -55,7 +55,7 @@ export class FormlyAttributes implements OnChanges {
       return field.templateOptions[prop];
     }
 
-    return field[prop] || '';
+    return (<any>field)[prop] || '';
   }
 
   private getStatementValue(statement: string) {

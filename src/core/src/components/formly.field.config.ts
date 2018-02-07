@@ -1,6 +1,7 @@
 import { FormGroup, AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
-import { Field } from './../templates/field';
+import { Field } from '../templates/field';
+import { TemplateManipulators } from '../services/formly.config';
 
 export interface FormlyFieldConfig {
   /**
@@ -32,7 +33,7 @@ export interface FormlyFieldConfig {
    */
   validation?: {
     messages?: {
-      [messageProperties: string]: string | ((error, field: FormlyFieldConfig) => string);
+      [messageProperties: string]: string | ((error: any, field: FormlyFieldConfig) => string);
     };
     show?: boolean;
     [additionalProperties: string]: any;
@@ -175,6 +176,7 @@ export interface FormlyTemplateOptions {
   click?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
   change?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
   keypress?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  templateManipulators?: TemplateManipulators;
   [additionalProperties: string]: any;
 }
 

@@ -8,6 +8,7 @@ export class SelectOption {
   value?: string;
   group?: SelectOption[];
   disabled?: boolean;
+  [key: string]: any;
 
   constructor(label: string, value?: string, children?: SelectOption[]) {
     this.label = label;
@@ -76,8 +77,8 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
   }
 
   ngOnInit() {
-    if (this.field['__formField__']) {
-      this.field['__formField__']._control = this.matSelect;
+    if ((<any>this.field)['__formField__']) {
+      (<any> this.field)['__formField__']._control = this.matSelect;
     }
     super.ngOnInit();
   }

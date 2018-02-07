@@ -111,7 +111,7 @@ export class FormlyFormBuilder {
     });
   }
 
-  private initFieldExpression(field: FormlyFieldConfig, model, options: FormlyFormOptions) {
+  private initFieldExpression(field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
     if (field.expressionProperties) {
       for (let key in field.expressionProperties as any) {
         if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
@@ -153,7 +153,7 @@ export class FormlyFormBuilder {
   }
 
   private initFieldAsyncValidation(field: FormlyFieldConfig) {
-    let validators = [];
+    let validators: any = [];
     if (field.asyncValidators) {
       for (let validatorName in field.asyncValidators) {
         if (validatorName !== 'validation') {
@@ -164,7 +164,7 @@ export class FormlyFormBuilder {
             }
 
             return new Promise((resolve) => {
-              return validator(control, field).then(result => {
+              return validator(control, field).then((result: boolean) => {
                 resolve(result ? null : {[validatorName]: true});
               });
             });
@@ -173,7 +173,7 @@ export class FormlyFormBuilder {
       }
     }
     if (field.asyncValidators && Array.isArray(field.asyncValidators.validation)) {
-      field.asyncValidators.validation.forEach(validate => {
+      field.asyncValidators.validation.forEach((validate: any) => {
         if (typeof validate === 'string') {
           validators.push(this.formlyConfig.getValidator(validate).validation);
         } else {
@@ -194,7 +194,7 @@ export class FormlyFormBuilder {
   }
 
   private initFieldValidation(field: FormlyFieldConfig) {
-    let validators = [];
+    let validators: any = [];
     FORMLY_VALIDATORS
       .filter(opt => (field.templateOptions && field.templateOptions[opt])
         || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]),
@@ -225,7 +225,7 @@ export class FormlyFormBuilder {
     }
 
     if (field.validators && Array.isArray(field.validators.validation)) {
-      field.validators.validation.forEach(validate => {
+      field.validators.validation.forEach((validate: any) => {
         if (typeof validate === 'string') {
           validators.push(this.formlyConfig.getValidator(validate).validation);
         } else {
@@ -287,7 +287,7 @@ export class FormlyFormBuilder {
     }
   }
 
-  private getValidation(opt, value) {
+  private getValidation(opt: string, value: any) {
     switch (opt) {
       case 'required':
         return Validators.required;

@@ -32,7 +32,7 @@ export class FormlyFieldMultiCheckbox extends FieldType implements AfterViewInit
   }
 
   ngAfterViewInit() {
-    const formField = this.field['__formField__'];
+    const formField = (<any> this.field)['__formField__'];
     if (formField) {
       formField._control.focusMonitor(
         this.matCheckboxes.map(matCheckbox => matCheckbox._inputElement.nativeElement),

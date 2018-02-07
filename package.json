@@ -9,8 +9,8 @@
   "scripts": {
     "contrib:add": "all-contributors add",
     "contrib:generate": "all-contributors generate",
-    "lint": "tslint 'src/**/*.ts' 'demo/**/*.ts' -p tsconfig.json",
-    "lint:fix": "tslint --fix 'src/**/*.ts' 'app/**/*.ts' -p tsconfig.json",
+    "lint": "tslint -p tsconfig.json",
+    "lint:fix": "tslint --fix -p tsconfig.json",
     "postinstall": "patch --forward node_modules/ng-packagr/lib/steps/ngc.js .config/ng-packagr.patch || true",
     "commit": "npm run build && git-cz",
     "prepublish": "npm run build",

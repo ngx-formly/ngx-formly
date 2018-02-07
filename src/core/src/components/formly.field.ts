@@ -3,7 +3,7 @@ import {
   ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver, SimpleChanges,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormlyConfig, TypeOption } from '../services/formly.config';
+import { FormlyConfig, TypeOption, TemplateManipulators } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { FORMLY_VALIDATORS, evalExpression, getFieldModel } from '../utils';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
@@ -158,7 +158,7 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
   }
 
   private getFieldWrappers(type: TypeOption) {
-    let templateManipulators = {
+    const templateManipulators: TemplateManipulators = {
       preWrapper: [],
       postWrapper: [],
     };
@@ -178,7 +178,7 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
     return [...preWrappers, ...this.field.wrappers, ...postWrappers];
   }
 
-  private mergeTemplateManipulators(source, target) {
+  private mergeTemplateManipulators(source: TemplateManipulators, target: TemplateManipulators) {
     target = target || {};
     if (target.preWrapper) {
       source.preWrapper = source.preWrapper.concat(target.preWrapper);

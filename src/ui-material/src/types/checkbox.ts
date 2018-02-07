@@ -25,7 +25,7 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const formField = this.field['__formField__'];
+    const formField = (<any> this.field)['__formField__'];
     if (formField) {
       formField._control.focusMonitor([this.matCheckbox._inputElement.nativeElement]);
 
