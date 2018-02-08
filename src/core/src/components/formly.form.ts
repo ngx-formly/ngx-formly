@@ -1,8 +1,8 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, QueryList, ViewChildren } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional } from '@angular/core';
 import { FormControl, FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { FormlyField } from './formly.field';
+import { FormlyFormExpression } from '../services/formly.form.expression';
 import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
 
 @Component({
@@ -18,8 +18,6 @@ import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey
   `,
 })
 export class FormlyForm implements DoCheck, OnChanges {
-  @ViewChildren(FormlyField) formlyFields: QueryList<FormlyField>;
-
   @Input() model: any = {};
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
@@ -29,8 +27,11 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   private initialModel: any;
 
+  private initialized = false;
+
   constructor(
     private formlyBuilder: FormlyFormBuilder,
+    private formlyExpression: FormlyFormExpression,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
   ) {}
@@ -46,6 +47,8 @@ export class FormlyForm implements DoCheck, OnChanges {
       this.setOptions();
       if (this.buildForm !== false) {
         this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+        this.initialized = true;
+        this.checkExpressionChange();
       }
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
@@ -65,17 +68,6 @@ export class FormlyForm implements DoCheck, OnChanges {
     this.checkExpressionChange();
   }
 
-  checkExpressionChange() {
-    if (!this.formlyFields || this.formlyFields.length === 0) {
-      return;
-    }
-
-    this.formlyFields.forEach(field => {
-      field.checkExpressionChange();
-      field.checkVisibilityChange();
-    });
-  }
-
   setOptions() {
     this.options = this.options || {};
     if (!this.options.resetModel) {
@@ -89,6 +81,14 @@ export class FormlyForm implements DoCheck, OnChanges {
     if (!this.options.updateInitialValue) {
       this.options.updateInitialValue = this.updateInitialValue.bind(this);
     }
+  }
+
+  private checkExpressionChange() {
+    if (!this.fields || !this.initialized || !this.buildForm) {
+      return;
+    }
+
+    this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
   }
 
   private resetModel(model?: any) {
