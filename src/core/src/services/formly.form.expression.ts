@@ -9,6 +9,10 @@ import { evalExpression, FORMLY_VALIDATORS, getFieldModel } from '../utils';
 @Injectable()
 export class FormlyFormExpression {
   checkFields(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+    if (!fields || !(<any>fields)['__build__']) {
+      return;
+    }
+
     fields.forEach(field => {
       this.checkFieldExpressionChange(form, field, this.fieldModel(model, field), options);
       this.checkFieldVisibilityChange(form, field, this.fieldModel(model, field), options);

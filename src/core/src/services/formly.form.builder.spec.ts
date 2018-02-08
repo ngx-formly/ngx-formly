@@ -17,6 +17,18 @@ describe('FormlyFormBuilder service', () => {
     );
   });
 
+  it('should not re-build field', () => {
+    const fields = [{ key: 'test' }];
+
+    // first build
+    builder.buildForm(form, fields, {}, {});
+    expect(fields['__build__']).toBeTruthy();
+    expect((<any> builder).formId).toEqual(1);
+
+    builder.buildForm(form, fields, {}, {});
+    expect((<any>builder).formId).toEqual(1);
+  });
+
   describe('initialise default TemplateOptions', () => {
     it('should not set the default value if the specified key or type is undefined', () => {
       field = { key: 'title' };

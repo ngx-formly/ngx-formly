@@ -22,12 +22,8 @@ export class FormlyForm implements DoCheck, OnChanges {
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
   @Input() options: FormlyFormOptions;
-  /** @internal */
-  @Input() buildForm: boolean = true;
 
   private initialModel: any;
-
-  private initialized = false;
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
@@ -45,11 +41,8 @@ export class FormlyForm implements DoCheck, OnChanges {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
-      if (this.buildForm !== false) {
-        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-        this.initialized = true;
-        this.checkExpressionChange();
-      }
+      this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+      this.checkExpressionChange();
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
       this.form.patchValue(this.model);
@@ -84,10 +77,6 @@ export class FormlyForm implements DoCheck, OnChanges {
   }
 
   private checkExpressionChange() {
-    if (!this.fields || !this.initialized || !this.buildForm) {
-      return;
-    }
-
     this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
   }
 
