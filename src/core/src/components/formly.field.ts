@@ -2,11 +2,10 @@ import {
   Component, OnInit, OnChanges, EventEmitter, Input, Output, OnDestroy,
   ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver, SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyConfig, TypeOption, TemplateManipulators } from '../services/formly.config';
 import { Field } from '../templates/field';
-import { FORMLY_VALIDATORS, evalExpression, getFieldModel } from '../utils';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { Subscription } from 'rxjs/Subscription';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { map } from 'rxjs/operator/map';
@@ -39,9 +38,6 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.createFieldComponents();
-    if (this.field.hide === true) {
-      this.toggleHide(true);
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -59,58 +55,6 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this._subscriptions.forEach(subscriber => subscriber.unsubscribe());
     this._subscriptions = this.componentRefs = [];
-  }
-
-  checkVisibilityChange() {
-    if (this.field && this.field.hideExpression) {
-      const hideExpressionResult: boolean = !!evalExpression(
-        this.field.hideExpression,
-        this,
-        [this.model, this.options.formState],
-      );
-
-      if (hideExpressionResult !== this.field.hide) {
-        this.toggleHide(hideExpressionResult);
-      }
-    }
-  }
-
-  checkExpressionChange() {
-    if (this.field && this.field.expressionProperties) {
-      const expressionProperties = this.field.expressionProperties;
-
-      for (let key in expressionProperties) {
-        const expressionValue = evalExpression(
-          expressionProperties[key].expression,
-          this,
-          [this.model, this.options.formState],
-        );
-
-        if (expressionProperties[key].expressionValue !== expressionValue) {
-          expressionProperties[key].expressionValue = expressionValue;
-          evalExpression(
-            expressionProperties[key].expressionValueSetter,
-            this,
-            [expressionValue, this.model, this.field.templateOptions, this.field.validation],
-          );
-
-          const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
-          if (validators.indexOf(key) !== -1 && this.field.formControl) {
-            this.field.formControl.updateValueAndValidity({ emitEvent: false });
-          }
-        }
-      }
-
-      const formControl = this.field.formControl;
-      if (formControl) {
-        if (formControl.status === 'DISABLED' && !this.field.templateOptions.disabled) {
-          formControl.enable();
-        }
-        if (formControl.status !== 'DISABLED' && this.field.templateOptions.disabled) {
-          formControl.disable();
-        }
-      }
-    }
   }
 
   private createFieldComponents() {
@@ -204,56 +148,5 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
     this.componentRefs.push(ref);
 
     return ref;
-  }
-
-  private toggleHide(value: boolean) {
-    this.field.hide = value;
-    if (this.field.formControl && this.field.key) {
-      if (value === true && this.form.get(this.field.key)) {
-        this.removeFieldControl();
-      } else if (value === false && !this.form.get(this.field.key)) {
-        this.addFieldControl();
-      }
-    }
-
-    this.field.templateOptions.hidden = value;
-    if (this.options.fieldChanges) {
-      this.options.fieldChanges.next(<FormlyValueChangeEvent> { field: this.field, type: 'hidden', value });
-    }
-  }
-
-  private get fieldKey() {
-    return this.field.key.split('.').pop();
-  }
-
-  private get fieldParentFormControl(): FormArray|FormGroup {
-      const paths = this.field.key.split('.');
-      paths.pop(); // remove last path
-
-      return (paths.length > 0 ? this.form.get(paths) : this.form) as any;
-  }
-
-  private addFieldControl() {
-    const parent = this.fieldParentFormControl,
-      model = (this.field.fieldGroup || this.field.fieldArray) ? this.model : getFieldModel(this.model, this.field, false);
-    if (this.field.formControl.value !== model) {
-      this.field.formControl.patchValue(model);
-    }
-
-    if (parent instanceof FormArray) {
-      parent.push(this.field.formControl);
-    } else if (parent instanceof FormGroup) {
-      parent.addControl(this.fieldKey, this.field.formControl);
-    }
-  }
-
-  private removeFieldControl() {
-    const parent = this.fieldParentFormControl;
-
-    if (parent instanceof FormArray) {
-      parent.removeAt(this.fieldKey as any);
-    } else if (parent instanceof FormGroup) {
-      parent.removeControl(this.fieldKey);
-    }
   }
 }
