@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.19"></a>
+# [2.0.0-rc.19](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.18...v2.0.0-rc.19) (2018-02-08)
+
+
+### Features
+
+* **core:** add FormlyFormExpression for eval field expressions. ([#696](https://github.com/formly-js/ngx-formly/issues/696)) ([c8591ab](https://github.com/formly-js/ngx-formly/commit/c8591ab))
+
+
+
 <a name="2.0.0-rc.18"></a>
 # [2.0.0-rc.18](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.17...v2.0.0-rc.18) (2018-02-07)
 
