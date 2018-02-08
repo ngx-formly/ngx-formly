@@ -13,6 +13,10 @@ export class FormlyFormBuilder {
   constructor(private formlyConfig: FormlyConfig) {}
 
   buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+    if (this.checkAndMarkAsBuilded(fields)) {
+      return;
+    }
+
     this.formId++;
 
     options = options || {};
@@ -302,5 +306,16 @@ export class FormlyFormBuilder {
       case 'max':
         return Validators.max(value);
     }
+  }
+
+  /* to avoid rebuild fields */
+  private checkAndMarkAsBuilded(fields: any): boolean {
+    if (fields['__build__']) {
+      return true;
+    }
+
+    fields['__build__'] = true;
+
+    return false;
   }
 }
