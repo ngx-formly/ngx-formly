@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.20"></a>
+# [2.0.0-rc.20](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.19...v2.0.0-rc.20) (2018-02-09)
+
+
+### Bug Fixes
+
+* **core:** check fields expression after build to avoid creation dup formcontrol. ([#700](https://github.com/formly-js/ngx-formly/issues/700)) ([ae925fd](https://github.com/formly-js/ngx-formly/commit/ae925fd))
+
+
+### Performance Improvements
+
+* **core:** avoid build field twice. ([#697](https://github.com/formly-js/ngx-formly/issues/697)) ([dacbe3e](https://github.com/formly-js/ngx-formly/commit/dacbe3e))
+
+
+
 <a name="2.0.0-rc.19"></a>
 # [2.0.0-rc.19](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.18...v2.0.0-rc.19) (2018-02-08)
 
