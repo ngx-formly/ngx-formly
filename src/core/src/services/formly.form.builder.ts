@@ -1,18 +1,27 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, evalExpression, getFieldId, assignModelValue, getValueForKey, isObject } from './../utils';
+import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
 import { Subject } from 'rxjs/Subject';
+import { FormlyFormExpression } from './formly.form.expression';
 
 @Injectable()
 export class FormlyFormBuilder {
   private formId = 0;
 
-  constructor(private formlyConfig: FormlyConfig) {}
+  constructor(
+    private formlyConfig: FormlyConfig,
+    private formlyFormExpression: FormlyFormExpression,
+  ) {}
 
   buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+    this._buildForm(form, fields, model, options);
+    this.formlyFormExpression.checkFields(form, fields, model, options);
+  }
+
+  private _buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     if (this.checkAndMarkAsBuilded(fields)) {
       return;
     }
@@ -86,7 +95,7 @@ export class FormlyFormBuilder {
         if (field.key) {
           this.addFormControl(form, field, { [field.key]: {} }, field.key);
           model[field.key] = model[field.key] || {};
-          this.buildForm(field.formControl as FormGroup, field.fieldGroup, model[field.key], options);
+          this._buildForm(field.formControl as FormGroup, field.fieldGroup, model[field.key], options);
         } else {
           // if `hideExpression` is set in that case we have to deal
           // with toggle FormControl for each field in fieldGroup separately
@@ -100,7 +109,7 @@ export class FormlyFormBuilder {
               f.hideExpression = (model, formState) => field.hide || hideExpression(model, formState);
             });
           }
-          this.buildForm(form, field.fieldGroup, model, options);
+          this._buildForm(form, field.fieldGroup, model, options);
         }
       }
 
@@ -125,10 +134,6 @@ export class FormlyFormBuilder {
             expressionValueSetter: evalExpressionValueSetter(key, ['expressionValue', 'model', 'templateOptions', 'validation']),
           };
         }
-
-        const expressionValue = evalExpression(field.expressionProperties[key].expression, { field }, [model, options.formState]);
-        field.expressionProperties[key].expressionValue = expressionValue;
-        evalExpression(field.expressionProperties[key].expressionValueSetter, { field }, [expressionValue, model, field.templateOptions || {}, field.validation]);
       }
     }
 
@@ -137,8 +142,6 @@ export class FormlyFormBuilder {
         // cache built expression
         field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
       }
-
-      field.hide = evalExpression(field.hideExpression, { field }, [model, options.formState]);
     }
   }
 
@@ -280,10 +283,6 @@ export class FormlyFormBuilder {
 
   private addControl(form: FormGroup, key: string, formControl: AbstractControl, field: FormlyFieldConfig) {
     field.formControl = formControl;
-    if (field.hide) {
-      return;
-    }
-
     if (formControl instanceof FormArray) {
       form.setControl(key, formControl);
     } else {

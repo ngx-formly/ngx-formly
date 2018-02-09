@@ -1,6 +1,7 @@
 import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from '../core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
+import { FormlyFormExpression } from './formly.form.expression';
 
 describe('FormlyFormBuilder service', () => {
   let builder: FormlyFormBuilder,
@@ -14,7 +15,18 @@ describe('FormlyFormBuilder service', () => {
         wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
         validators: [{ name: 'required', validation: Validators.required }],
       }]),
+      new FormlyFormExpression(),
     );
+  });
+
+  it('should use the same formcontrol for fields that use the same key', () => {
+    const fields: FormlyFieldConfig[] = [
+      { key: 'test', type: 'input', hide: true },
+      { key: 'test', type: 'input' },
+    ];
+
+    builder.buildForm(form, fields, {}, {});
+    expect(fields[0].formControl).toEqual(fields[1].formControl);
   });
 
   it('should not re-build field', () => {
