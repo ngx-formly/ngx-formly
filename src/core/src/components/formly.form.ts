@@ -42,7 +42,6 @@ export class FormlyForm implements DoCheck, OnChanges {
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-      this.checkExpressionChange();
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
       this.form.patchValue(this.model);
