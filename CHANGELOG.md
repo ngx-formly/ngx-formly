@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.21"></a>
+# [2.0.0-rc.21](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.20...v2.0.0-rc.21) (2018-02-10)
+
+
+### Bug Fixes
+
+* **bootstrap:** fixed input width when using add-ons ([#706](https://github.com/formly-js/ngx-formly/issues/706)) ([0fc4390](https://github.com/formly-js/ngx-formly/commit/0fc4390)), closes [#699](https://github.com/formly-js/ngx-formly/issues/699)
+
+
+### Performance Improvements
+
+* avoid using expressionProperties for Cascaded Select example. ([#705](https://github.com/formly-js/ngx-formly/issues/705)) ([96ad6cd](https://github.com/formly-js/ngx-formly/commit/96ad6cd))
+
+
+
 <a name="2.0.0-rc.20"></a>
 # [2.0.0-rc.20](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.19...v2.0.0-rc.20) (2018-02-09)
 
