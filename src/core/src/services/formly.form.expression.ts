@@ -9,16 +9,20 @@ import { evalExpression, FORMLY_VALIDATORS, getFieldModel } from '../utils';
 @Injectable()
 export class FormlyFormExpression {
   checkFields(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
-    if (!fields || !(<any>fields)['__build__']) {
+    if (!this.canCheck(fields)) {
       return;
     }
 
+    this._checkFields(form, fields, model, options);
+  }
+
+  private _checkFields(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     fields.forEach(field => {
       this.checkFieldExpressionChange(form, field, this.fieldModel(model, field), options);
       this.checkFieldVisibilityChange(form, field, this.fieldModel(model, field), options);
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {
-        this.checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup, model, options);
+        this._checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup, model, options);
       }
     });
   }
@@ -131,5 +135,9 @@ export class FormlyFormExpression {
 
   private fieldKey(field: FormlyFieldConfig) {
     return field.key.split('.').pop();
+  }
+
+  private canCheck(fields: any): boolean {
+    return fields && fields['__build__'] && !fields['__build_child__'];
   }
 }
