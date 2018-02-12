@@ -93,6 +93,6 @@ export class AppComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy$.complete();
+    this.onDestroy$.next();
   }
 }
