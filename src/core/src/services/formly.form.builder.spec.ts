@@ -30,15 +30,22 @@ describe('FormlyFormBuilder service', () => {
   });
 
   it('should not re-build field', () => {
-    const fields = [{ key: 'test' }];
+    const fields = [{
+      key: 'test',
+      fieldGroup: [
+        { key: 'test' },
+      ],
+    }];
 
     // first build
     builder.buildForm(form, fields, {}, {});
     expect(fields['__build__']).toBeTruthy();
-    expect((<any> builder).formId).toEqual(1);
+    expect(fields[0].fieldGroup['__build__']).toBeFalsy();
+    expect(fields[0].fieldGroup['__build_child__']).toBeTruthy();
+    expect((<any> builder).formId).toEqual(2);
 
     builder.buildForm(form, fields, {}, {});
-    expect((<any>builder).formId).toEqual(1);
+    expect((<any>builder).formId).toEqual(2);
   });
 
   describe('initialise default TemplateOptions', () => {

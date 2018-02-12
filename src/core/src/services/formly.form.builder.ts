@@ -17,14 +17,16 @@ export class FormlyFormBuilder {
   ) {}
 
   buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+    if (this.checkAndMarkAsBuilded(fields)) {
+      return;
+    }
+
     this._buildForm(form, fields, model, options);
     this.formlyFormExpression.checkFields(form, fields, model, options);
   }
 
   private _buildForm(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
-    if (this.checkAndMarkAsBuilded(fields)) {
-      return;
-    }
+    this.markAsChild(fields);
 
     this.formId++;
 
@@ -307,9 +309,17 @@ export class FormlyFormBuilder {
     }
   }
 
+  private markAsChild(fields: any) {
+    if (fields['__build__']) {
+      return;
+    }
+
+    fields['__build_child__'] = true;
+  }
+
   /* to avoid rebuild fields */
   private checkAndMarkAsBuilded(fields: any): boolean {
-    if (fields['__build__']) {
+    if (fields['__build__'] || fields['__build_child__']) {
       return true;
     }
 
