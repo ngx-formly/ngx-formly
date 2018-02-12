@@ -22,7 +22,7 @@ export class FormlyFormExpression {
       this.checkFieldVisibilityChange(form, field, this.fieldModel(model, field), options);
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {
-        this._checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup, model, options);
+        this._checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup, this.fieldModel(model, field), options);
       }
     });
   }
