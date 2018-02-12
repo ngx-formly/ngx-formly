@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.23"></a>
+# [2.0.0-rc.23](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.22...v2.0.0-rc.23) (2018-02-12)
+
+
+### Bug Fixes
+
+* **core:** ensure passing a valid model in checkField expression. ([#713](https://github.com/formly-js/ngx-formly/issues/713)) ([688b902](https://github.com/formly-js/ngx-formly/commit/688b902))
+
+
+### Performance Improvements
+
+* **core:** avoid check fields expression in child component. ([#712](https://github.com/formly-js/ngx-formly/issues/712)) ([75fd149](https://github.com/formly-js/ngx-formly/commit/75fd149))
+
+
+
 <a name="2.0.0-rc.22"></a>
 # [2.0.0-rc.22](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.21...v2.0.0-rc.22) (2018-02-12)
 
