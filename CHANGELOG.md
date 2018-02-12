@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.22"></a>
+# [2.0.0-rc.22](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.21...v2.0.0-rc.22) (2018-02-12)
+
+
+### Bug Fixes
+
+* **core:** ensure passing a valid form for checkField when fieldGroup is set. ([#709](https://github.com/formly-js/ngx-formly/issues/709)) ([dc6cf0e](https://github.com/formly-js/ngx-formly/commit/dc6cf0e))
+
+
+
 <a name="2.0.0-rc.21"></a>
 # [2.0.0-rc.21](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.20...v2.0.0-rc.21) (2018-02-10)
 
