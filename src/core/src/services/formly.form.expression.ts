@@ -18,7 +18,7 @@ export class FormlyFormExpression {
       this.checkFieldVisibilityChange(form, field, this.fieldModel(model, field), options);
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {
-        this.checkFields(form, field.fieldGroup, model, options);
+        this.checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup, model, options);
       }
     });
   }
