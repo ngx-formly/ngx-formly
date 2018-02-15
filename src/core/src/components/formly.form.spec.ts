@@ -188,6 +188,20 @@ describe('Formly Form Component', () => {
       testComponentInputs = { fields: [field], model, form };
     });
 
+    it('className', () => {
+      field.expressionProperties = {
+        'field.className': 'model.title',
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(field.className).toEqual(undefined);
+
+      model.title = 'test';
+      fixture.detectChanges();
+
+      expect(field.className).toEqual('test');
+    });
+
     it('templateOptions.disabled', () => {
       field.expressionProperties = {
         'templateOptions.disabled': 'model.title !== undefined',
