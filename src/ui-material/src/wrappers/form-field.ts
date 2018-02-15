@@ -15,6 +15,14 @@ import { Subject } from 'rxjs/Subject';
         <span *ngIf="to.required" class="mat-form-field-required-marker">*</span>
       </mat-label>
 
+      <ng-container matPrefix>
+        <ng-container *ngTemplateOutlet="to.prefix"></ng-container>
+      </ng-container>
+
+      <ng-container matSuffix>
+        <ng-container *ngTemplateOutlet="to.suffix"></ng-container>
+      </ng-container>
+
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
       <mat-error [id]="null">
         <formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>
