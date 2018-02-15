@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.25"></a>
+# [2.0.0-rc.25](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.24...v2.0.0-rc.25) (2018-02-15)
+
+
+### Features
+
+* **core:** support using `className` in expressionProperties. ([#721](https://github.com/formly-js/ngx-formly/issues/721)) ([b96329e](https://github.com/formly-js/ngx-formly/commit/b96329e))
+
+
+
 <a name="2.0.0-rc.24"></a>
 # [2.0.0-rc.24](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.23...v2.0.0-rc.24) (2018-02-15)
 
