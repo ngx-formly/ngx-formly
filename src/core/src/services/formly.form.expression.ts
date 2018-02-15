@@ -45,7 +45,7 @@ export class FormlyFormExpression {
         evalExpression(
           expressionProperties[key].expressionValueSetter,
           { field },
-          [expressionValue, model, field.templateOptions, field.validation],
+          [expressionValue, model, field.templateOptions, field.validation, field],
         );
 
         const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
