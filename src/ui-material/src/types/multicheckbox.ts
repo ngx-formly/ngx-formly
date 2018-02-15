@@ -1,7 +1,7 @@
-import { Component, ViewChildren, AfterViewInit, Renderer2 } from '@angular/core';
+import { Component, AfterViewInit, Renderer2 } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType } from './field';
 
 @Component({
   selector: 'formly-field-mat-multicheckbox',
@@ -12,8 +12,6 @@ import { MatCheckbox } from '@angular/material/checkbox';
   `,
 })
 export class FormlyFieldMultiCheckbox extends FieldType implements AfterViewInit {
-  @ViewChildren(MatCheckbox) matCheckboxes: MatCheckbox[];
-
   static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
     let controlGroupConfig = field.templateOptions.options.reduce((previous, option) => {
       previous[option.key] = new FormControl(model ? model[option.key] : undefined);
@@ -32,15 +30,10 @@ export class FormlyFieldMultiCheckbox extends FieldType implements AfterViewInit
   }
 
   ngAfterViewInit() {
-    const formField = (<any> this.field)['__formField__'];
-    if (formField) {
-      formField._control.focusMonitor(
-        this.matCheckboxes.map(matCheckbox => matCheckbox._inputElement.nativeElement),
-      );
-
+    if (this.formField) {
       // temporary fix for https://github.com/angular/material2/issues/7891
-      if (formField.underlineRef && this.renderer) {
-        this.renderer.removeClass(formField.underlineRef.nativeElement, 'mat-form-field-underline');
+      if (this.formField.underlineRef && this.renderer) {
+        this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
       }
     }
     super.ngAfterViewInit();

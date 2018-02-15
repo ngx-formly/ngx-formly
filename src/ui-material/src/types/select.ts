@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
 import { MatSelect } from '@angular/material/select';
-import { FormlyErrorStateMatcher } from '../formly.error-state-matcher';
+import { FieldType } from './field';
 
 export class SelectOption {
   label: string;
@@ -38,8 +37,7 @@ export class SelectOption {
   `,
 })
 export class FormlyFieldSelect extends FieldType implements OnInit {
-  @ViewChild(MatSelect) matSelect: MatSelect;
-  errorStateMatcher = new FormlyErrorStateMatcher(this);
+  @ViewChild(MatSelect) formFieldControl: MatSelect;
 
   get labelProp(): string { return this.to.labelProp || 'label'; }
   get valueProp(): string { return this.to.valueProp || 'value'; }
@@ -74,12 +72,5 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
     });
 
     return this._selectOptions;
-  }
-
-  ngOnInit() {
-    if ((<any>this.field)['__formField__']) {
-      (<any> this.field)['__formField__']._control = this.matSelect;
-    }
-    super.ngOnInit();
   }
 }

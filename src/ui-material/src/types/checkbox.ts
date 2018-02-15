@@ -1,6 +1,5 @@
-import { Component, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { Component, AfterViewInit, Renderer2 } from '@angular/core';
+import { FieldType } from './field';
 
 @Component({
   selector: 'formly-field-mat-checkbox',
@@ -18,20 +17,15 @@ import { MatCheckbox } from '@angular/material/checkbox';
   `,
 })
 export class FormlyFieldCheckbox extends FieldType implements AfterViewInit {
-  @ViewChild(MatCheckbox) matCheckbox: MatCheckbox;
-
   constructor(private renderer?: Renderer2) {
     super();
   }
 
   ngAfterViewInit() {
-    const formField = (<any> this.field)['__formField__'];
-    if (formField) {
-      formField._control.focusMonitor([this.matCheckbox._inputElement.nativeElement]);
-
+    if (this.formField) {
       // temporary fix for https://github.com/angular/material2/issues/7891
-      if (formField.underlineRef && this.renderer) {
-        this.renderer.removeClass(formField.underlineRef.nativeElement, 'mat-form-field-underline');
+      if (this.formField.underlineRef && this.renderer) {
+        this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
       }
     }
     super.ngAfterViewInit();
