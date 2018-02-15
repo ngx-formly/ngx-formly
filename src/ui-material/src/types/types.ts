@@ -1,3 +1,4 @@
+export { FieldType } from './field';
 export { FormlyFieldCheckbox } from './checkbox';
 export { FormlyFieldMultiCheckbox } from './multicheckbox';
 export { FormlyFieldInput } from './input';
