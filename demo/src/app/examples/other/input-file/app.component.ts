@@ -16,8 +16,4 @@ export class AppComponent {
       type: 'file',
     },
   ];
-
-  submit() {
-    alert(JSON.stringify(this.model));
-  }
 }

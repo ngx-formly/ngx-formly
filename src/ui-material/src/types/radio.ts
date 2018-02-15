@@ -1,6 +1,5 @@
-import { Component, AfterViewInit, ViewChildren, Renderer2 } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
-import { MatRadioButton } from '@angular/material/radio';
+import { Component, AfterViewInit, Renderer2 } from '@angular/core';
+import { FieldType } from './field';
 
 @Component({
   selector: 'formly-field-mat-radio',
@@ -13,21 +12,15 @@ import { MatRadioButton } from '@angular/material/radio';
   `,
 })
 export class FormlyFieldRadio extends FieldType implements AfterViewInit {
-  @ViewChildren(MatRadioButton) matRadioButtons: MatRadioButton[];
   constructor(private renderer?: Renderer2) {
     super();
   }
 
   ngAfterViewInit() {
-    const formField = (<any>this.field)['__formField__'];
-    if (formField) {
-      formField._control.focusMonitor(
-        this.matRadioButtons.map(matRadioButton => matRadioButton._inputElement.nativeElement),
-      );
-
+    if (this.formField) {
       // temporary fix for https://github.com/angular/material2/issues/7891
-      if (formField.underlineRef && this.renderer) {
-        this.renderer.removeClass(formField.underlineRef.nativeElement, 'mat-form-field-underline');
+      if (this.formField.underlineRef && this.renderer) {
+        this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
       }
     }
     super.ngAfterViewInit();

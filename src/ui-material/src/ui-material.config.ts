@@ -87,6 +87,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
   ],
   wrappers: [
     { name: 'form-field', component: FormlyWrapperFormField },
+    { name: 'fieldset', component: FormlyWrapperFormField },
   ],
   manipulators: [],
 };
