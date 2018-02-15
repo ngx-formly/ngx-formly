@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.24"></a>
+# [2.0.0-rc.24](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.23...v2.0.0-rc.24) (2018-02-15)
+
+
+### Bug Fixes
+
+* **demo:** add Material+Icons stylesheet ([#717](https://github.com/formly-js/ngx-formly/issues/717)) ([06fde99](https://github.com/formly-js/ngx-formly/commit/06fde99)), closes [#716](https://github.com/formly-js/ngx-formly/issues/716)
+
+
+### Features
+
+* **material:** allow using matPrefix/matSuffix within form-field wrapper. ([#719](https://github.com/formly-js/ngx-formly/issues/719)) ([97f4557](https://github.com/formly-js/ngx-formly/commit/97f4557)), closes [#715](https://github.com/formly-js/ngx-formly/issues/715)
+* **material:** simplify creation custom field type. ([#718](https://github.com/formly-js/ngx-formly/issues/718)) ([1f25587](https://github.com/formly-js/ngx-formly/commit/1f25587))
+
+
+
 <a name="2.0.0-rc.23"></a>
 # [2.0.0-rc.23](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.22...v2.0.0-rc.23) (2018-02-12)
 
