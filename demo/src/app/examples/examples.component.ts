@@ -58,6 +58,7 @@ export class ExamplesComponent {
     { title: 'Advanced', links: [
       { href: './advanced/repeating-section', text: 'Repeating Section' },
       { href: './advanced/multi-step-form', text: 'Multi-Step Form' },
+      { href: './advanced/tabs', text: 'Tabs Form' },
     ]},
     { title: 'Other', links: [
       { href: './other/cascaded-select', text: 'Cascaded Select' },
