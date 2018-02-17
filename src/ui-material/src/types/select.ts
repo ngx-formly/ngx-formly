@@ -43,27 +43,19 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
   get valueProp(): string { return this.to.valueProp || 'value'; }
   get groupProp(): string { return this.to.groupProp || 'group'; }
 
-  private _selectOptions: SelectOption[] = [];
-  private _oldOptions: SelectOption[] = [];
   get selectOptions() {
-    if (this.to.options.length === this._oldOptions.length
-      && this._oldOptions.every(opt => !!this.to.options.find(o => o[this.valueProp] === opt[this.valueProp]))
-    ) {
-      return this._selectOptions;
-    }
+    const options: SelectOption[] = [],
+      groups: { [key: string]: SelectOption[] } = {};
 
-    this._oldOptions = [...this.to.options];
-    this._selectOptions = [];
-    const groups: { [key: string]: SelectOption[] } = {};
     this.to.options.map((option: SelectOption) => {
       if (!option[this.groupProp]) {
-        this._selectOptions.push(option);
+        options.push(option);
       } else {
         if (groups[option[this.groupProp]]) {
           groups[option[this.groupProp]].push(option);
         } else {
           groups[option[this.groupProp]] = [option];
-          this._selectOptions.push({
+          options.push({
             label: option[this.groupProp],
             group: groups[option[this.groupProp]],
           });
@@ -71,6 +63,6 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
       }
     });
 
-    return this._selectOptions;
+    return options;
   }
 }
