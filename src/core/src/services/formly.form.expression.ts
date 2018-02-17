@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
-import { evalExpression, FORMLY_VALIDATORS, getFieldModel } from '../utils';
+import { evalExpression, FORMLY_VALIDATORS, getFieldModel, isObject } from '../utils';
 
 /**
  * @internal
@@ -40,7 +40,10 @@ export class FormlyFormExpression {
         [model, options.formState],
       );
 
-      if (expressionProperties[key].expressionValue !== expressionValue) {
+      if (
+        expressionProperties[key].expressionValue !== expressionValue
+        && (!isObject(expressionValue) || JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue))
+      ) {
         expressionProperties[key].expressionValue = expressionValue;
         evalExpression(
           expressionProperties[key].expressionValueSetter,

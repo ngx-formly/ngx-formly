@@ -36,7 +36,7 @@ export class ExampleViewerComponent implements OnInit, AfterViewInit, OnDestroy 
     this.demoComponentRef.instance.form.valueChanges.pipe(
       startWith(this.demoComponentRef.instance.model),
     )
-    .subscribe(v => {
+    .subscribe(() => {
       if (this.modelPreviewRef && this.modelPreviewRef.nativeElement) {
         const formatter = new JSONFormatter(this.demoComponentRef.instance.model, 5, { hoverPreviewEnabled: true });
         this.modelPreviewRef.nativeElement.innerHTML = '';
