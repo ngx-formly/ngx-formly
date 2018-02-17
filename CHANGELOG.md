@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.26"></a>
+# [2.0.0-rc.26](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.25...v2.0.0-rc.26) (2018-02-17)
+
+
+### Bug Fixes
+
+* **core:** assign changed model in expressionProperties into formControl. ([#724](https://github.com/formly-js/ngx-formly/issues/724)) ([fc3f935](https://github.com/formly-js/ngx-formly/commit/fc3f935)), closes [#723](https://github.com/formly-js/ngx-formly/issues/723)
+
+
+### Performance Improvements
+
+* **core:** use JSON.stringify for comparing object in expressionProperties. ([#725](https://github.com/formly-js/ngx-formly/issues/725)) ([122a685](https://github.com/formly-js/ngx-formly/commit/122a685))
+
+
+
 <a name="2.0.0-rc.25"></a>
 # [2.0.0-rc.25](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.24...v2.0.0-rc.25) (2018-02-15)
 
