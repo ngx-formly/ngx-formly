@@ -188,7 +188,7 @@ describe('Formly Form Component', () => {
       testComponentInputs = { fields: [field], model, form };
     });
 
-    it('className', () => {
+    it('should update className', () => {
       field.expressionProperties = {
         'field.className': 'model.title',
       };
@@ -202,7 +202,55 @@ describe('Formly Form Component', () => {
       expect(field.className).toEqual('test');
     });
 
-    it('templateOptions.disabled', () => {
+    describe('model', () => {
+      it('should update model and assign it into formControl', () => {
+        model.title = 'test';
+        field.expressionProperties = {
+          'model.title': `this.field.templateOptions.disabled ? '':model.title`,
+        };
+
+        const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+        expect(model.title).toEqual('test');
+        expect(field.formControl.value).toEqual('test');
+
+        field.templateOptions.disabled = true;
+        fixture.detectChanges();
+
+        expect(model.title).toEqual('');
+        expect(field.formControl.value).toEqual('');
+      });
+
+      it('should update model and assign it into formControl within nested form', () => {
+        model.title = 'test';
+        field.expressionProperties = {
+          'model.title': `this.field.templateOptions.disabled ? '':model.title`,
+        };
+
+        delete field.key;
+        delete field.type;
+        field.fieldGroup = [
+          {
+            key: 'title',
+            type: 'text',
+            templateOptions: {
+              placeholder: 'Title',
+            },
+          },
+        ];
+
+        const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+        expect(model.title).toEqual('test');
+        expect(field.fieldGroup[0].formControl.value).toEqual('test');
+
+        field.templateOptions.disabled = true;
+        fixture.detectChanges();
+
+        expect(model.title).toEqual('');
+        expect(field.fieldGroup[0].formControl.value).toEqual('');
+      });
+    });
+
+    it('should enable/disalbe formControl on templateOptions.disabled is set', () => {
       field.expressionProperties = {
         'templateOptions.disabled': 'model.title !== undefined',
       };

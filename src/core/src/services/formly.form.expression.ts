@@ -18,11 +18,11 @@ export class FormlyFormExpression {
 
   private _checkFields(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     fields.forEach(field => {
-      this.checkFieldExpressionChange(form, field, this.fieldModel(model, field), options);
-      this.checkFieldVisibilityChange(form, field, this.fieldModel(model, field), options);
+      this.checkFieldExpressionChange(form, field, this.getParentModel(model, field), options);
+      this.checkFieldVisibilityChange(form, field, this.getParentModel(model, field), options);
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {
-        this._checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup, this.fieldModel(model, field), options);
+        this._checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup, this.getParentModel(model, field), options);
       }
     });
   }
@@ -47,6 +47,16 @@ export class FormlyFormExpression {
           { field },
           [expressionValue, model, field.templateOptions, field.validation, field],
         );
+
+        if (key.indexOf('model.') === 0) {
+          const path = key.replace(/^model\./, '');
+
+          if (field.key && key === path) {
+            field.formControl.patchValue(expressionValue, { emitEvent: false });
+          } else if (form.get(path)) {
+            form.get(path).patchValue(expressionValue, { emitEvent: false });
+          }
+        }
 
         const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
         if (validators.indexOf(key) !== -1 && field.formControl) {
@@ -98,17 +108,10 @@ export class FormlyFormExpression {
     }
   }
 
-  private fieldModel(model: any, field: FormlyFieldConfig) {
-    if (field.key && (field.fieldGroup || field.fieldArray)) {
-      return getFieldModel(model, field, true);
-    }
-    return model;
-  }
-
-  private addFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig, fieldModel: any) {
-    const model = (field.fieldGroup || field.fieldArray) ? fieldModel : getFieldModel(fieldModel, field, false);
+  private addFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig, model: any) {
+    model = this.getFieldModel(model, field);
     if (field.formControl.value !== model) {
-      field.formControl.patchValue(model);
+      field.formControl.patchValue(model, { emitEvent: false });
     }
 
     if (parent instanceof FormArray) {
@@ -116,6 +119,21 @@ export class FormlyFormExpression {
     } else if (parent instanceof FormGroup) {
       parent.addControl(this.fieldKey(field), field.formControl);
     }
+  }
+
+  private getFieldModel(model: any, field: FormlyFieldConfig) {
+    if (field.fieldGroup || field.fieldArray) {
+      return model;
+    }
+
+    return getFieldModel(model, field, false);
+  }
+
+  private getParentModel(model: any, field: FormlyFieldConfig) {
+    if (field.key && (field.fieldGroup || field.fieldArray)) {
+      return getFieldModel(model, field, true);
+    }
+    return model;
   }
 
   private removeFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig) {
