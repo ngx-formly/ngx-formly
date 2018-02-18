@@ -74,8 +74,10 @@ describe('Formly Form Component', () => {
       testComponentInputs.fields = [{
         key: 'address',
         fieldGroup: [{
-          key: 'city',
-          type: 'text',
+          fieldGroup: [{
+            key: 'city',
+            type: 'text',
+          }],
         }],
       }];
 
