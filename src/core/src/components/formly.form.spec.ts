@@ -2,11 +2,12 @@ import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testin
 import { createGenericTestComponent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormlyModule } from '../core';
 import { FormGroup } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
+import { FormlyForm } from './formly.form';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -40,6 +41,76 @@ describe('Formly Form Component', () => {
         component: FormlyWrapperLabel,
       }],
     })]});
+  });
+
+  describe('modelChange output', () => {
+    beforeEach(() => {
+      testComponentInputs = {
+        form: new FormGroup({}),
+        options: {},
+        model: {},
+      };
+    });
+
+    it('should emit to `modelChange` when model is changed', () => {
+      testComponentInputs.fields = [{
+        key: 'title',
+        type: 'text',
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      testComponentInputs.form.get('title').patchValue('***');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ title: '***' });
+      subscription.unsubscribe();
+    });
+
+    it('should emit to `modelChange` when nested model is changed ', () => {
+      testComponentInputs.fields = [{
+        key: 'address',
+        fieldGroup: [{
+          key: 'city',
+          type: 'text',
+        }],
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      testComponentInputs.form.get('address.city').patchValue('***');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ address: { city: '***' } });
+      subscription.unsubscribe();
+    });
+
+    it('should emit to `modelChange` when nested model is changed through expressionProperties', () => {
+      testComponentInputs.fields = [{
+        key: 'test',
+        type: 'text',
+        expressionProperties: {
+          'model.test': 'model.title',
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      testComponentInputs.model.title = '***';
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ title: '***', test: '***' });
+      subscription.unsubscribe();
+    });
   });
 
   it('should initialize inputs with default values', () => {
@@ -347,6 +418,8 @@ describe('Formly Form Component', () => {
 
 @Component({selector: 'formly-form-test', template: '', entryComponents: []})
 class TestComponent {
+  @ViewChild(FormlyForm) formlyForm: FormlyForm;
+
   fields = testComponentInputs.fields;
   form = testComponentInputs.form;
   model = testComponentInputs.model || {};
