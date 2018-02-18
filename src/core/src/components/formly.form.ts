@@ -60,13 +60,15 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   changeModel(event: { key: string, value: any }) {
     assignModelValue(this.model, event.key, event.value);
+    this.emitModelChange();
+    this.checkExpressionChange();
+  }
+
+  emitModelChange() {
     this.modelChange.emit(this.model);
     if (this.parentFormlyForm) {
-      this.parentFormlyForm.modelChange.next(
-        this.parentFormlyForm.model,
-      );
+      this.parentFormlyForm.emitModelChange();
     }
-    this.checkExpressionChange();
   }
 
   setOptions() {
