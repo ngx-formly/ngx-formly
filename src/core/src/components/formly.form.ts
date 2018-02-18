@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf } from '@angular/core';
 import { FormControl, FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -23,6 +23,8 @@ export class FormlyForm implements DoCheck, OnChanges {
   @Input() fields: FormlyFieldConfig[] = [];
   @Input() options: FormlyFormOptions;
 
+  @Output() modelChange = new EventEmitter<any>();
+
   private initialModel: any;
 
   constructor(
@@ -30,6 +32,7 @@ export class FormlyForm implements DoCheck, OnChanges {
     private formlyExpression: FormlyFormExpression,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
+    @Optional() @SkipSelf() private parentFormlyForm: FormlyForm,
   ) {}
 
   ngDoCheck() {
@@ -57,6 +60,12 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   changeModel(event: { key: string, value: any }) {
     assignModelValue(this.model, event.key, event.value);
+    this.modelChange.emit(this.model);
+    if (this.parentFormlyForm) {
+      this.parentFormlyForm.modelChange.next(
+        this.parentFormlyForm.model,
+      );
+    }
     this.checkExpressionChange();
   }
 
@@ -76,7 +85,10 @@ export class FormlyForm implements DoCheck, OnChanges {
   }
 
   private checkExpressionChange() {
-    this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
+    // only eval expressions it's a root component
+    if (!this.parentFormlyForm) {
+      this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
+    }
   }
 
   private resetModel(model?: any) {

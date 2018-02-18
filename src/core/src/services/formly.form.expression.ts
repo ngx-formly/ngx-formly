@@ -52,12 +52,11 @@ export class FormlyFormExpression {
         );
 
         if (key.indexOf('model.') === 0) {
-          const path = key.replace(/^model\./, '');
+          const path = key.replace(/^model\./, ''),
+            formControl = field.key && key === path ? field.formControl : form.get(path);
 
-          if (field.key && key === path) {
-            field.formControl.patchValue(expressionValue, { emitEvent: false });
-          } else if (form.get(path)) {
-            form.get(path).patchValue(expressionValue, { emitEvent: false });
+          if (formControl) {
+            formControl.patchValue(expressionValue);
           }
         }
 
