@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.27"></a>
+# [2.0.0-rc.27](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.26...v2.0.0-rc.27) (2018-02-18)
+
+
+### Features
+
+* **core:** add `modelChange` output to emit the formly model changes. ([#726](https://github.com/formly-js/ngx-formly/issues/726)) ([9bf5102](https://github.com/formly-js/ngx-formly/commit/9bf5102)), closes [#720](https://github.com/formly-js/ngx-formly/issues/720)
+
+
+
 <a name="2.0.0-rc.26"></a>
 # [2.0.0-rc.26](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.25...v2.0.0-rc.26) (2018-02-17)
 
