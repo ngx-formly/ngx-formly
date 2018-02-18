@@ -158,6 +158,6 @@ export class FormlyFormExpression {
   }
 
   private canCheck(fields: any): boolean {
-    return fields && fields['__build__'] && !fields['__build_child__'];
+    return fields && fields['__build__'];
   }
 }

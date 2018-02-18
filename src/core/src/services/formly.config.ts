@@ -1,6 +1,5 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
 import { ValidationErrors, FormGroup } from '@angular/forms';
-import { FormlyGroup } from '../components/formly.group';
 import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
@@ -12,12 +11,7 @@ export const FORMLY_CONFIG_TOKEN = new InjectionToken<FormlyConfig>('FORMLY_CONF
  */
 @Injectable()
 export class FormlyConfig {
-  types: {[name: string]: TypeOption} = {
-    'formly-group': {
-      name: 'formly-group',
-      component: FormlyGroup,
-    },
-  };
+  types: {[name: string]: TypeOption} = {};
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
   messages: { [name: string]: string | ((error: any, field: FormlyFieldConfig) => string); } = {};

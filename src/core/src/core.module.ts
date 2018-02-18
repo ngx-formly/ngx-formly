@@ -27,6 +27,7 @@ export class FormlyModule {
         FormlyFormBuilder,
         FormlyFormExpression,
         FormlyConfig,
+        { provide: FORMLY_CONFIG_TOKEN, useValue: { types: [{ name: 'formly-group', component: FormlyGroup }] }, multi: true },
         { provide: FORMLY_CONFIG_TOKEN, useValue: config, multi: true },
         { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
       ],
