@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.28"></a>
+# [2.0.0-rc.28](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.27...v2.0.0-rc.28) (2018-02-19)
+
+
+### Bug Fixes
+
+* **bootstrap:** ensure emitting an int value for number input type. ([#730](https://github.com/formly-js/ngx-formly/issues/730)) ([8a30092](https://github.com/formly-js/ngx-formly/commit/8a30092)), closes [#729](https://github.com/formly-js/ngx-formly/issues/729)
+* **core:** ensure emitting modelChange for nested field groups. ([#728](https://github.com/formly-js/ngx-formly/issues/728)) ([21c3e2a](https://github.com/formly-js/ngx-formly/commit/21c3e2a))
+
+
+### Features
+
+* **core:** add support for readonly property. ([#733](https://github.com/formly-js/ngx-formly/issues/733)) ([1db51bb](https://github.com/formly-js/ngx-formly/commit/1db51bb)), closes [#732](https://github.com/formly-js/ngx-formly/issues/732)
+
+
+
 <a name="2.0.0-rc.27"></a>
 # [2.0.0-rc.27](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.26...v2.0.0-rc.27) (2018-02-18)
 
