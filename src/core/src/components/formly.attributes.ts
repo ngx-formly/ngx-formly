@@ -8,7 +8,7 @@ import { FormlyFieldConfig } from './formly.field.config';
 export class FormlyAttributes implements OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() formControl: AbstractControl;
-  private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'aria-describedby'];
+  private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'aria-describedby', 'readonly'];
   private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
   @HostListener('focus') onFocus() {
