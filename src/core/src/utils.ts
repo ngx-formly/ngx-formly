@@ -9,31 +9,31 @@ export function getFieldId(formId: string, options: FormlyFieldConfig, index: st
 
 export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fieldArray?: any}): (string|number)[] {
   /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
-  if ((<any> field)['_formlyKeyPath'] !== undefined) {
-    return (<any> field)['_formlyKeyPath'];
-  }
-  let keyPath: (string|number)[] = [];
-  if (field.key) {
-    /* Also allow for an array key, hence the type check  */
-    let pathElements = typeof field.key === 'string' ? field.key.split('.') : field.key;
-    for (let pathElement of pathElements) {
-      if (typeof pathElement === 'string') {
-        /* replace paths of the form names[2] by names.2, cfr. angular formly */
-        pathElement = pathElement.replace(/\[(\w+)\]/g, '.$1');
-        keyPath = keyPath.concat(pathElement.split('.'));
-      } else {
-        keyPath.push(pathElement);
+  if (!(<any> field)['_formlyKeyPath']) {
+    let keyPath: (string|number)[] = [];
+    if (field.key) {
+      /* Also allow for an array key, hence the type check  */
+      let pathElements = typeof field.key === 'string' ? field.key.split('.') : field.key;
+      for (let pathElement of pathElements) {
+        if (typeof pathElement === 'string') {
+          /* replace paths of the form names[2] by names.2, cfr. angular formly */
+          pathElement = pathElement.replace(/\[(\w+)\]/g, '.$1');
+          keyPath = keyPath.concat(pathElement.split('.'));
+        } else {
+          keyPath.push(pathElement);
+        }
+      }
+      for (let i = 0; i < keyPath.length; i++) {
+        let pathElement = keyPath[i];
+        if (typeof pathElement === 'string' && stringIsInteger(pathElement))  {
+          keyPath[i] = parseInt(pathElement);
+        }
       }
     }
-    for (let i = 0; i < keyPath.length; i++) {
-      let pathElement = keyPath[i];
-      if (typeof pathElement === 'string' && stringIsInteger(pathElement))  {
-        keyPath[i] = parseInt(pathElement);
-      }
-    }
+    (<any> field)['_formlyKeyPath'] = keyPath;
   }
-  (<any> field)['_formlyKeyPath'] = keyPath;
-  return keyPath;
+
+  return (<any> field)['_formlyKeyPath'].slice(0);
 }
 
 function stringIsInteger(str: string) {
