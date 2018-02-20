@@ -197,19 +197,19 @@ describe('Formly Form Component', () => {
     it('should hide/display field using a function with nested field key', fakeAsync(() => {
       const form = new FormGroup({});
       testComponentInputs.form = form;
-      testComponentInputs.model = { address: { city: '' } };
-      field.key = 'address.city';
-      field.hideExpression = '!(model.address && model.address.city === "agadir")';
+      testComponentInputs.model = { address: [{ city: '' }] };
+      field.key = 'address[0].city';
+      field.hideExpression = '!(model.address && model.address[0] && model.address[0].city === "agadir")';
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
       tick(1);
-      expect(form.get('address.city')).toBeNull();
+      expect(form.get('address.0.city')).toBeNull();
 
-      testComponentInputs.model.address.city = 'agadir';
+      testComponentInputs.model.address[0].city = 'agadir';
       fixture.detectChanges();
       tick(1);
-      expect(form.get('address.city')).not.toBeNull();
-      expect(form.get('address.city').value).toEqual('agadir');
+      expect(form.get('address.0.city')).not.toBeNull();
+      expect(form.get('address.0.city').value).toEqual('agadir');
     }));
 
     it('should hide/display child fields when field has empty key', fakeAsync(() => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
-import { evalExpression, FORMLY_VALIDATORS, getFieldModel, isObject } from '../utils';
+import { evalExpression, FORMLY_VALIDATORS, getFieldModel, isObject, getKeyPath } from '../utils';
 
 /**
  * @internal
@@ -97,9 +97,9 @@ export class FormlyFormExpression {
       if (field.formControl && field.key) {
         const parent = this.fieldParentFormControl(form, field);
 
-        if (hideExpressionResult === true && form.get(field.key)) {
+        if (hideExpressionResult === true && parent.get(this.fieldKey(field) as any)) {
           this.removeFieldControl(parent, field);
-        } else if (hideExpressionResult === false && !form.get(field.key)) {
+        } else if (hideExpressionResult === false && !parent.get(this.fieldKey(field) as any)) {
           this.addFieldControl(parent, field, model);
         }
       }
@@ -119,7 +119,7 @@ export class FormlyFormExpression {
     if (parent instanceof FormArray) {
       parent.push(field.formControl);
     } else if (parent instanceof FormGroup) {
-      parent.addControl(this.fieldKey(field), field.formControl);
+      parent.addControl(this.fieldKey(field) as string, field.formControl);
     }
   }
 
@@ -140,21 +140,21 @@ export class FormlyFormExpression {
 
   private removeFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig) {
     if (parent instanceof FormArray) {
-      parent.removeAt(this.fieldKey as any);
+      parent.removeAt(this.fieldKey(field) as number);
     } else if (parent instanceof FormGroup) {
-      parent.removeControl(this.fieldKey(field));
+      parent.removeControl(this.fieldKey(field) as string);
     }
   }
 
   private fieldParentFormControl(form: FormGroup, field: FormlyFieldConfig): FormArray | FormGroup {
-    const paths = field.key.split('.');
+    const paths = getKeyPath(field);
     paths.pop(); // remove last path
 
     return (paths.length > 0 ? form.get(paths) : form) as any;
   }
 
   private fieldKey(field: FormlyFieldConfig) {
-    return field.key.split('.').pop();
+    return getKeyPath(field).pop();
   }
 
   private canCheck(fields: any): boolean {
