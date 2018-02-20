@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.29"></a>
+# [2.0.0-rc.29](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.28...v2.0.0-rc.29) (2018-02-20)
+
+
+### Bug Fixes
+
+* **bootstrap:** don't render label when the templateOption is not set ([#734](https://github.com/formly-js/ngx-formly/issues/734)) ([8f30bb2](https://github.com/formly-js/ngx-formly/commit/8f30bb2))
+* **FormlyFormExpression:** ensure toggling formControl when key contains array syntax ([#735](https://github.com/formly-js/ngx-formly/issues/735)) ([58f25b7](https://github.com/formly-js/ngx-formly/commit/58f25b7))
+
+
+
 <a name="2.0.0-rc.28"></a>
 # [2.0.0-rc.28](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.27...v2.0.0-rc.28) (2018-02-19)
 
