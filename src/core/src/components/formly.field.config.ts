@@ -168,6 +168,7 @@ export interface FormlyTemplateOptions {
   pattern?: string|RegExp;
   required?: boolean;
   tabindex?: number;
+  attributes?: { [key: string]: string|number };
   step?: number;
   focus?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
   blur?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;

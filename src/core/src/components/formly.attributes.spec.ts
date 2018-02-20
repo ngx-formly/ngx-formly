@@ -35,6 +35,9 @@ describe('FormlyAttributes Component', () => {
         expect(elm.getAttribute('name')).toBe('title-name');
         expect(elm.getAttribute('id')).toBe('title-id');
         expect(elm.getAttribute('aria-describedby')).toBe('title-id-message');
+        // using attributes option
+        expect(elm.getAttribute('min')).toEqual('5');
+        expect(elm.getAttribute('max')).toEqual('10');
         expect(fixture.componentInstance.field.focus).toBeFalsy();
       });
 
@@ -98,6 +101,10 @@ class TestComponent {
       'aria-describedby': true,
       tabindex: 5,
       step: 2,
+      attributes: {
+        min: 5,
+        max: 10,
+      },
     },
   };
 }
