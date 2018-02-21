@@ -38,7 +38,7 @@ export class SelectOption {
         [formControl]="formControl"
         [class.is-invalid]="showError"
         [formlyAttributes]="field">
-        <option value="">{{ to.placeholder }}</option>
+        <option *ngIf="to.placeholder" value="">{{ to.placeholder }}</option>
         <ng-container *ngFor="let item of selectOptions">
           <optgroup *ngIf="item.group" label="{{item.label}}">
             <option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
