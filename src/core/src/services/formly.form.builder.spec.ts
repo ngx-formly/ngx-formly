@@ -411,6 +411,7 @@ describe('FormlyFormBuilder service', () => {
         { name: 'pattern', value: '[0-9]{5}', valid: '75964', invalid: 'ddd' },
         { name: 'minLength', value: 5, valid: '12345', invalid: '123' },
         { name: 'maxLength', value: 10, valid: '123', invalid: '12345678910' },
+        { name: 'min', value: 0, valid: 6, invalid: -6 },
         { name: 'min', value: 5, valid: 6, invalid: 3 },
         { name: 'min', value: 10, valid: 10, invalid: 2 },
         { name: 'min', value: 10, valid: null, invalid: 2 },
@@ -419,6 +420,7 @@ describe('FormlyFormBuilder service', () => {
         { name: 'max', value: 4, valid: 4, invalid: 5 },
         { name: 'max', value: 4, valid: null, invalid: 5 },
         { name: 'max', value: 4, valid: '', invalid: 5 },
+        { name: 'max', value: 0, valid: '', invalid: 5 },
       ];
 
       options.forEach(option => {
