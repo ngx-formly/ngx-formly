@@ -205,12 +205,12 @@ export class FormlyFormBuilder {
   private initFieldValidation(field: FormlyFieldConfig) {
     let validators: any = [];
     FORMLY_VALIDATORS
-      .filter(opt => (field.templateOptions && field.templateOptions[opt])
+      .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt))
         || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]),
       )
       .forEach((opt) => {
         validators.push((control: FormControl) => {
-          if (!field.templateOptions[opt]) {
+          if (field.templateOptions[opt] === false) {
             return null;
           }
 
