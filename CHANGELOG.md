@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.30"></a>
+# [2.0.0-rc.30](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.29...v2.0.0-rc.30) (2018-02-21)
+
+
+### Bug Fixes
+
+* **bootstrap:** avoid displaying blank field in select. ([#742](https://github.com/formly-js/ngx-formly/issues/742)) ([c2c23ef](https://github.com/formly-js/ngx-formly/commit/c2c23ef)), closes [#739](https://github.com/formly-js/ngx-formly/issues/739)
+* **core:** ignore built-in validations only when passing false value. ([#740](https://github.com/formly-js/ngx-formly/issues/740)) ([f29538a](https://github.com/formly-js/ngx-formly/commit/f29538a)), closes [#729](https://github.com/formly-js/ngx-formly/issues/729)
+
+
+### Features
+
+* **bootstrap, material:** allow removing the required asterisk symbol. ([#741](https://github.com/formly-js/ngx-formly/issues/741)) ([0060633](https://github.com/formly-js/ngx-formly/commit/0060633)), closes [#738](https://github.com/formly-js/ngx-formly/issues/738)
+* **core:** allow rendering extra attributes ([#736](https://github.com/formly-js/ngx-formly/issues/736)) ([59b0034](https://github.com/formly-js/ngx-formly/commit/59b0034))
+
+
+
 <a name="2.0.0-rc.29"></a>
 # [2.0.0-rc.29](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.28...v2.0.0-rc.29) (2018-02-20)
 
