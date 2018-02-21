@@ -12,7 +12,7 @@ import { Subject } from 'rxjs/Subject';
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="to.label && field.type !== 'checkbox'">
         {{ to.label }}
-        <span *ngIf="to.required" class="mat-form-field-required-marker">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
       </mat-label>
 
       <ng-container matPrefix>
