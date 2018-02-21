@@ -11,7 +11,7 @@ import { FieldType } from '@ngx-formly/core';
         [formlyAttributes]="field" class="custom-control-input">
         <span class="custom-control-label">
           {{ to.label }}
-          {{ to.required ? '*' : '' }}
+          <ng-container *ngIf="to.required && to.hideRequiredMarker !== true">*</ng-container>
         </span>
         <span class="custom-control-indicator"></span>
     </label>

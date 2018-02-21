@@ -12,7 +12,7 @@ import { FieldType } from './field';
       [indeterminate]="to.indeterminate && model[key] === undefined"
       [align]="to.align">
       {{ to.label }}
-      {{ to.required ? '*' : '' }}
+      <ng-container *ngIf="to.required && to.hideRequiredMarker !== true">*</ng-container>
     </mat-checkbox>
   `,
 })
