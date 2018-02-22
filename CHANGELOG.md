@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.31"></a>
+# [2.0.0-rc.31](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.30...v2.0.0-rc.31) (2018-02-22)
+
+
+### Bug Fixes
+
+* **core:** only read attributes property if templateOptions are set ([#744](https://github.com/formly-js/ngx-formly/issues/744)) ([0843b11](https://github.com/formly-js/ngx-formly/commit/0843b11))
+* **FormlyFormExpression:** ensure ParentFormControl is set when for check field visibility. ([#743](https://github.com/formly-js/ngx-formly/issues/743)) ([d8d7b27](https://github.com/formly-js/ngx-formly/commit/d8d7b27))
+
+
+
 <a name="2.0.0-rc.30"></a>
 # [2.0.0-rc.30](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.29...v2.0.0-rc.30) (2018-02-21)
 
