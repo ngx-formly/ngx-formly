@@ -60,6 +60,23 @@ describe('FormlyAttributes Component', () => {
         expect(elm.getAttribute('step')).toBe('');
         expect(fixture.componentInstance.field.focus).toBeTruthy();
       });
+
+      it('should not fail without templateOptions', () => {
+          const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
+          const elm = getFormlyAttributesElement(fixture.nativeElement);
+
+          fixture.componentInstance.field = {
+              key: 'title',
+              focus: true,
+          };
+
+          fixture.detectChanges();
+
+          expect(elm.getAttribute('tabindex')).toBe('');
+          expect(elm.getAttribute('step')).toBe('');
+          expect(fixture.componentInstance.field.focus).toBeTruthy();
+      });
+
   });
 
   describe('focus the element', () => {
