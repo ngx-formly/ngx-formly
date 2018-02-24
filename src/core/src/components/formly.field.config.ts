@@ -1,4 +1,4 @@
-import { FormGroup, AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
+import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 import { Field } from '../templates/field';
 import { TemplateManipulators } from '../services/formly.config';
@@ -201,7 +201,7 @@ export interface FormlyFormOptions {
   resetModel?: (model?: any) => void;
   formState?: any;
   fieldChanges?: Subject<FormlyValueChangeEvent>;
-  fieldTransform?: (fields: FormlyFieldConfig[], model: any, form: FormGroup, options: FormlyFormOptions) => FormlyFieldConfig[];
+  fieldTransform?: (fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[];
   showError?: (field: Field) => boolean;
   parentForm?: FormGroupDirective | NgForm | null;
 }
