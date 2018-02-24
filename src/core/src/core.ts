@@ -6,5 +6,6 @@ export { FormlyConfig, ConfigOption } from './services/formly.config';
 export { FormlyFormBuilder } from './services/formly.form.builder';
 export { Field } from './templates/field';
 export { FieldType } from './templates/field.type';
+export { FieldArrayType } from './templates/field-array.type';
 export { FieldWrapper } from './templates/field.wrapper';
 export { FormlyModule } from './core.module';
