@@ -38,7 +38,8 @@ export abstract class FieldArrayType extends FieldType {
 
   remove(i) {
     this.formControl.removeAt(i);
-    this.model.splice(i, 1);
     this.field.fieldGroup.splice(i, 1);
+    this.field.fieldGroup.forEach((f, index) => f.key = `${index}`);
+    this.model.splice(i, 1);
   }
 }
