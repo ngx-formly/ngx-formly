@@ -152,7 +152,14 @@ export function clone(value: any) {
     return new Date(value.getTime());
   }
 
-  return Array.isArray(value) ? value.slice(0) : Object.assign({}, value);
+  if (Array.isArray(value)) {
+    return value.slice(0).map(v => clone(v));
+  }
+
+  value = Object.assign({}, value);
+  Object.keys(value).forEach(k => value[k] = clone(value[k]));
+
+  return value;
 }
 
 export function evalStringExpression(expression: string, argNames: string[]) {
