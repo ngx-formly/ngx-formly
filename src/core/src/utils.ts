@@ -9,7 +9,7 @@ export function getFieldId(formId: string, options: FormlyFieldConfig, index: st
 
 export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fieldArray?: any}): (string|number)[] {
   /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
-  if (!(<any> field)['_formlyKeyPath']) {
+  if (!(<any> field)['_formlyKeyPath'] || (<any> field)['_formlyKeyPath'].key !== field.key) {
     let keyPath: (string|number)[] = [];
     if (field.key) {
       /* Also allow for an array key, hence the type check  */
@@ -30,10 +30,13 @@ export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fiel
         }
       }
     }
-    (<any> field)['_formlyKeyPath'] = keyPath;
+    (<any> field)['_formlyKeyPath'] = {
+      key: field.key,
+      path: keyPath,
+    };
   }
 
-  return (<any> field)['_formlyKeyPath'].slice(0);
+  return (<any> field)['_formlyKeyPath'].path.slice(0);
 }
 
 function stringIsInteger(str: string) {

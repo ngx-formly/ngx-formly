@@ -108,7 +108,15 @@ describe('FormlyUtils service', () => {
     it('should attach the key path to the field config', () => {
       let fieldConfig = {key: 'property1.property2[4].property3'};
       getKeyPath(fieldConfig);
-      expect(fieldConfig['_formlyKeyPath']).toEqual(['property1', 'property2', 4, 'property3']);
+      expect(fieldConfig['_formlyKeyPath'].path).toEqual(['property1', 'property2', 4, 'property3']);
+    });
+
+    it('should refresh formlyKeyPath on key updated', () => {
+      const fieldConfig = { key: 'property1.property2[4].property3' };
+      expect(getKeyPath(fieldConfig)).toEqual(['property1', 'property2', 4, 'property3']);
+
+      fieldConfig.key = 'ddd';
+      expect(getKeyPath(fieldConfig)).toEqual(['ddd']);
     });
 
   });

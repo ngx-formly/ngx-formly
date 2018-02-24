@@ -87,10 +87,7 @@ export class FormlyForm implements DoCheck, OnChanges {
   }
 
   private checkExpressionChange() {
-    // only eval expressions it's a root component
-    if (!this.parentFormlyForm) {
-      this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
-    }
+    this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
   }
 
   private resetModel(model?: any) {
