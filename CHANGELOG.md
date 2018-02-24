@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.32"></a>
+# [2.0.0-rc.32](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.31...v2.0.0-rc.32) (2018-02-24)
+
+
+### Bug Fixes
+
+* **core:** rely on `__build__` to check expression instead of parentFormlyForm. ([#751](https://github.com/formly-js/ngx-formly/issues/751)) ([886dad9](https://github.com/formly-js/ngx-formly/commit/886dad9)), closes [#745](https://github.com/formly-js/ngx-formly/issues/745)
+* **core:** reset FormArray when resetting model. ([#750](https://github.com/formly-js/ngx-formly/issues/750)) ([e37ae81](https://github.com/formly-js/ngx-formly/commit/e37ae81)), closes [#648](https://github.com/formly-js/ngx-formly/issues/648)
+
+
+### Features
+
+* **core:** introduce FieldArrayType to simplify managing repeating fields. ([#749](https://github.com/formly-js/ngx-formly/issues/749)) ([90dd1da](https://github.com/formly-js/ngx-formly/commit/90dd1da))
+* **formly-form:** allow passing FormArray in form input. ([#748](https://github.com/formly-js/ngx-formly/issues/748)) ([76938a8](https://github.com/formly-js/ngx-formly/commit/76938a8))
+
+
+
 <a name="2.0.0-rc.31"></a>
 # [2.0.0-rc.31](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.30...v2.0.0-rc.31) (2018-02-22)
 
