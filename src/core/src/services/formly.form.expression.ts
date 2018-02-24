@@ -8,7 +8,7 @@ import { evalExpression, FORMLY_VALIDATORS, getFieldModel, isObject, getKeyPath 
  */
 @Injectable()
 export class FormlyFormExpression {
-  checkFields(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+  checkFields(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     if (!this.canCheck(fields)) {
       return;
     }
@@ -16,7 +16,7 @@ export class FormlyFormExpression {
     this._checkFields(form, fields, model, options);
   }
 
-  private _checkFields(form: FormGroup, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+  private _checkFields(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     fields.forEach(field => {
       this.checkFieldExpressionChange(form, field, this.getParentModel(model, field), options);
       this.checkFieldVisibilityChange(form, field, this.getParentModel(model, field), options);
@@ -27,7 +27,7 @@ export class FormlyFormExpression {
     });
   }
 
-  private checkFieldExpressionChange(form: FormGroup, field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
+  private checkFieldExpressionChange(form: FormGroup | FormArray, field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
     if (!field || !field.expressionProperties) {
       return;
     }
@@ -78,7 +78,7 @@ export class FormlyFormExpression {
     }
   }
 
-  private checkFieldVisibilityChange(form: FormGroup, field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
+  private checkFieldVisibilityChange(form: FormGroup | FormArray, field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
     if (!field || !field.hideExpression) {
       return;
     }
@@ -147,7 +147,7 @@ export class FormlyFormExpression {
     }
   }
 
-  private fieldParentFormControl(form: FormGroup, field: FormlyFieldConfig): FormArray | FormGroup {
+  private fieldParentFormControl(form: FormGroup | FormArray, field: FormlyFieldConfig): FormArray | FormGroup {
     const paths = getKeyPath(field);
     paths.pop(); // remove last path
 

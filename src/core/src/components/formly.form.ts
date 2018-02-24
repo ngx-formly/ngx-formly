@@ -1,9 +1,9 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf } from '@angular/core';
-import { FormControl, FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFormExpression } from '../services/formly.form.expression';
-import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey, getValueForKey, getFieldModel } from '../utils';
+import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getFieldModel } from '../utils';
 
 @Component({
   selector: 'formly-form',
@@ -19,7 +19,7 @@ import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getKey
 })
 export class FormlyForm implements DoCheck, OnChanges {
   @Input() model: any = {};
-  @Input() form: FormGroup = new FormGroup({});
+  @Input() form: FormGroup | FormArray = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
   @Input() options: FormlyFormOptions;
 
@@ -47,7 +47,7 @@ export class FormlyForm implements DoCheck, OnChanges {
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
-      this.form.patchValue(this.model);
+      (<any>this.form).patchValue(this.model);
     }
   }
 
@@ -101,7 +101,6 @@ export class FormlyForm implements DoCheck, OnChanges {
       this.form.reset(model);
     }
 
-    this.resetFormGroup(model, this.form);
     this.resetFormModel(model, this.model);
   }
 
@@ -129,52 +128,6 @@ export class FormlyForm implements DoCheck, OnChanges {
         else {
           formModel[key] = model[key];
         }
-      }
-    }
-  }
-
-  private resetFormGroup(model: any, form: FormGroup, actualKey?: string) {
-    for (let controlKey in form.controls) {
-      let key = getKey(controlKey, actualKey);
-      if (form.controls[controlKey] instanceof FormGroup) {
-        this.resetFormGroup(model, <FormGroup>form.controls[controlKey], key);
-      }
-      if (form.controls[controlKey] instanceof FormArray) {
-        this.resetFormArray(model, <FormArray>form.controls[controlKey], key);
-      }
-      if (form.controls[controlKey] instanceof FormControl) {
-        form.controls[controlKey].setValue(getValueForKey(model, key));
-      }
-    }
-  }
-
-  private resetFormArray(model: any, formArray: FormArray, key: string) {
-    let newValue = getValueForKey(model, key);
-
-    // removes and updates
-    for (let i = formArray.length - 1; i >= 0; i--) {
-      if (formArray.at(i) instanceof FormGroup) {
-        if (newValue && !isNullOrUndefined(newValue[i])) {
-          this.resetFormGroup(newValue[i], <FormGroup>formArray.at(i));
-        }
-        else {
-          formArray.removeAt(i);
-          let value = getValueForKey(this.model, key);
-          if (Array.isArray(value)) {
-            value.splice(i, 1);
-          }
-        }
-      }
-    }
-
-    // inserts
-    if (Array.isArray(newValue) && formArray.length < newValue.length) {
-      let remaining = newValue.length - formArray.length;
-      let initialLength = formArray.length;
-      for (let i = 0; i < remaining; i++) {
-        let pos = initialLength + i;
-        getValueForKey(this.model, key).push(newValue[pos]);
-        formArray.push(new FormGroup({}));
       }
     }
   }

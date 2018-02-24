@@ -1,5 +1,5 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
-import { ValidationErrors, FormGroup } from '@angular/forms';
+import { ValidationErrors, FormGroup, FormArray } from '@angular/forms';
 import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
@@ -25,7 +25,7 @@ export class FormlyConfig {
   };
 
   extras: {
-    fieldTransform?: ((fields: FormlyFieldConfig[], model: any, form: FormGroup, options: FormlyFormOptions) => FormlyFieldConfig[])[],
+    fieldTransform?: ((fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[])[],
     showError?: (field: Field) => boolean;
   } = {
     fieldTransform: undefined,

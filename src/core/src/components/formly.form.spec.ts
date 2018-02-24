@@ -4,7 +4,7 @@ import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormlyModule } from '../core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
@@ -414,6 +414,28 @@ describe('Formly Form Component', () => {
 
       options.resetModel();
       expect(model.title).toEqual('edit title');
+    });
+  });
+
+  describe('form input', () => {
+    it('should allow passing FormArray', () => {
+      testComponentInputs = {
+        model: ['test'],
+        form: new FormArray([]),
+        options: {},
+        fields: [{
+          key: '0',
+          type: 'text',
+          templateOptions: {
+            placeholder: 'Title',
+          },
+        }],
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      fixture.detectChanges();
+
+      expect(testComponentInputs.form.at(0).value).toEqual('test');
     });
   });
 });
