@@ -52,7 +52,7 @@ export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmp
       if (i < keyPath.length - 1) {
         /* TODO? : It would be much nicer if we could construct object instances of the correct class, for instance by using factories. */
         value[path] = typeof keyPath[i + 1] === 'number' ? [] : {};
-      } else if (field.fieldGroup) {
+      } else if (field.fieldGroup && !field.fieldArray) {
         value[path] = {};
       } else if (field.fieldArray) {
         value[path] = [];

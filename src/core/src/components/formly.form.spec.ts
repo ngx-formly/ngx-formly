@@ -3,9 +3,9 @@ import { createGenericTestComponent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormlyModule } from '../core';
-import { FormGroup, FormArray } from '@angular/forms';
-import { FieldType } from '../templates/field.type';
+import { FormlyModule, FormlyFormBuilder } from '../core';
+import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
 
@@ -115,7 +115,7 @@ describe('Formly Form Component', () => {
     });
   });
 
-  it('should initialize inputs with default values', () => {
+  it('should reset model', () => {
     testComponentInputs = {
       fields: [{
         fieldGroup: [{
@@ -138,9 +138,18 @@ describe('Formly Form Component', () => {
         investments: [{investmentName: 'FA'}, {}],
       },
     };
-    createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
-    testComponentInputs.form.controls.investments.removeAt(1);
-    testComponentInputs.options.resetModel();
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    expect(testComponentInputs.form.controls.investments.length).toEqual(2);
+    expect(testComponentInputs.model.investments.length).toEqual(2);
+
+    testComponentInputs.options.resetModel({ investments: [{ investmentName: 'FA' }, {}, {}] });
+    expect(testComponentInputs.form.controls.investments.length).toEqual(3);
+    expect(testComponentInputs.model.investments.length).toEqual(3);
+
+    testComponentInputs.options.resetModel({});
+    expect(testComponentInputs.form.controls.investments.length).toEqual(0);
+    expect(testComponentInputs.model.investments.length).toEqual(0);
+
   });
 
   describe('hideExpression', () => {
@@ -453,37 +462,20 @@ class TestComponent {
 @Component({
   selector: 'formly-repeat-section',
   template: `
-    <div *ngFor="let control of controls; let i = index;">
-      <formly-form
+    <div *ngFor="let field of field.fieldGroup; let i = index;">
+      <formly-group
         [model]="model[i]"
-        [fields]="fields"
+        [field]="field"
         [options]="options"
-        [form]="control">
-      </formly-form>
-      <button (click)="remove(i)">Remove</button>
+        [form]="formControl">
+      </formly-group>
+      <button class="btn btn-danger" type="button" (click)="remove(i)">Remove</button>
+      <button class="btn btn-primary" type="button" (click)="add()">Add</button>
     </div>
   `,
 })
-export class RepeatComponent extends FieldType implements OnInit {
-  get controls() {
-    return this.form.controls[this.field.key]['controls'];
-  }
-
-  get fields(): FormlyFieldConfig[] {
-    return this.field.fieldArray.fieldGroup;
-  }
-
-  remove(i) {
-    this.form.controls[this.field.key]['controls'].splice(i, 1);
-    this.model.splice(i, 1);
-  }
-
-  ngOnInit() {
-    if (this.model) {
-      this.model.forEach(() => {
-        const formGroup = new FormGroup({});
-        this.form.controls[this.field.key]['controls'].push(formGroup);
-      });
-    }
+export class RepeatComponent extends FieldArrayType {
+  constructor(builder: FormlyFormBuilder) {
+    super(builder);
   }
 }
