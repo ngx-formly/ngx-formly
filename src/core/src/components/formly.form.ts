@@ -3,7 +3,7 @@ import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFormExpression } from '../services/formly.form.expression';
-import { assignModelValue, isNullOrUndefined, isObject, reverseDeepMerge, getFieldModel } from '../utils';
+import { assignModelValue, isNullOrUndefined, reverseDeepMerge, getFieldModel, clone } from '../utils';
 
 @Component({
   selector: 'formly-form',
@@ -51,11 +51,11 @@ export class FormlyForm implements DoCheck, OnChanges {
     }
   }
 
-  fieldModel(field: FormlyFieldConfig) {
+  fieldModel(field: FormlyFieldConfig, model = this.model) {
     if (field.key && (field.fieldGroup || field.fieldArray)) {
-      return getFieldModel(this.model, field, true);
+      return getFieldModel(model, field, true);
     }
-    return this.model;
+    return model;
   }
 
   changeModel(event: { key: string, value: any }) {
@@ -95,41 +95,37 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   private resetModel(model?: any) {
     model = isNullOrUndefined(model) ? this.initialModel : model;
+    this.resetForm(this.fields, model, this.model);
     if (this.options.parentForm) {
       this.options.parentForm.resetForm(model);
     } else {
       this.form.reset(model);
     }
-
-    this.resetFormModel(model, this.model);
   }
 
-  private resetFormModel(model: any, formModel: any, path?: (string | number)[]) {
-    if (!isObject(model) && !Array.isArray(model)) {
-      return;
-    }
+  private resetForm(fields: FormlyFieldConfig[], newModel: any, modelToUpdate: any) {
+    fields.forEach(field => {
+      if (field.fieldGroup && field.fieldGroup.length > 0) {
+        let newFieldModel = this.fieldModel(field, newModel),
+          fieldModel = this.fieldModel(field, modelToUpdate);
+        if (field.fieldArray) {
+          field.fieldGroup.length = 0;
+          fieldModel.length = 0;
+          const formControl = <FormArray>field.formControl;
+          while (formControl.length !== 0) {
+            formControl.removeAt(0);
+          }
 
-    // removes
-    for (let key in formModel) {
-      if (!(key in model) || isNullOrUndefined(model[key])) {
-        if (!this.form.get((path || []).concat(key))) {
-          // don't remove if bound to a control
-          delete formModel[key];
+          newFieldModel.forEach((m: any, i: number) => {
+            fieldModel[i] = m;
+            field.fieldGroup.push({ ...clone(field.fieldArray), key: `${i}` });
+            this.formlyBuilder.buildForm(formControl, [field.fieldGroup[i]], newFieldModel, this.options);
+          });
+        } else {
+          this.resetForm(field.fieldGroup, newFieldModel, fieldModel);
         }
       }
-    }
-
-    // inserts and updates
-    for (let key in model) {
-      if (!isNullOrUndefined(model[key])) {
-        if (key in formModel) {
-          this.resetFormModel(model[key], formModel[key], (path || []).concat(key));
-        }
-        else {
-          formModel[key] = model[key];
-        }
-      }
-    }
+    });
   }
 
   private updateInitialValue() {
