@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.34"></a>
+# [2.0.0-rc.34](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.33...v2.0.0-rc.34) (2018-02-28)
+
+
+### Bug Fixes
+
+* **core:** set empty array as defaultValue when fieldArray is set. ([#762](https://github.com/formly-js/ngx-formly/issues/762)) ([2567886](https://github.com/formly-js/ngx-formly/commit/2567886)), closes [#761](https://github.com/formly-js/ngx-formly/issues/761)
+
+
+
 <a name="2.0.0-rc.33"></a>
 # [2.0.0-rc.33](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.32...v2.0.0-rc.33) (2018-02-28)
 
