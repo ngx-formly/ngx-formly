@@ -146,6 +146,22 @@ describe('FormlyFormBuilder service', () => {
 
       expect(model['address']).toEqual({ city: 'foo' });
     });
+
+    it('set empty array as defaultValue when fieldArray is set', () => {
+      let model = {};
+      field = {
+        key: 'address',
+        fieldGroup: [],
+        fieldArray: {
+          fieldGroup: [
+            { key: 'city', type: 'input' },
+          ],
+        },
+      };
+      builder.buildForm(form, [field], model, {});
+
+      expect(model['address']).toEqual([]);
+    });
   });
 
   describe('field expression', () => {

@@ -96,7 +96,7 @@ export class FormlyFormBuilder {
       if (field.fieldGroup) {
         if (field.key) {
           this.addFormControl(form, field, { [field.key]: {} }, field.key);
-          model[field.key] = model[field.key] || {};
+          model[field.key] = model[field.key] || (field.fieldArray ? [] : {});
           this._buildForm(field.formControl as FormGroup, field.fieldGroup, model[field.key], options);
         } else {
           // if `hideExpression` is set in that case we have to deal
