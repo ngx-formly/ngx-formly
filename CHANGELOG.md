@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.33"></a>
+# [2.0.0-rc.33](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.32...v2.0.0-rc.33) (2018-02-28)
+
+
+### Bug Fixes
+
+* **bootstrap:** show error message when asyncValidators is set. ([#759](https://github.com/formly-js/ngx-formly/issues/759)) ([cb5e980](https://github.com/formly-js/ngx-formly/commit/cb5e980)), closes [#757](https://github.com/formly-js/ngx-formly/issues/757)
+* **demo:** take account of model changes in example-viewer. ([#755](https://github.com/formly-js/ngx-formly/issues/755)) ([15b4c48](https://github.com/formly-js/ngx-formly/commit/15b4c48)), closes [#754](https://github.com/formly-js/ngx-formly/issues/754)
+
+
+
 <a name="2.0.0-rc.32"></a>
 # [2.0.0-rc.32](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.31...v2.0.0-rc.32) (2018-02-24)
 
