@@ -146,8 +146,8 @@ export function isObject(x: any) {
   return x != null && typeof x === 'object';
 }
 
-export function clone(value: any) {
-  if (!isObject(value)) {
+export function clone(value: any): any {
+  if (!isObject(value) || value instanceof RegExp) {
     return value;
   }
 
