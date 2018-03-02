@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.35"></a>
+# [2.0.0-rc.35](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.34...v2.0.0-rc.35) (2018-03-02)
+
+
+### Bug Fixes
+
+* **core:** take account of RegExp in clone. ([#766](https://github.com/formly-js/ngx-formly/issues/766)) ([6489561](https://github.com/formly-js/ngx-formly/commit/6489561)), closes [#763](https://github.com/formly-js/ngx-formly/issues/763)
+
+
+
 <a name="2.0.0-rc.34"></a>
 # [2.0.0-rc.34](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.33...v2.0.0-rc.34) (2018-02-28)
 
