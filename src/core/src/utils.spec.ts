@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel, clone } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 
 describe('FormlyUtils service', () => {
@@ -247,5 +247,29 @@ describe ('getFieldModel', () => {
       };
       expect(evalExpression(expression, this, [this.model])).toBe(2);
     });
+  });
+});
+
+describe('clone', () => {
+  it('RegExp', () => {
+    expect(clone(/[^0-9]+/g)).toEqual(/[^0-9]+/g);
+  });
+
+  it('Date', () => {
+    const d = new Date();
+    expect(clone(d)).toEqual(d);
+    expect(clone(d) === d).toBeFalsy();
+  });
+
+  it('Array', () => {
+    const d = [1, 2, 3];
+    expect(clone(d)).toEqual(d);
+    expect(clone(d) === d).toBeFalsy();
+  });
+
+  it('Object', () => {
+    const d = { a: 'test' };
+    expect(clone(d)).toEqual(d);
+    expect(clone(d) === d).toBeFalsy();
   });
 });
