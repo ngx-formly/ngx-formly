@@ -82,7 +82,7 @@ export class FormlyFieldSelect extends FieldType {
       return of(options);
     } else {
       // return observable directly
-      return this.to.options || of([]);
+      return this.to.options;
     }
   }
 }

@@ -69,7 +69,7 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
       return of(options);
     } else {
       // return observable directly
-      return this.to.options || of([]);
+      return this.to.options;
     }
   }
 }
