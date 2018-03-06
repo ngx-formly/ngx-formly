@@ -105,7 +105,7 @@ export class FormlyForm implements DoCheck, OnChanges {
       if ((field.fieldGroup && field.fieldGroup.length > 0) || field.fieldArray) {
         let newFieldModel = this.fieldModel(field, newModel),
           fieldModel = this.fieldModel(field, modelToUpdate);
-        
+
         if (field.fieldArray) {
           field.fieldGroup.length = 0;
 
