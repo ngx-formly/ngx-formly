@@ -33,7 +33,7 @@ export class FormlyFieldMultiCheckbox extends FieldType {
         field.asyncValidators ? field.asyncValidators.validation : undefined,
       );
     } else {
-      console.error('You cannot pass an Observable to a multicheckbox yet.');
+      throw new Error(`[Formly Error] You cannot pass an Observable to a multicheckbox yet.`);
     }
   }
 }
