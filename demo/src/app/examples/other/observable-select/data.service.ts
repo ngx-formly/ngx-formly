@@ -12,5 +12,4 @@ export class DataService {
     getSports(): Observable<any[]> {
         return of(this.sports);
     }
-
 }
