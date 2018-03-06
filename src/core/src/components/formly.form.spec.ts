@@ -152,6 +152,50 @@ describe('Formly Form Component', () => {
 
   });
 
+  it('should update the form controls when changing the model', () => {
+    testComponentInputs = {
+      fields: [{
+        fieldGroup: [{
+          key: 'name',
+          type: 'text',
+        }],
+      }, {
+        key: 'investments',
+        type: 'repeat',
+        fieldArray: {
+          fieldGroup: [{
+            key: 'investmentName',
+            type: 'text',
+          }],
+        },
+      }],
+      form: new FormGroup({}),
+      options: {},
+      model: {
+        investments: [],
+      },
+    };
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    expect(testComponentInputs.form.controls.investments.length).toEqual(0);
+    expect(testComponentInputs.model.investments.length).toEqual(0);
+
+    const newModel = {
+      ...testComponentInputs.model,
+      investments: [
+        {
+          investmentName: 'bitcoin'
+        },
+        {
+          investmentName: 'facilities'
+        }
+      ]
+    };
+    fixture.componentInstance.model = newModel;
+
+    fixture.detectChanges();
+    expect(testComponentInputs.form.controls.investments.length).toEqual(2);
+  });
+
   describe('hideExpression', () => {
     let field;
 
@@ -474,7 +518,7 @@ class TestComponent {
     </div>
   `,
 })
-export class RepeatComponent extends FieldArrayType {
+class RepeatComponent extends FieldArrayType {
   constructor(builder: FormlyFormBuilder) {
     super(builder);
   }

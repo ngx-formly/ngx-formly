@@ -47,7 +47,7 @@ export class FormlyForm implements DoCheck, OnChanges {
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
-      (<any>this.form).patchValue(this.model);
+      this.resetModel(this.model);
     }
   }
 
@@ -102,12 +102,17 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   private resetForm(fields: FormlyFieldConfig[], newModel: any, modelToUpdate: any) {
     fields.forEach(field => {
-      if (field.fieldGroup && field.fieldGroup.length > 0) {
+      if ((field.fieldGroup && field.fieldGroup.length > 0) || field.fieldArray) {
         let newFieldModel = this.fieldModel(field, newModel),
           fieldModel = this.fieldModel(field, modelToUpdate);
+
         if (field.fieldArray) {
           field.fieldGroup.length = 0;
-          fieldModel.length = 0;
+
+          if (fieldModel !== newFieldModel) {
+            fieldModel.length = 0;
+          }
+
           const formControl = <FormArray>field.formControl;
           while (formControl.length !== 0) {
             formControl.removeAt(0);
