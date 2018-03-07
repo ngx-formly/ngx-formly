@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { FieldType } from './field';
+import { of } from 'rxjs/observable/of';
+import { Observable } from 'rxjs/Observable';
 
 export class SelectOption {
   label: string;
@@ -25,7 +27,7 @@ export class SelectOption {
       [multiple]="to.multiple"
       (selectionChange)="to.change && to.change(field, formControl)"
       [errorStateMatcher]="errorStateMatcher">
-      <ng-container *ngFor="let item of selectOptions">
+      <ng-container *ngFor="let item of selectOptions | async">
         <mat-optgroup *ngIf="item.group" label="{{item.label}}">
           <mat-option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
             {{ child[labelProp] }}
@@ -43,26 +45,31 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
   get valueProp(): string { return this.to.valueProp || 'value'; }
   get groupProp(): string { return this.to.groupProp || 'group'; }
 
-  get selectOptions() {
-    const options: SelectOption[] = [],
-      groups: { [key: string]: SelectOption[] } = {};
+  get selectOptions(): Observable<any[]> {
+    if (!(this.to.options instanceof Observable)) {
+      const options: SelectOption[] = [],
+        groups: { [key: string]: SelectOption[] } = {};
 
-    this.to.options.map((option: SelectOption) => {
-      if (!option[this.groupProp]) {
-        options.push(option);
-      } else {
-        if (groups[option[this.groupProp]]) {
-          groups[option[this.groupProp]].push(option);
+      this.to.options.map((option: SelectOption) => {
+        if (!option[this.groupProp]) {
+          options.push(option);
         } else {
-          groups[option[this.groupProp]] = [option];
-          options.push({
-            label: option[this.groupProp],
-            group: groups[option[this.groupProp]],
-          });
+          if (groups[option[this.groupProp]]) {
+            groups[option[this.groupProp]].push(option);
+          } else {
+            groups[option[this.groupProp]] = [option];
+            options.push({
+              label: option[this.groupProp],
+              group: groups[option[this.groupProp]],
+            });
+          }
         }
-      }
-    });
+      });
 
-    return options;
+      return of(options);
+    } else {
+      // return observable directly
+      return this.to.options;
+    }
   }
 }

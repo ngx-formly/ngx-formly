@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 export class SelectOption {
   label: string;
@@ -23,7 +25,7 @@ export class SelectOption {
       [class.is-invalid]="showError"
       [multiple]="true"
       [formlyAttributes]="field">
-        <ng-container *ngFor="let item of selectOptions">
+        <ng-container *ngFor="let item of selectOptions | async">
          <optgroup *ngIf="item.group" label="{{item.label}}">
             <option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
               {{ child[labelProp] }}
@@ -39,7 +41,7 @@ export class SelectOption {
         [class.is-invalid]="showError"
         [formlyAttributes]="field">
         <option *ngIf="to.placeholder" value="">{{ to.placeholder }}</option>
-        <ng-container *ngFor="let item of selectOptions">
+        <ng-container *ngFor="let item of selectOptions | async">
           <optgroup *ngIf="item.group" label="{{item.label}}">
             <option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
               {{ child[labelProp] }}
@@ -56,26 +58,31 @@ export class FormlyFieldSelect extends FieldType {
   get valueProp(): string { return this.to.valueProp || 'value'; }
   get groupProp(): string { return this.to.groupProp || 'group'; }
 
-  get selectOptions() {
-    const options: SelectOption[] = [],
-      groups: { [key: string]: SelectOption[] } = {};
+  get selectOptions(): Observable<any[]> {
+    if (!(this.to.options instanceof Observable)) {
+      const options: SelectOption[] = [],
+        groups: { [key: string]: SelectOption[] } = {};
 
-    this.to.options.map((option: SelectOption) => {
-      if (!option[this.groupProp]) {
-        options.push(option);
-      } else {
-        if (groups[option[this.groupProp]]) {
-          groups[option[this.groupProp]].push(option);
+      this.to.options.map((option: SelectOption) => {
+        if (!option[this.groupProp]) {
+          options.push(option);
         } else {
-          groups[option[this.groupProp]] = [option];
-          options.push({
-            label: option[this.groupProp],
-            group: groups[option[this.groupProp]],
-          });
+          if (groups[option[this.groupProp]]) {
+            groups[option[this.groupProp]].push(option);
+          } else {
+            groups[option[this.groupProp]] = [option];
+            options.push({
+              label: option[this.groupProp],
+              group: groups[option[this.groupProp]],
+            });
+          }
         }
-      }
-    });
+      });
 
-    return options;
+      return of(options);
+    } else {
+      // return observable directly
+      return this.to.options;
+    }
   }
 }

@@ -2,6 +2,7 @@ import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray } fro
 import { Subject } from 'rxjs/Subject';
 import { Field } from '../templates/field';
 import { TemplateManipulators } from '../services/formly.config';
+import { Observable } from 'rxjs/Observable';
 
 export interface FormlyFieldConfig {
   /**
@@ -156,7 +157,7 @@ export interface FormlyTemplateOptions {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
-  options?: any[];
+  options?: any[] | Observable<any[]>;
   rows?: number;
   cols?: number;
   description?: string;

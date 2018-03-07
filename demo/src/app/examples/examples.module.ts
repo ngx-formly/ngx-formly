@@ -62,6 +62,7 @@ import { ExamplesComponent } from './examples.component';
         // Other
         { path: 'other', children: [
           { path: 'cascaded-select', loadChildren: './other/cascaded-select/config.module#ConfigModule' },
+          { path: 'observable-select', loadChildren: './other/observable-select/config.module#ConfigModule' },
           { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/config.module#ConfigModule' },
           { path: 'nested-formly-forms', loadChildren: './other/nested-formly-forms/config.module#ConfigModule' },
           { path: 'button', loadChildren: './other/button/config.module#ConfigModule' },

@@ -62,6 +62,7 @@ export class ExamplesComponent {
     ]},
     { title: 'Other', links: [
       { href: './other/cascaded-select', text: 'Cascaded Select' },
+      { href: './other/observable-select', text: 'Bind Observable to Select' },
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
       { href: './other/button', text: 'Button Type' },
