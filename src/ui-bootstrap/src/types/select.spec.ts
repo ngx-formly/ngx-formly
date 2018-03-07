@@ -1,10 +1,10 @@
-import { TestBed, ComponentFixture, fakeAsync, tick, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { createGenericTestComponent } from '../../../core/src/test-utils';
 import { By } from '@angular/platform-browser';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormlyModule, FormlyFormBuilder } from '../../../core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormlyModule } from '../../../core';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
 import { FormlyForm } from '../../../core';
 import { of } from 'rxjs/observable/of';
@@ -21,8 +21,8 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
         {
           name: 'select',
           component: FormlyFieldSelect,
-        }
-      ]
+        },
+      ],
     })]});
   });
 
@@ -47,11 +47,11 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
                 ],
                 valueProp: 'id',
                 labelProp: 'name',
-            }
+            },
         }];
 
         const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
-        
+
         expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(2);
     });
 
@@ -68,11 +68,11 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
               options: sports$,
               valueProp: 'id',
               labelProp: 'name',
-          }
+          },
       }];
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
-      
+
       expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(2);
     }));
 

@@ -13,6 +13,8 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
   @Input() component;
   @Input() example: { file: string; content: string }[];
 
+  _prevModel: any;
+
   @ViewChild('demo', {read: ViewContainerRef}) demoRef: ViewContainerRef;
   @ViewChild('modelPreview') modelPreviewRef: ElementRef;
   demoComponentRef: ComponentRef<any>;
@@ -23,7 +25,9 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
   constructor(private copier: CopierService, private componentFactoryResolver: ComponentFactoryResolver) {}
 
   get model() {
-    if (this.modelPreviewRef && this.modelPreviewRef.nativeElement) {
+    const model = JSON.stringify(this.demoComponentRef.instance.model);
+    if (this._prevModel !== model && this.modelPreviewRef && this.modelPreviewRef.nativeElement) {
+      this._prevModel = model;
       const formatter = new JSONFormatter(this.demoComponentRef.instance.model, 5, { hoverPreviewEnabled: true });
       this.modelPreviewRef.nativeElement.innerHTML = '';
       this.modelPreviewRef.nativeElement.appendChild(formatter.render());

@@ -2,11 +2,11 @@ import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testin
 import { createGenericTestComponent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormlyModule, FormlyFormBuilder } from '../core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
-import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
+import { FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
 
 const createTestComponent = (html: string) =>
@@ -183,12 +183,12 @@ describe('Formly Form Component', () => {
       ...testComponentInputs.model,
       investments: [
         {
-          investmentName: 'bitcoin'
+          investmentName: 'bitcoin',
         },
         {
-          investmentName: 'facilities'
-        }
-      ]
+          investmentName: 'facilities',
+        },
+      ],
     };
     fixture.componentInstance.model = newModel;
 
