@@ -349,26 +349,6 @@ describe('FormlyFormBuilder service', () => {
       field = { key: 'title', type: 'input' };
     });
 
-    describe('validation.show', () => {
-      it('should show error when option `show` is true', () => {
-        field.validators = { validation: ['required'] };
-        field.validation = { show: true };
-        const options: any = {};
-        builder.buildForm(form, [field], {}, options);
-
-        expect(options.showError({ field, options, formControl: form })).toBeTruthy();
-      });
-
-      it('should not show error when option `show` is false', () => {
-        field.validators = { validation: ['required'] };
-        field.validation = { show: false };
-        const options: any = {};
-        builder.buildForm(form, [field], {}, options);
-
-        expect(options.showError({ field, options, formControl: form })).toBeFalsy();
-      });
-    });
-
     describe('validators', () => {
       describe('with validation option', () => {
         it(`using pre-defined type`, () => {

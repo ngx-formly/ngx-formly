@@ -1,9 +1,11 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFormExpression } from '../services/formly.form.expression';
+import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, reverseDeepMerge, getFieldModel, clone } from '../utils';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'formly-form',
@@ -30,6 +32,7 @@ export class FormlyForm implements DoCheck, OnChanges {
   constructor(
     private formlyBuilder: FormlyFormBuilder,
     private formlyExpression: FormlyFormExpression,
+    private formlyConfig: FormlyConfig,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
     @Optional() @SkipSelf() private parentFormlyForm: FormlyForm,
@@ -73,6 +76,15 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   setOptions() {
     this.options = this.options || {};
+
+    this.options.formState = this.options.formState || {};
+    if (!this.options.showError) {
+      this.options.showError = this.formlyConfig.extras.showError;
+    }
+    if (!this.options.fieldChanges) {
+      this.options.fieldChanges = new Subject<FormlyValueChangeEvent>();
+    }
+
     if (!this.options.resetModel) {
       this.options.resetModel = this.resetModel.bind(this);
     }
