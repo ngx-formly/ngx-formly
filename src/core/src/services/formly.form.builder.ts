@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject } from './../utils';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
-import { Subject } from 'rxjs/Subject';
 import { FormlyFormExpression } from './formly.form.expression';
 
 @Injectable()
@@ -29,15 +28,6 @@ export class FormlyFormBuilder {
   private _buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     this.formId++;
     this.markAsBuilded(fields, true);
-
-    options = options || {};
-    options.formState = options.formState || {};
-    if (!options.showError) {
-      options.showError = this.formlyConfig.extras.showError;
-    }
-    if (!options.fieldChanges) {
-      options.fieldChanges = new Subject<FormlyValueChangeEvent>();
-    }
 
     let fieldTransforms = (options && options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
     if (!Array.isArray(fieldTransforms)) {

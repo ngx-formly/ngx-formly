@@ -23,12 +23,21 @@ describe('FormlyConfig service', () => {
 
       expect(config.extras.showError({ options, formControl, field } as any)).toBeTruthy();
     });
+
     it('should showError when field is touched and form is invalid', () => {
       const field = {},
         formControl = new FormControl(null, Validators.required),
         options = { parentForm: { submitted: false } };
 
       formControl.markAsTouched();
+
+      expect(config.extras.showError({ options, formControl, field } as any)).toBeTruthy();
+    });
+
+    it('should show error when option `show` is true', () => {
+      const field = { validation: { show: true } },
+        formControl = new FormControl(null, Validators.required),
+        options = { parentForm: { submitted: false } };
 
       expect(config.extras.showError({ options, formControl, field } as any)).toBeTruthy();
     });
