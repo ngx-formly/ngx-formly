@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.36"></a>
+# [2.0.0-rc.36](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.35...v2.0.0-rc.36) (2018-03-08)
+
+
+### Bug Fixes
+
+* **core:** ensure options is initialized during build. ([#779](https://github.com/formly-js/ngx-formly/issues/779)) ([f7147e0](https://github.com/formly-js/ngx-formly/commit/f7147e0)), closes [#774](https://github.com/formly-js/ngx-formly/issues/774)
+* **core:** reset model on each change ([#770](https://github.com/formly-js/ngx-formly/issues/770)) ([cd78b60](https://github.com/formly-js/ngx-formly/commit/cd78b60))
+
+
+### Features
+
+* **core:** allow binding Observables to select options ([#772](https://github.com/formly-js/ngx-formly/issues/772)) ([7307e02](https://github.com/formly-js/ngx-formly/commit/7307e02))
+
+
+
 <a name="2.0.0-rc.35"></a>
 # [2.0.0-rc.35](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.34...v2.0.0-rc.35) (2018-03-02)
 
