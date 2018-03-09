@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.37"></a>
+# [2.0.0-rc.37](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.36...v2.0.0-rc.37) (2018-03-09)
+
+
+### Bug Fixes
+
+* **core:** avoid reset parent form when resetting model. ([#783](https://github.com/formly-js/ngx-formly/issues/783)) ([1757193](https://github.com/formly-js/ngx-formly/commit/1757193))
+
+
+
 <a name="2.0.0-rc.36"></a>
 # [2.0.0-rc.36](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.35...v2.0.0-rc.36) (2018-03-08)
 
