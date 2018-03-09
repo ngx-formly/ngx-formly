@@ -1,17 +1,13 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators/takeUntil';
-import { tap } from 'rxjs/operators/tap';
 import { DataService } from './data.service';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnDestroy {
-  onDestroy$ = new Subject<void>();
+export class AppComponent {
   form = new FormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};
@@ -33,10 +29,5 @@ export class AppComponent implements OnDestroy {
 
   submit() {
     alert(JSON.stringify(this.model));
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 }
