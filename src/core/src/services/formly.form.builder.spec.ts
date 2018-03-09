@@ -29,6 +29,19 @@ describe('FormlyFormBuilder service', () => {
     expect(fields[0].formControl).toEqual(fields[1].formControl);
   });
 
+  it('should use the update formcontrol value for fields that already has formcontrol', () => {
+    const fields: FormlyFieldConfig[] = [
+      {
+        key: 'test',
+        type: 'input',
+        formControl: new FormControl(),
+      },
+    ];
+
+    builder.buildForm(form, fields, { test: 'test' }, {});
+    expect(fields[0].formControl.value).toEqual('test');
+  });
+
   it('should not re-build field', () => {
     const fields = [{
       key: 'test',
