@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.38"></a>
+# [2.0.0-rc.38](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.37...v2.0.0-rc.38) (2018-03-11)
+
+
+### Bug Fixes
+
+* **core:** change `submitted` state on resetForm. ([#786](https://github.com/formly-js/ngx-formly/issues/786)) ([426ce5b](https://github.com/formly-js/ngx-formly/commit/426ce5b)), closes [#785](https://github.com/formly-js/ngx-formly/issues/785)
+* **core:** take account of model changes for an existent field form. ([#784](https://github.com/formly-js/ngx-formly/issues/784)) ([35fe7c5](https://github.com/formly-js/ngx-formly/commit/35fe7c5)), closes [#782](https://github.com/formly-js/ngx-formly/issues/782)
+* **core:** take account of model changes when fields is already builded. ([#787](https://github.com/formly-js/ngx-formly/issues/787)) ([73b85b4](https://github.com/formly-js/ngx-formly/commit/73b85b4))
+
+
+
 <a name="2.0.0-rc.37"></a>
 # [2.0.0-rc.37](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.36...v2.0.0-rc.37) (2018-03-09)
 
