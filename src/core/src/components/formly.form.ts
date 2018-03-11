@@ -47,7 +47,11 @@ export class FormlyForm implements DoCheck, OnChanges {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
-      this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+      if (!this.isBuilded(this.fields)) {
+        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+      } else if (changes.model) {
+        this.resetModel(this.model);
+      }
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
       this.resetModel(this.model);
@@ -125,7 +129,7 @@ export class FormlyForm implements DoCheck, OnChanges {
           field.fieldGroup = field.fieldGroup || [];
           field.fieldGroup.length = 0;
 
-          if (fieldModel !== newFieldModel) {
+          if (fieldModel !== newFieldModel && fieldModel) {
             fieldModel.length = 0;
           }
 
@@ -148,5 +152,9 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   private updateInitialValue() {
     this.initialModel = reverseDeepMerge({}, this.model);
+  }
+
+  private isBuilded(fields: any): boolean {
+    return fields && fields['__build__'];
   }
 }
