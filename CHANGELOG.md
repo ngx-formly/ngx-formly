@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.39"></a>
+# [2.0.0-rc.39](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.38...v2.0.0-rc.39) (2018-03-12)
+
+
+### Bug Fixes
+
+* **core:** rebuild fields when `form` change. ([#789](https://github.com/formly-js/ngx-formly/issues/789)) ([1ff5d00](https://github.com/formly-js/ngx-formly/commit/1ff5d00)), closes [#788](https://github.com/formly-js/ngx-formly/issues/788)
+
+
+
 <a name="2.0.0-rc.38"></a>
 # [2.0.0-rc.38](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.37...v2.0.0-rc.38) (2018-03-11)
 
