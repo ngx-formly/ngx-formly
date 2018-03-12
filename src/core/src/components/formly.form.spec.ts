@@ -471,6 +471,28 @@ describe('Formly Form Component', () => {
   });
 
   describe('form input', () => {
+    it('should rebuild field when form is changed', () => {
+      testComponentInputs = {
+        model: { test: 'test' },
+        form: new FormGroup({}),
+        fields: [{
+          key: 'test',
+          type: 'text',
+          templateOptions: {
+            placeholder: 'Title',
+          },
+        }],
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      expect(testComponentInputs.form.get('test').value).toEqual('test');
+
+      fixture.componentInstance.form = new FormGroup({});
+      fixture.componentInstance.model = { test: 'aaa' };
+      fixture.detectChanges();
+      expect(testComponentInputs.form.get('test').value).toEqual('aaa');
+    });
+
     it('should allow passing FormArray', () => {
       testComponentInputs = {
         model: ['test'],
