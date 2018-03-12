@@ -43,15 +43,18 @@ export class FormlyForm implements DoCheck, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.fields) {
+    if (changes.fields || (changes.form && this.fields && this.fields.length > 0)) {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
-      if (!this.isBuilded(this.fields)) {
-        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-      } else if (changes.model) {
-        this.resetModel(this.model);
+      if (this.isBuilded(this.fields)) {
+        if (changes.form) {
+          delete (<any>this.fields)['__build__'];
+        } else if (changes.model) {
+          this.resetModel(this.model);
+        }
       }
+      this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
       this.resetModel(this.model);
