@@ -14,7 +14,8 @@ export class AppComponent {
   fields: FormlyFieldConfig[] = [
     {
       key: 'email',
-      type: 'horizontalInput',
+      type: 'input',
+      wrappers: ['form-field-horizontal'],
       templateOptions: {
         label: 'Email',
         type: 'email',
@@ -24,7 +25,8 @@ export class AppComponent {
     },
     {
       key: 'password',
-      type: 'horizontalInput',
+      type: 'input',
+      wrappers: ['form-field-horizontal'],
       templateOptions: {
         label: 'Password',
         type: 'password',
