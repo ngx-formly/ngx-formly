@@ -1,5 +1,5 @@
 import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from '../core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component } from '@angular/core';
 import { FormlyFormExpression } from './formly.form.expression';
 
@@ -29,16 +29,27 @@ describe('FormlyFormBuilder service', () => {
     expect(fields[0].formControl).toEqual(fields[1].formControl);
   });
 
-  it('should use the update formcontrol value for fields that already has formcontrol', () => {
+  it('should update the formcontrol value for fields that already has formcontrol', () => {
     const fields: FormlyFieldConfig[] = [
       {
         key: 'test',
         type: 'input',
         formControl: new FormControl(),
       },
+      {
+        key: 'fieldGroup',
+        fieldGroup: [],
+        formControl: new FormGroup({}),
+      },
+      {
+        key: 'fieldArray',
+        fieldGroup: [],
+        formControl: new FormArray([]),
+        fieldArray: {},
+      },
     ];
 
-    builder.buildForm(form, fields, { test: 'test' }, {});
+    builder.buildForm(form, fields, { test: 'test', fieldGroup: { test: 'ddd' }, fieldArray: {} }, {});
     expect(fields[0].formControl.value).toEqual('test');
   });
 

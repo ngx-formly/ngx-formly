@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject } from './../utils';
+import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject, isNullOrUndefined } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
 import { FormlyFormExpression } from './formly.form.expression';
@@ -239,7 +239,10 @@ export class FormlyFormBuilder {
     let control: AbstractControl;
     if (field.formControl instanceof AbstractControl || form.get(path)) {
       control = field.formControl || form.get(path);
-      if (control.value !== model[path]) {
+      if (
+        !(isNullOrUndefined(control.value) && isNullOrUndefined(model[path]))
+        && control.value !== model[path]
+      ) {
         control.patchValue(model[path]);
       }
     } else if (field.component && field.component.createControl) {
