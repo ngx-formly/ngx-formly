@@ -242,6 +242,7 @@ export class FormlyFormBuilder {
       if (
         !(isNullOrUndefined(control.value) && isNullOrUndefined(model[path]))
         && control.value !== model[path]
+        && control instanceof FormControl
       ) {
         control.patchValue(model[path]);
       }
