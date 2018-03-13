@@ -38,19 +38,20 @@ describe('FormlyFormBuilder service', () => {
       },
       {
         key: 'fieldGroup',
-        fieldGroup: [],
-        formControl: new FormGroup({}),
+        type: 'input',
+        formControl: new FormGroup({ aa: new FormControl('aa') }),
       },
       {
         key: 'fieldArray',
-        fieldGroup: [],
-        formControl: new FormArray([]),
-        fieldArray: {},
+        type: 'input',
+        formControl: new FormArray([new FormControl('aa')]),
       },
     ];
 
-    builder.buildForm(form, fields, { test: 'test', fieldGroup: { test: 'ddd' }, fieldArray: {} }, {});
+    builder.buildForm(form, fields, { test: 'test' }, {});
     expect(fields[0].formControl.value).toEqual('test');
+    expect(fields[1].formControl.value).toEqual({ aa: 'aa' });
+    expect(fields[2].formControl.value).toEqual(['aa']);
   });
 
   it('should not re-build field', () => {
