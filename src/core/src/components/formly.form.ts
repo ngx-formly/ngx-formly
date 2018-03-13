@@ -51,13 +51,13 @@ export class FormlyForm implements DoCheck, OnChanges {
         if (changes.form) {
           delete (<any>this.fields)['__build__'];
         } else if (changes.model) {
-          this.resetModel(this.model);
+          this.patchModel(this.model);
         }
       }
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.updateInitialValue();
     } else if (changes.model && this.fields && this.fields.length > 0) {
-      this.resetModel(this.model);
+      this.patchModel(this.model);
     }
   }
 
@@ -109,9 +109,14 @@ export class FormlyForm implements DoCheck, OnChanges {
     this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
   }
 
+  private patchModel(model: any) {
+    this.resetFieldArray(this.fields, model, this.model);
+    (<FormGroup> this.form).patchValue(model, { onlySelf: true });
+  }
+
   private resetModel(model?: any) {
     model = isNullOrUndefined(model) ? this.initialModel : model;
-    this.resetForm(this.fields, model, this.model);
+    this.resetFieldArray(this.fields, model, this.model);
 
     // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
     // but only when the current component is a root one.
@@ -122,7 +127,7 @@ export class FormlyForm implements DoCheck, OnChanges {
     }
   }
 
-  private resetForm(fields: FormlyFieldConfig[], newModel: any, modelToUpdate: any) {
+  private resetFieldArray(fields: FormlyFieldConfig[], newModel: any, modelToUpdate: any) {
     fields.forEach(field => {
       if ((field.fieldGroup && field.fieldGroup.length > 0) || field.fieldArray) {
         const newFieldModel = this.fieldModel(field, newModel),
@@ -147,7 +152,7 @@ export class FormlyForm implements DoCheck, OnChanges {
             this.formlyBuilder.buildForm(formControl, [field.fieldGroup[i]], newFieldModel, this.options);
           });
         } else {
-          this.resetForm(field.fieldGroup, newFieldModel, fieldModel);
+          this.resetFieldArray(field.fieldGroup, newFieldModel, fieldModel);
         }
       }
     });
