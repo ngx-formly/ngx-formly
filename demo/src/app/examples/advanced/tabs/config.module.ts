@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Multi-Step Form',
+            title: 'Tabs Form',
             description: `
               This is an example of Tabs form using <a href="https://material.angular.io/components/tabs/overview" target="_blank">Material Tabs</a>
             `,
