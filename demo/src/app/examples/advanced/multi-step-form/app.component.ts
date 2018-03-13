@@ -15,8 +15,6 @@ export class AppComponent {
   activedStep = 0;
 
   model = {};
-  options: FormlyFormOptions = {};
-
   steps: StepType[] = [
     {
       label: 'Personal data',
@@ -70,6 +68,7 @@ export class AppComponent {
   ];
 
   form = new FormArray(this.steps.map(() => new FormGroup({})));
+  options = this.steps.map(() => <FormlyFormOptions> {});
 
   prevStep(step) {
     this.activedStep = step - 1;

@@ -13,8 +13,6 @@ export interface TabType {
 })
 export class AppComponent {
   model = {};
-  options: FormlyFormOptions = {};
-
   tabs: TabType[] = [
     {
       label: 'Personal data',
@@ -67,6 +65,7 @@ export class AppComponent {
     },
   ];
   form = new FormArray(this.tabs.map(() => new FormGroup({})));
+  options = this.tabs.map(() => <FormlyFormOptions>{});
 
   submit() {
     alert(JSON.stringify(this.model));

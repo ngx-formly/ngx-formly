@@ -80,8 +80,8 @@ import {FormlyFieldConfig} from '@ngx-formly/core';
 @Component({
   selector: 'app',
   template: `
-    <form [formGroup]="form" (ngSubmit)="submit(userModel)">
-      <formly-form [model]="userModel" [fields]="userFields">
+    <form [formGroup]="form" (ngSubmit)="submit(model)">
+      <formly-form [form]="form" [fields]="fields" [model]="model">
         <button type="submit" class="btn btn-default">Submit</button>
       </formly-form>
     </form>
@@ -89,8 +89,8 @@ import {FormlyFieldConfig} from '@ngx-formly/core';
 })
 export class AppComponent {
   form = new FormGroup({});
-  userModel = { email: 'email@gmail.com' };
-  userFields: Array<FormlyFieldConfig> = [{
+  model = { email: 'email@gmail.com' };
+  fields: FormlyFieldConfig[] = [{
     key: 'email',
     type: 'input',
     templateOptions: {
@@ -101,8 +101,8 @@ export class AppComponent {
     }
   }];
 
-  submit(user) {
-    console.log(user);
+  submit(model) {
+    console.log(model);
   }
 }
 ```

@@ -2,11 +2,11 @@
   <mat-horizontal-stepper>
     <mat-step *ngFor="let step of steps; let index = index; let last = last;">
       <ng-template matStepLabel>{{ step.label }}</ng-template>
-      <formly-form 
-        [form]="form.at(index)" 
-        [model]="model" 
-        [fields]="step.fields" 
-        [options]="options">
+      <formly-form
+        [form]="form.at(index)"
+        [model]="model"
+        [fields]="step.fields"
+        [options]="options[index]">
       </formly-form>
 
       <div>
