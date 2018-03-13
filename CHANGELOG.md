@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.40"></a>
+# [2.0.0-rc.40](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.39...v2.0.0-rc.40) (2018-03-13)
+
+
+### Bug Fixes
+
+* **core:** `addFormControl` apply patchValue only for FormControl instance. ([#799](https://github.com/formly-js/ngx-formly/issues/799)) ([dde0c14](https://github.com/formly-js/ngx-formly/commit/dde0c14))
+* **core:** call the `parentForm.reset` only if it match the current form. ([#798](https://github.com/formly-js/ngx-formly/issues/798)) ([222c3a0](https://github.com/formly-js/ngx-formly/commit/222c3a0)), closes [#796](https://github.com/formly-js/ngx-formly/issues/796)
+* **core:** use patch method instead of reset when model change. ([#797](https://github.com/formly-js/ngx-formly/issues/797)) ([ed6e7ba](https://github.com/formly-js/ngx-formly/commit/ed6e7ba)), closes [#794](https://github.com/formly-js/ngx-formly/issues/794)
+
+
+
 <a name="2.0.0-rc.39"></a>
 # [2.0.0-rc.39](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.38...v2.0.0-rc.39) (2018-03-12)
 
