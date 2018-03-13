@@ -4,14 +4,29 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'formly-demo-examples',
   template: `
-    <div class="container">
-      <div *ngIf="route.params | async as params" [innerHtml]="contents[params.id]"></div>
-    </div>
+    <mat-sidenav-container style="min-height: 90% !important;">
+      <mat-sidenav mode="side" opened="true" [style.width.px]="250">
+        <mat-nav-list>
+          <a mat-list-item  *ngFor="let link of navs" [routerLink]="link.href">
+            {{ link.text }}
+          </a>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <div *ngIf="route.params | async as params" [innerHtml]="contents[params.id]"></div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   `,
 })
 export class GuidesComponent {
+  navs = [
+    { href: '/guide/getting-started', text: 'Getting started' },
+    { href: '/guide/custom-formly-field', text: 'Custom Templates' },
+  ];
+
   contents = {
     'getting-started': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./../../../../README.md'),
+    'custom-formly-field': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./custom-formly-field.md'),
   };
 
   constructor(public route: ActivatedRoute) {}
