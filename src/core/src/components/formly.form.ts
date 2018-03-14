@@ -43,6 +43,10 @@ export class FormlyForm implements DoCheck, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (this.parentFormlyForm && this.isBuilded(this.fields)) {
+      return;
+    }
+
     if (changes.fields || (changes.form && this.fields && this.fields.length > 0)) {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
@@ -50,6 +54,7 @@ export class FormlyForm implements DoCheck, OnChanges {
       if (this.isBuilded(this.fields)) {
         if (changes.form) {
           delete (<any>this.fields)['__build__'];
+          delete (<any>this.fields)['__build_child__'];
         } else if (changes.model) {
           this.patchModel(this.model);
         }
@@ -163,6 +168,6 @@ export class FormlyForm implements DoCheck, OnChanges {
   }
 
   private isBuilded(fields: any): boolean {
-    return fields && fields['__build__'];
+    return fields && (!!fields['__build__'] || !!fields['__build_child__']);
   }
 }
