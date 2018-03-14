@@ -471,6 +471,36 @@ describe('Formly Form Component', () => {
   });
 
   describe('form input', () => {
+    it('should not rebuild field when form is not root', () => {
+      testComponentInputs = {
+        model: { test: 'test' },
+        form: new FormGroup({}),
+        fields: [
+          {
+            fieldGroup: [
+              { key: 'test', type: 'text' },
+            ],
+          },
+          {
+            fieldGroup: [
+              { key: 'test2', type: 'text' },
+            ],
+          },
+        ],
+      };
+
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = (<FormGroup> testComponentInputs.form).valueChanges.subscribe(spy);
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith({ test: 'test' });
+      expect(spy).toHaveBeenCalledWith({ test: 'test', test2: null });
+      subscription.unsubscribe();
+    });
+
     it('should rebuild field when form is changed', () => {
       testComponentInputs = {
         model: { test: 'test' },
