@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.41"></a>
+# [2.0.0-rc.41](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.40...v2.0.0-rc.41) (2018-03-14)
+
+
+### Bug Fixes
+
+* **core:** avoid initializing FormlyGroup twice. ([#803](https://github.com/formly-js/ngx-formly/issues/803)) ([28cfbd9](https://github.com/formly-js/ngx-formly/commit/28cfbd9))
+
+
+
 <a name="2.0.0-rc.40"></a>
 # [2.0.0-rc.40](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.39...v2.0.0-rc.40) (2018-03-13)
 
