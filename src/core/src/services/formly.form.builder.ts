@@ -16,18 +16,12 @@ export class FormlyFormBuilder {
   ) {}
 
   buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
-    if (this.isBuilded(fields)) {
-      return;
-    }
-
-    this.markAsBuilded(fields);
     this._buildForm(form, fields, model, options);
     this.formlyFormExpression.checkFields(form, fields, model, options);
   }
 
   private _buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     this.formId++;
-    this.markAsBuilded(fields, true);
 
     let fieldTransforms = (options && options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
     if (!Array.isArray(fieldTransforms)) {
@@ -84,6 +78,10 @@ export class FormlyFormBuilder {
       }
 
       if (field.fieldGroup) {
+        if (!field.type) {
+          field.type = 'formly-group';
+        }
+
         if (field.key) {
           this.addFormControl(form, field, { [field.key]: field.fieldArray ? [] : {} }, field.key);
           model[field.key] = model[field.key] || (field.fieldArray ? [] : {});
@@ -307,18 +305,5 @@ export class FormlyFormBuilder {
       case 'max':
         return Validators.max(value);
     }
-  }
-
-  /* to avoid rebuild fields */
-  private isBuilded(fields: any): boolean {
-    return fields && (!!fields['__build__'] || !!fields['__build_child__']);
-  }
-
-  private markAsBuilded(fields: any, isChild = false) {
-    if (this.isBuilded(fields)) {
-      return;
-    }
-
-    fields[`__build${isChild ? '_child' : ''}__`] = true;
   }
 }

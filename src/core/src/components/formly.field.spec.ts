@@ -87,6 +87,7 @@ describe('FormlyField Component', () => {
   it('should render fieldGroup', () => {
     testComponentInputs = {
       field: {
+        type: 'formly-group',
         fieldGroup: [
           {
             key: 'title1',
@@ -107,44 +108,6 @@ describe('FormlyField Component', () => {
 
     expect(getInputField(fixture.nativeElement, 0).getAttribute('placeholder')).toEqual('Title1');
     expect(getInputField(fixture.nativeElement, 1).getAttribute('placeholder')).toEqual('Title2');
-  });
-
-  describe('model changes', () => {
-    beforeEach(() => {
-      testComponentInputs = {
-        field: {
-          key: 'title',
-          type: 'text',
-          templateOptions: {
-            label: 'Title',
-            placeholder: 'Title',
-          },
-        },
-        form: new FormGroup({ title: new FormControl() }),
-      };
-    });
-
-    it('should change model value', () => {
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field" [model]="model" (modelChange)="changeModel($event)"></formly-field>');
-      spyOn(fixture.componentInstance, 'changeModel');
-      fixture.componentInstance.form.get('title').setValue('address');
-
-      expect(fixture.componentInstance.changeModel).toHaveBeenCalledWith({ key: 'title', value: 'address' });
-    });
-
-    it('should change model value after debounce time', fakeAsync(() => {
-      testComponentInputs.field.modelOptions = {
-        debounce: { default: 5 },
-      };
-
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field" [model]="model" (modelChange)="changeModel($event)"></formly-field>');
-      spyOn(fixture.componentInstance, 'changeModel');
-      fixture.componentInstance.form.get('title').setValue('address');
-
-      expect(fixture.componentInstance.changeModel).not.toHaveBeenCalled();
-      tick(6);
-      expect(fixture.componentInstance.changeModel).toHaveBeenCalledWith({ key: 'title', value: 'address' });
-    }));
   });
 
   describe('wrapper', () => {
