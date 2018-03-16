@@ -6,6 +6,7 @@ import { FieldType } from '../templates/field.type';
   template: `
     <formly-form
       [fields]="field.fieldGroup"
+      [isRoot]="false"
       [model]="model"
       [form]="field.formControl || form"
       [options]="options"

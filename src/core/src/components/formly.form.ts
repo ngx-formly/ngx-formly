@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -6,28 +6,34 @@ import { FormlyFormExpression } from '../services/formly.form.expression';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, reverseDeepMerge, getFieldModel, clone } from '../utils';
 import { Subject } from 'rxjs/Subject';
+import { debounceTime } from 'rxjs/operator/debounceTime';
+import { map } from 'rxjs/operator/map';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields"
       [model]="fieldModel(field)" [form]="form"
-      [field]="field" (modelChange)="changeModel($event)"
+      [field]="field"
       [ngClass]="field.className"
       [options]="options">
     </formly-field>
     <ng-content></ng-content>
   `,
 })
-export class FormlyForm implements DoCheck, OnChanges {
+export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input() model: any = {};
   @Input() form: FormGroup | FormArray = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
   @Input() options: FormlyFormOptions;
-
   @Output() modelChange = new EventEmitter<any>();
 
+  /** @internal */
+  @Input() isRoot = true;
+
   private initialModel: any;
+  private modelChangeSubs: Subscription[] = [];
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
@@ -43,27 +49,25 @@ export class FormlyForm implements DoCheck, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.parentFormlyForm && this.isBuilded(this.fields)) {
+    if (!this.fields || this.fields.length === 0 || !this.isRoot) {
       return;
     }
 
-    if (changes.fields || (changes.form && this.fields && this.fields.length > 0)) {
+    if (changes.fields || changes.form) {
       this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
-      if (this.isBuilded(this.fields)) {
-        if (changes.form) {
-          delete (<any>this.fields)['__build__'];
-          delete (<any>this.fields)['__build_child__'];
-        } else if (changes.model) {
-          this.patchModel(this.model);
-        }
-      }
+      this.clearModelSubscriptions();
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+      this.trackModelChanges(this.fields);
       this.updateInitialValue();
-    } else if (changes.model && this.fields && this.fields.length > 0) {
+    } else if (changes.model) {
       this.patchModel(this.model);
     }
+  }
+
+  ngOnDestroy() {
+    this.clearModelSubscriptions();
   }
 
   fieldModel(field: FormlyFieldConfig, model = this.model) {
@@ -75,15 +79,8 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   changeModel(event: { key: string, value: any }) {
     assignModelValue(this.model, event.key, event.value);
-    this.emitModelChange();
-    this.checkExpressionChange();
-  }
-
-  emitModelChange() {
     this.modelChange.emit(this.model);
-    if (this.parentFormlyForm) {
-      this.parentFormlyForm.emitModelChange();
-    }
+    this.checkExpressionChange();
   }
 
   setOptions() {
@@ -112,6 +109,36 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   private checkExpressionChange() {
     this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
+  }
+
+  private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
+    fields.forEach(field => {
+      if (field.key && (!field.fieldGroup || field.fieldGroup.length === 0)) {
+        let valueChanges = field.formControl.valueChanges;
+        const debounce = field.modelOptions && field.modelOptions.debounce && field.modelOptions.debounce.default;
+        if (debounce > 0) {
+          valueChanges = debounceTime.call(valueChanges, debounce);
+        }
+        if (field.parsers && field.parsers.length > 0) {
+          field.parsers.forEach(parserFn => {
+            valueChanges = map.call(valueChanges, parserFn);
+          });
+        }
+
+        this.modelChangeSubs.push(valueChanges
+          .subscribe(event => this.changeModel({ key: [...rootKey, field.key].join('.'), value: event })),
+        );
+      }
+
+      if (field.fieldGroup && field.fieldGroup.length > 0) {
+        this.trackModelChanges(field.fieldGroup, field.key ? [...rootKey, field.key] : rootKey);
+      }
+    });
+  }
+
+  private clearModelSubscriptions() {
+    this.modelChangeSubs.forEach(sub => sub.unsubscribe());
+    this.modelChangeSubs = [];
   }
 
   private patchModel(model: any) {
@@ -165,9 +192,5 @@ export class FormlyForm implements DoCheck, OnChanges {
 
   private updateInitialValue() {
     this.initialModel = reverseDeepMerge({}, this.model);
-  }
-
-  private isBuilded(fields: any): boolean {
-    return fields && (!!fields['__build__'] || !!fields['__build_child__']);
   }
 }

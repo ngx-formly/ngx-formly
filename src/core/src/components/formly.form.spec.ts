@@ -4,7 +4,7 @@ import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
 import { Component, ViewChild } from '@angular/core';
 import { FormlyModule, FormlyFormBuilder } from '../core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
@@ -52,7 +52,7 @@ describe('Formly Form Component', () => {
       };
     });
 
-    it('should emit to `modelChange` when model is changed', () => {
+    it('should emit `modelChange` when model is changed', () => {
       testComponentInputs.fields = [{
         key: 'title',
         type: 'text',
@@ -70,7 +70,30 @@ describe('Formly Form Component', () => {
       subscription.unsubscribe();
     });
 
-    it('should emit to `modelChange` when nested model is changed ', () => {
+    it('should emit `modelChange` after debounce time', fakeAsync(() => {
+      testComponentInputs.fields = [{
+        key: 'city',
+        type: 'text',
+        modelOptions: {
+          debounce: { default: 5 },
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      testComponentInputs.form.get('city').patchValue('***');
+
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+      tick(6);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ city: '***' });
+      subscription.unsubscribe();
+    }));
+
+    it('should emit `modelChange` when nested model is changed', () => {
       testComponentInputs.fields = [{
         key: 'address',
         fieldGroup: [{
@@ -93,7 +116,7 @@ describe('Formly Form Component', () => {
       subscription.unsubscribe();
     });
 
-    it('should emit to `modelChange` when nested model is changed through expressionProperties', () => {
+    it('should emit `modelChange` when nested model is changed through expressionProperties', () => {
       testComponentInputs.fields = [{
         key: 'test',
         type: 'text',
@@ -467,6 +490,23 @@ describe('Formly Form Component', () => {
 
       options.resetModel();
       expect(model.title).toEqual('edit title');
+    });
+  });
+
+  describe('model input', () => {
+    it('should update the form value when model change', () => {
+      testComponentInputs = {
+        model: {},
+        form: new FormGroup({}),
+        fields: [{ key: 'test', type: 'text' }],
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(testComponentInputs.form.value).toEqual({ test: null });
+
+      fixture.componentInstance.model = { test: '***' };
+      fixture.detectChanges();
+      expect(testComponentInputs.form.value).toEqual({ test: '***' });
     });
   });
 

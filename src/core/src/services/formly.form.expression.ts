@@ -9,10 +9,6 @@ import { evalExpression, FORMLY_VALIDATORS, getFieldModel, isObject, getKeyPath 
 @Injectable()
 export class FormlyFormExpression {
   checkFields(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
-    if (!this.canCheck(fields)) {
-      return;
-    }
-
     this._checkFields(form, fields, model, options);
   }
 
@@ -156,9 +152,5 @@ export class FormlyFormExpression {
 
   private fieldKey(field: FormlyFieldConfig) {
     return getKeyPath(field).pop();
-  }
-
-  private canCheck(fields: any): boolean {
-    return fields && fields['__build__'];
   }
 }

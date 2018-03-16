@@ -6,9 +6,6 @@ import { FormGroup } from '@angular/forms';
 import { FormlyConfig, TypeOption, TemplateManipulators } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
-import { Subscription } from 'rxjs/Subscription';
-import { debounceTime } from 'rxjs/operator/debounceTime';
-import { map } from 'rxjs/operator/map';
 
 @Component({
   selector: 'formly-field',
@@ -29,7 +26,6 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 
   private componentRefs: ComponentRef<Field>[] = [];
-  private _subscriptions: Subscription[] = [];
 
   constructor(
     private formlyConfig: FormlyConfig,
@@ -37,7 +33,9 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.createFieldComponents();
+    if (!this.field.template) {
+      this.createFieldComponent();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -53,48 +51,16 @@ export class FormlyField implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.componentRefs.forEach(componentRef => componentRef.destroy());
-    this._subscriptions.forEach(subscriber => subscriber.unsubscribe());
-    this._subscriptions = this.componentRefs = [];
-  }
-
-  private createFieldComponents() {
-    if (this.field && !this.field.template && !this.field.fieldGroup && !this.field.fieldArray) {
-      let debounce = 0;
-      if (this.field.modelOptions && this.field.modelOptions.debounce && this.field.modelOptions.debounce.default) {
-        debounce = this.field.modelOptions.debounce.default;
-      }
-
-      const fieldComponentRef = this.createFieldComponent();
-      if (this.field.key) {
-        let valueChanges = fieldComponentRef.instance.formControl.valueChanges;
-        if (debounce > 0) {
-          valueChanges = debounceTime.call(valueChanges, debounce);
-        }
-        if (this.field.parsers && this.field.parsers.length > 0) {
-          this.field.parsers.forEach(parserFn => {
-            valueChanges = map.call(valueChanges, parserFn);
-          });
-        }
-
-        this._subscriptions.push(valueChanges.subscribe((event) =>
-          this.modelChange.emit({ key: this.field.key, value: event }),
-        ));
-      }
-    } else if (this.field.fieldGroup || this.field.fieldArray) {
-      this.createFieldComponent();
-    }
+    this.componentRefs = [];
   }
 
   private createFieldComponent(): ComponentRef<Field> {
-    if (this.field.fieldGroup) {
-      this.field.type = this.field.type || 'formly-group';
-    }
     const type = this.formlyConfig.getType(this.field.type),
       wrappers = this.getFieldWrappers(type);
 
     let fieldComponent = this.fieldComponent;
     wrappers.forEach(wrapperName => {
-      let wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
+      const wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
       fieldComponent = wrapperRef.instance.fieldComponent;
     });
 

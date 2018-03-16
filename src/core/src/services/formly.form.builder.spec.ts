@@ -54,25 +54,6 @@ describe('FormlyFormBuilder service', () => {
     expect(fields[2].formControl.value).toEqual(['aa']);
   });
 
-  it('should not re-build field', () => {
-    const fields = [{
-      key: 'test',
-      fieldGroup: [
-        { key: 'test' },
-      ],
-    }];
-
-    // first build
-    builder.buildForm(form, fields, {}, {});
-    expect(fields['__build__']).toBeTruthy();
-    expect(fields[0].fieldGroup['__build__']).toBeFalsy();
-    expect(fields[0].fieldGroup['__build_child__']).toBeTruthy();
-    expect((<any> builder).formId).toEqual(2);
-
-    builder.buildForm(form, fields, {}, {});
-    expect((<any>builder).formId).toEqual(2);
-  });
-
   describe('initialise default TemplateOptions', () => {
     it('should not set the default value if the specified key or type is undefined', () => {
       field = { key: 'title' };
@@ -94,6 +75,7 @@ describe('FormlyFormBuilder service', () => {
         fieldGroup: [{ key: 'title', type: 'input', templateOptions: { placeholder: 'Title' } }],
       };
       builder.buildForm(form, [field], {}, {});
+      expect(field.type).toEqual('formly-group');
       expect(field.fieldGroup[0].templateOptions).toEqual(<any> { label: '', placeholder: 'Title', focus: false });
     });
   });
