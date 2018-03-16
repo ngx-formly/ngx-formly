@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.42"></a>
+# [2.0.0-rc.42](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.41...v2.0.0-rc.42) (2018-03-16)
+
+
+### Bug Fixes
+
+* **core:** move tracking model change to root component. ([#809](https://github.com/formly-js/ngx-formly/issues/809)) ([0410653](https://github.com/formly-js/ngx-formly/commit/0410653)), closes [#805](https://github.com/formly-js/ngx-formly/issues/805)
+
+
+### Performance Improvements
+
+* **core:** avoid calling setControl if control already exist in form. ([#810](https://github.com/formly-js/ngx-formly/issues/810)) ([8898389](https://github.com/formly-js/ngx-formly/commit/8898389))
+
+
+
 <a name="2.0.0-rc.41"></a>
 # [2.0.0-rc.41](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.40...v2.0.0-rc.41) (2018-03-14)
 
