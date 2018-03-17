@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.43"></a>
+# [2.0.0-rc.43](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.42...v2.0.0-rc.43) (2018-03-17)
+
+
+### Bug Fixes
+
+* **core:** fallback to null for an non-existing member on model change. ([e332485](https://github.com/formly-js/ngx-formly/commit/e332485)), closes [#805](https://github.com/formly-js/ngx-formly/issues/805)
+
+
+### Performance Improvements
+
+* **core:** check field expression only in root component. ([#811](https://github.com/formly-js/ngx-formly/issues/811)) ([495eb9b](https://github.com/formly-js/ngx-formly/commit/495eb9b))
+* **core:** do not emit `modelChange` on model-input change. ([20cc4b9](https://github.com/formly-js/ngx-formly/commit/20cc4b9))
+
+
+
 <a name="2.0.0-rc.42"></a>
 # [2.0.0-rc.42](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.41...v2.0.0-rc.42) (2018-03-16)
 
