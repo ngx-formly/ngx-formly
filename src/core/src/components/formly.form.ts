@@ -108,7 +108,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private checkExpressionChange() {
-    this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
+    if (this.isRoot) {
+      this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
+    }
   }
 
   private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
