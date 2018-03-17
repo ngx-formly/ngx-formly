@@ -493,8 +493,8 @@ describe('Formly Form Component', () => {
     });
   });
 
-  describe('model input', () => {
-    it('should update the form value when model change', () => {
+  describe('model input change', () => {
+    it('should update the form value', () => {
       testComponentInputs = {
         model: {},
         form: new FormGroup({}),
@@ -507,6 +507,24 @@ describe('Formly Form Component', () => {
       fixture.componentInstance.model = { test: '***' };
       fixture.detectChanges();
       expect(testComponentInputs.form.value).toEqual({ test: '***' });
+    });
+
+    it('fallback to null for an non-existing member', () => {
+      testComponentInputs = {
+        model: { aa: { test: 'aaa' } },
+        form: new FormGroup({}),
+        fields: [{
+          key: 'aa',
+          fieldGroup: [{ key: 'test', type: 'text' }]
+        }],
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(testComponentInputs.form.value).toEqual({ aa: { test: 'aaa' } });
+
+      fixture.componentInstance.model = {};
+      fixture.detectChanges();
+      expect(testComponentInputs.form.value).toEqual({ aa: { test: null } });
     });
   });
 

@@ -1,5 +1,5 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormArray, NgForm, FormGroupDirective, FormControl } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFormExpression } from '../services/formly.form.expression';
@@ -145,6 +145,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private patchModel(model: any) {
     this.resetFieldArray(this.fields, model, this.model);
+    this.initializeFormValue(this.form);
     (<FormGroup> this.form).patchValue(model, { onlySelf: true });
   }
 
@@ -190,6 +191,16 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         }
       }
     });
+  }
+
+  private initializeFormValue(control) {
+    if (control instanceof FormControl) {
+      control.setValue(null);
+    } else if (control instanceof FormGroup) {
+      Object.keys(control.controls).forEach(k => this.initializeFormValue(control.controls[k]));
+    } else if (control instanceof FormArray) {
+      control.controls.forEach(c => this.initializeFormValue(c));
+    }
   }
 
   private updateInitialValue() {
