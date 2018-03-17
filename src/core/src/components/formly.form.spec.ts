@@ -526,6 +526,25 @@ describe('Formly Form Component', () => {
       fixture.detectChanges();
       expect(testComponentInputs.form.value).toEqual({ aa: { test: null } });
     });
+
+    it('should not emit `modelChange`', () => {
+      testComponentInputs = {
+        model: {},
+        form: new FormGroup({}),
+        fields: [{ key: 'test', type: 'text' }],
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(testComponentInputs.form.value).toEqual({ test: null });
+
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      fixture.componentInstance.model = { test: '***' };
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+      subscription.unsubscribe();
+    });
   });
 
   describe('form input', () => {
