@@ -144,9 +144,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private patchModel(model: any) {
+    this.clearModelSubscriptions();
     this.resetFieldArray(this.fields, model, this.model);
     this.initializeFormValue(this.form);
     (<FormGroup> this.form).patchValue(model, { onlySelf: true });
+    this.trackModelChanges(this.fields);
   }
 
   private resetModel(model?: any) {
