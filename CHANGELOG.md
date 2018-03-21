@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.44"></a>
+# [2.0.0-rc.44](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.43...v2.0.0-rc.44) (2018-03-21)
+
+
+### Bug Fixes
+
+* **core:** ensure tracking model changes when using Repeating section. ([33ab0a9](https://github.com/formly-js/ngx-formly/commit/33ab0a9)), closes [#821](https://github.com/formly-js/ngx-formly/issues/821) [#822](https://github.com/formly-js/ngx-formly/issues/822)
+
+
+
 <a name="2.0.0-rc.43"></a>
 # [2.0.0-rc.43](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.42...v2.0.0-rc.43) (2018-03-17)
 
