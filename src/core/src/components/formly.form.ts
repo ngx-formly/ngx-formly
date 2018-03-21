@@ -105,6 +105,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (!this.options.updateInitialValue) {
       this.options.updateInitialValue = this.updateInitialValue.bind(this);
     }
+
+    if (!(<any> this.options).resetTrackModelChanges) {
+      (<any> this.options).resetTrackModelChanges = () => {
+        this.clearModelSubscriptions();
+        this.trackModelChanges(this.fields);
+      };
+    }
   }
 
   private checkExpressionChange() {
@@ -115,7 +122,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
     fields.forEach(field => {
-      if (field.key && (!field.fieldGroup || field.fieldGroup.length === 0)) {
+      if (field.key && !field.fieldGroup && !field.fieldArray) {
         let valueChanges = field.formControl.valueChanges;
         const debounce = field.modelOptions && field.modelOptions.debounce && field.modelOptions.debounce.default;
         if (debounce > 0) {

@@ -52,6 +52,36 @@ describe('Formly Form Component', () => {
       };
     });
 
+    it('should emit `modelChange` when model repeat section is changed', () => {
+      testComponentInputs.fields = [{
+        key: 'foo',
+        type: 'repeat',
+        fieldArray: {
+          fieldGroup: [{
+            key: 'title',
+            type: 'text',
+          }],
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+      fixture.nativeElement.querySelector('#add').click();
+      fixture.detectChanges();
+
+      testComponentInputs.form.get('foo').at(0).get('title').patchValue('***');
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ foo: [{ title: '***' }] });
+      expect(testComponentInputs.model).toEqual({ foo: [{ title: '***' }] });
+
+      fixture.nativeElement.querySelector('#remove-0').click();
+      expect(testComponentInputs.model).toEqual({ foo: [] });
+
+      subscription.unsubscribe();
+    });
+
     it('should emit `modelChange` when model is changed', () => {
       testComponentInputs.fields = [{
         key: 'title',
@@ -642,9 +672,9 @@ class TestComponent {
         [options]="options"
         [form]="formControl">
       </formly-group>
-      <button class="btn btn-danger" type="button" (click)="remove(i)">Remove</button>
-      <button class="btn btn-primary" type="button" (click)="add()">Add</button>
+      <button [id]="'remove-' + i" type="button" (click)="remove(i)">Remove</button>
     </div>
+    <button id="add" type="button" (click)="add()">Add</button>
   `,
 })
 class RepeatComponent extends FieldArrayType {
