@@ -34,6 +34,7 @@ export abstract class FieldArrayType extends FieldType {
     );
 
     this.builder.buildForm(this.formControl, [this.field.fieldGroup[i]], this.model, this.options);
+    (<any> this.options).resetTrackModelChanges();
   }
 
   remove(i) {
@@ -41,5 +42,6 @@ export abstract class FieldArrayType extends FieldType {
     this.field.fieldGroup.splice(i, 1);
     this.field.fieldGroup.forEach((f, index) => f.key = `${index}`);
     this.model.splice(i, 1);
+    (<any> this.options).resetTrackModelChanges();
   }
 }
