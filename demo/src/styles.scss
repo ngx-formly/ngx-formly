@@ -10,6 +10,33 @@
 @import '~bootstrap/scss/custom-forms';
 @import '~bootstrap/scss/card';
 
+table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: $spacer;
+  background-color: $table-bg; // Reset for nesting within parents with `background-color`.
+
+  th,
+  td {
+    padding: $table-cell-padding;
+    vertical-align: top;
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  tbody + tbody {
+    border-top: (2 * $table-border-width) solid $table-border-color;
+  }
+
+  .table {
+    background-color: $body-bg;
+  }
+}
+
 // prism
 @import '~prismjs/themes/prism.css';
 
