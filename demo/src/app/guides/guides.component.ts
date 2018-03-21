@@ -21,11 +21,13 @@ import { ActivatedRoute } from '@angular/router';
 export class GuidesComponent {
   navs = [
     { href: '/guide/getting-started', text: 'Getting started' },
+    { href: '/guide/properties-options', text: 'Properties and Options' },
     { href: '/guide/custom-formly-field', text: 'Custom Templates' },
   ];
 
   contents = {
     'getting-started': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./../../../../README.md'),
+    'properties-options': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./properties-options.md'),
     'custom-formly-field': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./custom-formly-field.md'),
   };
 
