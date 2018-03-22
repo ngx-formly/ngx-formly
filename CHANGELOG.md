@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.45"></a>
+# [2.0.0-rc.45](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.44...v2.0.0-rc.45) (2018-03-22)
+
+
+### Bug Fixes
+
+* **bootstrap:** always enable description + validation for templateManipulators. ([#826](https://github.com/formly-js/ngx-formly/issues/826)) ([edecf76](https://github.com/formly-js/ngx-formly/commit/edecf76))
+
+
+
 <a name="2.0.0-rc.44"></a>
 # [2.0.0-rc.44](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.43...v2.0.0-rc.44) (2018-03-21)
 
