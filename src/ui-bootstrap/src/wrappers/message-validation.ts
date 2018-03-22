@@ -5,8 +5,8 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-validation-messages',
   template: `
     <ng-template #fieldComponent></ng-template>
-    <div>
-      <small class="text-danger invalid-feedback" [style.display]="'block'" *ngIf="showError" role="alert" [id]="validationId">
+    <div *ngIf="showError">
+      <small class="text-danger invalid-feedback" [style.display]="'block'" role="alert" [id]="validationId">
         <formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>
       </small>
     </div>
