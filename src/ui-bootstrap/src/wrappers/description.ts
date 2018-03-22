@@ -5,7 +5,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-description',
   template: `
     <ng-template #fieldComponent></ng-template>
-    <div>
+    <div *ngIf="to.description">
       <small class="text-muted">{{ to.description }}</small>
     </div>
   `,
