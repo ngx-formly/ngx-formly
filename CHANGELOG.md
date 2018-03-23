@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.46"></a>
+# [2.0.0-rc.46](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.45...v2.0.0-rc.46) (2018-03-23)
+
+
+### Bug Fixes
+
+* **core:** subscribe to formcontrol when key and type are set. ([#829](https://github.com/formly-js/ngx-formly/issues/829)) ([eb2db0f](https://github.com/formly-js/ngx-formly/commit/eb2db0f)), closes [#827](https://github.com/formly-js/ngx-formly/issues/827)
+
+
+
 <a name="2.0.0-rc.45"></a>
 # [2.0.0-rc.45](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.44...v2.0.0-rc.45) (2018-03-22)
 
