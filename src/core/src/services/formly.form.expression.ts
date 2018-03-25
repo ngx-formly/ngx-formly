@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from '../components/formly.field.config';
-import { evalExpression, FORMLY_VALIDATORS, getFieldModel, isObject, getKeyPath } from '../utils';
+import { evalExpression, FORMLY_VALIDATORS, getFieldModel, isObject, getKeyPath, isNullOrUndefined } from '../utils';
 
 /**
  * @internal
@@ -75,7 +75,7 @@ export class FormlyFormExpression {
   }
 
   private checkFieldVisibilityChange(form: FormGroup | FormArray, field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
-    if (!field || !field.hideExpression) {
+    if (!field || isNullOrUndefined(field.hideExpression)) {
       return;
     }
 
