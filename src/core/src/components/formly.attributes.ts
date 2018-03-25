@@ -8,7 +8,7 @@ import { FormlyFieldConfig } from './formly.field.config';
 export class FormlyAttributes implements OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() formControl: AbstractControl;
-  private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'aria-describedby', 'readonly'];
+  private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'readonly'];
   private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
   @HostListener('focus') onFocus() {
@@ -54,10 +54,6 @@ export class FormlyAttributes implements OnChanges {
 
   private getPropValue(field: FormlyFieldConfig, prop: string) {
     field = field || {};
-    if (field.id && prop === 'aria-describedby') {
-      return field.id + '-message';
-    }
-
     if (field.templateOptions && field.templateOptions[prop]) {
       return field.templateOptions[prop];
     }
