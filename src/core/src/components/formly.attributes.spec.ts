@@ -34,7 +34,6 @@ describe('FormlyAttributes Component', () => {
         expect(elm.getAttribute('step')).toBe('2');
         expect(elm.getAttribute('name')).toBe('title-name');
         expect(elm.getAttribute('id')).toBe('title-id');
-        expect(elm.getAttribute('aria-describedby')).toBe('title-id-message');
         // using attributes option
         expect(elm.getAttribute('min')).toEqual('5');
         expect(elm.getAttribute('max')).toEqual('10');
@@ -115,7 +114,6 @@ class TestComponent {
     id: 'title-id',
     templateOptions: {
       placeholder: 'Title',
-      'aria-describedby': true,
       tabindex: 5,
       step: 2,
       attributes: {
