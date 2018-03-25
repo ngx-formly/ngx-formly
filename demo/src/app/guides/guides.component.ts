@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
           </a>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content class="markdown github">
         <div *ngIf="route.params | async as params" [innerHtml]="contents[params.id]"></div>
       </mat-sidenav-content>
     </mat-sidenav-container>
