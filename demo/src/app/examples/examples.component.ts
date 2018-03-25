@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'formly-demo-examples',
   template: `
-  <mat-sidenav-container style="min-height: 90% !important;">
+  <mat-sidenav-container style="min-height: 90% !important;" class="mat-typography">
     <mat-sidenav mode="side" opened="true" [style.width.px]="250">
       <mat-nav-list *ngFor="let nav of navs" dense>
         <h3 mat-subheader>{{ nav.title }}</h3>
