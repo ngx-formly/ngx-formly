@@ -264,6 +264,17 @@ describe('Formly Form Component', () => {
       testComponentInputs = { fields: [field], model: { address: { city: '' } } };
     });
 
+    it('should hide field using a boolean value', () => {
+      field.hideExpression = true;
+
+      const fixture = createTestComponent('<formly-form [fields]="fields"></formly-form>');
+      expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
+
+      field.hideExpression = false;
+      fixture.detectChanges();
+      expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('');
+    });
+
     it('should hide field using a string expression', () => {
       field.hideExpression = 'true';
 
@@ -276,6 +287,10 @@ describe('Formly Form Component', () => {
 
       const fixture = createTestComponent('<formly-form [fields]="fields"></formly-form>');
       expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('display: none;');
+
+      field.hideExpression = () => false;
+      fixture.detectChanges();
+      expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('');
     });
 
     it('should apply model changes when form is enabled', () => {
