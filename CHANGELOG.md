@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.47"></a>
+# [2.0.0-rc.47](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.46...v2.0.0-rc.47) (2018-03-25)
+
+
+### Bug Fixes
+
+* **core:** allow passing falsy value for hideExpression. ([#833](https://github.com/formly-js/ngx-formly/issues/833)) ([7469a2a](https://github.com/formly-js/ngx-formly/commit/7469a2a)), closes [#832](https://github.com/formly-js/ngx-formly/issues/832)
+
+
+
 <a name="2.0.0-rc.46"></a>
 # [2.0.0-rc.46](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.45...v2.0.0-rc.46) (2018-03-23)
 
