@@ -1,10 +1,10 @@
 import { FormlyFieldConfig } from './core';
 
-export function getFieldId(formId: string, options: FormlyFieldConfig, index: string|number) {
-  if (options.id) return options.id;
-  let type = options.type;
-  if (!type && options.template) type = 'template';
-  return [formId, type, options.key, index].join('_');
+export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
+  if (field.id) return field.id;
+  let type = field.type;
+  if (!type && field.template) type = 'template';
+  return [formId, type, field.key, index].join('_');
 }
 
 export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fieldArray?: any}): (string|number)[] {
