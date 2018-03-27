@@ -2,12 +2,16 @@ import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from '../core';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component } from '@angular/core';
 import { FormlyFormExpression } from './formly.form.expression';
+import { MockComponent } from '../test-utils';
 
 describe('FormlyFormBuilder service', () => {
-  let builder: FormlyFormBuilder,
-    form: FormGroup,
-    field: FormlyFieldConfig;
+  let builder: FormlyFormBuilder;
+  let form: FormGroup;
+  let field: FormlyFieldConfig;
+  let TestComponent: Component;
+
   beforeEach(() => {
+    TestComponent = MockComponent({ selector: 'formly-test-cmp' });
     form = new FormGroup({});
     builder = new FormlyFormBuilder(
       new FormlyConfig([{
@@ -439,11 +443,7 @@ describe('FormlyFormBuilder service', () => {
   });
 });
 
-@Component({selector: 'formly-test-cmp', template: '', entryComponents: []})
-class TestComponent {
-}
-
-class TestComponentThatCreatesControl {
+export class TestComponentThatCreatesControl {
 
   createControl(model, field) {
     return new FormControl('created by component');
