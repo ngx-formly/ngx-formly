@@ -29,7 +29,9 @@ export class FormlyFormExpression {
     }
 
     const expressionProperties = field.expressionProperties;
-    for (let key in expressionProperties) {
+    const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
+
+    for (const key in expressionProperties) {
       const expressionValue = evalExpression(
         expressionProperties[key].expression,
         { field },
@@ -56,20 +58,21 @@ export class FormlyFormExpression {
           }
         }
 
-        const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
         if (validators.indexOf(key) !== -1 && field.formControl) {
           field.formControl.updateValueAndValidity({ emitEvent: false });
         }
       }
     }
 
-    const formControl = field.formControl;
-    if (formControl) {
-      if (formControl.status === 'DISABLED' && !field.templateOptions.disabled) {
-        formControl.enable();
-      }
-      if (formControl.status !== 'DISABLED' && field.templateOptions.disabled) {
-        formControl.disable();
+    if (field.expressionProperties.hasOwnProperty('templateOptions.disabled')) {
+      const formControl = field.formControl;
+      if (formControl) {
+        if (!formControl.enabled && !field.templateOptions.disabled) {
+          formControl.enable();
+        }
+        if (formControl.enabled && field.templateOptions.disabled) {
+          formControl.disable();
+        }
       }
     }
   }

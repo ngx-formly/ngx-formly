@@ -444,7 +444,7 @@ describe('Formly Form Component', () => {
       });
     });
 
-    it('should enable/disalbe formControl on templateOptions.disabled is set', () => {
+    it('should enable/disable formControl when templateOptions.disabled is set', () => {
       field.expressionProperties = {
         'templateOptions.disabled': 'model.title !== undefined',
       };
@@ -458,6 +458,30 @@ describe('Formly Form Component', () => {
 
       expect(field.templateOptions.disabled).toEqual(true);
       expect(form.get('title').enabled).toEqual(false);
+    });
+
+    it('should enable/disable formControl when templateOptions.disabled and fieldGroup are set', () => {
+      delete field.type;
+      field.key = 'address';
+      field.expressionProperties = {
+        'templateOptions.disabled': (model) => true,
+      };
+      field.fieldGroup = [
+        {
+          key: 'city',
+          type: 'text',
+          templateOptions: {
+            placeholder: 'Title',
+          },
+          expressionProperties: {
+            'templateOptions.disabled': (model) => false,
+          },
+        },
+      ];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(field.templateOptions.disabled).toEqual(true);
+      expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
     });
 
     const options = [
