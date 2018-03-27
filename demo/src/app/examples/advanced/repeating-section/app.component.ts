@@ -35,7 +35,7 @@ export class AppComponent {
           {
             type: 'input',
             key: 'investmentDate',
-            className: 'col-sm-4',
+            className: 'col-sm-3',
             templateOptions: {
               type: 'date',
               label: 'Date of Investment:',
@@ -44,7 +44,7 @@ export class AppComponent {
           {
             type: 'input',
             key: 'stockIdentifier',
-            className: 'col-sm-4',
+            className: 'col-sm-3',
             templateOptions: {
               label: 'Stock Identifier:',
               addonRight: {
