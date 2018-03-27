@@ -11,6 +11,7 @@ import { FieldType } from '../templates/field.type';
       [form]="field.formControl || form"
       [options]="options"
       [ngClass]="field.fieldGroupClassName">
+      <ng-content></ng-content>
     </formly-form>
   `,
 })
