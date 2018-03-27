@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.49"></a>
+# [2.0.0-rc.49](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.48...v2.0.0-rc.49) (2018-03-27)
+
+
+### Bug Fixes
+
+* **core:** apply disabled status to child field when fieldGroup is set. ([#847](https://github.com/formly-js/ngx-formly/issues/847)) ([5ddd53a](https://github.com/formly-js/ngx-formly/commit/5ddd53a)), closes [#844](https://github.com/formly-js/ngx-formly/issues/844)
+
+
+
 <a name="2.0.0-rc.48"></a>
 # [2.0.0-rc.48](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.47...v2.0.0-rc.48) (2018-03-27)
 
