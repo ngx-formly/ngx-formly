@@ -106,7 +106,7 @@ export class FormlyFormBuilder {
 
   private initFieldExpression(field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
     if (field.expressionProperties) {
-      for (let key in field.expressionProperties as any) {
+      for (const key in field.expressionProperties as any) {
         if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
           // cache built expression
           field.expressionProperties[key] = {
@@ -122,6 +122,18 @@ export class FormlyFormBuilder {
         // cache built expression
         field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
       }
+    }
+
+    if (field.key && field.fieldGroup && field.fieldGroup.length > 0 && field.expressionProperties && field.expressionProperties.hasOwnProperty('templateOptions.disabled')) {
+      field.fieldGroup.forEach(f => {
+        f.expressionProperties = f.expressionProperties || {};
+        let disabledExpression: any = f.expressionProperties['templateOptions.disabled'] || (() => false);
+        if (typeof disabledExpression === 'string') {
+          disabledExpression = evalStringExpression(disabledExpression, ['model', 'formState']);
+        }
+
+        f.expressionProperties['templateOptions.disabled'] = (model: any, formState: any) => field.templateOptions.disabled || disabledExpression(model, formState);
+      });
     }
   }
 
@@ -140,9 +152,9 @@ export class FormlyFormBuilder {
   }
 
   private initFieldAsyncValidation(field: FormlyFieldConfig) {
-    let validators: any = [];
+    const validators: any = [];
     if (field.asyncValidators) {
-      for (let validatorName in field.asyncValidators) {
+      for (const validatorName in field.asyncValidators) {
         if (validatorName !== 'validation') {
           validators.push((control: FormControl) => {
             let validator = field.asyncValidators[validatorName];
@@ -181,7 +193,7 @@ export class FormlyFormBuilder {
   }
 
   private initFieldValidation(field: FormlyFieldConfig) {
-    let validators: any = [];
+    const validators: any = [];
     FORMLY_VALIDATORS
       .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt))
         || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]),
@@ -197,7 +209,7 @@ export class FormlyFormBuilder {
       });
 
     if (field.validators) {
-      for (let validatorName in field.validators) {
+      for (const validatorName in field.validators) {
         if (validatorName !== 'validation') {
           validators.push((control: FormControl) => {
             let validator = field.validators[validatorName];

@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **core:** Added ng-content to formly-group. Updated Examples to inline remove button of repeating section ([2a19867](https://github.com/formly-js/ngx-formly/commit/2a19867))
+* **core:** Added ng-content to formly-group. Updated Examples to inline remove button of repeating section  ([#840](https://github.com/formly-js/ngx-formly/issues/840)) ([2a19867](https://github.com/formly-js/ngx-formly/commit/2a19867))
 * **docs:** add validation + expression-properties section. ([#836](https://github.com/formly-js/ngx-formly/issues/836)) ([3f5fff0](https://github.com/formly-js/ngx-formly/commit/3f5fff0))
 
 
