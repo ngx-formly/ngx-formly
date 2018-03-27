@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.48"></a>
+# [2.0.0-rc.48](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.47...v2.0.0-rc.48) (2018-03-27)
+
+
+### Bug Fixes
+
+* **core:** remove aria-describedby ([#835](https://github.com/formly-js/ngx-formly/issues/835)) ([02e9d2e](https://github.com/formly-js/ngx-formly/commit/02e9d2e)), closes [#760](https://github.com/formly-js/ngx-formly/issues/760)
+
+
+### Features
+
+* **core:** Added ng-content to formly-group. Updated Examples to inline remove button of repeating section ([2a19867](https://github.com/formly-js/ngx-formly/commit/2a19867))
+* **docs:** add validation + expression-properties section. ([#836](https://github.com/formly-js/ngx-formly/issues/836)) ([3f5fff0](https://github.com/formly-js/ngx-formly/commit/3f5fff0))
+
+
+
 <a name="2.0.0-rc.47"></a>
 # [2.0.0-rc.47](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.46...v2.0.0-rc.47) (2018-03-25)
 
