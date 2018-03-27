@@ -1,10 +1,14 @@
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-import { MockComponent } from '../test-utils';
 
+import { Subject } from 'rxjs/Subject';
+
+import { MockComponent } from '../test-utils';
+import { evalStringExpression, evalExpressionValueSetter, FORMLY_VALIDATORS, getKeyPath, isFunction, isObject } from './../utils';
+
+import { FormlyValueChangeEvent } from '../components/formly.field.config';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormBuilder, FormlyFormOptions, FormlyForm } from '../core';
-import { evalStringExpression, evalExpressionValueSetter, FORMLY_VALIDATORS, getKeyPath, isFunction, isObject } from './../utils';
 
 import { FormlyFormExpression } from './formly.form.expression';
 
@@ -20,7 +24,11 @@ describe('FormlyFormExpression service', () => {
     form = new FormGroup({});
     builder = new FormlyFormBuilder(
       new FormlyConfig([{
-        types: [{ name: 'input', component: TestComponent }, { name: 'checkbox', component: TestComponent }],
+        types: [
+          { name: 'input', component: TestComponent },
+          { name: 'checkbox', component: TestComponent },
+          { name: 'repeat', component: TestComponent },
+        ],
         wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
         validators: [{ name: 'required', validation: Validators.required }],
       }]),
@@ -95,7 +103,7 @@ describe('FormlyFormExpression service', () => {
     expect(fields[1].templateOptions.disabled).toBeTruthy();
   });
 
-  it('should update the fields validity', () => {
+  it('should update field validity', () => {
     const fields: FormlyFieldConfig[] = [
       {
         key: 'checked',
@@ -130,7 +138,7 @@ describe('FormlyFormExpression service', () => {
     expect(fields[1].formControl.status).toEqual('VALID');
   });
 
-  it('should support field expression changes within field groups', () => {
+  it('should update field validity within field groups', () => {
     const fields: FormlyFieldConfig[] = [
       {
         key: 'fieldgroup',
@@ -170,5 +178,125 @@ describe('FormlyFormExpression service', () => {
     expression.checkFields(form, fields, model, options);
 
     expect(fields[0].fieldGroup[1].formControl.status).toEqual('VALID');
+  });
+
+  it('should allow subscription of FormlyValueChangeEvent', () => {
+    const fields: FormlyFieldConfig[] = [
+      {
+        key: 'visibilityToggle',
+        type: 'input',
+        defaultValue: 'show text',
+      },
+      {
+        key: 'text',
+        type: 'input',
+        defaultValue: 'initial value',
+        hideExpression: '!model.visibilityToggle',
+      },
+    ];
+    const model = {};
+    const options: FormlyFormOptions = {
+      fieldChanges: new Subject<FormlyValueChangeEvent>(),
+    };
+
+    options.fieldChanges.subscribe(({field, type, value}) => {
+      if (type === 'hidden' && field.formControl && value) {
+        field.formControl.setValue(null);
+      }
+    });
+
+    builder.buildForm(form, fields, model, options);
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[1].hide).toBeFalsy();
+    expect(fields[1].templateOptions.hidden).toBeFalsy();
+    expect(fields[1].formControl.value).toEqual('initial value');
+
+    model['visibilityToggle'] = null;
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[1].hide).toBeTruthy();
+    expect(fields[1].templateOptions.hidden).toBeTruthy();
+    expect(fields[1].formControl.value).toBeNull();
+  });
+
+  xit('should update field validity within field arrays', () => {
+    const fields: FormlyFieldConfig[] = [
+      {
+        key: 'address',
+        fieldArray: {
+          fieldGroup: [
+            {
+              key: 'city',
+              type: 'input',
+              expressionProperties: {
+                'templateOptions.required': 'model.addressIsRequired',
+              },
+            },
+          ],
+        },
+      },
+      {
+        key: 'addressIsRequired',
+        type: 'checkbox',
+      },
+    ];
+    const model = {
+      addressIsRequired: true,
+    };
+    const options = {};
+
+    builder.buildForm(form, fields, model, options);
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[0].formControl.status).toEqual('INVALID');
+
+    model.addressIsRequired = false;
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[0].fieldArray.formControl.status).toEqual('VALID');
+  });
+
+  xit('should update field visibility within field arrays', () => {
+    const fields: FormlyFieldConfig[] = [
+      {
+        key: 'address',
+        fieldArray: {
+          fieldGroup: [
+            {
+              key: 'city',
+              type: 'input',
+              hideExpression: '!model.addressIsRequired',
+            },
+          ],
+        },
+      },
+      {
+        key: 'addressIsRequired',
+        type: 'checkbox',
+      },
+    ];
+    const model = {
+      addressIsRequired: true,
+    };
+    const options = {};
+
+    builder.buildForm(form, fields, model, options);
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[0].templateOptions.hidden).toBeTruthy();
+    expect(fields[0].hide).toBeTruthy();
+
+    model.addressIsRequired = false;
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[0].templateOptions.hidden).toBeFalsy();
+    expect(fields[0].hide).toBeFalsy();
   });
 });
