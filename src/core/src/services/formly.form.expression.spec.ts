@@ -129,4 +129,46 @@ describe('FormlyFormExpression service', () => {
 
     expect(fields[1].formControl.status).toEqual('VALID');
   });
+
+  it('should support field expression changes within field groups', () => {
+    const fields: FormlyFieldConfig[] = [
+      {
+        key: 'fieldgroup',
+        fieldGroup: [
+          {
+            key: 'checked',
+            type: 'checkbox',
+          },
+          {
+            key: 'text',
+            type: 'input',
+            templateOptions: {
+              label: 'Am I required or not?',
+            },
+            expressionProperties: {
+              'templateOptions.required': 'model.checked',
+            },
+          },
+        ],
+      },
+    ];
+    const model = {
+      fieldgroup: {
+        checked: true,
+      },
+    };
+    const options = {};
+
+    builder.buildForm(form, fields, model, options);
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[0].fieldGroup[1].formControl.status).toEqual('INVALID');
+
+    model.fieldgroup.checked = false;
+
+    expression.checkFields(form, fields, model, options);
+
+    expect(fields[0].fieldGroup[1].formControl.status).toEqual('VALID');
+  });
 });
