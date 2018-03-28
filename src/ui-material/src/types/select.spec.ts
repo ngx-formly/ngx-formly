@@ -68,7 +68,7 @@ describe('ui-material: Formly Field Select Component', () => {
       expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(2);
     });
 
-    xit('should correctly bind to an Observable', async(() => {
+    it('should correctly bind to an Observable', async(() => {
       const sports$ = of([
         { id: '1', name: 'Soccer' },
         { id: '2', name: 'Basketball' },
