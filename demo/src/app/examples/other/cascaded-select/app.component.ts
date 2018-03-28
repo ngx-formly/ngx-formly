@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators/takeUntil';
+import { startWith } from 'rxjs/operators/startWith';
 import { tap } from 'rxjs/operators/tap';
 
 @Component({
@@ -12,7 +13,7 @@ import { tap } from 'rxjs/operators/tap';
 export class AppComponent implements OnDestroy {
   onDestroy$ = new Subject<void>();
   form = new FormGroup({});
-  model: any = {};
+  model: any = { sport: '1' };
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [
@@ -44,10 +45,12 @@ export class AppComponent implements OnDestroy {
             { id: '1', name: 'Bayern Munich', sportId: '1' },
             { id: '2', name: 'Real Madrid', sportId: '1' },
             { id: '3', name: 'Cleveland', sportId: '2' },
+            { id: '4', name: 'Miami', sportId: '2' },
           ];
 
           form.get('sport').valueChanges.pipe(
             takeUntil(this.onDestroy$),
+            startWith(form.get('sport').value),
             tap(sportId => {
               field.formControl.setValue('');
               field.templateOptions.options = teams.filter(team => team.sportId === sportId);
@@ -74,10 +77,13 @@ export class AppComponent implements OnDestroy {
             { id: '4', name: 'Real Madrid (Player 2)', teamId: '2' },
             { id: '5', name: 'Cleveland (Player 1)', teamId: '3' },
             { id: '6', name: 'Cleveland (Player 2)', teamId: '3' },
+            { id: '7', name: 'Miami (Player 1)', teamId: '4' },
+            { id: '8', name: 'Miami (Player 2)', teamId: '4' },
           ];
 
           form.get('team').valueChanges.pipe(
             takeUntil(this.onDestroy$),
+            startWith(form.get('team').value),
             tap(sportId => {
               field.formControl.setValue('');
               field.templateOptions.options = players.filter(team => team.teamId === sportId);
