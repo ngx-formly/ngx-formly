@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.50"></a>
+# [2.0.0-rc.50](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.49...v2.0.0-rc.50) (2018-03-30)
+
+
+### Bug Fixes
+
+* **core:** remove hide field to force re-evalute it in FormlyFormExpression. ([#852](https://github.com/formly-js/ngx-formly/issues/852)) ([333af5f](https://github.com/formly-js/ngx-formly/commit/333af5f))
+* **core:** toggle disabled state when disabled property is changed. ([442701d](https://github.com/formly-js/ngx-formly/commit/442701d)), closes [#851](https://github.com/formly-js/ngx-formly/issues/851)
+
+
+
 <a name="2.0.0-rc.49"></a>
 # [2.0.0-rc.49](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.48...v2.0.0-rc.49) (2018-03-27)
 
