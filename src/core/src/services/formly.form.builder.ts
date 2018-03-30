@@ -125,18 +125,6 @@ export class FormlyFormBuilder {
         field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
       }
     }
-
-    if (field.key && field.fieldGroup && field.fieldGroup.length > 0 && field.expressionProperties && field.expressionProperties.hasOwnProperty('templateOptions.disabled')) {
-      field.fieldGroup.forEach(f => {
-        f.expressionProperties = f.expressionProperties || {};
-        let disabledExpression: any = f.expressionProperties['templateOptions.disabled'] || (() => false);
-        if (typeof disabledExpression === 'string') {
-          disabledExpression = evalStringExpression(disabledExpression, ['model', 'formState']);
-        }
-
-        f.expressionProperties['templateOptions.disabled'] = (model: any, formState: any) => field.templateOptions.disabled || disabledExpression(model, formState);
-      });
-    }
   }
 
   private initFieldOptions(field: FormlyFieldConfig) {
