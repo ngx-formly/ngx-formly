@@ -271,6 +271,23 @@ export class FormlyFormBuilder {
       control.disable();
     }
 
+    // Replace decorated property with a getter that returns the observable.
+    // https://github.com/angular-redux/store/blob/master/src/decorators/select.ts#L79-L85
+    if (delete field.templateOptions.disabled) {
+      Object.defineProperty(field.templateOptions, 'disabled', {
+        get: (function () { return !this.formControl.enabled; }).bind(field),
+        set: (function (value: boolean) {
+          if (this.expressionProperties && this.expressionProperties.hasOwnProperty('templateOptions.disabled')) {
+            this.expressionProperties['templateOptions.disabled'].expressionValue = value;
+          }
+
+          value ? this.formControl.disable() : this.formControl.enable();
+        }).bind(field),
+        enumerable: true,
+        configurable: true,
+      });
+    }
+
     this.addControl(form, path, control, field);
   }
 
