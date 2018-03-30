@@ -460,7 +460,7 @@ describe('Formly Form Component', () => {
       expect(form.get('title').enabled).toEqual(false);
     });
 
-    it('should enable/disable formControl when templateOptions.disabled and fieldGroup are set', () => {
+    it('should enable parent formControl when child is enabled', () => {
       delete field.type;
       field.key = 'address';
       field.expressionProperties = {
@@ -480,8 +480,8 @@ describe('Formly Form Component', () => {
       ];
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
-      expect(field.templateOptions.disabled).toEqual(true);
-      expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
+      expect(field.templateOptions.disabled).toEqual(false);
+      expect(field.fieldGroup[0].templateOptions.disabled).toEqual(false);
     });
 
     const options = [

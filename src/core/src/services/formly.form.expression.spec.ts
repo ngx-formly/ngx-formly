@@ -87,7 +87,7 @@ describe('FormlyFormExpression service', () => {
     builder.buildForm(form, fields, model, options);
 
     // manually disable the form control so that service can enable on `checkFields`
-    fields[1].formControl.disable();
+    fields[1].templateOptions.disabled = true;
 
     expect(fields[1].formControl.status).toEqual('DISABLED');
 

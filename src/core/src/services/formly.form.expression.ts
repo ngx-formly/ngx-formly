@@ -63,18 +63,6 @@ export class FormlyFormExpression {
         }
       }
     }
-
-    if (field.expressionProperties.hasOwnProperty('templateOptions.disabled')) {
-      const formControl = field.formControl;
-      if (formControl) {
-        if (!formControl.enabled && !field.templateOptions.disabled) {
-          formControl.enable();
-        }
-        if (formControl.enabled && field.templateOptions.disabled) {
-          formControl.disable();
-        }
-      }
-    }
   }
 
   private checkFieldVisibilityChange(form: FormGroup | FormArray, field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
