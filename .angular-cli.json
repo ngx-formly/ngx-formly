@@ -55,9 +55,8 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "class": {
-      "spec": false
-    },
-    "component": {}
-  }
+    "component": {
+    }
+  },
+  "packageManager": "yarn"
 }
