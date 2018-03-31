@@ -125,15 +125,15 @@
   },
   "bundlesize": [
     {
-      "path": "./dist/core/@ngx-formly/core.es5.js",
+      "path": "./dist/core/esm5/ngx-formly-core.js",
       "maxSize": "15 kB"
     },
     {
-      "path": "./dist/bootstrap/@ngx-formly/bootstrap.es5.js",
+      "path": "./dist/bootstrap/esm5/ngx-formly-bootstrap.js",
       "maxSize": "5 kB"
     },
     {
-      "path": "./dist/material/@ngx-formly/material.es5.js",
+      "path": "./dist/material/esm5/ngx-formly-material.js",
       "maxSize": "5 kB"
     }
   ]
