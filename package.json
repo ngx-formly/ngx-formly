@@ -50,7 +50,7 @@
   },
   "homepage": "https://github.com/formly-js/ngx-formly#readme",
   "peerDependencies": {
-    "@angular/forms": ">=4.0.0"
+    "@angular/forms": ">=5.0.0"
   },
   "dependencies": {
     "tslib": "^1.7.1"
