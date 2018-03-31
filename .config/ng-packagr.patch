@@ -1,25 +1,25 @@
-commit 6584682c53ef5002b2cd8b24085b704c0ec69697
+commit 2240dcd6e2fd2de23e5918bbfb64ca51a50d37ae
 Author: Abdellatif Ait boudad <a.aitboudad@gmail.com>
-Date:   Fri Nov 10 17:38:37 2017 +0000
+Date:   Sun Mar 25 12:09:50 2018 +0100
 
-    patch
+    www
 
-diff --git a/ngc.js b/ngc.js
-index cb48466..2f62191 100644
---- a/ngc.js
-+++ b/ngc.js
-@@ -21,6 +21,7 @@ function prepareTsConfig(ngPkg, outFile) {
-         compilerOptions.flatModuleId = ngPkg.fullPackageName;
-         compilerOptions.flatModuleOutFile = `${ngPkg.flatModuleFileName}.js`;
-         tsConfig['files'] = [ngPkg.entryFile];
-+        tsConfig['compilerOptions']['paths'] = { "@ngx-formly/core": ["../../../../../dist/core"] };
-         yield fs_extra_1.writeJson(outFile, tsConfig);
-     });
- }
-@@ -42,4 +43,4 @@ function ngc(ngPkg, basePath) {
-     });
- }
- exports.ngc = ngc;
--//# sourceMappingURL=ngc.js.map
+diff --git a/compile-ngc.transform.js b/compile-ngc.transform.js
+index a8d2c51..451ea76 100644
+--- a/compile-ngc.transform.js
++++ b/compile-ngc.transform.js
+@@ -20,6 +20,7 @@ exports.compileNgcTransform = transform_1.transformFromPromise((graph) => __awai
+     const tsConfig = entryPoint.data.tsConfig;
+     // Add paths mappings for dependencies
+     const entryPointDeps = entryPoint.filter(nodes_1.isEntryPoint);
++    tsConfig.options.paths = { "@ngx-formly/core": ["../../dist/core"] };
+     if (entryPointDeps.length > 0) {
+         if (!tsConfig.options.paths) {
+             tsConfig.options.paths = {};
+@@ -42,4 +43,4 @@ exports.compileNgcTransform = transform_1.transformFromPromise((graph) => __awai
+     entryPoint.data.metadata = compilationResult.metadata;
+     return graph;
+ }));
+-//# sourceMappingURL=compile-ngc.transform.js.map
 \ No newline at end of file
-+//# sourceMappingURL=ngc.js.map
++//# sourceMappingURL=compile-ngc.transform.js.map
