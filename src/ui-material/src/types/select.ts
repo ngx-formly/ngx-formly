@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { FieldType } from './field';
-import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';
+import { of as observableOf } from 'rxjs/observable/of';
 
 export class SelectOption {
   label: string;
@@ -66,7 +66,7 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
         }
       });
 
-      return of(options);
+      return observableOf(options);
     } else {
       // return observable directly
       return this.to.options;
