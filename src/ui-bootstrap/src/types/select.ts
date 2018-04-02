@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { of as observableOf } from 'rxjs/observable/of';
 
 export class SelectOption {
   label: string;
@@ -79,7 +79,7 @@ export class FormlyFieldSelect extends FieldType {
         }
       });
 
-      return of(options);
+      return observableOf(options);
     } else {
       // return observable directly
       return this.to.options;

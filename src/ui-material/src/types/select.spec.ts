@@ -9,7 +9,7 @@ import { FormlyModule } from '../../../core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
 import { FormlyForm } from '../../../core';
-import { of } from 'rxjs/observable/of';
+import { of as observableOf } from 'rxjs/observable/of';
 
 const createTestComponent = (html: string) =>
   createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -70,7 +70,7 @@ describe('ui-material: Formly Field Select Component', () => {
     });
 
     it('should correctly bind to an Observable', async(() => {
-      const sports$ = of([
+      const sports$ = observableOf([
         { id: '1', name: 'Soccer' },
         { id: '2', name: 'Basketball' },
         { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
