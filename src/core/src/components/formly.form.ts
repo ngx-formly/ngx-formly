@@ -1,13 +1,14 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray, NgForm, FormGroupDirective, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, NgForm, FormGroupDirective, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFormExpression } from '../services/formly.form.expression';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, reverseDeepMerge, getFieldModel, clone } from '../utils';
 import { Subject } from 'rxjs/Subject';
-import { debounceTime } from 'rxjs/operator/debounceTime';
-import { map } from 'rxjs/operator/map';
+import { debounceTime } from 'rxjs/operators/debounceTime';
+import { map } from 'rxjs/operators/map';
+import { tap } from 'rxjs/operators/tap';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -123,20 +124,23 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
     fields.forEach(field => {
       if (field.key && field.type && !field.fieldGroup && !field.fieldArray) {
-        let valueChanges = field.formControl.valueChanges;
-        const debounce = field.modelOptions && field.modelOptions.debounce && field.modelOptions.debounce.default;
-        if (debounce > 0) {
-          valueChanges = debounceTime.call(valueChanges, debounce);
-        }
-        if (field.parsers && field.parsers.length > 0) {
-          field.parsers.forEach(parserFn => {
-            valueChanges = map.call(valueChanges, parserFn);
-          });
-        }
+        const valueChanges = field.formControl.valueChanges.pipe(
+          field.modelOptions && field.modelOptions.debounce && field.modelOptions.debounce.default
+          ? debounceTime(field.modelOptions.debounce.default)
+          : tap(() => {}),
+          map(value => {
+            if (field.parsers && field.parsers.length > 0) {
+              field.parsers.forEach(parserFn => {
+                value = map.call(value, parserFn);
+              });
+            }
 
-        this.modelChangeSubs.push(valueChanges
-          .subscribe(event => this.changeModel({ key: [...rootKey, field.key].join('.'), value: event })),
+            return value;
+          }),
+          tap(value => this.changeModel({ key: [...rootKey, field.key].join('.'), value })),
         );
+
+        this.modelChangeSubs.push(valueChanges.subscribe());
       }
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {
@@ -202,7 +206,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     });
   }
 
-  private initializeFormValue(control) {
+  private initializeFormValue(control: AbstractControl) {
     if (control instanceof FormControl) {
       control.setValue(null);
     } else if (control instanceof FormGroup) {
