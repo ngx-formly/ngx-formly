@@ -384,7 +384,7 @@ describe('Formly Form Component', () => {
 
     it('should update className', () => {
       field.expressionProperties = {
-        'field.className': 'model.title',
+        'className': 'model.title',
       };
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');

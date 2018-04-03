@@ -46,15 +46,19 @@ export class FormlyFormExpression {
         evalExpression(
           expressionProperties[key].expressionValueSetter,
           { field },
-          [expressionValue, model, field.templateOptions, field.validation, field],
+          [expressionValue, model, field],
         );
 
         if (key.indexOf('model.') === 0) {
           const path = key.replace(/^model\./, ''),
-            formControl = field.key && key === path ? field.formControl : form.get(path);
+            control = field.key && key === path ? field.formControl : form.get(path);
 
-          if (formControl) {
-            formControl.patchValue(expressionValue);
+          if (
+            control
+            && !(isNullOrUndefined(control.value) && isNullOrUndefined(expressionValue))
+            && control.value !== expressionValue
+          ) {
+            control.patchValue(expressionValue);
           }
         }
 
@@ -99,9 +103,13 @@ export class FormlyFormExpression {
   }
 
   private addFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig, model: any) {
-    model = this.getFieldModel(model, field);
-    if (field.formControl.value !== model) {
-      field.formControl.patchValue(model, { emitEvent: false });
+    const fieldModel = this.getFieldModel(model, field);
+
+    if (
+      !(isNullOrUndefined(field.formControl.value) && isNullOrUndefined(fieldModel))
+      && field.formControl.value !== fieldModel
+    ) {
+      field.formControl.patchValue(fieldModel, { emitEvent: false });
     }
 
     if (parent instanceof FormArray) {
