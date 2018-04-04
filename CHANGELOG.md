@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.51"></a>
+# [2.0.0-rc.51](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.50...v2.0.0-rc.51) (2018-04-04)
+
+
+### Features
+
+* **code:** allow using key expression property without passing `field` path. ([#863](https://github.com/formly-js/ngx-formly/issues/863)) ([809fced](https://github.com/formly-js/ngx-formly/commit/809fced))
+
+
+
 <a name="2.0.0-rc.50"></a>
 # [2.0.0-rc.50](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.49...v2.0.0-rc.50) (2018-03-30)
 
