@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.52"></a>
+# [2.0.0-rc.52](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.51...v2.0.0-rc.52) (2018-04-06)
+
+
+### Features
+
+* **core:** allow passing the index and the initial model for FieldArrayType::add method. ([#869](https://github.com/formly-js/ngx-formly/issues/869)) ([93f5eab](https://github.com/formly-js/ngx-formly/commit/93f5eab)), closes [#866](https://github.com/formly-js/ngx-formly/issues/866)
+
+
+
 <a name="2.0.0-rc.51"></a>
 # [2.0.0-rc.51](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.50...v2.0.0-rc.51) (2018-04-04)
 
