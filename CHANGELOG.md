@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.53"></a>
+# [2.0.0-rc.53](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.52...v2.0.0-rc.53) (2018-04-06)
+
+
+
 <a name="2.0.0-rc.52"></a>
 # [2.0.0-rc.52](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.51...v2.0.0-rc.52) (2018-04-06)
 

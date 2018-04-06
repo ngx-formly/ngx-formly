@@ -1,9 +1,8 @@
 import { FormArray, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FieldType } from './field.type';
-import { clone } from '../utils';
+import { clone, isNullOrUndefined } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { isNullOrUndefined } from 'util';
 
 export abstract class FieldArrayType extends FieldType {
   formControl: FormArray;
