@@ -1,8 +1,9 @@
-import { FormArray } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FieldType } from './field.type';
 import { clone } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
+import { isNullOrUndefined } from 'util';
 
 export abstract class FieldArrayType extends FieldType {
   formControl: FormArray;
@@ -26,18 +27,22 @@ export abstract class FieldArrayType extends FieldType {
     super();
   }
 
-  add() {
-    const i = this.field.fieldGroup.length;
-    this.model.push({});
-    this.field.fieldGroup.push(
-      { ...clone(this.field.fieldArray), key: `${this.field.fieldGroup.length}` },
-    );
+  add(i?: number, initialModel?: any) {
+    i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
+
+    this.model.splice(i, 0, initialModel ? clone(initialModel) : {});
+    this.formControl.insert(i, new FormGroup({}));
+    this.field.fieldGroup.splice(i, 0, { ...clone(this.field.fieldArray) });
+
+    this.field.fieldGroup.forEach((field, index) => {
+      field.key = `${index}`;
+    });
 
     this.builder.buildForm(this.formControl, [this.field.fieldGroup[i]], this.model, this.options);
     (<any> this.options).resetTrackModelChanges();
   }
 
-  remove(i) {
+  remove(i: number) {
     this.formControl.removeAt(i);
     this.field.fieldGroup.splice(i, 1);
     this.field.fieldGroup.forEach((f, index) => f.key = `${index}`);
