@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 import { FormlyModule } from '../core';
 import { FormlyAttributes } from './formly.attributes';
 import { FormlyFieldConfig } from './formly.field.config';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -19,6 +20,7 @@ describe('FormlyAttributes Component', () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
       imports: [
+        ReactiveFormsModule,
         FormlyModule.forRoot(),
       ],
     });
