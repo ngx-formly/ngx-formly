@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test-utils';
 
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
 
 const createTestComponent = (html: string) =>
@@ -17,6 +17,7 @@ describe('FormlyValidationMessage Component', () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
       imports: [
+        ReactiveFormsModule,
         FormlyModule.forRoot({
           validationMessages: [
             { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},
