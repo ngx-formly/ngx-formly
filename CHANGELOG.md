@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.54"></a>
+# [2.0.0-rc.54](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.53...v2.0.0-rc.54) (2018-04-07)
+
+
+### Features
+
+* **core:** pass event instead of formControl to FormlyAttributes events. ([#870](https://github.com/formly-js/ngx-formly/issues/870)) ([2bcc875](https://github.com/formly-js/ngx-formly/commit/2bcc875)), closes [#867](https://github.com/formly-js/ngx-formly/issues/867)
+
+### Deprecations
+
+* Passing `formControl` as a second argument for (focus, blur, keyup, keydown, click, change, keypress) events is deprecated and it will be removed in the 3.0 version, use `field.formControl` instead.
+
+  Before:
+    ```ts
+    keypress: (field, formControl) => { console.log(formControl.value); },
+    ```
+
+  After:
+    ```ts
+    keypress: (field) => { console.log(field.formControl.value); },
+    ```
+
+* Using `field.prop` path in `expressionProperties` is deprecated, use `prop` instead.
+
+  Before:
+    ```ts
+    expressionProperties = {
+      'field.className': ...
+    }
+    ```
+
+  After:
+    ```ts
+    expressionProperties = {
+      'className': ...
+    }
+    ```
+
 <a name="2.0.0-rc.53"></a>
 # [2.0.0-rc.53](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.52...v2.0.0-rc.53) (2018-04-06)
 
