@@ -4,7 +4,7 @@ import { FieldType } from './field';
 @Component({
   selector: 'formly-field-mat-radio',
   template: `
-    <mat-radio-group [formControl]="formControl" [formlyAttributes]="field" (change)="to.change && to.change(field, formControl)">
+    <mat-radio-group [formControl]="formControl" [formlyAttributes]="field" (change)="change()">
       <mat-radio-button *ngFor="let option of to.options; let i = index;" [id]="id + '_' + i" [value]="option.key">
         {{ option.value }}
       </mat-radio-button>
@@ -24,5 +24,15 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit {
       }
     }
     super.ngAfterViewInit();
+  }
+
+  change() {
+    if (this.to.change) {
+      if (this.to.change.length === 2) {
+        this.to.change(this.field, this.formControl);
+      } else {
+        this.to.change(this.field);
+      }
+    }
   }
 }
