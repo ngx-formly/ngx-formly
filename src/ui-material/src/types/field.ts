@@ -18,11 +18,9 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
     if (this.formField) {
       this.formField._control = this.formFieldControl;
     }
-    super.ngOnInit();
   }
 
   ngAfterViewInit() {
-    super.ngAfterViewInit();
     if (this.matPrefix || this.matSuffix) {
       setTimeout(() => {
         this.to.prefix = this.matPrefix;
@@ -37,7 +35,6 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
       delete this.formField._control;
     }
     this.stateChanges.complete();
-    super.ngOnDestroy();
   }
 
   setDescribedByIds(ids: string[]): void { }
