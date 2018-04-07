@@ -1,5 +1,4 @@
 import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, SimpleChange, Renderer2 } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from './formly.field.config';
 
 @Directive({
@@ -7,7 +6,6 @@ import { FormlyFieldConfig } from './formly.field.config';
 })
 export class FormlyAttributes implements OnChanges {
   @Input('formlyAttributes') field: FormlyFieldConfig;
-  @Input() formControl: AbstractControl;
   private attributes = ['id', 'name', 'placeholder', 'tabindex', 'step', 'readonly'];
   private statements = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 
@@ -67,7 +65,7 @@ export class FormlyAttributes implements OnChanges {
       console.warn(`FormlyForm: field(${this.field.key}) Passing formControl as a second argument for "${statement}" is deprecated and it will be removed in the 3.0 version, use "field.formControl" instead`);
     }
 
-    return (event: any) => fn.length !== 2 ? fn(this.field, event) : fn(this.field, this.formControl);
+    return (event: any) => fn.length !== 2 ? fn(this.field, event) : fn(this.field, this.field.formControl);
   }
 
   private canApplyRender(fieldChange: SimpleChange, prop: string): Boolean {

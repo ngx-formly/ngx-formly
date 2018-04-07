@@ -10,7 +10,7 @@ export abstract class Field {
 
   get key() { return this.field.key; }
 
-  get formControl(): AbstractControl { return this.field.formControl || this.form.get(this.key); }
+  get formControl(): AbstractControl { return this.field.formControl; }
 
   get to(): FormlyTemplateOptions { return this.field.templateOptions; }
 
