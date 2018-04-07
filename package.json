@@ -73,6 +73,7 @@
     "@angular/router": "5.2.9",
     "@commitlint/cli": "^6.1.3",
     "@commitlint/config-angular": "^6.1.3",
+    "@commitlint/travis-cli": "^6.1.3",
     "@compodoc/compodoc": "^1.0.5",
     "@ngx-loading-bar/router": "^1.0.0-rc.3",
     "@types/jasmine": "~2.8.3",
