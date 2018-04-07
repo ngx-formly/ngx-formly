@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { Component, ViewChild } from '@angular/core';
 import { FormlyModule } from '../../../core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
 import { FormlyForm } from '../../../core';
 import { of as observableOf } from 'rxjs/observable/of';
@@ -16,14 +16,17 @@ let testComponentInputs;
 
 describe('ui-bootstrap: Formly Field Select Component', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent, FormlyFieldSelect], imports: [FormlyModule.forRoot({
-      types: [
-        {
-          name: 'select',
-          component: FormlyFieldSelect,
-        },
-      ],
-    })]});
+    TestBed.configureTestingModule({declarations: [TestComponent, FormlyFieldSelect], imports: [
+      ReactiveFormsModule,
+      FormlyModule.forRoot({
+        types: [
+          {
+            name: 'select',
+            component: FormlyFieldSelect,
+          },
+        ],
+      }),
+    ]});
   });
 
   describe('options', () => {

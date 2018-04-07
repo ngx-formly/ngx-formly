@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 
 import { Component, ViewChild } from '@angular/core';
 import { FormlyModule } from '../../../core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
 import { FormlyForm } from '../../../core';
 import { of as observableOf } from 'rxjs/observable/of';
@@ -23,6 +23,7 @@ describe('ui-material: Formly Field Select Component', () => {
       imports: [
         NoopAnimationsModule,
         MatSelectModule,
+        ReactiveFormsModule,
         FormlyModule.forRoot({
           types: [
             {
