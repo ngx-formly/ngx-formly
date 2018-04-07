@@ -66,6 +66,48 @@ describe('FormlyField Component', () => {
     expect(fixture.nativeElement.innerText).toEqual('Nested property keys');
   });
 
+  it('should call field lifecycle hooks if set', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        formControl: new FormControl(),
+        lifecycle: {
+          afterContentInit: () => {},
+          afterContentChecked: () => {},
+          afterViewInit: () => {},
+          afterViewChecked: () => {},
+          doCheck: () => {},
+          onInit: () => {},
+          onChanges: () => {},
+          onDestroy: () => {},
+        },
+      },
+    };
+
+    const lifecycle = testComponentInputs.field.lifecycle;
+    spyOn(lifecycle, 'afterContentInit');
+    spyOn(lifecycle, 'afterContentChecked');
+    spyOn(lifecycle, 'afterViewInit');
+    spyOn(lifecycle, 'afterViewChecked');
+    spyOn(lifecycle, 'doCheck');
+    spyOn(lifecycle, 'onInit');
+    spyOn(lifecycle, 'onChanges');
+    spyOn(lifecycle, 'onDestroy');
+
+    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+    fixture.destroy();
+
+    expect(lifecycle.afterContentInit).toHaveBeenCalled();
+    expect(lifecycle.afterContentChecked).toHaveBeenCalled();
+    expect(lifecycle.afterViewInit).toHaveBeenCalled();
+    expect(lifecycle.afterViewChecked).toHaveBeenCalled();
+    expect(lifecycle.doCheck).toHaveBeenCalled();
+    expect(lifecycle.onInit).toHaveBeenCalled();
+    expect(lifecycle.onChanges).toHaveBeenCalled();
+    expect(lifecycle.onDestroy).toHaveBeenCalled();
+  });
+
   it('should render field type', () => {
     testComponentInputs = {
       field: {

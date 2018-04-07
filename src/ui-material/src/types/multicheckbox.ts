@@ -41,6 +41,5 @@ export class FormlyFieldMultiCheckbox extends FieldType implements AfterViewInit
         this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
       }
     }
-    super.ngAfterViewInit();
   }
 }
