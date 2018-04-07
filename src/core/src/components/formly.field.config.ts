@@ -152,6 +152,8 @@ export interface FormlyFieldConfig {
   parsers?: ((value: any, index: number) => {})[];
 }
 
+export type FormlyAttributeEvent = (field: FormlyFieldConfig, formControlOrEvent?: AbstractControl | any, useLegacyApi?: boolean) => void;
+
 export interface FormlyTemplateOptions {
   type?: string;
   label?: string;
@@ -171,13 +173,13 @@ export interface FormlyTemplateOptions {
   tabindex?: number;
   attributes?: { [key: string]: string|number };
   step?: number;
-  focus?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
-  blur?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
-  keyup?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
-  keydown?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
-  click?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
-  change?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
-  keypress?: (field: FormlyFieldConfig, formControl: AbstractControl) => void;
+  focus?: FormlyAttributeEvent;
+  blur?: FormlyAttributeEvent;
+  keyup?: FormlyAttributeEvent;
+  keydown?: FormlyAttributeEvent;
+  click?: FormlyAttributeEvent;
+  change?: FormlyAttributeEvent;
+  keypress?: FormlyAttributeEvent;
   templateManipulators?: TemplateManipulators;
   [additionalProperties: string]: any;
 }

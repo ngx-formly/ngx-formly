@@ -63,8 +63,11 @@ export class FormlyAttributes implements OnChanges {
 
   private getStatementValue(statement: string) {
     const fn = this.field.templateOptions[statement];
+    if (fn.length === 2) {
+      console.warn(`FormlyForm: field(${this.field.key}) Passing formControl as a second argument for "${statement}" is deprecated and it will be removed in the 3.0 version, use "field.formControl" instead`);
+    }
 
-    return () => fn(this.field, this.formControl);
+    return (event: any) => fn.length !== 2 ? fn(this.field, event) : fn(this.field, this.formControl);
   }
 
   private canApplyRender(fieldChange: SimpleChange, prop: string): Boolean {

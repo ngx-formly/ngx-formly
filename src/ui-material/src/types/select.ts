@@ -25,7 +25,7 @@ export class SelectOption {
       [formControl]="formControl"
       [formlyAttributes]="field"
       [multiple]="to.multiple"
-      (selectionChange)="to.change && to.change(field, formControl)"
+      (selectionChange)="change()"
       [errorStateMatcher]="errorStateMatcher">
       <ng-container *ngFor="let item of selectOptions | async">
         <mat-optgroup *ngIf="item.group" label="{{item.label}}">
@@ -70,6 +70,16 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
     } else {
       // return observable directly
       return this.to.options;
+    }
+  }
+
+  change() {
+    if (this.to.change) {
+      if (this.to.change.length === 2) {
+        this.to.change(this.field, this.formControl);
+      } else {
+        this.to.change(this.field);
+      }
     }
   }
 }

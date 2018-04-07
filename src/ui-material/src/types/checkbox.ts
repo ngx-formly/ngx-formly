@@ -8,7 +8,7 @@ import { FieldType } from './field';
       [formControl]="formControl"
       [id]="id"
       [formlyAttributes]="field"
-      (change)="to.change && to.change(field, formControl)"
+      (change)="change()"
       [indeterminate]="to.indeterminate && model[key] === undefined"
       [align]="to.align">
       {{ to.label }}
@@ -29,5 +29,15 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit {
       }
     }
     super.ngAfterViewInit();
+  }
+
+  change() {
+    if (this.to.change) {
+      if (this.to.change.length === 2) {
+        this.to.change(this.field, this.formControl);
+      } else {
+        this.to.change(this.field);
+      }
+    }
   }
 }
