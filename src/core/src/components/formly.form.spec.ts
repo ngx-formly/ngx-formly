@@ -4,7 +4,7 @@ import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
 import { Component, ViewChild } from '@angular/core';
 import { FormlyModule, FormlyFormBuilder } from '../core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
@@ -20,27 +20,32 @@ let testComponentInputs;
 
 describe('Formly Form Component', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent, FormlyFieldText, FormlyWrapperLabel, RepeatComponent], imports: [FormlyModule.forRoot({
-      types: [
-        {
-          name: 'text',
-          component: FormlyFieldText,
-        },
-        {
-          name: 'other',
-          component: FormlyFieldText,
-          wrappers: ['label'],
-        },
-        {
-          name: 'repeat',
-          component: RepeatComponent,
-        },
-      ],
-      wrappers: [{
-        name: 'label',
-        component: FormlyWrapperLabel,
-      }],
-    })]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, FormlyFieldText, FormlyWrapperLabel, RepeatComponent],
+      imports: [
+        ReactiveFormsModule,
+        FormlyModule.forRoot({
+          types: [
+            {
+              name: 'text',
+              component: FormlyFieldText,
+            },
+            {
+              name: 'other',
+              component: FormlyFieldText,
+              wrappers: ['label'],
+            },
+            {
+              name: 'repeat',
+              component: RepeatComponent,
+            },
+          ],
+          wrappers: [{
+            name: 'label',
+            component: FormlyWrapperLabel,
+          }],
+        }),
+      ]});
   });
 
   describe('modelChange output', () => {

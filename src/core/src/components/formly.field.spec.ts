@@ -2,7 +2,7 @@ import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testin
 import { createGenericTestComponent } from '../test-utils';
 
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   FormlyModule,
   FieldType,
@@ -31,6 +31,7 @@ describe('FormlyField Component', () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, FormlyFieldText, FormlyWrapperLabel],
       imports: [
+        ReactiveFormsModule,
         FormlyModule.forRoot({
           types: [
             {
@@ -70,11 +71,12 @@ describe('FormlyField Component', () => {
       field: {
         key: 'title',
         type: 'text',
+        formControl: new FormControl(),
         templateOptions: {
           placeholder: 'Title',
         },
       },
-      form: new FormGroup({title: new FormControl()}),
+      form: new FormGroup({}),
     };
 
     const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
@@ -92,16 +94,18 @@ describe('FormlyField Component', () => {
           {
             key: 'title1',
             type: 'text',
+            formControl: new FormControl(),
             templateOptions: { placeholder: 'Title1' },
           },
           {
             key: 'title2',
             type: 'text',
+            formControl: new FormControl(),
             templateOptions: { placeholder: 'Title2' },
           },
         ],
       },
-      form: new FormGroup({ title1: new FormControl(), title2: new FormControl() }),
+      form: new FormGroup({}),
     };
 
     const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
@@ -123,6 +127,7 @@ describe('FormlyField Component', () => {
         },
         form: new FormGroup({ title: new FormControl() }),
       };
+      testComponentInputs.field.formControl = testComponentInputs.form.get('title');
     });
 
     it('should render field without wrapper or key', () => {
@@ -176,12 +181,13 @@ describe('FormlyField Component', () => {
       field: {
         key: 'title',
         type: 'text',
+        formControl: new FormControl(),
         optionsTypes: ['other'],
         templateOptions: {
           placeholder: 'Title',
         },
       },
-      form: new FormGroup({title: new FormControl()}),
+      form: new FormGroup({}),
     };
 
     const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
