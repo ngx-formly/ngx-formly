@@ -20,6 +20,7 @@ install:
 
 script:
 - yarn lint
+- commitlint-travis
 - yarn test
 - yarn bundlesize
 - yarn build:demo
