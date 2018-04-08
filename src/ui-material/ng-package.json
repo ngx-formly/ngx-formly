@@ -2,15 +2,22 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "lib": {
     "entryFile": "index.ts",
-      "externals": {
-        "@ngx-formly/core": "@ngx-formly/core",
-        "@angular/material/core": "ng.material.core",
-        "@angular/material/form-field": "ng.material.form-field",
-        "@angular/material/input": "ng.material.input",
-        "@angular/material/radio": "ng.material.radio",
-        "@angular/material/select": "ng.material.select",
-        "@angular/material/checkbox": "ng.material.checkbox"
+    "datepicker": [
+      {
+        "path": "datepicker",
+        "entryFile": "index.ts"
       }
+    ],
+    "externals": {
+      "@ngx-formly/core": "@ngx-formly/core",
+      "@angular/material/core": "ng.material.core",
+      "@angular/material/form-field": "ng.material.form-field",
+      "@angular/material/input": "ng.material.input",
+      "@angular/material/radio": "ng.material.radio",
+      "@angular/material/select": "ng.material.select",
+      "@angular/material/checkbox": "ng.material.checkbox",
+      "@angular/material/datepicker": "ng.material.datepicker"
+    }
   },
   "dest": "../../dist/material",
   "workingDirectory": "../../.ng_build"
