@@ -14,10 +14,10 @@
     "lib": ["dom", "es6"],
     "importHelpers": true,
     "paths": {
-
       "@ngx-formly/core": ["./core/index"],
       "@ngx-formly/bootstrap": ["./ui-bootstrap/index"],
-      "@ngx-formly/material": ["./ui-material/index"]
+      "@ngx-formly/material": ["./ui-material/index"],
+      "@ngx-formly/material/*": ["./ui-material/*"]
     },
     "typeRoots": [
       "./node_modules/@types"
