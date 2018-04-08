@@ -3945,6 +3945,16 @@ github-build@^1.2.0:
   dependencies:
     axios "0.15.3"
 
+github-contributors-list@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/github-contributors-list/-/github-contributors-list-1.2.3.tgz#5e4c4596348a49623d6ce023bc72711bc355efb0"
+  dependencies:
+    marked "~0.3.1"
+    merge "^1.2.0"
+    minimist "0.0.8"
+    q "~1.4.1"
+    sprintf-js "0.0.7"
+
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -5978,6 +5988,10 @@ marked@^0.3.6:
   version "0.3.7"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.7.tgz#80ef3bbf1bd00d1c9cfebe42ba1b8c85da258d0d"
 
+marked@~0.3.1:
+  version "0.3.19"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.19.tgz#5d47f709c4c9fc3c216b6d46127280f40b39d790"
+
 md5.js@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.4.tgz#e9bdbde94a20a5ac18b04340fc5764d5b09d901d"
@@ -7403,7 +7417,7 @@ q-io@1.13.2:
     qs "^1.2.1"
     url2 "^0.0.0"
 
-q@1.4.1, q@~1.4.0:
+q@1.4.1, q@~1.4.0, q@~1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
 
@@ -8721,6 +8735,10 @@ split@^1.0.0:
   resolved "https://registry.yarnpkg.com/split/-/split-1.0.1.tgz#605bd9be303aa59fb35f9229fbea0ddec9ea07d9"
   dependencies:
     through "2"
+
+sprintf-js@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-0.0.7.tgz#f00d78fd160130809b4ab340c0310faa71253dbd"
 
 sprintf-js@^1.0.3:
   version "1.1.1"
