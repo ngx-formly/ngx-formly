@@ -232,6 +232,6 @@ export interface ConfigOption {
   manipulators?: ManipulatorOption[];
   extras?: {
     fieldTransform?: any,
-    showError?: (field: FormlyFieldConfig) => boolean;
+    showError?: (field: Field) => boolean;
   };
 }
