@@ -4,6 +4,7 @@ const fs = require("fs"),
     'core',
     'bootstrap',
     'material',
+    'ionic'
   ];
 
 // update `FORMLY-VERSION` in package.json for all sub-packages
