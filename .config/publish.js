@@ -3,6 +3,7 @@ const execSync = require('child_process').execSync,
     'core',
     'bootstrap',
     'material',
+    'ionic',
   ];
 
 packages.map(package => {
