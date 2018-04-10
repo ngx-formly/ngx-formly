@@ -47,6 +47,11 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
     npm install @ngx-formly/bootstrap --save
   ```
 
+- [Ionic](https://ionicframework.com):
+  ```bash
+    npm install @ngx-formly/ionic --save
+  ```
+
 #### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
 
 ```typescript
@@ -58,6 +63,9 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 // for material2 import `FormlyMaterialModule`:
 // import {FormlyMaterialModule} from '@ngx-formly/material';
 
+// for ionic import `FormlyIonicModule`:
+// import {FormlyIonicModule} from '@ngx-formly/ionic';
+
 @NgModule({
   imports: [
     ...,
@@ -67,6 +75,9 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 
     // for material2 use:
     // FormlyMaterialModule
+
+    // for ionic use:
+    // FormlyIonicModule
   ],
 })
 export class AppModule {}
