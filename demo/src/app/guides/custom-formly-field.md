@@ -7,7 +7,7 @@ there are prebuilt templates you can use:
 
   - Material
   - Bootstrap
-  - Ionic (WIP)
+  - Ionic
 
 
 ## Creating a Custom Template
