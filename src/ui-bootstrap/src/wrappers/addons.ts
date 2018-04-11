@@ -22,6 +22,16 @@ import { FieldWrapper } from '@ngx-formly/core';
       </div>
     </div>
   `,
+  styles: [`
+    :host ::ng-deep .input-group>:not(:first-child)> .form-control {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    :host ::ng-deep .input-group>:not(:last-child)> .form-control {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  `],
 })
 export class FormlyWrapperAddons extends FieldWrapper {
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
