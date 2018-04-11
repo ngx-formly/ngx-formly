@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.55"></a>
+# [2.0.0-rc.55](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.54...v2.0.0-rc.55) (2018-04-11)
+
+
+### Bug Fixes
+
+* **bootstrap:** apply border radius for input when using addons ([#882](https://github.com/formly-js/ngx-formly/issues/882)) ([cc3b168](https://github.com/formly-js/ngx-formly/commit/cc3b168)), closes [#656](https://github.com/formly-js/ngx-formly/issues/656)
+* **core:** take account of hidden fields when reseting model. ([#883](https://github.com/formly-js/ngx-formly/issues/883)) ([2eeae7a](https://github.com/formly-js/ngx-formly/commit/2eeae7a)), closes [#881](https://github.com/formly-js/ngx-formly/issues/881)
+* **core:** use `Field` instead `FormlyFieldConfig` in showError ([#878](https://github.com/formly-js/ngx-formly/issues/878)) ([f84252e](https://github.com/formly-js/ngx-formly/commit/f84252e)), closes [#877](https://github.com/formly-js/ngx-formly/issues/877)
+
+
+
 <a name="2.0.0-rc.54"></a>
 # [2.0.0-rc.54](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.53...v2.0.0-rc.54) (2018-04-07)
 
