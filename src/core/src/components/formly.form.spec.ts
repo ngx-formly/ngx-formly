@@ -546,6 +546,15 @@ describe('Formly Form Component', () => {
       expect(model.title).toEqual('test');
     });
 
+    it('should reset hidden fields', () => {
+      testComponentInputs.fields[0].hideExpression = true;
+      // initial value
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+      options.resetModel({ title: 'test' });
+      expect(model.title).toEqual('test');
+    });
+
     it('updateInitialValue', () => {
       // initial value
       model.title = 'test';

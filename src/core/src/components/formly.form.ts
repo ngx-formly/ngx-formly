@@ -1,5 +1,5 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray, NgForm, FormGroupDirective, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, NgForm, FormGroupDirective, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFormExpression } from '../services/formly.form.expression';
@@ -198,11 +198,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         } else {
           this.resetFieldArray(field.fieldGroup, newFieldModel, fieldModel);
         }
+      } else if (field.key && field.type) {
+        field.formControl.reset(getFieldModel(newModel, field, false));
       }
     });
   }
 
-  private initializeFormValue(control) {
+  private initializeFormValue(control: AbstractControl) {
     if (control instanceof FormControl) {
       control.setValue(null);
     } else if (control instanceof FormGroup) {
