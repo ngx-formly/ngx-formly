@@ -22,6 +22,11 @@ Links:
 The `formly-form` Component and the `FormlyConfig` service are very powerful and bring unmatched maintainability to your
 application's forms.
 
+#### Quick links
+* [Documentation, demos, and guides](https://formly-js.github.io/ngx-formly)
+* [StackBlitz UI Bootstrap Template](https://stackblitz.com/edit/ngx-formly-ui-bootstrap)
+* [StackBlitz UI Material Template](https://stackblitz.com/edit/ngx-formly-ui-material)
+
 ## Quick Start
 
 Follow these steps to get started with ng-formly. Also check out our [demos](https://formly-js.github.io/ngx-formly) for further examples.
