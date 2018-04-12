@@ -17,9 +17,12 @@ IF YOU DON'T FILL OUT THE FOLLOWING INFORMATION WE MIGHT CLOSE YOUR ISSUE WITHOU
 
 **Minimal reproduction of the problem with instructions**
 <!--
-If the current behavior is a bug or you can illustrate your feature request better with an example, 
+If the current behavior is a bug or you can illustrate your feature request better with an example,
 please provide the *STEPS TO REPRODUCE* and if possible a *MINIMAL DEMO* of the problem via
-https://plnkr.co or similar.
+https://stackblitz.com or similar.
+
+UI Bootstrap: https://stackblitz.com/edit/ngx-formly-ui-bootstrap
+UI Material: https://stackblitz.com/edit/ngx-formly-ui-material
 -->
 
 **What is the motivation / use case for changing the behavior?**
@@ -33,7 +36,7 @@ https://plnkr.co or similar.
 
 * **Browser:** [all | Chrome XX | Firefox XX | IE XX | Safari XX | Mobile Chrome XX | Android X.X Web Browser | iOS XX Safari | iOS XX UIWebView | iOS XX WKWebView ]
 <!-- All browsers where this could be reproduced -->
- 
+
 * **Language:** [all | TypeScript X.X | ES6/7 | ES5]
 
-* **Node (for AoT issues):** `node --version` =   
+* **Node (for AoT issues):** `node --version` =
