@@ -7268,6 +7268,10 @@ prettycli@^1.4.3:
   dependencies:
     chalk "2.1.0"
 
+primeng@^5.2.4:
+  version "5.2.4"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-5.2.4.tgz#79d9b030ea37fdeb23284dcbbca3b89dddc3e91e"
+
 prism-hightlight-loader@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/prism-hightlight-loader/-/prism-hightlight-loader-0.1.1.tgz#db555c63251d3888f6125dd851c8bbe9f50ee962"
