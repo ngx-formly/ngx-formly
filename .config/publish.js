@@ -4,6 +4,7 @@ const execSync = require('child_process').execSync,
     'bootstrap',
     'material',
     'ionic',
+    'primeng',
   ];
 
 packages.map(package => {

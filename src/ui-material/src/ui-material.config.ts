@@ -69,6 +69,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
         templateOptions: {
           indeterminate: true,
           floatLabel: 'always',
+          hideLabel: true,
           align: 'start', // start or end
         },
       },
