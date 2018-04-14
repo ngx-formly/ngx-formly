@@ -10,6 +10,7 @@ module.exports = {
         'material',
         'bootstrap',
         'ionic',
+        'primeng',
         'demo',
         'guides'
       ]

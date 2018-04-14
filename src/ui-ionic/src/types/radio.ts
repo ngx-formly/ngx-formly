@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-field-ion-rdgroup',
+  selector: 'formly-field-ion-radio',
   template: `
     <ion-list radio-group
       [formControl]="formControl"
