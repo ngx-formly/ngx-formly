@@ -14,11 +14,12 @@
     "commit": "npm run build && git-cz",
     "prepublish": "npm run build",
     "bundlesize": "bundlesize",
-    "build": "npm run build:core && npm run build:bootstrap && npm run build:material && npm run build:ionic && node .config/build.js",
+    "build": "npm run build:core && npm run build:bootstrap && npm run build:material && npm run build:ionic && npm run build:primeng && node .config/build.js",
     "build:core": "ng-packagr -p src/core/ng-package.json",
     "build:bootstrap": "ng-packagr -p src/ui-bootstrap/ng-package.json",
     "build:material": "ng-packagr -p src/ui-material/ng-package.json",
     "build:ionic": "ng-packagr -p src/ui-ionic/ng-package.json",
+    "build:primeng": "ng-packagr -p src/ui-primeng/ng-package.json",
     "release": "standard-version --prerelease alpha && npm run build && node .config/publish.js",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",
@@ -79,7 +80,6 @@
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
-    "ionic-angular": "^3.9.2",
     "angular-cli-ghpages": "^0.5.2",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^3.4.0",
@@ -92,6 +92,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "github-contributors-list": "^1.2.3",
     "husky": "^0.14.3",
+    "ionic-angular": "^3.9.2",
     "istanbul-instrumenter-loader": "^3.0.0",
     "jasmine": "^2.8.0",
     "jasmine-core": "~2.8.0",
@@ -111,6 +112,7 @@
     "markdown-loader": "^2.0.1",
     "ng-packagr": "2.4.1",
     "ng-snippets-loader": "^0.2.5",
+    "primeng": "^5.2.4",
     "prism-hightlight-loader": "^0.1.1",
     "prismjs-loader": "^0.0.4",
     "protractor": "~5.1.2",
@@ -141,6 +143,14 @@
     },
     {
       "path": "./dist/material/esm5/ngx-formly-material.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/ionic/esm5/ngx-formly-ionic.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/primeng/esm5/ngx-formly-primeng.js",
       "maxSize": "5 kB"
     }
   ]

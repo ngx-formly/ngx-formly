@@ -55,6 +55,11 @@ Follow these steps to get started with ng-formly. Also check out our [demos](htt
     npm install @ngx-formly/ionic --save
   ```
 
+- [PrimeNG](http://primefaces.org/primeng/#/):
+  ```bash
+    npm install @ngx-formly/primeng --save
+  ```
+
 #### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
 
 ```typescript
@@ -69,6 +74,9 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 // for ionic import `FormlyIonicModule`:
 // import {FormlyIonicModule} from '@ngx-formly/ionic';
 
+// for primeng import `FormlyPrimeNGModule`:
+// import {FormlyPrimeNGModule} from '@ngx-formly/primeng';
+
 @NgModule({
   imports: [
     ...,
@@ -76,11 +84,14 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
     FormlyModule.forRoot(),
     FormlyBootstrapModule,
 
-    // for material2 use:
+    // for material2 import:
     // FormlyMaterialModule
 
-    // for ionic use:
+    // for ionic import:
     // FormlyIonicModule
+
+    // for primeng import:
+    // FormlyPrimeNGModule
   ],
 })
 export class AppModule {}

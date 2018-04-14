@@ -10,7 +10,7 @@ import { Subject } from 'rxjs/Subject';
     <!-- fix https://github.com/angular/material2/pull/7083 by setting width to 100% -->
     <mat-form-field [hideRequiredMarker]="true" [floatLabel]="to.floatLabel" [style.width]="'100%'">
       <ng-container #fieldComponent></ng-container>
-      <mat-label *ngIf="to.label && field.type !== 'checkbox'">
+      <mat-label *ngIf="to.label && to.hideLabel !== true">
         {{ to.label }}
         <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
       </mat-label>
