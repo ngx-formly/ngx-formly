@@ -1,4 +1,4 @@
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FieldType } from './field.type';
 import { clone, isNullOrUndefined } from '../utils';
@@ -29,8 +29,7 @@ export abstract class FieldArrayType extends FieldType {
   add(i?: number, initialModel?: any) {
     i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
 
-    this.model.splice(i, 0, initialModel ? clone(initialModel) : {});
-    this.formControl.insert(i, new FormGroup({}));
+    this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
     this.field.fieldGroup.splice(i, 0, { ...clone(this.field.fieldArray) });
 
     this.field.fieldGroup.forEach((field, index) => {
