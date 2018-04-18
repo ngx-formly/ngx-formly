@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/formly-js/ngx-formly/compare/v2.0.0...v2.0.1) (2018-04-18)
+
+
+### Bug Fixes
+
+* **core:** do not force using FormGroup when FieldArray is set. ([#894](https://github.com/formly-js/ngx-formly/issues/894)) ([cb16156](https://github.com/formly-js/ngx-formly/commit/cb16156)), closes [#890](https://github.com/formly-js/ngx-formly/issues/890)
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/formly-js/ngx-formly/compare/v2.0.0-rc.55...v2.0.0) (2018-04-15)
 
