@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "entryFile": "index.ts",
+      "externals": {
+        "@ngx-formly/core": "@ngx-formly/core",
+        "@progress/kendo-angular-dropdowns": "@progress/kendo-angular-dropdowns"
+      }
+  },
+  "dest": "../../dist/kendo",
+  "workingDirectory": "../../.ng_build"
+}
