@@ -202,7 +202,7 @@ export interface WrapperOption {
 
 export interface ValidatorOption {
   name: string;
-  validation: string | ValidationErrors;
+  validation: string | ValidationErrors | any;
 }
 
 export interface ValidationMessageOption {
