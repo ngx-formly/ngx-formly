@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
-import { FormlyConfig } from './formly.config';
+import { FormlyConfig, FieldValidatorFn } from './formly.config';
 import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject, isNullOrUndefined } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
@@ -170,14 +170,10 @@ export class FormlyFormBuilder {
         }
       }
     }
+
     if (field.asyncValidators && Array.isArray(field.asyncValidators.validation)) {
-      field.asyncValidators.validation.forEach((validate: any) => {
-        if (typeof validate === 'string') {
-          validators.push(this.formlyConfig.getValidator(validate).validation);
-        } else {
-          validators.push(validate);
-        }
-      });
+      field.asyncValidators.validation
+        .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator)));
     }
 
     if (validators.length) {
@@ -223,13 +219,8 @@ export class FormlyFormBuilder {
     }
 
     if (field.validators && Array.isArray(field.validators.validation)) {
-      field.validators.validation.forEach((validate: any) => {
-        if (typeof validate === 'string') {
-          validators.push(this.formlyConfig.getValidator(validate).validation);
-        } else {
-          validators.push(validate);
-        }
-      });
+      field.validators.validation
+        .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator)));
     }
 
     if (validators.length) {
@@ -331,5 +322,13 @@ export class FormlyFormBuilder {
       case 'max':
         return Validators.max(value);
     }
+  }
+
+  private wrapNgValidatorFn(field: FormlyFieldConfig, validator: string | FieldValidatorFn) {
+    validator = typeof validator === 'string'
+    ? this.formlyConfig.getValidator(validator).validation
+    : validator;
+
+    return (control: AbstractControl) => (validator as FieldValidatorFn)(control, field);
   }
 }
