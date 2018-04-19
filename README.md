@@ -60,6 +60,11 @@ Follow these steps to get started with ng-formly. Also check out our [demos](htt
     npm install @ngx-formly/primeng --save
   ```
 
+- [Kendo](http://www.telerik.com/kendo-angular-ui):
+  ```bash
+    npm install @ngx-formly/kendo --save
+  ```
+
 #### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
 
 ```typescript
@@ -77,6 +82,9 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 // for primeng import `FormlyPrimeNGModule`:
 // import {FormlyPrimeNGModule} from '@ngx-formly/primeng';
 
+// for kendo import `FormlyKendoModule`:
+// import {FormlyKendoModule} from '@ngx-formly/kendo';
+
 @NgModule({
   imports: [
     ...,
@@ -84,14 +92,17 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
     FormlyModule.forRoot(),
     FormlyBootstrapModule,
 
-    // for material2 import:
+    // for material2:
     // FormlyMaterialModule
 
-    // for ionic import:
+    // for ionic:
     // FormlyIonicModule
 
-    // for primeng import:
+    // for primeng:
     // FormlyPrimeNGModule
+
+    // for kendo:
+    // FormlyKendoModule
   ],
 })
 export class AppModule {}
