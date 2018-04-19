@@ -173,7 +173,14 @@ export class FormlyFormBuilder {
     if (field.asyncValidators && Array.isArray(field.asyncValidators.validation)) {
       field.asyncValidators.validation.forEach((validate: any) => {
         if (typeof validate === 'string') {
-          validators.push(this.formlyConfig.getValidator(validate).validation);
+          validators.push((control:FormControl) : any => {
+            let validator = this.formlyConfig.getValidator(validate).validation;
+            if(validator.length==2){
+              return validator(control,field);
+            } else {
+              return validator(control);
+            }
+          });
         } else {
           validators.push(validate);
         }
@@ -225,7 +232,14 @@ export class FormlyFormBuilder {
     if (field.validators && Array.isArray(field.validators.validation)) {
       field.validators.validation.forEach((validate: any) => {
         if (typeof validate === 'string') {
-          validators.push(this.formlyConfig.getValidator(validate).validation);
+          validators.push( (control:FormControl) : any => {
+            let validator = this.formlyConfig.getValidator(validate).validation;
+            if(validator.length==2){
+              return validator(control,field);
+            } else {
+              return validator(control);
+            }
+          });
         } else {
           validators.push(validate);
         }
