@@ -11,6 +11,7 @@ module.exports = {
         'bootstrap',
         'ionic',
         'primeng',
+        'kendo',
         'demo',
         'guides'
       ]
