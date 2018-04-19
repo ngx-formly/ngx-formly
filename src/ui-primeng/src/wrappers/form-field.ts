@@ -2,7 +2,7 @@ import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-wrapper-ion-form-field',
+  selector: 'formly-wrapper-primeng-form-field',
   template: `
     <div *ngIf="to.label && to.hideLabel !== true" class="ui-widget">
       <label [for]="id">
