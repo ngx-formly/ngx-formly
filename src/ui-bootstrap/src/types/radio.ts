@@ -11,11 +11,11 @@ import { FieldType } from '@ngx-formly/core';
             [name]="id"
             [id]="id + '_' + i"
             type="radio"
-            [value]="option.key"
+            [value]="option.label ? option.value : option.key"
             [formControl]="formControl"
             [formlyAttributes]="field" class="custom-control-input">
 
-          <span class="custom-control-label">{{ option.value }}</span>
+          <span class="custom-control-label">{{ option.label ? option.label : option.value }}</span>
           <span class="custom-control-indicator"></span>
         </label>
       </div>
