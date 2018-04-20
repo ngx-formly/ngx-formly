@@ -30,7 +30,7 @@
     <div class="alert alert-info" *ngIf="description" [innerHtml]="description"></div>
     <ng-template #demo></ng-template>
 
-    <div *ngIf="demoComponentRef">
+    <div *ngIf="demoComponentRef && debug !== false">
       <h3>Form Data</h3>
       <pre [style.display]="'none'">{{ model }}</pre>
       <pre #modelPreview></pre>

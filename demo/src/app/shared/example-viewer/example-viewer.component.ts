@@ -11,6 +11,7 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
   @Input() title;
   @Input() description;
   @Input() component;
+  @Input() debug;
   @Input() example: { file: string; content: string }[];
 
   _prevModel: any;
