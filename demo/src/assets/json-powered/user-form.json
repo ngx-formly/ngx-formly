@@ -28,16 +28,16 @@
       "label": "Color Preference (try this out)",
       "options": [
         {
-          "value": "No Preference",
-          "key": null
+          "label": "No Preference",
+          "value": null
         },
         {
-          "value": "Green",
-          "key": "green"
+          "label": "Green",
+          "value": "green"
         },
         {
-          "value": "Blue",
-          "key": "blue"
+          "label": "Blue",
+          "value": "blue"
         }
       ]
     }

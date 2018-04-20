@@ -22,6 +22,7 @@ import { HomeComponent } from './home/home.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'guide', loadChildren: './guides/guides.module#GuidesModule' },
+      { path: 'ui', loadChildren: './ui/ui.module#UIModule' },
       { path: 'examples', loadChildren: './examples/examples.module#ExamplesModule' },
     ]),
   ],
