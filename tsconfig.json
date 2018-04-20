@@ -16,8 +16,13 @@
     "paths": {
       "@ngx-formly/core": ["./core/index"],
       "@ngx-formly/bootstrap": ["./ui-bootstrap/index"],
+
       "@ngx-formly/material": ["./ui-material/index"],
-      "@ngx-formly/material/*": ["./ui-material/*"]
+      "@ngx-formly/material/*": ["./ui-material/*"],
+
+      "@ngx-formly/ionic": ["./ui-ionic/index"],
+      "@ngx-formly/primeng": ["./ui-primeng/index"],
+      "@ngx-formly/kendo": ["./ui-kendo/index"]
     },
     "typeRoots": [
       "./node_modules/@types"

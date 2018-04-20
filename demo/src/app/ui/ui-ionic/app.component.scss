@@ -1,0 +1,13 @@
+@import '~ionic-angular/css/ionic.css';
+
+.app-root {
+  position: relative !important;
+  contain: initial !important;
+
+  ion-backdrop {
+    opacity: .1;
+  }
+  .alert-wrapper {
+    opacity: 1;
+  }
+}

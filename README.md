@@ -24,8 +24,12 @@ application's forms.
 
 #### Quick links
 * [Documentation, demos, and guides](https://formly-js.github.io/ngx-formly)
-* [StackBlitz UI Bootstrap Template](https://stackblitz.com/edit/ngx-formly-ui-bootstrap)
-* [StackBlitz UI Material Template](https://stackblitz.com/edit/ngx-formly-ui-material)
+* StackBlitz Template
+  * [UI Bootstrap](https://stackblitz.com/edit/ngx-formly-ui-bootstrap)
+  * [UI Material](https://stackblitz.com/edit/ngx-formly-ui-material)
+  * [UI Ionic](https://stackblitz.com/edit/ngx-formly-ui-ionic)
+  * [UI PrimeNG](https://stackblitz.com/edit/ngx-formly-ui-primeng)
+  * [UI Kendo](https://stackblitz.com/edit/ngx-formly-ui-kendo)
 
 ## Quick Start
 
