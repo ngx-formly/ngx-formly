@@ -23,7 +23,9 @@ import { FormlyDatepickerTypeComponent } from './datepicker.type';
         wrappers: ['form-field'],
         defaultOptions: {
           templateOptions: {
-            datepickerOptions: {},
+            datepickerOptions: {
+              startView: 'month',
+            },
           },
         },
       }],
