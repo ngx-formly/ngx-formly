@@ -6,11 +6,18 @@ import { AppComponent } from './app.component';
 import { FormlyIonicModule } from '@ngx-formly/ionic';
 import { IonicApp, IonicModule } from 'ionic-angular';
 
+import { DatetimeAppModule, DatetimeExampleConfig } from './datetime';
+import { RangeAppModule, RangeExampleConfig } from './range';
+import { ToggleAppModule, ToggleExampleConfig } from './toggle';
+
 @NgModule({
   imports: [
     CommonModule,
     FormlyIonicModule,
     IonicModule.forRoot(AppComponent),
+    DatetimeAppModule,
+    RangeAppModule,
+    ToggleAppModule,
 
     RouterModule.forChild([
       {
@@ -19,6 +26,9 @@ import { IonicApp, IonicModule } from 'ionic-angular';
         data: {
           examples: [
             ...CommonExampleConfigs,
+            DatetimeExampleConfig,
+            RangeExampleConfig,
+            ToggleExampleConfig,
           ],
         },
       },
