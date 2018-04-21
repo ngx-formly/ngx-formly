@@ -8,6 +8,12 @@
         "entryFile": "index.ts"
       }
     ],
+    "toggle": [
+      {
+        "path": "toggle",
+        "entryFile": "index.ts"
+      }
+    ],
     "externals": {
       "@ngx-formly/core": "@ngx-formly/core",
       "@angular/material/core": "ng.material.core",
@@ -16,7 +22,8 @@
       "@angular/material/radio": "ng.material.radio",
       "@angular/material/select": "ng.material.select",
       "@angular/material/checkbox": "ng.material.checkbox",
-      "@angular/material/datepicker": "ng.material.datepicker"
+      "@angular/material/datepicker": "ng.material.datepicker",
+      "@angular/material/slide-toggle": "ng.material.toggle"
     }
   },
   "dest": "../../dist/material",
