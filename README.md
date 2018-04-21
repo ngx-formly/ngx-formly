@@ -17,10 +17,7 @@ Links:
 [![Gitter](https://badges.gitter.im/formly-js/angular2-formly.svg)](https://gitter.im/formly-js/angular2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-
-@ngx-formly is an Angular module which has a Components to help customize and render JavaScript/JSON configured forms.
-The `formly-form` Component and the `FormlyConfig` service are very powerful and bring unmatched maintainability to your
-application's forms.
+Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an on [Angular Reactive Forms](https://angular.io/guide/reactive-forms)) that bring unmatched maintainability to your application's forms.
 
 #### Quick links
 * [Documentation, demos, and guides](https://formly-js.github.io/ngx-formly)
@@ -29,7 +26,7 @@ application's forms.
 
 ## Quick Start
 
-Follow these steps to get started with ng-formly. Also check out our [demos](https://formly-js.github.io/ngx-formly) for further examples.
+Follow these steps to get started with Ngx Formly. Also check out our [demos](https://formly-js.github.io/ngx-formly) for further examples.
 
 #### 1. Install @angular/forms and @ngx-formly/core packages:
 ```bash
