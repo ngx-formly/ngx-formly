@@ -33,6 +33,7 @@
   ],
   "exclude": [
     "test.ts",
+    "demo/src/assets/**/*.ts",
     "**/*.spec.ts"
   ],
   "compileOnSave": false
