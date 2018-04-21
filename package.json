@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/common",
-  "version": "3.0.0-alpha",
+  "version": "3.0.0-alpha.0",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -157,6 +157,10 @@
     },
     {
       "path": "./dist/primeng/esm5/ngx-formly-primeng.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/kendo/esm5/ngx-formly-kendo.js",
       "maxSize": "5 kB"
     }
   ]

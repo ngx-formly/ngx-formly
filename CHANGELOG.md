@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-alpha.0"></a>
+# [3.0.0-alpha.0](https://github.com/formly-js/ngx-formly/compare/v2.1.1...v3.0.0-alpha.0) (2018-04-21)
+
+
+### Features
+
+* **core:** move managing lifeCycle hooks to `formly-field` component ([#872](https://github.com/formly-js/ngx-formly/issues/872)) ([95fbf83](https://github.com/formly-js/ngx-formly/commit/95fbf83)), closes [#643](https://github.com/formly-js/ngx-formly/issues/643)
+* **core:** remove `formControl` input in FormlyAttributes ([#862](https://github.com/formly-js/ngx-formly/issues/862)) ([f5b6500](https://github.com/formly-js/ngx-formly/commit/f5b6500)), closes [#642](https://github.com/formly-js/ngx-formly/issues/642)
+* **core:** use rxjs lettable operators. ([#857](https://github.com/formly-js/ngx-formly/issues/857)) ([9a6089a](https://github.com/formly-js/ngx-formly/commit/9a6089a))
+* **ionic:** initial work for ui-ionic support ([#659](https://github.com/formly-js/ngx-formly/issues/659)) ([67ef8e7](https://github.com/formly-js/ngx-formly/commit/67ef8e7))
+* initial work for kendo support ([#897](https://github.com/formly-js/ngx-formly/issues/897)) ([8352ca3](https://github.com/formly-js/ngx-formly/commit/8352ca3)), closes [#599](https://github.com/formly-js/ngx-formly/issues/599)
+* initial work for primeng support ([#887](https://github.com/formly-js/ngx-formly/issues/887)) ([08e18b5](https://github.com/formly-js/ngx-formly/commit/08e18b5))
+* **material:** add auto-Complete type example ([8f85216](https://github.com/formly-js/ngx-formly/commit/8f85216)), closes [#615](https://github.com/formly-js/ngx-formly/issues/615)
+* **material:** add slider type ([62f9275](https://github.com/formly-js/ngx-formly/commit/62f9275))
+* **material:** add toggle type ([3ea1839](https://github.com/formly-js/ngx-formly/commit/3ea1839))
+* **material:** implement DatePicker type ([#873](https://github.com/formly-js/ngx-formly/issues/873)) ([a7d6d5b](https://github.com/formly-js/ngx-formly/commit/a7d6d5b)), closes [#614](https://github.com/formly-js/ngx-formly/issues/614)
+
+
+### BREAKING CHANGES
+
+* **core:** `formControl` has been removed in `[formlyAttributes]` directive.
+* **core:** droped Angular 4 support + rxjs version should >= 5.5.8
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/formly-js/ngx-formly/compare/v2.1.0...v2.1.1) (2018-04-21)
 

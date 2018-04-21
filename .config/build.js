@@ -6,6 +6,7 @@ const fs = require("fs"),
     'material',
     'ionic',
     'primeng',
+    'kendo',
   ];
 
 // update `FORMLY-VERSION` in package.json for all sub-packages
