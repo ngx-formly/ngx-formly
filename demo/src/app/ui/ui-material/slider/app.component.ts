@@ -16,7 +16,7 @@ export class AppComponent {
       type: 'slider',
       templateOptions: {
         label: 'Slider label',
-        placeholder: 'Slider Placeholder',
+        // placeholder: 'Slider Placeholder',
         description: 'Slider Description',
         required: true,
       },

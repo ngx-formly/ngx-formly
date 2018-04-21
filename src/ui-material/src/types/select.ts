@@ -24,6 +24,7 @@ export class SelectOption {
     <mat-select [id]="id"
       [formControl]="formControl"
       [formlyAttributes]="field"
+      [placeholder]="to.placeholder"
       [multiple]="to.multiple"
       (selectionChange)="change()"
       [errorStateMatcher]="errorStateMatcher">

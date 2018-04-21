@@ -10,7 +10,8 @@ import { FieldType } from './field';
       [type]="to.type || 'text'"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
-      [formlyAttributes]="field">
+      [formlyAttributes]="field"
+      [placeholder]="to.placeholder">
   `,
 })
 export class FormlyFieldInput extends FieldType implements OnInit {
