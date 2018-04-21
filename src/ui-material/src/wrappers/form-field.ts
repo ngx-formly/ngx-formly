@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy, Renderer2, AfterViewInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -33,12 +33,16 @@ import { Subject } from 'rxjs/Subject';
   `,
   providers: [{ provide: MatFormFieldControl, useExisting: FormlyWrapperFormField }],
 })
-export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDestroy, MatFormFieldControl<any> {
+export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDestroy, MatFormFieldControl<any>, AfterViewInit {
   @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent: ViewContainerRef;
   @ViewChild(MatFormField) formField: MatFormField;
 
   stateChanges = new Subject<void>();
   _errorState = false;
+
+  constructor(private renderer: Renderer2) {
+    super();
+  }
 
   ngOnInit() {
     this.formField._control = this;
@@ -46,6 +50,13 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
     if (this.to.floatPlaceholder) {
       this.to.floatLabel = this.to.floatPlaceholder;
       console.warn(`${this.field.key}: Passing 'floatPlaceholder' is deprecated, Use 'floatLabel' instead.`);
+    }
+  }
+
+  ngAfterViewInit() {
+    // temporary fix for https://github.com/angular/material2/issues/7891
+    if (this.formField.underlineRef && this.to.hideFieldUnderline === true) {
+      this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
     }
   }
 
