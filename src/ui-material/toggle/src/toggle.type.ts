@@ -1,4 +1,4 @@
-import { Component, Renderer2, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
 
 @Component({
@@ -9,15 +9,4 @@ import { FieldType } from '@ngx-formly/material';
     </mat-slide-toggle>
   `,
 })
-export class FormlyToggleTypeComponent extends FieldType implements AfterViewInit {
-  constructor(private renderer: Renderer2) {
-    super();
-  }
-
-  ngAfterViewInit() {
-    super.ngAfterViewInit();
-    if (this.formField && this.formField.underlineRef) {
-      this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
-    }
-  }
-}
+export class FormlyToggleTypeComponent extends FieldType {}

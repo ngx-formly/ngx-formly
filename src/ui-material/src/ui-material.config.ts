@@ -56,6 +56,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
+          hideFieldUnderline: true,
           floatLabel: 'always',
           options: [],
         },
@@ -67,6 +68,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
+          hideFieldUnderline: true,
           indeterminate: true,
           floatLabel: 'always',
           hideLabel: true,
@@ -80,6 +82,7 @@ export const MATERIAL_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
+          hideFieldUnderline: true,
           floatLabel: 'always',
           options: [],
         },

@@ -4,6 +4,7 @@ import { ExamplesRouterViewerComponent } from '../../shared';
 import { CommonModule, CommonExampleConfigs } from '../common';
 import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
 import { ToggleAppModule, ToggleExampleConfig } from './toggle';
+import { SliderAppModule, SliderExampleConfig } from './slider';
 
 import { FormlyMaterialModule } from '@ngx-formly/material';
 
@@ -13,6 +14,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
     FormlyMaterialModule,
     DatepickerAppModule,
     ToggleAppModule,
+    SliderAppModule,
     RouterModule.forChild([
       {
         path: '',
@@ -22,6 +24,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
             ...CommonExampleConfigs,
             DatepickerExampleConfig,
             ToggleExampleConfig,
+            SliderExampleConfig,
           ],
         },
       },

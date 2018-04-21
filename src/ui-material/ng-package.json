@@ -14,6 +14,12 @@
         "entryFile": "index.ts"
       }
     ],
+    "slider": [
+      {
+        "path": "slider",
+        "entryFile": "index.ts"
+      }
+    ],
     "externals": {
       "@ngx-formly/core": "@ngx-formly/core",
       "@angular/material/core": "ng.material.core",

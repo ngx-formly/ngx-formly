@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType } from './field';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
     </ng-container>
   `,
 })
-export class FormlyFieldMultiCheckbox extends FieldType implements AfterViewInit {
+export class FormlyFieldMultiCheckbox extends FieldType {
   static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
     if (!(field.templateOptions.options instanceof Observable)) {
       let controlGroupConfig = field.templateOptions.options.reduce((previous, option) => {
@@ -27,19 +27,6 @@ export class FormlyFieldMultiCheckbox extends FieldType implements AfterViewInit
       );
     } else {
       throw new Error(`[Formly Error] You cannot pass an Observable to a multicheckbox yet.`);
-    }
-  }
-
-  constructor(private renderer?: Renderer2) {
-    super();
-  }
-
-  ngAfterViewInit() {
-    if (this.formField) {
-      // temporary fix for https://github.com/angular/material2/issues/7891
-      if (this.formField.underlineRef && this.renderer) {
-        this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
-      }
     }
   }
 }
