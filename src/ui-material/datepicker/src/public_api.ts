@@ -1,1 +1,1 @@
-export * from './';
+export { FormlyMatDatepickerModule } from './datepicker.module';

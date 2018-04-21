@@ -1,1 +1,1 @@
-export * from './';
+export { FormlyMatToggleModule } from './toggle.module';

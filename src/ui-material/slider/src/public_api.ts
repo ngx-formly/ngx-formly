@@ -1,1 +1,1 @@
-export * from './';
+export { FormlyMatSliderModule } from './slider.module';
