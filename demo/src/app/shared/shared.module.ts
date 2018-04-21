@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 
+import { StackblitzButtonModule } from './stackblitz';
 import { ExampleViewerComponent } from './example-viewer/example-viewer.component';
 import { ExamplesRouterViewerComponent } from './examples-router-viewer/examples-router-viewer.component';
 import { CopierService } from './copier/copier.service';
@@ -19,6 +20,7 @@ import { CopierService } from './copier/copier.service';
     MatTabsModule,
     MatIconModule,
     MatButtonModule,
+    StackblitzButtonModule,
   ],
   exports: [
     CommonModule,
