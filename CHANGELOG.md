@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/formly-js/ngx-formly/compare/v2.0.1...v2.1.0) (2018-04-21)
+
+
+### Features
+
+* **core:** pass field instance into ValidatorOption callback ([#898](https://github.com/formly-js/ngx-formly/issues/898)) ([0233d41](https://github.com/formly-js/ngx-formly/commit/0233d41))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/formly-js/ngx-formly/compare/v2.0.0...v2.0.1) (2018-04-18)
 
