@@ -2,24 +2,9 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "lib": {
     "entryFile": "index.ts",
-    "datepicker": [
-      {
-        "path": "datepicker",
-        "entryFile": "index.ts"
-      }
-    ],
-    "toggle": [
-      {
-        "path": "toggle",
-        "entryFile": "index.ts"
-      }
-    ],
-    "slider": [
-      {
-        "path": "slider",
-        "entryFile": "index.ts"
-      }
-    ],
+    "datepicker": [{ "path": "datepicker" }],
+    "toggle": [{ "path": "toggle" }],
+    "slider": [{ "path": "slider" }],
     "externals": {
       "@ngx-formly/core": "@ngx-formly/core",
       "@angular/material/core": "ng.material.core",
