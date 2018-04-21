@@ -1,5 +1,5 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
-import { ValidationErrors, FormGroup, FormArray } from '@angular/forms';
+import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
@@ -200,9 +200,13 @@ export interface WrapperOption {
   types?: string[];
 }
 
+export interface FieldValidatorFn {
+  (c: AbstractControl, field: FormlyFieldConfig): ValidationErrors | null;
+}
+
 export interface ValidatorOption {
   name: string;
-  validation: string | ValidationErrors;
+  validation: FieldValidatorFn;
 }
 
 export interface ValidationMessageOption {
