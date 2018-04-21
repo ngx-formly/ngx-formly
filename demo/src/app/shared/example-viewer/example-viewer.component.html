@@ -1,6 +1,7 @@
 <div class="docs-example-viewer-wrapper">
   <div class="docs-example-viewer-title">
     <div class="docs-example-viewer-title-spacer">{{ title }}</div>
+    <formly-stackblitz-button *ngIf="debug !== false" [example]="example"></formly-stackblitz-button>
     <button mat-icon-button type="button" (click)="toggleSourceView()" [matTooltip]="'View source'">
       <mat-icon>
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fit="" preserveAspectRatio="xMidYMid meet"
