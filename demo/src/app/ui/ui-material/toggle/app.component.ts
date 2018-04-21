@@ -16,7 +16,6 @@ export class AppComponent {
       type: 'toggle',
       templateOptions: {
         label: 'Toggle label',
-        placeholder: 'Toggle Placeholder',
         description: 'Toggle Description',
         required: true,
       },

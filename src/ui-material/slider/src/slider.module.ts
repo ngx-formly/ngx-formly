@@ -21,7 +21,6 @@ import { FormlySliderTypeComponent } from './slider.type';
           templateOptions: {
             hideFieldUnderline: true,
             floatLabel: 'always',
-            hideLabel: true,
           },
         },
       }],
