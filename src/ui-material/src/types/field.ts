@@ -57,7 +57,7 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
   get disabled() { return this.to.disabled; }
   get required() { return this.to.required; }
   get placeholder() { return this.to.placeholder; }
-  get shouldPlaceholderFloat() { return !!this.to.placeholder; }
+  get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
   get value() { return this.formControl.value; }
   get ngControl() { return this.formControl as any; }
   get empty() { return !this.formControl.value; }

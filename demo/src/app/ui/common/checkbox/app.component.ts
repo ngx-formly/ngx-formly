@@ -16,7 +16,6 @@ export class AppComponent {
       type: 'checkbox',
       templateOptions: {
         label: 'Checkbox',
-        placeholder: 'Placeholder',
         description: 'Description',
         required: true,
       },

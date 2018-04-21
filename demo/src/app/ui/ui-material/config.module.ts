@@ -5,6 +5,7 @@ import { CommonModule, CommonExampleConfigs } from '../common';
 import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
 import { ToggleAppModule, ToggleExampleConfig } from './toggle';
 import { SliderAppModule, SliderExampleConfig } from './slider';
+import { AutocompleteAppModule, AutocompleteExampleConfig } from './autocomplete';
 
 import { FormlyMaterialModule } from '@ngx-formly/material';
 
@@ -15,6 +16,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
     DatepickerAppModule,
     ToggleAppModule,
     SliderAppModule,
+    AutocompleteAppModule,
     RouterModule.forChild([
       {
         path: '',
@@ -25,6 +27,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
             DatepickerExampleConfig,
             ToggleExampleConfig,
             SliderExampleConfig,
+            AutocompleteExampleConfig,
           ],
         },
       },
