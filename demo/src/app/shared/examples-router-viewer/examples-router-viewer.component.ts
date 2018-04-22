@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
     <ng-container *ngIf="router.data | async as data">
       <formly-example-viewer *ngFor="let example of data.examples"
         [title]="example.title"
+        [type]="type"
         [description]="example.description"
         [debug]="example.debug"
         [component]="example.component"
@@ -16,5 +17,14 @@ import { ActivatedRoute } from '@angular/router';
   `,
 })
 export class ExamplesRouterViewerComponent {
-  constructor(public router: ActivatedRoute) {}
+  type;
+
+  constructor(public router: ActivatedRoute) {
+    let r = router;
+    while (!r.routeConfig.path) {
+      r = r.parent;
+    }
+
+    this.type = r.routeConfig.path;
+  }
 }
