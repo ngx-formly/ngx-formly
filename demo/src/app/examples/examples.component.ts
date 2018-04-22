@@ -4,12 +4,12 @@ import { Component } from '@angular/core';
   selector: 'formly-demo-examples',
   template: `
   <mat-sidenav-container style="min-height: 90% !important;" class="mat-typography">
-    <mat-sidenav mode="side" opened="true" [style.width.px]="250">
+    <mat-sidenav mode="side" opened="true" [style.width.px]="250" [fixedTopGap]="59" [fixedInViewport]="true">
       <mat-nav-list *ngFor="let nav of navs" dense>
         <h3 mat-subheader>{{ nav.title }}</h3>
         <mat-divider></mat-divider>
 
-        <a *ngFor="let link of nav.links" mat-list-item [routerLink]="link.href">
+        <a *ngFor="let link of nav.links" mat-list-item [routerLink]="link.href" routerLinkActive="active-link">
           {{ link.text }}
         </a>
       </mat-nav-list>
