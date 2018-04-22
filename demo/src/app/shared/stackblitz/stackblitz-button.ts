@@ -10,9 +10,10 @@ import { MatButtonModule, MatIconModule, MatTooltipModule } from '@angular/mater
 export class StackblitzButton {
   stackblitzForm: HTMLFormElement;
 
+  @Input() type: string;
   @Input()
   set example(exampleData) {
-    this.stackblitzForm = this.stackblitzWriter.constructStackblitzForm(exampleData);
+    this.stackblitzForm = this.stackblitzWriter.constructStackblitzForm(this.type, exampleData);
   }
 
   constructor(private stackblitzWriter: StackblitzWriter) {}
