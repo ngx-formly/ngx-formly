@@ -8,6 +8,8 @@ there are prebuilt templates you can use:
   - Material
   - Bootstrap
   - Ionic
+  - Kendo
+  - PrimeNG
 
 
 ## Creating a Custom Template

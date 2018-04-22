@@ -19,6 +19,17 @@ Links:
 
 Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an on [Angular Reactive Forms](https://angular.io/guide/reactive-forms)) that bring unmatched maintainability to your application's forms.
 
+**Supported UI libs**
+
+| UI                                                |   |
+| ------------------------------------------------- | - |
+| [Bootstrap](https://getbootstrap.com)             | ✅ |
+| [Ionic](https://ionicframework.com)               | ✅ |
+| [Kendo](http://www.telerik.com/kendo-angular-ui)  | ✅ |
+| [Material2](https://github.com/angular/material2) | ✅ |
+| [PrimeNG](http://primefaces.org/primeng/#/)       | ✅ |
+
+
 #### Quick links
 * [Documentation, demos, and guides](https://formly-js.github.io/ngx-formly)
 * StackBlitz Template

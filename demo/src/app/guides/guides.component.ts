@@ -5,9 +5,9 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'formly-demo-examples',
   template: `
     <mat-sidenav-container style="min-height: 90% !important;">
-      <mat-sidenav mode="side" opened="true" [style.width.px]="250">
+      <mat-sidenav mode="side" opened="true" [style.width.px]="250" [fixedTopGap]="59" [fixedInViewport]="true">
         <mat-nav-list>
-          <a mat-list-item  *ngFor="let link of navs" [routerLink]="link.href">
+          <a mat-list-item  *ngFor="let link of navs" [routerLink]="link.href" routerLinkActive="active-link">
             {{ link.text }}
           </a>
         </mat-nav-list>
