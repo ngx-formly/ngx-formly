@@ -107,16 +107,12 @@ export class FormlyFormBuilder {
   private initFieldExpression(field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
     if (field.expressionProperties) {
       for (const key in field.expressionProperties as any) {
-        if (key.indexOf('field.') === 0) {
-          console.warn(`FormlyForm: field(${field.key}) using "field." path in "expressionProperties" is deprecated, use "${key.replace('field.', '')}" instead.`);
-        }
-
         if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
           // cache built expression
           field.expressionProperties[key] = {
             expression: isFunction(field.expressionProperties[key]) ? field.expressionProperties[key] : evalStringExpression(field.expressionProperties[key], ['model', 'formState']),
             expressionValueSetter: evalExpressionValueSetter(
-              key.indexOf('field.') === 0 || key.indexOf('model.') === 0
+              key.indexOf('model.') === 0
                 ? key
                 : `field.${key}`,
               ['expressionValue', 'model', 'field'],
