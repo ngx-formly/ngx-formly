@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { VERSION } from '@angular/material';
+import { ExampleType } from '../example-viewer/example-viewer.component';
 
 const STACKBLITZ_URL = 'https://run.stackblitz.com/api/angular/v1';
 
@@ -35,7 +36,7 @@ const TEMPLATE_FILES = {
   ],
 };
 
-const TAGS: string[] = ['angular', 'material', 'example'];
+const TAGS: string[] = ['angular', 'formly', 'example'];
 const angularVersion = '^5.0.0';
 const materialVersion = '^5.0.0';
 const formlyVersion = '^3.0.0-alpha';
@@ -113,32 +114,33 @@ export class StackblitzWriter {
    * Returns an HTMLFormElement that will open a new stackblitz template with the example data when
    * called with submit().
    */
-  constructStackblitzForm(type: string, files: any): HTMLFormElement {
-
+  constructStackblitzForm(type: string, exampleData: ExampleType): HTMLFormElement {
     const indexFile = `app%2Fapp.component.ts`;
     const form = this._createFormElement(indexFile);
 
     TAGS.forEach((tag, i) => this._appendFormInput(form, `tags[${i}]`, tag));
     this._appendFormInput(form, 'private', 'true');
+    this._appendFormInput(form, 'description', exampleData.title);
 
-    const appModuleContent = files.find(f => f.file === 'app.module.ts').filecontent;
-    const options: any = {
-      type: type,
-    };
+    const appModuleContent = exampleData.files.find(f => f.file === 'app.module.ts').filecontent;
 
-    if (appModuleContent.indexOf('@ngx-formly/bootstrap') !== -1) {
-      options.type = 'bootstrap';
-    } else if (appModuleContent.indexOf('@ngx-formly/material') !== -1) {
-      options.type = 'material';
-    } else if (appModuleContent.indexOf('@ngx-formly/kendo') !== -1) {
-      options.type = 'kendo';
-    } else if (appModuleContent.indexOf('@ngx-formly/ionic') !== -1) {
-      options.type = 'ionic';
-    } else if (appModuleContent.indexOf('@ngx-formly/primeng') !== -1) {
-      options.type = 'primeng';
+    const options: any = { type };
+
+    if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng'].indexOf(options.type) === -1) {
+      if (appModuleContent.indexOf('@ngx-formly/bootstrap') !== -1) {
+        options.type = 'bootstrap';
+      } else if (appModuleContent.indexOf('@ngx-formly/material') !== -1) {
+        options.type = 'material';
+      } else if (appModuleContent.indexOf('@ngx-formly/kendo') !== -1) {
+        options.type = 'kendo';
+      } else if (appModuleContent.indexOf('@ngx-formly/ionic') !== -1) {
+        options.type = 'ionic';
+      } else if (appModuleContent.indexOf('@ngx-formly/primeng') !== -1) {
+        options.type = 'primeng';
+      }
     }
 
-    if (['primeng', 'material'].indexOf(type) !== -1 || appModuleContent.indexOf('@angular/material') !== -1) {
+    if (['primeng', 'material'].indexOf(options.type) !== -1 || appModuleContent.indexOf('@angular/material') !== -1) {
       options.includeMaterial = true;
       options.useAnimation = true;
     }
@@ -174,7 +176,7 @@ export class StackblitzWriter {
         );
       });
 
-    files.forEach(data => {
+    exampleData.files.forEach(data => {
       this._addFileToForm(
         form,
         data,
@@ -249,11 +251,12 @@ export class StackblitzWriter {
       }
 
       filecontent = filecontent.replace('declarations: [', `bootstrap: [AppComponent],\n  declarations: [`);
-    } else if (fileName === 'styles.scss' && options.type !== 'material' && options.includeMaterial) {
+    } else if (fileName === 'styles.scss') {
+      filecontent = `${filecontent}\nbody { padding: 10px; }`;
 
-      filecontent = `${filecontent}
-      @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-      `;
+      if (options.type !== 'material' && options.includeMaterial) {
+        filecontent = `${filecontent}\n@import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; `;
+      }
     }
 
     return filecontent;

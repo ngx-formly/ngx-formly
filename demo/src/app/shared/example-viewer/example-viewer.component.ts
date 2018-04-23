@@ -2,18 +2,22 @@ import { Component, Input, OnInit, OnDestroy, ViewChild, ViewContainerRef, Compo
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
 
+export interface ExampleType {
+  title: string;
+  description: string;
+  component: any;
+  debug: boolean;
+  files: { file: string; filecontent: string; content: string }[];
+}
+
 @Component({
   selector: 'formly-example-viewer',
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
 })
 export class ExampleViewerComponent implements OnInit, OnDestroy {
-  @Input() title;
-  @Input() description;
-  @Input() component;
-  @Input() debug;
-  @Input() type;
-  @Input() example: { file: string; content: string }[];
+  @Input() type: string;
+  @Input() exampleData: ExampleType;
 
   _prevModel: any;
 
@@ -39,7 +43,7 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.component);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.exampleData.component);
     this.demoComponentRef = this.demoRef.createComponent(componentFactory);
   }
 
