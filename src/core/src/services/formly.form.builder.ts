@@ -48,8 +48,8 @@ export class FormlyFormBuilder {
       }
       this.initFieldOptions(field);
       this.initFieldExpression(field, model, options);
-      this.initFieldValidation(field);
-      this.initFieldAsyncValidation(field);
+      this.initFieldValidation(field, model);
+      this.initFieldAsyncValidation(field, model);
 
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
@@ -150,7 +150,7 @@ export class FormlyFormBuilder {
     }
   }
 
-  private initFieldAsyncValidation(field: FormlyFieldConfig) {
+  private initFieldAsyncValidation(field: FormlyFieldConfig, model: any) {
     const validators: any = [];
     if (field.asyncValidators) {
       for (const validatorName in field.asyncValidators) {
@@ -173,7 +173,7 @@ export class FormlyFormBuilder {
 
     if (field.asyncValidators && Array.isArray(field.asyncValidators.validation)) {
       field.asyncValidators.validation
-        .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator)));
+        .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator, model)));
     }
 
     if (validators.length) {
@@ -187,7 +187,7 @@ export class FormlyFormBuilder {
     }
   }
 
-  private initFieldValidation(field: FormlyFieldConfig) {
+  private initFieldValidation(field: FormlyFieldConfig, model: any) {
     const validators: any = [];
     FORMLY_VALIDATORS
       .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt))
@@ -220,7 +220,7 @@ export class FormlyFormBuilder {
 
     if (field.validators && Array.isArray(field.validators.validation)) {
       field.validators.validation
-        .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator)));
+        .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator, model)));
     }
 
     if (validators.length) {
@@ -324,11 +324,11 @@ export class FormlyFormBuilder {
     }
   }
 
-  private wrapNgValidatorFn(field: FormlyFieldConfig, validator: string | FieldValidatorFn) {
+  private wrapNgValidatorFn(field: FormlyFieldConfig, validator: string | FieldValidatorFn, model: any) {
     validator = typeof validator === 'string'
     ? this.formlyConfig.getValidator(validator).validation
     : validator;
 
-    return (control: AbstractControl) => (validator as FieldValidatorFn)(control, field);
+    return (control: AbstractControl) => (validator as FieldValidatorFn)(control, field, model);
   }
 }
