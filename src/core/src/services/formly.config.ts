@@ -201,7 +201,7 @@ export interface WrapperOption {
 }
 
 export interface FieldValidatorFn {
-  (c: AbstractControl, field: FormlyFieldConfig): ValidationErrors | null;
+  (c: AbstractControl, field: FormlyFieldConfig, model: any): ValidationErrors | null;
 }
 
 export interface ValidatorOption {
