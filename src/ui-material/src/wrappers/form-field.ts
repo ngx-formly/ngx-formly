@@ -86,7 +86,4 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
   get ngControl() { return this.formControl as any; }
   get empty() { return !this.formControl.value; }
   get shouldLabelFloat() { return this.focused || !this.empty; }
-  focusMonitor(elements: any[] = []) {
-    console.warn(`${this.field.key}: 'focusMonitor' is deprecated, and it will be removed in the next major version.`);
-  }
 }
