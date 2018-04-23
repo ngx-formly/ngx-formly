@@ -1,7 +1,7 @@
 <div class="docs-example-viewer-wrapper">
   <div class="docs-example-viewer-title">
-    <div class="docs-example-viewer-title-spacer">{{ title }}</div>
-    <formly-stackblitz-button [type]="type" [example]="example"></formly-stackblitz-button>
+    <div class="docs-example-viewer-title-spacer">{{ exampleData.title }}</div>
+    <formly-stackblitz-button [type]="type" [example]="exampleData"></formly-stackblitz-button>
     <button mat-icon-button type="button" (click)="toggleSourceView()" [matTooltip]="'View source'">
       <mat-icon>
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fit="" preserveAspectRatio="xMidYMid meet"
@@ -15,7 +15,7 @@
 
   <div class="docs-example-viewer-source" *ngIf="showSource">
     <mat-tab-group>
-      <mat-tab *ngFor="let f of example" [label]="f.file">
+      <mat-tab *ngFor="let f of exampleData.files" [label]="f.file">
         <div class="docs-example-source-wrapper">
           <button mat-icon-button type="button" class="docs-example-source-copy" title="Copy example source" aria-label="Copy example source to clipboard"
             (click)="copySource(textContent)">
@@ -28,10 +28,10 @@
   </div>
 
   <div class="docs-example-viewer-body">
-    <div class="alert alert-info" *ngIf="description" [innerHtml]="description"></div>
+    <div class="alert alert-info" *ngIf="exampleData.description" [innerHtml]="exampleData.description"></div>
     <ng-template #demo></ng-template>
 
-    <div *ngIf="demoComponentRef && debug !== false">
+    <div *ngIf="demoComponentRef && exampleData.debug !== false">
       <h3>Form Data</h3>
       <pre [style.display]="'none'">{{ model }}</pre>
       <pre #modelPreview></pre>

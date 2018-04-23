@@ -1,6 +1,7 @@
 import { Component, Input, NgModule } from '@angular/core';
 import { StackblitzWriter } from './stackblitz-writer';
 import { MatButtonModule, MatIconModule, MatTooltipModule } from '@angular/material';
+import { ExampleType } from '../example-viewer/example-viewer.component';
 
 @Component({
   selector: 'formly-stackblitz-button',
@@ -8,11 +9,11 @@ import { MatButtonModule, MatIconModule, MatTooltipModule } from '@angular/mater
   providers: [StackblitzWriter],
 })
 export class StackblitzButton {
-  stackblitzForm: HTMLFormElement;
+  stackblitzForm;
 
   @Input() type: string;
   @Input()
-  set example(exampleData) {
+  set example(exampleData: ExampleType) {
     this.stackblitzForm = this.stackblitzWriter.constructStackblitzForm(this.type, exampleData);
   }
 
