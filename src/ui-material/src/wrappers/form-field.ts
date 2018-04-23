@@ -47,10 +47,6 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
   ngOnInit() {
     this.formField._control = this;
     (<any> this.field)['__formField__'] = this.formField;
-    if (this.to.floatPlaceholder) {
-      this.to.floatLabel = this.to.floatPlaceholder;
-      console.warn(`${this.field.key}: Passing 'floatPlaceholder' is deprecated, Use 'floatLabel' instead.`);
-    }
   }
 
   ngAfterViewInit() {
