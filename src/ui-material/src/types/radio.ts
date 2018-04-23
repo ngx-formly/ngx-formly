@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FieldType } from './field';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'formly-field-mat-radio',
   template: `
-    <mat-radio-group [formControl]="formControl" [formlyAttributes]="field" (change)="change()">
+    <mat-radio-group [formControl]="formControl" [formlyAttributes]="field" (change)="change($event)">
       <mat-radio-button *ngFor="let option of to.options; let i = index;" [id]="id + '_' + i" [value]="option.label ? option.value : option.key">
         {{ option.label ? option.label : option.value }}
       </mat-radio-button>
@@ -12,13 +13,9 @@ import { FieldType } from './field';
   `,
 })
 export class FormlyFieldRadio extends FieldType {
-  change() {
+  change($event: MatRadioChange) {
     if (this.to.change) {
-      if (this.to.change.length === 2) {
-        this.to.change(this.field, this.formControl);
-      } else {
-        this.to.change(this.field);
-      }
+      this.to.change(this.field, $event);
     }
   }
 }

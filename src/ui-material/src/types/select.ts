@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { FieldType } from './field';
 import { Observable } from 'rxjs/Observable';
 import { of as observableOf } from 'rxjs/observable/of';
@@ -26,7 +26,7 @@ export class SelectOption {
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
       [multiple]="to.multiple"
-      (selectionChange)="change()"
+      (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher">
       <ng-container *ngFor="let item of selectOptions | async">
         <mat-optgroup *ngIf="item.group" label="{{item.label}}">
@@ -74,13 +74,9 @@ export class FormlyFieldSelect extends FieldType implements OnInit {
     }
   }
 
-  change() {
+  change($event: MatSelectChange) {
     if (this.to.change) {
-      if (this.to.change.length === 2) {
-        this.to.change(this.field, this.formControl);
-      } else {
-        this.to.change(this.field);
-      }
+      this.to.change(this.field, $event);
     }
   }
 }
