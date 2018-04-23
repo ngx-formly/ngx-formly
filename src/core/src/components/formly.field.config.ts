@@ -152,7 +152,7 @@ export interface FormlyFieldConfig {
   parsers?: ((value: any, index: number) => {})[];
 }
 
-export type FormlyAttributeEvent = (field: FormlyFieldConfig, formControlOrEvent?: AbstractControl | any, useLegacyApi?: boolean) => void;
+export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
 
 export interface FormlyTemplateOptions {
   type?: string;

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FieldType } from './field';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'formly-field-mat-checkbox',
@@ -8,7 +9,7 @@ import { FieldType } from './field';
       [formControl]="formControl"
       [id]="id"
       [formlyAttributes]="field"
-      (change)="change()"
+      (change)="change($event)"
       [indeterminate]="to.indeterminate && model[key] === undefined"
       [align]="to.align">
       {{ to.label }}
@@ -17,13 +18,9 @@ import { FieldType } from './field';
   `,
 })
 export class FormlyFieldCheckbox extends FieldType {
-  change() {
+  change($event: MatCheckboxChange) {
     if (this.to.change) {
-      if (this.to.change.length === 2) {
-        this.to.change(this.field, this.formControl);
-      } else {
-        this.to.change(this.field);
-      }
+      this.to.change(this.field, $event);
     }
   }
 }
