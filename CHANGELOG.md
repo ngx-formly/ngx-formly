@@ -2,6 +2,70 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-alpha.1"></a>
+# [3.0.0-alpha.1](https://github.com/formly-js/ngx-formly/compare/v3.0.0-alpha.0...v3.0.0-alpha.1) (2018-04-23)
+
+
+### Bug Fixes
+
+* **material:** use default entryFile ([8609732](https://github.com/formly-js/ngx-formly/commit/8609732))
+
+
+### Features
+
+* **core:** remove deprecated 'field.' path in `expressionProperties` ([073e693](https://github.com/formly-js/ngx-formly/commit/073e693))
+* **core:** remove passing formControl for formlyAttributes events ([91bd310](https://github.com/formly-js/ngx-formly/commit/91bd310))
+* **material:** remove deprected floatPlaceholder ([0c4519e](https://github.com/formly-js/ngx-formly/commit/0c4519e))
+* **material:** remove deprected focusMonitor method ([08cd92f](https://github.com/formly-js/ngx-formly/commit/08cd92f))
+
+
+### BREAKING CHANGES
+
+* **core:** Passing `formControl` as a second argument for (focus, blur, keyup, keydown, click, change, keypress) events is removed rely on `field.formControl` instead.
+
+  Before:
+    ```ts
+    keypress: (field, formControl) => { console.log(formControl.value); },
+    ```
+
+  After:
+    ```ts
+    keypress: (field, event) => { console.log(field.formControl.value); },
+    ```
+
+* **core:** Using `field.prop` path in `expressionProperties` is removed, use `prop` instead.
+
+  Before:
+    ```ts
+    expressionProperties = {
+      'field.className': ...
+    }
+    ```
+
+  After:
+    ```ts
+    expressionProperties = {
+      'className': ...
+    }
+    ```
+
+* **material:** FormlyWrapperFormField::focusMonitor is removed
+* **material:** the deprecated `floatPlaceholder` option is replaced by `floatLabel`
+
+  Before:
+    ```ts
+    templateOptions: {
+      floatPlaceholder: ...
+    }
+    ```
+
+  After:
+    ```ts
+    templateOptions: {
+      floatLabel: ...
+    }
+    ```
+
 <a name="3.0.0-alpha.0"></a>
 # [3.0.0-alpha.0](https://github.com/formly-js/ngx-formly/compare/v2.1.1...v3.0.0-alpha.0) (2018-04-21)
 
