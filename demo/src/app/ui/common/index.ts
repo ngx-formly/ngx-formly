@@ -14,9 +14,18 @@ const CommonExampleConfigs = [
   SelectExampleConfig,
 ];
 
+const CommonExampleComponents = [
+  InputAppComponent,
+  TextareaAppComponent,
+  CheckboxAppComponent,
+  RadioAppComponent,
+  SelectAppComponent,
+];
+
 export {
   CommonModule,
   CommonExampleConfigs,
+  CommonExampleComponents,
   InputAppModule,
   TextareaAppModule,
   CheckboxAppModule,

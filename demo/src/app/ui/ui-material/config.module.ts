@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ExamplesRouterViewerComponent } from '../../shared';
-import { CommonModule, CommonExampleConfigs } from '../common';
-import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
-import { ToggleAppModule, ToggleExampleConfig } from './toggle';
-import { SliderAppModule, SliderExampleConfig } from './slider';
-import { AutocompleteAppModule, AutocompleteExampleConfig } from './autocomplete';
+import { CommonModule, CommonExampleConfigs, CommonExampleComponents } from '../common';
+import { DatepickerAppModule, DatepickerExampleConfig, DatepickerAppComponent } from './datepicker';
+import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './toggle';
+import { SliderAppModule, SliderExampleConfig, SliderAppComponent } from './slider';
+import { AutocompleteAppModule, AutocompleteExampleConfig, AutocompleteAppComponent } from './autocomplete';
 
 import { FormlyMaterialModule } from '@ngx-formly/material';
 
@@ -32,6 +32,14 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
         },
       },
     ]),
+  ],
+  entryComponents: [
+    ...CommonExampleComponents,
+
+    DatepickerAppComponent,
+    ToggleAppComponent,
+    SliderAppComponent,
+    AutocompleteAppComponent,
   ],
 })
 export class ConfigModule { }
