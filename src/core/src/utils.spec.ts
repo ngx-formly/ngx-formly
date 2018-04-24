@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel, clone } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel, clone, assignModelToFields } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 
 describe('FormlyUtils service', () => {
@@ -246,6 +246,66 @@ describe ('getFieldModel', () => {
         val: 2,
       };
       expect(evalExpression(expression, this, [this.model])).toBe(2);
+    });
+  });
+});
+
+describe('assignModelToFields', () => {
+  let fields: FormlyFieldConfig[],
+    model: any;
+
+  it('with simple field', () => {
+    model = { city: 'foo' };
+    fields = [{ key: 'city' }];
+
+    assignModelToFields(fields, model);
+
+    expect(fields[0].model).toEqual(model);
+  });
+
+  describe('with fieldGroup', () => {
+    it('fieldGroup without key', () => {
+      model = { city: 'foo' };
+      fields = [{
+        fieldGroup: [{
+          key: 'city',
+        }],
+      }];
+
+      assignModelToFields(fields, model);
+
+      expect(fields[0].model).toEqual(model);
+      expect(fields[0].fieldGroup[0].model).toEqual(model);
+    });
+
+    it('fieldGroup with key', () => {
+      model = { address: { city: 'foo' } };
+      fields = [{
+        key: 'address',
+        fieldGroup: [{
+          key: 'city',
+        }],
+      }];
+
+      assignModelToFields(fields, model);
+
+      expect(fields[0].model).toEqual(model.address);
+      expect(fields[0].fieldGroup[0].model).toEqual(model.address);
+    });
+
+    it('fieldGroup with nested key', () => {
+      model = { location: { address: { city: 'foo' } } };
+      fields = [{
+        key: 'location.address',
+        fieldGroup: [{
+          key: 'city',
+        }],
+      }];
+
+      assignModelToFields(fields, model);
+
+      expect(fields[0].model).toEqual(model.location.address);
+      expect(fields[0].fieldGroup[0].model).toEqual(model.location.address);
     });
   });
 });

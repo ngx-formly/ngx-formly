@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig, FieldValidatorFn } from './formly.config';
-import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject, isNullOrUndefined, clone } from './../utils';
+import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, isObject, isNullOrUndefined, clone, assignModelToFields } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
-import { getKeyPath, isUndefined, isFunction } from '../utils';
+import { getKeyPath, isFunction } from '../utils';
 import { FormlyFormExpression } from './formly.form.expression';
 
 @Injectable()
@@ -30,30 +30,27 @@ export class FormlyFormBuilder {
       }
     });
 
-    this._buildForm(form, fields, model, options);
+    assignModelToFields(fields, model);
+    this._buildForm(form, fields, options);
     this.formlyFormExpression.checkFields(form, fields, model, options);
   }
 
-  private _buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+  private _buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], options: FormlyFormOptions) {
     this.formId++;
-    this.registerFormControls(form, fields, model, options);
+    this.registerFormControls(form, fields, options);
   }
 
-  private registerFormControls(form: FormGroup | FormArray, fields: FormlyFieldConfig[], model: any, options: FormlyFormOptions) {
+  private registerFormControls(form: FormGroup | FormArray, fields: FormlyFieldConfig[], options: FormlyFormOptions) {
     fields.forEach((field, index) => {
       field.id = getFieldId(`formly_${this.formId}`, field, index);
-
-      if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
-        assignModelValue(model, field.key, field.defaultValue);
-      }
       this.initFieldOptions(field);
-      this.initFieldExpression(field, model, options);
+      this.initFieldExpression(field, options);
       this.initFieldValidation(field);
       this.initFieldAsyncValidation(field);
 
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
-        let rootForm = form, rootModel = model;
+        let rootForm = form, rootModel = field.model;
         paths.forEach((path, index) => {
           // FormGroup/FormArray only allow string value for path
           const formPath = path.toString();
@@ -62,9 +59,10 @@ export class FormlyFormBuilder {
             this.addFormControl(rootForm, field, rootModel, formPath);
             if (field.fieldArray) {
               field.fieldGroup = [];
-              (rootModel[formPath] || []).forEach((m: any, i: number) => field.fieldGroup.push(
+              field.model.forEach((m: any, i: number) => field.fieldGroup.push(
                 { ...clone(field.fieldArray), key: `${i}` },
               ));
+              assignModelToFields(field.fieldGroup, rootModel);
             }
 
           } else {
@@ -90,8 +88,7 @@ export class FormlyFormBuilder {
 
         if (field.key) {
           this.addFormControl(form, field, { [field.key]: field.fieldArray ? [] : {} }, field.key);
-          model[field.key] = model[field.key] || (field.fieldArray ? [] : {});
-          this._buildForm(field.formControl as FormGroup, field.fieldGroup, model[field.key], options);
+          this._buildForm(field.formControl as FormGroup, field.fieldGroup, options);
         } else {
           // if `hideExpression` is set in that case we have to deal
           // with toggle FormControl for each field in fieldGroup separately
@@ -105,13 +102,13 @@ export class FormlyFormBuilder {
               f.hideExpression = (model, formState) => field.hide || hideExpression(model, formState);
             });
           }
-          this._buildForm(form, field.fieldGroup, model, options);
+          this._buildForm(form, field.fieldGroup, options);
         }
       }
     });
   }
 
-  private initFieldExpression(field: FormlyFieldConfig, model: any, options: FormlyFormOptions) {
+  private initFieldExpression(field: FormlyFieldConfig, options: FormlyFormOptions) {
     if (field.expressionProperties) {
       for (const key in field.expressionProperties as any) {
         if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
@@ -119,9 +116,7 @@ export class FormlyFormBuilder {
           field.expressionProperties[key] = {
             expression: isFunction(field.expressionProperties[key]) ? field.expressionProperties[key] : evalStringExpression(field.expressionProperties[key], ['model', 'formState']),
             expressionValueSetter: evalExpressionValueSetter(
-              key.indexOf('model.') === 0
-                ? key
-                : `field.${key}`,
+              `field.${key}`,
               ['expressionValue', 'model', 'field'],
             ),
           };
