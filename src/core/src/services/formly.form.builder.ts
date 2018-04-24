@@ -42,6 +42,7 @@ export class FormlyFormBuilder {
   private registerFormControls(form: FormGroup | FormArray, fields: FormlyFieldConfig[], model: any, options: FormlyFormOptions) {
     fields.forEach((field, index) => {
       field.id = getFieldId(`formly_${this.formId}`, field, index);
+      field.model = model;
 
       if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
         assignModelValue(model, field.key, field.defaultValue);
