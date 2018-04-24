@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { FormlyConfig, FieldValidatorFn } from './formly.config';
-import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject, isNullOrUndefined } from './../utils';
+import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, assignModelValue, getValueForKey, isObject, isNullOrUndefined, clone } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 import { getKeyPath, isUndefined, isFunction } from '../utils';
 import { FormlyFormExpression } from './formly.form.expression';
@@ -60,6 +60,13 @@ export class FormlyFormBuilder {
           // is last item
           if (index === paths.length - 1) {
             this.addFormControl(rootForm, field, rootModel, formPath);
+            if (field.fieldArray) {
+              field.fieldGroup = [];
+              (rootModel[formPath] || []).forEach((m: any, i: number) => field.fieldGroup.push(
+                { ...clone(field.fieldArray), key: `${i}` },
+              ));
+            }
+
           } else {
             let nestedForm = rootForm.get(formPath) as FormGroup;
             if (!nestedForm) {
@@ -232,6 +239,9 @@ export class FormlyFormBuilder {
 
   private addFormControl(form: FormGroup | FormArray, field: FormlyFieldConfig, model: any, path: string) {
     let control: AbstractControl;
+    const validators = field.validators ? field.validators.validation : undefined,
+      asyncValidators = field.asyncValidators ? field.asyncValidators.validation : undefined;
+
     if (field.formControl instanceof AbstractControl || form.get(path)) {
       control = field.formControl || form.get(path);
       if (
@@ -244,23 +254,11 @@ export class FormlyFormBuilder {
     } else if (field.component && field.component.createControl) {
       control = field.component.createControl(model[path], field);
     } else if (field.fieldGroup && field.key && field.key === path && !field.fieldArray) {
-      control = new FormGroup(
-        model[path],
-        field.validators ? field.validators.validation : undefined,
-        field.asyncValidators ? field.asyncValidators.validation : undefined,
-      );
+      control = new FormGroup(model[path], validators, asyncValidators);
     } else if (field.fieldArray && field.key && field.key === path) {
-      control = new FormArray(
-        [],
-        field.validators ? field.validators.validation : undefined,
-        field.asyncValidators ? field.asyncValidators.validation : undefined,
-      );
+      control = new FormArray([], validators, asyncValidators);
     } else {
-      control = new FormControl(
-        model[path],
-        field.validators ? field.validators.validation : undefined,
-        field.asyncValidators ? field.asyncValidators.validation : undefined,
-      );
+      control = new FormControl(model[path], validators, asyncValidators);
     }
 
     if (field.templateOptions.disabled) {
