@@ -6,6 +6,11 @@ import { Observable } from 'rxjs/Observable';
 
 export interface FormlyFieldConfig {
   /**
+   * The model that stores all the data, where the model[key] is the value of the field
+   */
+  readonly model?: any;
+
+  /**
    * The key that relates to the model. This will link the field value to the model
    */
   key?: string;

@@ -69,6 +69,23 @@ export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmp
   return value;
 }
 
+export function assignModelToFields(fields: FormlyFieldConfig[], model: any) {
+  fields.forEach((field, index) => {
+    if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
+      assignModelValue(model, field.key, field.defaultValue);
+    }
+
+    (field as any).model = model;
+    if (field.key && (field.fieldGroup || field.fieldArray)) {
+      (field as any).model = getFieldModel(model, field, true);
+    }
+
+    if (field.fieldGroup) {
+      assignModelToFields(field.fieldGroup, field.model);
+    }
+  });
+}
+
 export function assignModelValue(model: any, path: string | (string | number)[], value: any) {
   if (typeof path === 'string') {
     path = getKeyPath({key: path});
