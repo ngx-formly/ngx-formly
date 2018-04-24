@@ -23,39 +23,41 @@ describe('FormlyFormBuilder service', () => {
     );
   });
 
-  it('should use the same formcontrol for fields that use the same key', () => {
-    const fields: FormlyFieldConfig[] = [
-      { key: 'test', type: 'input', hide: true },
-      { key: 'test', type: 'input' },
-    ];
+  describe('formcontrol', () => {
+    it('should use the same formcontrol for fields that use the same key', () => {
+      const fields: FormlyFieldConfig[] = [
+        { key: 'test', type: 'input', hide: true },
+        { key: 'test', type: 'input' },
+      ];
 
-    builder.buildForm(form, fields, {}, {});
-    expect(fields[0].formControl).toEqual(fields[1].formControl);
-  });
+      builder.buildForm(form, fields, {}, {});
+      expect(fields[0].formControl).toEqual(fields[1].formControl);
+    });
 
-  it('should update the formcontrol value for fields that already has formcontrol', () => {
-    const fields: FormlyFieldConfig[] = [
-      {
-        key: 'test',
-        type: 'input',
-        formControl: new FormControl(),
-      },
-      {
-        key: 'fieldGroup',
-        type: 'input',
-        formControl: new FormGroup({ aa: new FormControl('aa') }),
-      },
-      {
-        key: 'fieldArray',
-        type: 'input',
-        formControl: new FormArray([new FormControl('aa')]),
-      },
-    ];
+    it('should update the formcontrol value for fields that already has formcontrol', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'test',
+          type: 'input',
+          formControl: new FormControl(),
+        },
+        {
+          key: 'fieldGroup',
+          type: 'input',
+          formControl: new FormGroup({ aa: new FormControl('aa') }),
+        },
+        {
+          key: 'fieldArray',
+          type: 'input',
+          formControl: new FormArray([new FormControl('aa')]),
+        },
+      ];
 
-    builder.buildForm(form, fields, { test: 'test' }, {});
-    expect(fields[0].formControl.value).toEqual('test');
-    expect(fields[1].formControl.value).toEqual({ aa: 'aa' });
-    expect(fields[2].formControl.value).toEqual(['aa']);
+      builder.buildForm(form, fields, { test: 'test' }, {});
+      expect(fields[0].formControl.value).toEqual('test');
+      expect(fields[1].formControl.value).toEqual({ aa: 'aa' });
+      expect(fields[2].formControl.value).toEqual(['aa']);
+    });
   });
 
   describe('initialise default TemplateOptions', () => {
@@ -439,6 +441,25 @@ describe('FormlyFormBuilder service', () => {
           expectValidators(option.invalid, option.valid);
         });
       });
+    });
+  });
+
+  describe('fieldArray', () => {
+    it('should create/build fieldGroup when model is set', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'array',
+          type: 'input',
+          fieldArray: {
+            key: 'test',
+            type: 'input',
+          },
+        },
+      ];
+
+      builder.buildForm(form, fields, { array: ['aaa'] }, {});
+
+      expect(fields[0].fieldGroup.length).toEqual(1);
     });
   });
 });

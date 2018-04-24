@@ -1,26 +1,10 @@
 import { FormArray } from '@angular/forms';
-import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FieldType } from './field.type';
 import { clone, isNullOrUndefined } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 
 export abstract class FieldArrayType extends FieldType {
   formControl: FormArray;
-
-  static createControl(model: any, field: FormlyFieldConfig): FormArray {
-    const form = new FormArray(
-      [],
-      field.validators ? field.validators.validation : undefined,
-      field.asyncValidators ? field.asyncValidators.validation : undefined,
-    );
-
-    field.fieldGroup = [];
-    (model || []).forEach((m: any, i: number) => field.fieldGroup.push(
-      { ...clone(field.fieldArray), key: `${i}` },
-    ));
-
-    return form;
-  }
 
  constructor(private builder: FormlyFormBuilder) {
     super();
