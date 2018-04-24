@@ -53,6 +53,7 @@ describe('ui-material: Formly Field Select Component', () => {
           options: [
             { id: '1', name: 'Soccer' },
             { id: '2', name: 'Basketball' },
+            { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
           ],
           valueProp: 'id',
           labelProp: 'name',
@@ -65,13 +66,14 @@ describe('ui-material: Formly Field Select Component', () => {
       trigger.click();
       fixture.detectChanges();
 
-      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(2);
+      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(3);
     });
 
     it('should correctly bind to an Observable', async(() => {
       const sports$ = of([
         { id: '1', name: 'Soccer' },
         { id: '2', name: 'Basketball' },
+        { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
       ]);
 
       testComponentInputs.fields = [{
@@ -90,7 +92,7 @@ describe('ui-material: Formly Field Select Component', () => {
       trigger.click();
       fixture.detectChanges();
 
-      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(2);
+      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(3);
     }));
 
   });

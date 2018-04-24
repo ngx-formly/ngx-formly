@@ -44,6 +44,7 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
                 options: [
                     { id: '1', name: 'Soccer' },
                     { id: '2', name: 'Basketball' },
+                    { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
                 ],
                 valueProp: 'id',
                 labelProp: 'name',
@@ -52,13 +53,14 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
 
         const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
 
-        expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(2);
+        expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(3);
     });
 
     it('should correctly bind to an Observable', async(() => {
       const sports$ = of([
         { id: '1', name: 'Soccer' },
         { id: '2', name: 'Basketball' },
+        { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
       ]);
 
       testComponentInputs.fields = [{
@@ -73,7 +75,7 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
 
-      expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(2);
+      expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(3);
     }));
 
   });
