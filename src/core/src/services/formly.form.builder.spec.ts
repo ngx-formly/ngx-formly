@@ -33,6 +33,16 @@ describe('FormlyFormBuilder service', () => {
     expect(fields[0].formControl).toEqual(fields[1].formControl);
   });
 
+  it('should have the model accessible from the field itself', () => {
+    const fields: FormlyFieldConfig[] = [
+      { key: 'test', type: 'input', hide: true },
+      { key: 'test', type: 'input' },
+    ];
+    const model = {};
+    builder.buildForm(form, fields, model, {});
+    expect(fields[0].model).toEqual(model);
+  });
+
   it('should update the formcontrol value for fields that already has formcontrol', () => {
     const fields: FormlyFieldConfig[] = [
       {
