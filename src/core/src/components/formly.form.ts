@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields"
-      [model]="fieldModel(field)" [form]="form"
+      [model]="field.model" [form]="form"
       [field]="field"
       [ngClass]="field.className"
       [options]="options">
@@ -69,13 +69,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.clearModelSubscriptions();
-  }
-
-  fieldModel(field: FormlyFieldConfig, model = this.model) {
-    if (field.key && (field.fieldGroup || field.fieldArray)) {
-      return getFieldModel(model, field, true);
-    }
-    return model;
   }
 
   changeModel(event: { key: string, value: any }) {
@@ -156,7 +149,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private patchModel(model: any) {
     this.clearModelSubscriptions();
-    this.resetFieldArray(this.fields, model, this.model);
+    this.resetFieldArray(this.fields, model);
     this.initializeFormValue(this.form);
     (<FormGroup> this.form).patchValue(model, { onlySelf: true });
     this.trackModelChanges(this.fields);
@@ -164,7 +157,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private resetModel(model?: any) {
     model = isNullOrUndefined(model) ? this.initialModel : model;
-    this.resetFieldArray(this.fields, model, this.model);
+    this.resetFieldArray(this.fields, model);
 
     // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
     // but only when the current component is a root one.
@@ -175,18 +168,16 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
   }
 
-  private resetFieldArray(fields: FormlyFieldConfig[], newModel: any, modelToUpdate: any) {
+  private resetFieldArray(fields: FormlyFieldConfig[], newModel: any) {
     fields.forEach(field => {
       if ((field.fieldGroup && field.fieldGroup.length > 0) || field.fieldArray) {
-        const newFieldModel = this.fieldModel(field, newModel),
-          fieldModel = this.fieldModel(field, modelToUpdate);
-
+        const newFieldModel = getFieldModel(newModel, field, true);
         if (field.fieldArray) {
           field.fieldGroup = field.fieldGroup || [];
           field.fieldGroup.length = 0;
 
-          if (fieldModel !== newFieldModel && fieldModel) {
-            fieldModel.length = 0;
+          if (field.model !== newFieldModel && field.model) {
+            field.model.length = 0;
           }
 
           const formControl = <FormArray>field.formControl;
@@ -195,12 +186,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           }
 
           newFieldModel.forEach((m: any, i: number) => {
-            fieldModel[i] = m;
+            field.model[i] = m;
             field.fieldGroup.push({ ...clone(field.fieldArray), key: `${i}` });
             this.formlyBuilder.buildForm(formControl, [field.fieldGroup[i]], newFieldModel, this.options);
           });
         } else {
-          this.resetFieldArray(field.fieldGroup, newFieldModel, fieldModel);
+          this.resetFieldArray(field.fieldGroup, newFieldModel);
         }
       } else if (field.key && field.type) {
         field.formControl.reset(getFieldModel(newModel, field, false));

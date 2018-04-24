@@ -23,6 +23,16 @@ describe('FormlyFormBuilder service', () => {
     );
   });
 
+  it('should have the model accessible from the field itself', () => {
+    const fields: FormlyFieldConfig[] = [
+      { key: 'test', type: 'input', hide: true },
+      { key: 'test', type: 'input' },
+    ];
+    const model = {};
+    builder.buildForm(form, fields, model, {});
+    expect(fields[0].model).toEqual(model);
+  });
+
   describe('formcontrol', () => {
     it('should use the same formcontrol for fields that use the same key', () => {
       const fields: FormlyFieldConfig[] = [
