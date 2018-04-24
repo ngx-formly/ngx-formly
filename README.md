@@ -28,6 +28,7 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | ✅ |
 | [Material2](https://github.com/angular/material2) | ✅ |
 | [PrimeNG](http://primefaces.org/primeng/#/)       | ✅ |
+| [NativeScript](https://www.nativescript.org)      | ❌ |
 
 
 #### Quick links

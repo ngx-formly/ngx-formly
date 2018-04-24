@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule, CommonExampleConfigs } from '../common';
+import { CommonModule, CommonExampleConfigs, CommonExampleComponents } from '../common';
 
 import { AppComponent } from './app.component';
 import { FormlyIonicModule } from '@ngx-formly/ionic';
 import { IonicApp, IonicModule } from 'ionic-angular';
 
-import { DatetimeAppModule, DatetimeExampleConfig } from './datetime';
-import { RangeAppModule, RangeExampleConfig } from './range';
-import { ToggleAppModule, ToggleExampleConfig } from './toggle';
+import { DatetimeAppModule, DatetimeExampleConfig, DatetimeAppComponent } from './datetime';
+import { RangeAppModule, RangeExampleConfig, RangeAppComponent } from './range';
+import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './toggle';
 
 @NgModule({
   imports: [
@@ -35,6 +35,12 @@ import { ToggleAppModule, ToggleExampleConfig } from './toggle';
     ]),
   ],
   declarations: [ AppComponent ],
-  entryComponents: [ AppComponent ],
+  entryComponents: [
+    AppComponent,
+    ...CommonExampleComponents,
+    DatetimeAppComponent,
+    RangeAppComponent,
+    ToggleAppComponent,
+  ],
 })
 export class ConfigModule { }

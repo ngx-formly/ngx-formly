@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ExamplesRouterViewerComponent } from '../../shared';
-import { CommonModule, CommonExampleConfigs } from '../common';
+import { CommonModule, CommonExampleConfigs, CommonExampleComponents } from '../common';
 
 import { AppComponent } from './app.component';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
@@ -29,6 +29,9 @@ import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
     ]),
   ],
   declarations: [ AppComponent ],
-  entryComponents: [ AppComponent ],
+  entryComponents: [
+    AppComponent,
+    ...CommonExampleComponents,
+  ],
 })
 export class ConfigModule { }
