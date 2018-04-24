@@ -5,12 +5,12 @@ import { of } from 'rxjs/observable/of';
 
 export class SelectOption {
   label: string;
-  value?: string;
+  value?: any;
   group?: SelectOption[];
   disabled?: boolean;
   [key: string]: any;
 
-  constructor(label: string, value?: string, children?: SelectOption[]) {
+  constructor(label: string, value?: any, children?: SelectOption[]) {
     this.label = label;
     this.value = value;
     this.group = children;
