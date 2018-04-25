@@ -33,7 +33,7 @@ export function IpValidatorMessage(err, field: FormlyFieldConfig) {
 ##### CUSTOM VALIDATION FUNCTION
 The validation function receives the `FormControl` as input and it will return `null` if there is not error, and otherwise it will send an object which property is set as `true`.  The name of the property must be the same as the name set to the error message for this validation.
 
-The following code example shows a function to validate an IP. As can be seen, the object returned when there is an error has a prorperty called 'ip' which matches with the name of the custom validation message.
+The following code example shows a function to validate an IP. As can be seen, the object returned when there is an error has a property called 'ip' which matches with the name of the custom validation message.
 
 ```typescript
 export function IpValidator(control: FormControl): ValidationErrors {

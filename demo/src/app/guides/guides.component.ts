@@ -23,7 +23,7 @@ export class GuidesComponent {
     { href: '/guide/getting-started', text: 'Getting started' },
     { href: '/guide/properties-options', text: 'Properties and Options' },
     { href: '/guide/validation', text: 'Validation' },
-    { href: '/guide/expresion-properties', text: 'Formly Expressions' },
+    { href: '/guide/expression-properties', text: 'Formly Expressions' },
     { href: '/guide/custom-formly-field', text: 'Custom Templates' },
   ];
 
@@ -32,7 +32,7 @@ export class GuidesComponent {
     'properties-options': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./properties-options.md'),
     'custom-formly-field': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./custom-formly-field.md'),
     'validation': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./validation.md'),
-    'expresion-properties': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./expresion-properties.md'),
+    'expression-properties': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./expression-properties.md'),
   };
 
   constructor(public route: ActivatedRoute) {}

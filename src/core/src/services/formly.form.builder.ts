@@ -130,7 +130,7 @@ export class FormlyFormBuilder {
     }
 
     if (field.hideExpression) {
-      // delete hide value in order to force re-evalute it in FormlyFormExpression.
+      // delete hide value in order to force re-evaluate it in FormlyFormExpression.
       delete field.hide;
       if (typeof field.hideExpression === 'string') {
         // cache built expression
