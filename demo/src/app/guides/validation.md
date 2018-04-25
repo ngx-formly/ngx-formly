@@ -1,9 +1,9 @@
 # Validation
 
 ## Custom Validation
-Formly offers different methods to implement custom validations for your forms.
+Formly offers different methods to implement custom validations.
 
-#### 1. Declaring your validation function and message within your FormlyModule config.
+#### 1. Declaring validation function and message within NgModule declaration.
 
 ##### CUSTOM VALIDATION MESSAGE
 To define a custom validation message, you need to add an object with two properties: `name` and `message`. You will include this object to the validationMessages array of the FormlyModule config:
@@ -92,7 +92,7 @@ You just need to include the name of the validate function, declared in `FormlyM
 },
 ```
 
-**ALERT!** If your function is async, you need to include it within `asyncValidators.validation` property:
+**ALERT!** If the function is async, you need to include it within `asyncValidators.validation` property:
 ```typescript
 {
   key: 'ip',
@@ -107,14 +107,14 @@ You just need to include the name of the validate function, declared in `FormlyM
 },
 ```
 
-#### 2. Declaring your validation function within your field definition and your validation message within your FormlyModule config.
+#### 2. Declaring validation function within field definition.
 
 ##### CUSTOM VALIDATION MESSAGE
 [As the case above]
 
 ##### CUSTOM VALIDATION FUNCTION
 
-You could implement your validation function within your field definition. For instance, you could use this method if you want to use several validation functions with the same error message.
+You could implement the validation function within field definition. For instance, you could use this method if you want to use several validation functions with the same error message.
 
 ```typescript
 export function IpValidator(control: FormControl): ValidationErrors {
@@ -138,7 +138,7 @@ You just need to include the validation function, declared wherever you want, wi
 ```
 
 
-**ALERT!** If your function is async, you need to include it within `asyncValidators.validation` property:
+**ALERT!** If the function is async, you may need to define it in `asyncValidators.validation` property:
 ```typescript
 {
   key: 'ip',
@@ -153,7 +153,7 @@ You just need to include the validation function, declared wherever you want, wi
 },
 ```
 
-#### 3. Declaring your validation function and message within your field definition.
+#### 3. Declaring validation function and message within field definition.
 
 ##### CUSTOM VALIDATION MESSAGE and CUSTOM VALIDATION FUNCTION
 The validators property of a field could accept different nested properties which match with different validators.
@@ -185,7 +185,7 @@ As can be seen in the following code example, you just need to give a name to th
 },
 ```
 
-**ALERT!** If your function is async, you need to include it within `asyncValidators` property:
+**ALERT!** If the function is async, you may need to define it in `asyncValidators` property:
 ```typescript
 {
   key: 'ip',
@@ -204,6 +204,75 @@ As can be seen in the following code example, you just need to give a name to th
       }),
       message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
     },
+  },
+},
+```
+
+
+#### 4. Declaring validation function in a formly type and message within NgModule declaration.
+
+##### CUSTOM VALIDATION MESSAGE
+Create a custom validation message as described in point 1.
+
+```typescript
+export function IpValidatorMessage(err, field: FormlyFieldConfig) {
+  return `"${field.formControl.value}" is not a valid IP Address`;
+}
+...
+@NgModule({
+  imports: [
+    ...
+    FormlyModule.forRoot({
+      validationMessages: [
+        { name: 'ip', message: IpValidatorMessage },
+        { name: 'required', message: 'This field is required' },
+      ],
+    }),
+  ]
+})
+```
+
+##### CUSTOM VALIDATION FUNCTION USED ON A FORMLY TYPE
+The validation function receives the `FormControl` as input and it will return a boolean value, `false` if there is no error, otherwise `true`.
+
+The following code example shows a function to validate an IP. It has to return a boolean instead of a ValidationErrors object.
+
+```typescript
+export function IpValidator(control: FormControl): boolean {
+  return /(\d{1,3}\.){3}\d{1,3}/.test(control.value);
+}
+...
+@NgModule({
+  imports: [
+    ...
+    FormlyModule.forRoot({
+      validationMessages: [
+        { name: 'ip', message: IpValidatorMessage },
+        { name: 'required', message: 'This field is required' },
+      ],
+      types: [
+        {
+          name: 'ip',
+          extends: 'input',
+          defaultOptions: {
+            validators: {
+              ip: IpValidator // 'ip' matches the ip validation message
+            }
+          },
+        },
+    }),
+  ]
+})
+```
+##### FIELD USING A FORMLY TYPE WITH CUSTOM VALIDATION
+The formly type has to be referenced in the field
+```typescript
+{
+  key: 'ip',
+  type: 'ip', // the formly type defined
+  templateOptions: {
+    label: 'IP Address (using custom validation declared in ngModule)',
+    required: true,
   },
 },
 ```
