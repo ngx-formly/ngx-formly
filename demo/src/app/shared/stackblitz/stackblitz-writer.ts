@@ -38,7 +38,7 @@ const TEMPLATE_FILES = {
 const TAGS: string[] = ['angular', 'formly', 'example'];
 const angularVersion = '^6.0.0';
 const materialVersion = '^6.0.0';
-const formlyVersion = '^3.0.0';
+const formlyVersion = '^4.0.0-alpha';
 
 const dependencies = {
   core: {
@@ -115,7 +115,7 @@ export class StackblitzWriter {
    * called with submit().
    */
   constructStackblitzForm(type: string, exampleData: ExampleType): HTMLFormElement {
-    const indexFile = `app%2Fapp.component.ts`;
+    const indexFile = `src%2Fapp%2Fapp.component.ts`;
     const form = this._createFormElement(indexFile);
 
     TAGS.forEach((tag, i) => this._appendFormInput(form, `tags[${i}]`, tag));
@@ -142,6 +142,10 @@ export class StackblitzWriter {
 
     if (['primeng', 'material'].indexOf(options.type) !== -1 || appModuleContent.indexOf('@angular/material') !== -1) {
       options.includeMaterial = true;
+      options.useAnimation = true;
+    }
+
+    if (!options.useAnimation && exampleData.files.map(f => f.filecontent).some(content => content.indexOf('@angular/animations') !== -1)) {
       options.useAnimation = true;
     }
 

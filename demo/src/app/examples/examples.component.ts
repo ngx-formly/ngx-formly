@@ -65,6 +65,7 @@ export class ExamplesComponent {
       { href: './other/observable-select', text: 'Bind Observable to Select' },
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
+      { href: './other/hide-fields-with-animations', text: 'Hide Fields with `@angular/animations`' },
       { href: './other/button', text: 'Button Type' },
       { href: './other/json-powered', text: 'JSON powered' },
       { href: './other/input-file', text: 'File input' },
