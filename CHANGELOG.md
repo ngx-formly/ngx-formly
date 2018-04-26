@@ -2,21 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-alpha.2"></a>
+# [3.0.0-alpha.2](https://github.com/formly-js/ngx-formly/compare/v2.1.1...v3.0.0-alpha.2) (2018-04-26)
+
+### Features
+
+* **core:** allow access to the model from the field ([b5034f2](https://github.com/formly-js/ngx-formly/commit/b5034f2))
+* **core:** move createControl FieldArrayType to core ([883a63c](https://github.com/formly-js/ngx-formly/commit/883a63c)), closes [#909](https://github.com/formly-js/ngx-formly/issues/909)
+
+
+### BREAKING CHANGES
+
+* **core:** createControl in FieldArrayType has been removed
+
 <a name="3.0.0-alpha.1"></a>
 # [3.0.0-alpha.1](https://github.com/formly-js/ngx-formly/compare/v3.0.0-alpha.0...v3.0.0-alpha.1) (2018-04-23)
 
 
 ### Bug Fixes
 
-* **material:** use default entryFile ([8609732](https://github.com/formly-js/ngx-formly/commit/8609732))
+* **material:** use default entryFile ([9032911](https://github.com/formly-js/ngx-formly/commit/9032911))
 
 
 ### Features
 
-* **core:** remove deprecated 'field.' path in `expressionProperties` ([073e693](https://github.com/formly-js/ngx-formly/commit/073e693))
-* **core:** remove passing formControl for formlyAttributes events ([91bd310](https://github.com/formly-js/ngx-formly/commit/91bd310))
-* **material:** remove deprected floatPlaceholder ([0c4519e](https://github.com/formly-js/ngx-formly/commit/0c4519e))
-* **material:** remove deprected focusMonitor method ([08cd92f](https://github.com/formly-js/ngx-formly/commit/08cd92f))
+* **core:** remove deprecated 'field.' path in `expressionProperties` ([b23e546](https://github.com/formly-js/ngx-formly/commit/b23e546))
+* **core:** remove passing formControl for formlyAttributes events ([4d4f894](https://github.com/formly-js/ngx-formly/commit/4d4f894))
+* **material:** remove deprected floatPlaceholder ([3a57aca](https://github.com/formly-js/ngx-formly/commit/3a57aca))
+* **material:** remove deprected focusMonitor method ([8c09639](https://github.com/formly-js/ngx-formly/commit/8c09639))
 
 
 ### BREAKING CHANGES
@@ -72,16 +85,16 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **core:** move managing lifeCycle hooks to `formly-field` component ([#872](https://github.com/formly-js/ngx-formly/issues/872)) ([95fbf83](https://github.com/formly-js/ngx-formly/commit/95fbf83)), closes [#643](https://github.com/formly-js/ngx-formly/issues/643)
-* **core:** remove `formControl` input in FormlyAttributes ([#862](https://github.com/formly-js/ngx-formly/issues/862)) ([f5b6500](https://github.com/formly-js/ngx-formly/commit/f5b6500)), closes [#642](https://github.com/formly-js/ngx-formly/issues/642)
-* **core:** use rxjs lettable operators. ([#857](https://github.com/formly-js/ngx-formly/issues/857)) ([9a6089a](https://github.com/formly-js/ngx-formly/commit/9a6089a))
-* **ionic:** initial work for ui-ionic support ([#659](https://github.com/formly-js/ngx-formly/issues/659)) ([67ef8e7](https://github.com/formly-js/ngx-formly/commit/67ef8e7))
-* initial work for kendo support ([#897](https://github.com/formly-js/ngx-formly/issues/897)) ([8352ca3](https://github.com/formly-js/ngx-formly/commit/8352ca3)), closes [#599](https://github.com/formly-js/ngx-formly/issues/599)
-* initial work for primeng support ([#887](https://github.com/formly-js/ngx-formly/issues/887)) ([08e18b5](https://github.com/formly-js/ngx-formly/commit/08e18b5))
-* **material:** add auto-Complete type example ([8f85216](https://github.com/formly-js/ngx-formly/commit/8f85216)), closes [#615](https://github.com/formly-js/ngx-formly/issues/615)
-* **material:** add slider type ([62f9275](https://github.com/formly-js/ngx-formly/commit/62f9275))
-* **material:** add toggle type ([3ea1839](https://github.com/formly-js/ngx-formly/commit/3ea1839))
-* **material:** implement DatePicker type ([#873](https://github.com/formly-js/ngx-formly/issues/873)) ([a7d6d5b](https://github.com/formly-js/ngx-formly/commit/a7d6d5b)), closes [#614](https://github.com/formly-js/ngx-formly/issues/614)
+* **core:** move managing lifeCycle hooks to `formly-field` component ([#872](https://github.com/formly-js/ngx-formly/issues/872)) ([40a6e6c](https://github.com/formly-js/ngx-formly/commit/40a6e6c)), closes [#643](https://github.com/formly-js/ngx-formly/issues/643)
+* **core:** remove `formControl` input in FormlyAttributes ([#862](https://github.com/formly-js/ngx-formly/issues/862)) ([5c41bdc](https://github.com/formly-js/ngx-formly/commit/5c41bdc)), closes [#642](https://github.com/formly-js/ngx-formly/issues/642)
+* **core:** use rxjs lettable operators. ([#857](https://github.com/formly-js/ngx-formly/issues/857)) ([a2e79bd](https://github.com/formly-js/ngx-formly/commit/a2e79bd))
+* **ionic:** initial work for ui-ionic support ([#659](https://github.com/formly-js/ngx-formly/issues/659)) ([31d732b](https://github.com/formly-js/ngx-formly/commit/31d732b))
+* initial work for kendo support ([#897](https://github.com/formly-js/ngx-formly/issues/897)) ([df6551d](https://github.com/formly-js/ngx-formly/commit/df6551d)), closes [#599](https://github.com/formly-js/ngx-formly/issues/599)
+* initial work for primeng support ([#887](https://github.com/formly-js/ngx-formly/issues/887)) ([40ca63f](https://github.com/formly-js/ngx-formly/commit/40ca63f))
+* **material:** add auto-Complete type example ([273447b](https://github.com/formly-js/ngx-formly/commit/273447b)), closes [#615](https://github.com/formly-js/ngx-formly/issues/615)
+* **material:** add slider type ([70019ca](https://github.com/formly-js/ngx-formly/commit/70019ca))
+* **material:** add toggle type ([7a39efc](https://github.com/formly-js/ngx-formly/commit/7a39efc))
+* **material:** implement DatePicker type ([#873](https://github.com/formly-js/ngx-formly/issues/873)) ([b5b5c18](https://github.com/formly-js/ngx-formly/commit/b5b5c18)), closes [#614](https://github.com/formly-js/ngx-formly/issues/614)
 
 
 ### BREAKING CHANGES
