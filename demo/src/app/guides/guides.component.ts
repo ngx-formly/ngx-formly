@@ -25,12 +25,14 @@ export class GuidesComponent {
     { href: '/guide/validation', text: 'Validation' },
     { href: '/guide/expression-properties', text: 'Formly Expressions' },
     { href: '/guide/custom-formly-field', text: 'Custom Templates' },
+    { href: '/guide/custom-formly-wrapper', text: 'Custom Wrapper' },
   ];
 
   contents = {
     'getting-started': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./../../../../README.md'),
     'properties-options': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./properties-options.md'),
     'custom-formly-field': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./custom-formly-field.md'),
+    'custom-formly-wrapper': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./custom-formly-wrapper.md'),
     'validation': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./validation.md'),
     'expression-properties': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./expression-properties.md'),
   };
