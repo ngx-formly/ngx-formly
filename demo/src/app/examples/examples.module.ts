@@ -65,6 +65,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'observable-select', loadChildren: './other/observable-select/config.module#ConfigModule' },
           { path: 'advanced-layout-flex', loadChildren: './other/advanced-layout-flex/config.module#ConfigModule' },
           { path: 'nested-formly-forms', loadChildren: './other/nested-formly-forms/config.module#ConfigModule' },
+          { path: 'hide-fields-with-animations', loadChildren: './other/hide-fields-with-animations/config.module#ConfigModule' },
           { path: 'button', loadChildren: './other/button/config.module#ConfigModule' },
           { path: 'json-powered', loadChildren: './other/json-powered/config.module#ConfigModule' },
           { path: 'input-file', loadChildren: './other/input-file/config.module#ConfigModule' },

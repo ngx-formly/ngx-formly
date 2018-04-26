@@ -145,6 +145,10 @@ export class StackblitzWriter {
       options.useAnimation = true;
     }
 
+    if (!options.useAnimation && exampleData.files.map(f => f.filecontent).some(content => content.indexOf('@angular/animations') !== -1)) {
+      options.useAnimation = true;
+    }
+
     const deps = {
       ...dependencies.core,
       ...dependencies[options.type],
