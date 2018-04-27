@@ -29,9 +29,9 @@ describe('FormlyValidationMessage Component', () => {
   });
 
   it('should not display message error when form is valid', () => {
-    const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
+    const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
     const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
-    fixture.componentInstance.formControl.setValue('12');
+    fixture.componentInstance.field.formControl.setValue('12');
     fixture.detectChanges();
 
     expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
@@ -40,9 +40,9 @@ describe('FormlyValidationMessage Component', () => {
 
   describe('display message error when form is invalid', () => {
     it('with a simple validation message', () => {
-      const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
+      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
       const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
-      fixture.componentInstance.formControl.setValue('test');
+      fixture.componentInstance.field.formControl.setValue('test');
       fixture.detectChanges();
 
       expect(formlyMessageElm.textContent).toMatch(/Maximum Length Exceeded/);
@@ -50,7 +50,7 @@ describe('FormlyValidationMessage Component', () => {
     });
 
     it('with a function validation message', () => {
-      const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
+      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
       const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
 
       expect(formlyMessageElm.textContent).toMatch(/Title is required/);
@@ -58,7 +58,7 @@ describe('FormlyValidationMessage Component', () => {
     });
 
     it('with a validator.message property', () => {
-      const fixture = createTestComponent('<formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>');
+      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
       const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
       fixture.componentInstance.field = Object.assign({}, fixture.componentInstance.field, {
         validators: {
@@ -81,9 +81,9 @@ describe('FormlyValidationMessage Component', () => {
 
 @Component({selector: 'formly-validation-message-test', template: '', entryComponents: []})
 class TestComponent {
-  formControl = new FormControl(null, [Validators.required, Validators.maxLength(3)]);
   field: FormlyFieldConfig = {
     type: 'input',
+    formControl: new FormControl(null, [Validators.required, Validators.maxLength(3)]),
     key: 'title',
     templateOptions: {
       label: 'Title',
