@@ -12,7 +12,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <formly-validation-message
       *ngIf="showError"
       class="k-field-info k-required"
-      [fieldForm]="formControl" [field]="field">
+      [field]="field">
     </formly-validation-message>
   `,
 })

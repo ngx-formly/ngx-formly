@@ -8,14 +8,17 @@ import { FormlyFieldConfig } from '../components/formly.field.config';
   template: `{{ errorMessage }}`,
 })
 export class FormlyValidationMessage {
-  @Input() fieldForm: FormControl;
   @Input() field: FormlyFieldConfig;
+  @Input() set fieldForm(control: FormControl) {
+    console.warn(`formly-validation-message: Passing 'fieldForm' input is deprecated and it will be removed in the 4.0 version.`);
+  }
 
   constructor(private formlyConfig: FormlyConfig) {}
 
   get errorMessage(): string {
-    for (let error in this.fieldForm.errors) {
-      if (this.fieldForm.errors.hasOwnProperty(error)) {
+    const fieldForm = this.field.formControl;
+    for (let error in fieldForm.errors) {
+      if (fieldForm.errors.hasOwnProperty(error)) {
         let message: string | Function = this.formlyConfig.getValidatorMessage(error);
 
         if (this.field.validation && this.field.validation.messages && this.field.validation.messages[error]) {
@@ -31,7 +34,7 @@ export class FormlyValidationMessage {
         }
 
         if (typeof message === 'function') {
-          return message(this.fieldForm.errors[error], this.field);
+          return message(fieldForm.errors[error], this.field);
         }
 
         return message;

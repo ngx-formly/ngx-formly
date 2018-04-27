@@ -25,7 +25,7 @@ import { Subject } from 'rxjs/Subject';
 
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
       <mat-error [id]="null">
-        <formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>
+        <formly-validation-message [field]="field"></formly-validation-message>
       </mat-error>
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
       <mat-hint *ngIf="to.description" [id]="null">{{ to.description }}</mat-hint>

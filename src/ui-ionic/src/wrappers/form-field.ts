@@ -7,7 +7,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <ng-container #fieldComponent></ng-container>
     <ion-item no-lines *ngIf="showError">
       <p item-content ion-text color="danger">
-        <formly-validation-message [fieldForm]="formControl" [field]="field"></formly-validation-message>
+        <formly-validation-message [field]="field"></formly-validation-message>
       </p>
     </ion-item>
   `,
