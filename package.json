@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/common",
-  "version": "3.1.0",
+  "version": "4.0.0-alpha",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -21,7 +21,7 @@
     "build:ionic": "ng-packagr -p src/ui-ionic/ng-package.json",
     "build:primeng": "ng-packagr -p src/ui-primeng/ng-package.json",
     "build:kendo": "ng-packagr -p src/ui-kendo/ng-package.json",
-    "release": "standard-version && npm run build && node .config/publish.js",
+    "release": "standard-version --prerelease alpha && npm run build && node .config/publish.js",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",
     "build:docs": "compodoc -p tsconfig.doc.json -n 'Angular Formly' --hideGenerator --disableCoverage --disablePrivate --disableProtected --disableInternal --disableLifeCycleHooks --customFavicon='demo/src/favicon.ico' -d ./dist/app/docs",
