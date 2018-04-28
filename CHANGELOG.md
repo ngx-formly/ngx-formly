@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/formly-js/ngx-formly/compare/v3.0.0-alpha.2...v3.0.0) (2018-04-28)
+
+
+### Features
+
+* **core:** deprecate passing 'fieldForm' in formly-validation-message ([bfd014e](https://github.com/formly-js/ngx-formly/commit/bfd014e))
+
+
+
 <a name="3.0.0-alpha.2"></a>
 # [3.0.0-alpha.2](https://github.com/formly-js/ngx-formly/compare/v2.1.1...v3.0.0-alpha.2) (2018-04-26)
 
