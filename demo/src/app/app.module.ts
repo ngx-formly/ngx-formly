@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { filter } from 'rxjs/operators/filter';
+import { tap } from 'rxjs/operators/tap';
 
 @NgModule({
   declarations: [
@@ -29,4 +31,10 @@ import { HomeComponent } from './home/home.component';
   bootstrap: [AppComponent],
 })
 export class AppModule {
+  constructor(router: Router) {
+    router.events.pipe(
+      filter(evt => evt instanceof NavigationEnd),
+      tap(() => document.querySelector('.mat-sidenav-content').scrollTop = 0),
+    ).subscribe();
+  }
 }
