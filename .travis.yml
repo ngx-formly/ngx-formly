@@ -31,6 +31,7 @@ after_success:
 branches:
   only:
   - next
+  - master
 
 addons:
   apt:

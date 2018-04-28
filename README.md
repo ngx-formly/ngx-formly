@@ -32,11 +32,11 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 
 **Which Version to use?**
 
-| Angular version | Formly version       |
-| --------------- | -------------------- |
-| Angular >= 5    | @ngx-formly/core@3.x |
-| Angular >= 4    | @ngx-formly/core@2.x |
-| Angular >= 2    | ng-formly@1.x        |
+| Angular version | Formly version         |
+| --------------- | ---------------------- |
+| Angular >= 5    | `@ngx-formly/core@3.x` |
+| Angular >= 4    | `@ngx-formly/core@2.x` |
+| Angular >= 2    | `ng-formly@1.x`        |
 
 #### Quick links
 * [Documentation, demos, and guides](https://formly-js.github.io/ngx-formly)
