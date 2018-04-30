@@ -237,7 +237,7 @@ export class StackblitzWriter {
         filecontent = filecontent.replace(`FormlyModule.forRoot`, `IonicModule.forRoot(AppComponent),\n    FormlyModule.forRoot`);
       }
 
-      if (filecontent.indexOf(`@ngx-formly/${options.type}`) === -1) {
+      if (filecontent.indexOf(`@ngx-formly/${options.type}'`) === -1) {
         filecontent = filecontent.replace(`'@ngx-formly/core';`, `'@ngx-formly/core';\nimport { ${ngModule[options.type]} } from '@ngx-formly/${options.type}';`);
         filecontent = filecontent.replace(`FormlyModule.forRoot`, `${ngModule[options.type]},\n    FormlyModule.forRoot`);
       }
