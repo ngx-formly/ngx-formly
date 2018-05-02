@@ -154,3 +154,19 @@ Sometimes you always want a components with certain wrappers.
   export class AppModule { }
   ```
 You can do this by setting the `wrappers: ['fieldset', 'label']` to that type in the module
+
+
+## Advanced Topics
+
+
+**life cycle**
+* [build field](https://github.com/formly-js/ngx-formly/blob/master/src/core/src/components/formly.form.ts#L61)
+* [evaluate field expressions](https://github.com/formly-js/ngx-formly/blob/master/src/core/src/services/formly.form.builder.ts#L34)
+*  [render field](https://github.com/formly-js/ngx-formly/blob/master/src/core/src/components/formly.form.ts#L61)
+    * pre-wrappers
+    * field component
+    * post-wrapper
+
+
+
+
