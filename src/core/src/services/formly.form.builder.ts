@@ -153,18 +153,16 @@ export class FormlyFormBuilder {
     if (field.asyncValidators) {
       for (const validatorName in field.asyncValidators) {
         if (validatorName !== 'validation') {
-          validators.push((control: FormControl) => {
-            let validator = field.asyncValidators[validatorName];
-            if (isObject(validator)) {
-              validator = validator.expression;
-            }
+          let validator = field.asyncValidators[validatorName];
+          if (isObject(validator)) {
+            validator = validator.expression;
+          }
 
-            return new Promise((resolve) => {
-              return validator(control, field).then((result: boolean) => {
-                resolve(result ? null : {[validatorName]: true});
-              });
+          validators.push((control: FormControl) => new Promise((resolve) => {
+            return validator(control, field).then((result: boolean) => {
+              resolve(result ? null : { [validatorName]: true });
             });
-          });
+          }));
         }
       }
     }
@@ -204,14 +202,12 @@ export class FormlyFormBuilder {
     if (field.validators) {
       for (const validatorName in field.validators) {
         if (validatorName !== 'validation') {
-          validators.push((control: FormControl) => {
-            let validator = field.validators[validatorName];
-            if (isObject(validator)) {
-              validator = validator.expression;
-            }
+          let validator = field.validators[validatorName];
+          if (isObject(validator)) {
+            validator = validator.expression;
+          }
 
-            return validator(control, field) ? null : {[validatorName]: true};
-          });
+          validators.push((control: FormControl) => validator(control, field) ? null : { [validatorName]: true });
         }
       }
     }

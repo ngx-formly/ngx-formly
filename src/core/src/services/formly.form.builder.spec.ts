@@ -405,6 +405,16 @@ describe('FormlyFormBuilder service', () => {
 
           expectValidators(null, 'test', {required: true});
         });
+
+        it(`using expression property with validation option`, () => {
+          field.validators = {
+            validation: ['required'],
+            required: { expression: (form, field) => field.key === 'title' ? form.value : false },
+          };
+          builder.buildForm(form, [field], {}, {});
+
+          expectValidators(null, 'test', {required: true});
+        });
       });
     });
 
