@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/formly-js/ngx-formly/compare/v3.0.0...v3.0.1) (2018-05-02)
+
+
+### Bug Fixes
+
+* **core:** allow using validation with custom validator ([#928](https://github.com/formly-js/ngx-formly/issues/928)) ([116c6ec](https://github.com/formly-js/ngx-formly/commit/116c6ec)), closes [#926](https://github.com/formly-js/ngx-formly/issues/926)
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/formly-js/ngx-formly/compare/v3.0.0-alpha.2...v3.0.0) (2018-04-28)
 
