@@ -9,7 +9,7 @@ import { FormlyModule } from '../../../core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
 import { FormlyForm } from '../../../core';
-import { of as observableOf } from 'rxjs/observable/of';
+import { of as observableOf } from 'rxjs';
 
 const createTestComponent = (html: string) =>
   createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;

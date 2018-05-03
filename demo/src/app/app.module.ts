@@ -7,8 +7,7 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { filter } from 'rxjs/operators/filter';
-import { tap } from 'rxjs/operators/tap';
+import { filter, tap } from 'rxjs/operators';
 
 @NgModule({
   declarations: [

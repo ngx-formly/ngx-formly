@@ -12,7 +12,7 @@ const COPYRIGHT =
 const TEMPLATE_FILES = {
   core: [
     { file: 'polyfills.ts', filecontent: require('!!raw-loader!../../../assets/stackblitz/polyfills.ts') },
-    { file: '.angular-cli.json', filecontent: require('!!raw-loader!../../../assets/stackblitz/.angular-cli.json') },
+    // { file: '.angular-cli.json', filecontent: require('!!raw-loader!../../../assets/stackblitz/.angular-cli.json') },
     { file: 'main.ts', filecontent: require('!!raw-loader!../../../assets/stackblitz/main.ts') },
     { file: 'index.html', filecontent: require('!!raw-loader!../../../assets/stackblitz/index.html') },
   ],

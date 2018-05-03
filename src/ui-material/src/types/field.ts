@@ -1,6 +1,6 @@
 import { OnInit, OnDestroy, AfterViewInit, TemplateRef, ViewChild } from '@angular/core';
 import { FieldType as CoreFieldType } from '@ngx-formly/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { FormlyErrorStateMatcher } from '../formly.error-state-matcher';
 

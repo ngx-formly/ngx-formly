@@ -1,10 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators/takeUntil';
-import { startWith } from 'rxjs/operators/startWith';
-import { tap } from 'rxjs/operators/tap';
+import { Subject } from 'rxjs';
+import { takeUntil, startWith, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-app-example',
