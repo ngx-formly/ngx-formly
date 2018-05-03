@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
 import { MatInput } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
 @Component({

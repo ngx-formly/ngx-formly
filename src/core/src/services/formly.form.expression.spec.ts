@@ -1,7 +1,7 @@
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { MockComponent } from '../test-utils';
 import { evalStringExpression, evalExpressionValueSetter, FORMLY_VALIDATORS, getKeyPath, isFunction, isObject } from './../utils';

@@ -1,8 +1,7 @@
 import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
+import { Subject, Observable } from 'rxjs';
 import { Field } from '../templates/field';
 import { TemplateManipulators } from '../services/formly.config';
-import { Observable } from 'rxjs/Observable';
 
 export interface FormlyFieldConfig {
   /**
