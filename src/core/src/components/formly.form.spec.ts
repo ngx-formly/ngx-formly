@@ -105,6 +105,24 @@ describe('Formly Form Component', () => {
       subscription.unsubscribe();
     });
 
+    it('should parse model value', () => {
+      testComponentInputs.fields = [{
+        key: 'city',
+        type: 'text',
+        parsers: [Number],
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      testComponentInputs.form.get('city').patchValue('55');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith({ city: 55 });
+      subscription.unsubscribe();
+    });
+
     it('should emit `modelChange` after debounce time', fakeAsync(() => {
       testComponentInputs.fields = [{
         key: 'city',

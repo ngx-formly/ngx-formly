@@ -123,9 +123,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           : tap(() => {}),
           map(value => {
             if (field.parsers && field.parsers.length > 0) {
-              field.parsers.forEach(parserFn => {
-                value = map.call(value, parserFn);
-              });
+              field.parsers.forEach(parserFn => value = parserFn(value));
             }
 
             return value;
