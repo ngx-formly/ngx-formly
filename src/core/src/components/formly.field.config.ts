@@ -154,7 +154,7 @@ export interface FormlyFieldConfig {
   /**
    * Array of functions to execute, as a pipeline, whenever the model updates, usually via user input.
    */
-  parsers?: ((value: any, index: number) => {})[];
+  parsers?: ((value: any) => {})[];
 }
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
