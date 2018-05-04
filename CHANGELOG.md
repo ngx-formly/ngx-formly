@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.3"></a>
+## [3.0.3](https://github.com/formly-js/ngx-formly/compare/v3.0.2...v3.0.3) (2018-05-04)
+
+
+### Bug Fixes
+
+* **core:** move building pre/post wrapper into FormBuilder ([#938](https://github.com/formly-js/ngx-formly/issues/938)) ([711e418](https://github.com/formly-js/ngx-formly/commit/711e418)), closes [#925](https://github.com/formly-js/ngx-formly/issues/925)
+* **material:** avoid using deprecated align input for checkbox ([#937](https://github.com/formly-js/ngx-formly/issues/937)) ([6ab6109](https://github.com/formly-js/ngx-formly/commit/6ab6109))
+
+
+
 <a name="3.0.2"></a>
 ## [3.0.2](https://github.com/formly-js/ngx-formly/compare/v3.0.1...v3.0.2) (2018-05-03)
 
