@@ -189,33 +189,6 @@ describe('FormlyField Component', () => {
       expect(getLabelWrapper(elm).innerText).toEqual('Title');
       expect(getInputField(elm).getAttribute('placeholder')).toEqual('Title');
     });
-
-    it('should render pre-wrapper', () => {
-      testComponentInputs.field.templateOptions.preWrapper = true;
-
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
-      const elm = getFormlyFieldElement(fixture.nativeElement);
-
-      expect(getLabelWrapper(elm).innerText).toEqual('Title');
-    });
-
-    it('should render post-wrapper', () => {
-      testComponentInputs.field.templateOptions.postWrapper = true;
-
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
-      const elm = getFormlyFieldElement(fixture.nativeElement);
-
-      expect(getLabelWrapper(elm).innerText).toEqual('Title');
-    });
-
-    it('should render pre/post-wrapper using templateManipulators option', () => {
-      testComponentInputs.field.templateOptions.templateManipulators = { preWrapper: () => 'label' };
-
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
-      const elm = getFormlyFieldElement(fixture.nativeElement);
-
-      expect(getLabelWrapper(elm).innerText).toEqual('Title');
-    });
   });
 
   it('should render options Types', () => {

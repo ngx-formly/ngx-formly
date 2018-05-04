@@ -70,6 +70,31 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 
+  describe('initialise Wrappers', () => {
+    it('should use an empty array if Wrappers is not set', () => {
+      field = { key: 'title' };
+      builder.buildForm(form, [field], {}, {});
+
+      expect(field.wrappers).toEqual([]);
+    });
+
+    it('should add preWrapper and postWrapper', () => {
+      field = {
+        key: 'title',
+        wrappers: ['wrapper'],
+        templateOptions: {
+          templateManipulators: {
+            preWrapper: [() => 'preWrapper'],
+            postWrapper: [() => 'postWrapper'],
+          },
+        },
+      };
+      builder.buildForm(form, [field], {}, {});
+
+      expect(field.wrappers).toEqual(['preWrapper', 'wrapper', 'postWrapper']);
+    });
+  });
+
   describe('initialise default TemplateOptions', () => {
     it('should not set the default value if the specified key or type is undefined', () => {
       field = { key: 'title' };
