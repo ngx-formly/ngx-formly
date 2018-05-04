@@ -216,6 +216,14 @@ describe('FormlyField Component', () => {
 
       expect(getLabelWrapper(elm).innerText).toEqual('Title');
     });
+
+    it('should skip all wrappers', () => {
+      testComponentInputs.field.templateOptions.skipWrappers = true;
+      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+      const elm = getFormlyFieldElement(fixture.nativeElement);
+
+      expect(getLabelWrapper(elm)).toBeNull();
+    });
   });
 
   it('should render options Types', () => {

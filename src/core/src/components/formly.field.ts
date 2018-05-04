@@ -108,6 +108,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     if (!this.field.wrappers) this.field.wrappers = [];
     if (!type.wrappers) type.wrappers = [];
 
+    if (this.field.templateOptions && this.field.templateOptions.skipWrappers) {
+      return [];
+    }
+
     return [...preWrappers, ...this.field.wrappers, ...postWrappers];
   }
 

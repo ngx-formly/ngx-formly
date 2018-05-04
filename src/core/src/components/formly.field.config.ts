@@ -186,6 +186,7 @@ export interface FormlyTemplateOptions {
   change?: FormlyAttributeEvent;
   keypress?: FormlyAttributeEvent;
   templateManipulators?: TemplateManipulators;
+  skipWrappers?: boolean;
   [additionalProperties: string]: any;
 }
 
