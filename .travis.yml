@@ -6,7 +6,7 @@ cache:
     - $HOME/.npm
     - $HOME/.yarn-cache
 node_js:
-  - "6"
+  - "8.11"
 
 before_install:
   - npm i -g yarn --cache-min 999999999

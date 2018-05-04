@@ -9,7 +9,7 @@ const execSync = require('child_process').execSync,
   ];
 
 packages.map(package => {
-  const packagePath = `${__dirname}/../dist/${package}`;
+  const packagePath = `${__dirname}/../dist/@ngx-formly/${package}`;
 
   execSync(`cd ${packagePath} && npm publish --tag next --access public`);
 });

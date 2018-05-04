@@ -1,40 +1,28 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "declaration": true,
-    "moduleResolution": "node",
-    "removeComments": true,
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": false,
-    "baseUrl": "src",
-    "lib": ["dom", "es6"],
-    "importHelpers": true,
-    "paths": {
-      "@ngx-formly/core": ["./core/index"],
-      "@ngx-formly/bootstrap": ["./ui-bootstrap/index"],
-
-      "@ngx-formly/material": ["./ui-material/index"],
-      "@ngx-formly/material/*": ["./ui-material/*"],
-
-      "@ngx-formly/ionic": ["./ui-ionic/index"],
-      "@ngx-formly/primeng": ["./ui-primeng/index"],
-      "@ngx-formly/kendo": ["./ui-kendo/index"]
-    },
     "typeRoots": [
-      "./node_modules/@types"
-    ]
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "@ngx-formly/*": [
+        "projects/ngx-formly/*/src/public_api"
+      ],
+    }
   },
-  "include": [
-    "src/**/*.ts"
-  ],
   "exclude": [
-    "test.ts",
-    "demo/src/assets/**/*.ts",
-    "**/*.spec.ts"
-  ],
-  "compileOnSave": false
+    "demo/src/assets/stackblitz/**/*.ts",
+  ]
 }

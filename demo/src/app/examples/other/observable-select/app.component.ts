@@ -22,7 +22,7 @@ export class AppComponent {
         valueProp: 'id',
         labelProp: 'name',
       },
-    }
+    },
   ];
 
   constructor(private dataService: DataService) {}

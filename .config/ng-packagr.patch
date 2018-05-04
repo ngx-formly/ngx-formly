@@ -12,7 +12,7 @@ index a8d2c51..451ea76 100644
      const tsConfig = entryPoint.data.tsConfig;
      // Add paths mappings for dependencies
      const entryPointDeps = entryPoint.filter(nodes_1.isEntryPoint);
-+    tsConfig.options.paths = { "@ngx-formly/core": [__dirname + "/../../../../../../dist/core"] };
++    tsConfig.options.paths = { "@ngx-formly/core": [__dirname + "/../../../../../../dist/@ngx-formly/core"] };
      if (entryPointDeps.length > 0) {
          if (!tsConfig.options.paths) {
              tsConfig.options.paths = {};
