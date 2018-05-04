@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
-import { FormlyConfig, FieldValidatorFn } from './formly.config';
+import { FormlyConfig, FieldValidatorFn, TemplateManipulators } from './formly.config';
 import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, isObject, isNullOrUndefined, clone, assignModelToFields } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 import { getKeyPath, isFunction } from '../utils';
@@ -46,6 +46,7 @@ export class FormlyFormBuilder {
       this.initFieldOptions(field);
       this.initFieldExpression(field, options);
       this.initFieldValidation(field);
+      this.initFieldWrappers(field);
       this.initFieldAsyncValidation(field);
 
       if (field.key && field.type) {
@@ -315,5 +316,39 @@ export class FormlyFormBuilder {
     : validator;
 
     return (control: AbstractControl) => (validator as FieldValidatorFn)(control, field);
+  }
+
+  private initFieldWrappers(field: FormlyFieldConfig) {
+    const templateManipulators: TemplateManipulators = {
+      preWrapper: [],
+      postWrapper: [],
+    };
+
+    if (field.templateOptions) {
+      this.mergeTemplateManipulators(templateManipulators, field.templateOptions.templateManipulators);
+    }
+
+    this.mergeTemplateManipulators(templateManipulators, this.formlyConfig.templateManipulators);
+
+    const preWrappers = templateManipulators.preWrapper.map(m => m(field)).filter(type => type),
+      postWrappers = templateManipulators.postWrapper.map(m => m(field)).filter(type => type);
+
+    if (!field.wrappers) {
+      field.wrappers = [];
+    }
+
+    field.wrappers = [...preWrappers, ...(field.wrappers || []), ...postWrappers];
+  }
+
+  private mergeTemplateManipulators(source: TemplateManipulators, target: TemplateManipulators) {
+    target = target || {};
+    if (target.preWrapper) {
+      source.preWrapper = source.preWrapper.concat(target.preWrapper);
+    }
+    if (target.postWrapper) {
+      source.postWrapper = source.postWrapper.concat(target.postWrapper);
+    }
+
+    return source;
   }
 }

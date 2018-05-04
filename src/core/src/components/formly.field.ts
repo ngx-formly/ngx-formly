@@ -3,7 +3,7 @@ import {
   ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver, SimpleChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyConfig, TypeOption, TemplateManipulators } from '../services/formly.config';
+import { FormlyConfig, TypeOption } from '../services/formly.config';
 import { Field } from '../templates/field';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn, FormlyLifeCycleOptions } from './formly.field.config';
 
@@ -78,49 +78,15 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   private createFieldComponent(): ComponentRef<Field> {
-    const type = this.formlyConfig.getType(this.field.type),
-      wrappers = this.getFieldWrappers(type);
+    const type = this.formlyConfig.getType(this.field.type);
 
     let fieldComponent = this.fieldComponent;
-    wrappers.forEach(wrapperName => {
+    (this.field.wrappers || []).forEach(wrapperName => {
       const wrapperRef = this.createComponent(fieldComponent, this.formlyConfig.getWrapper(wrapperName).component);
       fieldComponent = wrapperRef.instance.fieldComponent;
     });
 
     return this.createComponent(fieldComponent, type.component);
-  }
-
-  private getFieldWrappers(type: TypeOption) {
-    const templateManipulators: TemplateManipulators = {
-      preWrapper: [],
-      postWrapper: [],
-    };
-
-    if (this.field.templateOptions) {
-      this.mergeTemplateManipulators(templateManipulators, this.field.templateOptions.templateManipulators);
-    }
-
-    this.mergeTemplateManipulators(templateManipulators, this.formlyConfig.templateManipulators);
-
-    let preWrappers = templateManipulators.preWrapper.map(m => m(this.field)).filter(type => type),
-      postWrappers = templateManipulators.postWrapper.map(m => m(this.field)).filter(type => type);
-
-    if (!this.field.wrappers) this.field.wrappers = [];
-    if (!type.wrappers) type.wrappers = [];
-
-    return [...preWrappers, ...this.field.wrappers, ...postWrappers];
-  }
-
-  private mergeTemplateManipulators(source: TemplateManipulators, target: TemplateManipulators) {
-    target = target || {};
-    if (target.preWrapper) {
-      source.preWrapper = source.preWrapper.concat(target.preWrapper);
-    }
-    if (target.postWrapper) {
-      source.postWrapper = source.postWrapper.concat(target.postWrapper);
-    }
-
-    return source;
   }
 
   private createComponent(fieldComponent: ViewContainerRef, component: any): ComponentRef<any> {
