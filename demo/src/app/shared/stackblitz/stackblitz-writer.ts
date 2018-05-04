@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { VERSION } from '@angular/material';
 import { ExampleType } from '../example-viewer/example-viewer.component';
 
 const STACKBLITZ_URL = 'https://run.stackblitz.com/api/angular/v1';
@@ -12,7 +11,7 @@ const COPYRIGHT =
 const TEMPLATE_FILES = {
   core: [
     { file: 'polyfills.ts', filecontent: require('!!raw-loader!../../../assets/stackblitz/polyfills.ts') },
-    // { file: '.angular-cli.json', filecontent: require('!!raw-loader!../../../assets/stackblitz/.angular-cli.json') },
+    { file: 'angular.json', filecontent: require('!!raw-loader!../../../assets/stackblitz/angular_json') },
     { file: 'main.ts', filecontent: require('!!raw-loader!../../../assets/stackblitz/main.ts') },
     { file: 'index.html', filecontent: require('!!raw-loader!../../../assets/stackblitz/index.html') },
   ],
@@ -37,9 +36,9 @@ const TEMPLATE_FILES = {
 };
 
 const TAGS: string[] = ['angular', 'formly', 'example'];
-const angularVersion = '^5.0.0';
-const materialVersion = '^5.0.0';
-const formlyVersion = '^3.0.0-alpha';
+const angularVersion = '^6.0.0';
+const materialVersion = '^6.0.0';
+const formlyVersion = '^3.0.0';
 
 const dependencies = {
   core: {
@@ -50,7 +49,8 @@ const dependencies = {
     '@angular/platform-browser': angularVersion,
     '@angular/platform-browser-dynamic': angularVersion,
     'core-js': '^2.4.1',
-    'rxjs': '^5.5.2',
+    'rxjs': '^6.0.0',
+    'rxjs-compat': '^6.0.0',
     'zone.js': '^0.8.14',
     'tslib': '^1.7.0',
 
@@ -225,6 +225,10 @@ export class StackblitzWriter {
     prependApp = true) {
     if (prependApp) {
       filename = 'app/' + filename;
+    }
+
+    if (filename !== 'angular.json') {
+      filename = 'src/' + filename;
     }
 
     this._appendFormInput(form, `files[${filename}]`, this._appendCopyright(filename, content));

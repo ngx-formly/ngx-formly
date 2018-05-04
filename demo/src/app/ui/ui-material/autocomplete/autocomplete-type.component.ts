@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
 import { MatInput } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -19,13 +19,14 @@ import { startWith, switchMap } from 'rxjs/operators';
     </mat-autocomplete>
   `,
 })
-export class AutocompleteTypeComponent extends FieldType {
+export class AutocompleteTypeComponent extends FieldType implements OnInit {
   // Optional: only if you want to rely on `MatInput` implementation
   @ViewChild(MatInput) formFieldControl: MatInput;
 
   filter: Observable<any[]>;
 
   ngOnInit() {
+    super.ngOnInit();
     this.filter = this.formControl.valueChanges
       .pipe(
         startWith(''),

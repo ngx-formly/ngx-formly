@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
 
 @Component({

@@ -1,8 +1,0 @@
-{
-  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "lib": {
-    "entryFile": "index.ts"
-  },
-  "dest": "../../dist/core",
-  "workingDirectory": "../../.ng_build"
-}

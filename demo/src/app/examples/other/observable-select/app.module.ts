@@ -16,6 +16,6 @@ import { DataService } from './data.service';
   declarations: [
     AppComponent,
   ],
-  providers: [DataService]
+  providers: [DataService],
 })
 export class AppModule { }

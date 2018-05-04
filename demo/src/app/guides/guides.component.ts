@@ -29,12 +29,12 @@ export class GuidesComponent {
   ];
 
   contents = {
-    'getting-started': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./../../../../README.md'),
+    'getting-started': require('!!raw-loader!markdown-loader!prism-hightlight-loader!./../../../../README.md'),
     'properties-options': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./properties-options.md'),
-    'custom-formly-field': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./custom-formly-field.md'),
-    'custom-formly-wrapper': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./custom-formly-wrapper.md'),
-    'validation': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./validation.md'),
-    'expression-properties': require('!!raw-loader!prism-hightlight-loader!markdown-loader!./expression-properties.md'),
+    'custom-formly-field': require('!!raw-loader!markdown-loader!prism-hightlight-loader!./custom-formly-field.md'),
+    'custom-formly-wrapper': require('!!raw-loader!markdown-loader!prism-hightlight-loader!./custom-formly-wrapper.md'),
+    'validation': require('!!raw-loader!markdown-loader!prism-hightlight-loader!./validation.md'),
+    'expression-properties': require('!!raw-loader!markdown-loader!prism-hightlight-loader!./expression-properties.md'),
   };
 
   constructor(public route: ActivatedRoute) {}
