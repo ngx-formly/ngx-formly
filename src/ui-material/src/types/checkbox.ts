@@ -11,7 +11,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
       [formlyAttributes]="field"
       (change)="change($event)"
       [indeterminate]="to.indeterminate && model[key] === undefined"
-      [align]="to.align">
+      [labelPosition]="to.align">
       {{ to.label }}
       <ng-container *ngIf="to.required && to.hideRequiredMarker !== true">*</ng-container>
     </mat-checkbox>
