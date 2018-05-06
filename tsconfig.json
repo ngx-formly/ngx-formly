@@ -18,7 +18,7 @@
     ],
     "paths": {
       "@ngx-formly/*": [
-        "projects/ngx-formly/*/src/public_api"
+        "src/*/src/public_api"
       ],
     }
   },

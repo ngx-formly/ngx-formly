@@ -119,37 +119,37 @@
       }
     },
     "@ngx-formly/core": {
-      "root": "projects/ngx-formly/core",
-      "sourceRoot": "projects/ngx-formly/core/src",
+      "root": "src/core",
+      "sourceRoot": "src/core/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngx-formly/core/tsconfig.lib.json",
-            "project": "projects/ngx-formly/core/ng-package.json"
+            "tsConfig": "src/core/tsconfig.lib.json",
+            "project": "src/core/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ngx-formly/core/ng-package.prod.json"
+              "project": "src/core/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-formly/core/src/test.ts",
-            "tsConfig": "projects/ngx-formly/core/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-formly/core/karma.conf.js"
+            "main": "src/core/src/test.ts",
+            "tsConfig": "src/core/tsconfig.spec.json",
+            "karmaConfig": "src/core/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ngx-formly/core/tsconfig.lib.json",
-              "projects/ngx-formly/core/tsconfig.spec.json"
+              "src/core/tsconfig.lib.json",
+              "src/core/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -159,37 +159,37 @@
       }
     },
     "@ngx-formly/bootstrap": {
-      "root": "projects/ngx-formly/bootstrap",
-      "sourceRoot": "projects/ngx-formly/bootstrap/src",
+      "root": "src/bootstrap",
+      "sourceRoot": "src/bootstrap/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngx-formly/bootstrap/tsconfig.lib.json",
-            "project": "projects/ngx-formly/bootstrap/ng-package.json"
+            "tsConfig": "src/bootstrap/tsconfig.lib.json",
+            "project": "src/bootstrap/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ngx-formly/bootstrap/ng-package.prod.json"
+              "project": "src/bootstrap/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-formly/bootstrap/src/test.ts",
-            "tsConfig": "projects/ngx-formly/bootstrap/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-formly/bootstrap/karma.conf.js"
+            "main": "src/bootstrap/src/test.ts",
+            "tsConfig": "src/bootstrap/tsconfig.spec.json",
+            "karmaConfig": "src/bootstrap/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ngx-formly/bootstrap/tsconfig.lib.json",
-              "projects/ngx-formly/bootstrap/tsconfig.spec.json"
+              "src/bootstrap/tsconfig.lib.json",
+              "src/bootstrap/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -199,37 +199,37 @@
       }
     },
     "@ngx-formly/ionic": {
-      "root": "projects/ngx-formly/ionic",
-      "sourceRoot": "projects/ngx-formly/ionic/src",
+      "root": "src/ionic",
+      "sourceRoot": "src/ionic/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngx-formly/ionic/tsconfig.lib.json",
-            "project": "projects/ngx-formly/ionic/ng-package.json"
+            "tsConfig": "src/ionic/tsconfig.lib.json",
+            "project": "src/ionic/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ngx-formly/ionic/ng-package.prod.json"
+              "project": "src/ionic/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-formly/ionic/src/test.ts",
-            "tsConfig": "projects/ngx-formly/ionic/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-formly/ionic/karma.conf.js"
+            "main": "src/ionic/src/test.ts",
+            "tsConfig": "src/ionic/tsconfig.spec.json",
+            "karmaConfig": "src/ionic/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ngx-formly/ionic/tsconfig.lib.json",
-              "projects/ngx-formly/ionic/tsconfig.spec.json"
+              "src/ionic/tsconfig.lib.json",
+              "src/ionic/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -239,37 +239,37 @@
       }
     },
     "@ngx-formly/kendo": {
-      "root": "projects/ngx-formly/kendo",
-      "sourceRoot": "projects/ngx-formly/kendo/src",
+      "root": "src/kendo",
+      "sourceRoot": "src/kendo/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngx-formly/kendo/tsconfig.lib.json",
-            "project": "projects/ngx-formly/kendo/ng-package.json"
+            "tsConfig": "src/kendo/tsconfig.lib.json",
+            "project": "src/kendo/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ngx-formly/kendo/ng-package.prod.json"
+              "project": "src/kendo/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-formly/kendo/src/test.ts",
-            "tsConfig": "projects/ngx-formly/kendo/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-formly/kendo/karma.conf.js"
+            "main": "src/kendo/src/test.ts",
+            "tsConfig": "src/kendo/tsconfig.spec.json",
+            "karmaConfig": "src/kendo/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ngx-formly/kendo/tsconfig.lib.json",
-              "projects/ngx-formly/kendo/tsconfig.spec.json"
+              "src/kendo/tsconfig.lib.json",
+              "src/kendo/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -279,37 +279,37 @@
       }
     },
     "@ngx-formly/material": {
-      "root": "projects/ngx-formly/material",
-      "sourceRoot": "projects/ngx-formly/material/src",
+      "root": "src/material",
+      "sourceRoot": "src/material/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngx-formly/material/tsconfig.lib.json",
-            "project": "projects/ngx-formly/material/ng-package.json"
+            "tsConfig": "src/material/tsconfig.lib.json",
+            "project": "src/material/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ngx-formly/material/ng-package.prod.json"
+              "project": "src/material/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-formly/material/src/test.ts",
-            "tsConfig": "projects/ngx-formly/material/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-formly/material/karma.conf.js"
+            "main": "src/material/src/test.ts",
+            "tsConfig": "src/material/tsconfig.spec.json",
+            "karmaConfig": "src/material/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ngx-formly/material/tsconfig.lib.json",
-              "projects/ngx-formly/material/tsconfig.spec.json"
+              "src/material/tsconfig.lib.json",
+              "src/material/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -319,37 +319,37 @@
       }
     },
     "@ngx-formly/primeng": {
-      "root": "projects/ngx-formly/primeng",
-      "sourceRoot": "projects/ngx-formly/primeng/src",
+      "root": "src/primeng",
+      "sourceRoot": "src/primeng/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngx-formly/primeng/tsconfig.lib.json",
-            "project": "projects/ngx-formly/primeng/ng-package.json"
+            "tsConfig": "src/primeng/tsconfig.lib.json",
+            "project": "src/primeng/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ngx-formly/primeng/ng-package.prod.json"
+              "project": "src/primeng/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-formly/primeng/src/test.ts",
-            "tsConfig": "projects/ngx-formly/primeng/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-formly/primeng/karma.conf.js"
+            "main": "src/primeng/src/test.ts",
+            "tsConfig": "src/primeng/tsconfig.spec.json",
+            "karmaConfig": "src/primeng/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ngx-formly/primeng/tsconfig.lib.json",
-              "projects/ngx-formly/primeng/tsconfig.spec.json"
+              "src/primeng/tsconfig.lib.json",
+              "src/primeng/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

@@ -395,17 +395,17 @@
     tree-kill "^1.0.0"
     webpack-sources "^1.1.0"
 
-"@ngx-loading-bar/core@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@ngx-loading-bar/core/-/core-1.6.0.tgz#66f60db33aac6cc9a2ee733cfe1b894e8ce0f394"
+"@ngx-loading-bar/core@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ngx-loading-bar/core/-/core-2.0.0.tgz#a12963107d841089a79568e3b886e8aa12beaba2"
   dependencies:
     tslib "^1.7.1"
 
-"@ngx-loading-bar/router@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@ngx-loading-bar/router/-/router-1.6.0.tgz#8b0964a5fba85040bd3b26b449734510a457c921"
+"@ngx-loading-bar/router@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ngx-loading-bar/router/-/router-2.0.0.tgz#90553e4d2f970b20746cf32a1c7401581cb90e3e"
   dependencies:
-    "@ngx-loading-bar/core" "1.6.0"
+    "@ngx-loading-bar/core" "2.0.0"
     tslib "^1.7.1"
 
 "@progress/kendo-angular-dropdowns@^2.1.0":
@@ -7556,21 +7556,21 @@ rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
 
-rxjs-compat@^6.0.0-rc.0:
+rxjs-compat@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.1.0.tgz#935059623ee4c167728c9dd03ee6e4468cc5b583"
-
-rxjs@6.1.0, rxjs@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.1.0.tgz#833447de4e4f6427b9cec3e5eb9f56415cd28315"
-  dependencies:
-    tslib "^1.9.0"
 
 rxjs@^5.5.0:
   version "5.5.10"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.10.tgz#fde02d7a614f6c8683d0d1957827f492e09db045"
   dependencies:
     symbol-observable "1.0.1"
+
+rxjs@^6.0.0, rxjs@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.1.0.tgz#833447de4e4f6427b9cec3e5eb9f56415cd28315"
+  dependencies:
+    tslib "^1.9.0"
 
 safe-buffer@5.1.1:
   version "5.1.1"
