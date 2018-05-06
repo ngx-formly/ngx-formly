@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/formly-js/ngx-formly/compare/v3.1.0...v4.0.0) (2018-05-06)
+
+
+### Features
+
+* add angular & rxjs 6.0 support ([00587d0](https://github.com/formly-js/ngx-formly/commit/00587d0))
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/formly-js/ngx-formly/compare/v3.0.3...v3.1.0) (2018-05-06)
 

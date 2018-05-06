@@ -34,6 +34,7 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 
 | Angular version | Formly version         |
 | --------------- | ---------------------- |
+| Angular >= 6    | `@ngx-formly/core@4.x` |
 | Angular >= 5    | `@ngx-formly/core@3.x` |
 | Angular >= 4    | `@ngx-formly/core@2.x` |
 | Angular >= 2    | `ng-formly@1.x`        |
