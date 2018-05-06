@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/formly-js/ngx-formly/compare/v3.0.3...v3.1.0) (2018-05-06)
+
+
+### Bug Fixes
+
+* **core:** ensure using a valid formcontrol in FieldArrayType:add ([90d7cf7](https://github.com/formly-js/ngx-formly/commit/90d7cf7))
+
+
+
 <a name="3.0.3"></a>
 ## [3.0.3](https://github.com/formly-js/ngx-formly/compare/v3.0.2...v3.0.3) (2018-05-04)
 
