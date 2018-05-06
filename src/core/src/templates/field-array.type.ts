@@ -20,7 +20,10 @@ export abstract class FieldArrayType extends FieldType {
       field.key = `${index}`;
     });
 
-    this.builder.buildForm(this.formControl, [this.field.fieldGroup[i]], this.model, this.options);
+    const form = new FormArray([]);
+    this.builder.buildForm(form, [this.field.fieldGroup[i]], this.model, this.options);
+    this.formControl.insert(i, form.at(0));
+
     (<any> this.options).resetTrackModelChanges();
   }
 
