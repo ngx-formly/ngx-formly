@@ -1,4 +1,5 @@
 import { FormlyFieldConfig } from './core';
+import { Observable } from 'rxjs';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
@@ -164,7 +165,7 @@ export function isObject(x: any) {
 }
 
 export function clone(value: any): any {
-  if (!isObject(value) || value instanceof RegExp) {
+  if (!isObject(value) || value instanceof RegExp || value instanceof Observable) {
     return value;
   }
 
