@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/formly-js/ngx-formly/compare/v4.0.0...v4.0.1) (2018-05-09)
+
+
+### Bug Fixes
+
+* **core:** keep Observable value in clone ([bcb4bb4](https://github.com/formly-js/ngx-formly/commit/bcb4bb4))
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/formly-js/ngx-formly/compare/v3.1.0...v4.0.0) (2018-05-06)
 
