@@ -1,5 +1,6 @@
 import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel, clone, assignModelToFields } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
+import { of } from 'rxjs';
 
 describe('FormlyUtils service', () => {
   describe('reverseDeepMerge', () => {
@@ -313,6 +314,11 @@ describe('assignModelToFields', () => {
 describe('clone', () => {
   it('RegExp', () => {
     expect(clone(/[^0-9]+/g)).toEqual(/[^0-9]+/g);
+  });
+
+  it('Observable', () => {
+    const v = of(['clone']);
+    expect(clone(v)).toEqual(v);
   });
 
   it('Date', () => {
