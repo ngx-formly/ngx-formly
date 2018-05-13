@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.2"></a>
+## [4.0.2](https://github.com/formly-js/ngx-formly/compare/v4.0.1...v4.0.2) (2018-05-13)
+
+
+### Bug Fixes
+
+* **core:** create field component before calling onInit lifecycle ([b3923f2](https://github.com/formly-js/ngx-formly/commit/b3923f2))
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/formly-js/ngx-formly/compare/v4.0.0...v4.0.1) (2018-05-09)
 
