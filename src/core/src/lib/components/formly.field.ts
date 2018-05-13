@@ -53,10 +53,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   ngOnInit() {
-    this.lifeCycleHooks(this.lifecycle.onInit);
     if (!this.field.template) {
       this.createFieldComponent();
     }
+    this.lifeCycleHooks(this.lifecycle.onInit);
   }
 
   ngOnChanges(changes: SimpleChanges) {
