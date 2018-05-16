@@ -129,8 +129,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **core:** remove deprecated 'field.' path in `expressionProperties` ([b23e546](https://github.com/formly-js/ngx-formly/commit/b23e546))
 * **core:** remove passing formControl for formlyAttributes events ([4d4f894](https://github.com/formly-js/ngx-formly/commit/4d4f894))
-* **material:** remove deprected floatPlaceholder ([3a57aca](https://github.com/formly-js/ngx-formly/commit/3a57aca))
-* **material:** remove deprected focusMonitor method ([8c09639](https://github.com/formly-js/ngx-formly/commit/8c09639))
+* **material:** remove deprecated floatPlaceholder ([3a57aca](https://github.com/formly-js/ngx-formly/commit/3a57aca))
+* **material:** remove deprecated focusMonitor method ([8c09639](https://github.com/formly-js/ngx-formly/commit/8c09639))
 
 
 ### BREAKING CHANGES
@@ -1035,7 +1035,7 @@ To upgrade from ng-formly to @ngx-formly/core see [UPGRADE-2.0](./UPGRADE-2.0.md
 ### Bug Fixes
 
 * replace deprecated OpaqueToken with InjectionToken ([#508](https://github.com/formly-js/ng-formly/issues/508)) ([fbf1dc3](https://github.com/formly-js/ng-formly/commit/fbf1dc3))
-* **#514:** avoid supress and/or force validation messages. ([#524](https://github.com/formly-js/ng-formly/issues/524)) ([1ffe899](https://github.com/formly-js/ng-formly/commit/1ffe899))
+* **#514:** avoid suppress and/or force validation messages. ([#524](https://github.com/formly-js/ng-formly/issues/524)) ([1ffe899](https://github.com/formly-js/ng-formly/commit/1ffe899))
 * **field:** use showError instead of valid. ([2ba78a3](https://github.com/formly-js/ng-formly/commit/2ba78a3))
 
 

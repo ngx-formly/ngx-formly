@@ -65,7 +65,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
 
   `fieldComponent` is where the field is inserted.  (`<ng-container #fieldComponent></ng-container>`)
 
-  > Note: `FieldWrapper` component extends `Field` therefor you can have multiple wrappers attached to one field.
+  > Note: `FieldWrapper` component extends `Field` therefore you can have multiple wrappers attached to one field.
   > Example you can have both a label and validator wrapper.
 
   2. Register the custom wrapper in `NgModule` declaration:
