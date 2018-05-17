@@ -136,11 +136,16 @@ export interface FormlyFieldConfig {
   /**
    * An object with a few useful properties to control the model changes
    * - `debounce`: integer value which contains the debounce model update value in milliseconds. A value of 0 triggers an immediate update.
+   * - `updateOn`: string event value that instructs when the control should be updated
    */
   modelOptions?: {
     debounce?: {
       default: number;
     };
+    /**
+     * @see https://angular.io/api/forms/AbstractControl#updateOn
+     */
+    updateOn?: 'change' | 'blur' | 'submit';
   };
 
   lifecycle?: FormlyLifeCycleOptions;

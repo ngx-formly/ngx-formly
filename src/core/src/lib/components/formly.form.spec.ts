@@ -1,13 +1,14 @@
 import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { createGenericTestComponent } from '../test-utils';
+import { createGenericTestComponent, newEvent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, DebugElement } from '@angular/core';
 import { FormlyModule, FormlyFormBuilder } from '../core';
 import { FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
+import { By } from '@angular/platform-browser';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -18,10 +19,10 @@ function getFormlyFieldElement(element: HTMLElement): HTMLInputElement {
 
 let testComponentInputs;
 
-describe('Formly Form Component', () => {
+describe('FormlyForm Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, FormlyFieldText, FormlyWrapperLabel, RepeatComponent],
+      declarations: [TestComponent, TestFormComponent, FormlyFieldText, FormlyWrapperLabel, RepeatComponent],
       imports: [
         ReactiveFormsModule,
         FormlyModule.forRoot({
@@ -187,6 +188,34 @@ describe('Formly Form Component', () => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ title: '***', test: '***' });
+      subscription.unsubscribe();
+    });
+
+    it('should emit `modelChange` after `updateOn` action is triggered', () => {
+      testComponentInputs.fields = [{
+        key: 'city',
+        type: 'text',
+        modelOptions: {
+          updateOn: 'blur',
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+      const inputDe = fixture.debugElement.query(By.css('input')) as DebugElement;
+
+      inputDe.nativeElement.value = '***';
+      inputDe.nativeElement.dispatchEvent(newEvent('input', false));
+
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+
+      inputDe.triggerEventHandler('blur', {});
+      fixture.detectChanges();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ city: '***' });
       subscription.unsubscribe();
     });
   });
@@ -722,7 +751,240 @@ describe('Formly Form Component', () => {
       expect(testComponentInputs.form.at(0).value).toEqual('test');
     });
   });
+
+  describe('`updateOn` support', () => {
+    describe('on blur', () => {
+      it('should work on all form controls in a form group', () => {
+        testComponentInputs = {
+          model: {},
+          form: new FormGroup({}, { updateOn: 'blur' }),
+          fields: [
+            {
+              key: 'firstName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+            {
+              key: 'lastName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+          ],
+        };
+
+        const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+        const inputDeEls = fixture.debugElement.queryAll(By.css('input')) as DebugElement[];
+
+        expect(testComponentInputs.form.get('firstName').value).toBeNull();
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+
+        inputDeEls[0].nativeElement.value = 'First';
+        inputDeEls[0].nativeElement.dispatchEvent(newEvent('input', false));
+
+        inputDeEls[1].nativeElement.value = 'Last';
+        inputDeEls[1].nativeElement.dispatchEvent(newEvent('input', false));
+
+        fixture.detectChanges();
+
+        expect(testComponentInputs.form.get('firstName').value).toBeNull();
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+        expect(testComponentInputs.model.firstName).toBeUndefined();
+        expect(testComponentInputs.model.lastName).toBeUndefined();
+        expect(testComponentInputs.form.valid).toBe(false);
+
+        inputDeEls[0].triggerEventHandler('blur', {});
+        fixture.detectChanges();
+
+        expect(testComponentInputs.form.get('firstName').value).toEqual('First');
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+        expect(testComponentInputs.model.firstName).toEqual('First');
+        expect(testComponentInputs.model.lastName).toBeUndefined();
+        expect(testComponentInputs.form.valid).toBe(false);
+
+        inputDeEls[1].triggerEventHandler('blur', {});
+        fixture.detectChanges();
+
+        expect(testComponentInputs.form.get('firstName').value).toEqual('First');
+        expect(testComponentInputs.form.get('lastName').value).toEqual('Last');
+        expect(testComponentInputs.model.firstName).toEqual('First');
+        expect(testComponentInputs.model.lastName).toEqual('Last');
+        expect(testComponentInputs.form.valid).toBe(true);
+      });
+
+      it('should not wait for submit to set value programmatically', () => {
+        testComponentInputs = {
+          model: {},
+          form: new FormGroup({}, { updateOn: 'blur' }),
+          fields: [
+            {
+              key: 'firstName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+            {
+              key: 'lastName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+          ],
+        };
+
+        const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+        const inputDeEls = fixture.debugElement.queryAll(By.css('input')) as DebugElement[];
+
+        expect(testComponentInputs.form.get('firstName').value).toBeNull();
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+
+        testComponentInputs.form.patchValue({
+          firstName: 'First',
+          lastName: 'Last',
+        });
+        fixture.detectChanges();
+
+        expect(inputDeEls[0].nativeElement.value).toEqual('First');
+        expect(inputDeEls[1].nativeElement.value).toEqual('Last');
+        expect(testComponentInputs.form.get('firstName').value).toEqual('First');
+        expect(testComponentInputs.form.get('lastName').value).toEqual('Last');
+        expect(testComponentInputs.form.valid).toBe(true);
+      });
+    });
+
+    describe('on submit', () => {
+      it('should work on all form controls in a form group', () => {
+        testComponentInputs = {
+          model: {},
+          form: new FormGroup({}, { updateOn: 'submit' }),
+          fields: [
+            {
+              key: 'firstName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+            {
+              key: 'lastName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+          ],
+        };
+
+        const fixture = TestBed.createComponent(TestFormComponent);
+        // Allow <formly-form> to initialize
+        fixture.detectChanges();
+
+        const formDe = fixture.debugElement.query(By.css('form')) as DebugElement;
+        const inputDeEls = formDe.queryAll(By.css('input')) as DebugElement[];
+
+        expect(testComponentInputs.form.get('firstName').value).toBeNull();
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+
+        inputDeEls[0].nativeElement.value = 'First';
+        inputDeEls[0].nativeElement.dispatchEvent(newEvent('input', false));
+
+        inputDeEls[1].nativeElement.value = 'Last';
+        inputDeEls[1].nativeElement.dispatchEvent(newEvent('input', false));
+
+        fixture.detectChanges();
+
+        expect(testComponentInputs.form.get('firstName').value).toBeNull();
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+        expect(testComponentInputs.form.valid).toBe(false);
+
+        inputDeEls[0].triggerEventHandler('blur', {});
+        inputDeEls[1].triggerEventHandler('blur', {});
+        fixture.detectChanges();
+
+        expect(testComponentInputs.form.get('firstName').value).toBeNull();
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+        expect(testComponentInputs.form.valid).toBe(false);
+
+        formDe.triggerEventHandler('submit', {});
+        fixture.detectChanges();
+
+        expect(testComponentInputs.form.get('firstName').value).toEqual('First');
+        expect(testComponentInputs.form.get('lastName').value).toEqual('Last');
+        expect(testComponentInputs.form.valid).toBe(true);
+      });
+
+      it('should not wait for submit to set value programmatically', () => {
+        testComponentInputs = {
+          model: {},
+          form: new FormGroup({}, { updateOn: 'submit' }),
+          fields: [
+            {
+              key: 'firstName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+            {
+              key: 'lastName',
+              type: 'text',
+              templateOptions: {
+                required: true,
+              },
+            },
+          ],
+        };
+
+        const fixture = TestBed.createComponent(TestFormComponent);
+        // Allow <formly-form> to initialize
+        fixture.detectChanges();
+
+        const formDe = fixture.debugElement.query(By.css('form')) as DebugElement;
+        const inputDeEls = formDe.queryAll(By.css('input')) as DebugElement[];
+
+        expect(testComponentInputs.form.get('firstName').value).toBeNull();
+        expect(testComponentInputs.form.get('lastName').value).toBeNull();
+
+        testComponentInputs.form.patchValue({
+          firstName: 'First',
+          lastName: 'Last',
+        });
+        fixture.detectChanges();
+
+        expect(inputDeEls[0].nativeElement.value).toEqual('First');
+        expect(inputDeEls[1].nativeElement.value).toEqual('Last');
+        expect(testComponentInputs.form.get('firstName').value).toEqual('First');
+        expect(testComponentInputs.form.get('lastName').value).toEqual('Last');
+        expect(testComponentInputs.form.valid).toBe(true);
+      });
+    });
+  });
 });
+
+@Component({
+  selector: 'formly-form-comp',
+  template: `
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <formly-form #ff [model]="model" [fields]="fields" [options]="options" [form]="form">
+        <button type="submit">Submit</button>
+      </formly-form>
+    </form>`,
+})
+class TestFormComponent {
+  @ViewChild(FormlyForm) ff: FormlyForm;
+
+  fields = testComponentInputs.fields;
+  form = testComponentInputs.form;
+  model = testComponentInputs.model || {};
+  options = testComponentInputs.options;
+
+  submit(): void {}
+}
 
 @Component({selector: 'formly-form-test', template: '', entryComponents: []})
 class TestComponent {
