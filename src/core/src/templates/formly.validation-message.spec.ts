@@ -57,21 +57,21 @@ describe('FormlyValidationMessage Component', () => {
       expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
     });
 
-    it('with a validator.message property', () => {
+    it('with a `validator.message` property', () => {
       const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
       const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
       fixture.componentInstance.field = Object.assign({}, fixture.componentInstance.field, {
         validators: {
           required: {
             expression: (control: FormControl) => false,
-            message: `Custom title: Should have atleast 3 Characters`,
+            message: `Custom title: Should have at least 3 Characters`,
           },
         },
       });
 
       fixture.detectChanges();
 
-      expect(formlyMessageElm.textContent).toMatch(/Custom title: Should have atleast 3 Characters/);
+      expect(formlyMessageElm.textContent).toMatch(/Custom title: Should have at least 3 Characters/);
       expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
       expect(formlyMessageElm.textContent).not.toMatch(/Title is required/);
     });

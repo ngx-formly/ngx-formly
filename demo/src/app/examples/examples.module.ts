@@ -37,6 +37,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'force-show-error', loadChildren: './validation/force-show-error/config.module#ConfigModule' },
           { path: 'toggle-required', loadChildren: './validation/toggle-required/config.module#ConfigModule' },
           { path: 'unique-value-async-validation', loadChildren: './validation/unique-value-async-validation/config.module#ConfigModule' },
+          { path: 'async-validation-update-on', loadChildren: './validation/async-validation-update-on/config.module#ConfigModule' },
         ]},
 
         // Bootstrap Formly

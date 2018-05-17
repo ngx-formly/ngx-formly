@@ -40,6 +40,7 @@ export class ExamplesComponent {
       { href: './validation/custom-validation', text: 'Custom validation' },
       { href: './validation/validation-message', text: 'Validation message' },
       { href: './validation/unique-value-async-validation', text: 'Async validation of unique value' },
+      { href: './validation/async-validation-update-on', text: 'Async validation and `updateOn`' },
       { href: './validation/matching-two-fields', text: 'Matching Two Fields' },
       { href: './validation/force-show-error', text: 'Force showing error state' },
       { href: './validation/toggle-required', text: 'Toggle required field' },
