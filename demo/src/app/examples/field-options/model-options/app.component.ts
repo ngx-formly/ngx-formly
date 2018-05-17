@@ -24,9 +24,33 @@ export class AppComponent {
         label: 'Debounce',
       },
     },
+    {
+      key: 'updateOnBlur',
+      type: 'input',
+      modelOptions: {
+        updateOn: 'blur',
+      },
+      templateOptions: {
+        label: '`updateOn` on Blur',
+        required: true,
+      },
+    },
+    {
+      key: 'updateOnSubmit',
+      type: 'input',
+      modelOptions: {
+        updateOn: 'submit',
+      },
+      templateOptions: {
+        label: '`updateOn` on Submit',
+        required: true,
+      },
+    },
   ];
 
   submit() {
-    alert(JSON.stringify(this.model));
+    if (this.form.valid) {
+      alert(JSON.stringify(this.model));
+    }
   }
 }

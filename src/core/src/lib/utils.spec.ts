@@ -127,7 +127,7 @@ describe('FormlyUtils service', () => {
 
 describe ('getFieldModel', () => {
 
-  it('should extract te correct simple property', () => {
+  it('should extract the correct simple property', () => {
 
     let config: FormlyFieldConfig = {key: 'property1'};
     let model: any = {property1: 3};
@@ -137,7 +137,7 @@ describe ('getFieldModel', () => {
   });
 
 
-  it('should extract te correct nested property', () => {
+  it('should extract the correct nested property', () => {
 
     let config: FormlyFieldConfig = {key: 'property1.property2[2]'};
     let model:  any = {property1: {property2: [1, 1, 2]}};

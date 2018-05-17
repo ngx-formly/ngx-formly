@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormArray, FormControl, AbstractControl, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, AbstractControl, Validators, AbstractControlOptions } from '@angular/forms';
 import { FormlyConfig, FieldValidatorFn, TemplateManipulators } from './formly.config';
 import { FORMLY_VALIDATORS, evalStringExpression, evalExpressionValueSetter, getFieldId, isObject, isNullOrUndefined, clone, assignModelToFields } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
@@ -232,7 +232,14 @@ export class FormlyFormBuilder {
   private addFormControl(form: FormGroup | FormArray, field: FormlyFieldConfig, model: any, path: string) {
     let control: AbstractControl;
     const validators = field.validators ? field.validators.validation : undefined,
-      asyncValidators = field.asyncValidators ? field.asyncValidators.validation : undefined;
+      asyncValidators = field.asyncValidators ? field.asyncValidators.validation : undefined,
+      updateOn = field.modelOptions && field.modelOptions.updateOn ?
+        field.modelOptions.updateOn : undefined;
+    const abstractControlOptions = {
+      validators,
+      asyncValidators,
+      updateOn,
+    } as AbstractControlOptions;
 
     if (field.formControl instanceof AbstractControl || form.get(path)) {
       control = field.formControl || form.get(path);
@@ -246,11 +253,11 @@ export class FormlyFormBuilder {
     } else if (field.component && field.component.createControl) {
       control = field.component.createControl(model[path], field);
     } else if (field.fieldGroup && field.key && field.key === path && !field.fieldArray) {
-      control = new FormGroup(model[path], validators, asyncValidators);
+      control = new FormGroup(model[path], abstractControlOptions);
     } else if (field.fieldArray && field.key && field.key === path) {
-      control = new FormArray([], validators, asyncValidators);
+      control = new FormArray([], abstractControlOptions);
     } else {
-      control = new FormControl(model[path], validators, asyncValidators);
+      control = new FormControl(model[path], abstractControlOptions);
     }
 
     if (field.templateOptions.disabled) {
