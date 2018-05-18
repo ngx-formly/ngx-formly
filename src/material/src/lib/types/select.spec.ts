@@ -8,6 +8,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormlyModule, FormlyForm } from '@ngx-formly/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
+import { FormlySelectOptionsPipe } from '../select-options.pipe';
 import { of as observableOf } from 'rxjs';
 
 const createTestComponent = (html: string) =>
@@ -18,7 +19,7 @@ let testComponentInputs;
 describe('ui-material: Formly Field Select Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, FormlyFieldSelect],
+      declarations: [TestComponent, FormlyFieldSelect, FormlySelectOptionsPipe],
       imports: [
         NoopAnimationsModule,
         MatSelectModule,
@@ -43,7 +44,6 @@ describe('ui-material: Formly Field Select Component', () => {
         model: {},
       };
     });
-
 
     it('should correctly bind to a static array of data', () => {
       testComponentInputs.fields = [{
