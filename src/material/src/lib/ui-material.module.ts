@@ -10,9 +10,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { MATERIAL_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-material.config';
+import { FormlySelectOptionsPipe } from './select-options.pipe';
 
 @NgModule({
-  declarations: FIELD_TYPE_COMPONENTS,
+  declarations: [
+    FIELD_TYPE_COMPONENTS,
+    FormlySelectOptionsPipe,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

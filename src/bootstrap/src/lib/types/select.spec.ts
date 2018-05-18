@@ -7,6 +7,7 @@ import { FormlyModule, FormlyForm } from '@ngx-formly/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
 import { of as observableOf } from 'rxjs';
+import { FormlySelectOptionsPipe } from '../select-options.pipe';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -15,17 +16,20 @@ let testComponentInputs;
 
 describe('ui-bootstrap: Formly Field Select Component', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent, FormlyFieldSelect], imports: [
-      ReactiveFormsModule,
-      FormlyModule.forRoot({
-        types: [
-          {
-            name: 'select',
-            component: FormlyFieldSelect,
-          },
-        ],
-      }),
-    ]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, FormlyFieldSelect, FormlySelectOptionsPipe],
+      imports: [
+        ReactiveFormsModule,
+        FormlyModule.forRoot({
+          types: [
+            {
+              name: 'select',
+              component: FormlyFieldSelect,
+            },
+          ],
+        }),
+      ],
+    });
   });
 
   describe('options', () => {
@@ -37,25 +41,24 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
       };
     });
 
-
     it('should correctly bind to a static array of data', () => {
-        testComponentInputs.fields = [{
-            key: 'sportId',
-            type: 'select',
-            templateOptions: {
-                options: [
-                    { id: '1', name: 'Soccer' },
-                    { id: '2', name: 'Basketball' },
-                    { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
-                ],
-                valueProp: 'id',
-                labelProp: 'name',
-            },
-        }];
+      testComponentInputs.fields = [{
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          options: [
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
+          ],
+          valueProp: 'id',
+          labelProp: 'name',
+        },
+      }];
 
-        const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
 
-        expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(3);
+      expect(fixture.debugElement.query(By.css('select')).nativeElement.options.length).toEqual(3);
     });
 
     it('should correctly bind to an Observable', async(() => {
@@ -66,13 +69,13 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
       ]);
 
       testComponentInputs.fields = [{
-          key: 'sportId',
-          type: 'select',
-          templateOptions: {
-              options: sports$,
-              valueProp: 'id',
-              labelProp: 'name',
-          },
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          options: sports$,
+          valueProp: 'id',
+          labelProp: 'name',
+        },
       }];
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
