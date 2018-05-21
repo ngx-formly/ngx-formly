@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.2.0"></a>
+# [4.2.0](https://github.com/formly-js/ngx-formly/compare/v4.1.0...v4.2.0) (2018-05-21)
+
+
+### Features
+
+* **core:** add `updateOn` to `modelOptions` ([2f9f3a3](https://github.com/formly-js/ngx-formly/commit/2f9f3a3))
+* **material:** allow setting custom appearance and color ([69b3ae7](https://github.com/formly-js/ngx-formly/commit/69b3ae7))
+
+
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/formly-js/ngx-formly/compare/v4.0.3...v4.1.0) (2018-05-18)
 
