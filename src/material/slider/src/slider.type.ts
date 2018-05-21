@@ -4,7 +4,12 @@ import { FieldType } from '@ngx-formly/material';
 @Component({
   selector: 'formly-field-mat-slider',
   template: `
-    <mat-slider [style.width]="'100%'" [formControl]="formControl" [formlyAttributes]="field"></mat-slider>
+    <mat-slider
+      [style.width]="'100%'"
+      [formControl]="formControl"
+      [formlyAttributes]="field"
+      [color]="to.color">
+    </mat-slider>
   `,
 })
 export class FormlySliderTypeComponent extends FieldType {}
