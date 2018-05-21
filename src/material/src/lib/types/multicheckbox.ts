@@ -8,7 +8,13 @@ import { Observable } from 'rxjs';
   selector: 'formly-field-mat-multicheckbox',
   template: `
     <ng-container *ngFor="let option of to.options; let i = index;">
-      <mat-checkbox [id]="id + '_' + i" [formControl]="formControl.get(option.key)" [formlyAttributes]="field">{{ option.value }}</mat-checkbox>
+      <mat-checkbox [id]="id + '_' + i"
+        [formControl]="formControl.get(option.key)"
+        [formlyAttributes]="field"
+        [color]="to.color"
+        [labelPosition]="to.labelPosition">
+          {{ option.value }}
+      </mat-checkbox>
     </ng-container>
   `,
 })
