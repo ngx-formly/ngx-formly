@@ -129,7 +129,7 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 export class AppModule {}
 ```
 
-#### 3. Define the form config in your component:
+#### 4. Define the form config in your component:
 
 ```typescript
 import {Component} from '@angular/core';
@@ -167,6 +167,46 @@ export class AppComponent {
 ```
 
 From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
+
+## Using with Angular-CLI
+
+`@ngx-formly/schematics` provides CLI commands for setting up a project and _eventually_ generating other features (e.g. wrapper components).
+Built on top of Schematics, this tool integrates with the Angular CLI.
+
+### Installation
+
+Install `@ngx-formly/schematics` from npm:
+
+`npm install @ngx-formly/schematics --save-dev`
+
+### Default Schematics Collection
+
+To use `@ngx-formly/schematics` as the default collection in your Angular CLI project,
+add it to your `angular.json`:
+
+```bash
+ng config cli.defaultCollection @ngx-formly/schematics
+```
+
+The [collection schema](src/schematics/src/collection.json) defines the available schematics to run.
+
+The `@ngx-formly/schematics` extend the default `@schematics/angular` collection and so all existing Angular CLI commands are available.
+If you want to set defaults for schematics such as generating components with scss file, you must change the schematics package name from `@schematics/angular` to `@ngx-formly/schematics` in `angular.json`:
+
+```json
+"schematics": {
+  "@ngx-formly/schematics:component": {
+    "styleext": "scss"
+  }
+}
+```
+
+### Quick Start with Schematics
+
+#### Install @angular/forms and @ngx-formly/core packages and choose a UI theme to install:
+```bash
+  ng add @ngx-formly/schematics --ui-theme=material
+```
 
 ## Roadmap
 

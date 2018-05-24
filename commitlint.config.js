@@ -13,7 +13,8 @@ module.exports = {
         'primeng',
         'kendo',
         'demo',
-        'guides'
+        'guides',
+        'schematics'
       ]
     ],
     'scope-empty': [1, 'never'],

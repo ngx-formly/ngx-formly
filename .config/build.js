@@ -7,6 +7,7 @@ const fs = require("fs"),
     'ionic',
     'primeng',
     'kendo',
+    'schematics',
   ];
 
 // update `FORMLY-VERSION` in package.json for all sub-packages

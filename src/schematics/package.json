@@ -1,0 +1,37 @@
+{
+  "name": "@ngx-formly/schematics",
+  "version": "0.0.0",
+  "license": "MIT",
+  "homepage": "https://github.com/formly-js/ngx-formly#readme",
+  "description": "ngx-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms. The formly-form Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
+  "keywords": [
+    "angular",
+    "forms",
+    "ngx-formly",
+    "ngx-formly",
+    "ngx-formly",
+    "formly",
+    "angular 2",
+    "angular 2 forms",
+    "json forms",
+    "form library",
+    "dynamic-forms"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formly-js/ngx-formly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/formly-js/ngx-formly/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && jasmine src/**/*_spec.js"
+  },
+  "schematics": "./src/collection.json",
+  "dependencies": {
+    "@angular-devkit/core": "^0.6.5",
+    "@angular-devkit/schematics": "^0.6.5",
+    "@schematics/angular": "^0.6.5"
+  }
+}
