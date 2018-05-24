@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsNgxFormlyShell",
+  "title": "@ngx-formly Shell Options Schema",
+  "type": "object",
+  "properties": {
+    "skipPackageJson": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not add @ngx-formly dependencies to package.json (e.g., --skipPackageJson)"
+    },
+    "module": {
+      "type": "string",
+      "default": "app",
+      "description": "Allows specification of the declaring module.",
+      "alias": "m"
+    },
+    "uiTheme": {
+      "enum": ["material", "bootstrap", "ionic", "primeng", "kendo"],
+      "description": "The UI with pre-defined types/templates"
+    }
+  },
+  "required": []
+}

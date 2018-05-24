@@ -1,0 +1,61 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
+import { join } from 'path';
+import { createWorkspace, getTestProjectPath } from '../../utils/testing';
+import { Schema as ComponentOptions } from './schema';
+import { getFileContent } from '@schematics/angular/utility/test';
+
+// tslint:disable:max-line-length
+describe('Component Schematic', () => {
+  const collectionPath = join(__dirname, '../collection.json');
+  const defaultOptions: ComponentOptions = {
+    name: 'foo',
+    // path: 'src/app',
+    inlineStyle: false,
+    inlineTemplate: false,
+    changeDetection: 'Default',
+    styleext: 'css',
+    spec: true,
+    module: undefined,
+    export: false,
+    project: 'bar',
+  };
+  const schematicRunner = new SchematicTestRunner('schematics', collectionPath);
+  const projectPath = getTestProjectPath();
+
+  let appTree: UnitTestTree;
+
+  beforeEach(() => {
+    appTree = createWorkspace(schematicRunner, appTree);
+  });
+
+  it('should create a component', () => {
+    const tree = schematicRunner.runSchematic('wrapper', { ...defaultOptions }, appTree);
+
+    const files = tree.files;
+    expect(files.indexOf(`${projectPath}/src/app/foo/foo.component.css`)).toBeGreaterThanOrEqual(0);
+    expect(files.indexOf(`${projectPath}/src/app/foo/foo.component.html`)).toBeGreaterThanOrEqual(0);
+    expect(files.indexOf(`${projectPath}/src/app/foo/foo.component.spec.ts`)).toBeGreaterThanOrEqual(0);
+    expect(files.indexOf(`${projectPath}/src/app/foo/foo.component.ts`)).toBeGreaterThanOrEqual(0);
+
+    const moduleContent = getFileContent(tree, `${projectPath}/src/app/app.module.ts`);
+
+    expect(moduleContent).toMatch(/import.*Foo.*from '.\/foo\/foo.component'/);
+    expect(moduleContent).toMatch(/declarations:\s*\[[^\]]+?,\r?\n\s+FooComponent\r?\n/m);
+  });
+
+  xit('should add wrapper to FormlyModule config', () => {
+    const tree = schematicRunner.runSchematic('wrapper', { ...defaultOptions }, appTree);
+    const moduleContent = getFileContent(tree, `${projectPath}/src/app/app.module.ts`);
+
+    expect(moduleContent).toContain(`wrappers: [
+      { name: 'foo', component: FooWrapperComponent },
+    ],`);
+  });
+});

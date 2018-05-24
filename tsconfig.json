@@ -24,5 +24,10 @@
   },
   "exclude": [
     "demo/src/assets/stackblitz/**/*.ts",
+    "src/schematics/src/*/files/**/*",
+    // "dist/schematics/src/*/files/**/*",
+    // Skip all dist files
+    "dist/**/*",
+    "node_modules/**/*"
   ]
 }
