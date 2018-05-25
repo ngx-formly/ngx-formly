@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FieldType } from './field';
+import { FieldType } from '@ngx-formly/material/form-field';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field';
+import { FieldType } from '@ngx-formly/material/form-field';
 import { MatRadioChange } from '@angular/material/radio';
 
 @Component({

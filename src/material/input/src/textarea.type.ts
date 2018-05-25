@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormlyFieldInput } from './input';
+import { FormlyFieldInput } from './input.type';
 
 @Component({
   selector: 'formly-field-mat-textarea',

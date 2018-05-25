@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from '@ngx-formly/material';
+import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
   selector: 'formly-field-mat-slider',

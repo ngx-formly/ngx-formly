@@ -2,31 +2,34 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSliderModule } from '@angular/material/slider';
-import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 
-import { FormlySliderTypeComponent } from './slider.type';
+import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+
+import { FormlyFieldRadio } from './radio.type';
 
 @NgModule({
-  declarations: [FormlySliderTypeComponent],
+  declarations: [FormlyFieldRadio],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatSliderModule,
+    MatRadioModule,
+
     FormlyMatFormFieldModule,
     FormlyModule.forChild({
       types: [{
-        name: 'slider',
-        component: FormlySliderTypeComponent,
+        name: 'radio',
+        component: FormlyFieldRadio,
         wrappers: ['form-field'],
         defaultOptions: {
           templateOptions: {
             hideFieldUnderline: true,
             floatLabel: 'always',
+            options: [],
           },
         },
       }],
     }),
   ],
 })
-export class FormlyMatSliderModule { }
+export class FormlyMatRadioModule { }

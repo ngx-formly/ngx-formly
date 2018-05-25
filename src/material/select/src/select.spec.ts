@@ -1,14 +1,14 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { createGenericTestComponent } from '../../../../core/src/lib/test-utils';
+import { createGenericTestComponent } from '../../../core/src/lib/test-utils';
 import { By } from '@angular/platform-browser';
 
 import { Component, ViewChild } from '@angular/core';
 import { FormlyModule, FormlyForm } from '@ngx-formly/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldSelect } from './select';
-import { FormlySelectOptionsPipe } from '../select-options.pipe';
+import { FormlyFieldSelect } from './select.type';
+import { FormlySelectOptionsPipe } from './select-options.pipe';
 import { of as observableOf } from 'rxjs';
 
 const createTestComponent = (html: string) =>
