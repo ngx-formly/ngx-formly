@@ -1,3 +1,3 @@
-export { FieldType, FormlyFieldCheckbox, FormlyFieldMultiCheckbox, FormlyFieldInput, FormlyFieldRadio, FormlyFieldTextArea, FormlyFieldSelect} from './types/types';
-export { FormlyWrapperFormField } from './wrappers/wrappers';
+export { FieldType } from '@ngx-formly/material/form-field';
+
 export { FormlyMaterialModule } from './ui-material.module';

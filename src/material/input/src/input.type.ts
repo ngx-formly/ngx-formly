@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
-import { FieldType } from './field';
+import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
   selector: 'formly-field-mat-input',
