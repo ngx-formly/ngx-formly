@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.3.0"></a>
+# [4.3.0](https://github.com/formly-js/ngx-formly/compare/v4.2.0...v4.3.0) (2018-05-25)
+
+
+### Features
+
+* **material:** move types into separate entry points ([32671b7](https://github.com/formly-js/ngx-formly/commit/32671b7))
+
+
+
 <a name="4.2.0"></a>
 # [4.2.0](https://github.com/formly-js/ngx-formly/compare/v4.1.0...v4.2.0) (2018-05-21)
 
