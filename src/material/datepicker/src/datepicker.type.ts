@@ -10,6 +10,8 @@ import { MatInput } from '@angular/material/input';
       [formControl]="formControl"
       [matDatepicker]="picker"
       [matDatepickerFilter]="to.datepickerOptions.filter"
+      [max]="to.datepickerOptions.max"
+      [min]="to.datepickerOptions.min"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder">
     <ng-template #matSuffix>
