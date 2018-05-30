@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.0"></a>
+# [4.4.0](https://github.com/formly-js/ngx-formly/compare/v4.3.0...v4.4.0) (2018-05-30)
+
+
+### Features
+
+* **material:** update datepicker to support min max ([1e7d92c](https://github.com/formly-js/ngx-formly/commit/1e7d92c))
+
+
+
 <a name="4.3.0"></a>
 # [4.3.0](https://github.com/formly-js/ngx-formly/compare/v4.2.0...v4.3.0) (2018-05-25)
 
