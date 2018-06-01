@@ -161,6 +161,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     } else {
       this.form.reset(model);
     }
+
+    (<any> this.options).resetTrackModelChanges();
   }
 
   private resetFieldArray(fields: FormlyFieldConfig[], newModel: any) {

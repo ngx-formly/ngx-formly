@@ -252,10 +252,13 @@ describe('FormlyForm Component', () => {
     expect(testComponentInputs.form.controls.investments.length).toEqual(3);
     expect(testComponentInputs.model.investments.length).toEqual(3);
 
+    // ensure tracking model change is still working
+    testComponentInputs.form.get('investments.0.investmentName').patchValue('TEST');
+    expect(testComponentInputs.model.investments[0]).toEqual({ investmentName: 'TEST' });
+
     testComponentInputs.options.resetModel({});
     expect(testComponentInputs.form.controls.investments.length).toEqual(0);
     expect(testComponentInputs.model.investments.length).toEqual(0);
-
   });
 
   it('should update the form controls when changing the model', () => {
