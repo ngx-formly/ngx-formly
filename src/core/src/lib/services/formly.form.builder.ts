@@ -87,22 +87,23 @@ export class FormlyFormBuilder {
           field.type = 'formly-group';
         }
 
+        // if `hideExpression` is set in that case we have to deal
+        // with toggle FormControl for each field in fieldGroup separately
+        if (field.hideExpression) {
+          field.fieldGroup.forEach(f => {
+            let hideExpression: any = f.hideExpression || (() => false);
+            if (typeof hideExpression === 'string') {
+              hideExpression = evalStringExpression(hideExpression, ['model', 'formState']);
+            }
+
+            f.hideExpression = (model, formState) => field.hide || hideExpression(model, formState);
+          });
+        }
+
         if (field.key) {
           this.addFormControl(form, field, { [field.key]: field.fieldArray ? [] : {} }, field.key);
           this._buildForm(field.formControl as FormGroup, field.fieldGroup, options);
         } else {
-          // if `hideExpression` is set in that case we have to deal
-          // with toggle FormControl for each field in fieldGroup separately
-          if (field.hideExpression) {
-            field.fieldGroup.forEach(f => {
-              let hideExpression: any = f.hideExpression || (() => false);
-              if (typeof hideExpression === 'string') {
-                hideExpression = evalStringExpression(hideExpression, ['model', 'formState']);
-              }
-
-              f.hideExpression = (model, formState) => field.hide || hideExpression(model, formState);
-            });
-          }
           this._buildForm(form, field.fieldGroup, options);
         }
       }
