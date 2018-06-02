@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -38,12 +38,13 @@ import { Subject } from 'rxjs';
   `,
   providers: [{ provide: MatFormFieldControl, useExisting: FormlyWrapperFormField }],
 })
-export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDestroy, MatFormFieldControl<any>, AfterViewInit {
+export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDestroy, MatFormFieldControl<any>, AfterViewInit, AfterContentChecked {
   @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent: ViewContainerRef;
   @ViewChild(MatFormField) formField: MatFormField;
 
   stateChanges = new Subject<void>();
   _errorState = false;
+  private initialGapCalculated = false;
 
   constructor(private renderer: Renderer2) {
     super();
@@ -52,6 +53,20 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
   ngOnInit() {
     this.formField._control = this;
     (<any> this.field)['__formField__'] = this.formField;
+
+    // fix for https://github.com/angular/material2/issues/11437
+    if (this.field.hide && this.field.templateOptions.appearance === 'outline') {
+      this.initialGapCalculated = true;
+    }
+  }
+
+  ngAfterContentChecked() {
+    if (!this.initialGapCalculated || this.field.hide) {
+      return;
+    }
+
+    this.formField._initialGapCalculated = false;
+    this.initialGapCalculated = true;
   }
 
   ngAfterViewInit() {
