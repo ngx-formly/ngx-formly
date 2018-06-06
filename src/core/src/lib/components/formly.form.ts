@@ -4,7 +4,7 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFormExpression } from '../services/formly.form.expression';
 import { FormlyConfig } from '../services/formly.config';
-import { assignModelValue, isNullOrUndefined, reverseDeepMerge, getFieldModel, clone } from '../utils';
+import { assignModelValue, isNullOrUndefined, reverseDeepMerge, getFieldModel, clone, assignModelToFields } from '../utils';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
@@ -143,6 +143,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private patchModel(model: any) {
+    assignModelToFields(this.fields, model);
     this.clearModelSubscriptions();
     this.resetFieldArray(this.fields, model);
     this.initializeFormValue(this.form);

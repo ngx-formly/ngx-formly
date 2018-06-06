@@ -303,6 +303,7 @@ describe('FormlyForm Component', () => {
 
     fixture.detectChanges();
     expect(testComponentInputs.form.controls.investments.length).toEqual(2);
+    expect(testComponentInputs.fields[0].model).toBe(newModel);
   });
 
   describe('hideExpression', () => {
