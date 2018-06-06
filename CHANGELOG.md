@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.3"></a>
+## [4.4.3](https://github.com/formly-js/ngx-formly/compare/v4.4.2...v4.4.3) (2018-06-06)
+
+
+### Bug Fixes
+
+* **core:** update field model when assigning a new model ([727e7d5](https://github.com/formly-js/ngx-formly/commit/727e7d5)), closes [#975](https://github.com/formly-js/ngx-formly/issues/975)
+
+
+
 <a name="4.4.2"></a>
 ## [4.4.2](https://github.com/formly-js/ngx-formly/compare/v4.4.1...v4.4.2) (2018-06-02)
 
