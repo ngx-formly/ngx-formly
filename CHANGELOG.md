@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.4"></a>
+## [4.4.4](https://github.com/formly-js/ngx-formly/compare/v4.4.3...v4.4.4) (2018-06-07)
+
+
+### Bug Fixes
+
+* **core:** avoid passing a number path when handling hideExpression ([edabd82](https://github.com/formly-js/ngx-formly/commit/edabd82)), closes [#981](https://github.com/formly-js/ngx-formly/issues/981)
+
+
+### Features
+
+* **core:** add schematics ([9855ecb](https://github.com/formly-js/ngx-formly/commit/9855ecb))
+
+
+
 <a name="4.4.3"></a>
 ## [4.4.3](https://github.com/formly-js/ngx-formly/compare/v4.4.2...v4.4.3) (2018-06-06)
 
