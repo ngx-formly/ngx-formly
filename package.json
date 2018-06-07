@@ -21,7 +21,7 @@
     "build:primeng": "ng build @ngx-formly/primeng",
     "build:kendo": "ng build @ngx-formly/kendo",
     "build:schematics": "cd src/schematics && npm run build && cd ../.. && npm run copy:schematics",
-    "copy:schematics": "cpr src/schematics dist/@ngx-formly/schematics --delete-first --filter node_modules/",
+    "copy:schematics": "cpr src/schematics dist/@ngx-formly/schematics --delete-first --filter node_modules/ && node .config/version-schematics.js",
     "release": "standard-version && npm run build && node .config/publish.js",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",
