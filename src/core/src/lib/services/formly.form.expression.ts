@@ -88,9 +88,10 @@ export class FormlyFormExpression {
       if (field.formControl && field.key) {
         const parent = this.fieldParentFormControl(form, field);
         if (parent) {
-          if (hideExpressionResult === true && parent.get(this.fieldKey(field) as any)) {
+          const control = parent.get(`${this.fieldKey(field)}`);
+          if (hideExpressionResult === true && control) {
             this.removeFieldControl(parent, field);
-          } else if (hideExpressionResult === false && !parent.get(this.fieldKey(field) as any)) {
+          } else if (hideExpressionResult === false && !control) {
             this.addFieldControl(parent, field, model);
           }
         }
@@ -115,7 +116,7 @@ export class FormlyFormExpression {
     if (parent instanceof FormArray) {
       parent.push(field.formControl);
     } else if (parent instanceof FormGroup) {
-      parent.addControl(this.fieldKey(field) as string, field.formControl);
+      parent.addControl(`${this.fieldKey(field)}`, field.formControl);
     }
   }
 
@@ -138,7 +139,7 @@ export class FormlyFormExpression {
     if (parent instanceof FormArray) {
       parent.removeAt(this.fieldKey(field) as number);
     } else if (parent instanceof FormGroup) {
-      parent.removeControl(this.fieldKey(field) as string);
+      parent.removeControl(`${this.fieldKey(field)}`);
     }
   }
 

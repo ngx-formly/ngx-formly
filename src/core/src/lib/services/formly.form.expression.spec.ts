@@ -72,6 +72,7 @@ describe('FormlyFormExpression service', () => {
         {
           key: 'address',
           type: 'repeat',
+          hideExpression: model => model.length !== 1,
           fieldArray: {
             fieldGroup: [
               {
