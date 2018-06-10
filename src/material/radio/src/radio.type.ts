@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatRadioChange } from '@angular/material/radio';
+import { MatRadioGroup, MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'formly-field-mat-radio',
@@ -17,6 +17,19 @@ import { MatRadioChange } from '@angular/material/radio';
   `,
 })
 export class FormlyFieldRadio extends FieldType {
+  @ViewChild(MatRadioGroup) radioGroup: MatRadioGroup;
+
+  onContainerClick(event: MouseEvent): void {
+    if (this.radioGroup._radios.length) {
+      if (this.radioGroup.selected) {
+        this.radioGroup.selected.focus();
+      } else {
+        this.radioGroup._radios.first.focus();
+      }
+    }
+    super.onContainerClick(event);
+  }
+
   change($event: MatRadioChange) {
     if (this.to.change) {
       this.to.change(this.field, $event);

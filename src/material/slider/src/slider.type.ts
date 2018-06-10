@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
+import { MatSlider } from '@angular/material/slider';
 
 @Component({
   selector: 'formly-field-mat-slider',
@@ -12,4 +13,11 @@ import { FieldType } from '@ngx-formly/material/form-field';
     </mat-slider>
   `,
 })
-export class FormlySliderTypeComponent extends FieldType {}
+export class FormlySliderTypeComponent extends FieldType {
+  @ViewChild(MatSlider) slider: MatSlider;
+
+  onContainerClick(event: MouseEvent): void {
+    this.slider.focus();
+    super.onContainerClick(event);
+  }
+}

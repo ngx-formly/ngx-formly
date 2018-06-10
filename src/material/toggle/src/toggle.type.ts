@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'formly-field-mat-toggle',
@@ -9,4 +10,11 @@ import { FieldType } from '@ngx-formly/material/form-field';
     </mat-slide-toggle>
   `,
 })
-export class FormlyToggleTypeComponent extends FieldType {}
+export class FormlyToggleTypeComponent extends FieldType {
+  @ViewChild(MatSlideToggle) slideToggle: MatSlideToggle;
+
+  onContainerClick(event: MouseEvent): void {
+    this.slideToggle.focus();
+    super.onContainerClick(event);
+  }
+}
