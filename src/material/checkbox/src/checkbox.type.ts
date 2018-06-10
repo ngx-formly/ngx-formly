@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'formly-field-mat-checkbox',
@@ -18,10 +19,33 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
     </mat-checkbox>
   `,
 })
-export class FormlyFieldCheckbox extends FieldType {
+export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, OnDestroy {
+  @ViewChild(MatCheckbox) checkbox: MatCheckbox;
+
+  constructor(private focusMonitor: FocusMonitor) {
+    super();
+  }
+
+  onContainerClick(event: MouseEvent): void {
+    this.checkbox.focus();
+    super.onContainerClick(event);
+  }
+
   change($event: MatCheckboxChange) {
     if (this.to.change) {
       this.to.change(this.field, $event);
     }
+  }
+
+  ngAfterViewInit() {
+    super.ngAfterViewInit();
+    this.focusMonitor
+      .monitor(this.checkbox._inputElement.nativeElement)
+      .subscribe(focusOrigin => this.field.focus = !!focusOrigin);
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.focusMonitor.stopMonitoring(this.checkbox._inputElement.nativeElement);
   }
 }
