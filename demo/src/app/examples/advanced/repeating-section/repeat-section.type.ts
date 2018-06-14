@@ -16,7 +16,7 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
       </formly-group>
     </div>
     <div style="margin:30px 0;">
-      <button class="btn btn-primary" type="button" (click)="add()">Add More Investments</button>
+      <button class="btn btn-primary" type="button" (click)="add()">{{ field.fieldArray.templateOptions.btnText }}</button>
     </div>
   `,
 })
