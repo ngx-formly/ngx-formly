@@ -11,38 +11,44 @@ export class AppComponent {
   model: any = {};
   options: FormlyFormOptions = {};
 
-  fields: FormlyFieldConfig[] = [
-    {
-      key: 'password',
-      type: 'input',
-      templateOptions: {
-        type: 'password',
-        label: 'Password',
-        placeholder: 'Must be at least 3 characters',
-        required: true,
-        minLength: 3,
+  fields: FormlyFieldConfig[] = [{
+    key: 'password',
+    validators: {
+      fieldMatch: {
+        expression: (control) => {
+          const value = control.value;
+
+          return value.passwordConfirm === value.password
+            // avoid displaying the message error when values are empty
+            || (!value.passwordConfirm || !value.password);
+        },
+        message: 'Password Not Matching',
       },
     },
-    {
-      key: 'passwordConfirm',
-      type: 'input',
-      templateOptions: {
-        type: 'password',
-        label: 'Confirm Password',
-        placeholder: 'Please re-enter your password',
-        required: true,
-      },
-      validators: {
-        fieldMatch: {
-          expression: (control) => control.value === this.model.password,
-          message: 'Password Not Matching',
+    fieldGroup: [
+      {
+        key: 'password',
+        type: 'input',
+        templateOptions: {
+          type: 'password',
+          label: 'Password',
+          placeholder: 'Must be at least 3 characters',
+          required: true,
+          minLength: 3,
         },
       },
-      expressionProperties: {
-        'templateOptions.disabled': () => !this.form.get('password').valid,
+      {
+        key: 'passwordConfirm',
+        type: 'input',
+        templateOptions: {
+          type: 'password',
+          label: 'Confirm Password',
+          placeholder: 'Please re-enter your password',
+          required: true,
+        },
       },
-    },
-  ];
+    ],
+  }];
 
   submit() {
     if (this.form.valid) {
