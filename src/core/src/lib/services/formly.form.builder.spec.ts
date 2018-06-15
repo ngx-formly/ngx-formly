@@ -91,6 +91,9 @@ describe('FormlyFormBuilder service', () => {
       };
       builder.buildForm(form, [field], {}, {});
 
+      // preWrapper and postWrapper should be applied only once when rebuild form
+      builder.buildForm(form, [field], {}, {});
+
       expect(field.wrappers).toEqual(['preWrapper', 'wrapper', 'postWrapper']);
     });
   });
