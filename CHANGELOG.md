@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.5"></a>
+## [4.4.5](https://github.com/formly-js/ngx-formly/compare/v4.4.4...v4.4.5) (2018-06-18)
+
+
+### Bug Fixes
+
+* **core:** avoid duplicate templateManipulator wrapper during rebuild ([291d214](https://github.com/formly-js/ngx-formly/commit/291d214)), closes [#997](https://github.com/formly-js/ngx-formly/issues/997)
+
+
+
 <a name="4.4.4"></a>
 ## [4.4.4](https://github.com/formly-js/ngx-formly/compare/v4.4.3...v4.4.4) (2018-06-07)
 
