@@ -172,10 +172,8 @@ export class StackblitzWriter {
       .forEach(data => {
         this._addFileToForm(
           form,
-          data,
           this._replaceExamplePlaceholderNames(data.file, data.filecontent, options),
           data.file,
-          'app',
           false,
         );
       });
@@ -183,11 +181,9 @@ export class StackblitzWriter {
     exampleData.files.forEach(data => {
       this._addFileToForm(
         form,
-        data,
         this._replaceExamplePlaceholderNames(data.file, data.filecontent, options),
         data.file,
-        'app',
-        true,
+        data.file.indexOf('assets') !== 0,
       );
     });
 
@@ -222,10 +218,8 @@ export class StackblitzWriter {
    * @param prependApp whether to prepend the 'app' prefix to the path
    */
   _addFileToForm(form: HTMLFormElement,
-    data: any,
     content: string,
     filename: string,
-    path: string,
     prependApp = true) {
     if (prependApp) {
       filename = 'app/' + filename;
@@ -265,6 +259,8 @@ export class StackblitzWriter {
       if (options.type !== 'material' && options.includeMaterial) {
         filecontent = `${filecontent}\n@import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; `;
       }
+    } else if (fileName === 'user.service.ts') {
+      filecontent = filecontent.replace(/_json/g, '.json');
     }
 
     return filecontent;
