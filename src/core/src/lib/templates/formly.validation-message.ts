@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig } from '../components/formly.field.config';
+import { isObject } from '../utils';
 
 @Component({
   selector: 'formly-validation-message',
@@ -20,6 +21,16 @@ export class FormlyValidationMessage {
     for (let error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
         let message: string | Function = this.formlyConfig.getValidatorMessage(error);
+
+        if (isObject(fieldForm.errors[error])) {
+          if (fieldForm.errors[error].errorPath) {
+            return;
+          }
+
+          if (fieldForm.errors[error].message) {
+            message = fieldForm.errors[error].message;
+          }
+        }
 
         if (this.field.validation && this.field.validation.messages && this.field.validation.messages[error]) {
           message = this.field.validation.messages[error];

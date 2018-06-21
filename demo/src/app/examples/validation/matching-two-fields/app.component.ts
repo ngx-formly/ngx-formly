@@ -23,6 +23,7 @@ export class AppComponent {
             || (!value.passwordConfirm || !value.password);
         },
         message: 'Password Not Matching',
+        errorPath: 'passwordConfirm',
       },
     },
     fieldGroup: [
