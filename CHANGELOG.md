@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.5.0"></a>
+# [4.5.0](https://github.com/formly-js/ngx-formly/compare/v4.4.6...v4.5.0) (2018-06-21)
+
+
+### Features
+
+* **core:** allow specify the target of a validation error ([d2105f7](https://github.com/formly-js/ngx-formly/commit/d2105f7)), closes [#1007](https://github.com/formly-js/ngx-formly/issues/1007)
+
+
+
 <a name="4.4.6"></a>
 ## [4.4.6](https://github.com/formly-js/ngx-formly/compare/v4.4.5...v4.4.6) (2018-06-18)
 
