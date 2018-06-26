@@ -185,7 +185,7 @@ export function clone(value: any): any {
 
 export function evalStringExpression(expression: string, argNames: string[]) {
   try {
-    return Function.bind.apply(Function, [void 0].concat(argNames.concat(`return ${expression};`)))();
+    return Function(...argNames, `return ${expression};`) as any;
   } catch (error) {
     console.error(error);
   }
@@ -193,8 +193,7 @@ export function evalStringExpression(expression: string, argNames: string[]) {
 
 export function evalExpressionValueSetter(expression: string, argNames: string[]) {
   try {
-    return Function.bind
-      .apply(Function, [void 0].concat(argNames.concat(`${expression} = expressionValue;`)))();
+    return Function(...argNames, `${expression} = expressionValue;`);
   } catch (error) {
     console.error(error);
   }
