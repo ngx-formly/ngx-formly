@@ -9,13 +9,13 @@ import { FieldType } from '@ngx-formly/core';
       [class.is-invalid]="showError"
       [multiple]="true"
       [formlyAttributes]="field">
-        <ng-container *ngFor="let item of to.options | formlySelectOptions:groupProp | async">
+        <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
          <optgroup *ngIf="item.group" label="{{item.label}}">
-            <option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
-              {{ child[labelProp] }}
+            <option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
+              {{ child.label }}
             </option>
           </optgroup>
-          <option *ngIf="!item.group" [value]="item[valueProp]" [disabled]="item.disabled">{{ item[labelProp] }}</option>
+          <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
         </ng-container>
     </select>
 
@@ -25,20 +25,16 @@ import { FieldType } from '@ngx-formly/core';
         [class.is-invalid]="showError"
         [formlyAttributes]="field">
         <option *ngIf="to.placeholder" value="">{{ to.placeholder }}</option>
-        <ng-container *ngFor="let item of to.options | formlySelectOptions:groupProp | async">
+        <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
           <optgroup *ngIf="item.group" label="{{item.label}}">
-            <option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
-              {{ child[labelProp] }}
+            <option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
+              {{ child.label }}
             </option>
           </optgroup>
-          <option *ngIf="!item.group" [value]="item[valueProp]" [disabled]="item.disabled">{{ item[labelProp] }}</option>
+          <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
         </ng-container>
       </select>
     </ng-template>
   `,
 })
-export class FormlyFieldSelect extends FieldType {
-  get labelProp(): string { return this.to.labelProp || 'label'; }
-  get valueProp(): string { return this.to.valueProp || 'value'; }
-  get groupProp(): string { return this.to.groupProp || 'group'; }
-}
+export class FormlyFieldSelect extends FieldType {}
