@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.6.1"></a>
+## [4.6.1](https://github.com/formly-js/ngx-formly/compare/v4.6.0...v4.6.1) (2018-06-27)
+
+
+### Bug Fixes
+
+* **core:** ensure passing a valid model for FormGroup instance ([f512ebb](https://github.com/formly-js/ngx-formly/commit/f512ebb)), closes [#1019](https://github.com/formly-js/ngx-formly/issues/1019)
+
+
+
 <a name="4.6.0"></a>
 # [4.6.0](https://github.com/formly-js/ngx-formly/compare/v4.5.0...v4.6.0) (2018-06-27)
 
