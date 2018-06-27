@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.6.0"></a>
+# [4.6.0](https://github.com/formly-js/ngx-formly/compare/v4.5.0...v4.6.0) (2018-06-27)
+
+
+### Features
+
+* **bootstrap:** allow passing function for labelProp and valueProp ([9a658a4](https://github.com/formly-js/ngx-formly/commit/9a658a4))
+* **material:** allow passing function for labelProp and valueProp ([667ac50](https://github.com/formly-js/ngx-formly/commit/667ac50)), closes [#982](https://github.com/formly-js/ngx-formly/issues/982)
+* **material:** support compareWith input for select type ([2f17694](https://github.com/formly-js/ngx-formly/commit/2f17694)), closes [#982](https://github.com/formly-js/ngx-formly/issues/982)
+
+
+
 <a name="4.5.0"></a>
 # [4.5.0](https://github.com/formly-js/ngx-formly/compare/v4.4.6...v4.5.0) (2018-06-21)
 
