@@ -9,6 +9,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
+      [compareWith]="to.compareWith || compareWith"
       [multiple]="to.multiple"
       (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher">
@@ -34,5 +35,9 @@ export class FormlyFieldSelect extends FieldType {
     if (this.to.change) {
       this.to.change(this.field, $event);
     }
+  }
+
+  compareWith(o1: any, o2: any) {
+    return o1 === o2;
   }
 }
