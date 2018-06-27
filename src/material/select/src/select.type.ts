@@ -13,23 +13,19 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [multiple]="to.multiple"
       (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher">
-      <ng-container *ngFor="let item of to.options | formlySelectOptions:groupProp | async">
+      <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
         <mat-optgroup *ngIf="item.group" [label]="item.label">
-          <mat-option *ngFor="let child of item.group" [value]="child[valueProp]" [disabled]="child.disabled">
-            {{ child[labelProp] }}
+          <mat-option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
+            {{ child.label }}
           </mat-option>
         </mat-optgroup>
-        <mat-option *ngIf="!item.group" [value]="item[valueProp]" [disabled]="item.disabled">{{ item[labelProp] }}</mat-option>
+        <mat-option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</mat-option>
       </ng-container>
     </mat-select>
   `,
 })
 export class FormlyFieldSelect extends FieldType {
   @ViewChild(MatSelect) formFieldControl: MatSelect;
-
-  get labelProp(): string { return this.to.labelProp || 'label'; }
-  get valueProp(): string { return this.to.valueProp || 'value'; }
-  get groupProp(): string { return this.to.groupProp || 'group'; }
 
   change($event: MatSelectChange) {
     if (this.to.change) {
