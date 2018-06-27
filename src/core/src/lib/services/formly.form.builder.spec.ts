@@ -34,6 +34,24 @@ describe('FormlyFormBuilder service', () => {
   });
 
   describe('formcontrol', () => {
+    it('should create FormGroup control when nested form is set', () => {
+      const fields: FormlyFieldConfig[] = [
+        { key: 'test', type: 'input', fieldGroup: [] },
+      ];
+
+      builder.buildForm(form, fields, {}, {});
+      expect(fields[0].formControl instanceof FormGroup).toBeTruthy();
+    });
+
+    it('should create FormArray control when fieldArray is set', () => {
+      const fields: FormlyFieldConfig[] = [
+        { key: 'test', type: 'input', fieldArray: {} },
+      ];
+
+      builder.buildForm(form, fields, {}, {});
+      expect(fields[0].formControl instanceof FormArray).toBeTruthy();
+    });
+
     it('should use the same formcontrol for fields that use the same key', () => {
       const fields: FormlyFieldConfig[] = [
         { key: 'test', type: 'input', hide: true },

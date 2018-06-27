@@ -49,6 +49,10 @@ export class FormlyFormBuilder {
       this.initFieldWrappers(field);
       this.initFieldAsyncValidation(field);
 
+      if (field.fieldGroup && !field.type) {
+        field.type = 'formly-group';
+      }
+
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
         let rootForm = form, rootModel = field.model;
@@ -83,10 +87,6 @@ export class FormlyFormBuilder {
       }
 
       if (field.fieldGroup) {
-        if (!field.type) {
-          field.type = 'formly-group';
-        }
-
         // if `hideExpression` is set in that case we have to deal
         // with toggle FormControl for each field in fieldGroup separately
         if (field.hideExpression) {
@@ -101,7 +101,6 @@ export class FormlyFormBuilder {
         }
 
         if (field.key) {
-          this.addFormControl(form, field, { [field.key]: field.fieldArray ? [] : {} }, field.key);
           this._buildForm(field.formControl as FormGroup, field.fieldGroup, options);
         } else {
           this._buildForm(form, field.fieldGroup, options);
@@ -274,7 +273,7 @@ export class FormlyFormBuilder {
     } else if (field.component && field.component.createControl) {
       control = field.component.createControl(model[path], field);
     } else if (field.fieldGroup && field.key && field.key === path && !field.fieldArray) {
-      control = new FormGroup(model[path], abstractControlOptions);
+      control = new FormGroup(model[path] || {}, abstractControlOptions);
     } else if (field.fieldArray && field.key && field.key === path) {
       control = new FormArray([], abstractControlOptions);
     } else {
