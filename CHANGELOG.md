@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.6.3"></a>
+## [4.6.3](https://github.com/formly-js/ngx-formly/compare/v4.6.2...v4.6.3) (2018-06-28)
+
+
+### Bug Fixes
+
+* **material:** ensure focus field elm on container click ([b5f195b](https://github.com/formly-js/ngx-formly/commit/b5f195b))
+
+
+
 <a name="4.6.2"></a>
 ## [4.6.2](https://github.com/formly-js/ngx-formly/compare/v4.6.1...v4.6.2) (2018-06-27)
 
