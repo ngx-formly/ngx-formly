@@ -43,7 +43,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   ) {}
 
   ngDoCheck() {
-    this.checkExpressionChange();
+    if ((this.options as any).checkExpressionChange) {
+      this.checkExpressionChange();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
