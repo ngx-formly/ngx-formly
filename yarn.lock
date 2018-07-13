@@ -5997,6 +5997,17 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+nativescript-angular@^6.0.6:
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/nativescript-angular/-/nativescript-angular-6.0.6.tgz#3cc0e754dc4211ef9b5005c791d723260f2e38e6"
+  dependencies:
+    nativescript-intl "^3.0.0"
+    reflect-metadata "^0.1.8"
+
+nativescript-intl@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/nativescript-intl/-/nativescript-intl-3.0.0.tgz#82ee9be7d377172b3c4295734723037628e186a7"
+
 needle@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/needle/-/needle-2.2.1.tgz#b5e325bd3aae8c2678902fa296f729455d1d3a7d"
@@ -7318,7 +7329,7 @@ redis@^2.7.1:
     redis-commands "^1.2.0"
     redis-parser "^2.6.0"
 
-reflect-metadata@^0.1.2:
+reflect-metadata@^0.1.2, reflect-metadata@^0.1.8:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.12.tgz#311bf0c6b63cd782f228a81abe146a2bfa9c56f2"
 
@@ -8658,6 +8669,16 @@ tmp@^0.0.29:
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.29.tgz#f25125ff0dd9da3ccb0c2dd371ee1288bb9128c0"
   dependencies:
     os-tmpdir "~1.0.1"
+
+tns-core-modules-widgets@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/tns-core-modules-widgets/-/tns-core-modules-widgets-4.1.0.tgz#bfb706fb5f246d2f44e7c652dbe4564fdf9c0261"
+
+tns-core-modules@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/tns-core-modules/-/tns-core-modules-4.1.0.tgz#f838f0e040b9cdef8d361ba7392dfece51762fc2"
+  dependencies:
+    tns-core-modules-widgets "4.1.0"
 
 to-array@0.1.4:
   version "0.1.4"
