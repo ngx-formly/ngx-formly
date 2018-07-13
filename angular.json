@@ -357,6 +357,46 @@
           }
         }
       }
+    },
+    "@ngx-formly/nativescript": {
+      "root": "src/nativescript",
+      "sourceRoot": "src/nativescript/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "src/nativescript/tsconfig.lib.json",
+            "project": "src/nativescript/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "src/nativescript/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/nativescript/src/test.ts",
+            "tsConfig": "src/nativescript/tsconfig.spec.json",
+            "karmaConfig": "src/nativescript/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/nativescript/tsconfig.lib.json",
+              "src/nativescript/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "@ngx-formly-demo",

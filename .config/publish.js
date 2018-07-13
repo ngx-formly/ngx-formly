@@ -6,7 +6,8 @@ const execSync = require('child_process').execSync,
     'ionic',
     'primeng',
     'kendo',
-    // 'schematics',
+    'schematics',
+    'nativescript',
   ];
 
 packages.map(package => {
