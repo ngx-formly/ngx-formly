@@ -8,6 +8,7 @@ const fs = require("fs"),
     'primeng',
     'kendo',
     'schematics',
+    'nativescript',
   ];
 
 // update `FORMLY-VERSION` in package.json for all sub-packages

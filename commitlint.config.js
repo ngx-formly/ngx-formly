@@ -14,7 +14,8 @@ module.exports = {
         'kendo',
         'demo',
         'guides',
-        'schematics'
+        'schematics',
+        'nativescript'
       ]
     ],
     'scope-empty': [1, 'never'],
