@@ -28,7 +28,7 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | ✅ |
 | [Material2](https://github.com/angular/material2) | ✅ |
 | [PrimeNG](http://primefaces.org/primeng/#/)       | ✅ |
-| [NativeScript](https://www.nativescript.org)      | ❌ |
+| [NativeScript](https://www.nativescript.org)      | ✅ |
 
 **Which Version to use?**
 
@@ -84,6 +84,11 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 - [Kendo](http://www.telerik.com/kendo-angular-ui):
   ```bash
     npm install @ngx-formly/kendo --save
+  ```
+
+- [NativeScript](https://www.nativescript.org)
+  ```bash
+    npm install @ngx-formly/nativescript --save
   ```
 
 #### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
