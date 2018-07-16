@@ -70,19 +70,20 @@ export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmp
   return value;
 }
 
-export function assignModelToFields(fields: FormlyFieldConfig[], model: any) {
+export function assignModelToFields(fields: FormlyFieldConfig[], model: any, parent?: FormlyFieldConfig) {
   fields.forEach((field, index) => {
     if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
       assignModelValue(model, field.key, field.defaultValue);
     }
 
     (field as any).model = model;
+    (field as any).parent = parent;
     if (field.key && (field.fieldGroup || field.fieldArray)) {
       (field as any).model = getFieldModel(model, field, true);
     }
 
     if (field.fieldGroup) {
-      assignModelToFields(field.fieldGroup, field.model);
+      assignModelToFields(field.fieldGroup, field.model, field);
     }
   });
 }
