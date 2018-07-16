@@ -10,6 +10,11 @@ export interface FormlyFieldConfig {
   readonly model?: any;
 
   /**
+   * The parent field.
+   */
+  readonly parent?: FormlyFieldConfig;
+
+  /**
    * The key that relates to the model. This will link the field value to the model
    */
   key?: string;
