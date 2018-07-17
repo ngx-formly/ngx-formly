@@ -5,10 +5,10 @@ import { createGenericTestComponent } from '../../../core/src/lib/test-utils';
 import { By } from '@angular/platform-browser';
 
 import { Component, ViewChild } from '@angular/core';
-import { FormlyModule, FormlyForm } from '@ngx-formly/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyModule, FormlyForm } from '@ngx-formly/core';
+import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormlyFieldSelect } from './select.type';
-import { FormlySelectOptionsPipe } from './select-options.pipe';
 import { of as observableOf } from 'rxjs';
 
 const createTestComponent = (html: string) =>
@@ -19,11 +19,12 @@ let testComponentInputs;
 describe('ui-material: Formly Field Select Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, FormlyFieldSelect, FormlySelectOptionsPipe],
+      declarations: [TestComponent, FormlyFieldSelect],
       imports: [
         NoopAnimationsModule,
         MatSelectModule,
         ReactiveFormsModule,
+        FormlySelectModule,
         FormlyModule.forRoot({
           types: [
             {
