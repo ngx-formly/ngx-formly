@@ -6,6 +6,7 @@
     "entryFile": "src/public_api.ts",
     "form-field": [{ "path": "form-field" }],
     "input": [{ "path": "input" }],
+    "textarea": [{ "path": "textarea" }],
     "select": [{ "path": "select" }],
     "checkbox": [{ "path": "checkbox" }],
     "datepicker": [{ "path": "datepicker" }],
