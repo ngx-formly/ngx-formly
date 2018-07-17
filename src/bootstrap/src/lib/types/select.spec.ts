@@ -4,10 +4,10 @@ import { By } from '@angular/platform-browser';
 
 import { Component, ViewChild } from '@angular/core';
 import { FormlyModule, FormlyForm } from '@ngx-formly/core';
+import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldSelect } from './select';
 import { of as observableOf } from 'rxjs';
-import { FormlySelectOptionsPipe } from '../select-options.pipe';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -17,9 +17,10 @@ let testComponentInputs;
 describe('ui-bootstrap: Formly Field Select Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, FormlyFieldSelect, FormlySelectOptionsPipe],
+      declarations: [TestComponent, FormlyFieldSelect],
       imports: [
         ReactiveFormsModule,
+        FormlySelectModule,
         FormlyModule.forRoot({
           types: [
             {

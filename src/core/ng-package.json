@@ -3,6 +3,7 @@
   "dest": "../../dist/@ngx-formly/core",
   "deleteDestPath": false,
   "lib": {
-    "entryFile": "src/public_api.ts"
+    "entryFile": "src/public_api.ts",
+    "select": [{ "path": "select" }]
   }
 }
