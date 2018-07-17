@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { FormlyFieldInput } from './input.type';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatInput } from '@angular/material/input';
+import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
   selector: 'formly-field-mat-textarea',
@@ -15,5 +16,6 @@ import { FormlyFieldInput } from './input.type';
     </textarea>
   `,
 })
-export class FormlyFieldTextArea extends FormlyFieldInput {
+export class FormlyFieldTextArea extends FieldType implements OnInit {
+  @ViewChild(MatInput) formFieldControl: MatInput;
 }
