@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { isObject } from '../utils';
@@ -10,9 +9,6 @@ import { isObject } from '../utils';
 })
 export class FormlyValidationMessage {
   @Input() field: FormlyFieldConfig;
-  @Input() set fieldForm(control: FormControl) {
-    console.warn(`formly-validation-message: Passing 'fieldForm' input is deprecated and it will be removed in the 4.0 version.`);
-  }
 
   constructor(private formlyConfig: FormlyConfig) {}
 
