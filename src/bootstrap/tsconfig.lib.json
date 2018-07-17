@@ -17,8 +17,8 @@
       "es2015"
     ],
     "paths": {
-      "@ngx-formly/core": [
-        "dist/@ngx-formly/core"
+      "@ngx-formly/*": [
+        "dist/@ngx-formly/*"
       ]
     }
   },

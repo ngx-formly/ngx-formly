@@ -50,12 +50,20 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       return to.labelProp(item);
     }
 
+    if (!to.labelProp && item.key && item.value) {
+      return item.value;
+    }
+
     return item[to.labelProp || 'label'];
   }
 
   private getValueProp(item, to): string {
     if (typeof to.valueProp === 'function') {
       return to.valueProp(item);
+    }
+
+    if (!to.valueProp && item.key && item.value) {
+      return item.key;
     }
 
     return item[to.valueProp || 'value'];
