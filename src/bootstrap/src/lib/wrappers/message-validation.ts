@@ -5,17 +5,11 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-validation-messages',
   template: `
     <ng-template #fieldComponent></ng-template>
-    <div *ngIf="showError">
-      <small class="text-danger invalid-feedback" [style.display]="'block'" role="alert" [id]="validationId">
-        <formly-validation-message [field]="field"></formly-validation-message>
-      </small>
+    <div *ngIf="showError" class="invalid-feedback" [style.display]="'block'">
+      <formly-validation-message [field]="field"></formly-validation-message>
     </div>
   `,
 })
 export class FormlyWrapperValidationMessages extends FieldWrapper {
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
-
-  get validationId() {
-    return this.field.id + '-message';
-  }
 }

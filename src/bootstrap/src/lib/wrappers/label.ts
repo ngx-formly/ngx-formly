@@ -4,7 +4,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 @Component({
   selector: 'formly-wrapper-label',
   template: `
-    <label [attr.for]="id" class="form-control-label control-label" *ngIf="to.label">
+    <label *ngIf="to.label" [attr.for]="id">
       {{ to.label }}
       <ng-container *ngIf="to.required && to.hideRequiredMarker !== true">*</ng-container>
     </label>
