@@ -10,7 +10,6 @@ import { FieldType } from '@ngx-formly/core';
     </ng-template>
   `,
   host: {
-    // temporary fix until removing bootstrap 3 support.
     '[class.d-inline-flex]': 'to.addonLeft || to.addonRight',
     '[class.custom-file]': 'to.addonLeft || to.addonRight',
   },
