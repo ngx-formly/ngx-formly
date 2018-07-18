@@ -36,23 +36,18 @@ export class FormlyFormBuilder {
   }
 
   private _buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], options: FormlyFormOptions) {
-    fields.forEach((field, index) => {
+    fields.forEach((field) => {
       this.initFieldValidation(field);
       this.initFieldAsyncValidation(field);
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
-        let rootForm = form, rootModel = field.model;
+        let rootForm = form, rootModel = field.fieldGroup ? { [paths[0]]: field.model } : field.model;
         paths.forEach((path, index) => {
           // FormGroup/FormArray only allow string value for path
           const formPath = path.toString();
           // is last item
           if (index === paths.length - 1) {
-            this.addFormControl(
-              rootForm,
-              field,
-              field.fieldGroup ? { [formPath]: field.fieldArray ? [] : {} } : rootModel,
-              formPath,
-            );
+            this.addFormControl(rootForm, field, rootModel, formPath);
 
             if (field.fieldArray) {
               field.fieldGroup = [];
@@ -139,9 +134,9 @@ export class FormlyFormBuilder {
       }
     } else if (field.component && field.component.createControl) {
       control = field.component.createControl(model[path], field);
-    } else if (field.fieldGroup && field.key && field.key === path && !field.fieldArray) {
+    } else if (field.fieldGroup && !field.fieldArray) {
       control = new FormGroup({}, abstractControlOptions);
-    } else if (field.fieldArray && field.key && field.key === path) {
+    } else if (field.fieldArray) {
       control = new FormArray([], abstractControlOptions);
     } else {
       control = new FormControl(model[path], abstractControlOptions);
