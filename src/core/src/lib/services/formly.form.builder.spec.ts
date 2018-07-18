@@ -160,6 +160,19 @@ describe('FormlyFormBuilder service', () => {
 
       expect(form.get('a.1').value).toEqual('bar');
     });
+
+    it('should create nested form control with fieldGroup', () => {
+      const model = { a: { b: { c: 'foo' } }};
+      field = {
+        key: 'a.b',
+        type: 'input',
+        fieldGroup: [{ key: 'c', type: 'input' }],
+      };
+      builder.buildForm(form, [field], model, {});
+
+      expect(form.get('a.b').value).toEqual({ c: 'foo' });
+      expect(model).toEqual({ a: { b: { c: 'foo' } } });
+    });
   });
 
   describe('field defaultValue', () => {
