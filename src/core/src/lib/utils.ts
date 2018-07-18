@@ -71,7 +71,7 @@ export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmp
 }
 
 export function assignModelToFields(fields: FormlyFieldConfig[], model: any, parent?: FormlyFieldConfig) {
-  fields.forEach((field, index) => {
+  fields.forEach((field) => {
     if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
       assignModelValue(model, field.key, field.defaultValue);
     }
