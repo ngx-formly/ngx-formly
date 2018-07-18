@@ -156,8 +156,9 @@ export function isFunction(value: any) {
 }
 
 export function objAndSameType(obj1: any, obj2: any) {
-  return isObject(obj1) && isObject(obj2) &&
-    Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
+  return isObject(obj1) && isObject(obj2)
+    && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2)
+    && !(Array.isArray(obj1) || Array.isArray(obj2));
 }
 
 export function isObject(x: any) {
