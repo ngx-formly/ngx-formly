@@ -30,29 +30,22 @@ export class FormlyFormBuilder {
       }
     });
 
+    this.initFieldsOptions(fields);
     assignModelToFields(fields, model);
     this._buildForm(form, fields, options);
     this.formlyFormExpression.checkFields(form, fields, model, options);
   }
 
   private _buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], options: FormlyFormOptions) {
-    this.formId++;
     this.registerFormControls(form, fields, options);
   }
 
   private registerFormControls(form: FormGroup | FormArray, fields: FormlyFieldConfig[], options: FormlyFormOptions) {
     fields.forEach((field, index) => {
-      field.id = getFieldId(`formly_${this.formId}`, field, index);
-      this.initFieldOptions(field);
       this.initFieldExpression(field, options);
       this.initFieldValidation(field);
       this.initFieldWrappers(field);
       this.initFieldAsyncValidation(field);
-
-      if (field.fieldGroup && !field.type) {
-        field.type = 'formly-group';
-      }
-
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
         let rootForm = form, rootModel = field.model;
@@ -73,6 +66,8 @@ export class FormlyFormBuilder {
               field.model.forEach((m: any, i: number) => field.fieldGroup.push(
                 { ...clone(field.fieldArray), key: `${i}` },
               ));
+
+              this.initFieldsOptions(field.fieldGroup);
               assignModelToFields(field.fieldGroup, rootModel);
             }
 
@@ -145,18 +140,30 @@ export class FormlyFormBuilder {
     }
   }
 
-  private initFieldOptions(field: FormlyFieldConfig) {
-    field.templateOptions = field.templateOptions || {};
-    if (field.type) {
-      this.formlyConfig.getMergedField(field);
-      if (field.key) {
-        field.templateOptions = Object.assign({
-          label: '',
-          placeholder: '',
-          focus: false,
-        }, field.templateOptions);
+  private initFieldsOptions(fields: FormlyFieldConfig[]) {
+    this.formId++;
+    fields.forEach((field, index) => {
+      field.id = getFieldId(`formly_${this.formId}`, field, index);
+      field.templateOptions = field.templateOptions || {};
+      if (field.type) {
+        this.formlyConfig.getMergedField(field);
+        if (field.key) {
+          field.templateOptions = Object.assign({
+            label: '',
+            placeholder: '',
+            focus: false,
+          }, field.templateOptions);
+        }
       }
-    }
+
+      if (field.fieldGroup) {
+        if (!field.type) {
+          field.type = 'formly-group';
+        }
+
+        this.initFieldsOptions(field.fieldGroup);
+      }
+    });
   }
 
   private initFieldAsyncValidation(field: FormlyFieldConfig) {
