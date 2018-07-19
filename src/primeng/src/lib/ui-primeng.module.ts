@@ -9,6 +9,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
 
 import { FormlyModule } from '@ngx-formly/core';
+import { FormlySelectModule } from '@ngx-formly/core/select';
 import { PRIME_NG_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-primeng.config';
 
 @NgModule({
@@ -23,6 +24,7 @@ import { PRIME_NG_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-primeng.conf
     DropdownModule,
 
     ReactiveFormsModule,
+    FormlySelectModule,
     FormlyModule.forRoot(PRIME_NG_FORMLY_CONFIG),
   ],
 })

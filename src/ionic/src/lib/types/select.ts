@@ -10,7 +10,7 @@ import { FieldType } from '@ngx-formly/core';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [multiple]="to.multiple">
-      <ion-option *ngFor="let option of to.options" [value]="option.value">
+      <ion-option *ngFor="let option of to.options | formlySelectOptions:field | async" [value]="option.value">
         {{ option.label }}
       </ion-option>
     </ion-select>

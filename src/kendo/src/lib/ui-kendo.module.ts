@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 
 import { FormlyModule } from '@ngx-formly/core';
+import { FormlySelectModule } from '@ngx-formly/core/select';
 import { PRIME_NG_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-kendo.config';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { PRIME_NG_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-kendo.config
     CommonModule,
     DropDownsModule,
     ReactiveFormsModule,
+    FormlySelectModule,
     FormlyModule.forRoot(PRIME_NG_FORMLY_CONFIG),
   ],
 })
