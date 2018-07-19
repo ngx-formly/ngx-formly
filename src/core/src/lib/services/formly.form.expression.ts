@@ -16,6 +16,7 @@ export class FormlyFormExpression {
     this._initFields(fields, options);
     this.checkFields(form, fields, model, options);
   }
+
   checkFields(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     this._checkFields(form, fields, options);
   }
