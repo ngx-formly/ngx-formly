@@ -57,6 +57,7 @@ export class ExamplesComponent {
       { href: './bootstrap-specific/input-add-ons', text: 'Input add-ons' },
     ]},
     { title: 'Advanced', links: [
+      { href: './advanced/i18n', text: 'i18n using ngx-translate' },
       { href: './advanced/repeating-section', text: 'Repeating Section' },
       { href: './advanced/multi-step-form', text: 'Multi-Step Form' },
       { href: './advanced/tabs', text: 'Tabs Form' },
