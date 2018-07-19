@@ -4,7 +4,7 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-kendo-radio',
   template: `
-    <ng-container *ngFor="let option of to.options; let i = index;">
+    <ng-container *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;">
       <input
         type="radio"
         [id]="id + '_' + i"
