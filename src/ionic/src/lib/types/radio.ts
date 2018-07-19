@@ -9,7 +9,7 @@ import { FieldType } from '@ngx-formly/core';
       [formlyAttributes]="field">
       <ion-list-header>{{ to.label }}</ion-list-header>
 
-      <ion-item *ngFor="let option of to.options">
+      <ion-item *ngFor="let option of to.options | formlySelectOptions:field | async">
         <ion-label>{{ option.label }}</ion-label>
         <ion-radio [value]="option.value"></ion-radio>
       </ion-item>
