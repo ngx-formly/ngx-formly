@@ -186,8 +186,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           newFieldModel.forEach((m: any, i: number) => {
             field.model[i] = m;
             field.fieldGroup.push({ ...clone(field.fieldArray), key: `${i}` });
-            this.formlyBuilder.buildForm(formControl, [field.fieldGroup[i]], newFieldModel, this.options);
           });
+          this.formlyBuilder.buildForm(formControl, field.fieldGroup, newFieldModel, this.options);
         } else {
           this.resetFieldArray(field.fieldGroup, newFieldModel);
         }
