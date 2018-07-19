@@ -76,11 +76,13 @@ export function assignModelToFields(fields: FormlyFieldConfig[], model: any, par
       assignModelValue(model, field.key, field.defaultValue);
     }
 
-    (field as any).model = model;
-    (field as any).parent = parent;
-    if (field.key && (field.fieldGroup || field.fieldArray)) {
-      (field as any).model = getFieldModel(model, field, true);
-    }
+    Object.defineProperty(field, 'parent', { get: () => parent, configurable: true });
+    Object.defineProperty(field, 'model', {
+      get: () => field.key && (field.fieldGroup || field.fieldArray)
+        ? getFieldModel(model, field, true)
+        : model,
+      configurable: true,
+    });
 
     if (field.fieldGroup) {
       assignModelToFields(field.fieldGroup, field.model, field);
