@@ -38,7 +38,7 @@ const TEMPLATE_FILES = {
 const TAGS: string[] = ['angular', 'formly', 'example'];
 const angularVersion = '^6.0.0';
 const materialVersion = '^6.0.0';
-const formlyVersion = '^4.0.0-alpha';
+const formlyVersion = '^5.0.0-alpha';
 
 const dependencies = {
   core: {
