@@ -77,15 +77,29 @@ export function assignModelToFields(fields: FormlyFieldConfig[], model: any, par
     }
 
     Object.defineProperty(field, 'parent', { get: () => parent, configurable: true });
-    Object.defineProperty(field, 'model', {
-      get: () => field.key && (field.fieldGroup || field.fieldArray)
-        ? getFieldModel(model, field, true)
-        : model,
-      configurable: true,
-    });
+    if (field.key && field.fieldArray) {
+      field.fieldGroup = field.fieldGroup || [];
+      field.fieldGroup.length = 0;
 
-    if (field.fieldGroup) {
-      assignModelToFields(field.fieldGroup, field.model, field);
+      const m = getFieldModel(model, field, true);
+      m.forEach((m: any, i: number) => field.fieldGroup.push({ ...clone(field.fieldArray), key: `${i}` }));
+      if (field.hasOwnProperty('model') && field.model !== m) {
+        field.model.length = 0;
+        m.forEach((m: any, i: number) => field.model[i] = m);
+      }
+    }
+
+    if (!field.hasOwnProperty('model') || !field.key || !(field.fieldArray || field.fieldGroup)) {
+      Object.defineProperty(field, 'model', {
+        get: () => field.key && (field.fieldGroup || field.fieldArray)
+          ? getFieldModel(model, field, true)
+          : model,
+        configurable: true,
+      });
+
+      if (field.fieldGroup) {
+        assignModelToFields(field.fieldGroup, field.model, field);
+      }
     }
   });
 }
