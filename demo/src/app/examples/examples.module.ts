@@ -55,6 +55,7 @@ import { ExamplesComponent } from './examples.component';
 
         // Advanced
         { path: 'advanced', children: [
+          { path: 'i18n', loadChildren: './advanced/i18n/config.module#ConfigModule' },
           { path: 'repeating-section', loadChildren: './advanced/repeating-section/config.module#ConfigModule' },
           { path: 'datatable-integration', loadChildren: './advanced/datatable-integration/config.module#ConfigModule' },
           { path: 'multi-step-form', loadChildren: './advanced/multi-step-form/config.module#ConfigModule' },
