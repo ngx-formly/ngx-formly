@@ -7,7 +7,7 @@ import { FieldType } from '@ngx-formly/core';
     <p-dropdown
       [class.ng-dirty]="showError"
       [placeholder]="to.placeholder"
-      [options]="to.options"
+      [options]="to.options | formlySelectOptions:field | async"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [showClear]="!to.required">
