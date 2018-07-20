@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.6.6"></a>
+## [4.6.6](https://github.com/formly-js/ngx-formly/compare/v4.6.5...v4.6.6) (2018-07-20)
+
+* **core:** Revert "perf(core): check expression change only when expression is set"
+
 <a name="4.6.5"></a>
 ## [4.6.5](https://github.com/formly-js/ngx-formly/compare/v4.6.4...v4.6.5) (2018-07-18)
 
