@@ -111,10 +111,6 @@ export class FormlyFormBuilder {
   }
 
   private initFieldExpression(field: FormlyFieldConfig, options: FormlyFormOptions) {
-    if (field.expressionProperties || field.hideExpression) {
-      (options as any).checkExpressionChange = true;
-    }
-
     if (field.expressionProperties) {
       for (const key in field.expressionProperties as any) {
         if (typeof field.expressionProperties[key] === 'string' || isFunction(field.expressionProperties[key])) {
