@@ -9,6 +9,7 @@
     "textarea": [{ "path": "textarea" }],
     "select": [{ "path": "select" }],
     "checkbox": [{ "path": "checkbox" }],
+    "multicheckbox": [{ "path": "multicheckbox" }],
     "datepicker": [{ "path": "datepicker" }],
     "radio": [{ "path": "radio" }],
     "toggle": [{ "path": "toggle" }],
