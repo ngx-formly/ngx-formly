@@ -84,6 +84,7 @@ export class FormlyFormBuilder {
   private initFieldOptions(field: FormlyFieldConfig, index: number) {
     field.id = getFieldId(`formly_${this.formId}`, field, index);
     field.templateOptions = field.templateOptions || {};
+    field.lifecycle = field.lifecycle || {};
     if (field.type && field.key) {
       field.templateOptions = Object.assign({
         label: '',
@@ -141,8 +142,8 @@ export class FormlyFormBuilder {
       Object.defineProperty(field.templateOptions, 'disabled', {
         get: (function () { return !this.formControl.enabled; }).bind(field),
         set: (function (value: boolean) {
-          if (this.expressionProperties && this.expressionProperties.hasOwnProperty('templateOptions.disabled')) {
-            this.expressionProperties['templateOptions.disabled'].expressionValue = value;
+          if (this._expressionProperties && this._expressionProperties.hasOwnProperty('templateOptions.disabled')) {
+            this._expressionProperties['templateOptions.disabled'].expressionValue = value;
           }
 
           value ? this.formControl.disable() : this.formControl.enable();
@@ -176,7 +177,7 @@ export class FormlyFormBuilder {
     FORMLY_VALIDATORS
       .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt))
         || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]),
-    )
+      )
       .forEach((opt) => {
         validators.push((control: FormControl) => {
           if (field.templateOptions[opt] === false) {

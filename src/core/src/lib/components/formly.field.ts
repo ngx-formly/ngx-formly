@@ -5,7 +5,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { Field } from '../templates/field';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn, FormlyLifeCycleOptions } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn } from './formly.field.config';
 
 @Component({
   selector: 'formly-field',
@@ -33,34 +33,34 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   ) {}
 
   ngAfterContentInit() {
-    this.lifeCycleHooks(this.lifecycle.afterContentInit);
+    this.lifeCycleHooks(this.field.lifecycle.afterContentInit);
   }
 
   ngAfterContentChecked() {
-    this.lifeCycleHooks(this.lifecycle.afterContentChecked);
+    this.lifeCycleHooks(this.field.lifecycle.afterContentChecked);
   }
 
   ngAfterViewInit() {
-    this.lifeCycleHooks(this.lifecycle.afterViewInit);
+    this.lifeCycleHooks(this.field.lifecycle.afterViewInit);
   }
 
   ngAfterViewChecked() {
-    this.lifeCycleHooks(this.lifecycle.afterViewChecked);
+    this.lifeCycleHooks(this.field.lifecycle.afterViewChecked);
   }
 
   ngDoCheck() {
-    this.lifeCycleHooks(this.lifecycle.doCheck);
+    this.lifeCycleHooks(this.field.lifecycle.doCheck);
   }
 
   ngOnInit() {
     if (!this.field.template) {
       this.createFieldComponent();
     }
-    this.lifeCycleHooks(this.lifecycle.onInit);
+    this.lifeCycleHooks(this.field.lifecycle.onInit);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.lifeCycleHooks(this.lifecycle.onChanges);
+    this.lifeCycleHooks(this.field.lifecycle.onChanges);
     this.componentRefs.forEach(ref => {
       Object.assign(ref.instance, {
         model: this.model,
@@ -72,7 +72,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   ngOnDestroy() {
-    this.lifeCycleHooks(this.lifecycle.onDestroy);
+    this.lifeCycleHooks(this.field.lifecycle.onDestroy);
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this.componentRefs = [];
   }
@@ -103,10 +103,6 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs.push(ref);
 
     return ref;
-  }
-
-  private get lifecycle(): FormlyLifeCycleOptions {
-    return this.field.lifecycle || {};
   }
 
   private lifeCycleHooks(callback: FormlyLifeCycleFn) {
