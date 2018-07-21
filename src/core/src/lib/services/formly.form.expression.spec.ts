@@ -1,7 +1,7 @@
 import { FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 
 import { MockComponent } from '../test-utils';
 
@@ -316,6 +316,25 @@ describe('FormlyFormExpression service', () => {
       expect(fields[1].hide).toBeTruthy();
       expect(fields[1].templateOptions.hidden).toBeTruthy();
       expect(fields[1].formControl.value).toBeNull();
+    });
+  });
+
+  describe('with Observable expression', () => {
+    it('should update field from emitted observable values', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'text',
+          type: 'input',
+          expressionProperties: {
+            'templateOptions.label': of('test'),
+          },
+        },
+      ];
+      const model = {};
+      const options = {};
+
+      builder.buildForm(form, fields, model, options);
+      expect(fields[0].templateOptions.label).toEqual('test');
     });
   });
 });

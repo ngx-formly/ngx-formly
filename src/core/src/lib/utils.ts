@@ -211,7 +211,7 @@ export function evalStringExpression(expression: string, argNames: string[]) {
 
 export function evalExpressionValueSetter(expression: string, argNames: string[]) {
   try {
-    return Function(...argNames, `${expression} = expressionValue;`);
+    return Function(...argNames, `${expression} = expressionValue;`) as (value: any) => void;
   } catch (error) {
     console.error(error);
   }

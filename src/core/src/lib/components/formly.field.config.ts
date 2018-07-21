@@ -97,7 +97,7 @@ export interface FormlyFieldConfig {
   /**
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
-  expressionProperties?: { [property: string]: string | ((model: any, formState: any) => boolean) } | any;
+  expressionProperties?: { [property: string]: string | ((model: any, formState: any) => any) | Observable<any> };
 
   /**
    * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.
@@ -164,6 +164,16 @@ export interface FormlyFieldConfig {
    * Array of functions to execute, as a pipeline, whenever the model updates, usually via user input.
    */
   parsers?: ((value: any) => {})[];
+}
+
+export interface ExpressionPropertyCache {
+  expression: (model: any, formState: any) => boolean;
+  expressionValueSetter: (value: any) => void;
+  expressionValue?: any;
+}
+
+export interface FormlyFieldConfigCache extends FormlyFieldConfig {
+  _expressionProperties: { [property: string]: ExpressionPropertyCache };
 }
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
