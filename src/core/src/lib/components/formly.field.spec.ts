@@ -58,7 +58,7 @@ describe('FormlyField Component', () => {
 
   it('should render template option', () => {
     testComponentInputs = {
-      field: { template: '<div>Nested property keys</div>'},
+      field: { template: '<div>Nested property keys</div>', lifecycle: {} },
     };
 
     const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
@@ -114,6 +114,7 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         formControl: new FormControl(),
+        lifecycle: {},
         templateOptions: {
           placeholder: 'Title',
         },
@@ -132,17 +133,20 @@ describe('FormlyField Component', () => {
     testComponentInputs = {
       field: {
         type: 'formly-group',
+        lifecycle: {},
         fieldGroup: [
           {
             key: 'title1',
             type: 'text',
             formControl: new FormControl(),
+            lifecycle: {},
             templateOptions: { placeholder: 'Title1' },
           },
           {
             key: 'title2',
             type: 'text',
             formControl: new FormControl(),
+            lifecycle: {},
             templateOptions: { placeholder: 'Title2' },
           },
         ],
@@ -162,6 +166,7 @@ describe('FormlyField Component', () => {
         field: {
           key: 'title',
           type: 'text',
+          lifecycle: {},
           templateOptions: {
             label: 'Title',
             placeholder: 'Title',
@@ -198,6 +203,7 @@ describe('FormlyField Component', () => {
         type: 'text',
         formControl: new FormControl(),
         optionsTypes: ['other'],
+        lifecycle: {},
         templateOptions: {
           placeholder: 'Title',
         },

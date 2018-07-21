@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component } from '@angular/core';
 import { FormlyFormExpression } from './formly.form.expression';
 import { MockComponent } from '../test-utils';
+import { FormlyFieldConfigCache } from '../components/formly.field.config';
 
 describe('FormlyFormBuilder service', () => {
   let builder: FormlyFormBuilder;
@@ -258,11 +259,11 @@ describe('FormlyFormBuilder service', () => {
       };
 
       builder.buildForm(form, [field], {}, {});
-      const disabledExpression = field.expressionProperties['templateOptions.disabled'];
+      const disabledExpression = (field as FormlyFieldConfigCache)._expressionProperties['templateOptions.disabled'];
       expect(typeof disabledExpression.expression).toBe('function');
       expect(typeof disabledExpression.expressionValueSetter).toBe('function');
 
-      const labelExpression = field.expressionProperties['templateOptions.label'];
+      const labelExpression = (field as FormlyFieldConfigCache)._expressionProperties['templateOptions.label'];
       expect(typeof labelExpression.expression).toBe('function');
       expect(typeof labelExpression.expressionValueSetter).toBe('function');
 
