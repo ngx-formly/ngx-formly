@@ -5,6 +5,7 @@ import { FormlyMatInputModule } from '@ngx-formly/material/input';
 import { FormlyMatTextAreaModule } from '@ngx-formly/material/textarea';
 import { FormlyMatRadioModule } from '@ngx-formly/material/radio';
 import { FormlyMatCheckboxModule } from '@ngx-formly/material/checkbox';
+import { FormlyMatMultiCheckboxModule } from '@ngx-formly/material/multicheckbox';
 import { FormlyMatSelectModule } from '@ngx-formly/material/select';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { FormlyMatSelectModule } from '@ngx-formly/material/select';
     FormlyMatTextAreaModule,
     FormlyMatRadioModule,
     FormlyMatCheckboxModule,
+    FormlyMatMultiCheckboxModule,
     FormlyMatSelectModule,
   ],
 })
