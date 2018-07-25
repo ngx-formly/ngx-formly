@@ -70,6 +70,7 @@
     "@progress/kendo-angular-intl": "^1.4.0",
     "@progress/kendo-angular-l10n": "^1.1.0",
     "@progress/kendo-theme-default": "^2.50.0",
+    "@swimlane/ngx-datatable": "^13.0.1",
     "bootstrap": "^4.1.2",
     "core-js": "^2.5.7",
     "ionic-angular": "^3.9.2",

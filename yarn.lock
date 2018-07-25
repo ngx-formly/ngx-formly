@@ -488,6 +488,10 @@
     semver "^5.3.0"
     semver-intersect "^1.1.2"
 
+"@swimlane/ngx-datatable@^13.0.1":
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-13.0.1.tgz#6e949e19130b2054e2715d30d158751c4fbaa502"
+
 "@telerik/kendo-draggable@^1.5.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@telerik/kendo-draggable/-/kendo-draggable-1.7.1.tgz#b1fa1ebadd7ad5eb3d437d8353ee09caa04888e5"

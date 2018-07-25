@@ -60,6 +60,7 @@ export class ExamplesComponent {
       { href: './advanced/repeating-section', text: 'Repeating Section' },
       { href: './advanced/multi-step-form', text: 'Multi-Step Form' },
       { href: './advanced/tabs', text: 'Tabs Form' },
+      { href: './advanced/datatable-integration', text: 'ngx-datatable Integration' },
     ]},
     { title: 'Other', links: [
       { href: './other/cascaded-select', text: 'Cascaded Select' },
