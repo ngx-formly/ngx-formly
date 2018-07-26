@@ -87,6 +87,7 @@ function mapUIName(uiTheme: string): string {
   const uiMap: UIModuleName = {
     bootstrap: 'Bootstrap',
     material: 'Material',
+    nativescript: 'Nativescript',
     ionic: 'Ionic',
     primeng: 'PrimeNG',
     kendo: 'Kendo',
