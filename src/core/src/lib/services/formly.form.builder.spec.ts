@@ -14,14 +14,14 @@ describe('FormlyFormBuilder service', () => {
   beforeEach(() => {
     TestComponent = MockComponent({ selector: 'formly-test-cmp' });
     form = new FormGroup({});
-    builder = new FormlyFormBuilder(
-      new FormlyConfig([{
-        types: [{ name: 'input', component: TestComponent }],
-        wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
-        validators: [{ name: 'required', validation: Validators.required }],
-      }]),
-      new FormlyFormExpression(),
-    );
+    const config = new FormlyConfig();
+    config.addConfig({
+      types: [{ name: 'input', component: TestComponent }],
+      wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
+      validators: [{ name: 'required', validation: Validators.required }],
+    });
+
+    builder = new FormlyFormBuilder(config, new FormlyFormExpression());
   });
 
   it('should have the model accessible from the field itself', () => {

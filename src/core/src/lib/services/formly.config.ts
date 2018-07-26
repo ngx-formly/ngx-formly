@@ -1,4 +1,4 @@
-import { Injectable, Inject, InjectionToken } from '@angular/core';
+import { Injectable, InjectionToken, ComponentFactoryResolver } from '@angular/core';
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { Field } from './../templates/field';
 import { reverseDeepMerge } from './../utils';
@@ -9,7 +9,7 @@ export const FORMLY_CONFIG_TOKEN = new InjectionToken<FormlyConfig>('FORMLY_CONF
 /**
  * Maintains list of formly field directive types. This can be used to register new field templates.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FormlyConfig {
   types: {[name: string]: TypeOption} = {};
   validators: { [name: string]: ValidatorOption } = {};
@@ -33,10 +33,6 @@ export class FormlyConfig {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
   };
-
-  constructor(@Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = []) {
-    configs.forEach(config => this.addConfig(config));
-  }
 
   addConfig(config: ConfigOption) {
     if (config.types) {
@@ -70,6 +66,7 @@ export class FormlyConfig {
       this.types[options.name].name = options.name;
       this.types[options.name].extends = options.extends;
       this.types[options.name].defaultOptions = options.defaultOptions;
+      this.types[options.name].componentFactoryResolver = options.componentFactoryResolver;
       if (options.wrappers) {
         options.wrappers.forEach((wrapper) => this.setTypeWrapper(options.name, wrapper));
       }
@@ -194,12 +191,14 @@ export interface TypeOption {
   wrappers?: string[];
   extends?: string;
   defaultOptions?: FormlyFieldConfig;
+  componentFactoryResolver?: ComponentFactoryResolver;
 }
 
 export interface WrapperOption {
   name: string;
   component: any;
   types?: string[];
+  componentFactoryResolver?: ComponentFactoryResolver;
 }
 
 export interface FieldValidatorFn {

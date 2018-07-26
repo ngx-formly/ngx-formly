@@ -5,7 +5,7 @@ import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field
 import { FormlyFormExpression } from './formly.form.expression';
 import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, assignModelToFields, getKeyPath } from '../utils';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
   private formId = 0;
 
@@ -309,19 +309,11 @@ export class FormlyFormBuilder {
     }
 
     this.mergeTemplateManipulators(templateManipulators, this.formlyConfig.templateManipulators);
-    if (!field.wrappers) {
-      field.wrappers = [];
-    }
-
-    const preWrappers = templateManipulators.preWrapper
-      .map(m => m(field))
-      .filter(wrapper => wrapper && field.wrappers.indexOf(wrapper) === -1);
-
-    const postWrappers = templateManipulators.postWrapper
-      .map(m => m(field))
-      .filter(wrapper => wrapper && field.wrappers.indexOf(wrapper) === -1);
-
-    field.wrappers = [...preWrappers, ...field.wrappers, ...postWrappers];
+    field.wrappers = [
+      ...templateManipulators.preWrapper.map(m => m(field)),
+      ...(field.wrappers || []),
+      ...templateManipulators.postWrapper.map(m => m(field)),
+    ].filter((el, i, a) => i === a.indexOf(el));
   }
 
   private mergeTemplateManipulators(source: TemplateManipulators, target: TemplateManipulators) {
