@@ -12,7 +12,7 @@ import { tap } from 'rxjs/operators';
 /**
  * @internal
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FormlyFormExpression {
   initFields(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     this._initFields(fields as any, options);

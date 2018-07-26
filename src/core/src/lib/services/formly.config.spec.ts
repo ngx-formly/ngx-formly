@@ -5,14 +5,15 @@ import { Component } from '@angular/core';
 describe('FormlyConfig service', () => {
   let config: FormlyConfig;
   beforeEach(() => {
-    config = new FormlyConfig([{
+    config = new FormlyConfig();
+    config.addConfig({
       wrappers: [{ name: 'layout', component: TestComponent }],
       types: [{ name: 'input' }],
       validators: [{ name: 'required', validation: Validators.required }],
       validationMessages: [
         { name: 'required', message: 'This field is required.' },
       ],
-    }]);
+    });
   });
 
   describe('extra option: showError', () => {
@@ -90,6 +91,7 @@ describe('FormlyConfig service', () => {
         wrappers: ['label'],
         extends: 'custom_input1',
         defaultOptions: undefined,
+        componentFactoryResolver: undefined,
       });
     });
   });
