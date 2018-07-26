@@ -50,7 +50,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       return to.labelProp(item);
     }
 
-    if (!to.labelProp && item.key && item.value) {
+    if (this.shouldUseLegacyOption(item, to)) {
       return item.value;
     }
 
@@ -62,7 +62,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       return to.valueProp(item);
     }
 
-    if (!to.valueProp && item.key && item.value) {
+    if (this.shouldUseLegacyOption(item, to)) {
       return item.key;
     }
 
@@ -75,5 +75,14 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     }
 
     return item[to.groupProp || 'group'];
+  }
+
+  private shouldUseLegacyOption(item, to) {
+    return !to.valueProp
+      && !to.labelProp
+      && item != null
+      && typeof item === 'object'
+      && 'key' in item
+      && 'value' in item;
   }
 }
