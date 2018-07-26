@@ -16,7 +16,7 @@
       "alias": "m"
     },
     "uiTheme": {
-      "enum": ["material", "bootstrap", "ionic", "primeng", "kendo"],
+      "enum": ["material", "bootstrap", "ionic", "nativescript", "primeng", "kendo"],
       "description": "The UI with pre-defined types/templates"
     }
   },
