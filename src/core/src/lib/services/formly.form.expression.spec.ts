@@ -22,18 +22,18 @@ describe('FormlyFormExpression service', () => {
 
     expression = new FormlyFormExpression();
     form = new FormGroup({});
-    builder = new FormlyFormBuilder(
-      new FormlyConfig([{
-        types: [
-          { name: 'input', component: TestComponent },
-          { name: 'checkbox', component: TestComponent },
-          { name: 'repeat', component: FieldArrayType },
-        ],
-        wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
-        validators: [{ name: 'required', validation: Validators.required }],
-      }]),
-      new FormlyFormExpression(),
-    );
+    const config = new FormlyConfig();
+    config.addConfig({
+      types: [
+        { name: 'input', component: TestComponent },
+        { name: 'checkbox', component: TestComponent },
+        { name: 'repeat', component: FieldArrayType },
+      ],
+      wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
+      validators: [{ name: 'required', validation: Validators.required }],
+    });
+
+    builder = new FormlyFormBuilder(config, new FormlyFormExpression());
   });
 
   describe('field visibility', () => {
