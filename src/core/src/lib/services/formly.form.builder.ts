@@ -122,6 +122,16 @@ export class FormlyFormBuilder {
       ) {
         control.patchValue(model[path]);
       }
+
+      if (abstractControlOptions.validators || abstractControlOptions.asyncValidators) {
+        if (abstractControlOptions.validators) {
+          control.setValidators(abstractControlOptions.validators);
+        }
+        if (abstractControlOptions.asyncValidators) {
+          control.setAsyncValidators(abstractControlOptions.asyncValidators);
+        }
+        control.updateValueAndValidity();
+      }
     } else if (field.component && field.component.createControl) {
       control = field.component.createControl(model[path], field);
     } else if (field.fieldGroup && !field.fieldArray) {

@@ -63,6 +63,16 @@ describe('FormlyFormBuilder service', () => {
       expect(fields[0].formControl).toEqual(fields[1].formControl);
     });
 
+    it('should update the formcontrol validation for a built form', () => {
+      form.addControl('test', new FormControl());
+      const fields: FormlyFieldConfig[] = [
+        { key: 'test', type: 'input', templateOptions: { required: true } },
+      ];
+
+      builder.buildForm(form, fields, {}, {});
+      expect(form.valid).toBeFalsy();
+    });
+
     it('should update the formcontrol value for fields that already has formcontrol', () => {
       const fields: FormlyFieldConfig[] = [
         {
