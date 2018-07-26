@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-alpha.0"></a>
+# [5.0.0-alpha.0](https://github.com/formly-js/ngx-formly/compare/v4.6.6...v5.0.0-alpha.0) (2018-07-26)
+
+
+### Bug Fixes
+
+* **core:** allow false value for legacy select-option ([edee68a](https://github.com/formly-js/ngx-formly/commit/edee68a))
+* **core:** update formcontrol validators when fields change ([3c25646](https://github.com/formly-js/ngx-formly/commit/3c25646)), closes [#1059](https://github.com/formly-js/ngx-formly/issues/1059)
+* **demo:** fixed material autocomplete stackblitz example ([8faf24e](https://github.com/formly-js/ngx-formly/commit/8faf24e)), closes [#1062](https://github.com/formly-js/ngx-formly/issues/1062)
+
+
+### Features
+
+
+* **core:** remove lifecycle hooks in FieldType ([009cf31](https://github.com/formly-js/ngx-formly/commit/009cf31))
+* add nativescript support ([ae8a38e](https://github.com/formly-js/ngx-formly/commit/ae8a38e))
+* **bootstrap:** remove bootstrap v3 support ([1be7139](https://github.com/formly-js/ngx-formly/commit/1be7139)), closes [#679](https://github.com/formly-js/ngx-formly/issues/679)
+* **core:** add access to the parent field from children ([56937aa](https://github.com/formly-js/ngx-formly/commit/56937aa)), closes [#764](https://github.com/formly-js/ngx-formly/issues/764)
+* **core:** allow passing nested key in fieldGroup ([a09369a](https://github.com/formly-js/ngx-formly/commit/a09369a))
+* **core:** allow passing observable in expressionProperties ([daba83c](https://github.com/formly-js/ngx-formly/commit/daba83c)), closes [#1031](https://github.com/formly-js/ngx-formly/issues/1031)
+* **core:** move formlySelectOptions pipe to core ([c8c937c](https://github.com/formly-js/ngx-formly/commit/c8c937c))
+* **core:** remove deprecated fieldForm input in FormlyValidationMessage ([d94c06f](https://github.com/formly-js/ngx-formly/commit/d94c06f))
+* **core:** support attr binding in formlyAttributes ([ae69ab6](https://github.com/formly-js/ngx-formly/commit/ae69ab6)), closes [#1066](https://github.com/formly-js/ngx-formly/issues/1066)
+* allow passing observable for radio options ([10be999](https://github.com/formly-js/ngx-formly/commit/10be999))
+* **core:** use the new providedIn with better lazyload support ([35c064e](https://github.com/formly-js/ngx-formly/commit/35c064e))
+* **material:** move multicheckbox into a separate module ([15698a1](https://github.com/formly-js/ngx-formly/commit/15698a1))
+* **material:** move textarea into a separate module ([c781017](https://github.com/formly-js/ngx-formly/commit/c781017))
+
+
+### BREAKING CHANGES
+
+* **material:** multicheckbox is not part of FormlyMatCheckboxModule
+* **core:** lifecycle hooks in FieldType has been removed
+* **bootstrap:** bootstrap v3 support is removed
+* **core:** `fieldForm` input in `FormlyValidationMessage` is removed
+* **material:** textarea is not part of FormlyMatInputModule
+
+
 <a name="4.7.2"></a>
 ## [4.7.2](https://github.com/formly-js/ngx-formly/compare/v4.7.1...v4.7.2) (2018-08-07)
 
