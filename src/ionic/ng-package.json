@@ -6,7 +6,7 @@
     "entryFile": "src/public_api.ts",
     "externals": {
       "@ngx-formly/core": "@ngx-formly/core",
-      "ionic-angular": "ionic-angular"
+      "@ionic/angular": "@ionic/angular"
     }
   }
 }

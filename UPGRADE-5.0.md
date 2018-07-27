@@ -69,3 +69,9 @@ import { FormlyMatMultiCheckboxModule } from '@ngx-formly/material/multicheckbox
 ---------------------
 
 bootstrap v3 support is removed, so if you still using the v3 you may check the migrating to v4 https://getbootstrap.com/docs/4.0/migration/
+
+
+@ngx-formly/ionic
+-----------------
+
+The library now require the Ionic V4 (https://blog.ionicframework.com/announcing-ionic-4-beta/).
