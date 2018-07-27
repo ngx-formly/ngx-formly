@@ -5,7 +5,7 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-ion-input',
   template: `
     <ion-item>
-      <ion-label>{{ to.label }}</ion-label>
+      <ion-label [position]="to.labelPosition || 'inline'">{{ to.label }}</ion-label>
       <ion-input [type]="to.type || 'text'"
         [formControl]="formControl"
         [formlyAttributes]="field">
