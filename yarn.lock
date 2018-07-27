@@ -379,6 +379,18 @@
     is-absolute "^1.0.0"
     is-negated-glob "^1.0.0"
 
+"@ionic/angular@^4.0.0-beta.0":
+  version "4.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-4.0.0-beta.0.tgz#11829501ee1e4ced9eaee2c3c7a6057d914e0990"
+  dependencies:
+    "@ionic/core" "4.0.0-beta.0"
+
+"@ionic/core@4.0.0-beta.0":
+  version "4.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-4.0.0-beta.0.tgz#44905a763975b222218dd08fbb6a446d841c487e"
+  dependencies:
+    ionicons "4.2.5"
+
 "@marionebl/sander@^0.6.0":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@marionebl/sander/-/sander-0.6.1.tgz#1958965874f24bc51be48875feb50d642fc41f7b"
@@ -4593,9 +4605,9 @@ invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
 
-ionic-angular@^3.9.2:
-  version "3.9.2"
-  resolved "https://registry.yarnpkg.com/ionic-angular/-/ionic-angular-3.9.2.tgz#75053e4a422aaae7d7cd668cc92cfd5cb29d38cc"
+ionicons@4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-4.2.5.tgz#1665e8e08458ffa1a74aaf9f33ed00bce65f1a3c"
 
 ip@^1.1.0, ip@^1.1.2, ip@^1.1.4, ip@^1.1.5:
   version "1.1.5"

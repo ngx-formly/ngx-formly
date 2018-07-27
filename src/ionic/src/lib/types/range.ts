@@ -11,8 +11,8 @@ import { FieldType } from '@ngx-formly/core';
           [max]="to.max"
           [formControl]="formControl"
           [formlyAttributes]="field">
-          <ion-label range-left>{{ to.min }}</ion-label>
-          <ion-label range-right>{{ to.max }}</ion-label>
+          <ion-label slot="start">{{ to.min }}</ion-label>
+          <ion-label slot="end">{{ to.max }}</ion-label>
       </ion-range>
       </ion-item>
     </ion-list>
