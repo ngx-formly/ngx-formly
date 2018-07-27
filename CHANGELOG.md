@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="5.0.0-alpha.0"></a>
 # [5.0.0-alpha.0](https://github.com/formly-js/ngx-formly/compare/v4.6.6...v5.0.0-alpha.0) (2018-07-26)
 
+To upgrade from 4.0 to 5.0 see [UPGRADE-5.0](./UPGRADE-5.0.md)
 
 ### Bug Fixes
 
