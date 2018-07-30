@@ -34,4 +34,13 @@ export abstract class FieldArrayType extends FieldType {
     this.model.splice(i, 1);
     (<any> this.options).resetTrackModelChanges();
   }
+
+  reset() {
+    this.field.fieldGroup.length = 0;
+    this.model.length = 0;
+    const formControl = <FormArray> this.field.formControl;
+    while (formControl.length !== 0) {
+      formControl.removeAt(0);
+    }
+  }
 }
