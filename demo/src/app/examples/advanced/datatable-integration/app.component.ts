@@ -41,13 +41,19 @@ export class AppComponent {
     {
       key: 'investments',
       type: 'datatable',
+      templateOptions: {
+        columns: [
+          { name: 'Name of Investment', prop: 'investmentName' },
+          { name: 'Date of Investment', prop: 'investmentDate' },
+          { name: 'Stock Identifier', prop: 'stockIdentifier' },
+        ],
+      },
       fieldArray: {
         fieldGroup: [
           {
             type: 'input',
             key: 'investmentName',
             templateOptions: {
-              label: 'Name of Investment:',
               required: true,
             },
           },
@@ -56,14 +62,12 @@ export class AppComponent {
             key: 'investmentDate',
             templateOptions: {
               type: 'date',
-              label: 'Date of Investment:',
             },
           },
           {
             type: 'input',
             key: 'stockIdentifier',
             templateOptions: {
-              label: 'Stock Identifier:',
               addonRight: {
                 class: 'fa fa-code',
                 onClick: (to, fieldType, $event) => console.log(to, fieldType, $event),
