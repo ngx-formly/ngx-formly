@@ -2,7 +2,6 @@ import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { FormlyFieldConfig, FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
 import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 
-
 @Component({
   selector: 'formly-field-datatable',
   template: `
@@ -10,7 +9,7 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
       #table
       class="bootstrap"
       [rows]="model"
-      [columns]="columns"
+      [columns]="to.columns"
       [columnMode]="to.columnMode"
       [rowHeight]="to.rowHeight"
       [headerHeight]="to.headerHeight"
@@ -20,7 +19,7 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
       [reorderable]="to.reorderable"
       [externalSorting]="true"
       [selectionType]="'single'">
-      <ng-template #genericcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
+      <ng-template #defaultColumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
         <formly-field
           [model]="getModel(model,column,rowIndex)"
           [field]="getField(field,column, rowIndex)"
@@ -33,17 +32,10 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 })
 
 export class DatatableTypeComponent extends FieldArrayType implements OnInit {
-  @ViewChild('genericcolumn') public genericcolumn: TemplateRef<any>;
-
-  // column description
-  columns: TableColumn[];
+  @ViewChild('defaultColumn') public defaultColumn: TemplateRef<any>;
 
   ngOnInit() {
-    this.columns = this.field.fieldArray.fieldGroup.map(el => ({
-      name: el.templateOptions.label,
-      prop: el.key,
-      cellTemplate: this.genericcolumn,
-    }));
+    this.to.columns.forEach(column => column.cellTemplate = this.defaultColumn);
   }
 
   constructor(builder: FormlyFormBuilder) {
