@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-alpha.1"></a>
+# [5.0.0-alpha.1](https://github.com/formly-js/ngx-formly/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2018-07-30)
+
+To upgrade from 4.0 to 5.0 see [UPGRADE-5.0](./UPGRADE-5.0.md)
+
+### Bug Fixes
+
+* **core:** apply init fields type for fieldArray ([a57d7b3](https://github.com/formly-js/ngx-formly/commit/a57d7b3))
+
+
+### Features
+
+* migrate from ionic-angular to [@ionic](https://github.com/ionic)/angular ([fb1069a](https://github.com/formly-js/ngx-formly/commit/fb1069a))
+* **core:** add reset action in FieldArrayType ([c553ca3](https://github.com/formly-js/ngx-formly/commit/c553ca3)), closes [#1076](https://github.com/formly-js/ngx-formly/issues/1076)
+* **schematics:** add nativescript ([0d5f922](https://github.com/formly-js/ngx-formly/commit/0d5f922))
+
+
+### BREAKING CHANGES
+
+* **ionic:** removed v3 support in favore of v4
+
 <a name="5.0.0-alpha.0"></a>
 # [5.0.0-alpha.0](https://github.com/formly-js/ngx-formly/compare/v4.6.6...v5.0.0-alpha.0) (2018-07-26)
 
