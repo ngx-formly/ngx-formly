@@ -17,6 +17,7 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
     </div>
     <div style="margin:30px 0;">
       <button class="btn btn-primary" type="button" (click)="add()">{{ field.fieldArray.templateOptions.btnText }}</button>
+      <button class="btn btn-danger" type="button" (click)="reset()">Reset</button>
     </div>
   `,
 })
