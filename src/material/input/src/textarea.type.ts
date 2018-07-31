@@ -6,7 +6,6 @@ import { FormlyFieldInput } from './input.type';
   template: `
     <textarea matInput
       [id]="id"
-      [name]="key"
       [formControl]="formControl"
       [errorStateMatcher]="errorStateMatcher"
       [cols]="to.cols"

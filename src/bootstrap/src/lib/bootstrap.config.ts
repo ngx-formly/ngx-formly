@@ -16,6 +16,7 @@ import {
   FormlyWrapperDescription,
   FormlyWrapperValidationMessages,
   FormlyWrapperFieldset,
+  FormlyWrapperFormField,
 } from './wrappers/wrappers';
 
 export const FIELD_TYPE_COMPONENTS = [
@@ -33,6 +34,7 @@ export const FIELD_TYPE_COMPONENTS = [
   FormlyWrapperValidationMessages,
   FormlyWrapperFieldset,
   FormlyWrapperAddons,
+  FormlyWrapperFormField,
 ];
 
 export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
@@ -40,22 +42,23 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'input',
       component: FormlyFieldInput,
-      wrappers: ['fieldset', 'label'],
+      wrappers: ['form-field'],
     },
     {
       name: 'checkbox',
       component: FormlyFieldCheckbox,
-      wrappers: ['fieldset'],
+      wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
           indeterminate: true,
+          hideLabel: true,
         },
       },
     },
     {
       name: 'radio',
       component: FormlyFieldRadio,
-      wrappers: ['fieldset', 'label'],
+      wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
           options: [],
@@ -65,7 +68,7 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'select',
       component: FormlyFieldSelect,
-      wrappers: ['fieldset', 'label'],
+      wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
           options: [],
@@ -75,7 +78,7 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'textarea',
       component: FormlyFieldTextArea,
-      wrappers: ['fieldset', 'label'],
+      wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
           cols: 1,
@@ -86,7 +89,7 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'multicheckbox',
       component: FormlyFieldMultiCheckbox,
-      wrappers: ['fieldset', 'label'],
+      wrappers: ['form-field'],
       defaultOptions: {
         templateOptions: {
           options: [],
@@ -100,6 +103,7 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {name: 'validation-message', component: FormlyWrapperValidationMessages},
     {name: 'fieldset', component: FormlyWrapperFieldset},
     {name: 'addons', component: FormlyWrapperAddons},
+    {name: 'form-field', component: FormlyWrapperFormField},
   ],
   manipulators: [
     {class: TemplateDescription, method: 'run'},
