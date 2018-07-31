@@ -6,7 +6,6 @@ import { FieldType } from '@ngx-formly/core';
   template: `
     <div class="custom-control custom-checkbox">
       <input class="custom-control-input" type="checkbox"
-        [id]="id"
         [class.is-invalid]="showError"
         [indeterminate]="to.indeterminate && model[key] === undefined"
         [formControl]="formControl"

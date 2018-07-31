@@ -17,7 +17,7 @@ import { FormlyFieldCustomInput } from './custom-input.component';
         { name: 'required', message: 'This field is required' },
       ],
       types: [
-        { name: 'custom', component: FormlyFieldCustomInput, wrappers: ['fieldset', 'label'] },
+        { name: 'custom', component: FormlyFieldCustomInput, wrappers: ['form-field'] },
       ],
     }),
   ],
