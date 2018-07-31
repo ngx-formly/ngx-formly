@@ -4,7 +4,6 @@ import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config'
 @Directive({
   selector: '[formlyAttributes]',
   host: {
-    '[attr.id]': 'field.id',
     '[attr.name]': 'field.name',
     '[attr.placeholder]': 'to.placeholder',
     '[attr.tabindex]': 'to.tabindex',
@@ -47,6 +46,8 @@ export class FormlyAttributes implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
       const fieldChanges = changes.field;
+
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'id', this.field.id);
       if (this.to && this.to.attributes) {
         const attributes = this.to.attributes;
         Object.keys(attributes).forEach(name => this.renderer.setAttribute(
