@@ -17,7 +17,7 @@ import { FormlyFieldButton } from './button-type.component';
         {
           name: 'button',
           component: FormlyFieldButton,
-          wrappers: ['fieldset', 'label'],
+          wrappers: ['form-field'],
           defaultOptions: {
             templateOptions: {
               btnType: 'default',

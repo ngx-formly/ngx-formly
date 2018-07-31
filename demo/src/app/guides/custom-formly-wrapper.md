@@ -5,14 +5,8 @@ Custom wrappers allows you to wrap a field type with a component.
 ## Prebuilt Wrappers
 
 ui-bootstrap
-  - label
-    - Adds a label to field (Side)
-  - description
-    - Adds a small message to bellow field.
-  - validation-message
-    - Adds a small red message bellow field.
-  - fieldset
-    - Adds error div around fields.
+  - form-field
+    - Shows validation messages bellow field.
   - addons
 
 ui-ionic
@@ -141,7 +135,7 @@ Sometimes you always want a components with certain wrappers.
           {
             name: 'operator',
             component: OperatorComponent,
-            wrappers: ['fieldset', 'label']
+            wrappers: ['form-field']
           },
         ],
       }),
@@ -153,4 +147,4 @@ Sometimes you always want a components with certain wrappers.
   })
   export class AppModule { }
   ```
-You can do this by setting the `wrappers: ['fieldset', 'label']` to that type in the module
+You can do this by setting the `wrappers: ['form-field']` to that type in the module
