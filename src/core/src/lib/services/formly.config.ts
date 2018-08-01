@@ -67,6 +67,7 @@ export class FormlyConfig {
       this.types[options.name].extends = options.extends;
       this.types[options.name].defaultOptions = options.defaultOptions;
       this.types[options.name].componentFactoryResolver = options.componentFactoryResolver;
+      this.types[options.name].wrappers = this.types[options.name].wrappers || [];
       if (options.wrappers) {
         options.wrappers.forEach((wrapper) => this.setTypeWrapper(options.name, wrapper));
       }
@@ -113,7 +114,7 @@ export class FormlyConfig {
     }
 
     if (!field.wrappers) {
-      field.wrappers = this.types[name].wrappers;
+      field.wrappers = [...this.types[name].wrappers];
     }
   }
 
@@ -141,7 +142,9 @@ export class FormlyConfig {
     if (!this.types[type].wrappers) {
       this.types[type].wrappers = <[string]>[];
     }
-    this.types[type].wrappers.push(name);
+    if (this.types[type].wrappers.indexOf(name) === -1) {
+      this.types[type].wrappers.push(name);
+    }
   }
 
   setValidator(options: ValidatorOption) {

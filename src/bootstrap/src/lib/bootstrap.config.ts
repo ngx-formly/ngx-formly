@@ -3,6 +3,7 @@ import { FormlyWrapperAddons } from './wrappers/addons';
 import { TemplateDescription } from './run/description';
 import { TemplateValidation } from './run/validation';
 import { TemplateAddons } from './run/addon';
+import { TemplateFieldset } from './run/fieldset';
 import {
   FormlyFieldInput,
   FormlyFieldCheckbox,
@@ -109,5 +110,6 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {class: TemplateDescription, method: 'run'},
     {class: TemplateValidation, method: 'run'},
     {class: TemplateAddons, method: 'run'},
+    {class: TemplateFieldset, method: 'run'},
   ],
 };
