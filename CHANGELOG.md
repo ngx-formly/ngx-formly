@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.7.1"></a>
+## [4.7.1](https://github.com/formly-js/ngx-formly/compare/v4.7.0...v4.7.1) (2018-08-01)
+
+
+### Bug Fixes
+
+* **core:** avoid setting wrapper while init type-config ([0371180](https://github.com/formly-js/ngx-formly/commit/0371180))
+
+
+
 <a name="4.7.0"></a>
 # [4.7.0](https://github.com/formly-js/ngx-formly/compare/v4.6.6...v4.7.0) (2018-08-01)
 
