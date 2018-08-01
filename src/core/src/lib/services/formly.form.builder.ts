@@ -359,6 +359,7 @@ export class FormlyFormBuilder {
   }
 
   private initFieldWrappers(field: FormlyFieldConfig) {
+    field.wrappers = field.wrappers || [];
     const templateManipulators: TemplateManipulators = {
       preWrapper: [],
       postWrapper: [],
