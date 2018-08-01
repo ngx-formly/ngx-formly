@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.7.0"></a>
+# [4.7.0](https://github.com/formly-js/ngx-formly/compare/v4.6.6...v4.7.0) (2018-08-01)
+
+
+### Features
+
+* **bootstrap:** deprecate all wrappers in favor of `form-field` ([03c7e4b](https://github.com/formly-js/ngx-formly/commit/03c7e4b))
+* **bootstrap:** introduce form-field wrapper ([8a276fb](https://github.com/formly-js/ngx-formly/commit/8a276fb))
+
+
+
 <a name="4.6.6"></a>
 ## [4.6.6](https://github.com/formly-js/ngx-formly/compare/v4.6.5...v4.6.6) (2018-07-20)
 
