@@ -67,8 +67,9 @@ import { FormlyMatMultiCheckboxModule } from '@ngx-formly/material/multicheckbox
 
 @ngx-formly/bootstrap
 ---------------------
+ * the deprecated wrappers ('label', 'fieldset', 'description', 'validation-message') has been removed, you may use `form-field` instead (for a smooth upgrade, ensure updating to version `4.7` first)
 
-bootstrap v3 support is removed, so if you still using the v3 you may check the migrating to v4 https://getbootstrap.com/docs/4.0/migration/
+ * bootstrap v3 support is removed, so if you still using the v3 you may check the migrating to v4 https://getbootstrap.com/docs/4.0/migration/
 
 
 @ngx-formly/ionic
