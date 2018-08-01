@@ -70,7 +70,6 @@ export class FormlyConfig {
       this.types[options.name].name = options.name;
       this.types[options.name].extends = options.extends;
       this.types[options.name].defaultOptions = options.defaultOptions;
-      this.types[options.name].wrappers = this.types[options.name].wrappers || [];
       if (options.wrappers) {
         options.wrappers.forEach((wrapper) => this.setTypeWrapper(options.name, wrapper));
       }
@@ -116,7 +115,7 @@ export class FormlyConfig {
       field.component = this.types[name].component;
     }
 
-    if (!field.wrappers) {
+    if (!field.wrappers && this.types[name].wrappers) {
       field.wrappers = [...this.types[name].wrappers];
     }
   }
