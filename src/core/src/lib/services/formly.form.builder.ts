@@ -79,8 +79,8 @@ export class FormlyFormBuilder {
         this.initFieldsType(field.fieldGroup);
       }
 
-      if (field.fieldArray && field.fieldArray.fieldGroup) {
-        this.initFieldsType(field.fieldArray.fieldGroup);
+      if (field.fieldArray) {
+        this.initFieldsType([field.fieldArray]);
       }
     });
   }
