@@ -100,6 +100,7 @@
     "@schematics/angular": "~0.6.7",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
+    "@types/json-schema": "^7.0.0",
     "@types/node": "~9.6.6",
     "angular-cli-ghpages": "^0.5.2",
     "bundlesize": "^0.17.0",
