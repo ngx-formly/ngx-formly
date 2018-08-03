@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-alpha.2"></a>
+# [5.0.0-alpha.2](https://github.com/formly-js/ngx-formly/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2018-08-03)
+
+
+### Features
+
+* **bootstrap:** deprecate all wrappers in favor of `form-field` ([40c3720](https://github.com/formly-js/ngx-formly/commit/40c3720))
+* **bootstrap:** introduce form-field wrapper ([a41a2e4](https://github.com/formly-js/ngx-formly/commit/a41a2e4))
+* **bootstrap:** remove deprecated wrappers ([f94ea1b](https://github.com/formly-js/ngx-formly/commit/f94ea1b))
+* **core:** initial work for JSON Schema implementation ([de63fef](https://github.com/formly-js/ngx-formly/commit/de63fef)), closes [#1056](https://github.com/formly-js/ngx-formly/issues/1056)
+
+
+
 <a name="5.0.0-alpha.1"></a>
 # [5.0.0-alpha.1](https://github.com/formly-js/ngx-formly/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2018-07-30)
 
