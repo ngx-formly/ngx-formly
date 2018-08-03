@@ -7,8 +7,16 @@
 @import '~bootstrap/scss/forms';
 @import '~bootstrap/scss/input-group';
 @import '~bootstrap/scss/utilities/display';
+@import '~bootstrap/scss/utilities/text';
+@import '~bootstrap/scss/utilities/spacing';
 @import '~bootstrap/scss/custom-forms';
 @import '~bootstrap/scss/card';
+
+legend {
+  margin-bottom: 20px;
+  font-size: 21px;
+  border-bottom: 1px solid #e5e5e5;
+}
 
 // prism
 @import '~prismjs/themes/prism.css';

@@ -548,6 +548,10 @@
   dependencies:
     "@types/jasmine" "*"
 
+"@types/json-schema@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.0.tgz#5a2b780fec9f2cf851e1b5e0a29a4cac6c9686c5"
+
 "@types/node@*":
   version "10.1.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.1.4.tgz#606651d3f8a8bec08b8cb262161aab9209f4a29d"
