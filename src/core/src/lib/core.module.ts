@@ -5,6 +5,7 @@ import { FormlyForm } from './components/formly.form';
 import { FormlyField } from './components/formly.field';
 import { FormlyAttributes } from './components/formly.attributes';
 import { FormlyConfig, ConfigOption, FORMLY_CONFIG_TOKEN } from './services/formly.config';
+import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyGroup } from './components/formly.group';
 import { FormlyValidationMessage } from './templates/formly.validation-message';
 
@@ -25,6 +26,8 @@ export class FormlyModule {
         { provide: FORMLY_CONFIG_TOKEN, useValue: { types: [{ name: 'formly-group', component: FormlyGroup }] }, multi: true },
         { provide: FORMLY_CONFIG_TOKEN, useValue: config, multi: true },
         { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
+        FormlyConfig,
+        FormlyFormBuilder,
       ],
     };
   }
