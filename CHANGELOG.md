@@ -2,55 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="5.0.0-alpha.2"></a>
-# [5.0.0-alpha.2](https://github.com/formly-js/ngx-formly/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2018-08-03)
-
-
-### Features
-
-* **bootstrap:** deprecate all wrappers in favor of `form-field` ([40c3720](https://github.com/formly-js/ngx-formly/commit/40c3720))
-* **bootstrap:** introduce form-field wrapper ([a41a2e4](https://github.com/formly-js/ngx-formly/commit/a41a2e4))
-* **bootstrap:** remove deprecated wrappers ([f94ea1b](https://github.com/formly-js/ngx-formly/commit/f94ea1b))
-* **core:** initial work for JSON Schema implementation ([de63fef](https://github.com/formly-js/ngx-formly/commit/de63fef)), closes [#1056](https://github.com/formly-js/ngx-formly/issues/1056)
-
-
-
-<a name="5.0.0-alpha.1"></a>
-# [5.0.0-alpha.1](https://github.com/formly-js/ngx-formly/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2018-07-30)
+<a name="5.0.0-beta.0"></a>
+# [5.0.0-beta.0](https://github.com/formly-js/ngx-formly/compare/v5.0.0-alpha.2...v5.0.0-beta.0) (2018-08-05)
 
 To upgrade from 4.0 to 5.0 see [UPGRADE-5.0](./UPGRADE-5.0.md)
 
 ### Bug Fixes
 
+* **core:** ensure init fieldArray even if fieldGroup is not set ([2ed7c2f](https://github.com/formly-js/ngx-formly/commit/2ed7c2f))
+* **core:** restore FormlyFormBuilder & FormlyConfig to forRoot module ([da04fbd](https://github.com/formly-js/ngx-formly/commit/da04fbd))
 * **core:** apply init fields type for fieldArray ([a57d7b3](https://github.com/formly-js/ngx-formly/commit/a57d7b3))
-
-
-### Features
-
-* migrate from ionic-angular to [@ionic](https://github.com/ionic)/angular ([fb1069a](https://github.com/formly-js/ngx-formly/commit/fb1069a))
-* **core:** add reset action in FieldArrayType ([c553ca3](https://github.com/formly-js/ngx-formly/commit/c553ca3)), closes [#1076](https://github.com/formly-js/ngx-formly/issues/1076)
-* **schematics:** add nativescript ([0d5f922](https://github.com/formly-js/ngx-formly/commit/0d5f922))
-
-
-### BREAKING CHANGES
-
-* **ionic:** removed v3 support in favore of v4
-
-<a name="5.0.0-alpha.0"></a>
-# [5.0.0-alpha.0](https://github.com/formly-js/ngx-formly/compare/v4.6.6...v5.0.0-alpha.0) (2018-07-26)
-
-To upgrade from 4.0 to 5.0 see [UPGRADE-5.0](./UPGRADE-5.0.md)
-
-### Bug Fixes
-
 * **core:** allow false value for legacy select-option ([edee68a](https://github.com/formly-js/ngx-formly/commit/edee68a))
 * **core:** update formcontrol validators when fields change ([3c25646](https://github.com/formly-js/ngx-formly/commit/3c25646)), closes [#1059](https://github.com/formly-js/ngx-formly/issues/1059)
 * **demo:** fixed material autocomplete stackblitz example ([8faf24e](https://github.com/formly-js/ngx-formly/commit/8faf24e)), closes [#1062](https://github.com/formly-js/ngx-formly/issues/1062)
 
-
 ### Features
 
-
+* **core:** apply disabled status to fieldGroup items ([dc125c4](https://github.com/formly-js/ngx-formly/commit/dc125c4)), closes [#844](https://github.com/formly-js/ngx-formly/issues/844)
+* **bootstrap:** introduce form-field wrapper ([a41a2e4](https://github.com/formly-js/ngx-formly/commit/a41a2e4))
+* **bootstrap:** remove deprecated wrappers ([f94ea1b](https://github.com/formly-js/ngx-formly/commit/f94ea1b))
+* **core:** initial work for JSON Schema implementation ([de63fef](https://github.com/formly-js/ngx-formly/commit/de63fef)), closes [#1056](https://github.com/formly-js/ngx-formly/issues/1056)
+* migrate from ionic-angular to [@ionic](https://github.com/ionic)/angular ([fb1069a](https://github.com/formly-js/ngx-formly/commit/fb1069a))
+* **core:** add reset action in FieldArrayType ([c553ca3](https://github.com/formly-js/ngx-formly/commit/c553ca3)), closes [#1076](https://github.com/formly-js/ngx-formly/issues/1076)
+* **schematics:** add nativescript ([0d5f922](https://github.com/formly-js/ngx-formly/commit/0d5f922))
 * **core:** remove lifecycle hooks in FieldType ([009cf31](https://github.com/formly-js/ngx-formly/commit/009cf31))
 * add nativescript support ([ae8a38e](https://github.com/formly-js/ngx-formly/commit/ae8a38e))
 * **bootstrap:** remove bootstrap v3 support ([1be7139](https://github.com/formly-js/ngx-formly/commit/1be7139)), closes [#679](https://github.com/formly-js/ngx-formly/issues/679)
@@ -65,14 +39,29 @@ To upgrade from 4.0 to 5.0 see [UPGRADE-5.0](./UPGRADE-5.0.md)
 * **material:** move multicheckbox into a separate module ([15698a1](https://github.com/formly-js/ngx-formly/commit/15698a1))
 * **material:** move textarea into a separate module ([c781017](https://github.com/formly-js/ngx-formly/commit/c781017))
 
-
 ### BREAKING CHANGES
 
-* **material:** multicheckbox is not part of FormlyMatCheckboxModule
-* **core:** lifecycle hooks in FieldType has been removed
-* **bootstrap:** bootstrap v3 support is removed
-* **core:** `fieldForm` input in `FormlyValidationMessage` is removed
-* **material:** textarea is not part of FormlyMatInputModule
+* see [UPGRADE-5.0](./UPGRADE-5.0.md)
+
+
+<a name="4.7.1"></a>
+## [4.7.1](https://github.com/formly-js/ngx-formly/compare/v4.7.0...v4.7.1) (2018-08-01)
+
+
+### Bug Fixes
+
+* **core:** avoid setting wrapper while init type-config ([0371180](https://github.com/formly-js/ngx-formly/commit/0371180))
+
+
+
+<a name="4.7.0"></a>
+# [4.7.0](https://github.com/formly-js/ngx-formly/compare/v4.6.6...v4.7.0) (2018-08-01)
+
+
+### Features
+
+* **bootstrap:** deprecate all wrappers in favor of `form-field` ([03c7e4b](https://github.com/formly-js/ngx-formly/commit/03c7e4b))
+* **bootstrap:** introduce form-field wrapper ([8a276fb](https://github.com/formly-js/ngx-formly/commit/8a276fb))
 
 
 <a name="4.7.2"></a>
