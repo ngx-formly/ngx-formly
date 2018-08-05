@@ -36,7 +36,7 @@ describe('FormlyFormExpression service', () => {
     builder = new FormlyFormBuilder(config, new FormlyFormExpression());
   });
 
-  describe('field visibility', () => {
+  describe('field visibility (hideExpression)', () => {
     it('should update field visibility', () => {
       const fields: FormlyFieldConfig[] = [
         {
@@ -113,165 +113,232 @@ describe('FormlyFormExpression service', () => {
     });
   });
 
-  describe('field validity', () => {
-    it('should update field validity', () => {
-      const fields: FormlyFieldConfig[] = [
-        {
-          key: 'checked',
-          type: 'checkbox',
-        },
-        {
-          key: 'text',
-          type: 'input',
-          templateOptions: {
-            label: 'Am I required or not?',
+  describe('expressionProperties', () => {
+    describe('field validity', () => {
+      it('should update field validity', () => {
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'checked',
+            type: 'checkbox',
           },
-          expressionProperties: {
-            'templateOptions.required': 'model.checked',
+          {
+            key: 'text',
+            type: 'input',
+            templateOptions: {
+              label: 'Am I required or not?',
+            },
+            expressionProperties: {
+              'templateOptions.required': 'model.checked',
+            },
           },
-        },
-      ];
-      const model = {
-        checked: true,
-      };
-      const options = {};
-
-      builder.buildForm(form, fields, model, options);
-
-      expression.checkFields(form, fields, model, options);
-
-      expect(fields[1].formControl.status).toEqual('INVALID');
-
-      model.checked = false;
-
-      expression.checkFields(form, fields, model, options);
-
-      expect(fields[1].formControl.status).toEqual('VALID');
-    });
-
-    it('should update field validity within field groups', () => {
-      const fields: FormlyFieldConfig[] = [
-        {
-          key: 'fieldgroup',
-          fieldGroup: [
-            {
-              key: 'checked',
-              type: 'checkbox',
-            },
-            {
-              key: 'text',
-              type: 'input',
-              templateOptions: {
-                label: 'Am I required or not?',
-              },
-              expressionProperties: {
-                'templateOptions.required': 'model.checked',
-              },
-            },
-          ],
-        },
-      ];
-      const model = {
-        fieldgroup: {
+        ];
+        const model = {
           checked: true,
-        },
-      };
-      const options = {};
+        };
+        const options = {};
 
-      builder.buildForm(form, fields, model, options);
+        builder.buildForm(form, fields, model, options);
 
-      expression.checkFields(form, fields, model, options);
+        expression.checkFields(form, fields, model, options);
 
-      expect(fields[0].fieldGroup[1].formControl.status).toEqual('INVALID');
+        expect(fields[1].formControl.status).toEqual('INVALID');
 
-      model.fieldgroup.checked = false;
+        model.checked = false;
 
-      expression.checkFields(form, fields, model, options);
+        expression.checkFields(form, fields, model, options);
 
-      expect(fields[0].fieldGroup[1].formControl.status).toEqual('VALID');
-    });
+        expect(fields[1].formControl.status).toEqual('VALID');
+      });
 
-    it('should update field validity within field arrays', () => {
-      const fields: FormlyFieldConfig[] = [
-        {
-          key: 'address',
-          type: 'repeat',
-          fieldArray: {
+      it('should update field validity within field groups', () => {
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'fieldgroup',
             fieldGroup: [
               {
-                key: 'city',
+                key: 'checked',
+                type: 'checkbox',
+              },
+              {
+                key: 'text',
                 type: 'input',
+                templateOptions: {
+                  label: 'Am I required or not?',
+                },
                 expressionProperties: {
-                  'templateOptions.required': 'model.addressIsRequired',
+                  'templateOptions.required': 'model.checked',
                 },
               },
             ],
           },
-        },
-        {
-          key: 'addressIsRequired',
-          type: 'checkbox',
-        },
-      ];
-      const model = {
-        address: [{
-          addressIsRequired: true,
-        }],
-      };
-      const options = {};
-
-      builder.buildForm(form, fields, model, options);
-
-      expression.checkFields(form, fields, model, options);
-
-      const cityField = fields[0].fieldGroup[0].fieldGroup[0];
-
-      expect(cityField.formControl.status).toEqual('INVALID');
-
-      model.address[0].addressIsRequired = false;
-
-      expression.checkFields(form, fields, model, options);
-
-      expect(cityField.formControl.status).toEqual('VALID');
-    });
-  });
-
-  describe('field disabled state', () => {
-    it('should update field disabled state', () => {
-      const fields: FormlyFieldConfig[] = [
-        {
-          key: 'disableToggle',
-          type: 'checkbox',
-        },
-        {
-          key: 'text',
-          type: 'input',
-          expressionProperties: {
-            'templateOptions.disabled': 'model.disableToggle',
+        ];
+        const model = {
+          fieldgroup: {
+            checked: true,
           },
-        },
-      ];
-      const model = {};
-      const options = {};
+        };
+        const options = {};
 
-      builder.buildForm(form, fields, model, options);
+        builder.buildForm(form, fields, model, options);
 
-      // manually disable the form control so that service can enable on `checkFields`
-      fields[1].templateOptions.disabled = true;
+        expression.checkFields(form, fields, model, options);
 
-      expect(fields[1].formControl.status).toEqual('DISABLED');
+        expect(fields[0].fieldGroup[1].formControl.status).toEqual('INVALID');
 
-      expression.checkFields(form, fields, model, options);
+        model.fieldgroup.checked = false;
 
-      expect(fields[1].formControl.status).toEqual('VALID');
-      expect(fields[1].templateOptions.disabled).toBeFalsy();
+        expression.checkFields(form, fields, model, options);
 
-      model['disableToggle'] = true;
+        expect(fields[0].fieldGroup[1].formControl.status).toEqual('VALID');
+      });
 
-      expression.checkFields(form, fields, model, options);
+      it('should update field validity within field arrays', () => {
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'address',
+            type: 'repeat',
+            fieldArray: {
+              fieldGroup: [
+                {
+                  key: 'city',
+                  type: 'input',
+                  expressionProperties: {
+                    'templateOptions.required': 'model.addressIsRequired',
+                  },
+                },
+              ],
+            },
+          },
+          {
+            key: 'addressIsRequired',
+            type: 'checkbox',
+          },
+        ];
+        const model = {
+          address: [{
+            addressIsRequired: true,
+          }],
+        };
+        const options = {};
 
-      expect(fields[1].formControl.status).toEqual('DISABLED');
-      expect(fields[1].templateOptions.disabled).toBeTruthy();
+        builder.buildForm(form, fields, model, options);
+
+        expression.checkFields(form, fields, model, options);
+
+        const cityField = fields[0].fieldGroup[0].fieldGroup[0];
+
+        expect(cityField.formControl.status).toEqual('INVALID');
+
+        model.address[0].addressIsRequired = false;
+
+        expression.checkFields(form, fields, model, options);
+
+        expect(cityField.formControl.status).toEqual('VALID');
+      });
+    });
+
+    describe('field disabled state', () => {
+      it('should update field disabled state', () => {
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'disableToggle',
+            type: 'checkbox',
+          },
+          {
+            key: 'text',
+            type: 'input',
+            expressionProperties: {
+              'templateOptions.disabled': 'model.disableToggle',
+            },
+          },
+        ];
+        const model = {};
+        const options = {};
+
+        builder.buildForm(form, fields, model, options);
+
+        // manually disable the form control so that service can enable on `checkFields`
+        fields[1].templateOptions.disabled = true;
+
+        expect(fields[1].formControl.status).toEqual('DISABLED');
+
+        expression.checkFields(form, fields, model, options);
+
+        expect(fields[1].formControl.status).toEqual('VALID');
+        expect(fields[1].templateOptions.disabled).toBeFalsy();
+
+        model['disableToggle'] = true;
+
+        expression.checkFields(form, fields, model, options);
+
+        expect(fields[1].formControl.status).toEqual('DISABLED');
+        expect(fields[1].templateOptions.disabled).toBeTruthy();
+      });
+
+      it('should take account of parent disabled state', () => {
+        const disabled = {
+          address: true,
+          city: false,
+        };
+        const fields: FormlyFieldConfig[] = [{
+          key: 'address',
+          expressionProperties: { 'templateOptions.disabled': () => disabled.address },
+          fieldGroup: [
+            {
+              key: 'city',
+              type: 'input',
+              expressionProperties: { 'templateOptions.disabled': () => disabled.city },
+            },
+            {
+              key: 'street',
+              type: 'input',
+            },
+          ],
+        }];
+
+        const model = {};
+        const options = {};
+
+        builder.buildForm(form, fields, model, options);
+        expression.checkFields(form, fields, model, options);
+
+        expect(fields[0].templateOptions.disabled).toBeTruthy();
+        expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeTruthy();
+        expect(fields[0].fieldGroup[1].templateOptions.disabled).toBeTruthy();
+
+        disabled.address = false;
+        expression.checkFields(form, fields, model, options);
+
+        expect(fields[0].templateOptions.disabled).toBeFalsy();
+        expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeFalsy();
+        expect(fields[0].fieldGroup[1].templateOptions.disabled).toBeFalsy();
+
+        disabled.city = true;
+        expression.checkFields(form, fields, model, options);
+
+        expect(fields[0].templateOptions.disabled).toBeFalsy();
+        expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeTruthy();
+        expect(fields[0].fieldGroup[1].templateOptions.disabled).toBeFalsy();
+      });
+    });
+
+    describe('expression as observable', () => {
+      it('should update field from emitted observable values', () => {
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'text',
+            type: 'input',
+            expressionProperties: {
+              'templateOptions.label': of('test'),
+            },
+          },
+        ];
+        const model = {};
+        const options = {};
+
+        builder.buildForm(form, fields, model, options);
+        expect(fields[0].templateOptions.label).toEqual('test');
+      });
     });
   });
 
@@ -316,25 +383,6 @@ describe('FormlyFormExpression service', () => {
       expect(fields[1].hide).toBeTruthy();
       expect(fields[1].templateOptions.hidden).toBeTruthy();
       expect(fields[1].formControl.value).toBeNull();
-    });
-  });
-
-  describe('with Observable expression', () => {
-    it('should update field from emitted observable values', () => {
-      const fields: FormlyFieldConfig[] = [
-        {
-          key: 'text',
-          type: 'input',
-          expressionProperties: {
-            'templateOptions.label': of('test'),
-          },
-        },
-      ];
-      const model = {};
-      const options = {};
-
-      builder.buildForm(form, fields, model, options);
-      expect(fields[0].templateOptions.label).toEqual('test');
     });
   });
 });
