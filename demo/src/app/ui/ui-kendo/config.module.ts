@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ExamplesRouterViewerComponent } from '../../shared';
-import { CommonModule, CommonExampleConfigs, CommonExampleComponents } from '../common';
+import { CommonModule, CommonExampleConfigs, CommonExampleComponents, debugFields } from '../common';
 
 import { AppComponent } from './app.component';
 import { FormlyKendoModule } from '@ngx-formly/kendo';
@@ -19,6 +19,7 @@ import { FormlyKendoModule } from '@ngx-formly/kendo';
             path: '',
             component: ExamplesRouterViewerComponent,
             data: {
+              debugFields,
               examples: [
                 ...CommonExampleConfigs,
               ],

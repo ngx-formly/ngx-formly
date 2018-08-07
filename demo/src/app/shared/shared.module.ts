@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { FormlyModule } from '@ngx-formly/core';
 
 import { StackblitzButtonModule } from './stackblitz';
 import { ExampleViewerComponent } from './example-viewer/example-viewer.component';
@@ -21,6 +22,7 @@ import { CopierService } from './copier/copier.service';
     MatIconModule,
     MatButtonModule,
     StackblitzButtonModule,
+    FormlyModule,
   ],
   exports: [
     CommonModule,

@@ -1,6 +1,6 @@
 import { NgModule, APP_INITIALIZER, Inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule, CommonExampleConfigs, CommonExampleComponents } from '../common';
+import { CommonModule, CommonExampleConfigs, CommonExampleComponents, debugFields } from '../common';
 
 import { AppComponent } from './app.component';
 import { FormlyIonicModule } from '@ngx-formly/ionic';
@@ -24,6 +24,7 @@ import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './togg
         path: '',
         component: AppComponent,
         data: {
+          debugFields,
           examples: [
             ...CommonExampleConfigs,
             DatetimeExampleConfig,
