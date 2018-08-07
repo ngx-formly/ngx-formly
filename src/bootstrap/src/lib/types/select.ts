@@ -5,9 +5,9 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-select',
   template: `
     <select *ngIf="to.multiple; else singleSelect" class="form-control"
+      multiple
       [formControl]="formControl"
       [class.is-invalid]="showError"
-      [multiple]="true"
       [formlyAttributes]="field">
         <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
          <optgroup *ngIf="item.group" label="{{item.label}}">
