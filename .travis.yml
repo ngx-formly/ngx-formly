@@ -4,35 +4,28 @@ dist: trusty
 cache:
   directories:
     - $HOME/.npm
-    - $HOME/.yarn-cache
 node_js:
-  - "8.11"
+  - "10"
 
 before_install:
-  - npm i -g yarn --cache-min 999999999
+  - npm i -g npm
   - "export CHROME_BIN=/usr/bin/google-chrome"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 
 install:
-  - yarn
+  - npm ci
 
 script:
-- yarn lint
+- npm run lint
 - commitlint-travis
-- yarn test
-- yarn bundlesize
-- yarn build:demo
+- npm run test
+- npm run bundlesize
+- npm run build:demo
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && yarn gh-pages
-
-branches:
-  only:
-  - v4
-  - next
-  - master
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && npm run gh-pages
 
 addons:
   apt:
