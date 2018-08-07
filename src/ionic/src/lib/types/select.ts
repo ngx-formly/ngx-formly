@@ -5,7 +5,7 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-ion-select',
   template: `
   <ion-item>
-    <ion-label>{{ to.label }}</ion-label>
+    <ion-label [position]="to.labelPosition">{{ to.label }}</ion-label>
     <ion-select
       [formControl]="formControl"
       [formlyAttributes]="field"
