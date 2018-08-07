@@ -5,8 +5,11 @@ import { FormlyTemplateOptions, FormlyFieldConfig, FormlyFormOptions } from '../
 export abstract class Field {
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
-  @Input() model: any;
   @Input() options: FormlyFormOptions;
+
+  @Input()
+  get model() { return this.field.model; }
+  set model(m: any) { console.warn(`NgxFormly: passing 'model' input to '${this.constructor.name}' component is not required anymore, you may remove it!`); }
 
   get key() { return this.field.key; }
 

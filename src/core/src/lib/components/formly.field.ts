@@ -18,7 +18,10 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn, FormlyLifeCycl
   },
 })
 export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
-  @Input() model: any;
+  @Input() set model(m: any) {
+    console.warn(`NgxFormly: passing 'model' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
+  }
+
   @Input() form: FormGroup;
   @Input() field: FormlyFieldConfig;
   @Input() options: FormlyFormOptions = {};
@@ -60,7 +63,6 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.lifeCycleHooks(this.lifecycle.onChanges);
     this.componentRefs.forEach(ref => {
       Object.assign(ref.instance, {
-        model: this.model,
         form: this.form,
         field: this.field,
         options: this.options,
@@ -92,7 +94,6 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     let ref = <ComponentRef<Field>>fieldComponent.createComponent(componentFactory);
 
     Object.assign(ref.instance, {
-        model: this.model,
         form: this.form,
         field: this.field,
         options: this.options,
@@ -109,7 +110,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   private lifeCycleHooks(callback: FormlyLifeCycleFn) {
     if (callback) {
-      callback(this.form, this.field, this.model, this.options);
+      callback(this.form, this.field, this.field.model, this.options);
     }
   }
 }

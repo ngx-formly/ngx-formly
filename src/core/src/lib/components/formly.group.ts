@@ -7,7 +7,7 @@ import { FieldType } from '../templates/field.type';
     <formly-form
       [fields]="field.fieldGroup"
       [isRoot]="false"
-      [model]="model"
+      [model]="field.model"
       [form]="field.formControl || form"
       [options]="options"
       [ngClass]="field.fieldGroupClassName">
