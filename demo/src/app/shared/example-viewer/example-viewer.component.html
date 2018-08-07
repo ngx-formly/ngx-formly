@@ -1,6 +1,9 @@
 <div class="docs-example-viewer-wrapper">
   <div class="docs-example-viewer-title">
     <div class="docs-example-viewer-title-spacer">{{ exampleData.title }}</div>
+    <button *ngIf="exampleData.debug && _debugFields" mat-icon-button type="button" (click)="toggleDebugView()" [matTooltip]="'Debug'">
+      <mat-icon>bug_report</mat-icon>
+    </button>
     <formly-stackblitz-button [type]="type" [example]="exampleData"></formly-stackblitz-button>
     <button mat-icon-button type="button" (click)="toggleSourceView()" [matTooltip]="'View source'">
       <mat-icon>
@@ -27,11 +30,17 @@
     </mat-tab-group>
   </div>
 
+  <div *ngIf="showDebug && _debugFields" style="padding: 10px 100px; background: white;">
+    <formly-form [model]="this.demoComponentRef.instance.fields[0]" [fields]="_debugFields">
+    </formly-form>
+  </div>
+
   <div class="docs-example-viewer-body">
     <div class="alert alert-info" *ngIf="exampleData.description" [innerHtml]="exampleData.description"></div>
+
     <ng-template #demo></ng-template>
 
-    <div *ngIf="demoComponentRef && exampleData.debug !== false">
+    <div *ngIf="(!exampleData.debug || showDebug) && demoComponentRef">
       <h3>Form Data</h3>
       <pre [style.display]="'none'">{{ model }}</pre>
       <pre #modelPreview></pre>

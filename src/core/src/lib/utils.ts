@@ -1,5 +1,6 @@
 import { FormlyFieldConfig } from './core';
 import { Observable } from 'rxjs';
+import { AbstractControl } from '@angular/forms';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
@@ -185,6 +186,10 @@ export function isObject(x: any) {
 export function clone(value: any): any {
   if (!isObject(value) || value instanceof RegExp || value instanceof Observable) {
     return value;
+  }
+
+  if (value instanceof AbstractControl) {
+    return null;
   }
 
   if (Object.prototype.toString.call(value) === '[object Date]') {
