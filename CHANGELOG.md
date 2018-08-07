@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.7.2"></a>
+## [4.7.2](https://github.com/formly-js/ngx-formly/compare/v4.7.1...v4.7.2) (2018-08-07)
+
+
+### Bug Fixes
+
+* **bootstrap:** ensure using angular multi-select selector ([5bc50c8](https://github.com/formly-js/ngx-formly/commit/5bc50c8)), closes [#1094](https://github.com/formly-js/ngx-formly/issues/1094)
+
+
+
 <a name="4.7.1"></a>
 ## [4.7.1](https://github.com/formly-js/ngx-formly/compare/v4.7.0...v4.7.1) (2018-08-01)
 
