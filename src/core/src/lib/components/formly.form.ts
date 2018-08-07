@@ -125,7 +125,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     fields.forEach(field => {
       if (field.key && field.type && !field.fieldGroup && !field.fieldArray) {
         const valueChanges = field.formControl.valueChanges.pipe(
-          field.modelOptions && field.modelOptions.debounce && field.modelOptions.debounce.default
+          field.modelOptions.debounce && field.modelOptions.debounce.default
           ? debounceTime(field.modelOptions.debounce.default)
           : tap(() => {}),
           map(value => {

@@ -1,4 +1,4 @@
-import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray } from '@angular/forms';
+import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { Field } from '../templates/field';
 import { TemplateManipulators } from '../services/formly.config';
@@ -55,7 +55,7 @@ export interface FormlyFieldConfig {
    * Each should return a boolean value, returning true when the field is valid. See Validation for more information.
    *
    * {
-   *   validation?: (string | ValidatorFn)[] | ValidatorFn;
+   *   validation?: (string | ValidatorFn)[];
    *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => boolean) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean, message: string | ((error, field: FormlyFieldConfig) => string) });
    * }
    */
@@ -66,7 +66,7 @@ export interface FormlyFieldConfig {
    * Pretty much exactly the same as the validators api, except it must be a function that returns a promise.
    *
    * {
-   *   validation?: (string | AsyncValidatorFn)[] | AsyncValidatorFn;
+   *   validation?: (string | AsyncValidatorFn)[];
    *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean>) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean>, message: string });
    * }
    */
@@ -173,7 +173,9 @@ export interface ExpressionPropertyCache {
 }
 
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
-  _expressionProperties: { [property: string]: ExpressionPropertyCache };
+  _expressionProperties?: { [property: string]: ExpressionPropertyCache };
+  _validators?: ValidatorFn[];
+  _asyncValidators?: AsyncValidatorFn[];
 }
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
