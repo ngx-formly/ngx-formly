@@ -5,7 +5,7 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-ion-checkbox',
   template: `
     <ion-item>
-      <ion-label>{{ to.label }}</ion-label>
+      <ion-label [position]="to.labelPosition">{{ to.label }}</ion-label>
       <ion-checkbox
         [formControl]="formControl"
         [formlyAttributes]="field">
