@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, ElementRef } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 export interface ExampleType {
   title: string;
@@ -18,7 +19,13 @@ export interface ExampleType {
 export class ExampleViewerComponent implements OnInit, OnDestroy {
   @Input() type: string;
   @Input() exampleData: ExampleType;
+  @Input() set debugFields(fields: FormlyFieldConfig[]) {
+    if (fields) {
+      this._debugFields = JSON.parse(JSON.stringify(fields));
+    }
+  }
 
+  _debugFields: any;
   _prevModel: any;
 
   @ViewChild('demo', {read: ViewContainerRef}) demoRef: ViewContainerRef;
@@ -27,6 +34,7 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
 
   /** Whether the source for the example is being displayed. */
   showSource = false;
+  showDebug = false;
 
   constructor(private copier: CopierService, private componentFactoryResolver: ComponentFactoryResolver) {}
 
@@ -40,6 +48,10 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
     }
 
     return this.demoComponentRef.instance.model;
+  }
+
+  get debugModel() {
+    return this.demoComponentRef.instance.fields[0];
   }
 
   ngOnInit() {
@@ -59,5 +71,9 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
 
   copySource(content) {
     this.copier.copyText(content.innerText);
+  }
+
+  toggleDebugView() {
+    this.showDebug = !this.showDebug;
   }
 }

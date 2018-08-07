@@ -52,7 +52,11 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
 
   ngOnInit() {
     this.formField._control = this;
-    (<any> this.field)['__formField__'] = this.formField;
+    Object.defineProperty(this.field, '__formField__', {
+      get: () => this.formField,
+      enumerable: false,
+      configurable: true,
+    });
 
     // fix for https://github.com/angular/material2/issues/11437
     if (this.field.hide && this.field.templateOptions.appearance === 'outline') {

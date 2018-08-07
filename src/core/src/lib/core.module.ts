@@ -47,6 +47,10 @@ export class FormlyModule {
     componentFactoryResolver: ComponentFactoryResolver,
     @Optional() @Inject(FORMLY_CONFIG_TOKEN) configs: ConfigOption[] = [],
   ) {
+    if (!configs) {
+      return;
+    }
+
     configs.forEach(config => {
       [...(config.types || []), ...(config.wrappers || [])]
       .filter(t => !!t)
