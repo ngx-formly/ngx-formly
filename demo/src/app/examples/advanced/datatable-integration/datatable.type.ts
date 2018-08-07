@@ -21,8 +21,7 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
       [selectionType]="'single'">
       <ng-template #defaultColumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
         <formly-field
-          [model]="getModel(model,column,rowIndex)"
-          [field]="getField(field,column, rowIndex)"
+          [field]="getField(field, column, rowIndex)"
           [options]="options"
           [form]="formControl">
         </formly-field>
@@ -44,9 +43,5 @@ export class DatatableTypeComponent extends FieldArrayType implements OnInit {
 
   getField(field: FormlyFieldConfig, column: TableColumn, rowIndex: number ): FormlyFieldConfig {
     return field.fieldGroup[rowIndex].fieldGroup.find(f => f.key === column.prop);
-  }
-
-  getModel(model, column: TableColumn, rowIndex): any {
-    return model[rowIndex];
   }
 }

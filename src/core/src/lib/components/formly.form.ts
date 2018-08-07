@@ -12,7 +12,7 @@ import { debounceTime, map, tap } from 'rxjs/operators';
   selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields"
-      [model]="field.model" [form]="form"
+      [form]="form"
       [field]="field"
       [ngClass]="field.className"
       [options]="options">
