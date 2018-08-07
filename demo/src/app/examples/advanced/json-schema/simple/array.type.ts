@@ -5,10 +5,9 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
   selector: 'formly-array-type',
   template: `
     <legend *ngIf="to.label">{{ to.label }}</legend>
-    <div *ngFor="let field of field.fieldGroup; let i = index;" class="row">
+    <div *ngFor="let field of field.fieldGroup" class="row">
       <formly-field
         class="col-sm-10"
-        [model]="model[i]"
         [field]="field"
         [options]="options"
         [form]="formControl">

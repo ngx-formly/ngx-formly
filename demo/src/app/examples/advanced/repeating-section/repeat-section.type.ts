@@ -6,7 +6,6 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
   template: `
     <div *ngFor="let field of field.fieldGroup; let i = index;">
       <formly-group
-        [model]="model[i]"
         [field]="field"
         [options]="options"
         [form]="formControl">
