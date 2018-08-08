@@ -53,13 +53,14 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   ngOnInit() {
-    if (!this.field.template) {
-      this.createFieldComponent();
-    }
     this.lifeCycleHooks(this.lifecycle.onInit);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.field) {
+      this.renderField();
+    }
+
     this.lifeCycleHooks(this.lifecycle.onChanges);
     this.componentRefs.forEach(ref => {
       Object.assign(ref.instance, {
@@ -76,7 +77,13 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs = [];
   }
 
-  private createFieldComponent(): ComponentRef<Field> {
+  private renderField(): ComponentRef<Field> {
+    this.componentRefs.forEach(componentRef => componentRef.destroy());
+    this.componentRefs = [];
+    if (this.field.template) {
+      return;
+    }
+
     const type = this.formlyConfig.getType(this.field.type);
 
     let fieldComponent = this.fieldComponent;
