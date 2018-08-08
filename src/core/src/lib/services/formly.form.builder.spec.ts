@@ -8,7 +8,7 @@ import { FormlyFieldConfigCache } from '../components/formly.field.config';
 describe('FormlyFormBuilder service', () => {
   let builder: FormlyFormBuilder;
   let form: FormGroup;
-  let field: FormlyFieldConfig;
+  let field: FormlyFieldConfigCache;
   let TestComponent: Component;
 
   beforeEach(() => {
@@ -418,7 +418,7 @@ describe('FormlyFormBuilder service', () => {
   describe('initialise field validators', () => {
     const expectValidators = (invalidValue, validValue, errors?) => {
       const formControl = form.get('title');
-      expect(typeof field.validators.validation).toBe('function');
+      expect(Array.isArray(field._validators)).toBeTruthy();
 
       formControl.patchValue(invalidValue);
       expect(formControl.valid).toBeFalsy();
@@ -432,7 +432,7 @@ describe('FormlyFormBuilder service', () => {
 
     const expectAsyncValidators = (value) => {
       const formControl = form.get('title');
-      expect(typeof field.asyncValidators.validation).toBe('function');
+      expect(Array.isArray(field._asyncValidators)).toBeTruthy();
 
       formControl.patchValue(value);
       expect(formControl.status).toBe('PENDING');
