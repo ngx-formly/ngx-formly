@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from './core';
 import { Observable } from 'rxjs';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
@@ -69,34 +69,6 @@ export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmp
     }
   }
   return value;
-}
-
-export function assignModelToFields(fields: FormlyFieldConfig[], model: any, parent?: FormlyFieldConfig) {
-  fields.forEach((field) => {
-    if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
-      assignModelValue(model, field.key, field.defaultValue);
-    }
-
-    Object.defineProperty(field, 'parent', { get: () => parent, configurable: true });
-    Object.defineProperty(field, 'model', {
-      get: () => field.key && (field.fieldGroup || field.fieldArray) ? getFieldModel(model, field, true) : model,
-      configurable: true,
-    });
-
-    if (field.key && field.fieldArray) {
-      while (field.formControl && (<FormArray> field.formControl).length !== 0) {
-        (<FormArray>field.formControl).removeAt(0);
-      }
-
-      field.fieldGroup = field.fieldGroup || [];
-      field.fieldGroup.length = 0;
-      field.model.forEach((m: any, i: number) => field.fieldGroup.push({ ...clone(field.fieldArray), key: `${i}` }));
-    }
-
-    if (field.fieldGroup) {
-      assignModelToFields(field.fieldGroup, field.model, field);
-    }
-  });
 }
 
 export function assignModelValue(model: any, path: string | (string | number)[], value: any) {

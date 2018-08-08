@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormControl, AbstractControl, Validators, Abstrac
 import { FormlyConfig, FieldValidatorFn, TemplateManipulators } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FormlyFormExpression } from './formly.form.expression';
-import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, assignModelToFields, getKeyPath } from '../utils';
+import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, getKeyPath, getFieldModel, assignModelValue, isUndefined, getValueForKey, clone } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -26,7 +26,7 @@ export class FormlyFormBuilder {
     });
 
     this.initFieldsType(fields);
-    assignModelToFields(fields, model);
+    this._assignModelToFields(fields, model);
     this._buildForm(form, fields, options);
     this.formlyFormExpression.initFields(form, fields, model, options);
   }
@@ -78,9 +78,38 @@ export class FormlyFormBuilder {
       if (field.fieldGroup) {
         this.initFieldsType(field.fieldGroup);
       }
+    });
+  }
 
-      if (field.fieldArray) {
-        this.initFieldsType([field.fieldArray]);
+  private _assignModelToFields(fields: FormlyFieldConfig[], model: any, parent?: FormlyFieldConfig) {
+    fields.forEach((field) => {
+      if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
+        assignModelValue(model, field.key, field.defaultValue);
+      }
+
+      Object.defineProperty(field, 'parent', { get: () => parent, configurable: true });
+      Object.defineProperty(field, 'model', {
+        get: () => field.key && (field.fieldGroup || field.fieldArray) ? getFieldModel(model, field, true) : model,
+        configurable: true,
+      });
+
+      if (field.key && field.fieldArray) {
+        while (field.formControl && (<FormArray> field.formControl).length !== 0) {
+          (<FormArray> field.formControl).removeAt(0);
+        }
+
+        field.fieldGroup = field.fieldGroup || [];
+        field.fieldGroup.length = 0;
+        field.model.forEach((m: any, i: number) => {
+          const f = { ...clone(field.fieldArray), key: `${i}` };
+          this.initFieldsType([f]);
+
+          field.fieldGroup.push(f);
+        });
+      }
+
+      if (field.fieldGroup) {
+        this._assignModelToFields(field.fieldGroup, field.model, field);
       }
     });
   }

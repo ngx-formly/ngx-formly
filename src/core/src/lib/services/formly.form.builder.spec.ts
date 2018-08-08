@@ -153,6 +153,83 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 
+
+  describe('assign model to fields', () => {
+    let fields: FormlyFieldConfig[],
+      model: any;
+
+    it('with simple field', () => {
+      model = { city: 'foo' };
+      fields = [{ key: 'city' }];
+
+      builder.buildForm(form, fields, model, {});
+
+      expect(fields[0].model).toEqual(model);
+    });
+
+    describe('with fieldGroup', () => {
+      it('fieldGroup without key', () => {
+        model = { city: 'foo' };
+        fields = [{
+          fieldGroup: [{
+            key: 'city',
+          }],
+        }];
+
+        builder.buildForm(form, fields, model, {});
+
+        expect(fields[0].model).toEqual(model);
+        expect(fields[0].fieldGroup[0].model).toEqual(model);
+      });
+
+      it('fieldGroup with key', () => {
+        model = { address: { city: 'foo' } };
+        fields = [{
+          key: 'address',
+          fieldGroup: [{
+            key: 'city',
+          }],
+        }];
+
+        builder.buildForm(form, fields, model, {});
+
+        expect(fields[0].model).toEqual(model.address);
+        expect(fields[0].fieldGroup[0].model).toEqual(model.address);
+      });
+
+      it('fieldGroup with nested key', () => {
+        model = { location: { address: { city: 'foo' } } };
+        fields = [{
+          key: 'location.address',
+          fieldGroup: [{
+            key: 'city',
+          }],
+        }];
+
+        builder.buildForm(form, fields, model, {});
+
+        expect(fields[0].model).toEqual(model.location.address);
+        expect(fields[0].fieldGroup[0].model).toEqual(model.location.address);
+      });
+
+      it('assign parent field to children', () => {
+        model = { address: { city: 'foo' } };
+        fields = [{
+          key: 'address',
+          fieldGroup: [{
+            key: 'city',
+          }],
+        }];
+
+        builder.buildForm(form, fields, model, {});
+
+        expect(fields[0].model).toEqual(model.address);
+        expect(fields[0].fieldGroup[0].model).toEqual(model.address);
+        expect(fields[0].fieldGroup[0].parent).toEqual(fields[0]);
+      });
+    });
+  });
+
   describe('initialise form', () => {
     it('should create nested form control when field key is nested', () => {
       const model = { address: { city: 'test' } };
