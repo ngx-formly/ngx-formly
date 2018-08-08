@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from './core';
 import { Observable } from 'rxjs';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormArray } from '@angular/forms';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
@@ -78,29 +78,23 @@ export function assignModelToFields(fields: FormlyFieldConfig[], model: any, par
     }
 
     Object.defineProperty(field, 'parent', { get: () => parent, configurable: true });
+    Object.defineProperty(field, 'model', {
+      get: () => field.key && (field.fieldGroup || field.fieldArray) ? getFieldModel(model, field, true) : model,
+      configurable: true,
+    });
+
     if (field.key && field.fieldArray) {
+      while (field.formControl && (<FormArray> field.formControl).length !== 0) {
+        (<FormArray>field.formControl).removeAt(0);
+      }
+
       field.fieldGroup = field.fieldGroup || [];
       field.fieldGroup.length = 0;
-
-      const m = getFieldModel(model, field, true);
-      m.forEach((m: any, i: number) => field.fieldGroup.push({ ...clone(field.fieldArray), key: `${i}` }));
-      if (field.hasOwnProperty('model') && field.model !== m) {
-        field.model.length = 0;
-        m.forEach((m: any, i: number) => field.model[i] = m);
-      }
+      field.model.forEach((m: any, i: number) => field.fieldGroup.push({ ...clone(field.fieldArray), key: `${i}` }));
     }
 
-    if (!field.hasOwnProperty('model') || !field.key || !(field.fieldArray || field.fieldGroup)) {
-      Object.defineProperty(field, 'model', {
-        get: () => field.key && (field.fieldGroup || field.fieldArray)
-          ? getFieldModel(model, field, true)
-          : model,
-        configurable: true,
-      });
-
-      if (field.fieldGroup) {
-        assignModelToFields(field.fieldGroup, field.model, field);
-      }
+    if (field.fieldGroup) {
+      assignModelToFields(field.fieldGroup, field.model, field);
     }
   });
 }
