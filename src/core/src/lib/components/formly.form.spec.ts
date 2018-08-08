@@ -620,7 +620,7 @@ describe('FormlyForm Component', () => {
       expect(testComponentInputs.form.value).toEqual({ test: '***' });
     });
 
-    it('fallback to null for an non-existing member', () => {
+    it('fallback to undefined for an non-existing member', () => {
       testComponentInputs = {
         model: { aa: { test: 'aaa' } },
         form: new FormGroup({}),
@@ -635,7 +635,7 @@ describe('FormlyForm Component', () => {
 
       fixture.componentInstance.model = {};
       fixture.detectChanges();
-      expect(testComponentInputs.form.value).toEqual({ aa: { test: null } });
+      expect(testComponentInputs.form.value).toEqual({ aa: { test: undefined } });
     });
 
     it('should not emit `modelChange`', () => {
@@ -981,7 +981,6 @@ class TestComponent {
   template: `
     <div *ngFor="let field of field.fieldGroup; let i = index;">
       <formly-group
-        [model]="model[i]"
         [field]="field"
         [options]="options"
         [form]="formControl">
