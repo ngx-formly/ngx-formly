@@ -68,7 +68,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       this.clearModelSubscriptions();
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.trackModelChanges(this.fields);
-      this.updateInitialValue();
+      this.options.updateInitialValue();
     }
   }
 
@@ -94,7 +94,25 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (!this.options.resetModel) {
-      this.options.resetModel = this.resetModel.bind(this);
+      this.options.resetModel = (model ?: any) => {
+        model = isNullOrUndefined(model) ? this.initialModel : model;
+        if (this.model) {
+          Object.keys(this.model).forEach(k => delete this.model[k]);
+          Object.assign(this.model, model || {});
+        }
+
+        this.clearModelSubscriptions();
+        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
+        this.trackModelChanges(this.fields);
+
+        // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
+        // but only when the current component is a root one.
+        if (!this.parentFormlyForm && this.options.parentForm && this.options.parentForm.control === this.form) {
+          this.options.parentForm.resetForm(model);
+        } else {
+          this.form.reset(model);
+        }
+      };
     }
 
     if (!this.options.parentForm) {
@@ -102,12 +120,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (!this.options.updateInitialValue) {
-      this.options.updateInitialValue = this.updateInitialValue.bind(this);
+      this.options.updateInitialValue = () => this.initialModel = reverseDeepMerge({}, this.model);
     }
 
-    if (!(<any> this.options).resetTrackModelChanges) {
-      (<any> this.options).resetTrackModelChanges = () => {
+    if (!(<any> this.options).buildForm) {
+      (<any> this.options).buildForm = () => {
         this.clearModelSubscriptions();
+        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
         this.trackModelChanges(this.fields);
       };
     }
@@ -148,29 +167,5 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private clearModelSubscriptions() {
     this.modelChangeSubs.forEach(sub => sub.unsubscribe());
     this.modelChangeSubs = [];
-  }
-
-  private resetModel(model?: any) {
-    model = isNullOrUndefined(model) ? this.initialModel : model;
-    if (this.model) {
-      Object.keys(this.model).forEach(k => delete this.model[k]);
-      Object.assign(this.model, model || {});
-    }
-
-    this.clearModelSubscriptions();
-    this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-    this.trackModelChanges(this.fields);
-
-    // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
-    // but only when the current component is a root one.
-    if (!this.parentFormlyForm && this.options.parentForm && this.options.parentForm.control === this.form) {
-      this.options.parentForm.resetForm(model);
-    } else {
-      this.form.reset(model);
-    }
-  }
-
-  private updateInitialValue() {
-    this.initialModel = reverseDeepMerge({}, this.model);
   }
 }
