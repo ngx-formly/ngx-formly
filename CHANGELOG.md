@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.1"></a>
+# [5.0.0-beta.1](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.0...v5.0.0-beta.1) (2018-08-08)
+
+
+### Bug Fixes
+
+* **core:** init fieldArray during assignModelToFields ([#1105](https://github.com/formly-js/ngx-formly/issues/1105)) ([cd2e92b](https://github.com/formly-js/ngx-formly/commit/cd2e92b))
+
+
+### Features
+
+* **bootstrap:** add customSelect option to select type ([#1107](https://github.com/formly-js/ngx-formly/issues/1107)) ([83e186c](https://github.com/formly-js/ngx-formly/commit/83e186c)), closes [#1100](https://github.com/formly-js/ngx-formly/issues/1100)
+* **core:** deprecate passing 'model' input to FormlyField ([#1093](https://github.com/formly-js/ngx-formly/issues/1093)) ([0007cf9](https://github.com/formly-js/ngx-formly/commit/0007cf9))
+* **core:** rerender field type on change ([#1106](https://github.com/formly-js/ngx-formly/issues/1106)) ([2f362d1](https://github.com/formly-js/ngx-formly/commit/2f362d1)), closes [#1091](https://github.com/formly-js/ngx-formly/issues/1091)
+* **ionic:** allow customize label position ([#1096](https://github.com/formly-js/ngx-formly/issues/1096)) ([6a0db60](https://github.com/formly-js/ngx-formly/commit/6a0db60)), closes [#1092](https://github.com/formly-js/ngx-formly/issues/1092)
+
+
+
 <a name="5.0.0-beta.0"></a>
 # [5.0.0-beta.0](https://github.com/formly-js/ngx-formly/compare/v4.7.2...v5.0.0-beta.0) (2018-08-05)
 
