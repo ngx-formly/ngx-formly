@@ -6,6 +6,7 @@ import { FieldType } from '@ngx-formly/core';
   template: `
     <select *ngIf="to.multiple; else singleSelect" class="form-control"
       multiple
+      [class.custom-select]="to.customSelect"
       [formControl]="formControl"
       [class.is-invalid]="showError"
       [formlyAttributes]="field">
@@ -22,6 +23,7 @@ import { FieldType } from '@ngx-formly/core';
     <ng-template #singleSelect>
       <select class="form-control"
         [formControl]="formControl"
+        [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
         [formlyAttributes]="field">
         <option *ngIf="to.placeholder" value="">{{ to.placeholder }}</option>
