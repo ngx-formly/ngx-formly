@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
-import { Field } from '../templates/field';
+import { FieldType } from '../templates/field.type';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn, FormlyLifeCycleOptions } from './formly.field.config';
 
 @Component({
@@ -28,7 +28,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 
-  private componentRefs: ComponentRef<Field>[] = [];
+  private componentRefs: ComponentRef<FieldType>[] = [];
 
   constructor(private formlyConfig: FormlyConfig) {}
 
@@ -77,7 +77,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs = [];
   }
 
-  private renderField(): ComponentRef<Field> {
+  private renderField(): ComponentRef<FieldType> {
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this.componentRefs = [];
     if (this.field.template) {
@@ -98,7 +98,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   private createComponent(componentFactoryResolver: ComponentFactoryResolver, fieldComponent: ViewContainerRef, component: any): ComponentRef<any> {
     let componentFactory = componentFactoryResolver.resolveComponentFactory(component);
-    let ref = <ComponentRef<Field>>fieldComponent.createComponent(componentFactory);
+    let ref = <ComponentRef<FieldType>>fieldComponent.createComponent(componentFactory);
 
     Object.assign(ref.instance, {
         form: this.form,

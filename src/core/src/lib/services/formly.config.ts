@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken, ComponentFactoryResolver } from '@angular/core';
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
-import { Field } from './../templates/field';
+import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
 
@@ -26,10 +26,10 @@ export class FormlyConfig {
 
   extras: {
     fieldTransform?: ((fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[])[],
-    showError?: (field: Field) => boolean;
+    showError?: (field: FieldType) => boolean;
   } = {
     fieldTransform: undefined,
-    showError: function(field: Field) {
+    showError: function(field: FieldType) {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
   };
@@ -237,6 +237,6 @@ export interface ConfigOption {
   manipulators?: ManipulatorOption[];
   extras?: {
     fieldTransform?: any,
-    showError?: (field: Field) => boolean;
+    showError?: (field: FieldType) => boolean;
   };
 }

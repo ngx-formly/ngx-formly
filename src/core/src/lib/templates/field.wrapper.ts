@@ -1,6 +1,6 @@
 import { ViewContainerRef } from '@angular/core';
-import { Field } from './field';
+import { FieldType } from './field.type';
 
-export abstract class FieldWrapper extends Field {
+export abstract class FieldWrapper extends FieldType {
   fieldComponent: ViewContainerRef;
 }
