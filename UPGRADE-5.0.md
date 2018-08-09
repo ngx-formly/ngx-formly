@@ -37,6 +37,28 @@ After:
 <formly-validation-message [field]="field"></formly-validation-message>
 ```
 
+ * rename `Field` to `FieldType`
+
+Before:
+```ts
+import { Field } from '@ngx-formly/core';
+```
+After:
+```ts
+import { FieldType } from '@ngx-formly/core';
+```
+
+ * passing `model` input to `formly-field` component is not required anymore:
+
+Before:
+```html
+<formly-field [field]="field" [model]="model"></formly-field>
+```
+After:
+```html
+<formly-field [field]="field"></formly-field>
+```
+
 @ngx-formly/material
 --------------------
 **Note**: this only affect the user's who import sub-modules of `@ngx-formly/material` instead of main module `FormlyMaterialModule`.
