@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormControl, AbstractControl, Validators, Abstrac
 import { FormlyConfig, FieldValidatorFn, TemplateManipulators } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FormlyFormExpression } from './formly.form.expression';
-import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, getKeyPath, getFieldModel, assignModelValue, isUndefined, getValueForKey, clone, removeFieldControl } from '../utils';
+import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, getKeyPath, assignModelValue, isUndefined, clone, removeFieldControl, getFieldValue } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -71,12 +71,9 @@ export class FormlyFormBuilder {
   private initFieldOptions(root: FormlyFieldConfig, field: FormlyFieldConfig, index: number) {
     Object.defineProperty(field, 'parent', { get: () => root, configurable: true });
     Object.defineProperty(field, 'model', {
-      get: () => field.key && field.fieldGroup ? getFieldModel(root.model, field, true) : root.model,
+      get: () => field.key && field.fieldGroup ? getFieldValue(field) : root.model,
       configurable: true,
     });
-    if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(field.model, field.key))) {
-      assignModelValue(field.model, field.key, field.defaultValue);
-    }
 
     field.id = getFieldId(`formly_${this.formId}`, field, index);
     field.templateOptions = field.templateOptions || {};
@@ -91,6 +88,13 @@ export class FormlyFormBuilder {
     }
     if (field.type) {
       this.formlyConfig.getMergedField(field);
+    }
+    if (field.key && isUndefined(field.defaultValue) && (field.fieldGroup || field.fieldArray)) {
+      field.defaultValue = field.fieldArray ? [] : {};
+    }
+
+    if (!isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+      assignModelValue(root.model, field.key, field.defaultValue);
     }
 
     this.initFieldWrappers(field);
