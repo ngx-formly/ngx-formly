@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormControl, AbstractControl, Validators, Abstrac
 import { FormlyConfig, FieldValidatorFn, TemplateManipulators } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FormlyFormExpression } from './formly.form.expression';
-import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, getKeyPath, getFieldModel, assignModelValue, isUndefined, getValueForKey, clone } from '../utils';
+import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, getKeyPath, getFieldModel, assignModelValue, isUndefined, getValueForKey, clone, removeFieldControl } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -71,7 +71,7 @@ export class FormlyFormBuilder {
   private initFieldOptions(root: FormlyFieldConfig, field: FormlyFieldConfig, index: number) {
     Object.defineProperty(field, 'parent', { get: () => root, configurable: true });
     Object.defineProperty(field, 'model', {
-      get: () => field.key && (field.fieldGroup || field.fieldArray) ? getFieldModel(root.model, field, true) : root.model,
+      get: () => field.key && field.fieldGroup ? getFieldModel(root.model, field, true) : root.model,
       configurable: true,
     });
     if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(field.model, field.key))) {
@@ -94,9 +94,7 @@ export class FormlyFormBuilder {
     }
 
     this.initFieldWrappers(field);
-
-
-    if (field.key && field.fieldArray) {
+    if (field.fieldArray) {
       this.initFieldArray(field);
     }
 
@@ -111,7 +109,7 @@ export class FormlyFormBuilder {
     field.fieldGroup = field.fieldGroup || [];
     if (field.fieldGroup.length > field.model.length) {
       for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
-        (<FormArray> field.formControl).removeAt(i);
+        removeFieldControl(field.formControl as FormArray, i);
         field.fieldGroup.splice(i, 1);
       }
     }
@@ -194,6 +192,10 @@ export class FormlyFormBuilder {
   }
 
   private initFieldValidation(field: FormlyFieldConfigCache) {
+    if (field._validators) {
+      return;
+    }
+
     field._validators = [];
     this.initPredefinedFieldValidation(field);
     if (field.validators) {
@@ -237,6 +239,10 @@ export class FormlyFormBuilder {
   }
 
   private initFieldAsyncValidation(field: FormlyFieldConfigCache) {
+    if (field._asyncValidators) {
+      return;
+    }
+
     field._asyncValidators = [];
     if (field.asyncValidators) {
       for (const validatorName in field.asyncValidators) {

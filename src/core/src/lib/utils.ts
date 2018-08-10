@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from './core';
 import { Observable } from 'rxjs';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
@@ -193,5 +193,13 @@ export function evalExpression(expression: string | Function | boolean, thisArg:
     return expression.apply(thisArg, argVal);
   } else {
     return expression ? true : false;
+  }
+}
+
+export function removeFieldControl(form: FormArray | FormGroup, key: string | number) {
+  if (form instanceof FormArray) {
+    form.removeAt(key as number);
+  } else if (form instanceof FormGroup) {
+    form.removeControl(`${key}`);
   }
 }

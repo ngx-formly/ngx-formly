@@ -3,7 +3,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../components/formly.field.config';
 import {
   isObject, isNullOrUndefined, isFunction,
-  FORMLY_VALIDATORS, getFieldModel, getKeyPath,
+  FORMLY_VALIDATORS, getFieldModel, getKeyPath, removeFieldControl,
   evalExpression, evalStringExpression, evalExpressionValueSetter,
 } from '../utils';
 import { Observable } from 'rxjs';
@@ -181,7 +181,7 @@ export class FormlyFormExpression {
         if (parent) {
           const control = parent.get(`${this.fieldKey(field)}`);
           if (hideExpressionResult === true && control) {
-            this.removeFieldControl(parent, field);
+            removeFieldControl(parent, this.fieldKey(field));
           } else if (hideExpressionResult === false && !control) {
             this.addFieldControl(parent, field);
           }
@@ -195,7 +195,7 @@ export class FormlyFormExpression {
   }
 
   private addFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig) {
-    const fieldModel = field.fieldGroup || field.fieldArray ? field.model : getFieldModel(field.model, field, false);
+    const fieldModel = field.fieldGroup ? field.model : getFieldModel(field.model, field, false);
     if (
       !(isNullOrUndefined(field.formControl.value) && isNullOrUndefined(fieldModel))
       && field.formControl.value !== fieldModel
@@ -207,14 +207,6 @@ export class FormlyFormExpression {
       parent.push(field.formControl);
     } else if (parent instanceof FormGroup) {
       parent.addControl(`${this.fieldKey(field)}`, field.formControl);
-    }
-  }
-
-  private removeFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig) {
-    if (parent instanceof FormArray) {
-      parent.removeAt(this.fieldKey(field) as number);
-    } else if (parent instanceof FormGroup) {
-      parent.removeControl(`${this.fieldKey(field)}`);
     }
   }
 
