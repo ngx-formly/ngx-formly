@@ -25,21 +25,19 @@ export class FormlyFormBuilder {
       }
     });
 
-    this.initFieldsType(fields);
-    this._assignModelToFields(fields, model);
-    this._buildForm(form, fields, options);
+    this._buildForm({ fieldGroup: fields, model: model, formControl: form });
     this.formlyFormExpression.initFields(form, fields, model, options);
   }
 
-  private _buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], options: FormlyFormOptions) {
+  private _buildForm(root: FormlyFieldConfig) {
     this.formId++;
-    fields.forEach((field, index) => {
-      this.initFieldOptions(field, index);
+    root.fieldGroup.forEach((field, index) => {
+      this.initFieldOptions(root, field, index);
       this.initFieldValidation(field);
       this.initFieldAsyncValidation(field);
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
-        let rootForm = form, rootModel = field.fieldGroup ? { [paths[0]]: field.model } : field.model;
+        let rootForm = root.formControl as FormGroup, rootModel = field.fieldGroup ? { [paths[0]]: field.model } : field.model;
         paths.forEach((path, index) => {
           // FormGroup/FormArray only allow string value for path
           const formPath = path.toString();
@@ -47,7 +45,7 @@ export class FormlyFormBuilder {
           if (index === paths.length - 1) {
             this.addFormControl(rootForm, field, rootModel, formPath);
             if (field.fieldGroup) {
-              this._buildForm(field.formControl as FormGroup, field.fieldGroup, options);
+              this._buildForm(field);
             }
           } else {
             let nestedForm = rootForm.get(formPath) as FormGroup;
@@ -64,59 +62,22 @@ export class FormlyFormBuilder {
           }
         });
       } else if (!field.key && field.fieldGroup) {
-        this._buildForm(form, field.fieldGroup, options);
+        field.formControl = root.formControl;
+        this._buildForm(field);
       }
     });
   }
 
-  private initFieldsType(fields: FormlyFieldConfig[]) {
-    fields.forEach((field, index) => {
-      if (field.type) {
-        this.formlyConfig.getMergedField(field);
-      }
-
-      if (field.fieldGroup) {
-        this.initFieldsType(field.fieldGroup);
-      }
+  private initFieldOptions(root: FormlyFieldConfig, field: FormlyFieldConfig, index: number) {
+    Object.defineProperty(field, 'parent', { get: () => root, configurable: true });
+    Object.defineProperty(field, 'model', {
+      get: () => field.key && (field.fieldGroup || field.fieldArray) ? getFieldModel(root.model, field, true) : root.model,
+      configurable: true,
     });
-  }
+    if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(field.model, field.key))) {
+      assignModelValue(field.model, field.key, field.defaultValue);
+    }
 
-  private _assignModelToFields(fields: FormlyFieldConfig[], model: any, parent?: FormlyFieldConfig) {
-    fields.forEach((field) => {
-      if (!isUndefined(field.defaultValue) && isUndefined(getValueForKey(model, field.key))) {
-        assignModelValue(model, field.key, field.defaultValue);
-      }
-
-      Object.defineProperty(field, 'parent', { get: () => parent, configurable: true });
-      Object.defineProperty(field, 'model', {
-        get: () => field.key && (field.fieldGroup || field.fieldArray) ? getFieldModel(model, field, true) : model,
-        configurable: true,
-      });
-
-      if (field.key && field.fieldArray) {
-        field.fieldGroup = field.fieldGroup || [];
-        if (field.fieldGroup.length > field.model.length) {
-          for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
-            (<FormArray> field.formControl).removeAt(i);
-            field.fieldGroup.splice(i, 1);
-          }
-        }
-
-        for (let i = field.fieldGroup.length; i < field.model.length; i++) {
-          const f = { ...clone(field.fieldArray), key: `${i}` };
-          this.initFieldsType([f]);
-
-          field.fieldGroup.push(f);
-        }
-      }
-
-      if (field.fieldGroup) {
-        this._assignModelToFields(field.fieldGroup, field.model, field);
-      }
-    });
-  }
-
-  private initFieldOptions(field: FormlyFieldConfig, index: number) {
     field.id = getFieldId(`formly_${this.formId}`, field, index);
     field.templateOptions = field.templateOptions || {};
     field.modelOptions = field.modelOptions || {};
@@ -128,12 +89,36 @@ export class FormlyFormBuilder {
         focus: false,
       }, field.templateOptions);
     }
+    if (field.type) {
+      this.formlyConfig.getMergedField(field);
+    }
 
     this.initFieldWrappers(field);
+
+
+    if (field.key && field.fieldArray) {
+      this.initFieldArray(field);
+    }
+
     if (field.fieldGroup) {
       if (!field.type) {
         field.type = 'formly-group';
       }
+    }
+  }
+
+  private initFieldArray(field: FormlyFieldConfigCache) {
+    field.fieldGroup = field.fieldGroup || [];
+    if (field.fieldGroup.length > field.model.length) {
+      for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
+        (<FormArray> field.formControl).removeAt(i);
+        field.fieldGroup.splice(i, 1);
+      }
+    }
+
+    for (let i = field.fieldGroup.length; i < field.model.length; i++) {
+      const f = { ...clone(field.fieldArray), key: `${i}` };
+      field.fieldGroup.push(f);
     }
   }
 
@@ -210,19 +195,7 @@ export class FormlyFormBuilder {
 
   private initFieldValidation(field: FormlyFieldConfigCache) {
     field._validators = [];
-
-    FORMLY_VALIDATORS
-      .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt))
-        || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]),
-      )
-      .forEach((opt) => {
-        field._validators.push((control: AbstractControl) => {
-          return field.templateOptions[opt] !== false
-            ? this.getValidation(opt, field.templateOptions[opt])(control)
-            : null;
-        });
-      });
-
+    this.initPredefinedFieldValidation(field);
     if (field.validators) {
       for (const validatorName in field.validators) {
         if (validatorName !== 'validation') {
@@ -289,21 +262,31 @@ export class FormlyFormBuilder {
     }
   }
 
-  private getValidation(opt: string, value: any) {
-    switch (opt) {
-      case 'required':
-        return Validators.required;
-      case 'pattern':
-        return Validators.pattern(value);
-      case 'minLength':
-        return Validators.minLength(value);
-      case 'maxLength':
-        return Validators.maxLength(value);
-      case 'min':
-        return Validators.min(value);
-      case 'max':
-        return Validators.max(value);
-    }
+  private initPredefinedFieldValidation(field: FormlyFieldConfigCache) {
+    FORMLY_VALIDATORS
+      .filter(opt => field.templateOptions.hasOwnProperty(opt) || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]))
+      .forEach((opt) => {
+        field._validators.push((control: AbstractControl) => {
+          const value = field.templateOptions[opt];
+          if (value === false) {
+            return null;
+          }
+          switch (opt) {
+            case 'required':
+              return Validators.required(control);
+            case 'pattern':
+              return Validators.pattern(value)(control);
+            case 'minLength':
+              return Validators.minLength(value)(control);
+            case 'maxLength':
+              return Validators.maxLength(value)(control);
+            case 'min':
+              return Validators.min(value)(control);
+            case 'max':
+              return Validators.max(value)(control);
+          }
+        });
+      });
   }
 
   private wrapNgValidatorFn(field: FormlyFieldConfig, validator: string | FieldValidatorFn) {
@@ -316,32 +299,18 @@ export class FormlyFormBuilder {
 
   private initFieldWrappers(field: FormlyFieldConfig) {
     field.wrappers = field.wrappers || [];
-    const templateManipulators: TemplateManipulators = {
+    const fieldTemplateManipulators: TemplateManipulators = {
       preWrapper: [],
       postWrapper: [],
+      ...(field.templateOptions.templateManipulators || {}),
     };
 
-    if (field.templateOptions) {
-      this.mergeTemplateManipulators(templateManipulators, field.templateOptions.templateManipulators);
-    }
-
-    this.mergeTemplateManipulators(templateManipulators, this.formlyConfig.templateManipulators);
     field.wrappers = [
-      ...templateManipulators.preWrapper.map(m => m(field)),
-      ...(field.wrappers || []),
-      ...templateManipulators.postWrapper.map(m => m(field)),
+      ...this.formlyConfig.templateManipulators.preWrapper.map(m => m(field)),
+      ...fieldTemplateManipulators.preWrapper.map(m => m(field)),
+      ...field.wrappers,
+      ...this.formlyConfig.templateManipulators.postWrapper.map(m => m(field)),
+      ...fieldTemplateManipulators.postWrapper.map(m => m(field)),
     ].filter((el, i, a) => el && i === a.indexOf(el));
-  }
-
-  private mergeTemplateManipulators(source: TemplateManipulators, target: TemplateManipulators) {
-    target = target || {};
-    if (target.preWrapper) {
-      source.preWrapper = source.preWrapper.concat(target.preWrapper);
-    }
-    if (target.postWrapper) {
-      source.postWrapper = source.postWrapper.concat(target.postWrapper);
-    }
-
-    return source;
   }
 }
