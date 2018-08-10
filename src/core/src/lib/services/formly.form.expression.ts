@@ -3,7 +3,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../components/formly.field.config';
 import {
   isObject, isNullOrUndefined, isFunction,
-  FORMLY_VALIDATORS, getFieldModel, getKeyPath, removeFieldControl,
+  FORMLY_VALIDATORS, getFieldValue, getKeyPath, removeFieldControl,
   evalExpression, evalStringExpression, evalExpressionValueSetter,
 } from '../utils';
 import { Observable } from 'rxjs';
@@ -195,7 +195,7 @@ export class FormlyFormExpression {
   }
 
   private addFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig) {
-    const fieldModel = field.fieldGroup ? field.model : getFieldModel(field.model, field, false);
+    const fieldModel = getFieldValue(field);
     if (
       !(isNullOrUndefined(field.formControl.value) && isNullOrUndefined(fieldModel))
       && field.formControl.value !== fieldModel

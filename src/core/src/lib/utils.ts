@@ -27,7 +27,7 @@ export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fiel
       }
       for (let i = 0; i < keyPath.length; i++) {
         let pathElement = keyPath[i];
-        if (typeof pathElement === 'string' && stringIsInteger(pathElement))  {
+        if (typeof pathElement === 'string' && /^\d+$/.test(pathElement))  {
           keyPath[i] = parseInt(pathElement);
         }
       }
@@ -41,35 +41,7 @@ export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fiel
   return (<any> field)['_formlyKeyPath'].path.slice(0);
 }
 
-function stringIsInteger(str: string) {
-  return !isNullOrUndefined(str) && /^\d+$/.test(str);
-}
-
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
-
-export function getFieldModel(model: any, field: FormlyFieldConfig, constructEmptyObjects: boolean): any {
-  let keyPath: (string|number)[] = getKeyPath(field);
-  let value: any = model;
-  for (let i = 0; i < keyPath.length; i++) {
-    let path = keyPath[i];
-    let pathValue = value[path];
-    if (isNullOrUndefined(pathValue) && constructEmptyObjects) {
-      if (i < keyPath.length - 1) {
-        /* TODO? : It would be much nicer if we could construct object instances of the correct class, for instance by using factories. */
-        value[path] = typeof keyPath[i + 1] === 'number' ? [] : {};
-      } else if (field.fieldGroup && !field.fieldArray) {
-        value[path] = {};
-      } else if (field.fieldArray) {
-        value[path] = [];
-      }
-    }
-    value = value[path];
-    if (!value) {
-      break;
-    }
-  }
-  return value;
-}
 
 export function assignModelValue(model: any, path: string | (string | number)[], value: any) {
   if (typeof path === 'string') {
@@ -87,19 +59,15 @@ export function assignModelValue(model: any, path: string | (string | number)[],
   }
 }
 
-export function getValueForKey(model: any, path: string | (string | number)[]): any {
-  if (typeof path === 'string') {
-    path = getKeyPath({key: path});
+export function getFieldValue(field: FormlyFieldConfig): any {
+  const paths = getKeyPath(field);
+  let model = field.parent.model;
+  while (model && paths.length > 0) {
+    const e = paths.shift();
+    model = model[e];
   }
-  if (path.length > 1) {
-    const e = path.shift();
-    if (!model[e]) {
-      model[e] = typeof path[0] === 'string' ? {} : [];
-    }
-    return getValueForKey(model[e], path);
-  } else {
-    return model[path[0]];
-  }
+
+  return model;
 }
 
 export function getKey(controlKey: string, actualKey: string) {

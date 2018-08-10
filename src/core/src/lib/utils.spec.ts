@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getValueForKey, getKey, evalExpression, getKeyPath, getFieldModel, clone } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKey, evalExpression, getKeyPath, clone } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
 
@@ -29,7 +29,7 @@ describe('FormlyUtils service', () => {
     });
   });
 
-  describe('getValueForKey', () => {
+  describe('getFieldValue', () => {
     it('should properly get value', () => {
       let model = {
         value: 2,
@@ -38,10 +38,11 @@ describe('FormlyUtils service', () => {
           value: 'bar',
         },
       };
-      expect(getValueForKey(model, 'path.to.save')).toBe(undefined);
-      expect(getValueForKey(model, 'value')).toBe(2);
-      expect(getValueForKey(model, 'looks.nested')).toBe(undefined);
-      expect(getValueForKey(model, 'nested.value')).toBe('bar');
+
+      expect(getFieldValue({ parent: { model }, key: 'path.to.save' })).toBe(undefined);
+      expect(getFieldValue({ parent: { model }, key: 'value' })).toBe(2);
+      expect(getFieldValue({ parent: { model }, key: 'looks.nested' })).toBe(undefined);
+      expect(getFieldValue({ parent: { model }, key: 'nested.value' })).toBe('bar');
     });
   });
 
@@ -122,133 +123,15 @@ describe('FormlyUtils service', () => {
     });
 
   });
-
 });
 
-
-describe ('getFieldModel', () => {
-
-  it('should extract the correct simple property', () => {
-
-    let config: FormlyFieldConfig = {key: 'property1'};
-    let model: any = {property1: 3};
-    let fieldModel: any = getFieldModel(model, config, true);
-    expect(fieldModel).toEqual(3);
-
-  });
-
-
-  it('should extract the correct nested property', () => {
-
-    let config: FormlyFieldConfig = {key: 'property1.property2[2]'};
-    let model:  any = {property1: {property2: [1, 1, 2]}};
-    let fieldModel: any = getFieldModel(model, config, true);
-    expect(fieldModel).toEqual(2);
-
-    config = {key: 'property1.property2[2].property3'};
-    model = {property1: {property2: [1, 1, {property3: 'test'}]}};
-    fieldModel = getFieldModel(model, config, true);
-    expect(fieldModel).toEqual('test');
-
-    config = {key: 'property1.property2.property3'};
-    model = {property1: {property2: {property3: 'test'}}};
-    fieldModel = getFieldModel(model, config, true);
-    expect(fieldModel).toEqual('test');
-
-
-  });
-
-  it('should create the necessary empty objects in a simple property path', () => {
-
-    let config: FormlyFieldConfig = {key: 'property1'};
-    let model: any = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({});
-
-    config = {key: 'property1', fieldGroup: []};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {}});
-
-    config = {key: 'property1', fieldArray: {}};
-    model  = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: []});
-
-  });
-
-  it('should create the necessary empty objects in a nested property path', () => {
-
-    let config: FormlyFieldConfig = {key: 'property1.property2'};
-    let model: any  = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {}});
-
-    config = {key: 'property1.property2', fieldGroup: []};
-    model  = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: {}}});
-
-    config = {key: 'property1.property2', fieldArray: {}};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: []}});
-
-    config = {key: 'property1.property2.property3'};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: {}}});
-
-    config = {key: 'property1.property2.property3', fieldGroup: []};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: {property3: {}}}});
-
-    config = {key: 'property1.property2.property3', fieldArray: {}};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: {property3: []}}});
-
-    config  = {key: 'property1.property2[2]'};
-    model  = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: []}});
-
-    config = {key: 'property1.property2[2]', fieldGroup: []};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: [undefined, undefined, {}]}});
-
-    config = {key: 'property1.property2[2]', fieldArray: {}};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: [undefined, undefined, []]}});
-
-    config = {key: 'property1.property2[2].property3', fieldGroup: []};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: [undefined, undefined, {property3: {}}]}});
-
-    config = {key: 'property1.property2[2].property3', fieldArray: {}};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: [undefined, undefined, {property3: []}]}});
-
-    config = {key: 'property1.property2[2].property3'};
-    model = {};
-    getFieldModel(model, config, true);
-    expect(model).toEqual({property1: {property2: [undefined, undefined, {}]}});
-
-  });
-
-  describe('evalExpression', () => {
-    it('should evaluate the value correctly', () => {
-      let expression = () => { return this.model.val; };
-      this.model = {
-        val: 2,
-      };
-      expect(evalExpression(expression, this, [this.model])).toBe(2);
-    });
+describe('evalExpression', () => {
+  it('should evaluate the value correctly', () => {
+    let expression = () => { return this.model.val; };
+    this.model = {
+      val: 2,
+    };
+    expect(evalExpression(expression, this, [this.model])).toBe(2);
   });
 });
 
