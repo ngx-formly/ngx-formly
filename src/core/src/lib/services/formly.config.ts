@@ -39,7 +39,9 @@ export class FormlyConfig {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
   };
-  extensions: FormlyExtension[] = [new FieldExpressionExtension()];
+  extensions: { [name: string]: FormlyExtension } = {
+    'field-expression': new FieldExpressionExtension(),
+  };
 
   addConfig(config: ConfigOption) {
     if (config.types) {
@@ -58,7 +60,7 @@ export class FormlyConfig {
       config.validationMessages.forEach(validation => this.addValidatorMessage(validation.name, validation.message));
     }
     if (config.extensions) {
-      this.extensions = [...this.extensions, ...config.extensions];
+      config.extensions.forEach(c => this.extensions[c.name] = c.extension);
     }
     if (config.extras) {
       this.extras = { ...this.extras, ...config.extras };
@@ -220,6 +222,11 @@ export interface ValidatorOption {
   validation: FieldValidatorFn;
 }
 
+export interface ExtensionOption {
+  name: string;
+  extension: FormlyExtension;
+}
+
 export interface ValidationMessageOption {
   name: string;
   message: string | ((error: any, field: FormlyFieldConfig) => string);
@@ -243,7 +250,7 @@ export interface ConfigOption {
   types?: TypeOption[];
   wrappers?: WrapperOption[];
   validators?: ValidatorOption[];
-  extensions?: FormlyExtension[];
+  extensions?: ExtensionOption[];
   validationMessages?: ValidationMessageOption[];
   manipulators?: ManipulatorOption[];
   extras?: {
