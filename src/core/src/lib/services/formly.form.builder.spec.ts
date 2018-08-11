@@ -1,7 +1,6 @@
 import { FormlyFormBuilder, FormlyConfig, FormlyFieldConfig } from '../core';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component } from '@angular/core';
-import { FormlyFormExpression } from './formly.form.expression';
 import { MockComponent } from '../test-utils';
 import { FormlyFieldConfigCache } from '../components/formly.field.config';
 
@@ -22,7 +21,7 @@ describe('FormlyFormBuilder service', () => {
       validators: [{ name: 'required', validation: Validators.required }],
     });
 
-    builder = new FormlyFormBuilder(config, new FormlyFormExpression());
+    builder = new FormlyFormBuilder(config);
   });
 
   it('custom extension', () => {

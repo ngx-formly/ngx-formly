@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
 import {
   isObject, isNullOrUndefined, isFunction,
   FORMLY_VALIDATORS, getFieldValue, getKeyPath, removeFieldControl,
-  evalExpression, evalStringExpression, evalExpressionValueSetter,
-} from '../utils';
+} from '../../utils';
+import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -13,95 +13,80 @@ import { tap } from 'rxjs/operators';
  * @internal
  */
 @Injectable({ providedIn: 'root' })
-export class FormlyFormExpression {
-  initFields(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
-    this._initFields(fields as any, options);
-    this.checkFields(form, fields, model, options);
-  }
+export class FieldExpressionExtension {
+  onPopulate(field: FormlyFieldConfigCache) {
+    if (field._expressionProperties) {
+      return;
+    }
 
-  checkFields(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
-    this._checkFields(form, fields as any, options);
-  }
+    // cache built expression
+    field._expressionProperties = field._expressionProperties || {};
 
-  private _initFields(fields: FormlyFieldConfigCache[], options: FormlyFormOptions) {
-    fields.forEach((field) => {
-      if (field.expressionProperties) {
-        for (const key in field.expressionProperties) {
-          const expressionProperty = field.expressionProperties[key],
-            expressionValueSetter = evalExpressionValueSetter(
+    if (field.expressionProperties) {
+      for (const key in field.expressionProperties) {
+        const expressionProperty = field.expressionProperties[key],
+          expressionValueSetter = evalExpressionValueSetter(
             `field.${key}`,
             ['expressionValue', 'model', 'field'],
           );
 
-          if (typeof expressionProperty === 'string' || isFunction(expressionProperty)) {
-            // cache built expression
-            field._expressionProperties = field._expressionProperties || {};
-            field._expressionProperties[key] = {
-              expression: isFunction(expressionProperty)
-                ? expressionProperty
-                : evalStringExpression(expressionProperty as string, ['model', 'formState']),
-              expressionValueSetter,
-            };
-            if (key === 'templateOptions.disabled') {
-              Object.defineProperty(field._expressionProperties[key], 'expressionValue', {
-                get: () => field.templateOptions.disabled,
-                set: () => { },
-                enumerable: true,
-                configurable: true,
-              });
-            }
-          } else if (expressionProperty instanceof Observable) {
-            const subscription = (expressionProperty as Observable<any>).pipe(
-              tap(v => evalExpression(expressionValueSetter, { field }, [v, field.model, field])),
-            ).subscribe();
-
-            const onDestroy = field.lifecycle.onDestroy;
-            field.lifecycle.onDestroy = (...args) => {
-              if (onDestroy) {
-                onDestroy(...args);
-              }
-              subscription.unsubscribe();
-            };
+        if (typeof expressionProperty === 'string' || isFunction(expressionProperty)) {
+          field._expressionProperties[key] = {
+            expression: this._evalExpression(
+              expressionProperty,
+              field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
+                ? () => field.parent.templateOptions.disabled
+                : undefined,
+            ),
+            expressionValueSetter,
+          };
+          if (key === 'templateOptions.disabled') {
+            Object.defineProperty(field._expressionProperties[key], 'expressionValue', {
+              get: () => field.templateOptions.disabled,
+              set: () => { },
+              enumerable: true,
+              configurable: true,
+            });
           }
+        } else if (expressionProperty instanceof Observable) {
+          const subscription = (expressionProperty as Observable<any>).pipe(
+            tap(v => evalExpression(expressionValueSetter, { field }, [v, field.model, field])),
+          ).subscribe();
+
+          const onDestroy = field.lifecycle.onDestroy;
+          field.lifecycle.onDestroy = (...args) => {
+            if (onDestroy) {
+              onDestroy(...args);
+            }
+            subscription.unsubscribe();
+          };
         }
       }
+    }
 
-      if (field.hideExpression) {
-        // delete hide value in order to force re-evaluate it in FormlyFormExpression.
-        delete field.hide;
-        if (typeof field.hideExpression === 'string') {
-          // cache built expression
-          field.hideExpression = evalStringExpression(field.hideExpression, ['model', 'formState']);
-        }
-      }
+    if (field.hideExpression || field.parent.hideExpression) {
+      // delete hide value in order to force re-evaluate it in FormlyFormExpression.
+      delete field.hide;
+      field.hideExpression = this._evalExpression(
+        field.hideExpression,
+        field.parent && field.parent.hideExpression ? () => field.parent.hide : undefined,
+      );
+    }
 
-      if (field.fieldGroup) {
-        // if `hideExpression` is set in that case we have to deal
-        // with toggle FormControl for each field in fieldGroup separately
-        if (field.hideExpression) {
-          field.fieldGroup.forEach(f => f.hideExpression = this._wrapChildExpression(() => field.hide, f.hideExpression));
-        }
-
-        const disabledKey = 'templateOptions.disabled';
-        if (field.expressionProperties && field.expressionProperties.hasOwnProperty(disabledKey)) {
-          field.fieldGroup.forEach(f => {
-            f.expressionProperties = f.expressionProperties || {};
-            f.expressionProperties[disabledKey] = this._wrapChildExpression(() => field.templateOptions.disabled, f.expressionProperties[disabledKey]);
-          });
-        }
-
-        this._initFields(field.fieldGroup as any, options);
-      }
-    });
+    if (!field.options._checkField) {
+      field.options._checkField = (f) => this._checkFields(<FormGroup> f.formControl, f.fieldGroup, f.options);
+    }
   }
 
-  private _wrapChildExpression(parentExpression,  expression) {
+  private _evalExpression(expression, parentExpression?) {
     expression = expression || (() => false);
     if (typeof expression === 'string') {
       expression = evalStringExpression(expression, ['model', 'formState']);
     }
 
-    return (model: any, formState: any) => parentExpression() || expression(model, formState);
+    return parentExpression
+      ? (model: any, formState: any) => parentExpression() || expression(model, formState)
+      : expression;
   }
 
   private _checkFields(form: FormGroup | FormArray, fields: FormlyFieldConfigCache[] = [], options: FormlyFormOptions) {

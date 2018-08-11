@@ -3,25 +3,25 @@ import { Component } from '@angular/core';
 
 import { Subject, of } from 'rxjs';
 
-import { MockComponent } from '../test-utils';
 
-import { FormlyValueChangeEvent } from '../components/formly.field.config';
-import { FormlyConfig } from './formly.config';
-import { FormlyFieldConfig, FormlyFormBuilder, FormlyFormOptions, FieldArrayType } from '../core';
+import { FormlyFieldConfig, FormlyFormBuilder, FieldArrayType, FormlyConfig } from '@ngx-formly/core';
+import { MockComponent } from '../../test-utils';
+import { FormlyValueChangeEvent, FormlyFormOptionsCache } from '../../components/formly.field.config';
 
-import { FormlyFormExpression } from './formly.form.expression';
 
 describe('FormlyFormExpression service', () => {
-  let expression: FormlyFormExpression;
   let form: FormGroup;
+  let options: FormlyFormOptionsCache;
   let builder: FormlyFormBuilder;
   let TestComponent: Component;
 
   beforeEach(() => {
     TestComponent = MockComponent({ selector: 'formly-test-cmp' });
 
-    expression = new FormlyFormExpression();
     form = new FormGroup({});
+    options = {
+      fieldChanges: new Subject<FormlyValueChangeEvent>(),
+    };
     const config = new FormlyConfig();
     config.addConfig({
       types: [
@@ -33,7 +33,7 @@ describe('FormlyFormExpression service', () => {
       validators: [{ name: 'required', validation: Validators.required }],
     });
 
-    builder = new FormlyFormBuilder(config, new FormlyFormExpression());
+    builder = new FormlyFormBuilder(config);
   });
 
   describe('field visibility (hideExpression)', () => {
@@ -50,18 +50,15 @@ describe('FormlyFormExpression service', () => {
         },
       ];
       const model = {};
-      const options = {};
 
       builder.buildForm(form, fields, model, options);
-
-      expression.checkFields(form, fields, model, options);
 
       expect(fields[1].hide).toBeTruthy();
       expect(fields[1].templateOptions.hidden).toBeTruthy();
 
       model['visibilityToggle'] = 'test';
 
-      expression.checkFields(form, fields, model, options);
+      options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
       expect(fields[1].hide).toBeFalsy();
       expect(fields[1].templateOptions.hidden).toBeFalsy();
@@ -93,11 +90,8 @@ describe('FormlyFormExpression service', () => {
           addressIsRequired: true,
         }],
       };
-      const options = {};
 
       builder.buildForm(form, fields, model, options);
-
-      expression.checkFields(form, fields, model, options);
 
       const cityField = fields[0].fieldGroup[0].fieldGroup[0];
 
@@ -106,7 +100,7 @@ describe('FormlyFormExpression service', () => {
 
       model.address[0].addressIsRequired = false;
 
-      expression.checkFields(form, fields, model, options);
+      options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
       expect(cityField.templateOptions.hidden).toBeFalsy();
       expect(cityField.hide).toBeFalsy();
@@ -135,17 +129,14 @@ describe('FormlyFormExpression service', () => {
         const model = {
           checked: true,
         };
-        const options = {};
 
         builder.buildForm(form, fields, model, options);
-
-        expression.checkFields(form, fields, model, options);
 
         expect(fields[1].formControl.status).toEqual('INVALID');
 
         model.checked = false;
 
-        expression.checkFields(form, fields, model, options);
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
         expect(fields[1].formControl.status).toEqual('VALID');
       });
@@ -177,17 +168,14 @@ describe('FormlyFormExpression service', () => {
             checked: true,
           },
         };
-        const options = {};
 
         builder.buildForm(form, fields, model, options);
-
-        expression.checkFields(form, fields, model, options);
 
         expect(fields[0].fieldGroup[1].formControl.status).toEqual('INVALID');
 
         model.fieldgroup.checked = false;
 
-        expression.checkFields(form, fields, model, options);
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
         expect(fields[0].fieldGroup[1].formControl.status).toEqual('VALID');
       });
@@ -219,11 +207,8 @@ describe('FormlyFormExpression service', () => {
             addressIsRequired: true,
           }],
         };
-        const options = {};
 
         builder.buildForm(form, fields, model, options);
-
-        expression.checkFields(form, fields, model, options);
 
         const cityField = fields[0].fieldGroup[0].fieldGroup[0];
 
@@ -231,7 +216,7 @@ describe('FormlyFormExpression service', () => {
 
         model.address[0].addressIsRequired = false;
 
-        expression.checkFields(form, fields, model, options);
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
         expect(cityField.formControl.status).toEqual('VALID');
       });
@@ -253,7 +238,6 @@ describe('FormlyFormExpression service', () => {
           },
         ];
         const model = {};
-        const options = {};
 
         builder.buildForm(form, fields, model, options);
 
@@ -262,14 +246,14 @@ describe('FormlyFormExpression service', () => {
 
         expect(fields[1].formControl.status).toEqual('DISABLED');
 
-        expression.checkFields(form, fields, model, options);
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
         expect(fields[1].formControl.status).toEqual('VALID');
         expect(fields[1].templateOptions.disabled).toBeFalsy();
 
         model['disableToggle'] = true;
 
-        expression.checkFields(form, fields, model, options);
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
         expect(fields[1].formControl.status).toEqual('DISABLED');
         expect(fields[1].templateOptions.disabled).toBeTruthy();
@@ -297,24 +281,22 @@ describe('FormlyFormExpression service', () => {
         }];
 
         const model = {};
-        const options = {};
 
         builder.buildForm(form, fields, model, options);
-        expression.checkFields(form, fields, model, options);
 
         expect(fields[0].templateOptions.disabled).toBeTruthy();
         expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeTruthy();
         expect(fields[0].fieldGroup[1].templateOptions.disabled).toBeTruthy();
 
         disabled.address = false;
-        expression.checkFields(form, fields, model, options);
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
         expect(fields[0].templateOptions.disabled).toBeFalsy();
         expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeFalsy();
         expect(fields[0].fieldGroup[1].templateOptions.disabled).toBeFalsy();
 
         disabled.city = true;
-        expression.checkFields(form, fields, model, options);
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
         expect(fields[0].templateOptions.disabled).toBeFalsy();
         expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeTruthy();
@@ -358,11 +340,8 @@ describe('FormlyFormExpression service', () => {
         },
       ];
       const model = {};
-      const options: FormlyFormOptions = {
-        fieldChanges: new Subject<FormlyValueChangeEvent>(),
-      };
 
-      options.fieldChanges.subscribe(({field, type, value}) => {
+      options.fieldChanges.subscribe(({ field, type, value }) => {
         if (type === 'hidden' && field.formControl && value) {
           field.formControl.setValue(null);
         }
@@ -370,15 +349,13 @@ describe('FormlyFormExpression service', () => {
 
       builder.buildForm(form, fields, model, options);
 
-      expression.checkFields(form, fields, model, options);
-
       expect(fields[1].hide).toBeFalsy();
       expect(fields[1].templateOptions.hidden).toBeFalsy();
       expect(fields[1].formControl.value).toEqual('initial value');
 
       model['visibilityToggle'] = null;
 
-      expression.checkFields(form, fields, model, options);
+      options._checkField({ formControl: form, fieldGroup: fields, model, options });
 
       expect(fields[1].hide).toBeTruthy();
       expect(fields[1].templateOptions.hidden).toBeTruthy();
