@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKey, evalExpression, getKeyPath, clone } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKey, getKeyPath, clone } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
 
@@ -122,16 +122,6 @@ describe('FormlyUtils service', () => {
       expect(getKeyPath(fieldConfig)).toEqual(['ddd']);
     });
 
-  });
-});
-
-describe('evalExpression', () => {
-  it('should evaluate the value correctly', () => {
-    let expression = () => { return this.model.val; };
-    this.model = {
-      val: 2,
-    };
-    expect(evalExpression(expression, this, [this.model])).toBe(2);
   });
 });
 
