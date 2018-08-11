@@ -1,8 +1,7 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { FormlyFormExpression } from '../services/formly.form.expression';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, reverseDeepMerge } from '../utils';
 import { Subject, Subscription } from 'rxjs';
@@ -45,7 +44,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
-    private formlyExpression: FormlyFormExpression,
     private formlyConfig: FormlyConfig,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
@@ -123,8 +121,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       this.options.updateInitialValue = () => this.initialModel = reverseDeepMerge({}, this.model);
     }
 
-    if (!(<any> this.options).buildForm) {
-      (<any> this.options).buildForm = () => {
+    if (!(<FormlyFormOptionsCache> this.options)._buildForm) {
+      (<FormlyFormOptionsCache> this.options)._buildForm = () => {
         this.clearModelSubscriptions();
         this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
         this.trackModelChanges(this.fields);
@@ -133,8 +131,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private checkExpressionChange() {
-    if (this.isRoot) {
-      this.formlyExpression.checkFields(this.form, this.fields, this.model, this.options);
+    if (this.isRoot && (<FormlyFormOptionsCache> this.options)._checkField) {
+      (<FormlyFormOptionsCache> this.options)._checkField({ fieldGroup: this.fields, model: this.model, formControl: this.form, options: this.options });
     }
   }
 

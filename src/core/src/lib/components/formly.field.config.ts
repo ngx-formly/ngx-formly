@@ -173,6 +173,7 @@ export interface ExpressionPropertyCache {
 }
 
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
+  options?: FormlyFormOptionsCache;
   _expressionProperties?: { [property: string]: ExpressionPropertyCache };
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];
@@ -223,8 +224,13 @@ export interface FormlyLifeCycleOptions {
   afterViewInit?: FormlyLifeCycleFn;
   afterViewChecked?: FormlyLifeCycleFn;
   onDestroy?: FormlyLifeCycleFn;
+  [additionalProperties: string]: any;
 }
 
+export interface FormlyFormOptionsCache extends FormlyFormOptions {
+  _checkField?: (field: FormlyFieldConfigCache) => void;
+  _buildForm?: () => void;
+}
 export interface FormlyFormOptions {
   updateInitialValue?: () => void;
   resetModel?: (model?: any) => void;

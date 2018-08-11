@@ -15,12 +15,12 @@ export abstract class FieldArrayType extends FieldType {
     i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
 
-    (<any> this.options).buildForm();
+    (<any> this.options)._buildForm();
   }
 
   remove(i: number) {
     this.model.splice(i, 1);
 
-    (<any> this.options).buildForm();
+    (<any> this.options)._buildForm();
   }
 }
