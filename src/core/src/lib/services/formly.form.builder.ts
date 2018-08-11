@@ -30,9 +30,9 @@ export class FormlyFormBuilder {
   private _buildForm(root: FormlyFieldConfigCache) {
     this.formId++;
     root.fieldGroup.forEach((field, index) => {
-      this.formlyConfig.extensions.forEach(extension => extension.prePopulate && extension.prePopulate(field));
+      this.getExtensions().forEach(extension => extension.prePopulate && extension.prePopulate(field));
       this.initFieldOptions(root, field, index);
-      this.formlyConfig.extensions.forEach(extension => extension.onPopulate && extension.onPopulate(field));
+      this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
       this.initFieldValidation(field);
       this.initFieldAsyncValidation(field);
       if (field.key && field.type) {
@@ -66,8 +66,12 @@ export class FormlyFormBuilder {
       if (field.fieldGroup) {
         this._buildForm(field);
       }
-      this.formlyConfig.extensions.forEach(extension => extension.postPopulate && extension.postPopulate(field));
+      this.getExtensions().forEach(extension => extension.postPopulate && extension.postPopulate(field));
     });
+  }
+
+  private getExtensions() {
+    return Object.keys(this.formlyConfig.extensions).map(name => this.formlyConfig.extensions[name]);
   }
 
   private initFieldOptions(root: FormlyFieldConfigCache, field: FormlyFieldConfig, index: number) {

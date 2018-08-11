@@ -30,7 +30,7 @@ describe('FormlyFormBuilder service', () => {
       onPopulate: () => { },
       postPopulate: () => { },
     };
-    config.extensions.push(customExtension);
+    config.extensions.custom = customExtension;
 
     spyOn(customExtension, 'prePopulate');
     spyOn(customExtension, 'onPopulate');
