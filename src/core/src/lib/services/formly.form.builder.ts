@@ -32,9 +32,11 @@ export class FormlyFormBuilder {
   private _buildForm(root: FormlyFieldConfig) {
     this.formId++;
     root.fieldGroup.forEach((field, index) => {
+      this.formlyConfig.extensions.forEach(extension => extension.prePopulate && extension.prePopulate(field));
       this.initFieldOptions(root, field, index);
       this.initFieldValidation(field);
       this.initFieldAsyncValidation(field);
+      this.formlyConfig.extensions.forEach(extension => extension.onPopulate && extension.onPopulate(field));
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
         let rootForm = root.formControl as FormGroup, rootModel = field.fieldGroup ? { [paths[0]]: field.model } : field.model;
@@ -65,6 +67,7 @@ export class FormlyFormBuilder {
         field.formControl = root.formControl;
         this._buildForm(field);
       }
+      this.formlyConfig.extensions.forEach(extension => extension.postPopulate && extension.postPopulate(field));
     });
   }
 

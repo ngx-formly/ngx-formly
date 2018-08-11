@@ -10,11 +10,12 @@ describe('FormlyFormBuilder service', () => {
   let form: FormGroup;
   let field: FormlyFieldConfigCache;
   let TestComponent: Component;
+  let config: FormlyConfig;
 
   beforeEach(() => {
     TestComponent = MockComponent({ selector: 'formly-test-cmp' });
     form = new FormGroup({});
-    const config = new FormlyConfig();
+    config = new FormlyConfig();
     config.addConfig({
       types: [{ name: 'input', component: TestComponent }],
       wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
@@ -22,6 +23,24 @@ describe('FormlyFormBuilder service', () => {
     });
 
     builder = new FormlyFormBuilder(config, new FormlyFormExpression());
+  });
+
+  it('custom extension', () => {
+    const customExtension: any = {
+      prePopulate: () => { },
+      onPopulate: () => { },
+      postPopulate: () => { },
+    };
+    config.extensions.push(customExtension);
+
+    spyOn(customExtension, 'prePopulate');
+    spyOn(customExtension, 'onPopulate');
+    spyOn(customExtension, 'postPopulate');
+
+    builder.buildForm(form, [{ key: 'extension' }], {}, {});
+    expect(customExtension.prePopulate).toHaveBeenCalledBefore(customExtension.onPopulate);
+    expect(customExtension.onPopulate).toHaveBeenCalledBefore(customExtension.postPopulate);
+    expect(customExtension.postPopulate).toHaveBeenCalled();
   });
 
   it('should have the model accessible from the field itself', () => {
