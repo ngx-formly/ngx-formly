@@ -6,6 +6,12 @@ import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field
 
 export const FORMLY_CONFIG_TOKEN = new InjectionToken<FormlyConfig>('FORMLY_CONFIG_TOKEN');
 
+export interface FormlyExtension {
+  prePopulate?(field: FormlyFieldConfig): void;
+  onPopulate?(field: FormlyFieldConfig): void;
+  postPopulate?(field: FormlyFieldConfig): void;
+}
+
 /**
  * Maintains list of formly field directive types. This can be used to register new field templates.
  */
@@ -15,7 +21,6 @@ export class FormlyConfig {
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
   messages: { [name: string]: string | ((error: any, field: FormlyFieldConfig) => string); } = {};
-
   templateManipulators: {
     preWrapper: ManipulatorWrapper[];
     postWrapper: ManipulatorWrapper[];
@@ -23,7 +28,6 @@ export class FormlyConfig {
     preWrapper: [],
     postWrapper: [],
   };
-
   extras: {
     fieldTransform?: ((fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[])[],
     showError?: (field: FieldType) => boolean;
@@ -33,6 +37,7 @@ export class FormlyConfig {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
   };
+  extensions: FormlyExtension[] = [];
 
   addConfig(config: ConfigOption) {
     if (config.types) {
@@ -49,6 +54,9 @@ export class FormlyConfig {
     }
     if (config.validationMessages) {
       config.validationMessages.forEach(validation => this.addValidatorMessage(validation.name, validation.message));
+    }
+    if (config.extensions) {
+      this.extensions = [...this.extensions, ...config.extensions];
     }
     if (config.extras) {
       this.extras = { ...this.extras, ...config.extras };
@@ -233,6 +241,7 @@ export interface ConfigOption {
   types?: TypeOption[];
   wrappers?: WrapperOption[];
   validators?: ValidatorOption[];
+  extensions?: FormlyExtension[];
   validationMessages?: ValidationMessageOption[];
   manipulators?: ManipulatorOption[];
   extras?: {
