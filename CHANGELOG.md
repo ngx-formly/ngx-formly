@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.2"></a>
+# [5.0.0-beta.2](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.1...v5.0.0-beta.2) (2018-08-11)
+
+
+### Bug Fixes
+
+* **core:** page flicker on fieldArray changes ([#1110](https://github.com/formly-js/ngx-formly/issues/1110)) ([544e25d](https://github.com/formly-js/ngx-formly/commit/544e25d))
+
+
+### Features
+
+* fieldArray make key optional + allow passing FormGroup ([#1114](https://github.com/formly-js/ngx-formly/issues/1114)) ([a6650bd](https://github.com/formly-js/ngx-formly/commit/a6650bd))
+* take account of defaultValue for NestedForm ([#1115](https://github.com/formly-js/ngx-formly/issues/1115)) ([71ffe69](https://github.com/formly-js/ngx-formly/commit/71ffe69))
+* **core:** allow modify field during build-form ([#1118](https://github.com/formly-js/ngx-formly/issues/1118)) ([ec9606f](https://github.com/formly-js/ngx-formly/commit/ec9606f))
+* **core:** introduce field-expression extension ([#1119](https://github.com/formly-js/ngx-formly/issues/1119)) ([a18c7be](https://github.com/formly-js/ngx-formly/commit/a18c7be))
+* **core:** rename Field to FieldType ([#1111](https://github.com/formly-js/ngx-formly/issues/1111)) ([0eebe96](https://github.com/formly-js/ngx-formly/commit/0eebe96))
+* **core:** update extension config ([#1120](https://github.com/formly-js/ngx-formly/issues/1120)) ([5c93f5a](https://github.com/formly-js/ngx-formly/commit/5c93f5a))
+
+
+
 <a name="5.0.0-beta.1"></a>
 # [5.0.0-beta.1](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.0...v5.0.0-beta.1) (2018-08-08)
 
