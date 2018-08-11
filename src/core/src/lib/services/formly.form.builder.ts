@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators, AbstractControlOptions } from '@angular/forms';
 import { FormlyConfig, FieldValidatorFn, TemplateManipulators } from './formly.config';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
-import { FormlyFormExpression } from './formly.form.expression';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyFormOptionsCache } from '../components/formly.field.config';
+import { FieldExpressionExtension } from '../extensions';
 import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, getKeyPath, assignModelValue, isUndefined, clone, removeFieldControl, getFieldValue } from '../utils';
 
 @Injectable({ providedIn: 'root' })
@@ -11,30 +11,33 @@ export class FormlyFormBuilder {
 
   constructor(
     private formlyConfig: FormlyConfig,
-    private formlyFormExpression: FormlyFormExpression,
+    private formlyFormExpression: FieldExpressionExtension,
   ) {}
 
-  buildForm(form: FormGroup | FormArray, fields: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+  buildForm(formControl: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     const fieldTransforms = (options && options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
     (Array.isArray(fieldTransforms) ? fieldTransforms : [fieldTransforms]).forEach(fieldTransform => {
       if (fieldTransform) {
-        fields = fieldTransform(fields, model, form, options);
-        if (!fields) {
+        fieldGroup = fieldTransform(fieldGroup, model, formControl, options);
+        if (!fieldGroup) {
           throw new Error('fieldTransform must return an array of fields');
         }
       }
     });
 
-    this._buildForm({ fieldGroup: fields, model: model, formControl: form });
-    this.formlyFormExpression.initFields(form, fields, model, options);
+    this._buildForm({ fieldGroup, model, formControl, options });
+    if ((<FormlyFormOptionsCache>options)._checkField) {
+      (<FormlyFormOptionsCache> options)._checkField({ fieldGroup, model, formControl, options });
+    }
   }
 
-  private _buildForm(root: FormlyFieldConfig) {
+  private _buildForm(root: FormlyFieldConfigCache) {
     this.formId++;
     root.fieldGroup.forEach((field, index) => {
       this.initFieldOptions(root, field, index);
       this.initFieldValidation(field);
       this.initFieldAsyncValidation(field);
+      this.formlyFormExpression.onPopulate(field);
       if (field.key && field.type) {
         const paths = getKeyPath({ key: field.key });
         let rootForm = root.formControl as FormGroup, rootModel = field.fieldGroup ? { [paths[0]]: field.model } : field.model;
@@ -68,7 +71,8 @@ export class FormlyFormBuilder {
     });
   }
 
-  private initFieldOptions(root: FormlyFieldConfig, field: FormlyFieldConfig, index: number) {
+  private initFieldOptions(root: FormlyFieldConfigCache, field: FormlyFieldConfig, index: number) {
+    Object.defineProperty(field, 'options', { get: () => root.options, configurable: true });
     Object.defineProperty(field, 'parent', { get: () => root, configurable: true });
     Object.defineProperty(field, 'model', {
       get: () => field.key && field.fieldGroup ? getFieldValue(field) : root.model,
