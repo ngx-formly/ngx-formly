@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType } from './field.type';
 
 @Component({
   selector: 'formly-field-ion-datetime',
   template: `
-    <ion-item>
-      <ion-label [position]="to.labelPosition">{{ to.label }}</ion-label>
-      <ion-datetime
-        [displayFormat]="to.displayFormat"
-        [pickerFormat]="to.pickerFormat"
-        [min]="to.min"
-        [max]="to.max"
-        [formControl]="formControl"
-        [formlyAttributes]="field">
-      </ion-datetime>
-    </ion-item>
+    <ion-datetime
+      [displayFormat]="to.displayFormat"
+      [pickerFormat]="to.pickerFormat"
+      [min]="to.min"
+      [max]="to.max"
+      [formControl]="formControl"
+      [formlyAttributes]="field"
+      (ionChange)="change($event)">
+    </ion-datetime>
   `,
 })
 export class FormlyFieldDatetime extends FieldType {
