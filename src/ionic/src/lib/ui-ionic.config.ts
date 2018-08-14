@@ -47,7 +47,7 @@ export const IONIC_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'radio',
       component: FormlyFieldRadio,
-      wrappers: ['form-field'],
+      wrappers: [],
     },
     {
       name: 'toggle',

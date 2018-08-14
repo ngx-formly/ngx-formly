@@ -4,7 +4,10 @@ import { FieldWrapper } from '@ngx-formly/core';
 @Component({
   selector: 'formly-wrapper-ion-form-field',
   template: `
-    <ng-container #fieldComponent></ng-container>
+    <ion-item>
+      <ion-label [position]="to.labelPosition">{{ to.label }}</ion-label>
+      <ng-template #fieldComponent></ng-template>
+    </ion-item>
     <ion-item lines="none" *ngIf="showError">
       <ion-label>
         <ion-text color="danger">
