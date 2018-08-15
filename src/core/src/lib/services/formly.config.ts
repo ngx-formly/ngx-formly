@@ -120,9 +120,7 @@ export class FormlyConfig {
       });
     }
 
-    if (!field.component) {
-      field.component = this.types[name].component;
-    }
+    (<any>field).component = this.types[name].component;
 
     if (!field.wrappers && this.types[name].wrappers) {
       field.wrappers = [...this.types[name].wrappers];

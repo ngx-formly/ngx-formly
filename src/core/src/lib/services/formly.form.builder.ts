@@ -158,8 +158,8 @@ export class FormlyFormBuilder {
         }
         control.updateValueAndValidity();
       }
-    } else if (field.component && field.component.createControl) {
-      control = field.component.createControl(model[path], field);
+    } else if ((<any>field).component && (<any>field).component.createControl) {
+      control = (<any>field).component.createControl(model[path], field);
     } else if (field.fieldGroup && !field.fieldArray) {
       control = new FormGroup({}, abstractControlOptions);
     } else if (field.fieldArray) {

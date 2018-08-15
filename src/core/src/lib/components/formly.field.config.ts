@@ -129,11 +129,6 @@ export interface FormlyFieldConfig {
   type?: string;
 
   /**
-   * Can be set to replace the component that is defined in `type`.
-   */
-  component?: any;
-
-  /**
    * Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressionProperties`
    */
   focus?: boolean;
