@@ -20,7 +20,7 @@ export const FIELD_TYPE_COMPONENTS = [
   FormlyWrapperFormField,
 ];
 
-export const PRIME_NG_FORMLY_CONFIG: ConfigOption = {
+export const KENDO_FORMLY_CONFIG: ConfigOption = {
   types: [
     {
       name: 'input',
