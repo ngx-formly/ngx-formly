@@ -16,7 +16,10 @@ describe('FormlyFormBuilder service', () => {
     form = new FormGroup({});
     config = new FormlyConfig();
     config.addConfig({
-      types: [{ name: 'input', component: TestComponent }],
+      types: [
+        { name: 'input', component: TestComponent },
+        { name: 'input-createcontrol', component: TestComponentThatCreatesControl },
+      ],
       wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
       validators: [{ name: 'required', validation: Validators.required }],
     });
@@ -462,7 +465,7 @@ describe('FormlyFormBuilder service', () => {
 
   describe('form control creation and addition', () => {
     it('should let component create the form control', () =>  {
-      let field = { key: 'title', type: 'input', component: new TestComponentThatCreatesControl() };
+      let field = { key: 'title', type: 'input-createcontrol' };
 
       builder.buildForm(form, [field], {}, {});
 
@@ -673,9 +676,7 @@ describe('FormlyFormBuilder service', () => {
 });
 
 export class TestComponentThatCreatesControl {
-
-  createControl(model, field) {
+  static createControl(model, field) {
     return new FormControl('created by component');
   }
-
 }
