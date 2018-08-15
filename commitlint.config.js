@@ -12,6 +12,7 @@ module.exports = {
         'ionic',
         'primeng',
         'kendo',
+        'ng-zorro-antd',
         'demo',
         'guides',
         'schematics',
