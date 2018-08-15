@@ -15,6 +15,7 @@ import { UIComponent } from './ui.component';
         { path: 'ionic', loadChildren: './ui-ionic/config.module#ConfigModule' },
         { path: 'primeng', loadChildren: './ui-primeng/config.module#ConfigModule' },
         { path: 'kendo', loadChildren: './ui-kendo/config.module#ConfigModule' },
+        { path: 'ng-zorro-antd', loadChildren: './ui-ng-zorro-antd/config.module#ConfigModule' },
       ] },
     ]),
   ],
