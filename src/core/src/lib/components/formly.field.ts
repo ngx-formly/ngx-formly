@@ -84,8 +84,6 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       return;
     }
 
-    const type = this.formlyConfig.getType(this.field.type);
-
     let fieldComponent = this.fieldComponent;
     (this.field.wrappers || []).forEach(wrapperName => {
       const wrapper = this.formlyConfig.getWrapper(wrapperName);
@@ -93,7 +91,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       fieldComponent = wrapperRef.instance.fieldComponent;
     });
 
-    return this.createComponent(type.componentFactoryResolver, fieldComponent, type.component);
+    const type = this.formlyConfig.getType(this.field.type);
+    this.createComponent(type.componentFactoryResolver, fieldComponent, type.component);
   }
 
   private createComponent(componentFactoryResolver: ComponentFactoryResolver, fieldComponent: ViewContainerRef, component: any): ComponentRef<any> {
