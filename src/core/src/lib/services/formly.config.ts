@@ -3,9 +3,8 @@ import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angula
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
-import { FieldExpressionExtension } from '../extensions';
 
-export const FORMLY_CONFIG_TOKEN = new InjectionToken<FormlyConfig>('FORMLY_CONFIG_TOKEN');
+export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
 
 /** @experimental */
 export interface FormlyExtension {
@@ -39,9 +38,7 @@ export class FormlyConfig {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
   };
-  extensions: { [name: string]: FormlyExtension } = {
-    'field-expression': new FieldExpressionExtension(),
-  };
+  extensions: { [name: string]: FormlyExtension } = {};
 
   addConfig(config: ConfigOption) {
     if (config.types) {

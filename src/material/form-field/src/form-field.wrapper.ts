@@ -69,7 +69,7 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
       return;
     }
 
-    this.formField._initialGapCalculated = false;
+    this.formField.updateOutlineGap();
     this.initialGapCalculated = true;
   }
 
