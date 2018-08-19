@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.3"></a>
+# [5.0.0-beta.3](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.2...v5.0.0-beta.3) (2018-08-19)
+
+
+### Bug Fixes
+
+* **core:** hide internal component from public interface ([1f7404b](https://github.com/formly-js/ngx-formly/commit/1f7404b))
+* **kendo:** use KENDO prefix in config name ([#1128](https://github.com/formly-js/ngx-formly/issues/1128)) ([7b6511a](https://github.com/formly-js/ngx-formly/commit/7b6511a))
+* **material:** add missing id for toggle, slider and datepicker ([4569e86](https://github.com/formly-js/ngx-formly/commit/4569e86))
+
+
+### Features
+
+* **core:** take account of templateOptions attributes changes ([39bd41c](https://github.com/formly-js/ngx-formly/commit/39bd41c)), closes [#1132](https://github.com/formly-js/ngx-formly/issues/1132)
+* **ionic:** extended v4 support ([952bca6](https://github.com/formly-js/ngx-formly/commit/952bca6))
+
+
+
 <a name="5.0.0-beta.2"></a>
 # [5.0.0-beta.2](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.1...v5.0.0-beta.2) (2018-08-11)
 
