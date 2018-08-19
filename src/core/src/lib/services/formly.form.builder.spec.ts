@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component } from '@angular/core';
 import { MockComponent } from '../test-utils';
 import { FormlyFieldConfigCache } from '../components/formly.field.config';
+import { FieldExpressionExtension } from '../extensions';
 
 describe('FormlyFormBuilder service', () => {
   let builder: FormlyFormBuilder;
@@ -22,6 +23,7 @@ describe('FormlyFormBuilder service', () => {
       ],
       wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
       validators: [{ name: 'required', validation: Validators.required }],
+      extensions: [{ name: 'field-expression', extension: new FieldExpressionExtension() }],
     });
 
     builder = new FormlyFormBuilder(config);

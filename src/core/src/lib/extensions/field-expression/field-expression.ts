@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
 import {
@@ -8,12 +7,9 @@ import {
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { FormlyExtension } from '../../services/formly.config';
 
-/**
- * @internal
- */
-@Injectable({ providedIn: 'root' })
-export class FieldExpressionExtension {
+export class FieldExpressionExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
     if (field._expressionProperties) {
       return;

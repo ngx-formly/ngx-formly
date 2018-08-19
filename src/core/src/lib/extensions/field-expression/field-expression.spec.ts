@@ -7,9 +7,10 @@ import { Subject, of } from 'rxjs';
 import { FormlyFieldConfig, FormlyFormBuilder, FieldArrayType, FormlyConfig } from '@ngx-formly/core';
 import { MockComponent } from '../../test-utils';
 import { FormlyValueChangeEvent, FormlyFormOptionsCache } from '../../components/formly.field.config';
+import { FieldExpressionExtension } from './field-expression';
 
 
-describe('FormlyFormExpression service', () => {
+describe('FieldExpressionExtension', () => {
   let form: FormGroup;
   let options: FormlyFormOptionsCache;
   let builder: FormlyFormBuilder;
@@ -31,6 +32,7 @@ describe('FormlyFormExpression service', () => {
       ],
       wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
       validators: [{ name: 'required', validation: Validators.required }],
+      extensions: [{ name: 'field-expression', extension: new FieldExpressionExtension() }],
     });
 
     builder = new FormlyFormBuilder(config);
