@@ -42,6 +42,19 @@ describe('FormlyAttributes Component', () => {
         expect(fixture.componentInstance.field.focus).toBeFalsy();
       });
 
+      it('should change element attribute on edit templateOptions attributes', () => {
+        const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
+        const elm = getFormlyAttributesElement(fixture.nativeElement);
+
+        fixture.componentInstance.field.templateOptions.attributes = {
+          style: 'background: green',
+        };
+
+        expect(elm.getAttribute('style')).toBe('background: green');
+        expect(elm.getAttribute('min')).toEqual(null);
+        expect(elm.getAttribute('max')).toEqual(null);
+      });
+
       it('should change element attribute on edit templateOptions', () => {
         const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
         const elm = getFormlyAttributesElement(fixture.nativeElement);
