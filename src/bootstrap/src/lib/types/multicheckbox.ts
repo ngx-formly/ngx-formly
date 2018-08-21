@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
         [value]="option.value"
         [formControl]="formControl.get(option.key)"
         [formlyAttributes]="field">
-      <label class="custom-control-label" [for]="id + '_' + i">
+      <label *ngIf="to.label && !to.hideLabel" class="custom-control-label" [for]="id + '_' + i">
         {{ option.value }}
       </label>
     </div>
