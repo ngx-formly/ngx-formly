@@ -9,10 +9,7 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn, FormlyLifeCycl
 
 @Component({
   selector: 'formly-field',
-  template: `
-    <ng-template #fieldComponent></ng-template>
-    <div *ngIf="field.template && !field.fieldGroup" [innerHtml]="field.template"></div>
-  `,
+  template: `<ng-template #fieldComponent></ng-template>`,
   host: {
     '[style.display]': 'field.hide ? "none":""',
   },
@@ -77,12 +74,9 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs = [];
   }
 
-  private renderField(): ComponentRef<FieldType> {
+  private renderField() {
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this.componentRefs = [];
-    if (this.field.template) {
-      return;
-    }
 
     let fieldComponent = this.fieldComponent;
     (this.field.wrappers || []).forEach(wrapperName => {
