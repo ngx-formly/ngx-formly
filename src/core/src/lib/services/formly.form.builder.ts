@@ -93,6 +93,14 @@ export class FormlyFormBuilder {
         focus: false,
       }, field.templateOptions);
     }
+
+    if (field.template && field.type !== 'formly-template') {
+      if (field.type) {
+        console.warn(`NgxFormly: passing 'type' property is not allowed when 'template' is set.`);
+      }
+      field.type = 'formly-template';
+    }
+
     if (field.type) {
       this.formlyConfig.getMergedField(field);
     }
@@ -109,10 +117,8 @@ export class FormlyFormBuilder {
       this.initFieldArray(field);
     }
 
-    if (field.fieldGroup) {
-      if (!field.type) {
-        field.type = 'formly-group';
-      }
+    if (!field.type && field.fieldGroup) {
+      field.type = 'formly-group';
     }
   }
 
