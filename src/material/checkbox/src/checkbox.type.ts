@@ -11,7 +11,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [id]="id"
       [formlyAttributes]="field"
       (change)="change($event)"
-      [indeterminate]="to.indeterminate && model[key] === undefined"
+      [indeterminate]="to.indeterminate && field.formControl.value === null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">
       {{ to.label }}
