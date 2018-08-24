@@ -1,15 +1,15 @@
 import {
   Component, OnInit, OnChanges, EventEmitter, Input, Output, OnDestroy,
-  ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver, SimpleChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked,
+  ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
-import { FieldType } from '../templates/field.type';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn, FormlyLifeCycleOptions } from './formly.field.config';
+import { FieldWrapper } from '../templates/field.wrapper';
 
 @Component({
   selector: 'formly-field',
-  template: `<ng-template #fieldComponent></ng-template>`,
+  template: `<ng-template #container></ng-template>`,
   host: {
     '[style.display]': 'field.hide ? "none":""',
   },
@@ -23,9 +23,9 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   @Input() field: FormlyFieldConfig;
   @Input() options: FormlyFormOptions = {};
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
-  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
+  @ViewChild('container', {read: ViewContainerRef}) containerRef: ViewContainerRef;
 
-  private componentRefs: ComponentRef<FieldType>[] = [];
+  private componentRefs: ComponentRef<FieldWrapper>[] = [];
 
   constructor(private formlyConfig: FormlyConfig) {}
 
@@ -55,7 +55,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
-      this.renderField();
+      this.renderField(this.field, this.containerRef);
     }
 
     this.lifeCycleHooks(this.lifecycle.onChanges);
@@ -74,34 +74,18 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs = [];
   }
 
-  private renderField() {
+  private renderField(field: FormlyFieldConfig, containerRef: ViewContainerRef) {
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this.componentRefs = [];
 
-    let fieldComponent = this.fieldComponent;
-    (this.field.wrappers || []).forEach(wrapperName => {
-      const wrapper = this.formlyConfig.getWrapper(wrapperName);
-      const wrapperRef = this.createComponent(wrapper.componentFactoryResolver, fieldComponent, wrapper.component);
-      fieldComponent = wrapperRef.instance.fieldComponent;
+    const wrappers = <any>(field.wrappers || []).map(wrapperName => this.formlyConfig.getWrapper(wrapperName));
+    [...wrappers, this.formlyConfig.getType(field.type)].forEach(({ componentFactoryResolver, component }) => {
+      const ref = containerRef.createComponent<FieldWrapper>(componentFactoryResolver.resolveComponentFactory(component));
+
+      Object.assign(ref.instance, { form: this.form, options: this.options, field });
+      this.componentRefs.push(ref);
+      containerRef = ref.instance.fieldComponent;
     });
-
-    const type = this.formlyConfig.getType(this.field.type);
-    this.createComponent(type.componentFactoryResolver, fieldComponent, type.component);
-  }
-
-  private createComponent(componentFactoryResolver: ComponentFactoryResolver, fieldComponent: ViewContainerRef, component: any): ComponentRef<any> {
-    let componentFactory = componentFactoryResolver.resolveComponentFactory(component);
-    let ref = <ComponentRef<FieldType>>fieldComponent.createComponent(componentFactory);
-
-    Object.assign(ref.instance, {
-        form: this.form,
-        field: this.field,
-        options: this.options,
-    });
-
-    this.componentRefs.push(ref);
-
-    return ref;
   }
 
   private get lifecycle(): FormlyLifeCycleOptions {
