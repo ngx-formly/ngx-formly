@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.4"></a>
+# [5.0.0-beta.4](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.3...v5.0.0-beta.4) (2018-08-27)
+
+
+### Bug Fixes
+
+* **bootstrap:** rely on control value for indeterminate checkbox state ([ad50e11](https://github.com/formly-js/ngx-formly/commit/ad50e11)), closes [#1143](https://github.com/formly-js/ngx-formly/issues/1143)
+
+
+### Features
+
+* **core:** move template render into separate field-type ([dccf8e2](https://github.com/formly-js/ngx-formly/commit/dccf8e2))
+
+
+
 <a name="5.0.0-beta.3"></a>
 # [5.0.0-beta.3](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.2...v5.0.0-beta.3) (2018-08-19)
 
