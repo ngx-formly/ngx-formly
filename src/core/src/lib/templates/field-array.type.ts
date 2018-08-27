@@ -13,7 +13,7 @@ export abstract class FieldArrayType extends FieldType {
 
   add(i?: number, initialModel?: any) {
     i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
-    this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
+    this.model = [...this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined)];
 
     (<any> this.options)._buildForm();
   }
