@@ -9,6 +9,7 @@ import { MockComponent } from '../../test-utils';
 import { FormlyValueChangeEvent, FormlyFormOptionsCache } from '../../components/formly.field.config';
 import { FieldExpressionExtension } from './field-expression';
 import { FieldValidationExtension } from '../field-validation/field-validation';
+import { FieldFormExtension } from '../field-form/field-form';
 
 
 describe('FieldExpressionExtension', () => {
@@ -35,6 +36,7 @@ describe('FieldExpressionExtension', () => {
       validators: [{ name: 'required', validation: Validators.required }],
       extensions: [
         { name: 'field-validation', extension: new FieldValidationExtension(config) },
+        { name: 'field-form', extension: new FieldFormExtension() },
         { name: 'field-expression', extension: new FieldExpressionExtension() },
       ],
     });
