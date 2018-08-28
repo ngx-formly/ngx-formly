@@ -10,8 +10,16 @@ import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../services/formly.config';
 
 export class FieldExpressionExtension implements FormlyExtension {
+  prePopulate(field: FormlyFieldConfigCache) {
+    if (field.parent || field.options._checkField) {
+      return;
+    }
+
+    field.options._checkField = (f) => this._checkField(f);
+  }
+
   onPopulate(field: FormlyFieldConfigCache) {
-    if (field._expressionProperties) {
+    if (!field.parent || field._expressionProperties) {
       return;
     }
 
@@ -68,10 +76,13 @@ export class FieldExpressionExtension implements FormlyExtension {
         field.parent && field.parent.hideExpression ? () => field.parent.hide : undefined,
       );
     }
+  }
 
-    if (!field.options._checkField) {
-      field.options._checkField = (f) => this._checkField(f);
+  postPopulate(field: FormlyFieldConfigCache) {
+    if (field.parent) {
+      return;
     }
+    field.options._checkField(field);
   }
 
   private _evalExpression(expression, parentExpression?) {

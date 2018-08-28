@@ -41,7 +41,7 @@ describe('FormlyFormBuilder service', () => {
     spyOn(customExtension, 'onPopulate');
     spyOn(customExtension, 'postPopulate');
 
-    builder.buildForm(form, [{ key: 'extension' }], {}, {});
+    builder.buildForm(form, [], {}, {});
     expect(customExtension.prePopulate).toHaveBeenCalledBefore(customExtension.onPopulate);
     expect(customExtension.onPopulate).toHaveBeenCalledBefore(customExtension.postPopulate);
     expect(customExtension.postPopulate).toHaveBeenCalled();
