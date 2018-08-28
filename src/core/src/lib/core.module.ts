@@ -7,16 +7,21 @@ import { FormlyConfig, ConfigOption, FORMLY_CONFIG } from './services/formly.con
 import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyGroup } from './components/formly.group';
 import { FormlyValidationMessage } from './templates/formly.validation-message';
-import { FieldExpressionExtension } from './extensions/field-expression/field-expression';
 import { FormlyTemplateType } from './templates/field-template.type';
 
-export function defaultFormlyConfig(): ConfigOption {
+import { FieldExpressionExtension } from './extensions/field-expression/field-expression';
+import { FieldValidationExtension } from './extensions/field-validation/field-validation';
+
+export function defaultFormlyConfig(formlyConfig: FormlyConfig): ConfigOption {
   return {
     types: [
       { name: 'formly-group', component: FormlyGroup },
       { name: 'formly-template', component: FormlyTemplateType },
     ],
-    extensions: [{ name: 'field-expression', extension: new FieldExpressionExtension() }],
+    extensions: [
+      { name: 'field-validation', extension: new FieldValidationExtension(formlyConfig) },
+      { name: 'field-expression', extension: new FieldExpressionExtension() },
+    ],
   };
 }
 
@@ -38,7 +43,7 @@ export class FormlyModule {
     return {
       ngModule: FormlyModule,
       providers: [
-        { provide: FORMLY_CONFIG, multi: true, useFactory: defaultFormlyConfig },
+        { provide: FORMLY_CONFIG, multi: true, useFactory: defaultFormlyConfig, deps: [FormlyConfig] },
         { provide: FORMLY_CONFIG, useValue: config, multi: true },
         { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
         FormlyConfig,

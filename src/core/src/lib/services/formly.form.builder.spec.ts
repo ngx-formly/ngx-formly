@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { MockComponent } from '../test-utils';
 import { FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FieldExpressionExtension } from '../extensions';
+import { FieldValidationExtension } from '../extensions/field-validation/field-validation';
 
 describe('FormlyFormBuilder service', () => {
   let builder: FormlyFormBuilder;
@@ -23,7 +24,10 @@ describe('FormlyFormBuilder service', () => {
       ],
       wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
       validators: [{ name: 'required', validation: Validators.required }],
-      extensions: [{ name: 'field-expression', extension: new FieldExpressionExtension() }],
+      extensions: [
+        { name: 'field-validation', extension: new FieldValidationExtension(config) },
+        { name: 'field-expression', extension: new FieldExpressionExtension() },
+      ],
     });
 
     builder = new FormlyFormBuilder(config);
