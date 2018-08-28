@@ -146,7 +146,7 @@ export class FormlyConfig {
       this.types[type] = <TypeOption>{};
     }
     if (!this.types[type].wrappers) {
-      this.types[type].wrappers = <[string]>[];
+      this.types[type].wrappers = [];
     }
     if (this.types[type].wrappers.indexOf(name) === -1) {
       this.types[type].wrappers.push(name);

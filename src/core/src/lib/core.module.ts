@@ -12,6 +12,7 @@ import { FormlyTemplateType } from './templates/field-template.type';
 import { FieldExpressionExtension } from './extensions/field-expression/field-expression';
 import { FieldValidationExtension } from './extensions/field-validation/field-validation';
 import { FieldFormExtension } from './extensions/field-form/field-form';
+import { CoreExtension } from './extensions/core/core';
 
 export function defaultFormlyConfig(formlyConfig: FormlyConfig): ConfigOption {
   return {
@@ -20,6 +21,7 @@ export function defaultFormlyConfig(formlyConfig: FormlyConfig): ConfigOption {
       { name: 'formly-template', component: FormlyTemplateType },
     ],
     extensions: [
+      { name: 'core', extension: new CoreExtension(formlyConfig) },
       { name: 'field-validation', extension: new FieldValidationExtension(formlyConfig) },
       { name: 'field-form', extension: new FieldFormExtension() },
       { name: 'field-expression', extension: new FieldExpressionExtension() },
