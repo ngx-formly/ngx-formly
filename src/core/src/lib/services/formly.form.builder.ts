@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, AbstractControl, Validators, AbstractControlOptions } from '@angular/forms';
 import { FormlyConfig, FieldValidatorFn, TemplateManipulators } from './formly.config';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyFormOptionsCache } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FORMLY_VALIDATORS, getFieldId, isObject, isNullOrUndefined, getKeyPath, assignModelValue, isUndefined, clone, removeFieldControl, getFieldValue } from '../utils';
 
 @Injectable({ providedIn: 'root' })
@@ -22,67 +22,68 @@ export class FormlyFormBuilder {
     });
 
     this._buildForm({ fieldGroup, model, formControl, options });
-    if ((<FormlyFormOptionsCache>options)._checkField) {
-      (<FormlyFormOptionsCache> options)._checkField({ fieldGroup, model, formControl, options });
-    }
   }
 
-  private _buildForm(root: FormlyFieldConfigCache) {
-    this.formId++;
-    root.fieldGroup.forEach((field, index) => {
-      this.getExtensions().forEach(extension => extension.prePopulate && extension.prePopulate(field));
-      this.initFieldOptions(root, field, index);
-      this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
-      this.initFieldValidation(field);
-      this.initFieldAsyncValidation(field);
-      if (field.key && field.type) {
-        const paths = getKeyPath({ key: field.key });
-        let rootForm = root.formControl as FormGroup, rootModel = field.fieldGroup ? { [paths[0]]: field.model } : field.model;
-        paths.forEach((path, index) => {
-          // FormGroup/FormArray only allow string value for path
-          const formPath = path.toString();
-          // is last item
-          if (index === paths.length - 1) {
-            this.addFormControl(rootForm, field, rootModel, formPath);
-
-          } else {
-            let nestedForm = rootForm.get(formPath) as FormGroup;
-            if (!nestedForm) {
-              nestedForm = new FormGroup({});
-              this.addControl(rootForm, formPath, nestedForm);
-            }
-            if (!rootModel[path]) {
-              rootModel[path] = typeof path === 'string' ? {} : [];
-            }
-
-            rootForm = nestedForm;
-            rootModel = rootModel[path];
+  private _buildForm(field: FormlyFieldConfigCache) {
+    this.getExtensions().forEach(extension => extension.prePopulate && extension.prePopulate(field));
+    this.initFieldOptions(field);
+    this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
+    this.initFieldValidation(field);
+    this.initFieldAsyncValidation(field);
+    if (field.key && field.type) {
+      const paths = getKeyPath({ key: field.key });
+      let rootForm = field.parent.formControl as FormGroup, rootModel = field.fieldGroup ? { [paths[0]]: field.model } : field.model;
+      paths.forEach((path, index) => {
+        // FormGroup/FormArray only allow string value for path
+        const formPath = path.toString();
+        // is last item
+        if (index === paths.length - 1) {
+          this.addFormControl(rootForm, field, rootModel, formPath);
+        } else {
+          if (!rootModel[path]) {
+            rootModel[path] = typeof path === 'string' ? {} : [];
           }
-        });
-      } else if (!field.key && field.fieldGroup) {
-        field.formControl = root.formControl;
+          this.addFormControl(rootForm, { key: formPath, fieldGroup: [], modelOptions: {}, templateOptions: {} }, rootModel, formPath);
+
+          rootForm = <FormGroup> rootForm.get(formPath);
+          rootModel = rootModel[path];
+        }
+      });
+    }
+
+    if (field.fieldGroup) {
+      if (!field.formControl) {
+        field.formControl = field.parent.formControl;
       }
 
-      if (field.fieldGroup) {
-        this._buildForm(field);
-      }
-      this.getExtensions().forEach(extension => extension.postPopulate && extension.postPopulate(field));
-    });
+      field.fieldGroup.forEach((f, index) => {
+        Object.defineProperty(f, 'parent', { get: () => field, configurable: true });
+        Object.defineProperty(f, 'index', { get: () => index, configurable: true });
+        this.formId++;
+        this._buildForm(f);
+      });
+    }
+
+    this.getExtensions().forEach(extension => extension.postPopulate && extension.postPopulate(field));
   }
 
   private getExtensions() {
     return Object.keys(this.formlyConfig.extensions).map(name => this.formlyConfig.extensions[name]);
   }
 
-  private initFieldOptions(root: FormlyFieldConfigCache, field: FormlyFieldConfig, index: number) {
+  private initFieldOptions(field: FormlyFieldConfigCache) {
+    const root = <FormlyFieldConfigCache> field.parent;
+    if (!root) {
+      return;
+    }
+
     Object.defineProperty(field, 'options', { get: () => root.options, configurable: true });
-    Object.defineProperty(field, 'parent', { get: () => root, configurable: true });
     Object.defineProperty(field, 'model', {
       get: () => field.key && field.fieldGroup ? getFieldValue(field) : root.model,
       configurable: true,
     });
 
-    field.id = getFieldId(`formly_${this.formId}`, field, index);
+    field.id = getFieldId(`formly_${this.formId}`, field, field['index']);
     field.templateOptions = field.templateOptions || {};
     field.modelOptions = field.modelOptions || {};
     field.lifecycle = field.lifecycle || {};
@@ -137,7 +138,7 @@ export class FormlyFormBuilder {
     }
   }
 
-  private addFormControl(form: FormGroup | FormArray, field: FormlyFieldConfigCache, model: any, path: string) {
+  private addFormControl(form: FormGroup | FormArray, field: FormlyFieldConfigCache, model: any, path: string|number) {
     const abstractControlOptions = {
       validators: field._validators,
       asyncValidators: field._asyncValidators,
@@ -145,8 +146,8 @@ export class FormlyFormBuilder {
     } as AbstractControlOptions;
     let control: AbstractControl;
 
-    if (field.formControl instanceof AbstractControl || form.get(path)) {
-      control = field.formControl || form.get(path);
+    if (field.formControl instanceof AbstractControl || form.get(<string> path)) {
+      control = field.formControl || form.get(<string> path);
       if (
         !(isNullOrUndefined(control.value) && isNullOrUndefined(model[path]))
         && control.value !== model[path]
@@ -189,21 +190,17 @@ export class FormlyFormBuilder {
       });
     }
 
-    this.addControl(form, path, control, field);
-  }
-
-  private addControl(form: FormGroup | FormArray, key: string | number, formControl: AbstractControl, field?: FormlyFieldConfig) {
     if (field) {
-      field.formControl = formControl;
+      field.formControl = control;
     }
 
     if (form instanceof FormArray) {
-      if (form.at(<number> key) !== formControl) {
-        form.setControl(<number>key, formControl);
+      if (form.at(<number> path) !== control) {
+        form.setControl(<number> path, control);
       }
     } else {
-      if (form.get(<string> key) !== formControl) {
-        form.setControl(<string>key, formControl);
+      if (form.get(<string> path) !== control) {
+        form.setControl(<string> path, control);
       }
     }
   }
@@ -287,7 +284,7 @@ export class FormlyFormBuilder {
 
   private initPredefinedFieldValidation(field: FormlyFieldConfigCache) {
     FORMLY_VALIDATORS
-      .filter(opt => field.templateOptions.hasOwnProperty(opt) || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]))
+      .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt)) || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]))
       .forEach((opt) => {
         field._validators.push((control: AbstractControl) => {
           const value = field.templateOptions[opt];
