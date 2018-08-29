@@ -3,6 +3,7 @@ import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, FormGroup, FormArray, FormControl, AbstractControlOptions } from '@angular/forms';
 import { getKeyPath, isNullOrUndefined } from '../../utils';
 
+/** @experimental */
 export class FieldFormExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
     if (field.key && field.type) {
@@ -58,8 +59,8 @@ export class FieldFormExtension implements FormlyExtension {
         }
         control.updateValueAndValidity();
       }
-    } else if ((<any> field).component && (<any> field).component.createControl) {
-      control = (<any> field).component.createControl(model[path], field);
+    } else if (field._componentFactory && field._componentFactory.component && field._componentFactory.component.createControl) {
+      control = field._componentFactory.component.createControl(model[path], field);
     } else if (field.fieldGroup && !field.fieldArray) {
       control = new FormGroup({}, abstractControlOptions);
     } else if (field.fieldArray) {

@@ -3,6 +3,7 @@ import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators } from '@angular/forms';
 import { isObject, FORMLY_VALIDATORS } from '../../utils';
 
+/** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
@@ -10,7 +11,6 @@ export class FieldValidationExtension implements FormlyExtension {
     this.initFieldValidation(field);
     this.initFieldAsyncValidation(field);
   }
-
 
   private initFieldValidation(field: FormlyFieldConfigCache) {
     if (field._validators) {

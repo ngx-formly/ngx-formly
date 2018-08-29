@@ -79,8 +79,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs = [];
 
     const wrappers = <any>(field.wrappers || []).map(wrapperName => this.formlyConfig.getWrapper(wrapperName));
-    [...wrappers, this.formlyConfig.getType(field.type)].forEach(({ componentFactoryResolver, component }) => {
-      const ref = containerRef.createComponent<FieldWrapper>(componentFactoryResolver.resolveComponentFactory(component));
+    [...wrappers, { ...this.formlyConfig.getType(field.type), componentFactory: (<any> field)._componentFactory }].forEach(({ componentFactoryResolver, component, componentRef }) => {
+      const ref = componentRef ? componentRef : containerRef.createComponent<FieldWrapper>(componentFactoryResolver.resolveComponentFactory(component));
 
       Object.assign(ref.instance, { form: this.form, options: this.options, field });
       this.componentRefs.push(ref);

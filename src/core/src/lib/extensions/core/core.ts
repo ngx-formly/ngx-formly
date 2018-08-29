@@ -3,11 +3,14 @@ import { FormlyFieldConfigCache, FormlyFieldConfig } from '../../components/form
 import { FormGroup, FormArray } from '@angular/forms';
 import { getFieldId, assignModelValue, isUndefined, clone, removeFieldControl, getFieldValue } from '../../utils';
 
+/** @experimental */
 export class CoreExtension implements FormlyExtension {
   private formId = 0;
   constructor(private formlyConfig: FormlyConfig) { }
 
   prePopulate(field: FormlyFieldConfigCache) {
+    this.formlyConfig.createComponentInstance(field);
+    this.getFieldComponentInstance(field).prePopulate();
     if (field.parent) {
       return;
     }
@@ -26,6 +29,7 @@ export class CoreExtension implements FormlyExtension {
 
   onPopulate(field: FormlyFieldConfigCache) {
     this.initFieldOptions(field);
+    this.getFieldComponentInstance(field).onPopulate();
     if (field.fieldGroup) {
       field.fieldGroup.forEach((f, index) => {
         Object.defineProperty(f, 'parent', { get: () => field, configurable: true });
@@ -35,6 +39,9 @@ export class CoreExtension implements FormlyExtension {
     }
   }
 
+  postPopulate(field: FormlyFieldConfigCache) {
+    this.getFieldComponentInstance(field).postPopulate();
+  }
 
   private initFieldOptions(field: FormlyFieldConfigCache) {
     const root = <FormlyFieldConfigCache> field.parent;
@@ -118,5 +125,18 @@ export class CoreExtension implements FormlyExtension {
       ...this.formlyConfig.templateManipulators.postWrapper.map(m => m(field)),
       ...fieldTemplateManipulators.postWrapper.map(m => m(field)),
     ].filter((el, i, a) => el && i === a.indexOf(el));
+  }
+
+  private getFieldComponentInstance(field: FormlyFieldConfigCache) {
+    let instance: FormlyExtension = {};
+    if (field._componentFactory && field._componentFactory.componentRef) {
+      instance = field._componentFactory.componentRef.instance;
+    }
+
+    return {
+      prePopulate: () => instance.prePopulate && instance.prePopulate(field),
+      onPopulate: () => instance.onPopulate && instance.onPopulate(field),
+      postPopulate: () => instance.postPopulate && instance.postPopulate(field),
+    };
   }
 }
