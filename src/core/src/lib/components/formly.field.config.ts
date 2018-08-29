@@ -2,6 +2,7 @@ import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray, Asyn
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { TemplateManipulators } from '../services/formly.config';
+import { ComponentFactoryResolver, ComponentRef } from '@angular/core';
 
 export interface FormlyFieldConfig {
   /**
@@ -172,6 +173,12 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _expressionProperties?: { [property: string]: ExpressionPropertyCache };
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];
+  _componentFactory?: {
+    type: string;
+    component: any;
+    componentFactoryResolver: ComponentFactoryResolver,
+    componentRef?: ComponentRef<any>;
+  };
 }
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;

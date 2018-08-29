@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../services/formly.config';
 
+/** @experimental */
 export class FieldExpressionExtension implements FormlyExtension {
   prePopulate(field: FormlyFieldConfigCache) {
     if (field.parent || field.options._checkField) {

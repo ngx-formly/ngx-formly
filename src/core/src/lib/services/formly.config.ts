@@ -2,7 +2,7 @@ import { Injectable, InjectionToken, ComponentFactoryResolver } from '@angular/c
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge } from './../utils';
-import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
 
 export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
 
@@ -93,35 +93,45 @@ export class FormlyConfig {
   }
 
   getMergedField(field: FormlyFieldConfig = {}): any {
-    let name = field.type;
-    if (!this.types[name]) {
-      throw new Error(`[Formly Error] There is no type by the name of "${name}"`);
+    const type = this.getType(field.type);
+    if (type.defaultOptions) {
+      reverseDeepMerge(field, type.defaultOptions);
     }
 
-    this.mergeExtendedType(name);
-    if (this.types[name].defaultOptions) {
-      reverseDeepMerge(field, this.types[name].defaultOptions);
-    }
-
-    let extendDefaults = this.types[name].extends && this.getType(this.types[name].extends).defaultOptions;
+    const extendDefaults = type.extends && this.getType(type.extends).defaultOptions;
     if (extendDefaults) {
       reverseDeepMerge(field, extendDefaults);
     }
 
     if (field && field.optionsTypes) {
       field.optionsTypes.forEach(option => {
-        let defaultOptions = this.getType(option).defaultOptions;
+        const defaultOptions = this.getType(option).defaultOptions;
         if (defaultOptions) {
           reverseDeepMerge(field, defaultOptions);
         }
       });
     }
 
-    (<any> field).component = this.types[name].component;
-
-    if (!field.wrappers && this.types[name].wrappers) {
-      field.wrappers = [...this.types[name].wrappers];
+    if (!field.wrappers && type.wrappers) {
+      field.wrappers = [...type.wrappers];
     }
+
+    this.createComponentInstance(field);
+  }
+
+  createComponentInstance(field: FormlyFieldConfigCache = {}) {
+    if (!field.type || field._componentFactory && field.type === field._componentFactory.type) {
+      return;
+    }
+    const type = this.getType(field.type);
+    field._componentFactory = {
+      type: field.type,
+      component: type.component,
+      componentFactoryResolver: type.componentFactoryResolver,
+      componentRef: !type.componentFactoryResolver ? undefined : type.componentFactoryResolver
+        .resolveComponentFactory(type.component)
+        .create((<any> type.componentFactoryResolver)._ngModule.injector),
+    };
   }
 
   setWrapper(options: WrapperOption) {
