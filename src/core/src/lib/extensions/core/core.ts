@@ -15,6 +15,7 @@ export class CoreExtension implements FormlyExtension {
     const fieldTransforms = (field.options && field.options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
     (Array.isArray(fieldTransforms) ? fieldTransforms : [fieldTransforms]).forEach(fieldTransform => {
       if (fieldTransform) {
+        console.warn(`NgxFormly: fieldTransform is deprecated since v5.0, use custom extension instead.`);
         const fieldGroup = fieldTransform(field.fieldGroup, field.model, <FormGroup>field.formControl, field.options);
         if (!fieldGroup) {
           throw new Error('fieldTransform must return an array of fields');
