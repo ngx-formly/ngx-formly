@@ -10,7 +10,7 @@ import { FieldType } from '@ngx-formly/core';
         [indeterminate]="to.indeterminate && field.formControl.value === null"
         [formControl]="formControl"
         [formlyAttributes]="field">
-      <label class="custom-control-label" [for]="id">
+      <label *ngIf="to.label && !to.hideCheckboxLabel" class="custom-control-label" [for]="id">
         {{ to.label }}
         <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
       </label>
