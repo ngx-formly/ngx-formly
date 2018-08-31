@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.5"></a>
+# [5.0.0-beta.5](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.4...v5.0.0-beta.5) (2018-08-31)
+
+
+### Bug Fixes
+
+* **core:** set enumerable to false for hidden props ([#1159](https://github.com/formly-js/ngx-formly/issues/1159)) ([5e9942f](https://github.com/formly-js/ngx-formly/commit/5e9942f)), closes [#1158](https://github.com/formly-js/ngx-formly/issues/1158)
+
+
+### Features
+
+* **core:** add core extension ([9ed88ae](https://github.com/formly-js/ngx-formly/commit/9ed88ae))
+* **core:** add FieldForm extension ([b87f7fe](https://github.com/formly-js/ngx-formly/commit/b87f7fe))
+* **core:** add FieldValidation extension ([21312bf](https://github.com/formly-js/ngx-formly/commit/21312bf))
+* **core:** delegate field lifecycle to its component ([fcccc95](https://github.com/formly-js/ngx-formly/commit/fcccc95))
+* **core:** deprecate fieldTransform in favor of custom extension ([3d50d96](https://github.com/formly-js/ngx-formly/commit/3d50d96))
+* **core:** pass root field in extension hooks ([#1153](https://github.com/formly-js/ngx-formly/issues/1153)) ([c16c007](https://github.com/formly-js/ngx-formly/commit/c16c007))
+
+
+
 <a name="5.0.0-beta.4"></a>
 # [5.0.0-beta.4](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.3...v5.0.0-beta.4) (2018-08-27)
 
