@@ -1,5 +1,5 @@
 import { OnInit, OnDestroy, AfterViewInit, TemplateRef, ViewChild } from '@angular/core';
-import { FieldType as CoreFieldType } from '@ngx-formly/core';
+import { FieldType as CoreFieldType, ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { FormlyErrorStateMatcher } from './formly.error-state-matcher';
@@ -22,8 +22,8 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
   ngAfterViewInit() {
     if (this.matPrefix || this.matSuffix) {
       setTimeout(() => {
-        this.to.prefix = this.matPrefix;
-        this.to.suffix = this.matSuffix;
+        defineHiddenProp(this.to, 'prefix', this.matPrefix);
+        defineHiddenProp(this.to, 'suffix', this.matSuffix);
       });
     }
   }
