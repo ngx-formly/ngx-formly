@@ -147,3 +147,8 @@ export function removeFieldControl(form: FormArray | FormGroup, key: string | nu
     form.removeControl(`${key}`);
   }
 }
+
+export function defineHiddenProp(field, prop, defaultValue) {
+  Object.defineProperty(field, prop, { enumerable: false, writable: true, configurable: true });
+  field[prop] = defaultValue;
+}

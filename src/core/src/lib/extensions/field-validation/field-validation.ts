@@ -1,7 +1,7 @@
 import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators } from '@angular/forms';
-import { isObject, FORMLY_VALIDATORS } from '../../utils';
+import { isObject, FORMLY_VALIDATORS, defineHiddenProp } from '../../utils';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -17,7 +17,7 @@ export class FieldValidationExtension implements FormlyExtension {
       return;
     }
 
-    field._validators = [];
+    defineHiddenProp(field, '_validators', []);
     this.initPredefinedFieldValidation(field);
     if (field.validators) {
       for (const validatorName in field.validators) {
@@ -64,7 +64,7 @@ export class FieldValidationExtension implements FormlyExtension {
       return;
     }
 
-    field._asyncValidators = [];
+    defineHiddenProp(field, '_asyncValidators', []);
     if (field.asyncValidators) {
       for (const validatorName in field.asyncValidators) {
         if (validatorName !== 'validation') {

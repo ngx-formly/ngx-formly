@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, ComponentFactoryResolver } from '@angular/core';
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
-import { reverseDeepMerge } from './../utils';
+import { reverseDeepMerge, defineHiddenProp } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
 
 export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
@@ -124,14 +124,15 @@ export class FormlyConfig {
       return;
     }
     const type = this.getType(field.type);
-    field._componentFactory = {
+
+    defineHiddenProp(field, '_componentFactory', {
       type: field.type,
       component: type.component,
       componentFactoryResolver: type.componentFactoryResolver,
       componentRef: !type.componentFactoryResolver ? undefined : type.componentFactoryResolver
         .resolveComponentFactory(type.component)
         .create((<any> type.componentFactoryResolver)._ngModule.injector),
-    };
+    });
   }
 
   setWrapper(options: WrapperOption) {

@@ -2,7 +2,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
 import {
   isObject, isNullOrUndefined, isFunction,
-  FORMLY_VALIDATORS, getFieldValue, getKeyPath, removeFieldControl,
+  FORMLY_VALIDATORS, getFieldValue, getKeyPath, removeFieldControl, defineHiddenProp,
 } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
@@ -25,7 +25,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     // cache built expression
-    field._expressionProperties = field._expressionProperties || {};
+    defineHiddenProp(field, '_expressionProperties', {});
 
     if (field.expressionProperties) {
       for (const key in field.expressionProperties) {
