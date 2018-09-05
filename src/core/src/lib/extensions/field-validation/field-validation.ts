@@ -7,7 +7,7 @@ import { isObject, FORMLY_VALIDATORS, defineHiddenProp } from '../../utils';
 export class FieldValidationExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
-  prePopulate(field: FormlyFieldConfigCache) {
+  onPopulate(field: FormlyFieldConfigCache) {
     this.initFieldValidation(field);
     this.initFieldAsyncValidation(field);
   }
