@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.6"></a>
+# [5.0.0-beta.6](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.5...v5.0.0-beta.6) (2018-09-06)
+
+
+### Bug Fixes
+
+* **core:** move init field validation to onPopulate hook ([#1164](https://github.com/formly-js/ngx-formly/issues/1164)) ([cc278b5](https://github.com/formly-js/ngx-formly/commit/cc278b5))
+
+
+### Features
+
+* **core:** set peerDependency to angular >=6.1 ([#1165](https://github.com/formly-js/ngx-formly/issues/1165)) ([67d4509](https://github.com/formly-js/ngx-formly/commit/67d4509))
+
+
+### BREAKING CHANGES
+
+* **core:** The library is now using Angular 6.1 and Typescript 2.9.2
+
+
+
 <a name="5.0.0-beta.5"></a>
 # [5.0.0-beta.5](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.4...v5.0.0-beta.5) (2018-08-31)
 
