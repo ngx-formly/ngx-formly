@@ -99,7 +99,12 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   private lifeCycleHooks(callback: FormlyLifeCycleFn) {
     if (callback) {
-      callback(this.form, this.field, this.field.model, this.options);
+      callback(
+        <FormGroup> (this.field.parent ? this.field.parent.formControl : null),
+        this.field,
+        this.field.model,
+        this.field.options,
+      );
     }
   }
 }

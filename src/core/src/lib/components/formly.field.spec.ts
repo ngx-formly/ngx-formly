@@ -72,6 +72,9 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         formControl: new FormControl(),
+        parent: {
+          formControl: new FormGroup({}),
+        },
         lifecycle: {
           afterContentInit: () => {},
           afterContentChecked: () => {},
