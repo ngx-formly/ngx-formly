@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.7"></a>
+# [5.0.0-beta.7](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.6...v5.0.0-beta.7) (2018-09-12)
+
+
+### Bug Fixes
+
+* **material:** make sure input type number emits the correct value ([#1172](https://github.com/formly-js/ngx-formly/issues/1172)) ([e2fbee4](https://github.com/formly-js/ngx-formly/commit/e2fbee4))
+
+
+### Features
+
+* **core:** deprecate passing options and form input to FormlyField ([#1173](https://github.com/formly-js/ngx-formly/issues/1173)) ([724f594](https://github.com/formly-js/ngx-formly/commit/724f594))
+
+
+
 <a name="5.0.0-beta.6"></a>
 # [5.0.0-beta.6](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.5...v5.0.0-beta.6) (2018-09-06)
 
