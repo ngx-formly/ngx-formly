@@ -22,8 +22,8 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
   ngAfterViewInit() {
     if (this.matPrefix || this.matSuffix) {
       setTimeout(() => {
-        defineHiddenProp(this.to, 'prefix', this.matPrefix);
-        defineHiddenProp(this.to, 'suffix', this.matSuffix);
+        defineHiddenProp(this.field, '_matPrefix', this.matPrefix);
+        defineHiddenProp(this.field, '_matSuffix', this.matSuffix);
       });
     }
   }
