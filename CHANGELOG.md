@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.8"></a>
+# [5.0.0-beta.8](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.7...v5.0.0-beta.8) (2018-09-12)
+
+
+### Bug Fixes
+
+* **core:** pass field props to lifeCycleHooks ([#1174](https://github.com/formly-js/ngx-formly/issues/1174)) ([f944bdb](https://github.com/formly-js/ngx-formly/commit/f944bdb))
+* **material:** avoid define hidden prop in field templateOptions ([#1175](https://github.com/formly-js/ngx-formly/issues/1175)) ([c8a3e37](https://github.com/formly-js/ngx-formly/commit/c8a3e37))
+
+
+
 <a name="5.0.0-beta.7"></a>
 # [5.0.0-beta.7](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.6...v5.0.0-beta.7) (2018-09-12)
 
