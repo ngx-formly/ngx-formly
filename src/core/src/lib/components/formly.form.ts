@@ -10,12 +10,7 @@ import { debounceTime, map, tap } from 'rxjs/operators';
 @Component({
   selector: 'formly-form',
   template: `
-    <formly-field *ngFor="let field of fields"
-      [form]="form"
-      [field]="field"
-      [ngClass]="field.className"
-      [options]="options">
-    </formly-field>
+    <formly-field *ngFor="let field of fields" [field]="field"></formly-field>
     <ng-content></ng-content>
   `,
 })

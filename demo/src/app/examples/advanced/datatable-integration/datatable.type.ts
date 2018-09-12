@@ -20,11 +20,7 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
       [externalSorting]="true"
       [selectionType]="'single'">
       <ng-template #defaultColumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
-        <formly-field
-          [field]="getField(field, column, rowIndex)"
-          [options]="options"
-          [form]="formControl">
-        </formly-field>
+        <formly-field [field]="getField(field, column, rowIndex)"></formly-field>
       </ng-template>
     </ngx-datatable>
 `,

@@ -12,16 +12,25 @@ import { FieldWrapper } from '../templates/field.wrapper';
   template: `<ng-template #container></ng-template>`,
   host: {
     '[style.display]': 'field.hide ? "none":""',
+    '[class]': 'field.className? field.className : className',
   },
 })
 export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
+  @Input() field: FormlyFieldConfig;
+  @Input('class') className: string = '';
+
   @Input() set model(m: any) {
     console.warn(`NgxFormly: passing 'model' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
   }
 
-  @Input() form: FormGroup;
-  @Input() field: FormlyFieldConfig;
-  @Input() options: FormlyFormOptions = {};
+  @Input() set form(form: FormGroup) {
+    console.warn(`NgxFormly: passing 'form' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
+  }
+
+  @Input() set options(options: FormlyFormOptions) {
+    console.warn(`NgxFormly: passing 'options' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
+  }
+
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('container', {read: ViewContainerRef}) containerRef: ViewContainerRef;
 
@@ -60,11 +69,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
     this.lifeCycleHooks(this.lifecycle.onChanges);
     this.componentRefs.forEach(ref => {
-      Object.assign(ref.instance, {
-        form: this.form,
-        field: this.field,
-        options: this.options,
-      });
+      Object.assign(ref.instance, { field: this.field });
     });
   }
 
@@ -82,7 +87,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     [...wrappers, { ...this.formlyConfig.getType(field.type), componentFactory: (<any> field)._componentFactory }].forEach(({ componentFactoryResolver, component, componentRef }) => {
       const ref = componentRef ? componentRef : containerRef.createComponent<FieldWrapper>(componentFactoryResolver.resolveComponentFactory(component));
 
-      Object.assign(ref.instance, { form: this.form, options: this.options, field });
+      Object.assign(ref.instance, { field });
       this.componentRefs.push(ref);
       containerRef = ref.instance.fieldComponent;
     });

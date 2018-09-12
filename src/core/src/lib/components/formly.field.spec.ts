@@ -122,7 +122,7 @@ describe('FormlyField Component', () => {
       form: new FormGroup({}),
     };
 
-    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
 
     expect(getLabelWrapper(fixture.nativeElement)).toEqual(null);
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
@@ -154,7 +154,7 @@ describe('FormlyField Component', () => {
       form: new FormGroup({}),
     };
 
-    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
 
     expect(getInputField(fixture.nativeElement, 0).getAttribute('placeholder')).toEqual('Title1');
     expect(getInputField(fixture.nativeElement, 1).getAttribute('placeholder')).toEqual('Title2');
@@ -180,7 +180,7 @@ describe('FormlyField Component', () => {
     it('should render field without wrapper or key', () => {
       delete testComponentInputs.field.key;
 
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+      const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
       const elm = getFormlyFieldElement(fixture.nativeElement);
       expect(getInputField(elm)).toBeDefined();
     });
@@ -188,7 +188,7 @@ describe('FormlyField Component', () => {
     it('should render field wrapper', () => {
       testComponentInputs.field.wrappers = ['label'];
 
-      const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+      const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
       const elm = getFormlyFieldElement(fixture.nativeElement);
 
       expect(getLabelWrapper(elm).innerText).toEqual('Title');
@@ -211,7 +211,7 @@ describe('FormlyField Component', () => {
       form: new FormGroup({}),
     };
 
-    const fixture = createTestComponent('<formly-field [form]="form" [field]="field"></formly-field>');
+    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
     expect(getLabelWrapper(fixture.nativeElement)).toEqual(null);
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
     expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');

@@ -17,11 +17,11 @@ export class AppComponent {
     {
       key: 'investments',
       type: 'repeat',
+      templateOptions: {
+        addText: 'Add another investment',
+      },
       fieldArray: {
         fieldGroupClassName: 'row',
-        templateOptions: {
-          btnText: 'Add another investment',
-        },
         fieldGroup: [
           {
             className: 'col-sm-4',
@@ -35,7 +35,7 @@ export class AppComponent {
           {
             type: 'input',
             key: 'investmentDate',
-            className: 'col-sm-3',
+            className: 'col-sm-4',
             templateOptions: {
               type: 'date',
               label: 'Date of Investment:',
@@ -44,7 +44,7 @@ export class AppComponent {
           {
             type: 'input',
             key: 'stockIdentifier',
-            className: 'col-sm-3',
+            className: 'col-sm-4',
             templateOptions: {
               label: 'Stock Identifier:',
               addonRight: {
