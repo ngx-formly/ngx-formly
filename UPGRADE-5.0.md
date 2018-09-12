@@ -48,11 +48,11 @@ After:
 import { FieldType } from '@ngx-formly/core';
 ```
 
- * passing `model` input to `formly-field` component is not required anymore:
+ * passing `model`, `options` and `form` inputs to `formly-field` component is not required anymore:
 
 Before:
 ```html
-<formly-field [field]="field" [model]="model"></formly-field>
+<formly-field [form]="form" [field]="field" [options]="options" [model]="model"></formly-field>
 ```
 After:
 ```html
