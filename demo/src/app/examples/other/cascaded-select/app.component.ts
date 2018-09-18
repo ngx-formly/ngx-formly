@@ -50,7 +50,7 @@ export class AppComponent implements OnDestroy {
             takeUntil(this.onDestroy$),
             startWith(form.get('sport').value),
             tap(sportId => {
-              field.formControl.setValue('');
+              field.formControl.setValue(null);
               field.templateOptions.options = teams.filter(team => team.sportId === sportId);
             }),
           ).subscribe();
@@ -83,7 +83,7 @@ export class AppComponent implements OnDestroy {
             takeUntil(this.onDestroy$),
             startWith(form.get('team').value),
             tap(sportId => {
-              field.formControl.setValue('');
+              field.formControl.setValue(null);
               field.templateOptions.options = players.filter(team => team.teamId === sportId);
             }),
           ).subscribe();

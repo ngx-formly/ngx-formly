@@ -12,11 +12,11 @@ import { FieldType } from '@ngx-formly/core';
       [formlyAttributes]="field">
         <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
          <optgroup *ngIf="item.group" label="{{item.label}}">
-            <option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
+            <option *ngFor="let child of item.group" [ngValue]="child.value" [disabled]="child.disabled">
               {{ child.label }}
             </option>
           </optgroup>
-          <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
+          <option *ngIf="!item.group" [ngValue]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
         </ng-container>
     </select>
 
@@ -26,14 +26,14 @@ import { FieldType } from '@ngx-formly/core';
         [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
         [formlyAttributes]="field">
-        <option *ngIf="to.placeholder" value="">{{ to.placeholder }}</option>
+        <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
         <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
           <optgroup *ngIf="item.group" label="{{item.label}}">
-            <option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
+            <option *ngFor="let child of item.group" [ngValue]="child.value" [disabled]="child.disabled">
               {{ child.label }}
             </option>
           </optgroup>
-          <option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
+          <option *ngIf="!item.group" [ngValue]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
         </ng-container>
       </select>
     </ng-template>
