@@ -7,6 +7,7 @@ const fs = require("fs"),
     'ionic',
     'primeng',
     'kendo',
+    'ng-zorro-antd',
     'schematics',
     'nativescript',
   ];

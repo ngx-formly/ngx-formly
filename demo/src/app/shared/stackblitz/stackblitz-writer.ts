@@ -24,6 +24,9 @@ const TEMPLATE_FILES = {
   kendo: [
     { file: 'styles.scss', filecontent: `@import '~@progress/kendo-theme-default/dist/all.css';` },
   ],
+  'ng-zorro-antd': [
+    { file: 'styles.scss', filecontent: `@import '~ng-zorro-antd/src/ng-zorro-antd.min.css';` },
+  ],
   primeng: [
     { file: 'styles.scss', filecontent: `
       @import '~primeng/resources/primeng.min.css';
@@ -71,6 +74,9 @@ const dependencies = {
     '@progress/kendo-angular-dropdowns': '^2.1.0',
     '@progress/kendo-angular-l10n': '^1.0.0',
   },
+  'ng-zorro-antd': {
+    'ng-zorro-antd': '^1.3.0',
+  },
   primeng: {
     '@ngx-formly/primeng': formlyVersion,
     'primeng': '^5.2.0',
@@ -85,6 +91,7 @@ const ngModule = {
   bootstrap: 'FormlyBootstrapModule',
   material: 'FormlyMaterialModule',
   kendo: 'FormlyKendoModule',
+  'ng-zorro-antd': 'FormlyNgZorroAntdModule',
   primeng: 'FormlyPrimeNGModule',
   ionic: 'FormlyIonicModule',
 };
@@ -126,13 +133,15 @@ export class StackblitzWriter {
 
     const options: any = { type };
 
-    if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng'].indexOf(options.type) === -1) {
+    if (['bootstrap', 'material', 'kendo', 'ng-zorro-antd', 'ionic', 'primeng'].indexOf(options.type) === -1) {
       if (appModuleContent.indexOf('@ngx-formly/bootstrap') !== -1) {
         options.type = 'bootstrap';
       } else if (appModuleContent.indexOf('@ngx-formly/material') !== -1) {
         options.type = 'material';
       } else if (appModuleContent.indexOf('@ngx-formly/kendo') !== -1) {
         options.type = 'kendo';
+      } else if (appModuleContent.indexOf('@ngx-formly/ng-zorro-antd') !== -1) {
+        options.type = 'ng-zorro-antd';
       } else if (appModuleContent.indexOf('@ngx-formly/ionic') !== -1) {
         options.type = 'ionic';
       } else if (appModuleContent.indexOf('@ngx-formly/primeng') !== -1) {
@@ -141,7 +150,13 @@ export class StackblitzWriter {
     }
 
     if (['primeng', 'material'].indexOf(options.type) !== -1 || appModuleContent.indexOf('@angular/material') !== -1) {
+      options.includeCdk = true;
       options.includeMaterial = true;
+      options.useAnimation = true;
+    }
+
+    if (['ng-zorro-antd'].indexOf(options.type) !== -1 || appModuleContent.indexOf('@angular/material') !== -1) {
+      options.includeCdk = true;
       options.useAnimation = true;
     }
 
@@ -158,8 +173,11 @@ export class StackblitzWriter {
       deps['@angular/animations'] = angularVersion;
     }
 
-    if (options.includeMaterial) {
+    if (options.includeCdk) {
       deps['@angular/cdk'] = materialVersion;
+    }
+
+    if (options.includeMaterial) {
       deps['@angular/material'] = materialVersion;
     }
 
