@@ -2,6 +2,105 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.8"></a>
+# [5.0.0-beta.8](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.7...v5.0.0-beta.8) (2018-09-12)
+
+
+### Bug Fixes
+
+* **core:** pass field props to lifeCycleHooks ([#1174](https://github.com/formly-js/ngx-formly/issues/1174)) ([f944bdb](https://github.com/formly-js/ngx-formly/commit/f944bdb))
+* **material:** avoid define hidden prop in field templateOptions ([#1175](https://github.com/formly-js/ngx-formly/issues/1175)) ([c8a3e37](https://github.com/formly-js/ngx-formly/commit/c8a3e37))
+
+
+
+<a name="5.0.0-beta.7"></a>
+# [5.0.0-beta.7](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.6...v5.0.0-beta.7) (2018-09-12)
+
+
+### Bug Fixes
+
+* **material:** make sure input type number emits the correct value ([#1172](https://github.com/formly-js/ngx-formly/issues/1172)) ([e2fbee4](https://github.com/formly-js/ngx-formly/commit/e2fbee4))
+
+
+### Features
+
+* **core:** deprecate passing options and form input to FormlyField ([#1173](https://github.com/formly-js/ngx-formly/issues/1173)) ([724f594](https://github.com/formly-js/ngx-formly/commit/724f594))
+
+
+
+<a name="5.0.0-beta.6"></a>
+# [5.0.0-beta.6](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.5...v5.0.0-beta.6) (2018-09-06)
+
+
+### Bug Fixes
+
+* **core:** move init field validation to onPopulate hook ([#1164](https://github.com/formly-js/ngx-formly/issues/1164)) ([cc278b5](https://github.com/formly-js/ngx-formly/commit/cc278b5))
+
+
+### Features
+
+* **core:** set peerDependency to angular >=6.1 ([#1165](https://github.com/formly-js/ngx-formly/issues/1165)) ([67d4509](https://github.com/formly-js/ngx-formly/commit/67d4509))
+
+
+### BREAKING CHANGES
+
+* **core:** The library is now using Angular 6.1 and Typescript 2.9.2
+
+
+
+<a name="5.0.0-beta.5"></a>
+# [5.0.0-beta.5](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.4...v5.0.0-beta.5) (2018-08-31)
+
+
+### Bug Fixes
+
+* **core:** set enumerable to false for hidden props ([#1159](https://github.com/formly-js/ngx-formly/issues/1159)) ([5e9942f](https://github.com/formly-js/ngx-formly/commit/5e9942f)), closes [#1158](https://github.com/formly-js/ngx-formly/issues/1158)
+
+
+### Features
+
+* **core:** add core extension ([9ed88ae](https://github.com/formly-js/ngx-formly/commit/9ed88ae))
+* **core:** add FieldForm extension ([b87f7fe](https://github.com/formly-js/ngx-formly/commit/b87f7fe))
+* **core:** add FieldValidation extension ([21312bf](https://github.com/formly-js/ngx-formly/commit/21312bf))
+* **core:** delegate field lifecycle to its component ([fcccc95](https://github.com/formly-js/ngx-formly/commit/fcccc95))
+* **core:** deprecate fieldTransform in favor of custom extension ([3d50d96](https://github.com/formly-js/ngx-formly/commit/3d50d96))
+* **core:** pass root field in extension hooks ([#1153](https://github.com/formly-js/ngx-formly/issues/1153)) ([c16c007](https://github.com/formly-js/ngx-formly/commit/c16c007))
+
+
+
+<a name="5.0.0-beta.4"></a>
+# [5.0.0-beta.4](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.3...v5.0.0-beta.4) (2018-08-27)
+
+
+### Bug Fixes
+
+* **bootstrap:** rely on control value for indeterminate checkbox state ([ad50e11](https://github.com/formly-js/ngx-formly/commit/ad50e11)), closes [#1143](https://github.com/formly-js/ngx-formly/issues/1143)
+
+
+### Features
+
+* **core:** move template render into separate field-type ([dccf8e2](https://github.com/formly-js/ngx-formly/commit/dccf8e2))
+
+
+
+<a name="5.0.0-beta.3"></a>
+# [5.0.0-beta.3](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.2...v5.0.0-beta.3) (2018-08-19)
+
+
+### Bug Fixes
+
+* **core:** hide internal component from public interface ([1f7404b](https://github.com/formly-js/ngx-formly/commit/1f7404b))
+* **kendo:** use KENDO prefix in config name ([#1128](https://github.com/formly-js/ngx-formly/issues/1128)) ([7b6511a](https://github.com/formly-js/ngx-formly/commit/7b6511a))
+* **material:** add missing id for toggle, slider and datepicker ([4569e86](https://github.com/formly-js/ngx-formly/commit/4569e86))
+
+
+### Features
+
+* **core:** take account of templateOptions attributes changes ([39bd41c](https://github.com/formly-js/ngx-formly/commit/39bd41c)), closes [#1132](https://github.com/formly-js/ngx-formly/issues/1132)
+* **ionic:** extended v4 support ([952bca6](https://github.com/formly-js/ngx-formly/commit/952bca6))
+
+
+
 <a name="5.0.0-beta.2"></a>
 # [5.0.0-beta.2](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.1...v5.0.0-beta.2) (2018-08-11)
 

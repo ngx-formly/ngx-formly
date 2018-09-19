@@ -980,11 +980,7 @@ class TestComponent {
   selector: 'formly-repeat-section',
   template: `
     <div *ngFor="let field of field.fieldGroup; let i = index;">
-      <formly-group
-        [field]="field"
-        [options]="options"
-        [form]="formControl">
-      </formly-group>
+      <formly-group [field]="field"></formly-group>
       <button [id]="'remove-' + i" type="button" (click)="remove(i)">Remove</button>
     </div>
     <button id="add" type="button" (click)="add()">Add</button>

@@ -2,6 +2,7 @@ import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray, Asyn
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { TemplateManipulators } from '../services/formly.config';
+import { ComponentFactoryResolver, ComponentRef } from '@angular/core';
 
 export interface FormlyFieldConfig {
   /**
@@ -13,6 +14,9 @@ export interface FormlyFieldConfig {
    * The parent field.
    */
   readonly parent?: FormlyFieldConfig;
+
+
+  readonly options?: FormlyFormOptions;
 
   /**
    * The key that relates to the model. This will link the field value to the model
@@ -129,11 +133,6 @@ export interface FormlyFieldConfig {
   type?: string;
 
   /**
-   * Can be set to replace the component that is defined in `type`.
-   */
-  component?: any;
-
-  /**
    * Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressionProperties`
    */
   focus?: boolean;
@@ -177,6 +176,12 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _expressionProperties?: { [property: string]: ExpressionPropertyCache };
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];
+  _componentFactory?: {
+    type: string;
+    component: any;
+    componentFactoryResolver: ComponentFactoryResolver,
+    componentRef?: ComponentRef<any>;
+  };
 }
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;

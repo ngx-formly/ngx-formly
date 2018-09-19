@@ -6,6 +6,7 @@ import { MatSlider } from '@angular/material/slider';
   selector: 'formly-field-mat-slider',
   template: `
     <mat-slider
+      [id]="id"
       [style.width]="'100%'"
       [formControl]="formControl"
       [formlyAttributes]="field"

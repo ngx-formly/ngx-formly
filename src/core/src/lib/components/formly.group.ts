@@ -8,7 +8,7 @@ import { FieldType } from '../templates/field.type';
       [fields]="field.fieldGroup"
       [isRoot]="false"
       [model]="field.model"
-      [form]="field.formControl || form"
+      [form]="field.formControl"
       [options]="options"
       [ngClass]="field.fieldGroupClassName">
       <ng-content></ng-content>

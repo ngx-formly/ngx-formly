@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
     FormlyBootstrapModule,
     FormlyModule.forRoot({
       types: [
-        { name: 'file', component: FormlyFieldFile },
+        { name: 'file', component: FormlyFieldFile, wrappers: ['form-field'] },
       ],
     }),
   ],

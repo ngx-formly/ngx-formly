@@ -1,26 +1,31 @@
-import { Injectable } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
 import {
   isObject, isNullOrUndefined, isFunction,
-  FORMLY_VALIDATORS, getFieldValue, getKeyPath, removeFieldControl,
+  FORMLY_VALIDATORS, getFieldValue, getKeyPath, removeFieldControl, defineHiddenProp,
 } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { FormlyExtension } from '../../services/formly.config';
 
-/**
- * @internal
- */
-@Injectable({ providedIn: 'root' })
-export class FieldExpressionExtension {
+/** @experimental */
+export class FieldExpressionExtension implements FormlyExtension {
+  prePopulate(field: FormlyFieldConfigCache) {
+    if (field.parent || field.options._checkField) {
+      return;
+    }
+
+    field.options._checkField = (f) => this._checkField(f);
+  }
+
   onPopulate(field: FormlyFieldConfigCache) {
-    if (field._expressionProperties) {
+    if (!field.parent || field._expressionProperties) {
       return;
     }
 
     // cache built expression
-    field._expressionProperties = field._expressionProperties || {};
+    defineHiddenProp(field, '_expressionProperties', {});
 
     if (field.expressionProperties) {
       for (const key in field.expressionProperties) {
@@ -72,10 +77,13 @@ export class FieldExpressionExtension {
         field.parent && field.parent.hideExpression ? () => field.parent.hide : undefined,
       );
     }
+  }
 
-    if (!field.options._checkField) {
-      field.options._checkField = (f) => this._checkFields(<FormGroup> f.formControl, f.fieldGroup, f.options);
+  postPopulate(field: FormlyFieldConfigCache) {
+    if (field.parent) {
+      return;
     }
+    field.options._checkField(field);
   }
 
   private _evalExpression(expression, parentExpression?) {
@@ -89,18 +97,18 @@ export class FieldExpressionExtension {
       : expression;
   }
 
-  private _checkFields(form: FormGroup | FormArray, fields: FormlyFieldConfigCache[] = [], options: FormlyFormOptions) {
-    fields.forEach(field => {
-      this.checkFieldExpressionChange(form, field, options);
-      this.checkFieldVisibilityChange(form, field, options);
+  private _checkField(field: FormlyFieldConfigCache) {
+    field.fieldGroup.forEach(f => {
+      this.checkFieldExpressionChange(f);
+      this.checkFieldVisibilityChange(f);
 
-      if (field.fieldGroup && field.fieldGroup.length > 0) {
-        this._checkFields(field.formControl ? <FormGroup> field.formControl : form, field.fieldGroup as any, options);
+      if (f.fieldGroup && f.fieldGroup.length > 0) {
+        this._checkField(f);
       }
     });
   }
 
-  private checkFieldExpressionChange(form: FormGroup | FormArray, field: FormlyFieldConfigCache, options: FormlyFormOptions) {
+  private checkFieldExpressionChange(field: FormlyFieldConfigCache) {
     if (!field || !field._expressionProperties) {
       return;
     }
@@ -109,7 +117,7 @@ export class FieldExpressionExtension {
     const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
 
     for (const key in expressionProperties) {
-      let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, options.formState]);
+      let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState]);
       if (key === 'templateOptions.disabled') {
         expressionValue = expressionValue || false;
       }
@@ -127,7 +135,7 @@ export class FieldExpressionExtension {
 
         if (key.indexOf('model.') === 0) {
           const path = key.replace(/^model\./, ''),
-            control = field.key && key === path ? field.formControl : form.get(path);
+            control = field.key && key === path ? field.formControl : field.parent.formControl.get(path);
 
           if (
             control
@@ -145,7 +153,7 @@ export class FieldExpressionExtension {
     }
   }
 
-  private checkFieldVisibilityChange(form: FormGroup | FormArray, field: FormlyFieldConfig, options: FormlyFormOptions) {
+  private checkFieldVisibilityChange(field: FormlyFieldConfigCache) {
     if (!field || isNullOrUndefined(field.hideExpression)) {
       return;
     }
@@ -153,7 +161,7 @@ export class FieldExpressionExtension {
     const hideExpressionResult: boolean = !!evalExpression(
       field.hideExpression,
       { field },
-      [field.model, options.formState],
+      [field.model, field.options.formState],
     );
 
     if (hideExpressionResult !== field.hide) {
@@ -162,7 +170,7 @@ export class FieldExpressionExtension {
       field.templateOptions.hidden = hideExpressionResult;
 
       if (field.formControl && field.key) {
-        const parent = this.fieldParentFormControl(form, field);
+        const parent = this.fieldParentFormControl(field);
         if (parent) {
           const control = parent.get(`${this.fieldKey(field)}`);
           if (hideExpressionResult === true && control) {
@@ -173,8 +181,8 @@ export class FieldExpressionExtension {
         }
       }
 
-      if (options.fieldChanges) {
-        options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hideExpressionResult });
+      if (field.options.fieldChanges) {
+        field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hideExpressionResult });
       }
     }
   }
@@ -195,11 +203,11 @@ export class FieldExpressionExtension {
     }
   }
 
-  private fieldParentFormControl(form: FormGroup | FormArray, field: FormlyFieldConfig): FormArray | FormGroup {
+  private fieldParentFormControl(field: FormlyFieldConfig): FormArray | FormGroup {
     const paths = getKeyPath(field);
     paths.pop(); // remove last path
 
-    return (paths.length > 0 ? form.get(paths) : form) as any;
+    return (paths.length > 0 ? field.parent.formControl.get(paths) : field.parent.formControl) as any;
   }
 
   private fieldKey(field: FormlyFieldConfig) {

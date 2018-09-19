@@ -3,6 +3,10 @@ import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component } from '@angular/core';
 import { MockComponent } from '../test-utils';
 import { FormlyFieldConfigCache } from '../components/formly.field.config';
+import { FieldExpressionExtension } from '../extensions';
+import { FieldValidationExtension } from '../extensions/field-validation/field-validation';
+import { FieldFormExtension } from '../extensions/field-form/field-form';
+import { CoreExtension } from '../extensions/core/core';
 
 describe('FormlyFormBuilder service', () => {
   let builder: FormlyFormBuilder;
@@ -16,9 +20,18 @@ describe('FormlyFormBuilder service', () => {
     form = new FormGroup({});
     config = new FormlyConfig();
     config.addConfig({
-      types: [{ name: 'input', component: TestComponent }],
+      types: [
+        { name: 'input', component: TestComponent },
+        { name: 'input-createcontrol', component: TestComponentThatCreatesControl },
+      ],
       wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
       validators: [{ name: 'required', validation: Validators.required }],
+      extensions: [
+        { name: 'core', extension: new CoreExtension(config) },
+        { name: 'field-validation', extension: new FieldValidationExtension(config) },
+        { name: 'field-form', extension: new FieldFormExtension() },
+        { name: 'field-expression', extension: new FieldExpressionExtension() },
+      ],
     });
 
     builder = new FormlyFormBuilder(config);
@@ -36,7 +49,7 @@ describe('FormlyFormBuilder service', () => {
     spyOn(customExtension, 'onPopulate');
     spyOn(customExtension, 'postPopulate');
 
-    builder.buildForm(form, [{ key: 'extension' }], {}, {});
+    builder.buildForm(form, [], {}, {});
     expect(customExtension.prePopulate).toHaveBeenCalledBefore(customExtension.onPopulate);
     expect(customExtension.onPopulate).toHaveBeenCalledBefore(customExtension.postPopulate);
     expect(customExtension.postPopulate).toHaveBeenCalled();
@@ -462,7 +475,7 @@ describe('FormlyFormBuilder service', () => {
 
   describe('form control creation and addition', () => {
     it('should let component create the form control', () =>  {
-      let field = { key: 'title', type: 'input', component: new TestComponentThatCreatesControl() };
+      let field = { key: 'title', type: 'input-createcontrol' };
 
       builder.buildForm(form, [field], {}, {});
 
@@ -673,9 +686,7 @@ describe('FormlyFormBuilder service', () => {
 });
 
 export class TestComponentThatCreatesControl {
-
-  createControl(model, field) {
+  static createControl(model, field) {
     return new FormControl('created by component');
   }
-
 }

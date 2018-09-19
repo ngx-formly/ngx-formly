@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType } from './field.type';
 
 @Component({
   selector: 'formly-field-ion-input',
   template: `
-    <ion-item>
-      <ion-label [position]="to.labelPosition || 'inline'">{{ to.label }}</ion-label>
-      <ion-input [type]="to.type || 'text'"
-        [formControl]="formControl"
-        [formlyAttributes]="field">
-      </ion-input>
-    </ion-item>
+    <ion-input [type]="to.type || 'text'"
+      [formControl]="formControl"
+      [formlyAttributes]="field"
+      (ionChange)="change($event)">
+    </ion-input>
   `,
 })
 export class FormlyFieldInput extends FieldType {}

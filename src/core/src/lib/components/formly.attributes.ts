@@ -49,15 +49,29 @@ export class FormlyAttributes implements OnChanges {
 
       this.renderer.setAttribute(this.elementRef.nativeElement, 'id', this.field.id);
       if (this.to && this.to.attributes) {
-        const attributes = this.to.attributes;
-        Object.keys(attributes).forEach(name => this.renderer.setAttribute(
-          this.elementRef.nativeElement, name, attributes[name] as string,
-        ));
+        this.setAttributes(this.to.attributes);
+        Object.defineProperty(this.to, 'attributes', {
+          get: () => this.to.__attributes__,
+          set: attributes => this.setAttributes(attributes),
+          enumerable: true,
+          configurable: true,
+        });
       }
 
       if ((fieldChanges.previousValue || {}).focus !== (fieldChanges.currentValue || {}).focus && this.elementRef.nativeElement.focus) {
         this.elementRef.nativeElement[this.field.focus ? 'focus' : 'blur']();
       }
     }
+  }
+
+  private setAttributes(attributes) {
+    if (this.to.__attributes__ && this.to.__attributes__ !== attributes) {
+      Object.keys(this.to.__attributes__).forEach(name => this.renderer.removeAttribute(this.elementRef.nativeElement, name));
+    }
+
+    this.to.__attributes__ = attributes;
+    Object.keys(attributes).forEach(name => this.renderer.setAttribute(
+      this.elementRef.nativeElement, name, attributes[name] as string,
+    ));
   }
 }

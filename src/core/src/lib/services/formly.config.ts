@@ -1,11 +1,10 @@
 import { Injectable, InjectionToken, ComponentFactoryResolver } from '@angular/core';
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
-import { reverseDeepMerge } from './../utils';
-import { FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
-import { FieldExpressionExtension } from '../extensions';
+import { reverseDeepMerge, defineHiddenProp } from './../utils';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
 
-export const FORMLY_CONFIG_TOKEN = new InjectionToken<FormlyConfig>('FORMLY_CONFIG_TOKEN');
+export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
 
 /** @experimental */
 export interface FormlyExtension {
@@ -39,9 +38,7 @@ export class FormlyConfig {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
   };
-  extensions: { [name: string]: FormlyExtension } = {
-    'field-expression': new FieldExpressionExtension(),
-  };
+  extensions: { [name: string]: FormlyExtension } = {};
 
   addConfig(config: ConfigOption) {
     if (config.types) {
@@ -96,37 +93,46 @@ export class FormlyConfig {
   }
 
   getMergedField(field: FormlyFieldConfig = {}): any {
-    let name = field.type;
-    if (!this.types[name]) {
-      throw new Error(`[Formly Error] There is no type by the name of "${name}"`);
+    const type = this.getType(field.type);
+    if (type.defaultOptions) {
+      reverseDeepMerge(field, type.defaultOptions);
     }
 
-    this.mergeExtendedType(name);
-    if (this.types[name].defaultOptions) {
-      reverseDeepMerge(field, this.types[name].defaultOptions);
-    }
-
-    let extendDefaults = this.types[name].extends && this.getType(this.types[name].extends).defaultOptions;
+    const extendDefaults = type.extends && this.getType(type.extends).defaultOptions;
     if (extendDefaults) {
       reverseDeepMerge(field, extendDefaults);
     }
 
     if (field && field.optionsTypes) {
       field.optionsTypes.forEach(option => {
-        let defaultOptions = this.getType(option).defaultOptions;
+        const defaultOptions = this.getType(option).defaultOptions;
         if (defaultOptions) {
           reverseDeepMerge(field, defaultOptions);
         }
       });
     }
 
-    if (!field.component) {
-      field.component = this.types[name].component;
+    if (!field.wrappers && type.wrappers) {
+      field.wrappers = [...type.wrappers];
     }
 
-    if (!field.wrappers && this.types[name].wrappers) {
-      field.wrappers = [...this.types[name].wrappers];
+    this.createComponentInstance(field);
+  }
+
+  createComponentInstance(field: FormlyFieldConfigCache = {}) {
+    if (!field.type || field._componentFactory && field.type === field._componentFactory.type) {
+      return;
     }
+    const type = this.getType(field.type);
+
+    defineHiddenProp(field, '_componentFactory', {
+      type: field.type,
+      component: type.component,
+      componentFactoryResolver: type.componentFactoryResolver,
+      componentRef: !type.componentFactoryResolver ? undefined : type.componentFactoryResolver
+        .resolveComponentFactory(type.component)
+        .create((<any> type.componentFactoryResolver)._ngModule.injector),
+    });
   }
 
   setWrapper(options: WrapperOption) {
@@ -151,7 +157,7 @@ export class FormlyConfig {
       this.types[type] = <TypeOption>{};
     }
     if (!this.types[type].wrappers) {
-      this.types[type].wrappers = <[string]>[];
+      this.types[type].wrappers = [];
     }
     if (this.types[type].wrappers.indexOf(name) === -1) {
       this.types[type].wrappers.push(name);

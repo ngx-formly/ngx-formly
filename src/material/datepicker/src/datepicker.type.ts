@@ -6,6 +6,7 @@ import { MatInput } from '@angular/material/input';
   selector: 'formly-field-mat-datepicker',
   template: `
     <input matInput
+      [id]="id"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [matDatepicker]="picker"

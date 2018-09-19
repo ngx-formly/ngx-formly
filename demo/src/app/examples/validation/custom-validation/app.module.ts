@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
 import { AppComponent } from './app.component';
 
 export function IpValidator(control: FormControl): ValidationErrors {
-  return /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { 'ip': true };
+  return !control.value || /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { 'ip': true };
 }
 
 export function IpValidatorMessage(err, field: FormlyFieldConfig) {
