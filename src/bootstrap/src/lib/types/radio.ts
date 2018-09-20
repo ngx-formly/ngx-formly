@@ -10,6 +10,7 @@ import { FieldType } from '@ngx-formly/core';
           [id]="id + '_' + i"
           [name]="id"
           [class.is-invalid]="showError"
+          [attr.value]="option.value"
           [value]="option.value"
           [formControl]="formControl"
           [formlyAttributes]="field">
