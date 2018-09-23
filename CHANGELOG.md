@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.9"></a>
+# [5.0.0-beta.9](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.8...v5.0.0-beta.9) (2018-09-23)
+
+
+### Bug Fixes
+
+* **bootstrap:** get correct radio value through queryselector ([#1190](https://github.com/formly-js/ngx-formly/issues/1190)) ([a673ba7](https://github.com/formly-js/ngx-formly/commit/a673ba7)), closes [#1187](https://github.com/formly-js/ngx-formly/issues/1187)
+
+
+### Features
+
+* **bootstrap:** use ngValue for option with 'null' for placeholder ([#1182](https://github.com/formly-js/ngx-formly/issues/1182)) ([d10a62b](https://github.com/formly-js/ngx-formly/commit/d10a62b)), closes [#1169](https://github.com/formly-js/ngx-formly/issues/1169)
+* **core:** deprecated `lifecycle` option in favor of 'hooks' ([#1192](https://github.com/formly-js/ngx-formly/issues/1192)) ([891532b](https://github.com/formly-js/ngx-formly/commit/891532b))
+
+
+
 <a name="5.0.0-beta.8"></a>
 # [5.0.0-beta.8](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.7...v5.0.0-beta.8) (2018-09-12)
 
