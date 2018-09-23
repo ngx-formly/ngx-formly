@@ -58,11 +58,9 @@ export class FieldExpressionExtension implements FormlyExtension {
             tap(v => evalExpression(expressionValueSetter, { field }, [v, field.model, field])),
           ).subscribe();
 
-          const onDestroy = field.lifecycle.onDestroy;
-          field.lifecycle.onDestroy = (...args) => {
-            if (onDestroy) {
-              onDestroy(...args);
-            }
+          const onDestroy = field.hooks.onDestroy;
+          field.hooks.onDestroy = (field) => {
+            onDestroy && onDestroy(field);
             subscription.unsubscribe();
           };
         }

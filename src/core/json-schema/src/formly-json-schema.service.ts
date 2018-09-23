@@ -37,7 +37,7 @@ export class FormlyJsonschema {
       case 'object': {
         field.fieldGroup = [];
         Object.keys(jsonSchema.properties).forEach(p => {
-          const child = this._toFieldConfig(jsonSchema.properties[p], p);
+          const child = this._toFieldConfig(<JSONSchema7> jsonSchema.properties[p], p);
           if (Array.isArray(jsonSchema.required) && jsonSchema.required.indexOf(p) !== -1) {
             child.templateOptions.required = true;
           }
@@ -51,9 +51,9 @@ export class FormlyJsonschema {
         } else {
           field['_fieldArray'] = [];
           field.fieldGroup = [];
-          jsonSchema.items.forEach(item => field['_fieldArray'].push(this._toFieldConfig(item)));
+          jsonSchema.items.forEach(item => field['_fieldArray'].push(this._toFieldConfig(<JSONSchema7> item)));
           if (jsonSchema.additionalItems) {
-            field['_additionalFieldArray'] = this._toFieldConfig(jsonSchema.additionalItems);
+            field['_additionalFieldArray'] = this._toFieldConfig(<JSONSchema7> jsonSchema.additionalItems);
           }
 
           Object.defineProperty(field, 'fieldArray', {

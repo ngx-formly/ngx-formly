@@ -58,7 +58,11 @@ export class CoreExtension implements FormlyExtension {
     field.id = getFieldId(`formly_${this.formId}`, field, field['index']);
     field.templateOptions = field.templateOptions || {};
     field.modelOptions = field.modelOptions || {};
-    field.lifecycle = field.lifecycle || {};
+    field.hooks = field.hooks || {};
+    if (field.lifecycle) {
+      console.warn(`NgxFormly: 'lifecycle' is deprecated since v5.0, use 'hooks' instead.`);
+    }
+
     if (field.type && field.key) {
       field.templateOptions = Object.assign({
         label: '',

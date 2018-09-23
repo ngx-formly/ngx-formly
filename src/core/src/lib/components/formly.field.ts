@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyLifeCycleFn, FormlyLifeCycleOptions } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
 import { FieldWrapper } from '../templates/field.wrapper';
 
 @Component({
@@ -39,27 +39,27 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   constructor(private formlyConfig: FormlyConfig) {}
 
   ngAfterContentInit() {
-    this.lifeCycleHooks(this.lifecycle.afterContentInit);
+    this.triggerHook('afterContentInit');
   }
 
   ngAfterContentChecked() {
-    this.lifeCycleHooks(this.lifecycle.afterContentChecked);
+    this.triggerHook('afterContentChecked');
   }
 
   ngAfterViewInit() {
-    this.lifeCycleHooks(this.lifecycle.afterViewInit);
+    this.triggerHook('afterViewInit');
   }
 
   ngAfterViewChecked() {
-    this.lifeCycleHooks(this.lifecycle.afterViewChecked);
+    this.triggerHook('afterViewChecked');
   }
 
   ngDoCheck() {
-    this.lifeCycleHooks(this.lifecycle.doCheck);
+    this.triggerHook('doCheck');
   }
 
   ngOnInit() {
-    this.lifeCycleHooks(this.lifecycle.onInit);
+    this.triggerHook('onInit');
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -67,14 +67,14 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       this.renderField(this.field, this.containerRef);
     }
 
-    this.lifeCycleHooks(this.lifecycle.onChanges);
+    this.triggerHook('onChanges');
     this.componentRefs.forEach(ref => {
       Object.assign(ref.instance, { field: this.field });
     });
   }
 
   ngOnDestroy() {
-    this.lifeCycleHooks(this.lifecycle.onDestroy);
+    this.triggerHook('onDestroy');
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this.componentRefs = [];
   }
@@ -93,14 +93,19 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     });
   }
 
-  private get lifecycle(): FormlyLifeCycleOptions {
-    return this.field.lifecycle || {};
-  }
+  private triggerHook(name: string) {
+    if (this.field.hooks && this.field.hooks[name]) {
+      this.field.hooks[name](this.field);
+    }
 
-  private lifeCycleHooks(callback: FormlyLifeCycleFn) {
-    if (callback) {
-      callback(
-        <FormGroup> (this.field.parent ? this.field.parent.formControl : null),
+    if (this.field.lifecycle && this.field.lifecycle[name]) {
+      let field = this.field;
+      while (field.parent) {
+        field = field.parent;
+      }
+
+      this.field.lifecycle[name](
+        <FormGroup>(field !== this.field ? field.formControl : null),
         this.field,
         this.field.model,
         this.field.options,
