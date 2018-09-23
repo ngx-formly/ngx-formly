@@ -152,6 +152,11 @@ export interface FormlyFieldConfig {
     updateOn?: 'change' | 'blur' | 'submit';
   };
 
+  hooks?: FormlyLifeCycleOptions<FormlyHookFn>;
+
+  /**
+   * @deprecated use `hooks` instead
+   */
   lifecycle?: FormlyLifeCycleOptions;
 
   /**
@@ -220,15 +225,19 @@ export interface FormlyLifeCycleFn {
   (form?: FormGroup, field?: FormlyFieldConfig, model?: any, options?: FormlyFormOptions): void;
 }
 
-export interface FormlyLifeCycleOptions {
-  onInit?: FormlyLifeCycleFn;
-  onChanges?: FormlyLifeCycleFn;
-  doCheck?: FormlyLifeCycleFn;
-  afterContentInit?: FormlyLifeCycleFn;
-  afterContentChecked?: FormlyLifeCycleFn;
-  afterViewInit?: FormlyLifeCycleFn;
-  afterViewChecked?: FormlyLifeCycleFn;
-  onDestroy?: FormlyLifeCycleFn;
+export interface FormlyHookFn {
+  (field?: FormlyFieldConfig): void;
+}
+
+export interface FormlyLifeCycleOptions<T = FormlyLifeCycleFn> {
+  onInit?: T;
+  onChanges?: T;
+  doCheck?: T;
+  afterContentInit?: T;
+  afterContentChecked?: T;
+  afterViewInit?: T;
+  afterViewChecked?: T;
+  onDestroy?: T;
   [additionalProperties: string]: any;
 }
 

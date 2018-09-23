@@ -37,8 +37,8 @@ export class AppComponent implements OnDestroy {
         valueProp: 'id',
         labelProp: 'name',
       },
-      lifecycle: {
-        onInit: (form, field) => {
+      hooks: {
+        onInit: (field) => {
           const teams = [
             { id: '1', name: 'Bayern Munich', sportId: '1' },
             { id: '2', name: 'Real Madrid', sportId: '1' },
@@ -46,6 +46,7 @@ export class AppComponent implements OnDestroy {
             { id: '4', name: 'Miami', sportId: '2' },
           ];
 
+          const form = field.parent.formControl;
           form.get('sport').valueChanges.pipe(
             takeUntil(this.onDestroy$),
             startWith(form.get('sport').value),
@@ -66,8 +67,8 @@ export class AppComponent implements OnDestroy {
         valueProp: 'id',
         labelProp: 'name',
       },
-      lifecycle: {
-        onInit: (form, field) => {
+      hooks: {
+        onInit: (field) => {
           const players = [
             { id: '1', name: 'Bayern Munich (Player 1)', teamId: '1' },
             { id: '2', name: 'Bayern Munich (Player 2)', teamId: '1' },
@@ -79,6 +80,7 @@ export class AppComponent implements OnDestroy {
             { id: '8', name: 'Miami (Player 2)', teamId: '4' },
           ];
 
+          const form = field.parent.formControl;
           form.get('team').valueChanges.pipe(
             takeUntil(this.onDestroy$),
             startWith(form.get('team').value),

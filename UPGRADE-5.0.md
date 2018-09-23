@@ -59,6 +59,37 @@ After:
 <formly-field [field]="field"></formly-field>
 ```
 
+ * `lifecycle` option has been renamed to `hooks` with a change in the callback signature:
+
+Before:
+```ts
+  fields = [
+    {
+      key: 'email',
+      ...
+      lifecycle: {
+        onInit: (form, field, model, options) => {
+          ...
+        },
+      },
+    },
+  ]
+```
+After:
+```ts
+  fields = [
+    {
+      key: 'email',
+      ...
+      hooks: {
+        onInit: (field) => {
+          ...
+        },
+      },
+    },
+  ]
+```
+
 @ngx-formly/material
 --------------------
 **Note**: this only affect the user's who import sub-modules of `@ngx-formly/material` instead of main module `FormlyMaterialModule`.
