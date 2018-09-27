@@ -6,7 +6,7 @@ import { FieldType } from '@ngx-formly/core';
   template: `
     <input *ngIf="type !== 'number' else numberTmp" [type]="type" [formControl]="formControl" class="form-control" [formlyAttributes]="field" [class.is-invalid]="showError">
     <ng-template #numberTmp>
-      <input type="number" [formControl]="formControl" class="form-control" [formlyAttributes]="field" [class.is-invalid]="showError">
+      <input type="number" [formControl]="formControl" class="form-control" [class.form-control-lg]="to.size==='lg'" [class.form-control-sm]="to.size='sm'" [formlyAttributes]="field" [class.is-invalid]="showError">
     </ng-template>
   `,
   host: {
