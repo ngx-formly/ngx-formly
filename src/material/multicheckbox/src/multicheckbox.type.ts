@@ -1,38 +1,25 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'formly-field-mat-multicheckbox',
   template: `
-    <ng-container *ngFor="let option of to.options; let i = index;">
-      <mat-checkbox [id]="id + '_' + i"
-        [formControl]="formControl.get(option.key)"
+    <ng-container *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;">
+      <mat-checkbox
+        [id]="id + '_' + i"
         [formlyAttributes]="field"
         [color]="to.color"
-        [labelPosition]="to.labelPosition">
-          {{ option.value }}
+        [labelPosition]="to.labelPosition"
+        [checked]="formControl.value && formControl.value[option.value]"
+        (change)="onChange(option.value, $event.checked)">
+          {{ option.label }}
       </mat-checkbox>
     </ng-container>
   `,
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
-  static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
-    if (!(field.templateOptions.options instanceof Observable)) {
-      let controlGroupConfig = field.templateOptions.options.reduce((previous, option) => {
-        previous[option.key] = new FormControl(model ? model[option.key] : undefined);
-        return previous;
-      }, {});
-
-      return new FormGroup(
-        controlGroupConfig,
-        field.validators ? field.validators.validation : undefined,
-        field.asyncValidators ? field.asyncValidators.validation : undefined,
-      );
-    } else {
-      throw new Error(`[Formly Error] You cannot pass an Observable to a multicheckbox yet.`);
-    }
+  onChange(value, checked) {
+    this.formControl.patchValue({ ...this.formControl.value, [value]: checked });
+    this.formControl.markAsTouched();
   }
 }
