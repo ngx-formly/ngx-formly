@@ -60,7 +60,9 @@ export class FieldFormExtension implements FormlyExtension {
         control.updateValueAndValidity();
       }
     } else if (field._componentFactory && field._componentFactory.component && field._componentFactory.component.createControl) {
-      control = field._componentFactory.component.createControl(model[path], field);
+      const component = field._componentFactory.component;
+      console.warn(`NgxFormly: '${component.name}::createControl' is deprecated since v5.0, use 'prePopulate' hook instead.`);
+      control = component.createControl(model[path], field);
     } else if (field.fieldGroup && !field.fieldArray) {
       control = new FormGroup({}, abstractControlOptions);
     } else if (field.fieldArray) {
