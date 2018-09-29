@@ -59,6 +59,29 @@ After:
 <formly-field [field]="field"></formly-field>
 ```
 
+ * using `createControl` to create custom form control is deprecated, use `prePopulate` hook instead:
+
+Before:
+```ts
+export class FormlyFieldCustomType extends FieldType {
+  static createControl(model: any, field: FormlyFieldConfig): AbstractControl {
+    return new FormControl(...);
+  }
+}
+```
+After:
+```ts
+export class FormlyFieldCustomType extends FieldType {
+  prePopulate(field: FormlyFieldConfig) {
+    if (field.formControl) {
+      return;
+    }
+
+    field.formControl = new FormControl(...);
+  }
+}
+```
+
  * `lifecycle` option has been renamed to `hooks` with a change in the callback signature:
 
 Before:
