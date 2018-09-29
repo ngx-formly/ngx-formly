@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.10"></a>
+# [5.0.0-beta.10](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.9...v5.0.0-beta.10) (2018-09-29)
+
+
+### Features
+
+* allow passing observable for multicheckbox ([#1209](https://github.com/formly-js/ngx-formly/issues/1209)) ([d370959](https://github.com/formly-js/ngx-formly/commit/d370959))
+* **core:** deprecated `createControl` method in favor of `prePopulate` ([#1210](https://github.com/formly-js/ngx-formly/issues/1210)) ([86ee2b0](https://github.com/formly-js/ngx-formly/commit/86ee2b0))
+
+
+
 <a name="5.0.0-beta.9"></a>
 # [5.0.0-beta.9](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.8...v5.0.0-beta.9) (2018-09-23)
 
