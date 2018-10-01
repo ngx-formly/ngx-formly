@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.11"></a>
+# [5.0.0-beta.11](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.10...v5.0.0-beta.11) (2018-10-01)
+
+
+### Bug Fixes
+
+* **bootstrap:** take account of checked options for multicheckbox ([#1213](https://github.com/formly-js/ngx-formly/issues/1213)) ([7484599](https://github.com/formly-js/ngx-formly/commit/7484599)), closes [#1212](https://github.com/formly-js/ngx-formly/issues/1212)
+
+
+### Features
+
+* allow passing array value for multicheckbox ([#1214](https://github.com/formly-js/ngx-formly/issues/1214)) ([609eb39](https://github.com/formly-js/ngx-formly/commit/609eb39))
+
+
+
 <a name="5.0.0-beta.10"></a>
 # [5.0.0-beta.10](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.9...v5.0.0-beta.10) (2018-09-29)
 
