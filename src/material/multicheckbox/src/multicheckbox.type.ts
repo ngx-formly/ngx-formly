@@ -10,7 +10,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
         [formlyAttributes]="field"
         [color]="to.color"
         [labelPosition]="to.labelPosition"
-        [checked]="formControl.value && formControl.value[option.value]"
+        [checked]="formControl.value && (this.to.type === 'array' ? formControl.value.includes(option.value) : formControl.value[option.value])"
         (change)="onChange(option.value, $event.checked)">
           {{ option.label }}
       </mat-checkbox>
@@ -19,7 +19,14 @@ import { FieldType } from '@ngx-formly/material/form-field';
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
   onChange(value, checked) {
-    this.formControl.patchValue({ ...this.formControl.value, [value]: checked });
+    if (this.to.type === 'array') {
+      this.formControl.patchValue(checked
+        ? [...(this.formControl.value || []), value]
+        : [...(this.formControl.value || [])].filter(o => o !== value),
+      );
+    } else {
+      this.formControl.patchValue({ ...this.formControl.value, [value]: checked });
+    }
     this.formControl.markAsTouched();
   }
 }
