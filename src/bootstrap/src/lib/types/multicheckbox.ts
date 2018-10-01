@@ -8,6 +8,7 @@ import { FieldType } from '@ngx-formly/core';
       <input class="custom-control-input" type="checkbox"
         [id]="id + '_' + i"
         [value]="option.value"
+        [checked]="formControl.value && formControl.value[option.value]"
         [formlyAttributes]="field"
         (change)="onChange(option.value, $event.target.checked)">
       <label class="custom-control-label" [for]="id + '_' + i">
