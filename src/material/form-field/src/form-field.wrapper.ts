@@ -110,5 +110,5 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
   get value() { return this.formControl.value; }
   get ngControl() { return this.formControl as any; }
   get empty() { return !this.formControl.value; }
-  get shouldLabelFloat() { return this.focused || !this.empty; }
+  get shouldLabelFloat() { return this.to.floatLabel !== 'never' && (this.focused || !this.empty); }
 }
