@@ -99,13 +99,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     }
 
     if (this.field.lifecycle && this.field.lifecycle[name]) {
-      let field = this.field;
-      while (field.parent) {
-        field = field.parent;
-      }
-
       this.field.lifecycle[name](
-        <FormGroup>(field !== this.field ? field.formControl : null),
+        this.field.form,
         this.field,
         this.field.model,
         this.field.options,
