@@ -106,6 +106,7 @@ After:
       ...
       hooks: {
         onInit: (field) => {
+          const { form, model, options } = field;
           ...
         },
       },

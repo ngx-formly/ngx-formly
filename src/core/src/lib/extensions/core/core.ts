@@ -49,6 +49,7 @@ export class CoreExtension implements FormlyExtension {
       return;
     }
 
+    Object.defineProperty(field, 'form', { get: () => root.formControl, configurable: true });
     Object.defineProperty(field, 'options', { get: () => root.options, configurable: true });
     Object.defineProperty(field, 'model', {
       get: () => field.key && field.fieldGroup ? getFieldValue(field) : root.model,
