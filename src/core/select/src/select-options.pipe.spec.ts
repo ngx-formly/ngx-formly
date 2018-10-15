@@ -10,20 +10,20 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
 
   it('passing options as an array', () => {
     pipe.transform([{ label: '1', value: '1' }]).subscribe((options) => {
-      expect(options).toEqual([{ label: '1', value: '1' }]);
+      expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
   });
 
   it('passing options as an observable', () => {
     pipe.transform(observableOf([{ label: '1', value: '1' }])).subscribe((options) => {
-      expect(options).toEqual([{ label: '1', value: '1' }]);
+      expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
   });
 
-  describe('label & value props', () => {
+  describe('label & value & disabled props', () => {
     let options;
     beforeEach(() => {
-      options = [{ name: 'foo', id: '1' }];
+      options = [{ name: 'foo', id: '1', locked: true }];
     });
 
     it('as a string', () => {
@@ -31,25 +31,41 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         templateOptions: {
           labelProp: 'name',
           valueProp: 'id',
+          disabledProp: 'locked',
         },
       };
 
       pipe.transform(options, field).subscribe((options) => {
-        expect(options).toEqual([{ label: 'foo', value: '1' }]);
+        expect(options).toEqual([{ label: 'foo', value: '1', disabled: true }]);
+      });
+    });
+
+    it('as a function', () => {
+      const field = {
+        templateOptions: {
+          labelProp: item => item.name,
+          valueProp: item => item.id,
+          disabledProp: item => item.locked,
+        },
+      };
+
+      pipe.transform(options, field).subscribe((options) => {
+        expect(options).toEqual([{ label: 'foo', value: '1', disabled: true }]);
       });
     });
 
     it('with group props', () => {
       options = [
-        { name: '1', id: '1', parent: '1' },
-        { name: '2', id: '2', parent: '1' },
-        { name: '3', id: '3', parent: '2' },
+        { name: '1', id: '1', locked: true, parent: '1' },
+        { name: '2', id: '2', locked: false, parent: '1' },
+        { name: '3', id: '3', locked: false, parent: '2' },
       ];
 
       const field = {
         templateOptions: {
           labelProp: item => item.name,
           valueProp: item => item.id,
+          disabledProp: item => item.locked,
           groupProp: item => item.parent,
         },
       };
@@ -59,30 +75,17 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
           {
             label: '1',
             group: [
-              { label: '1', value: '1' },
-              { label: '2', value: '2' },
+              { label: '1', value: '1', disabled: true },
+              { label: '2', value: '2', disabled: false },
             ],
           },
           {
             label: '2',
             group: [
-              { label: '3', value: '3' },
+              { label: '3', value: '3', disabled: false },
             ],
           },
         ]);
-      });
-    });
-
-    it('as a function', () => {
-      const field = {
-          templateOptions: {
-            labelProp: item => item.name,
-            valueProp: item => item.id,
-          },
-        };
-
-      pipe.transform(options, field).subscribe((options) => {
-        expect(options).toEqual([{ label: 'foo', value: '1' }]);
       });
     });
   });
@@ -105,14 +108,14 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
           {
             label: '1',
             group: [
-              { label: '1', value: '1' },
-              { label: '2', value: '2' },
+              { label: '1', value: '1', disabled: false },
+              { label: '2', value: '2', disabled: false },
             ],
           },
           {
             label: '2',
             group: [
-              { label: '3', value: '3' },
+              { label: '3', value: '3', disabled: false },
             ],
           },
         ]);
@@ -127,14 +130,14 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
           {
             label: '1',
             group: [
-              { label: '1', value: '1' },
-              { label: '2', value: '2' },
+              { label: '1', value: '1', disabled: false },
+              { label: '2', value: '2', disabled: false },
             ],
           },
           {
             label: '2',
             group: [
-              { label: '3', value: '3' },
+              { label: '3', value: '3', disabled: false },
             ],
           },
         ]);

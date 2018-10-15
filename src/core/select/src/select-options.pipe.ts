@@ -42,6 +42,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     return {
       label: this.getLabelProp(item, to),
       value: this.getValueProp(item, to),
+      disabled: this.getDisabledProp(item, to) || false,
     };
   }
 
@@ -67,6 +68,13 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     }
 
     return item[to.valueProp || 'value'];
+  }
+
+  private getDisabledProp(item, to): string {
+    if (typeof to.disabledProp === 'function') {
+      return to.disabledProp(item);
+    }
+    return item[to.disabledProp || 'disabled'];
   }
 
   private getGroupProp(item, to): string {
