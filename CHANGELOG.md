@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.8.0"></a>
+# [4.8.0](https://github.com/formly-js/ngx-formly/compare/v4.7.2...v4.8.0) (2018-10-15)
+
+
+### Features
+
+* allow passing disabled prop for select options ([#1238](https://github.com/formly-js/ngx-formly/issues/1238)) ([2f99b43](https://github.com/formly-js/ngx-formly/commit/2f99b43))
+
+
+
 <a name="4.7.2"></a>
 ## [4.7.2](https://github.com/formly-js/ngx-formly/compare/v4.7.1...v4.7.2) (2018-08-07)
 
