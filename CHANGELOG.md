@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.12"></a>
+# [5.0.0-beta.12](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.11...v5.0.0-beta.12) (2018-10-15)
+
+
+### Features
+
+* **core:** add form alias to the field object ([#1226](https://github.com/formly-js/ngx-formly/issues/1226)) ([053d72f](https://github.com/formly-js/ngx-formly/commit/053d72f))
+* **core:** allow passing disabled prop for select options ([039a693](https://github.com/formly-js/ngx-formly/commit/039a693))
+
+
+
 <a name="5.0.0-beta.11"></a>
 # [5.0.0-beta.11](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.10...v5.0.0-beta.11) (2018-10-01)
 
