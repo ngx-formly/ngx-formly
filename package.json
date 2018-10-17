@@ -71,7 +71,7 @@
     "@progress/kendo-angular-inputs": "^3.2.2",
     "@progress/kendo-angular-intl": "^1.5.0",
     "@progress/kendo-angular-l10n": "^1.2.1",
-    "@progress/kendo-theme-default": "^2.57.0",
+    "@progress/kendo-theme-default": "^2.57.1",
     "@swimlane/ngx-datatable": "^13.0.1",
     "bootstrap": "^4.1.2",
     "core-js": "^2.5.7",
