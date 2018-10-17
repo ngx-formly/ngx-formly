@@ -113,6 +113,7 @@ After:
     },
   ]
 ```
+**Warning**: `onChanges` under `hooks` doens't take account of model, options and form changes (https://github.com/formly-js/ngx-formly/issues/1241).
 
 @ngx-formly/material
 --------------------

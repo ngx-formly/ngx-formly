@@ -1,6 +1,6 @@
 import {
   Component, OnInit, OnChanges, EventEmitter, Input, Output, OnDestroy,
-  ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked,
+  ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Attribute,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -19,16 +19,18 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   @Input() field: FormlyFieldConfig;
   @Input('class') className: string = '';
 
+  warnDeprecation = false;
+
   @Input() set model(m: any) {
-    console.warn(`NgxFormly: passing 'model' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
+    this.warnDeprecation && console.warn(`NgxFormly: passing 'model' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
   }
 
   @Input() set form(form: FormGroup) {
-    console.warn(`NgxFormly: passing 'form' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
+    this.warnDeprecation && console.warn(`NgxFormly: passing 'form' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
   }
 
   @Input() set options(options: FormlyFormOptions) {
-    console.warn(`NgxFormly: passing 'options' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
+    this.warnDeprecation && console.warn(`NgxFormly: passing 'options' input to '${this.constructor.name}' component is not required anymore, you may remove it!`);
   }
 
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
@@ -36,7 +38,13 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   private componentRefs: ComponentRef<FieldWrapper>[] = [];
 
-  constructor(private formlyConfig: FormlyConfig) {}
+  constructor(
+    private formlyConfig: FormlyConfig,
+    // tslint:disable-next-line
+    @Attribute('hide-deprecation') hideDeprecation,
+  ) {
+    this.warnDeprecation = hideDeprecation === null;
+  }
 
   ngAfterContentInit() {
     this.triggerHook('afterContentInit');
@@ -67,7 +75,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       this.renderField(this.field, this.containerRef);
     }
 
-    this.triggerHook('onChanges');
+    this.triggerHook('onChanges', changes);
     this.componentRefs.forEach(ref => {
       Object.assign(ref.instance, { field: this.field });
     });
@@ -93,9 +101,11 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     });
   }
 
-  private triggerHook(name: string) {
+  private triggerHook(name: string, changes?: SimpleChanges) {
     if (this.field.hooks && this.field.hooks[name]) {
-      this.field.hooks[name](this.field);
+      if (!changes || changes.field) {
+        this.field.hooks[name](this.field);
+      }
     }
 
     if (this.field.lifecycle && this.field.lifecycle[name]) {
