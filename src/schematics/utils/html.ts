@@ -2,7 +2,7 @@ import { Tree, SchematicsException } from '@angular-devkit/schematics';
 import * as parse5 from 'parse5';
 import { getIndexHtmlPath } from './ast';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { WorkspaceProject } from '@schematics/angular/utility/config';
+import { WorkspaceProject } from '@angular-devkit/core/src/workspace';
 
 /**
  * Parses the index.html file to get the HEAD tag position.
