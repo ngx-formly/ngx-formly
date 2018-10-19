@@ -10,6 +10,7 @@ import { join } from 'path';
 import { createWorkspace, getTestProjectPath } from '../../utils/testing';
 import { Schema as ComponentOptions } from './schema';
 import { getFileContent } from '@schematics/angular/utility/test';
+import { ChangeDetection } from '@schematics/angular/component/schema';
 
 // tslint:disable:max-line-length
 describe('Component Schematic', () => {
@@ -19,7 +20,7 @@ describe('Component Schematic', () => {
     // path: 'src/app',
     inlineStyle: false,
     inlineTemplate: false,
-    changeDetection: 'Default',
+    changeDetection: ChangeDetection.Default,
     styleext: 'css',
     spec: true,
     module: undefined,

@@ -3,9 +3,10 @@ import { SchematicsException, Tree } from '@angular-devkit/schematics';
 import * as ts from 'typescript';
 import { addImportToModule } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { WorkspaceProject, getWorkspace } from '@schematics/angular/utility/config';
+import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { findModuleFromOptions as internalFindModule } from '@schematics/angular/utility/find-module';
+import { WorkspaceProject } from '@angular-devkit/core/src/workspace';
 
 
 /** Reads file given path and returns TypeScript source file. */

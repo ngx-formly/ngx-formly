@@ -16,7 +16,7 @@
     "tslib": "^1.7.1"
   },
   "peerDependencies": {
-    "@angular/forms": ">=6.1.0",
-    "rxjs": ">=6.0.0"
+    "@angular/forms": ">=7.0.0",
+    "rxjs": ">=6.3.0"
   }
 }
