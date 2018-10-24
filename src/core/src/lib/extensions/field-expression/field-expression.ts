@@ -16,7 +16,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       return;
     }
 
-    field.options._checkField = (f) => this._checkField(f);
+    field.options._checkField = (f, ignoreCache) => this._checkField(f, ignoreCache);
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
@@ -81,7 +81,8 @@ export class FieldExpressionExtension implements FormlyExtension {
     if (field.parent) {
       return;
     }
-    field.options._checkField(field);
+
+    field.options._checkField(field, true);
   }
 
   private _evalExpression(expression, parentExpression?) {
@@ -95,18 +96,18 @@ export class FieldExpressionExtension implements FormlyExtension {
       : expression;
   }
 
-  private _checkField(field: FormlyFieldConfigCache) {
+  private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
     field.fieldGroup.forEach(f => {
-      this.checkFieldExpressionChange(f);
-      this.checkFieldVisibilityChange(f);
+      this.checkFieldExpressionChange(f, ignoreCache);
+      this.checkFieldVisibilityChange(f, ignoreCache);
 
       if (f.fieldGroup && f.fieldGroup.length > 0) {
-        this._checkField(f);
+        this._checkField(f, ignoreCache);
       }
     });
   }
 
-  private checkFieldExpressionChange(field: FormlyFieldConfigCache) {
+  private checkFieldExpressionChange(field: FormlyFieldConfigCache, ignoreCache) {
     if (!field || !field._expressionProperties) {
       return;
     }
@@ -121,8 +122,10 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
 
       if (
-        expressionProperties[key].expressionValue !== expressionValue
-        && (!isObject(expressionValue) || JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue))
+        ignoreCache || (
+          expressionProperties[key].expressionValue !== expressionValue
+          && (!isObject(expressionValue) || JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue))
+        )
       ) {
         expressionProperties[key].expressionValue = expressionValue;
         evalExpression(
@@ -151,7 +154,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private checkFieldVisibilityChange(field: FormlyFieldConfigCache) {
+  private checkFieldVisibilityChange(field: FormlyFieldConfigCache, ignoreCache) {
     if (!field || isNullOrUndefined(field.hideExpression)) {
       return;
     }
@@ -162,7 +165,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       [field.model, field.options.formState],
     );
 
-    if (hideExpressionResult !== field.hide) {
+    if (hideExpressionResult !== field.hide || ignoreCache) {
       // toggle hide
       field.hide = hideExpressionResult;
       field.templateOptions.hidden = hideExpressionResult;
