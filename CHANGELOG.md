@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.13"></a>
+# [5.0.0-beta.13](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.12...v5.0.0-beta.13) (2018-10-25)
+
+
+### Bug Fixes
+
+* **core:** ignore cached expression value during buildForm ([#1252](https://github.com/formly-js/ngx-formly/issues/1252)) ([15995af](https://github.com/formly-js/ngx-formly/commit/15995af)), closes [#1250](https://github.com/formly-js/ngx-formly/issues/1250)
+* **core:** take account of deprecated FormlyField inputs changes ([#1242](https://github.com/formly-js/ngx-formly/issues/1242)) ([3f22da8](https://github.com/formly-js/ngx-formly/commit/3f22da8)), closes [#1241](https://github.com/formly-js/ngx-formly/issues/1241)
+
+
+### Features
+
+* **core:** set peerDependency to angular >=7.0 ([#1247](https://github.com/formly-js/ngx-formly/issues/1247)) ([413be23](https://github.com/formly-js/ngx-formly/commit/413be23))
+
+
+
 <a name="5.0.0-beta.12"></a>
 # [5.0.0-beta.12](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.11...v5.0.0-beta.12) (2018-10-15)
 
