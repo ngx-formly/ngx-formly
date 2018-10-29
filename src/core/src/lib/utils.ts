@@ -118,7 +118,7 @@ export function isObject(x: any) {
 }
 
 export function clone(value: any): any {
-  if (!isObject(value) || value instanceof RegExp || value instanceof Observable) {
+  if (!isObject(value) || value instanceof RegExp || value instanceof Observable || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity) {
     return value;
   }
 
