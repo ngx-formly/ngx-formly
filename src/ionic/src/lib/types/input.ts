@@ -10,5 +10,6 @@ import { FieldType } from './field.type';
       (ionChange)="change($event)">
     </ion-input>
   `,
+  styles: [':host { display: inherit; }'],
 })
 export class FormlyFieldInput extends FieldType {}
