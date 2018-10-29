@@ -7,8 +7,11 @@ import { FieldType } from './field.type';
     <ion-textarea
       [formControl]="formControl"
       [formlyAttributes]="field"
+      [cols]="to.cols"
+      [rows]="to.rows"
       (ionChange)="change($event)">
     </ion-textarea>
   `,
+  styles: [':host { display: inherit; }'],
 })
 export class FormlyFieldTextArea extends FieldType {}
