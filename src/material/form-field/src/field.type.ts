@@ -52,7 +52,7 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
     return showError;
   }
 
-  get controlType() { return this.to.type; }
+  get controlType() { return this.to.type || this.field.type; }
   get focused() { return this.field.focus && !this.disabled; }
   get disabled() { return this.to.disabled; }
   get required() { return this.to.required; }
