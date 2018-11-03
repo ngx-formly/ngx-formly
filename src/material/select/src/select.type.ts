@@ -12,7 +12,9 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [compareWith]="to.compareWith || compareWith"
       [multiple]="to.multiple"
       (selectionChange)="change($event)"
-      [errorStateMatcher]="errorStateMatcher">
+      [errorStateMatcher]="errorStateMatcher"
+      [aria-labelledby]="formField?._labelId"
+      >
       <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
         <mat-optgroup *ngIf="item.group" [label]="item.label">
           <mat-option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
