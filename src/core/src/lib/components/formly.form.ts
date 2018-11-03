@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -46,6 +46,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   constructor(
     private formlyBuilder: FormlyFormBuilder,
     private formlyConfig: FormlyConfig,
+    private changeDetectorRef: ChangeDetectorRef,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
     @Optional() @SkipSelf() private parentFormlyForm: FormlyForm,
@@ -100,9 +101,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           Object.assign(this.model, model || {});
         }
 
-        this.clearModelSubscriptions();
-        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-        this.trackModelChanges(this.fields);
+        (<FormlyFormOptionsCache> this.options)._buildForm();
 
         // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
         // but only when the current component is a root one.
@@ -116,6 +115,17 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     if (!this.options.parentForm) {
       this.options.parentForm = this.parentFormGroup || this.parentForm;
+    }
+
+    if (this.options.parentForm) {
+      let submitted = this.options.parentForm.submitted;
+      Object.defineProperty(this.options.parentForm, 'submitted', {
+        get: () => submitted,
+        set: value => {
+          submitted = value;
+          this.changeDetectorRef.markForCheck();
+        },
+      });
     }
 
     if (!this.options.updateInitialValue) {
