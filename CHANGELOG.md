@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.8.1"></a>
+## [4.8.1](https://github.com/formly-js/ngx-formly/compare/v4.8.0...v4.8.1) (2018-11-03)
+
+
+### Bug Fixes
+
+* **material:** set select aria-labelledby to avoid ExpressionCheck Error ([#1265](https://github.com/formly-js/ngx-formly/issues/1265)) ([e12b6b9](https://github.com/formly-js/ngx-formly/commit/e12b6b9)), closes [#1251](https://github.com/formly-js/ngx-formly/issues/1251)
+
+
+
 <a name="4.8.0"></a>
 # [4.8.0](https://github.com/formly-js/ngx-formly/compare/v4.7.2...v4.8.0) (2018-10-15)
 
