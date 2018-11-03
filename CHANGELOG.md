@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.14"></a>
+# [5.0.0-beta.14](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.13...v5.0.0-beta.14) (2018-11-03)
+
+
+### Bug Fixes
+
+* **core:** ensure validation error is displayed while enabling onpush CD ([#1266](https://github.com/formly-js/ngx-formly/issues/1266)) ([7984729](https://github.com/formly-js/ngx-formly/commit/7984729)), closes [#1262](https://github.com/formly-js/ngx-formly/issues/1262)
+* **core:** ignore clone SafeHtmlImpl value ([#1257](https://github.com/formly-js/ngx-formly/issues/1257)) ([a7c018b](https://github.com/formly-js/ngx-formly/commit/a7c018b)), closes [#1254](https://github.com/formly-js/ngx-formly/issues/1254)
+* **material:** fallback to field.type for custom FieldControlType ([#1261](https://github.com/formly-js/ngx-formly/issues/1261)) ([6a116f7](https://github.com/formly-js/ngx-formly/commit/6a116f7))
+* **material:** set select aria-labelledby to avoid ExpressionCheck Error ([#1265](https://github.com/formly-js/ngx-formly/issues/1265)) ([41fae5c](https://github.com/formly-js/ngx-formly/commit/41fae5c)), closes [#1251](https://github.com/formly-js/ngx-formly/issues/1251)
+
+
+### Features
+
+* **ionic:** support textarea rows & cols options ([#1258](https://github.com/formly-js/ngx-formly/issues/1258)) ([61cd902](https://github.com/formly-js/ngx-formly/commit/61cd902)), closes [#1183](https://github.com/formly-js/ngx-formly/issues/1183)
+
+
+
 <a name="5.0.0-beta.13"></a>
 # [5.0.0-beta.13](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.12...v5.0.0-beta.13) (2018-10-25)
 
