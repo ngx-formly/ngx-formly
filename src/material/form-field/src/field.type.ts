@@ -24,6 +24,7 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
       setTimeout(() => {
         defineHiddenProp(this.field, '_matPrefix', this.matPrefix);
         defineHiddenProp(this.field, '_matSuffix', this.matSuffix);
+        (<any> this.options)._markForCheck(this.field);
       });
     }
   }

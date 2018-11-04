@@ -97,21 +97,25 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
+    let markForCheck = false;
     field.fieldGroup.forEach(f => {
-      this.checkFieldExpressionChange(f, ignoreCache);
-      this.checkFieldVisibilityChange(f, ignoreCache);
+      this.checkFieldExpressionChange(f, ignoreCache) && (markForCheck = true);
+      this.checkFieldVisibilityChange(f, ignoreCache) && (markForCheck = true);
 
       if (f.fieldGroup && f.fieldGroup.length > 0) {
-        this._checkField(f, ignoreCache);
+        this._checkField(f, ignoreCache) && (markForCheck = true);
       }
     });
+
+    return markForCheck;
   }
 
-  private checkFieldExpressionChange(field: FormlyFieldConfigCache, ignoreCache) {
+  private checkFieldExpressionChange(field: FormlyFieldConfigCache, ignoreCache): boolean {
     if (!field || !field._expressionProperties) {
-      return;
+      return false;
     }
 
+    let markForCheck = false;
     const expressionProperties = field._expressionProperties;
     const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
 
@@ -127,6 +131,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           && (!isObject(expressionValue) || JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue))
         )
       ) {
+        markForCheck = true;
         expressionProperties[key].expressionValue = expressionValue;
         evalExpression(
           expressionProperties[key].expressionValueSetter,
@@ -152,11 +157,13 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
       }
     }
+
+    return markForCheck;
   }
 
-  private checkFieldVisibilityChange(field: FormlyFieldConfigCache, ignoreCache) {
+  private checkFieldVisibilityChange(field: FormlyFieldConfigCache, ignoreCache): boolean {
     if (!field || isNullOrUndefined(field.hideExpression)) {
-      return;
+      return false;
     }
 
     const hideExpressionResult: boolean = !!evalExpression(
@@ -164,8 +171,9 @@ export class FieldExpressionExtension implements FormlyExtension {
       { field },
       [field.model, field.options.formState],
     );
-
+    let markForCheck = false;
     if (hideExpressionResult !== field.hide || ignoreCache) {
+      markForCheck = true;
       // toggle hide
       field.hide = hideExpressionResult;
       field.templateOptions.hidden = hideExpressionResult;
@@ -186,6 +194,8 @@ export class FieldExpressionExtension implements FormlyExtension {
         field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hideExpressionResult });
       }
     }
+
+    return markForCheck;
   }
 
   private addFieldControl(parent: FormArray | FormGroup, field: FormlyFieldConfig) {
