@@ -243,7 +243,7 @@ export interface FormlyLifeCycleOptions<T = FormlyLifeCycleFn> {
 }
 
 export interface FormlyFormOptionsCache extends FormlyFormOptions {
-  _checkField?: (field: FormlyFieldConfigCache, ignoreCache?: boolean) => boolean;
+  _checkField?: (field: FormlyFieldConfigCache, ignoreCache?: boolean) => void;
   _markForCheck?: (field: FormlyFieldConfigCache) => void;
   _buildForm?: () => void;
   _componentFactoryResolver?: ComponentFactoryResolver;

@@ -164,10 +164,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private checkExpressionChange() {
     if (this.isRoot && (<FormlyFormOptionsCache> this.options)._checkField) {
-      const field = { fieldGroup: this.fields, model: this.model, formControl: this.form, options: this.options };
-      if ((<FormlyFormOptionsCache> this.options)._checkField(field)) {
-        (<FormlyFormOptionsCache> this.options)._markForCheck(field);
-      }
+      (<FormlyFormOptionsCache> this.options)._checkField({
+        fieldGroup: this.fields,
+        model: this.model,
+        formControl: this.form,
+        options: this.options,
+      });
     }
   }
 
