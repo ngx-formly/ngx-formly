@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.15"></a>
+# [5.0.0-beta.15](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.14...v5.0.0-beta.15) (2018-11-04)
+
+
+### Bug Fixes
+
+* **core:** ensure setting active injector in child module ([#1268](https://github.com/formly-js/ngx-formly/issues/1268)) ([84e7b71](https://github.com/formly-js/ngx-formly/commit/84e7b71)), closes [#1240](https://github.com/formly-js/ngx-formly/issues/1240)
+
+
+### Features
+
+* **core:** initial support OnPush CD ([#1267](https://github.com/formly-js/ngx-formly/issues/1267)) ([a874e09](https://github.com/formly-js/ngx-formly/commit/a874e09))
+
+
+### Performance Improvements
+
+* **core:** markForCheck only changed fields ([#1269](https://github.com/formly-js/ngx-formly/issues/1269)) ([44c25c9](https://github.com/formly-js/ngx-formly/commit/44c25c9))
+
+
+
 <a name="5.0.0-beta.14"></a>
 # [5.0.0-beta.14](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.13...v5.0.0-beta.14) (2018-11-03)
 
