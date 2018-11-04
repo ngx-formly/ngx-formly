@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -46,7 +46,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   constructor(
     private formlyBuilder: FormlyFormBuilder,
     private formlyConfig: FormlyConfig,
-    private changeDetectorRef: ChangeDetectorRef,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
     @Optional() @SkipSelf() private parentFormlyForm: FormlyForm,
@@ -123,7 +122,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         get: () => submitted,
         set: value => {
           submitted = value;
-          this.changeDetectorRef.markForCheck();
+          (<FormlyFormOptionsCache> this.options)._markForCheck({
+            fieldGroup: this.fields,
+            model: this.model,
+            formControl: this.form,
+            options: this.options,
+          });
         },
       });
     }
@@ -139,11 +143,27 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         this.trackModelChanges(this.fields);
       };
     }
+
+    if (!(<FormlyFormOptionsCache> this.options)._markForCheck) {
+      (<FormlyFormOptionsCache> this.options)._markForCheck = (field) => {
+        if (field._componentRefs) {
+          field._componentRefs.forEach(ref => ref.changeDetectorRef.markForCheck());
+        }
+
+        if (field.fieldGroup) {
+          field.fieldGroup.forEach(f => (<FormlyFormOptionsCache> this.options)._markForCheck(f));
+        }
+      };
+    }
+
   }
 
   private checkExpressionChange() {
     if (this.isRoot && (<FormlyFormOptionsCache> this.options)._checkField) {
-      (<FormlyFormOptionsCache> this.options)._checkField({ fieldGroup: this.fields, model: this.model, formControl: this.form, options: this.options });
+      const field = { fieldGroup: this.fields, model: this.model, formControl: this.form, options: this.options };
+      if ((<FormlyFormOptionsCache> this.options)._checkField(field)) {
+        (<FormlyFormOptionsCache> this.options)._markForCheck(field);
+      }
     }
   }
 

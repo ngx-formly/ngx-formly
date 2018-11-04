@@ -4,8 +4,9 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
-import { FormlyFieldConfig, FormlyFormOptions } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
 import { FieldWrapper } from '../templates/field.wrapper';
+import { defineHiddenProp } from '../utils';
 
 @Component({
   selector: 'formly-field',
@@ -36,7 +37,17 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('container', {read: ViewContainerRef}) containerRef: ViewContainerRef;
 
-  private componentRefs: ComponentRef<FieldWrapper>[] = [];
+  get componentRefs(): ComponentRef<any>[] {
+    if (!(<FormlyFieldConfigCache> this.field)._componentRefs) {
+      defineHiddenProp(this.field, '_componentRefs', []);
+    }
+
+    return (<FormlyFieldConfigCache> this.field)._componentRefs;
+  }
+
+  set componentRefs(refs: ComponentRef<any>[]) {
+    (<FormlyFieldConfigCache> this.field)._componentRefs = refs;
+  }
 
   constructor(
     private formlyConfig: FormlyConfig,

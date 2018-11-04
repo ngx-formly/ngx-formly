@@ -966,7 +966,11 @@ class TestFormComponent {
   submit(): void {}
 }
 
-@Component({selector: 'formly-form-test', template: '', entryComponents: []})
+@Component({
+  selector: 'formly-form-test',
+  template: '',
+  entryComponents: [],
+})
 class TestComponent {
   @ViewChild(FormlyForm) formlyForm: FormlyForm;
 

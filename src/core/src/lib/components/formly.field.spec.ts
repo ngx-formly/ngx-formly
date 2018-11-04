@@ -221,7 +221,11 @@ describe('FormlyField Component', () => {
   });
 });
 
-@Component({selector: 'formly-formly-field-test', template: '', entryComponents: []})
+@Component({
+  selector: 'formly-formly-field-test',
+  template: '',
+  entryComponents: [],
+})
 class TestComponent {
   field = testComponentInputs.field;
   form = testComponentInputs.form;

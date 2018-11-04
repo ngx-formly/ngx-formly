@@ -120,7 +120,11 @@ describe('FormlyAttributes Component', () => {
   });
 });
 
-@Component({selector: 'formly-formly-attributes-test', template: '', entryComponents: []})
+@Component({
+  selector: 'formly-formly-attributes-test',
+  template: '',
+  entryComponents: [],
+})
 class TestComponent {
   field: FormlyFieldConfig = {
     focus: false,
