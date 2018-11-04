@@ -1,6 +1,7 @@
 import {
-  Component, OnInit, OnChanges, EventEmitter, Input, Output, OnDestroy,
-  ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Attribute,
+  Component, EventEmitter, Input, Output,
+  ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, Attribute, ComponentFactoryResolver,
+  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -51,6 +52,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   constructor(
     private formlyConfig: FormlyConfig,
+    private componentFactoryResolver: ComponentFactoryResolver,
     // tslint:disable-next-line
     @Attribute('hide-deprecation') hideDeprecation,
   ) {
@@ -103,8 +105,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs = [];
 
     const wrappers = <any>(field.wrappers || []).map(wrapperName => this.formlyConfig.getWrapper(wrapperName));
-    [...wrappers, { ...this.formlyConfig.getType(field.type), componentFactory: (<any> field)._componentFactory }].forEach(({ componentFactoryResolver, component, componentRef }) => {
-      const ref = componentRef ? componentRef : containerRef.createComponent<FieldWrapper>(componentFactoryResolver.resolveComponentFactory(component));
+    [...wrappers, { ...this.formlyConfig.getType(field.type), componentFactory: (<any> field)._componentFactory }].forEach(({ component, componentRef }) => {
+      const ref = componentRef ? componentRef : containerRef.createComponent<FieldWrapper>(this.componentFactoryResolver.resolveComponentFactory(component));
 
       Object.assign(ref.instance, { field });
       this.componentRefs.push(ref);

@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy, ComponentFactoryResolver } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -46,6 +46,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   constructor(
     private formlyBuilder: FormlyFormBuilder,
     private formlyConfig: FormlyConfig,
+    private componentFactoryResolver: ComponentFactoryResolver,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
     @Optional() @SkipSelf() private parentFormlyForm: FormlyForm,
@@ -156,6 +157,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       };
     }
 
+    if (!(<FormlyFormOptionsCache> this.options)._componentFactoryResolver) {
+      (<FormlyFormOptionsCache> this.options)._componentFactoryResolver = this.componentFactoryResolver;
+    }
   }
 
   private checkExpressionChange() {
