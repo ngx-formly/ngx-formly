@@ -91,7 +91,6 @@ describe('FormlyConfig service', () => {
         wrappers: ['label'],
         extends: 'custom_input1',
         defaultOptions: undefined,
-        componentFactoryResolver: undefined,
       });
     });
   });

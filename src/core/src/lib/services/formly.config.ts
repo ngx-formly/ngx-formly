@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, ComponentFactoryResolver } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
@@ -75,7 +75,6 @@ export class FormlyConfig {
       this.types[options.name].name = options.name;
       this.types[options.name].extends = options.extends;
       this.types[options.name].defaultOptions = options.defaultOptions;
-      this.types[options.name].componentFactoryResolver = options.componentFactoryResolver;
       if (options.wrappers) {
         options.wrappers.forEach((wrapper) => this.setTypeWrapper(options.name, wrapper));
       }
@@ -125,13 +124,13 @@ export class FormlyConfig {
     }
     const type = this.getType(field.type);
 
+    const _componentFactoryResolver = (<any> field.parent.options)._componentFactoryResolver;
     defineHiddenProp(field, '_componentFactory', {
       type: field.type,
       component: type.component,
-      componentFactoryResolver: type.componentFactoryResolver,
-      componentRef: !type.componentFactoryResolver ? undefined : type.componentFactoryResolver
-        .resolveComponentFactory(type.component)
-        .create((<any> type.componentFactoryResolver)._ngModule.injector),
+      componentRef: _componentFactoryResolver
+        ? _componentFactoryResolver.resolveComponentFactory(type.component).create(_componentFactoryResolver._ngModule.injector)
+        : null,
     });
   }
 
@@ -209,14 +208,12 @@ export interface TypeOption {
   wrappers?: string[];
   extends?: string;
   defaultOptions?: FormlyFieldConfig;
-  componentFactoryResolver?: ComponentFactoryResolver;
 }
 
 export interface WrapperOption {
   name: string;
   component: any;
   types?: string[];
-  componentFactoryResolver?: ComponentFactoryResolver;
 }
 
 export interface FieldValidatorFn {

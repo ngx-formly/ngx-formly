@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS, Inject, Optional, ComponentFactoryResolver } from '@angular/core';
+import { NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormlyForm } from './components/formly.form';
 import { FormlyField } from './components/formly.field';
@@ -68,19 +68,12 @@ export class FormlyModule {
 
   constructor(
     configService: FormlyConfig,
-    componentFactoryResolver: ComponentFactoryResolver,
     @Optional() @Inject(FORMLY_CONFIG) configs: ConfigOption[] = [],
   ) {
     if (!configs) {
       return;
     }
 
-    configs.forEach(config => {
-      [...(config.types || []), ...(config.wrappers || [])]
-      .filter(t => !!t)
-      .forEach(t => t.componentFactoryResolver = componentFactoryResolver);
-
-      configService.addConfig(config);
-    });
+    configs.forEach(config => configService.addConfig(config));
   }
 }

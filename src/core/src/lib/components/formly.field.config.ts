@@ -186,7 +186,6 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _componentFactory?: {
     type: string;
     component: any;
-    componentFactoryResolver: ComponentFactoryResolver,
     componentRef?: ComponentRef<any>;
   };
 }
@@ -247,6 +246,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _checkField?: (field: FormlyFieldConfigCache, ignoreCache?: boolean) => boolean;
   _markForCheck?: (field: FormlyFieldConfigCache) => void;
   _buildForm?: () => void;
+  _componentFactoryResolver?: ComponentFactoryResolver;
 }
 export interface FormlyFormOptions {
   updateInitialValue?: () => void;
