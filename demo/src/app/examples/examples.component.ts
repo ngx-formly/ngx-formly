@@ -61,6 +61,7 @@ export class ExamplesComponent {
       { href: './advanced/multi-step-form', text: 'Multi-Step Form' },
       { href: './advanced/tabs', text: 'Tabs Form' },
       { href: './advanced/datatable-integration', text: 'ngx-datatable Integration' },
+      { href: './advanced/tabs-bootstrap', text: 'Tab multi step form bootstrap' },
     ]},
     { title: 'Other', links: [
       { href: './other/cascaded-select', text: 'Cascaded Select' },

@@ -18,7 +18,7 @@ import { TabTypeComponent } from './tab-type.component'
         { name: 'required', message: 'This field is required' },
       ],
       types: [
-          { name: 'tab', component: TabTypeComponent },
+          { name: 'tabBootstrap', component: TabTypeComponent },
       ]
     }),
   ],

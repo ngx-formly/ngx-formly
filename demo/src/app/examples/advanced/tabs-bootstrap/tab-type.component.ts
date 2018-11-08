@@ -56,7 +56,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
   steps: StepType[] = [];
 
   ngOnInit() {                   
-    this.steps = (this.to.steps as []);       
+    this.steps = (this.to.steps);       
  
   }
   

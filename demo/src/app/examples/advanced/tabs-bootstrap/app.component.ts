@@ -21,7 +21,7 @@ export class AppComponent {
 
   fields: FormlyFieldConfig[] = [
     {            
-      type: 'tab',
+      type: 'tabBootstrap',
       fieldGroup: [],
       templateOptions: {
         steps: [
