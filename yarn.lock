@@ -387,6 +387,13 @@
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
+"@ng-bootstrap/ng-bootstrap@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-4.0.0.tgz#e56aafc8e3ae900b88d528303a5962cc363088ed"
+  integrity sha512-jWVHRDUYppOSvzclP9d3lVWGUO+y0X9W6jdfyYehDkJCY0MFgtwefLYMtQ/NJ4niPzm2d/zZn+Bte48iIn0nKw==
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
