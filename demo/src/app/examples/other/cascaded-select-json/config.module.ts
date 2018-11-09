@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
         component: ExamplesRouterViewerComponent,
         data: {
           examples: [{
-            title: 'Cascaded Select (using observable)',
+            title: 'Cascaded Select JSON powered',
             description: ``,
             component: AppComponent,
             files: [
