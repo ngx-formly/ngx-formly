@@ -7,6 +7,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   template: `
     <input matInput
       [id]="id"
+      [readonly]="to.readonly"
       [type]="to.type || 'text'"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
