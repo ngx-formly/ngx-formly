@@ -8,6 +8,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
     <input *ngIf="type !== 'number'; else numberTmp"
       matInput
       [id]="id"
+      [readonly]="to.readonly"
       [type]="type || 'text'"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
