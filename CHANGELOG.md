@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.8.2"></a>
+## [4.8.2](https://github.com/formly-js/ngx-formly/compare/v4.8.1...v4.8.2) (2018-11-09)
+
+
+### Bug Fixes
+
+* **material:** use readonly input instead of formly-attributes ([#1279](https://github.com/formly-js/ngx-formly/issues/1279)) ([0252e51](https://github.com/formly-js/ngx-formly/commit/0252e51)), closes [#1277](https://github.com/formly-js/ngx-formly/issues/1277)
+
+
+
 <a name="4.8.1"></a>
 ## [4.8.1](https://github.com/formly-js/ngx-formly/compare/v4.8.0...v4.8.1) (2018-11-03)
 
