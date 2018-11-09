@@ -65,7 +65,8 @@ export class ExamplesComponent {
       { href: './advanced/datatable-integration', text: 'ngx-datatable Integration' },
     ]},
     { title: 'Other', links: [
-      { href: './other/cascaded-select', text: 'Cascaded Select' },
+      { href: './other/cascaded-select', text: 'Cascaded Select (using observable)' },
+      { href: './other/cascaded-select-json', text: 'Cascaded Select JSON powered' },
       { href: './other/observable-select', text: 'Bind Observable to Select' },
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
