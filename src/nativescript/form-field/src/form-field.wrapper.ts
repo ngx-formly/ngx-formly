@@ -4,15 +4,18 @@ import { FieldWrapper } from '@ngx-formly/core';
 @Component({
   selector: 'formly-wrapper-ns-form-field',
   template: `
-    <StackLayout>
-      <Label *ngIf="to.label && to.hideLabel !== true" [text]="to.label"></Label>
-      <ng-container #fieldComponent></ng-container>
-
-      <ng-container *ngIf="showError">
-        <formly-validation-message #validationMessage [field]="field"></formly-validation-message>
-        <Label [text]="validationMessage.errorMessage"></Label>
-      </ng-container>
+    <StackLayout class="form">
+      <StackLayout class="input-field">
+        <Label *ngIf="to.label && to.hideLabel !== true" class="label" [text]="to.label"></Label>
+        <ng-container #fieldComponent></ng-container>
+        <StackLayout class="hr-light"></StackLayout>
+        <ng-container *ngIf="showError">
+          <formly-validation-message #validationMessage [field]="field"></formly-validation-message>
+          <Label class="text-danger" [text]="validationMessage.errorMessage"></Label>
+        </ng-container>
+      </StackLayout>
     </StackLayout>
+
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper {
