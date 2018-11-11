@@ -70,7 +70,7 @@ describe('FormlyAttributes Component', () => {
         fixture.detectChanges();
 
         expect(elm.getAttribute('placeholder')).toBe('Title Edit');
-        expect(elm.getAttribute('tabindex')).toBeNull();
+        expect(elm.getAttribute('tabindex')).toEqual('0');
         expect(elm.getAttribute('step')).toBeNull();
         expect(fixture.componentInstance.field.focus).toBeTruthy();
       });
@@ -86,7 +86,7 @@ describe('FormlyAttributes Component', () => {
 
           fixture.detectChanges();
 
-          expect(elm.getAttribute('tabindex')).toBeNull();
+          expect(elm.getAttribute('tabindex')).toEqual('0');
           expect(elm.getAttribute('step')).toBeNull();
           expect(fixture.componentInstance.field.focus).toBeTruthy();
       });
