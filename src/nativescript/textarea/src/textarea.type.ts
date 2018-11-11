@@ -2,17 +2,16 @@ import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-field-ns-input',
+  selector: 'formly-field-ns-textarea',
   template: `
-    <TextField class="input"
+    <TextView class="input"
       [formlyAttributes]="field"
       [formControl]="formControl"
 
-      [autocorrect]="to.autocorrect"
-      [secure]="to.secure"
       [hint]="to.hint"
+      [autocorrect]="to.autocorrect"
       [keyboardType]="to.keyboardType">
-    </TextField>
+    </TextView>
   `,
 })
-export class FormlyFieldText extends FieldType {}
+export class FormlyFieldTextarea extends FieldType {}

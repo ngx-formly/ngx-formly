@@ -5,10 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
-import { FormlyFieldText } from './text-field.type';
+import { FormlyFieldCheckbox } from './checkbox.type';
 
 @NgModule({
-  declarations: [FormlyFieldText],
+  declarations: [FormlyFieldCheckbox],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -18,14 +18,18 @@ import { FormlyFieldText } from './text-field.type';
     FormlyModule.forChild({
       types: [
         {
-          name: 'text-field',
-          component: FormlyFieldText,
+          name: 'checkbox',
+          component: FormlyFieldCheckbox,
           wrappers: ['form-field'],
+          defaultOptions: {
+            templateOptions: {
+              hideLabel: true,
+            },
+          },
         },
-        { name: 'input', extends: 'text-field' },
       ],
     }),
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class FormlyNsTextFieldModule { }
+export class FormlyNsCheckboxFieldModule { }
