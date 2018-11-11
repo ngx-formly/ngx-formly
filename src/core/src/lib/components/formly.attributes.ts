@@ -6,7 +6,7 @@ import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config'
   host: {
     '[attr.name]': 'field.name',
     '[attr.placeholder]': 'to.placeholder',
-    '[attr.tabindex]': 'to.tabindex',
+    '[attr.tabindex]': 'to.tabindex || 0',
     '[attr.readonly]': 'to.readonly',
     '[attr.step]': 'to.step',
 
