@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { ExamplesRouterViewerComponent } from '../../shared';
 import { CommonModule, CommonExampleConfigs, CommonExampleComponents, debugFields } from '../common';
 import { DatepickerAppModule, DatepickerExampleConfig, DatepickerAppComponent } from './datepicker';
+import { NativeSelectAppModule, NativeSelectExampleConfig, NativeSelectAppComponent } from './native-select';
 import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './toggle';
 import { SliderAppModule, SliderExampleConfig, SliderAppComponent } from './slider';
 import { AutocompleteAppModule, AutocompleteExampleConfig, AutocompleteAppComponent } from './autocomplete';
@@ -12,6 +13,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
   imports: [
     CommonModule,
     FormlyMaterialModule,
+    NativeSelectAppModule,
     DatepickerAppModule,
     ToggleAppModule,
     SliderAppModule,
@@ -24,6 +26,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
           debugFields,
           examples: [
             ...CommonExampleConfigs,
+            NativeSelectExampleConfig,
             DatepickerExampleConfig,
             ToggleExampleConfig,
             SliderExampleConfig,
@@ -36,6 +39,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
   entryComponents: [
     ...CommonExampleComponents,
 
+    NativeSelectAppComponent,
     DatepickerAppComponent,
     ToggleAppComponent,
     SliderAppComponent,
