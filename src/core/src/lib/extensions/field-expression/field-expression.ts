@@ -124,7 +124,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     for (const key in expressionProperties) {
       let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState]);
       if (key === 'templateOptions.disabled') {
-        expressionValue = expressionValue || false;
+        expressionValue = !!expressionValue;
       }
 
       if (
