@@ -8,6 +8,8 @@
     "text-field": [{ "path": "text-field" }],
     "textarea": [{ "path": "textarea" }],
     "checkbox": [{ "path": "checkbox" }],
+    "select": [{ "path": "select" }],
+    "radio": [{ "path": "radio" }],
     "externals": {
       "@ngx-formly/core": "@ngx-formly/core"
     }
