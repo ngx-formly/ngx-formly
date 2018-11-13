@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.16"></a>
+# [5.0.0-beta.16](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.15...v5.0.0-beta.16) (2018-11-13)
+
+
+### Bug Fixes
+
+* **material:** fallback to default tabindex value ([#1282](https://github.com/formly-js/ngx-formly/issues/1282)) ([588be37](https://github.com/formly-js/ngx-formly/commit/588be37)), closes [#1281](https://github.com/formly-js/ngx-formly/issues/1281)
+* **material:** use readonly input instead of formly-attributes ([#1279](https://github.com/formly-js/ngx-formly/issues/1279)) ([5c1bce7](https://github.com/formly-js/ngx-formly/commit/5c1bce7))
+
+
+### Features
+
+* **material:** add native-select type ([#1288](https://github.com/formly-js/ngx-formly/issues/1288)) ([24bcac1](https://github.com/formly-js/ngx-formly/commit/24bcac1))
+* **nativescript:** add checkbox and textarea types ([#1283](https://github.com/formly-js/ngx-formly/issues/1283)) ([77a5900](https://github.com/formly-js/ngx-formly/commit/77a5900))
+* **nativescript:** add radio and select types ([#1287](https://github.com/formly-js/ngx-formly/issues/1287)) ([3cfedb8](https://github.com/formly-js/ngx-formly/commit/3cfedb8))
+
+
+
 <a name="5.0.0-beta.15"></a>
 # [5.0.0-beta.15](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.14...v5.0.0-beta.15) (2018-11-04)
 

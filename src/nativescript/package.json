@@ -14,6 +14,6 @@
   },
   "peerDependencies": {
     "@ngx-formly/core": "FORMLY-VERSION",
-    "nativescript-angular": ">=6.0.6"
+    "nativescript-angular": ">=7.0.0"
   }
 }
