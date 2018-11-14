@@ -1,3 +1,17 @@
+::ng-deep .nav-fill .nav-link.active {
+  margin-top: -1px;
+  border-top: 2px solid #20a8d8;
+  color: yellow;    
+}
+
+::ng-deep a {
+  color: purple;
+}
+
+::ng-deep a:hover {
+  color: red;
+}   
+
 ::ng-deep .nav-pills a.nav-link.active, 
 ::ng-deep .nav-pills .show > a.nav-link {                        
     border-radius: 0%;
@@ -14,3 +28,4 @@
   font-size: 12px;
   line-height: 1.42857;
 }
+

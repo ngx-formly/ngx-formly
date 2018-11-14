@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
@@ -8,8 +8,8 @@ import { AppComponent } from './app.component';
 import { TabTypeComponent } from './tab-type.component'
 
 @NgModule({
-  imports: [
-    BrowserAnimationsModule,
+  imports: [    
+    CommonModule,
     ReactiveFormsModule,  
     FormlyBootstrapModule,
     NgbModule,

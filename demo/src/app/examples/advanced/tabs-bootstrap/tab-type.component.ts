@@ -13,12 +13,12 @@ export interface StepType {
 @Component({
   selector: 'formly-tabtype',
   template: `
-<ngb-tabset  #tabs="ngbTabset" type="pills" [justify]="'justified'" (tabChange)="onTabChange($event)">
+<ngb-tabset #tabs="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'" (tabChange)="onTabChange($event)">
       <div *ngFor="let f of field.fieldGroup; let index = index;">  
         <ngb-tab id="tab-{{index}}" [disabled]="index>0 && !isValid(index-1)" >
             <ng-template ngbTabTitle >                
              <button class="btn btn-circle mr-2" >
-                <span *ngIf="!isActive(index)" class="oi oi-pencil iconic" title="reload"       aria-hidden="true"></span>
+                <span *ngIf="!isActive(index)" class="oi oi-pencil iconic" title="reload" aria-hidden="true">-</span>
                 <span *ngIf="isActive(index)"><b>{{ index }}</b></span>
                 </button>
                 <span class="h6">{{ getStepTitle(index) }}</span>                 
