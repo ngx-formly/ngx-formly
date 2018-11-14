@@ -27,7 +27,7 @@ const TEMPLATE_FILES = {
   primeng: [
     { file: 'styles.scss', filecontent: `
       @import '~primeng/resources/primeng.min.css';
-      @import '~primeng/resources/themes/omega/theme.css';
+      @import '~primeng/resources/themes/bootstrap/theme.css';
     ` },
   ],
   ionic: [
