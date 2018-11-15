@@ -21,70 +21,67 @@ export class AppComponent {
   fields: FormlyFieldConfig[] = [
     {
       type: 'tabBootstrap',
-      fieldGroup: [],
+      fieldGroup: [
+        {
+          fieldGroup: [
+            {
+              key: 'firstname',
+              type: 'input',
+              templateOptions: {
+                label: 'First name',
+                required: true,
+              },
+            },
+            {
+              key: 'age',
+              type: 'input',
+              templateOptions: {
+                type: 'number',
+                label: 'Age',
+                required: true,
+              },
+            },
+          ],
+        },
+        {
+          fieldGroup: [
+            {
+              key: 'country',
+              type: 'input',
+              templateOptions: {
+                label: 'Country',
+                required: true,
+              },
+            },
+          ],
+        },
+        {
+          fieldGroup: [
+            {
+              key: 'day',
+              type: 'input',
+              templateOptions: {
+                type: 'date',
+                label: 'Day of the trip',
+                required: true,
+              },
+            },
+          ],
+        }
+      ],
       templateOptions: {
-        steps: [
-          {
-            label: 'Personal data',
-            fields: [
-              {
-                key: 'firstname',
-                type: 'input',
-                templateOptions: {
-                  label: 'First name',
-                  required: true,
-                },
-              },
-              {
-                key: 'age',
-                type: 'input',
-                templateOptions: {
-                  type: 'number',
-                  label: 'Age',
-                  required: true,
-                },
-              },
-            ],
-          },
-          {
-            label: 'Destination',
-            fields: [
-              {
-                key: 'country',
-                type: 'input',
-                templateOptions: {
-                  label: 'Country',
-                  required: true,
-                },
-              },
-            ],
-          },
-          {
-            label: 'Day of the trip',
-            fields: [
-              {
-                key: 'day',
-                type: 'input',
-                templateOptions: {
-                  type: 'date',
-                  label: 'Day of the trip',
-                  required: true,
-                },
-              },
-            ],
-          },
-        ],
+        labels: ['Personal data', 'Destination', 'Day of the trip'],
       },
     },
   ];
 
-constructor() {
+  constructor() {
 
-  // I would like to do this login in the template.
-  this.fields[0].fieldGroup = ([]).concat(this.fields[0].templateOptions.steps.map((val) => {
-    return { fieldGroup: val.fields };
-  }));
-}
+    // I would like to do this login in the template.
+    //this.fields[0].fieldGroup = ([]).concat(this.fields[0].templateOptions.steps.map((val) => {
+    //  return { fieldGroup: val.fields };
+    //}));
+  }
 
 
 }

@@ -24,13 +24,13 @@ export interface StepType {
                 </button>
                 <span class="h6">{{ getStepTitle(index) }}</span>
             </ng-template>
-            <ng-template ngbTabContent>
-               <formly-form
-                  [model]="model"
-                  [fields]="f.fieldGroup"
-                  [options]="options"
-                  [form]="form">
-              </formly-form>
+            <ng-template ngbTabContent>            
+                <formly-field 
+                    [model]="model"
+                    [field]="f"
+                    [options]="options"
+                    [form]="form">
+                </formly-field>              
             </ng-template>
         </ngb-tab>
     </div>
@@ -58,7 +58,6 @@ export class TabTypeComponent extends FieldType implements OnInit {
 
   ngOnInit() {
     this.steps = (this.to.steps);
-
   }
 
   // for beta version
@@ -72,8 +71,8 @@ export class TabTypeComponent extends FieldType implements OnInit {
   }
 
   isValid(index): boolean {
-    let tab = this.steps[index];
-    for (let subfield of tab.fields) {
+    let tab = this.field.fieldGroup[index];
+    for (let subfield of tab.fieldGroup) {
       const contrl = this.form.get(subfield.key);
       if (contrl && !contrl.valid)
         return false;
@@ -118,9 +117,9 @@ export class TabTypeComponent extends FieldType implements OnInit {
 
 
   getStepTitle(index) {
-    let step = this.steps[index];
-    if (step && step.label) {
-      return step.label;
+    let label = this.to.labels[index];
+    if (label) {
+      return label;
     }
     return 'Passo ' + index;
   }
