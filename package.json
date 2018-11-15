@@ -64,6 +64,7 @@
     "@angular/platform-browser-dynamic": "^7.0.3",
     "@angular/router": "^7.0.3",
     "@ionic/angular": "^4.0.0-beta.15",
+    "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "@ngx-loading-bar/router": "^2.2.0",
     "@ngx-translate/core": "^11.0.0",
     "@ngx-translate/http-loader": "^4.0.0",

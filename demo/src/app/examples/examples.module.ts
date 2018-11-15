@@ -61,6 +61,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'datatable-integration', loadChildren: './advanced/datatable-integration/config.module#ConfigModule' },
           { path: 'multi-step-form', loadChildren: './advanced/multi-step-form/config.module#ConfigModule' },
           { path: 'tabs', loadChildren: './advanced/tabs/config.module#ConfigModule' },
+          { path: 'tabs-bootstrap', loadChildren: './advanced/tabs-bootstrap/config.module#ConfigModule' },
         ]},
 
         // Other
