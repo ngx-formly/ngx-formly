@@ -5,12 +5,12 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
-import { TabTypeComponent } from './tab-type.component'
+import { TabTypeComponent } from './tab-type.component';
 
 @NgModule({
-  imports: [    
+  imports: [
     CommonModule,
-    ReactiveFormsModule,  
+    ReactiveFormsModule,
     FormlyBootstrapModule,
     NgbModule,
     FormlyModule.forRoot({
@@ -19,14 +19,14 @@ import { TabTypeComponent } from './tab-type.component'
       ],
       types: [
           { name: 'tabBootstrap', component: TabTypeComponent },
-      ]
+      ],
     }),
   ],
   bootstrap: [AppComponent],
   declarations: [
     AppComponent,
-    TabTypeComponent
+    TabTypeComponent,
   ],
-  exports:[ TabTypeComponent ]
+  exports: [ TabTypeComponent ],
 })
 export class AppModule { }

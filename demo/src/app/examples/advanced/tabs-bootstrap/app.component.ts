@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { FormGroup, FormArray } from '@angular/forms';
-import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup } from '@angular/forms';
 
 export interface StepType {
   label: string;
@@ -11,7 +10,7 @@ export interface StepType {
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
 
@@ -20,7 +19,7 @@ export class AppComponent {
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [
-    {            
+    {
       type: 'tabBootstrap',
       fieldGroup: [],
       templateOptions: {
@@ -74,18 +73,17 @@ export class AppComponent {
               },
             ],
           },
-        ]
-      }
+        ],
+      },
+    },
+  ];
 
+constructor() {
 
-    }
-  ]
-
-constructor(){  
-
-  //I would like to do this login in the template. 
-  this.fields[0].fieldGroup = ([]).concat(this.fields[0].templateOptions.steps.map((val)=>{ 
-    return {fieldGroup: val.fields} }));  
+  // I would like to do this login in the template.
+  this.fields[0].fieldGroup = ([]).concat(this.fields[0].templateOptions.steps.map((val) => {
+    return { fieldGroup: val.fields };
+  }));
 }
 
 
