@@ -42,6 +42,9 @@ export class AppComponent {
               },
             },
           ],
+          templateOptions: {
+            label: 'Personal data'
+          }
         },
         {
           fieldGroup: [
@@ -52,8 +55,11 @@ export class AppComponent {
                 label: 'Country',
                 required: true,
               },
-            },
+            },            
           ],
+          templateOptions: {
+            label: 'Destination'
+          }
         },
         {
           fieldGroup: [
@@ -67,20 +73,15 @@ export class AppComponent {
               },
             },
           ],
+          templateOptions: {
+            label:  'Day of the trip'
+          }
         }
-      ],
-      templateOptions: {
-        labels: ['Personal data', 'Destination', 'Day of the trip'],
-      },
+      ],     
     },
   ];
 
   constructor() {
-
-    // I would like to do this login in the template.
-    //this.fields[0].fieldGroup = ([]).concat(this.fields[0].templateOptions.steps.map((val) => {
-    //  return { fieldGroup: val.fields };
-    //}));
   }
 
 

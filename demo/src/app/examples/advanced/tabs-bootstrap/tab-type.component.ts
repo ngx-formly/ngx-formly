@@ -22,7 +22,7 @@ export interface StepType {
                 <span *ngIf="!isActive(index)" class="oi oi-pencil iconic" title="reload" aria-hidden="true">-</span>
                 <span *ngIf="isActive(index)"><b>{{ index }}</b></span>
                 </button>
-                <span class="h6">{{ getStepTitle(index) }}</span>
+                <span class="h6">{{ f.templateOptions.label }} </span>
             </ng-template>
             <ng-template ngbTabContent>            
                 <formly-field 
@@ -52,19 +52,10 @@ export class TabTypeComponent extends FieldType implements OnInit {
 
   last = false;
 
-  _selectedTab = 'tab-0';
-
-  steps: StepType[] = [];
+  _selectedTab = 'tab-0';  
 
   ngOnInit() {
-    this.steps = (this.to.steps);
   }
-
-  // for beta version
-  // onPopulate(field: FormlyFieldConfig) {
-  //  this.field.fieldGroup = ([]).concat(this.to.steps.map((val)=>{ return {fieldGroup: val.fields} }));
-  // }
-
 
   isActive(index): boolean {
     return ('tab-' + index) === this.tabs.activeId;
@@ -76,7 +67,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
       const contrl = this.form.get(subfield.key);
       if (contrl && !contrl.valid)
         return false;
-    }
+    }    
     return true;
   }
 
@@ -89,7 +80,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
   }
 
   nextStep(step) {
-    if (step === this.steps.length - 1) {
+    if (step ===  this.field.fieldGroup.length - 1) {
       return true;
     }
     this.activedStep = step + 1;
@@ -102,7 +93,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
 
 
   public get lastIndex(): string {
-    return 'tab-' + (this.steps.length - 1);
+    return 'tab-' + ( this.field.fieldGroup.length - 1);
   }
 
   public get selectedTab(): string {
