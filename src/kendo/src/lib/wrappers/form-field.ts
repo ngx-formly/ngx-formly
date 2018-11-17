@@ -5,7 +5,10 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-kendo-form-field',
   template: `
     <label [for]="id" class="k-form-field">
-      <span *ngIf="to.label && to.hideLabel !== true">{{ to.label }} <span *ngIf="to.required && to.hideRequiredMarker !== true" class="k-required">*</span></span>
+      <span *ngIf="to.label && to.hideLabel !== true">
+        {{ to.label }}
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" class="k-required">*</span>
+      </span>
       <ng-container #fieldComponent></ng-container>
     </label>
 

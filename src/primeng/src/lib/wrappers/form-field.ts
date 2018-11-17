@@ -7,7 +7,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <div *ngIf="to.label && to.hideLabel !== true" class="ui-widget">
       <label [for]="id">
         {{ to.label }}
-        <ng-container *ngIf="to.required && to.hideRequiredMarker !== true">*</ng-container>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
       </label>
     </div>
     <ng-container #fieldComponent></ng-container>
