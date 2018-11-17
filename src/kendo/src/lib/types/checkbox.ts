@@ -11,7 +11,10 @@ import { FieldType } from '@ngx-formly/core';
       [formlyAttributes]="field"/>
 
     <label [for]="id" class="k-checkbox-label">
-      <span>{{ to.label }} <span *ngIf="to.required && to.hideRequiredMarker !== true" class="k-required">*</span></span>
+      <span>
+        {{ to.label }}
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" class="k-required">*</span>
+      </span>
     </label>
   `,
 })
