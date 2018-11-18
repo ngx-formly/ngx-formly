@@ -24,13 +24,13 @@ export interface StepType {
                 </button>
                 <span class="h6">{{ f.templateOptions.label }} </span>
             </ng-template>
-            <ng-template ngbTabContent>            
-                <formly-field 
+            <ng-template ngbTabContent>
+                <formly-field
                     [model]="model"
                     [field]="f"
                     [options]="options"
                     [form]="form">
-                </formly-field>              
+                </formly-field>
             </ng-template>
         </ngb-tab>
     </div>
@@ -52,7 +52,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
 
   last = false;
 
-  _selectedTab = 'tab-0';  
+  _selectedTab = 'tab-0';
 
   ngOnInit() {
   }
@@ -67,7 +67,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
       const contrl = this.form.get(subfield.key);
       if (contrl && !contrl.valid)
         return false;
-    }    
+    }
     return true;
   }
 

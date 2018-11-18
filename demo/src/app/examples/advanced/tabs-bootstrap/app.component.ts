@@ -43,8 +43,8 @@ export class AppComponent {
             },
           ],
           templateOptions: {
-            label: 'Personal data'
-          }
+            label: 'Personal data',
+          },
         },
         {
           fieldGroup: [
@@ -55,11 +55,11 @@ export class AppComponent {
                 label: 'Country',
                 required: true,
               },
-            },            
+            },
           ],
           templateOptions: {
-            label: 'Destination'
-          }
+            label: 'Destination',
+          },
         },
         {
           fieldGroup: [
@@ -74,10 +74,10 @@ export class AppComponent {
             },
           ],
           templateOptions: {
-            label:  'Day of the trip'
-          }
-        }
-      ],     
+            label:  'Day of the trip',
+          },
+        },
+      ],
     },
   ];
 
