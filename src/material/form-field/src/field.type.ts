@@ -1,10 +1,10 @@
-import { OnInit, OnDestroy, AfterViewInit, TemplateRef, ViewChild } from '@angular/core';
-import { FieldType as CoreFieldType, ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
+import { OnInit, OnDestroy, AfterViewInit, TemplateRef, ViewChild, Type } from '@angular/core';
+import { FieldType as CoreFieldType, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { FormlyErrorStateMatcher } from './formly.error-state-matcher';
 
-export abstract class FieldType extends CoreFieldType implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
+export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> extends CoreFieldType<F> implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
   @ViewChild('matPrefix') matPrefix: TemplateRef<any>;
   @ViewChild('matSuffix') matSuffix: TemplateRef<any>;
 
@@ -53,7 +53,17 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
     return showError;
   }
 
-  get controlType() { return this.to.type || this.field.type; }
+  get controlType() {
+    if (this.to.type) {
+      return this.to.type;
+    }
+
+    if ((<any> this.field.type) instanceof Type) {
+      return this.field.type.constructor.name;
+    }
+
+    return this.field.type;
+  }
   get focused() { return this.field.focus && !this.disabled; }
   get disabled() { return this.to.disabled; }
   get required() { return this.to.required; }

@@ -1,9 +1,9 @@
 import { Input } from '@angular/core';
-import { FormGroup, AbstractControl } from '@angular/forms';
-import { FormlyTemplateOptions, FormlyFieldConfig, FormlyFormOptions } from '../components/formly.field.config';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '../components/formly.field.config';
 
- export abstract class FieldType {
-  @Input() field: FormlyFieldConfig;
+export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
+  @Input() field: F;
 
   @Input()
   get model() { return this.field.model; }
@@ -14,14 +14,14 @@ import { FormlyTemplateOptions, FormlyFieldConfig, FormlyFormOptions } from '../
   set form(form) { console.warn(`NgxFormly: passing 'form' input to '${this.constructor.name}' component is not required anymore, you may remove it!`); }
 
   @Input()
-  get options() { return this.field.options; }
-  set options(options: FormlyFormOptions) { console.warn(`NgxFormly: passing 'options' input to '${this.constructor.name}' component is not required anymore, you may remove it!`); }
+  get options(): F['options'] { return this.field.options; }
+  set options(options: F['options']) { console.warn(`NgxFormly: passing 'options' input to '${this.constructor.name}' component is not required anymore, you may remove it!`); }
 
   get key() { return this.field.key; }
 
-  get formControl(): AbstractControl { return this.field.formControl; }
+  get formControl(): F['formControl'] { return this.field.formControl; }
 
-  get to(): FormlyTemplateOptions { return this.field.templateOptions; }
+  get to(): F['templateOptions'] { return this.field.templateOptions; }
 
   get showError(): boolean { return this.options.showError(this); }
 
