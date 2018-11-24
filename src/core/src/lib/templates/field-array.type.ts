@@ -2,8 +2,9 @@ import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, isNullOrUndefined } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
+import { FormlyFieldConfig } from '../components/formly.field.config';
 
-export abstract class FieldArrayType extends FieldType {
+export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> {
   formControl: FormArray;
 
   // tslint:disable-next-line
