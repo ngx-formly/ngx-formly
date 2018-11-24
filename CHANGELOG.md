@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.17"></a>
+# [5.0.0-beta.17](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.16...v5.0.0-beta.17) (2018-11-24)
+
+
+### Bug Fixes
+
+* **core:** force eval disabled expr as a boolean ([#1290](https://github.com/formly-js/ngx-formly/issues/1290)) ([11dfb5a](https://github.com/formly-js/ngx-formly/commit/11dfb5a))
+* **demo:** fixed missing primeng theme ([#1289](https://github.com/formly-js/ngx-formly/issues/1289)) ([bf5a405](https://github.com/formly-js/ngx-formly/commit/bf5a405))
+
+
+### Features
+
+* allow customize required-marker style ([#1301](https://github.com/formly-js/ngx-formly/issues/1301)) ([fa1acad](https://github.com/formly-js/ngx-formly/commit/fa1acad)), closes [#1298](https://github.com/formly-js/ngx-formly/issues/1298)
+* **core:** allow passing defaultOptions through FieldType ([#1313](https://github.com/formly-js/ngx-formly/issues/1313)) ([dea3b49](https://github.com/formly-js/ngx-formly/commit/dea3b49))
+* **core:** improved typing for FieldType ([#1312](https://github.com/formly-js/ngx-formly/issues/1312)) ([b724e2b](https://github.com/formly-js/ngx-formly/commit/b724e2b))
+
+
+
 <a name="5.0.0-beta.16"></a>
 # [5.0.0-beta.16](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.15...v5.0.0-beta.16) (2018-11-13)
 
