@@ -4,6 +4,7 @@ import { FormlyFieldConfig } from '../components/formly.field.config';
 
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
   @Input() field: F;
+  defaultOptions?: F;
 
   @Input()
   get model() { return this.field.model; }
