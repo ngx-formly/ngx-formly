@@ -111,11 +111,15 @@ export class FormlyConfig {
       });
     }
 
+    this.createComponentInstance(field);
+    const componentRef = (<FormlyFieldConfigCache> field)._componentFactory.componentRef;
+    if (componentRef && componentRef.instance && componentRef.instance.defaultOptions) {
+      reverseDeepMerge(field, componentRef.instance.defaultOptions);
+    }
+
     if (!field.wrappers && type.wrappers) {
       field.wrappers = [...type.wrappers];
     }
-
-    this.createComponentInstance(field);
   }
 
   createComponentInstance(field: FormlyFieldConfigCache = {}) {
