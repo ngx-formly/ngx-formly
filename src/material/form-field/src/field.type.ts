@@ -4,9 +4,14 @@ import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { FormlyErrorStateMatcher } from './formly.error-state-matcher';
 
-export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> extends CoreFieldType<F> implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
-  @ViewChild('matPrefix') matPrefix: TemplateRef<any>;
-  @ViewChild('matSuffix') matSuffix: TemplateRef<any>;
+export interface MatFormlyFieldConfig extends FormlyFieldConfig {
+  _matPrefix: TemplateRef<any>;
+  _matSuffix: TemplateRef<any>;
+}
+
+export abstract class FieldType<F extends MatFormlyFieldConfig = MatFormlyFieldConfig> extends CoreFieldType<F> implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
+  @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
+  @ViewChild('matSuffix') matSuffix!: TemplateRef<any>;
 
   formFieldControl: MatFormFieldControl<any> = this;
   errorStateMatcher = new FormlyErrorStateMatcher(this);
@@ -30,7 +35,6 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   ngOnDestroy() {
-    this.formFieldControl = null;
     if (this.formField) {
       delete this.formField._control;
     }
@@ -44,7 +48,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   get errorState() {
-    const showError = this.options.showError(this);
+    const showError = this.options!.showError!(this);
     if (showError !== this._errorState) {
       this._errorState = showError;
       this.stateChanges.next();
@@ -59,15 +63,15 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     }
 
     if ((<any> this.field.type) instanceof Type) {
-      return this.field.type.constructor.name;
+      return this.field.type!.constructor.name;
     }
 
-    return this.field.type;
+    return this.field.type!;
   }
-  get focused() { return this.field.focus && !this.disabled; }
-  get disabled() { return this.to.disabled; }
-  get required() { return this.to.required; }
-  get placeholder() { return this.to.placeholder; }
+  get focused() { return !!this.field.focus && !this.disabled; }
+  get disabled() { return !!this.to.disabled; }
+  get required() { return !!this.to.required; }
+  get placeholder() { return this.to.placeholder || ''; }
   get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
   get value() { return this.formControl.value; }
   get ngControl() { return this.formControl as any; }

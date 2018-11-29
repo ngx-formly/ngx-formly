@@ -14,7 +14,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
   `,
 })
 export class FormlyToggleTypeComponent extends FieldType {
-  @ViewChild(MatSlideToggle) slideToggle: MatSlideToggle;
+  @ViewChild(MatSlideToggle) slideToggle!: MatSlideToggle;
 
   onContainerClick(event: MouseEvent): void {
     this.slideToggle.focus();

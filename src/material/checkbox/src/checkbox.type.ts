@@ -11,7 +11,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [id]="id"
       [formlyAttributes]="field"
       (change)="change($event)"
-      [indeterminate]="to.indeterminate && field.formControl.value === null"
+      [indeterminate]="to.indeterminate && formControl.value === null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">
       {{ to.label }}
@@ -20,7 +20,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   `,
 })
 export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, OnDestroy {
-  @ViewChild(MatCheckbox) checkbox: MatCheckbox;
+  @ViewChild(MatCheckbox) checkbox!: MatCheckbox;
 
   constructor(private focusMonitor: FocusMonitor) {
     super();

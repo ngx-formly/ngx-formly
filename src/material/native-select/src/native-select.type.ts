@@ -19,5 +19,5 @@ import { MatInput } from '@angular/material/input';
   `,
 })
 export class FormlyFieldNativeSelect extends FieldType {
-  @ViewChild(MatInput) formFieldControl: MatInput;
+  @ViewChild(MatInput) formFieldControl!: MatInput;
 }
