@@ -27,7 +27,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
 })
 export class FormlyFieldSelect extends FieldType {
-  @ViewChild(MatSelect) formFieldControl: MatSelect;
+  @ViewChild(MatSelect) formFieldControl!: MatSelect;
 
   change($event: MatSelectChange) {
     if (this.to.change) {

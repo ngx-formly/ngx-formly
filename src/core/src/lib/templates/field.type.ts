@@ -15,14 +15,14 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   set form(form) { console.warn(`NgxFormly: passing 'form' input to '${this.constructor.name}' component is not required anymore, you may remove it!`); }
 
   @Input()
-  get options(): F['options'] { return this.field.options; }
+  get options() { return this.field.options; }
   set options(options: F['options']) { console.warn(`NgxFormly: passing 'options' input to '${this.constructor.name}' component is not required anymore, you may remove it!`); }
 
   get key() { return this.field.key; }
 
-  get formControl(): F['formControl'] { return this.field.formControl; }
+  get formControl() { return this.field.formControl; }
 
-  get to(): F['templateOptions'] { return this.field.templateOptions; }
+  get to() { return this.field.templateOptions || {}; }
 
   get showError(): boolean { return this.options.showError(this); }
 

@@ -15,7 +15,7 @@ import { MatSlider } from '@angular/material/slider';
   `,
 })
 export class FormlySliderTypeComponent extends FieldType {
-  @ViewChild(MatSlider) slider: MatSlider;
+  @ViewChild(MatSlider) slider!: MatSlider;
 
   onContainerClick(event: MouseEvent): void {
     this.slider.focus();

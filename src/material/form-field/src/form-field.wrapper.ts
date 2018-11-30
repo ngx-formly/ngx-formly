@@ -4,6 +4,8 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 
+import { MatFormlyFieldConfig } from './field.type';
+
 @Component({
   selector: 'formly-wrapper-mat-form-field',
   template: `
@@ -21,11 +23,11 @@ import { Subject } from 'rxjs';
       </mat-label>
 
       <ng-container matPrefix>
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : field['_matPrefix']"></ng-container>
+        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : field._matPrefix"></ng-container>
       </ng-container>
 
       <ng-container matSuffix>
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : field['_matSuffix']"></ng-container>
+        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : field._matSuffix"></ng-container>
       </ng-container>
 
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
@@ -38,9 +40,9 @@ import { Subject } from 'rxjs';
   `,
   providers: [{ provide: MatFormFieldControl, useExisting: FormlyWrapperFormField }],
 })
-export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDestroy, MatFormFieldControl<any>, AfterViewInit, AfterContentChecked {
-  @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent: ViewContainerRef;
-  @ViewChild(MatFormField) formField: MatFormField;
+export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> implements OnInit, OnDestroy, MatFormFieldControl<any>, AfterViewInit, AfterContentChecked {
+  @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent!: ViewContainerRef;
+  @ViewChild(MatFormField) formField!: MatFormField;
 
   stateChanges = new Subject<void>();
   _errorState = false;
@@ -59,7 +61,7 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
     });
 
     // fix for https://github.com/angular/material2/issues/11437
-    if (this.field.hide && this.field.templateOptions.appearance === 'outline') {
+    if (this.field.hide && this.field.templateOptions!.appearance === 'outline') {
       this.initialGapCalculated = true;
     }
   }
@@ -93,7 +95,7 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
   }
 
   get errorState() {
-    const showError = this.options.showError(this);
+    const showError = this.options!.showError!(this);
     if (showError !== this._errorState) {
       this._errorState = showError;
       this.stateChanges.next();
@@ -102,10 +104,10 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
     return showError;
   }
   get controlType() { return this.to.type; }
-  get focused() { return this.field.focus && !this.disabled; }
-  get disabled() { return this.to.disabled; }
-  get required() { return this.to.required; }
-  get placeholder() { return this.to.placeholder; }
+  get focused() { return !!this.field.focus && !this.disabled; }
+  get disabled() { return !!this.to.disabled; }
+  get required() { return !!this.to.required; }
+  get placeholder() { return this.to.placeholder || ''; }
   get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
   get value() { return this.formControl.value; }
   get ngControl() { return this.formControl as any; }

@@ -17,7 +17,7 @@ import { MatRadioGroup, MatRadioChange } from '@angular/material/radio';
   `,
 })
 export class FormlyFieldRadio extends FieldType {
-  @ViewChild(MatRadioGroup) radioGroup: MatRadioGroup;
+  @ViewChild(MatRadioGroup) radioGroup!: MatRadioGroup;
 
   onContainerClick(event: MouseEvent): void {
     if (this.radioGroup._radios.length) {

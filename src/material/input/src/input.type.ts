@@ -26,7 +26,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
 })
 export class FormlyFieldInput extends FieldType implements OnInit {
-  @ViewChild(MatInput) formFieldControl: MatInput;
+  @ViewChild(MatInput) formFieldControl!: MatInput;
 
   get type() {
     return this.to.type || 'text';
