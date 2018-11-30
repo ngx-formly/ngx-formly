@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/ionic",
-  "version": "FORMLY-VERSION",
+  "version": "0.0.0-FORMLY-VERSION",
   "license": "MIT",
   "homepage": "https://github.com/formly-js/ngx-formly#readme",
   "description": "ngx-formly is an Angular 2 module which has a Components to help customize and render JavaScript/JSON configured forms. The formly-form Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
@@ -13,7 +13,7 @@
     "url": "https://github.com/formly-js/ngx-formly/issues"
   },
   "peerDependencies": {
-    "@ngx-formly/core": "FORMLY-VERSION",
+    "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
     "@ionic/angular": "^4.0.0-beta.0"
   }
 }
