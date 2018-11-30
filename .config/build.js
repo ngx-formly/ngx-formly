@@ -19,5 +19,5 @@ packages.map(package => {
   execSync(`cp README.md ${packagePath}`);
 
   package = fs.readFileSync(`${packagePath}/package.json`, 'utf8');
-  fs.writeFileSync(`${packagePath}/package.json`, package.replace(/FORMLY-VERSION|0.0.0/g, version));
+  fs.writeFileSync(`${packagePath}/package.json`, package.replace(/0.0.0-FORMLY-VERSION/g, version));
 });
