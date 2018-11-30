@@ -4,9 +4,10 @@ import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormlyWrapperFormField } from './form-field.wrapper';
+import { FormlyMatAttributes } from './formly.attributes';
 
 @NgModule({
-  declarations: [FormlyWrapperFormField],
+  declarations: [FormlyWrapperFormField, FormlyMatAttributes],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -18,5 +19,6 @@ import { FormlyWrapperFormField } from './form-field.wrapper';
       }],
     }),
   ],
+  exports: [FormlyMatAttributes],
 })
 export class FormlyMatFormFieldModule { }
