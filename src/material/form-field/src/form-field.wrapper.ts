@@ -1,10 +1,10 @@
 import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked } from '@angular/core';
-import { FieldWrapper } from '@ngx-formly/core';
+import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 
-import { MatFormlyFieldConfig } from './field.type';
+import { MatFormlyFieldConfig, FieldType } from './field.type';
 
 @Component({
   selector: 'formly-wrapper-mat-form-field',
@@ -54,11 +54,12 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
 
   ngOnInit() {
     this.formField._control = this;
-    Object.defineProperty(this.field, '__formField__', {
-      get: () => this.formField,
-      enumerable: false,
-      configurable: true,
-    });
+    defineHiddenProp(this.field, '__formField__', this.formField);
+
+    const fieldComponent = this.field['_componentFactory'];
+    if (!(fieldComponent.componentRef.instance instanceof FieldType)) {
+      console.warn(`Component '${fieldComponent.component.prototype.constructor.name}' must extend 'FieldType' from '@ngx-formly/material'.`);
+    }
 
     // fix for https://github.com/angular/material2/issues/11437
     if (this.field.hide && this.field.templateOptions!.appearance === 'outline') {
