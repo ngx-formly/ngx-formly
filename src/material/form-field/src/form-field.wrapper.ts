@@ -1,10 +1,17 @@
-import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked } from '@angular/core';
-import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
+import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef } from '@angular/core';
+import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 
-import { MatFormlyFieldConfig, FieldType } from './field.type';
+import { FieldType } from './field.type';
+
+interface MatFormlyFieldConfig extends FormlyFieldConfig {
+  _matPrefix: TemplateRef<any>;
+  _matSuffix: TemplateRef<any>;
+  __formField__: FormlyWrapperFormField;
+  _componentFactory: any;
+}
 
 @Component({
   selector: 'formly-wrapper-mat-form-field',
@@ -23,11 +30,11 @@ import { MatFormlyFieldConfig, FieldType } from './field.type';
       </mat-label>
 
       <ng-container matPrefix>
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : field._matPrefix"></ng-container>
+        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : formlyField._matPrefix"></ng-container>
       </ng-container>
 
       <ng-container matSuffix>
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : field._matSuffix"></ng-container>
+        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matSuffix"></ng-container>
       </ng-container>
 
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
@@ -56,19 +63,19 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     this.formField._control = this;
     defineHiddenProp(this.field, '__formField__', this.formField);
 
-    const fieldComponent = this.field['_componentFactory'];
+    const fieldComponent = this.formlyField['_componentFactory'];
     if (!(fieldComponent.componentRef.instance instanceof FieldType)) {
       console.warn(`Component '${fieldComponent.component.prototype.constructor.name}' must extend 'FieldType' from '@ngx-formly/material'.`);
     }
 
     // fix for https://github.com/angular/material2/issues/11437
-    if (this.field.hide && this.field.templateOptions!.appearance === 'outline') {
+    if (this.formlyField.hide && this.formlyField.templateOptions!.appearance === 'outline') {
       this.initialGapCalculated = true;
     }
   }
 
   ngAfterContentChecked() {
-    if (!this.initialGapCalculated || this.field.hide) {
+    if (!this.initialGapCalculated || this.formlyField.hide) {
       return;
     }
 
@@ -85,13 +92,13 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
   }
 
   ngOnDestroy() {
-    delete (<any> this.field)['__formField__'];
+    delete this.formlyField.__formField__;
     this.stateChanges.complete();
   }
 
   setDescribedByIds(ids: string[]): void { }
   onContainerClick(event: MouseEvent): void {
-    this.field.focus = true;
+    this.formlyField.focus = true;
     this.stateChanges.next();
   }
 
@@ -105,7 +112,7 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     return showError;
   }
   get controlType() { return this.to.type; }
-  get focused() { return !!this.field.focus && !this.disabled; }
+  get focused() { return !!this.formlyField.focus && !this.disabled; }
   get disabled() { return !!this.to.disabled; }
   get required() { return !!this.to.required; }
   get placeholder() { return this.to.placeholder || ''; }
@@ -114,4 +121,6 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
   get ngControl() { return this.formControl as any; }
   get empty() { return !this.formControl.value; }
   get shouldLabelFloat() { return this.focused || !this.empty; }
+
+  get formlyField() { return this.field as MatFormlyFieldConfig; }
 }

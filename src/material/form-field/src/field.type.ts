@@ -4,12 +4,7 @@ import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { FormlyErrorStateMatcher } from './formly.error-state-matcher';
 
-export interface MatFormlyFieldConfig extends FormlyFieldConfig {
-  _matPrefix: TemplateRef<any>;
-  _matSuffix: TemplateRef<any>;
-}
-
-export abstract class FieldType<F extends MatFormlyFieldConfig = MatFormlyFieldConfig> extends CoreFieldType<F> implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
+export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> extends CoreFieldType<F> implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
   @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
   @ViewChild('matSuffix') matSuffix!: TemplateRef<any>;
 
