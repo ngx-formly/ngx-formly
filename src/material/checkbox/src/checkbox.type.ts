@@ -9,7 +9,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
     <mat-checkbox
       [formControl]="formControl"
       [id]="id"
-      [formlyMatAttributes]="field"
+      [formlyAttributes]="field"
       [tabindex]="to.tabindex || 0"
       (change)="change($event)"
       [indeterminate]="to.indeterminate && field.formControl.value === null"

@@ -1,3 +1,2 @@
 export { FormlyMatFormFieldModule } from './form-field.module';
 export { FieldType } from './field.type';
-export { FormlyMatAttributes } from './formly.attributes';

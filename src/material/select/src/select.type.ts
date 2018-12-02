@@ -7,7 +7,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   template: `
     <mat-select [id]="id"
       [formControl]="formControl"
-      [formlyMatAttributes]="field"
+      [formlyAttributes]="field"
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex || 0"
       [compareWith]="to.compareWith || compareWith"

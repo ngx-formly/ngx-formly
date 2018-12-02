@@ -7,7 +7,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
     <ng-container *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;">
       <mat-checkbox
         [id]="id + '_' + i"
-        [formlyMatAttributes]="field"
+        [formlyAttributes]="field"
         [tabindex]="to.tabindex || 0"
         [color]="to.color"
         [labelPosition]="to.labelPosition"

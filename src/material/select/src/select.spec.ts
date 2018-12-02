@@ -10,7 +10,6 @@ import { FormlyModule, FormlyForm } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormlyFieldSelect } from './select.type';
 import { of as observableOf } from 'rxjs';
-import { FormlyMatFormFieldModule } from '../../form-field';
 
 const createTestComponent = (html: string) =>
   createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -26,7 +25,6 @@ describe('ui-material: Formly Field Select Component', () => {
         MatSelectModule,
         ReactiveFormsModule,
         FormlySelectModule,
-        FormlyMatFormFieldModule,
         FormlyModule.forRoot({
           types: [
             {

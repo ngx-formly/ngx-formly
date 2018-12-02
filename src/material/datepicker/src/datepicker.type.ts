@@ -13,7 +13,7 @@ import { MatInput } from '@angular/material/input';
       [matDatepickerFilter]="to.datepickerOptions.filter"
       [max]="to.datepickerOptions.max"
       [min]="to.datepickerOptions.min"
-      [formlyMatAttributes]="field"
+      [formlyAttributes]="field"
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex || 0"
       [readonly]="to.readonly">

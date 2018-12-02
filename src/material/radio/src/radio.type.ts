@@ -7,7 +7,7 @@ import { MatRadioGroup, MatRadioChange } from '@angular/material/radio';
   template: `
     <mat-radio-group
       [formControl]="formControl"
-      [formlyMatAttributes]="field"
+      [formlyAttributes]="field"
       [tabindex]="to.tabindex || 0"
       (change)="change($event)">
       <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
