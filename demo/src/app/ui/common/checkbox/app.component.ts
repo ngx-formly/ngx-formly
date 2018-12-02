@@ -15,9 +15,15 @@ export class AppComponent {
       key: 'Checkbox',
       type: 'checkbox',
       templateOptions: {
-        label: 'Checkbox',
-        description: 'Description',
+        label: 'Accept terms',
+        description: 'In order to proceed, please accept terms',
+        pattern: 'true',
         required: true,
+      },
+      validation: {
+        messages: {
+          pattern: 'Please accept the terms',
+        },
       },
     },
   ];

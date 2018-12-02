@@ -5,7 +5,11 @@ import { MatRadioGroup, MatRadioChange } from '@angular/material/radio';
 @Component({
   selector: 'formly-field-mat-radio',
   template: `
-    <mat-radio-group [formControl]="formControl" [formlyAttributes]="field" (change)="change($event)">
+    <mat-radio-group
+      [formControl]="formControl"
+      [formlyAttributes]="field"
+      [tabindex]="to.tabindex || 0"
+      (change)="change($event)">
       <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
         [id]="id + '_' + i"
         [color]="to.color"

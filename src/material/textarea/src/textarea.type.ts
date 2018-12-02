@@ -12,8 +12,10 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [errorStateMatcher]="errorStateMatcher"
       [cols]="to.cols"
       [rows]="to.rows"
+      [formlyAttributes]="field"
       [placeholder]="to.placeholder"
-      [formlyAttributes]="field">
+      [tabindex]="to.tabindex || 0"
+      [readonly]="to.readonly">
     </textarea>
   `,
 })

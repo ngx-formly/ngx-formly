@@ -10,6 +10,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [formControl]="formControl"
       [id]="id"
       [formlyAttributes]="field"
+      [tabindex]="to.tabindex || 0"
       (change)="change($event)"
       [indeterminate]="to.indeterminate && formControl.value === null"
       [color]="to.color"

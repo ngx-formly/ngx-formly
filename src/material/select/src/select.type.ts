@@ -9,6 +9,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
+      [tabindex]="to.tabindex || 0"
       [compareWith]="to.compareWith || compareWith"
       [multiple]="to.multiple"
       (selectionChange)="change($event)"

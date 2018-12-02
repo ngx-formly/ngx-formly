@@ -1,13 +1,10 @@
-import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, Renderer2 } from '@angular/core';
+import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
 
 @Directive({
   selector: '[formlyAttributes]',
   host: {
     '[attr.name]': 'field.name',
-    '[attr.placeholder]': 'to.placeholder',
-    '[attr.tabindex]': 'to.tabindex || 0',
-    '[attr.readonly]': 'to.readonly',
     '[attr.step]': 'to.step',
 
     '(keyup)': 'to.keyup && to.keyup(field, $event)',
@@ -17,8 +14,12 @@ import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config'
     '(keypress)': 'to.keypress && to.keypress(field, $event)',
   },
 })
-export class FormlyAttributes implements OnChanges {
+export class FormlyAttributes implements OnChanges, DoCheck {
   @Input('formlyAttributes') field: FormlyFieldConfig;
+
+  private placeholder?: string;
+  private tabindex?: number;
+  private readonly?: boolean;
 
   @HostListener('focus', ['$event']) onFocus($event) {
     this.field.focus = true;
@@ -61,6 +62,31 @@ export class FormlyAttributes implements OnChanges {
       if ((fieldChanges.previousValue || {}).focus !== (fieldChanges.currentValue || {}).focus && this.elementRef.nativeElement.focus) {
         this.elementRef.nativeElement[this.field.focus ? 'focus' : 'blur']();
       }
+    }
+  }
+
+  /**
+   * We need to re-evaluate all the attributes on every change detection cycle, because
+   * by using a HostBinding we run into certain edge cases. This means that whatever logic
+   * is in here has to be super lean or we risk seriously damaging or destroying the performance.
+   *
+   * Formly issue: https://github.com/formly-js/ngx-formly/issues/1317
+   * Material issue: https://github.com/angular/material2/issues/14024
+   */
+  ngDoCheck() {
+    if (this.placeholder !== this.to.placeholder) {
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'placeholder', this.to.placeholder);
+      this.placeholder = this.to.placeholder;
+    }
+
+    if (this.tabindex !== this.to.tabindex) {
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'tabindex', `${this.to.tabindex || 0}`);
+      this.tabindex = this.to.tabindex;
+    }
+
+    if (this.readonly !== this.to.readonly) {
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'readonly', `${this.to.readonly}`);
+      this.readonly = this.to.readonly;
     }
   }
 

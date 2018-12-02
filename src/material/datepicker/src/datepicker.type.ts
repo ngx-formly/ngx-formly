@@ -14,7 +14,9 @@ import { MatInput } from '@angular/material/input';
       [max]="to.datepickerOptions.max"
       [min]="to.datepickerOptions.min"
       [formlyAttributes]="field"
-      [placeholder]="to.placeholder">
+      [placeholder]="to.placeholder"
+      [tabindex]="to.tabindex || 0"
+      [readonly]="to.readonly">
     <ng-template #matSuffix>
       <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
     </ng-template>

@@ -8,6 +8,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       <mat-checkbox
         [id]="id + '_' + i"
         [formlyAttributes]="field"
+        [tabindex]="to.tabindex || 0"
         [color]="to.color"
         [labelPosition]="to.labelPosition"
         [checked]="formControl.value && (this.to.type === 'array' ? formControl.value.includes(option.value) : formControl.value[option.value])"
