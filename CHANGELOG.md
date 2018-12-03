@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.18"></a>
+# [5.0.0-beta.18](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.17...v5.0.0-beta.18) (2018-12-03)
+
+
+### Bug Fixes
+
+* **core:** use Renderer2 instead of HostBinding ([7d1cc2c](https://github.com/formly-js/ngx-formly/commit/7d1cc2c))
+
+
+### Features
+
+* **material:** warn missing FieldType for a custom field type ([031f704](https://github.com/formly-js/ngx-formly/commit/031f704))
+
+
+
 <a name="5.0.0-beta.17"></a>
 # [5.0.0-beta.17](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.16...v5.0.0-beta.17) (2018-11-24)
 
