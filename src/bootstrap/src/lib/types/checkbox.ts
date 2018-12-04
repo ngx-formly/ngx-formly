@@ -7,7 +7,7 @@ import { FieldType } from '@ngx-formly/core';
     <div class="custom-control custom-checkbox">
       <input class="custom-control-input" type="checkbox"
         [class.is-invalid]="showError"
-        [indeterminate]="to.indeterminate && field.formControl.value === null"
+        [indeterminate]="to.indeterminate && formControl.value === null"
         [formControl]="formControl"
         [formlyAttributes]="field">
       <label class="custom-control-label" [for]="id">

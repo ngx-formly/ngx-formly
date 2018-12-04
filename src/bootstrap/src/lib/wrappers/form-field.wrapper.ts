@@ -21,5 +21,5 @@ import { FieldWrapper } from '@ngx-formly/core';
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper {
-  @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent: ViewContainerRef;
+  @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent!: ViewContainerRef;
 }
