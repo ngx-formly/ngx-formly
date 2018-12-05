@@ -51,6 +51,7 @@ export class FormlyConfig {
       config.wrappers.forEach(wrapper => this.setWrapper(wrapper));
     }
     if (config.manipulators) {
+      console.warn(`NgxFormly: passing 'manipulators' config is deprecated, use custom extension instead.`);
       config.manipulators.forEach(manipulator => this.setManipulator(manipulator));
     }
     if (config.validationMessages) {
@@ -259,6 +260,8 @@ export interface ConfigOption {
   validators?: ValidatorOption[];
   extensions?: ExtensionOption[];
   validationMessages?: ValidationMessageOption[];
+
+  /** @deprecated use `extensions` instead */
   manipulators?: ManipulatorOption[];
   extras?: {
     fieldTransform?: any,

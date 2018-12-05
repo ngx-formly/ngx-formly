@@ -1,5 +1,4 @@
 import { ConfigOption } from '@ngx-formly/core';
-import { TemplateAddons } from './run/addon';
 import {
   FormlyFieldInput,
   FormlyFieldCheckbox,
@@ -12,6 +11,7 @@ import {
   FormlyWrapperAddons,
   FormlyWrapperFormField,
 } from './wrappers/wrappers';
+import { addonsExtension } from './extension/addon';
 
 export const FIELD_TYPE_COMPONENTS = [
   // types
@@ -91,7 +91,7 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     {name: 'addons', component: FormlyWrapperAddons},
     {name: 'form-field', component: FormlyWrapperFormField},
   ],
-  manipulators: [
-    {class: TemplateAddons, method: 'run'},
+  extensions: [
+    { name: 'addons', extension: { onPopulate: addonsExtension } },
   ],
 };
