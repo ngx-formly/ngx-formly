@@ -18,7 +18,7 @@ import { FieldType } from '@ngx-formly/core';
   `,
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
-  onChange(value, checked) {
+  onChange(value: any, checked: boolean) {
     if (this.to.type === 'array') {
       this.formControl.patchValue(checked
         ? [...(this.formControl.value || []), value]

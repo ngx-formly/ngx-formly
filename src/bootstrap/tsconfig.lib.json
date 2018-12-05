@@ -12,6 +12,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "types": [],
+    "strict": true,
     "lib": [
       "dom",
       "es2015"

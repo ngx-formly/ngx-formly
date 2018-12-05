@@ -34,7 +34,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   `],
 })
 export class FormlyWrapperAddons extends FieldWrapper {
-  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
+  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent!: ViewContainerRef;
 
   addonRightClick($event: any) {
     if (this.to.addonRight.onClick) {
