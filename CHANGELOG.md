@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.19"></a>
+# [5.0.0-beta.19](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.18...v5.0.0-beta.19) (2018-12-06)
+
+
+### Bug Fixes
+
+* **core:** ensure init options during buildForm ([#1333](https://github.com/formly-js/ngx-formly/issues/1333)) ([ee958c1](https://github.com/formly-js/ngx-formly/commit/ee958c1))
+
+
+### Features
+
+* **core:** deprecate manipulators in favor of extensions ([#1332](https://github.com/formly-js/ngx-formly/issues/1332)) ([d8ec692](https://github.com/formly-js/ngx-formly/commit/d8ec692))
+
+
+
 <a name="5.0.0-beta.18"></a>
 # [5.0.0-beta.18](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.17...v5.0.0-beta.18) (2018-12-03)
 
