@@ -115,6 +115,22 @@ After:
 ```
 **Warning**: `onChanges` under `hooks` doens't take account of model, options and form changes (https://github.com/formly-js/ngx-formly/issues/1241).
 
+ * `manipulators` config is deprecated in favor of `extension`:
+
+Before:
+```ts
+FormlyModule.forRoot({
+  manipulators: [{ method: 'run', class: TemplateAddons }],
+})
+```
+
+After:
+```ts
+FormlyModule.forRoot({
+  extensions: [{ name: 'addons', extension: addonsExtension }],
+})
+```
+
 @ngx-formly/material
 --------------------
 **Note**: this only affect the user's who import sub-modules of `@ngx-formly/material` instead of main module `FormlyMaterialModule`.
