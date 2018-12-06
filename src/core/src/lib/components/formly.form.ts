@@ -1,10 +1,9 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy, ComponentFactoryResolver } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyValueChangeEvent, FormlyFormOptionsCache } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, reverseDeepMerge } from '../utils';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
 @Component({
@@ -45,7 +44,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
-    private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
     @Optional() private parentForm: NgForm,
     @Optional() private parentFormGroup: FormGroupDirective,
@@ -84,14 +82,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   setOptions() {
     this.options = this.options || {};
-
-    this.options.formState = this.options.formState || {};
-    if (!this.options.showError) {
-      this.options.showError = this.formlyConfig.extras.showError;
-    }
-    if (!this.options.fieldChanges) {
-      this.options.fieldChanges = new Subject<FormlyValueChangeEvent>();
-    }
 
     if (!this.options.resetModel) {
       this.options.resetModel = (model ?: any) => {

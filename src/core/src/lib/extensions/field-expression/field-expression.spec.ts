@@ -43,7 +43,7 @@ describe('FieldExpressionExtension', () => {
       ],
     });
 
-    builder = new FormlyFormBuilder(config);
+    builder = new FormlyFormBuilder(config, null);
   });
 
   describe('field visibility (hideExpression)', () => {

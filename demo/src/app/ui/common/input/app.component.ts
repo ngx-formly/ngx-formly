@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFormOptions, FormlyFieldConfig, FormlyFormBuilder } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
@@ -22,4 +22,8 @@ export class AppComponent {
       },
     },
   ];
+
+  constructor(builder: FormlyFormBuilder) {
+    builder.buildForm(this.form, this.fields, this.model, this.options);
+  }
 }
