@@ -14,6 +14,8 @@ export class FormlyJsonschema {
       type: jsonSchema.type as JSONSchema7TypeName,
       defaultValue: jsonSchema.default,
       templateOptions: {
+        min: jsonSchema.minimum,
+        max: jsonSchema.maximum,
         minLength: jsonSchema.minLength,
         maxLength: jsonSchema.maxLength,
         label: jsonSchema.title,
@@ -37,7 +39,7 @@ export class FormlyJsonschema {
       case 'object': {
         field.fieldGroup = [];
         Object.keys(jsonSchema.properties).forEach(p => {
-          const child = this._toFieldConfig(<JSONSchema7> jsonSchema.properties[p], p);
+          const child = this._toFieldConfig(<JSONSchema7> jsonSchema.properties[p], key ? key + '.' + p : p);
           if (Array.isArray(jsonSchema.required) && jsonSchema.required.indexOf(p) !== -1) {
             child.templateOptions.required = true;
           }
