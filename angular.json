@@ -120,7 +120,7 @@
     },
     "@ngx-formly/core": {
       "root": "src/core",
-      "sourceRoot": "src/core/src",
+      "sourceRoot": "src/core",
       "projectType": "library",
       "prefix": "lib",
       "architect": {

@@ -209,6 +209,7 @@ export interface FormlyTemplateOptions {
   pattern?: string|RegExp;
   required?: boolean;
   tabindex?: number;
+  readonly?: boolean;
   attributes?: { [key: string]: string|number };
   step?: number;
   focus?: FormlyAttributeEvent;
