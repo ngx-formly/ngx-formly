@@ -1,13 +1,14 @@
 import {
-  Component, EventEmitter, Input, Output,
+  Component, EventEmitter, Input, Output, Type,
   ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, Attribute, ComponentFactoryResolver,
   OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
-import { FieldWrapper } from '../templates/field.wrapper';
 import { defineHiddenProp } from '../utils';
+import { FieldWrapper } from '../templates/field.wrapper';
+import { FieldType } from '../templates/field.type';
 
 @Component({
   selector: 'formly-field',
@@ -100,18 +101,19 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.componentRefs = [];
   }
 
-  private renderField(field: FormlyFieldConfig, containerRef: ViewContainerRef) {
+  private renderField(f: FormlyFieldConfigCache, containerRef: ViewContainerRef) {
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this.componentRefs = [];
 
-    const wrappers = <any>(field.wrappers || []).map(wrapperName => this.formlyConfig.getWrapper(wrapperName));
-    [...wrappers, { ...this.formlyConfig.getType(field.type), componentFactory: (<any> field)._componentFactory }].forEach(({ component, componentRef }) => {
-      const ref = componentRef ? componentRef : containerRef.createComponent<FieldWrapper>(this.componentFactoryResolver.resolveComponentFactory(component));
-
-      Object.assign(ref.instance, { field });
-      this.componentRefs.push(ref);
-      containerRef = ref.instance.fieldComponent;
+    (f.wrappers || []).forEach(wrapper => {
+      containerRef = this.createWrapperRef(f, containerRef, this.formlyConfig.getWrapper(wrapper));
     });
+
+    const ref = this.formlyConfig.createComponentInstance(f, this.componentFactoryResolver);
+    if (ref) {
+      containerRef.insert(ref.hostView);
+      this.attachComponentRef(ref, f);
+    }
   }
 
   private triggerHook(name: string, changes?: SimpleChanges) {
@@ -129,5 +131,23 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
         this.field.options,
       );
     }
+  }
+
+  private createWrapperRef<T extends FieldWrapper>(
+    field: FormlyFieldConfig,
+    containerRef: ViewContainerRef,
+    config: { component: Type<T>; },
+  ) {
+    const ref = containerRef.createComponent<T>(
+      this.componentFactoryResolver.resolveComponentFactory(config.component),
+    );
+    this.attachComponentRef(ref, field);
+
+    return ref.instance.fieldComponent;
+  }
+
+  private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfig) {
+    Object.assign(ref.instance, { field });
+    this.componentRefs.push(ref);
   }
 }

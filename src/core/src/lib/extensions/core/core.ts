@@ -135,7 +135,7 @@ export class CoreExtension implements FormlyExtension {
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
     let instance: FormlyExtension = {};
     if (field._componentFactory && field._componentFactory.componentRef) {
-      instance = field._componentFactory.componentRef.instance;
+      instance = field._componentFactory.componentRef.instance as any;
     }
 
     return {
