@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken } from '@angular/core';
+import { Injectable, InjectionToken, ComponentRef, ComponentFactoryResolver } from '@angular/core';
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
@@ -112,8 +112,7 @@ export class FormlyConfig {
       });
     }
 
-    this.createComponentInstance(field);
-    const componentRef = (<FormlyFieldConfigCache> field)._componentFactory.componentRef;
+    const componentRef = this.createComponentInstance(field);
     if (componentRef && componentRef.instance && componentRef.instance.defaultOptions) {
       reverseDeepMerge(field, componentRef.instance.defaultOptions);
     }
@@ -123,20 +122,30 @@ export class FormlyConfig {
     }
   }
 
-  createComponentInstance(field: FormlyFieldConfigCache = {}) {
-    if (!field.type || field._componentFactory && field.type === field._componentFactory.type) {
+  /** @internal */
+  createComponentInstance(field: FormlyFieldConfigCache = {}, resolver?: ComponentFactoryResolver): ComponentRef<FieldType> {
+    if (!field.type) {
       return;
     }
-    const type = this.getType(field.type);
 
-    const _componentFactoryResolver = (<any> field.parent.options)._componentFactoryResolver;
+    if (field._componentFactory && field.type === field._componentFactory.type) {
+      return field._componentFactory.componentRef;
+    }
+
+    const type = this.getType(field.type);
+    if (!resolver) {
+      resolver = field.parent.options._componentFactoryResolver;
+    }
+
     defineHiddenProp(field, '_componentFactory', {
       type: field.type,
       component: type.component,
-      componentRef: _componentFactoryResolver
-        ? _componentFactoryResolver.resolveComponentFactory(type.component).create(_componentFactoryResolver._ngModule.injector)
+      componentRef: resolver
+        ? resolver.resolveComponentFactory(type.component).create((<any> resolver)._ngModule.injector)
         : null,
     });
+
+    return field._componentFactory.componentRef;
   }
 
   setWrapper(options: WrapperOption) {
