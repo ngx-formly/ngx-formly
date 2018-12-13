@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.20"></a>
+# [5.0.0-beta.20](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.19...v5.0.0-beta.20) (2018-12-13)
+
+
+### Bug Fixes
+
+* **core:** add FormlyFormBuilder to child module ([#1335](https://github.com/formly-js/ngx-formly/issues/1335)) ([e662ac1](https://github.com/formly-js/ngx-formly/commit/e662ac1)), closes [#1334](https://github.com/formly-js/ngx-formly/issues/1334)
+* **core:** avoid create field component twice ([#1340](https://github.com/formly-js/ngx-formly/issues/1340)) ([50ae25f](https://github.com/formly-js/ngx-formly/commit/50ae25f))
+
+
+
 <a name="5.0.0-beta.19"></a>
 # [5.0.0-beta.19](https://github.com/formly-js/ngx-formly/compare/v5.0.0-beta.18...v5.0.0-beta.19) (2018-12-06)
 
