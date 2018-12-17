@@ -128,7 +128,8 @@ export class FormlyConfig {
       return;
     }
 
-    if (field._componentFactory && field.type === field._componentFactory.type) {
+    const cf = field._componentFactory;
+    if (cf && field.type === cf.type && (cf.componentRef && cf.componentRef.hostView && !cf.componentRef.hostView.destroyed)) {
       return field._componentFactory.componentRef;
     }
 
