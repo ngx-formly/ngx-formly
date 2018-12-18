@@ -18,4 +18,7 @@ import { FieldType } from './field.type';
   styles: [':host { display: inherit; }'],
 })
 export class FormlyFieldSelect extends FieldType {
+  defaultOptions = {
+    templateOptions: { options: [] },
+  };
 }

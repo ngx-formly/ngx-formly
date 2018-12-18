@@ -38,53 +38,26 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
       name: 'checkbox',
       component: FormlyFieldCheckbox,
       wrappers: ['form-field'],
-      defaultOptions: {
-        templateOptions: {
-          indeterminate: true,
-          hideLabel: true,
-        },
-      },
     },
     {
       name: 'radio',
       component: FormlyFieldRadio,
       wrappers: ['form-field'],
-      defaultOptions: {
-        templateOptions: {
-          options: [],
-        },
-      },
     },
     {
       name: 'select',
       component: FormlyFieldSelect,
       wrappers: ['form-field'],
-      defaultOptions: {
-        templateOptions: {
-          options: [],
-        },
-      },
     },
     {
       name: 'textarea',
       component: FormlyFieldTextArea,
       wrappers: ['form-field'],
-      defaultOptions: {
-        templateOptions: {
-          cols: 1,
-          rows: 1,
-        },
-      },
     },
     {
       name: 'multicheckbox',
       component: FormlyFieldMultiCheckbox,
       wrappers: ['form-field'],
-      defaultOptions: {
-        templateOptions: {
-          options: [],
-        },
-      },
     },
   ],
   wrappers: [

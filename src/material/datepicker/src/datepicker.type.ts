@@ -30,4 +30,11 @@ import { MatInput } from '@angular/material/input';
 })
 export class FormlyDatepickerTypeComponent extends FieldType {
   @ViewChild(MatInput) formFieldControl!: MatInput;
+  defaultOptions = {
+    templateOptions: {
+      datepickerOptions: {
+        startView: 'month',
+      },
+    },
+  };
 }

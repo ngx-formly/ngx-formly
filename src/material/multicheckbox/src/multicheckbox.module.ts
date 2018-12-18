@@ -24,13 +24,6 @@ import { FormlyFieldMultiCheckbox } from './multicheckbox.type';
           name: 'multicheckbox',
           component: FormlyFieldMultiCheckbox,
           wrappers: ['form-field'],
-          defaultOptions: {
-            templateOptions: {
-              hideFieldUnderline: true,
-              floatLabel: 'always',
-              options: [],
-            },
-          },
         },
       ],
     }),

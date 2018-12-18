@@ -21,4 +21,10 @@ import { FieldType } from '@ngx-formly/material/form-field';
 })
 export class FormlyFieldTextArea extends FieldType implements OnInit {
   @ViewChild(MatInput) formFieldControl!: MatInput;
+  defaultOptions = {
+    templateOptions: {
+      cols: 1,
+      rows: 1,
+    },
+  };
 }

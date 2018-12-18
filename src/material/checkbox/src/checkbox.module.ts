@@ -23,15 +23,6 @@ import { FormlyFieldCheckbox } from './checkbox.type';
           name: 'checkbox',
           component: FormlyFieldCheckbox,
           wrappers: ['form-field'],
-          defaultOptions: {
-            templateOptions: {
-              hideFieldUnderline: true,
-              indeterminate: true,
-              floatLabel: 'always',
-              hideLabel: true,
-              align: 'start', // start or end
-            },
-          },
         },
       ],
     }),

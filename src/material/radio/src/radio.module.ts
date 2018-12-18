@@ -23,13 +23,6 @@ import { FormlyFieldRadio } from './radio.type';
         name: 'radio',
         component: FormlyFieldRadio,
         wrappers: ['form-field'],
-        defaultOptions: {
-          templateOptions: {
-            hideFieldUnderline: true,
-            floatLabel: 'always',
-            options: [],
-          },
-        },
       }],
     }),
   ],

@@ -19,12 +19,6 @@ import { FormlySliderTypeComponent } from './slider.type';
         name: 'slider',
         component: FormlySliderTypeComponent,
         wrappers: ['form-field'],
-        defaultOptions: {
-          templateOptions: {
-            hideFieldUnderline: true,
-            floatLabel: 'always',
-          },
-        },
       }],
     }),
   ],

@@ -21,4 +21,8 @@ import { FieldType } from '@ngx-formly/core';
     </div>
   `,
 })
-export class FormlyFieldRadio extends FieldType {}
+export class FormlyFieldRadio extends FieldType {
+  defaultOptions = {
+    templateOptions: { options: [] },
+  };
+}
