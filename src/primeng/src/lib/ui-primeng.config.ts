@@ -31,11 +31,6 @@ export const PRIME_NG_FORMLY_CONFIG: ConfigOption = {
       name: 'checkbox',
       component: FormlyFieldCheckbox,
       wrappers: ['form-field'],
-      defaultOptions: {
-        templateOptions: {
-          hideLabel: true,
-        },
-      },
     },
     {
       name: 'textarea',

@@ -19,6 +19,14 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
+  defaultOptions = {
+    templateOptions: {
+      hideFieldUnderline: true,
+      floatLabel: 'always',
+      options: [],
+    },
+  };
+
   onChange(value: any, checked: boolean) {
     if (this.to.type === 'array') {
       this.formControl.patchValue(checked

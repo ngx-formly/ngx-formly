@@ -22,12 +22,6 @@ import { FormlyFieldTextArea } from './textarea.type';
           name: 'textarea',
           component: FormlyFieldTextArea,
           wrappers: ['form-field'],
-          defaultOptions: {
-            templateOptions: {
-              cols: 1,
-              rows: 1,
-            },
-          },
         },
       ],
     }),

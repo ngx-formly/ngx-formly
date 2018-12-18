@@ -39,4 +39,8 @@ import { FieldType } from '@ngx-formly/core';
     </ng-template>
   `,
 })
-export class FormlyFieldSelect extends FieldType {}
+export class FormlyFieldSelect extends FieldType {
+  defaultOptions = {
+    templateOptions: { options: [] },
+  };
+}

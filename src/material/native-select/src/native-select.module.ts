@@ -24,11 +24,6 @@ import { FormlyFieldNativeSelect } from './native-select.type';
           name: 'native-select',
           component: FormlyFieldNativeSelect,
           wrappers: ['form-field'],
-          defaultOptions: {
-            templateOptions: {
-              options: [],
-            },
-          },
         },
       ],
     }),

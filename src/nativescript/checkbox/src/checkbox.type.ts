@@ -10,4 +10,10 @@ import { FieldType } from '@ngx-formly/core';
     </GridLayout>
   `,
 })
-export class FormlyFieldCheckbox extends FieldType {}
+export class FormlyFieldCheckbox extends FieldType {
+  defaultOptions = {
+    templateOptions: {
+      hideLabel: true,
+    },
+  };
+}

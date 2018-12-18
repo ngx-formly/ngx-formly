@@ -14,4 +14,9 @@ import { FieldType } from '@ngx-formly/core';
   `,
 })
 export class FormlyFieldCheckbox extends FieldType {
+  defaultOptions = {
+    templateOptions: {
+      hideLabel: true,
+    },
+  };
 }

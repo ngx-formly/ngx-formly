@@ -11,4 +11,10 @@ import { FieldType } from '@ngx-formly/core';
   `,
 })
 export class FormlyFieldTextArea extends FieldType {
+  defaultOptions = {
+    templateOptions: {
+      cols: 1,
+      rows: 1,
+    },
+  };
 }

@@ -23,11 +23,6 @@ import { FormlyFieldSelect } from './select.type';
         name: 'select',
         component: FormlyFieldSelect,
         wrappers: ['form-field'],
-        defaultOptions: {
-          templateOptions: {
-            options: [],
-          },
-        },
       }],
     }),
   ],

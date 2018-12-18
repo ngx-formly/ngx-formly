@@ -19,13 +19,6 @@ import { FormlyToggleTypeComponent } from './toggle.type';
         name: 'toggle',
         component: FormlyToggleTypeComponent,
         wrappers: ['form-field'],
-        defaultOptions: {
-          templateOptions: {
-            hideFieldUnderline: true,
-            floatLabel: 'always',
-            hideLabel: true,
-          },
-        },
       }],
     }),
   ],

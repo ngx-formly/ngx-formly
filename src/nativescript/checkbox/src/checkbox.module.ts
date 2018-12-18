@@ -21,11 +21,6 @@ import { FormlyFieldCheckbox } from './checkbox.type';
           name: 'checkbox',
           component: FormlyFieldCheckbox,
           wrappers: ['form-field'],
-          defaultOptions: {
-            templateOptions: {
-              hideLabel: true,
-            },
-          },
         },
       ],
     }),

@@ -27,4 +27,8 @@ import { FieldType } from './field.type';
     </ion-item>
   `,
 })
-export class FormlyFieldRadio extends FieldType {}
+export class FormlyFieldRadio extends FieldType {
+  defaultOptions = {
+    templateOptions: { options: [] },
+  };
+}
