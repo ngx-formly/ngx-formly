@@ -1,20 +1,20 @@
-<img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
+<img src="https://raw.githubusercontent.com/ngx-formly/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
 
 # @ngx-formly
 [![Angular Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
-[![Stories in Ready](https://badge.waffle.io/formly-js/ngx-formly.png?label=ready&title=Ready)](https://waffle.io/formly-js/ngx-formly)
+[![Stories in Ready](https://badge.waffle.io/ngx-formly/ngx-formly.png?label=ready&title=Ready)](https://waffle.io/ngx-formly/ngx-formly)
 
 Status:
-[![Build Status](https://travis-ci.org/formly-js/ngx-formly.svg?branch=master)](https://travis-ci.org/formly-js/ngx-formly)
+[![Build Status](https://travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)](https://travis-ci.org/ngx-formly/ngx-formly)
 [![npm version](https://badge.fury.io/js/%40ngx-formly%2Fcore.svg)](https://badge.fury.io/js/%40ngx-formly%2Fcore)
-[![devDependencies Status](https://david-dm.org/formly-js/ng-formly/dev-status.svg)](https://david-dm.org/formly-js/ng-formly?type=dev)
-[![Package Quality](http://npm.packagequality.com/shield/ng-formly.png)](http://packagequality.com/#?package=ng-formly)
-[![Known Vulnerabilities](https://snyk.io/test/github/formly-js/ng-formly/badge.svg)](https://snyk.io/test/github/formly-js/ng-formly)
-[![codecov.io](http://codecov.io/github/formly-js/ng-formly/coverage.svg?branch=master)](http://codecov.io/github/formly-js/ng-formly?branch=master)
+[![devDependencies Status](https://david-dm.org/ngx-formly/ngx-formly/dev-status.svg)](https://david-dm.org/ngx-formly/ngx-formly?type=dev)
+[![Package Quality](http://npm.packagequality.com/shield/ngx-formly.png)](http://packagequality.com/#?package=ng-formly)
+[![Known Vulnerabilities](https://snyk.io/test/github/ngx-formly/ngx-formly/badge.svg)](https://snyk.io/test/github/ngx-formly/ngx-formly)
+[![codecov.io](http://codecov.io/github/ngx-formly/ngx-formly/coverage.svg?branch=master)](http://codecov.io/github/ngx-formly/ngx-formly?branch=master)
 
 Links:
-[![Gitter](https://badges.gitter.im/formly-js/angular2-formly.svg)](https://gitter.im/formly-js/angular2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/formly-js/ng2-formly.svg)](https://gitter.im/formly-js/ng2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an on [Angular Reactive Forms](https://angular.io/guide/reactive-forms)) that bring unmatched maintainability to your application's forms.
@@ -40,7 +40,7 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 | Angular >= 2    | `ng-formly@1.x`        |
 
 #### Quick links
-* [Documentation, demos, and guides](https://formly-js.github.io/ngx-formly)
+* [Documentation, demos, and guides](https://ngx-formly.github.io/ngx-formly)
 * StackBlitz Template
   * [UI Bootstrap](https://stackblitz.com/edit/ngx-formly-ui-bootstrap)
   * [UI Material](https://stackblitz.com/edit/ngx-formly-ui-material)
@@ -50,7 +50,7 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 
 ## Quick Start
 
-Follow these steps to get started with Ngx Formly. Also check out our [demos](https://formly-js.github.io/ngx-formly) for further examples.
+Follow these steps to get started with Ngx Formly. Also check out our [demos](https://ngx-formly.github.io/ngx-formly) for further examples.
 
 #### 1. Install @angular/forms and @ngx-formly/core packages:
 ```bash
@@ -215,14 +215,14 @@ If you want to set defaults for schematics such as generating components with sc
 
 ## Roadmap
 
-See the [issues labeled enhancement](https://github.com/formly-js/angular2-formly/labels/enhancement)
+See the [issues labeled enhancement](https://github.com/ngx-formly/ngx-formly/labels/enhancement)
 
 ## Thanks
 
 A special thanks to [Kent C. Dodds](https://twitter.com/kentcdodds) for giving me opportunity to work on this.
 This library is maintained (with love) by me, [Mohammed Zama Khan](https://twitter.com/mohamedzamakhan).
-Thanks to all [contributors](https://github.com/formly-js/angular2-formly/graphs/contributors)!
-If you're trying to find angular-formly, go [here](https://github.com/formly-js/angular-formly)
+Thanks to all [contributors](https://github.com/ngx-formly/ngx-formly/graphs/contributors)!
+If you're trying to find angular-formly, go [here](https://github.com/ngx-formly/angular-formly)
 
 ## Contributors
 

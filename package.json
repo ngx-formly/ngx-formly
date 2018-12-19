@@ -7,7 +7,7 @@
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
   "scripts": {
-    "contrib:generate": "githubcontrib --owner formly-js --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
+    "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint --fix -p tsconfig.json",
     "commit": "npm run build && git-cz",
@@ -27,7 +27,7 @@
     "demo": "npm run start",
     "build:docs": "compodoc -p tsconfig.doc.json -n 'Angular Formly' --hideGenerator --disableCoverage --disablePrivate --disableProtected --disableInternal --disableLifeCycleHooks --customFavicon='demo/src/favicon.ico' -d ./dist/app/docs",
     "build:demo": "ng build --prod --base-href=\"/ngx-formly/\"",
-    "gh-pages": "npm run build:docs && ngh --dir dist/app --repo=https://GH_TOKEN@github.com/formly-js/ngx-formly.git",
+    "gh-pages": "npm run build:docs && ngh --dir dist/app --repo=https://GH_TOKEN@github.com/ngx-formly/ngx-formly.git",
     "test": "ng test @ngx-formly/core --browsers ChromeHeadless && ng test @ngx-formly/bootstrap --browsers ChromeHeadless && ng test @ngx-formly/material --browsers ChromeHeadless && cd src/schematics && npm run test",
     "test:watch": "ng test @ngx-formly/core --watch",
     "commitmsg": "commitlint -e $GIT_PARAMS"
@@ -47,12 +47,12 @@
   "description": "@ngx-formly is an Angular 2 module which has Components to help customize and render JavaScript/JSON configured forms. The `formly-form` Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/formly-js/ngx-formly.git"
+    "url": "git+https://github.com/ngx-formly/ngx-formly.git"
   },
   "bugs": {
-    "url": "https://github.com/formly-js/ngx-formly/issues"
+    "url": "https://github.com/ngx-formly/ngx-formly/issues"
   },
-  "homepage": "https://github.com/formly-js/ngx-formly#readme",
+  "homepage": "https://github.com/ngx-formly/ngx-formly#readme",
   "dependencies": {
     "@angular/animations": "^7.1.3",
     "@angular/cdk": "^7.1.1",

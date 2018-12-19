@@ -70,7 +70,7 @@ export class FormlyAttributes implements OnChanges, DoCheck {
    * by using a HostBinding we run into certain edge cases. This means that whatever logic
    * is in here has to be super lean or we risk seriously damaging or destroying the performance.
    *
-   * Formly issue: https://github.com/formly-js/ngx-formly/issues/1317
+   * Formly issue: https://github.com/ngx-formly/ngx-formly/issues/1317
    * Material issue: https://github.com/angular/material2/issues/14024
    */
   ngDoCheck() {
