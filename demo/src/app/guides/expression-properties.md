@@ -45,7 +45,7 @@ Example with function value:
 The field will be hidden when *formState.mainModel.text* is empty
 
 
-**ALERT**: You can use the formstate to store information. In the example we keep the model. formstate is a property of options. [Read more](https://formly-js.github.io/ngx-formly/examples/form-options/form-state)
+**ALERT**: You can use the formstate to store information. In the example we keep the model. formstate is a property of options. [Read more](https://ngx-formly.github.io/ngx-formly/examples/form-options/form-state)
 
 ```typescript
 options = {

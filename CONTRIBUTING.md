@@ -17,7 +17,7 @@ Help us keep Angular open and inclusive. Please read and follow our [Code of Con
 
 ## <a name="question"></a> Got a Question or Problem?
 
-Feel free to chat on [gitter](https://gitter.im/formly-js/ng-formly) and raise questions on Stack overflow using `angular 2 formly` tag. We also support questions or problems from the [issues](https://github.com/formly-js/ng-formly/issues)
+Feel free to chat on [gitter](https://gitter.im/formly-js/ng2-formly) and raise questions on Stack overflow using `angular 2 formly` tag. We also support questions or problems from the [issues](https://github.com/ngx-formly/ngx-formly/issues)
 
 ## <a name="issue"></a> Found a Bug?
 If you find a bug in the source code, you can help us by
@@ -54,7 +54,7 @@ We will be insisting on a minimal reproduce scenario in order to save maintainer
 
 Unfortunately we are not able to investigate / fix bugs without a minimal reproduction, so if we don't hear back from you we are going to close an issue that don't have enough info to be reproduced.
 
-You can file new issues by filling out our [new issue form](https://github.com/formly-js/ng-formly/issues/new).
+You can file new issues by filling out our [new issue form](https://github.com/ngx-formly/ngx-formly/issues/new).
 
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
@@ -95,5 +95,5 @@ readable messages** that are easy to follow when looking through the **project h
 - Record screencasts
 - Write examples. The website is driven by examples.
 
-[coc]: https://github.com/formly-js/ng-formly/blob/master/CODE_OF_CONDUCT.md
-[github]: https://github.com/formly-js/ng-formly
+[coc]: https://github.com/ngx-formly/ngx-formly/blob/master/CODE_OF_CONDUCT.md
+[github]: https://github.com/ngx-formly/ngx-formly
