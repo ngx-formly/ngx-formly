@@ -4,11 +4,10 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-primeng-input',
   template: `
-    <input
-      [class.ng-dirty]="showError"
-      [type]="to.type || 'text'"
-      [formControl]="formControl"
-      [formlyAttributes]="field" pInputText />
+    <input *ngIf="to.type !== 'number' else numberTmp" pInputText [type]="to.type || 'text'" [formControl]="formControl" [formlyAttributes]="field" [class.ng-dirty]="showError">
+    <ng-template #numberTmp>
+      <input type="number" pInputText [formControl]="formControl" [formlyAttributes]="field" [class.ng-dirty]="showError">
+    </ng-template>
   `,
 })
 export class FormlyFieldInput extends FieldType {}
