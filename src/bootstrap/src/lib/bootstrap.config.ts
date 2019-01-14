@@ -7,11 +7,7 @@ import {
   FormlyFieldTextArea,
   FormlyFieldMultiCheckbox,
 } from './types/types';
-import {
-  FormlyWrapperAddons,
-  FormlyWrapperFormField,
-} from './wrappers/wrappers';
-import { addonsExtension } from './extension/addon';
+import { FormlyWrapperFormField } from './wrappers/wrappers';
 
 export const FIELD_TYPE_COMPONENTS = [
   // types
@@ -23,7 +19,6 @@ export const FIELD_TYPE_COMPONENTS = [
   FormlyFieldMultiCheckbox,
 
   // wrappers
-  FormlyWrapperAddons,
   FormlyWrapperFormField,
 ];
 
@@ -61,10 +56,6 @@ export const BOOTSTRAP_FORMLY_CONFIG: ConfigOption = {
     },
   ],
   wrappers: [
-    {name: 'addons', component: FormlyWrapperAddons},
-    {name: 'form-field', component: FormlyWrapperFormField},
-  ],
-  extensions: [
-    { name: 'addons', extension: { onPopulate: addonsExtension } },
+    {name: 'form-field', component: FormlyWrapperFormField },
   ],
 };

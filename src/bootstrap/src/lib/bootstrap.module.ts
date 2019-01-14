@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { BOOTSTRAP_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './bootstrap.config';
+import { FormlyBootstrapAddonsModule } from '@ngx-formly/bootstrap/addons';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { BOOTSTRAP_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './bootstrap.conf
     ReactiveFormsModule,
     FormlySelectModule,
     FormlyModule.forRoot(BOOTSTRAP_FORMLY_CONFIG),
+    FormlyBootstrapAddonsModule,
   ],
 })
-export class FormlyBootstrapModule {
-}
+export class FormlyBootstrapModule {}
