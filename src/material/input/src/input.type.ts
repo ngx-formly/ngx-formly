@@ -19,9 +19,11 @@ import { FieldType } from '@ngx-formly/material/form-field';
       <input matInput
              [id]="id"
              type="number"
+             [readonly]="to.readonly"
              [errorStateMatcher]="errorStateMatcher"
              [formControl]="formControl"
              [formlyAttributes]="field"
+             [tabindex]="to.tabindex || 0"
              [placeholder]="to.placeholder">
     </ng-template>
   `,
