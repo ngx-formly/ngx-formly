@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.22"></a>
+# [5.0.0-beta.22](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-beta.21...v5.0.0-beta.22) (2019-01-17)
+
+
+### Bug Fixes
+
+* **material:** add readonly and tabindex to number input ([#1383](https://github.com/ngx-formly/ngx-formly/issues/1383)) ([8c6fee7](https://github.com/ngx-formly/ngx-formly/commit/8c6fee7))
+* **material:** remove duplicated readonly prop ([#1372](https://github.com/ngx-formly/ngx-formly/issues/1372)) ([34eccf5](https://github.com/ngx-formly/ngx-formly/commit/34eccf5))
+
+
+### Features
+
+* **bootstrap:** add addons to select ([#1381](https://github.com/ngx-formly/ngx-formly/issues/1381)) ([2479091](https://github.com/ngx-formly/ngx-formly/commit/2479091)), closes [#1380](https://github.com/ngx-formly/ngx-formly/issues/1380)
+* **ionic:** emit int value for number input type ([008a50c](https://github.com/ngx-formly/ngx-formly/commit/008a50c))
+* **kendo:** emit int value for number input type ([f53eaa5](https://github.com/ngx-formly/ngx-formly/commit/f53eaa5))
+* **primeng:** emit int value for number input type ([a088477](https://github.com/ngx-formly/ngx-formly/commit/a088477))
+
+
+
 <a name="5.0.0-beta.21"></a>
 # [5.0.0-beta.21](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-beta.20...v5.0.0-beta.21) (2018-12-28)
 
