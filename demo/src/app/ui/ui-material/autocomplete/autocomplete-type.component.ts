@@ -1,6 +1,7 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
 import { MatInput } from '@angular/material/input';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
@@ -19,9 +20,9 @@ import { startWith, switchMap } from 'rxjs/operators';
     </mat-autocomplete>
   `,
 })
-export class AutocompleteTypeComponent extends FieldType implements OnInit {
-  // Optional: only if you want to rely on `MatInput` implementation
+export class AutocompleteTypeComponent extends FieldType implements OnInit, AfterViewInit {
   @ViewChild(MatInput) formFieldControl: MatInput;
+  @ViewChild(MatAutocompleteTrigger) autocomplete;
 
   filter: Observable<any[]>;
 
@@ -32,5 +33,11 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit {
         startWith(''),
         switchMap(term => this.to.filter(term)),
       );
+  }
+
+  ngAfterViewInit() {
+    super.ngAfterViewInit();
+    // temporary fix for https://github.com/angular/material2/issues/6728
+    this.autocomplete._formField = this.formField;
   }
 }
