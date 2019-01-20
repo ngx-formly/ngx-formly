@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.23"></a>
+# [5.0.0-beta.23](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-beta.22...v5.0.0-beta.23) (2019-01-20)
+
+
+### Features
+
+* **core:** export FORMLY_CONFIG ([#1392](https://github.com/ngx-formly/ngx-formly/issues/1392)) ([f793c59](https://github.com/ngx-formly/ngx-formly/commit/f793c59))
+
+
+
 <a name="5.0.0-beta.22"></a>
 # [5.0.0-beta.22](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-beta.21...v5.0.0-beta.22) (2019-01-17)
 

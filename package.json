@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/common",
-  "version": "5.0.0-beta.22",
+  "version": "5.0.0-beta.23",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -64,8 +64,8 @@
     "@angular/platform-browser-dynamic": "^7.2.1",
     "@angular/router": "^7.2.1",
     "@ionic/angular": "^4.0.0-rc.2",
-    "@ngx-loading-bar/core": "^4.0.0",
-    "@ngx-loading-bar/router": "^4.0.0",
+    "@ngx-loading-bar/core": "^4.1.1",
+    "@ngx-loading-bar/router": "^4.1.1",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@progress/kendo-angular-dropdowns": "^3.4.2",
@@ -98,7 +98,7 @@
     "@commitlint/travis-cli": "^7.3.2",
     "@compodoc/compodoc": "^1.1.7",
     "@schematics/angular": "^7.2.2",
-    "@types/jasmine": "^2.8.14",
+    "@types/jasmine": "^2.8.15",
     "@types/jasminewd2": "^2.0.6",
     "@types/json-schema": "^7.0.1",
     "@types/node": "^10.12.18",
@@ -132,7 +132,7 @@
     "ts-node": "^7.0.0",
     "tsickle": "^0.34.0",
     "tslint": "^5.12.1",
-    "typescript": "~3.2.2"
+    "typescript": "~3.2.4"
   },
   "config": {
     "commitizen": {
