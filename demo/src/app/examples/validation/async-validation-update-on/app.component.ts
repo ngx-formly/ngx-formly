@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'formly-app-example',
@@ -19,7 +20,7 @@ export class AppComponent {
 
   fields: FormlyFieldConfig[] = [
     {
-      key: 'text',
+      key: 'username',
       type: 'input',
       templateOptions: {
         label: 'Username (validated on `blur`)',
@@ -32,11 +33,7 @@ export class AppComponent {
       asyncValidators: {
         uniqueUsername: {
           expression: (control: FormControl) => {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve(this.existingUsers.indexOf(control.value) === -1);
-              }, 1000);
-            });
+            return of(this.existingUsers.indexOf(control.value) === -1);
           },
           message: 'This username is already taken.',
         },
