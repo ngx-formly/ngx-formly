@@ -70,6 +70,7 @@ export class ExamplesComponent {
       { href: './other/observable-select', text: 'Bind Observable to Select' },
       { href: './other/advanced-layout-flex', text: 'Advanced Layout (Flex)' },
       { href: './other/nested-formly-forms', text: 'Nested Forms (fieldGroup wrapper)' },
+      { href: './other/material-prefix-suffix', text: 'Material Field Prefix/Suffix' },
       { href: './other/hide-fields-with-animations', text: 'Hide Fields with `@angular/animations`' },
       { href: './other/button', text: 'Button Type' },
       { href: './other/json-powered', text: 'JSON powered' },
