@@ -13,7 +13,7 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { ChangeDetection } from '@schematics/angular/component/schema';
 
 // tslint:disable:max-line-length
-describe('Component Schematic', () => {
+xdescribe('Component Schematic', () => {
   const collectionPath = join(__dirname, '../collection.json');
   const defaultOptions: ComponentOptions = {
     name: 'foo',
