@@ -22,9 +22,9 @@ import { startWith, switchMap } from 'rxjs/operators';
 })
 export class AutocompleteTypeComponent extends FieldType implements OnInit, AfterViewInit {
   @ViewChild(MatInput) formFieldControl: MatInput;
-  @ViewChild(MatAutocompleteTrigger) autocomplete;
+  @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
 
-  filter: Observable<any[]>;
+  filter: Observable<any>;
 
   ngOnInit() {
     super.ngOnInit();
@@ -38,6 +38,6 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit, Afte
   ngAfterViewInit() {
     super.ngAfterViewInit();
     // temporary fix for https://github.com/angular/material2/issues/6728
-    this.autocomplete._formField = this.formField;
+    (<any> this.autocomplete)._formField = this.formField;
   }
 }
