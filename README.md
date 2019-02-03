@@ -145,9 +145,8 @@ import {FormlyFieldConfig} from '@ngx-formly/core';
   selector: 'app',
   template: `
     <form [formGroup]="form" (ngSubmit)="submit(model)">
-      <formly-form [form]="form" [fields]="fields" [model]="model">
-        <button type="submit" class="btn btn-default">Submit</button>
-      </formly-form>
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <button type="submit" class="btn btn-default">Submit</button>
     </form>
   `,
 })
