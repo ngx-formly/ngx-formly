@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-beta.24"></a>
+# [5.0.0-beta.24](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-beta.23...v5.0.0-beta.24) (2019-02-03)
+
+
+### Features
+
+* **bootstrap:** add inline support for multicheckboxe and radio ([#1407](https://github.com/ngx-formly/ngx-formly/issues/1407)) ([31a5784](https://github.com/ngx-formly/ngx-formly/commit/31a5784)), closes [#1400](https://github.com/ngx-formly/ngx-formly/issues/1400)
+
+
+
 <a name="5.0.0-beta.23"></a>
 # [5.0.0-beta.23](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-beta.22...v5.0.0-beta.23) (2019-01-20)
 
