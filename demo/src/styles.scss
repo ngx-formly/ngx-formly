@@ -18,8 +18,8 @@ legend {
   border-bottom: 1px solid #e5e5e5;
 }
 
-// prism
-@import '~prismjs/themes/prism.css';
+// highlight.js
+@import '~highlight.js/styles/github.css';
 
 // material
 @import '~@angular/material/theming';
