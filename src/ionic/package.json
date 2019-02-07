@@ -14,6 +14,6 @@
   },
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "@ionic/angular": "^4.0.0-beta.0"
+    "@ionic/angular": "^4.0.0"
   }
 }

@@ -31,14 +31,24 @@ const TEMPLATE_FILES = {
     ` },
   ],
   ionic: [
-    { file: 'styles.scss', filecontent: `@import '~ionic-angular/css/ionic.css';` },
+    { file: 'styles.scss', filecontent: `
+      @import "~@ionic/angular/css/core.css";
+      @import "~@ionic/angular/css/normalize.css";
+      @import "~@ionic/angular/css/structure.css";
+      @import "~@ionic/angular/css/typography.css";
+
+      @import "~@ionic/angular/css/padding.css";
+      @import "~@ionic/angular/css/float-elements.css";
+      @import "~@ionic/angular/css/text-alignment.css";
+      @import "~@ionic/angular/css/flex-utils.css";
+    ` },
   ],
 };
 
 const TAGS: string[] = ['angular', 'formly', 'example'];
-const angularVersion = '^6.0.0';
-const materialVersion = '^6.0.0';
-const formlyVersion = '^5.0.0-alpha';
+const angularVersion = '^7.0.0';
+const materialVersion = '^7.0.0';
+const formlyVersion = '^5.0.0-rc';
 
 const dependencies = {
   core: {
@@ -49,16 +59,15 @@ const dependencies = {
     '@angular/platform-browser': angularVersion,
     '@angular/platform-browser-dynamic': angularVersion,
     'core-js': '^2.4.1',
-    'rxjs': '^6.0.0',
-    'rxjs-compat': '^6.0.0',
-    'zone.js': '^0.8.14',
+    'rxjs': '^6.4.0',
+    'zone.js': '^0.8.29',
     'tslib': '^1.7.0',
 
     '@ngx-formly/core': formlyVersion,
   },
   bootstrap: {
     '@ngx-formly/bootstrap': formlyVersion,
-    'bootstrap': '^4.0.0',
+    'bootstrap': '^4.2.1',
     'popper.js': '^1.14',
     'jquery': '^3',
   },
@@ -67,17 +76,18 @@ const dependencies = {
   },
   kendo: {
     '@ngx-formly/kendo': formlyVersion,
-    '@progress/kendo-theme-default': '^2.50.0',
-    '@progress/kendo-angular-dropdowns': '^2.1.0',
+    '@progress/kendo-theme-default': '^3.2.0',
+    '@progress/kendo-angular-dropdowns': '^3.4.2',
     '@progress/kendo-angular-l10n': '^1.0.0',
+    'rxjs-compat': '^6.4.0',
   },
   primeng: {
     '@ngx-formly/primeng': formlyVersion,
-    'primeng': '^5.2.0',
+    'primeng': '^7.0.5',
   },
   ionic: {
     '@ngx-formly/ionic': formlyVersion,
-    'ionic-angular': '^3.9.0',
+    '@ionic/angular': '^4.0.1',
   },
 };
 
@@ -235,7 +245,7 @@ export class StackblitzWriter {
   _replaceExamplePlaceholderNames(fileName: string, filecontent: string, options): string {
     if (fileName === 'app.module.ts') {
       if (options.type === 'ionic') {
-        filecontent = filecontent.replace(`'@angular/common';`, `'@angular/common';\nimport { IonicModule } from 'ionic-angular';`);
+        filecontent = filecontent.replace(`'@angular/common';`, `'@angular/common';\nimport { IonicModule } from '@ionic/angular';`);
         filecontent = filecontent.replace(`FormlyModule.forRoot`, `IonicModule.forRoot(AppComponent),\n    FormlyModule.forRoot`);
       }
 
