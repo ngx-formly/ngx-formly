@@ -2,7 +2,7 @@ import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmi
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { assignModelValue, isNullOrUndefined, reverseDeepMerge } from '../utils';
+import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty } from '../utils';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
@@ -109,18 +109,15 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (this.options.parentForm) {
-      let submitted = this.options.parentForm.submitted;
-      Object.defineProperty(this.options.parentForm, 'submitted', {
-        get: () => submitted,
-        set: value => {
-          submitted = value;
+      wrapProperty(this.options.parentForm, 'submitted', (newVal, oldVal) => {
+        if (newVal !== !!oldVal) {
           (<FormlyFormOptionsCache> this.options)._markForCheck({
             fieldGroup: this.fields,
             model: this.model,
             formControl: this.form,
             options: this.options,
           });
-        },
+        }
       });
     }
 
