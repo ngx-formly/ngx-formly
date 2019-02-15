@@ -98,11 +98,11 @@ describe('FormlyAttributes Component', () => {
       const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
       const elm = getFormlyAttributesElement(fixture.nativeElement);
 
-      fixture.componentInstance.field = { focus: true, templateOptions: {} };
+      fixture.componentInstance.field.focus = true;
       fixture.detectChanges();
       expect(document.activeElement === elm).toBeTruthy();
 
-      fixture.componentInstance.field = { focus: false, templateOptions: {} };
+      fixture.componentInstance.field.focus = false;
       fixture.detectChanges();
       expect(document.activeElement === elm).toBeFalsy();
     });

@@ -152,3 +152,17 @@ export function defineHiddenProp(field, prop, defaultValue) {
   Object.defineProperty(field, prop, { enumerable: false, writable: true, configurable: true });
   field[prop] = defaultValue;
 }
+
+export function wrapProperty(field, prop, setFn: (newVal: any, oldVal?: any) => void) {
+  let value = field[prop];
+  setFn(value);
+
+  Object.defineProperty(field, prop, {
+    configurable: true,
+    get: () => value,
+    set: newVal => {
+      setFn(newVal, value);
+      value = newVal;
+    },
+  });
+}

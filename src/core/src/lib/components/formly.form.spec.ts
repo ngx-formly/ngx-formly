@@ -3,7 +3,7 @@ import { createGenericTestComponent, newEvent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
 import { Component, ViewChild, DebugElement } from '@angular/core';
-import { FormlyModule, FormlyFormBuilder } from '../core';
+import { FormlyModule } from '../core';
 import { FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFormOptions } from './formly.field.config';
@@ -990,8 +990,4 @@ class TestComponent {
     <button id="add" type="button" (click)="add()">Add</button>
   `,
 })
-class RepeatComponent extends FieldArrayType {
-  constructor(builder: FormlyFormBuilder) {
-    super(builder);
-  }
-}
+class RepeatComponent extends FieldArrayType {}
