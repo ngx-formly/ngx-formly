@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.3"></a>
+# [5.0.0-rc.3](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.2...v5.0.0-rc.3) (2019-02-15)
+
+
+### Bug Fixes
+
+* **core:** display async validation message for OnPush CD ([#1419](https://github.com/ngx-formly/ngx-formly/issues/1419)) ([344b697](https://github.com/ngx-formly/ngx-formly/commit/344b697)), closes [#1417](https://github.com/ngx-formly/ngx-formly/issues/1417)
+* **core:** improve managing focus with expressionProperties ([#1421](https://github.com/ngx-formly/ngx-formly/issues/1421)) ([405d8cc](https://github.com/ngx-formly/ngx-formly/commit/405d8cc)), closes [#1413](https://github.com/ngx-formly/ngx-formly/issues/1413)
+
+
+### Features
+
+* **core:** mark builder optional for FieldArrayType ([#1418](https://github.com/ngx-formly/ngx-formly/issues/1418)) ([692f84e](https://github.com/ngx-formly/ngx-formly/commit/692f84e))
+
+
+
 <a name="5.0.0-rc.0"></a>
 # [5.0.0-rc.0](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-beta.24...v5.0.0-rc.0) (2019-02-07)
 
