@@ -1,5 +1,7 @@
-import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck } from '@angular/core';
+import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck, Inject } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
+import { wrapProperty } from '../utils';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Directive({
   selector: '[formlyAttributes]',
@@ -20,21 +22,27 @@ export class FormlyAttributes implements OnChanges, DoCheck {
   private placeholder?: string;
   private tabindex?: number;
   private readonly?: boolean;
+  private document: Document;
 
   @HostListener('focus', ['$event']) onFocus($event) {
-    this.field.focus = true;
+    if (!this.field.focus) {
+      this.field.focus = true;
+    }
+
     if (this.to.focus) {
       this.to.focus(this.field, $event);
     }
   }
 
   @HostListener('blur', ['$event']) onBlur($event) {
-    this.field.focus = false;
+    if (this.field.focus) {
+      this.field.focus = false;
+    }
+
     if (this.to.blur) {
       this.to.blur(this.field, $event);
     }
   }
-
   get to(): FormlyTemplateOptions {
     return this.field.templateOptions || {};
   }
@@ -42,26 +50,37 @@ export class FormlyAttributes implements OnChanges, DoCheck {
   constructor(
     private renderer: Renderer2,
     private elementRef: ElementRef,
-  ) {}
+    @Inject(DOCUMENT) _document: any,
+  ) {
+    this.document = _document;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
-      const fieldChanges = changes.field;
-
       this.renderer.setAttribute(this.elementRef.nativeElement, 'id', this.field.id);
       if (this.to && this.to.attributes) {
-        this.setAttributes(this.to.attributes);
-        Object.defineProperty(this.to, 'attributes', {
-          get: () => this.to.__attributes__,
-          set: attributes => this.setAttributes(attributes),
-          enumerable: true,
-          configurable: true,
+        wrapProperty(this.to, 'attributes', (newVal, oldValue) => {
+          if (oldValue) {
+            Object.keys(oldValue).forEach(attr => this.renderer.removeAttribute(this.elementRef.nativeElement, attr));
+          }
+
+          if (newVal) {
+            Object.keys(newVal).forEach(attr => this.setAttribute(attr, newVal[attr]));
+          }
         });
       }
 
-      if ((fieldChanges.previousValue || {}).focus !== (fieldChanges.currentValue || {}).focus && this.elementRef.nativeElement.focus) {
-        this.elementRef.nativeElement[this.field.focus ? 'focus' : 'blur']();
-      }
+      wrapProperty(this.field, 'focus', (value) => {
+        if (!this.elementRef.nativeElement.focus) {
+          return;
+        }
+
+        if (this.document.activeElement !== this.elementRef.nativeElement && value) {
+          this.elementRef.nativeElement.focus();
+        } else if (this.document.activeElement === this.elementRef.nativeElement && !value) {
+          this.elementRef.nativeElement.blur();
+        }
+      });
     }
   }
 
@@ -75,29 +94,22 @@ export class FormlyAttributes implements OnChanges, DoCheck {
    */
   ngDoCheck() {
     if (this.placeholder !== this.to.placeholder) {
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'placeholder', this.to.placeholder);
+      this.setAttribute('placeholder', this.to.placeholder);
       this.placeholder = this.to.placeholder;
     }
 
     if (this.tabindex !== this.to.tabindex) {
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'tabindex', `${this.to.tabindex || 0}`);
+      this.setAttribute('tabindex', `${this.to.tabindex || 0}`);
       this.tabindex = this.to.tabindex;
     }
 
     if (this.readonly !== this.to.readonly) {
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'readonly', `${this.to.readonly}`);
+      this.setAttribute('readonly', `${this.to.readonly}`);
       this.readonly = this.to.readonly;
     }
   }
 
-  private setAttributes(attributes) {
-    if (this.to.__attributes__ && this.to.__attributes__ !== attributes) {
-      Object.keys(this.to.__attributes__).forEach(name => this.renderer.removeAttribute(this.elementRef.nativeElement, name));
-    }
-
-    this.to.__attributes__ = attributes;
-    Object.keys(attributes).forEach(name => this.renderer.setAttribute(
-      this.elementRef.nativeElement, name, attributes[name] as string,
-    ));
+  private setAttribute(attr: string, value: string) {
+    this.renderer.setAttribute(this.elementRef.nativeElement, attr, value);
   }
 }
