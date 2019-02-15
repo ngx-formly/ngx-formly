@@ -1,4 +1,4 @@
-import { Injectable, ComponentFactoryResolver } from '@angular/core';
+import { Injectable, ComponentFactoryResolver, Injector } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyFormOptionsCache } from '../components/formly.field.config';
@@ -6,7 +6,11 @@ import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
-  constructor(private formlyConfig: FormlyConfig, private componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor(
+    private formlyConfig: FormlyConfig,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private injector: Injector,
+  ) {}
 
   buildForm(formControl: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
     options = options || {};
@@ -22,6 +26,10 @@ export class FormlyFormBuilder {
 
     if (!(<FormlyFormOptionsCache> options)._componentFactoryResolver) {
       (<FormlyFormOptionsCache> options)._componentFactoryResolver = this.componentFactoryResolver;
+    }
+
+    if (!(<FormlyFormOptionsCache> options)._injector) {
+      (<FormlyFormOptionsCache> options)._injector = this.injector;
     }
 
     this._buildForm({ fieldGroup, model, formControl, options });

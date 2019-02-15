@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, ComponentRef, ComponentFactoryResolver } from '@angular/core';
+import { Injectable, InjectionToken, ComponentRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
@@ -123,7 +123,11 @@ export class FormlyConfig {
   }
 
   /** @internal */
-  createComponentInstance(field: FormlyFieldConfigCache = {}, resolver?: ComponentFactoryResolver): ComponentRef<FieldType> {
+  createComponentInstance(
+    field: FormlyFieldConfigCache = {},
+    resolver?: ComponentFactoryResolver,
+    injector?: Injector,
+  ): ComponentRef<FieldType> {
     if (!field.type) {
       return;
     }
@@ -137,12 +141,15 @@ export class FormlyConfig {
     if (!resolver) {
       resolver = field.parent.options._componentFactoryResolver;
     }
+    if (!injector) {
+      injector = field.parent.options._injector;
+    }
 
     defineHiddenProp(field, '_componentFactory', {
       type: field.type,
       component: type.component,
       componentRef: resolver
-        ? resolver.resolveComponentFactory(type.component).create((<any> resolver)._ngModule.injector)
+        ? resolver.resolveComponentFactory(type.component).create(injector)
         : null,
     });
 
