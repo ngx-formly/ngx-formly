@@ -34,7 +34,7 @@ describe('FormlyFormBuilder service', () => {
       ],
     });
 
-    builder = new FormlyFormBuilder(config, null);
+    builder = new FormlyFormBuilder(config, null, null);
   });
 
   it('custom extension', () => {

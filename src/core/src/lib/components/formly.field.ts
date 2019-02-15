@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output, Type,
   ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, Attribute, ComponentFactoryResolver,
-  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked,
+  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Injector,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -54,6 +54,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   constructor(
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
+    private injector: Injector,
     // tslint:disable-next-line
     @Attribute('hide-deprecation') hideDeprecation,
   ) {
@@ -109,7 +110,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       containerRef = this.createWrapperRef(f, containerRef, this.formlyConfig.getWrapper(wrapper));
     });
 
-    const ref = this.formlyConfig.createComponentInstance(f, this.componentFactoryResolver);
+    const ref = this.formlyConfig.createComponentInstance(f, this.componentFactoryResolver, this.injector);
     if (ref) {
       containerRef.insert(ref.hostView);
       this.attachComponentRef(ref, f);

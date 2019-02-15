@@ -2,7 +2,7 @@ import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray, Asyn
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { TemplateManipulators } from '../services/formly.config';
-import { ComponentFactoryResolver, ComponentRef } from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
 
 export interface FormlyFieldConfig {
   /**
@@ -249,6 +249,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _markForCheck?: (field: FormlyFieldConfigCache) => void;
   _buildForm?: () => void;
   _componentFactoryResolver?: ComponentFactoryResolver;
+  _injector?: Injector;
 }
 export interface FormlyFormOptions {
   updateInitialValue?: () => void;
