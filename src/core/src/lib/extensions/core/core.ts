@@ -1,7 +1,8 @@
-import { FormlyExtension, FormlyConfig, TemplateManipulators } from '../../services/formly.config';
+import { FormlyConfig, TemplateManipulators } from '../../services/formly.config';
 import { FormlyFieldConfigCache, FormlyFieldConfig } from '../../components/formly.field.config';
 import { FormGroup, FormArray } from '@angular/forms';
 import { getFieldId, assignModelValue, isUndefined, clone, removeFieldControl, getFieldValue } from '../../utils';
+import { FormlyExtension } from '../extension';
 
 /** @experimental */
 export class CoreExtension implements FormlyExtension {
@@ -41,6 +42,18 @@ export class CoreExtension implements FormlyExtension {
 
   postPopulate(field: FormlyFieldConfigCache) {
     this.getFieldComponentInstance(field).postPopulate();
+  }
+
+  onDestroy(field: FormlyFieldConfigCache) {
+    if (!field.parent) {
+      return;
+    }
+
+    if (field.id && field.id.indexOf('formly_') === 0) {
+      delete field.id;
+    }
+    ['index', 'parent', 'form', 'model', 'options']
+      .forEach(prop => delete field[prop]);
   }
 
   private initFieldOptions(field: FormlyFieldConfigCache) {

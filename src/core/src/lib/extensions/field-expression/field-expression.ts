@@ -7,7 +7,7 @@ import {
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { FormlyExtension } from '../../services/formly.config';
+import { FormlyExtension } from '../extension';
 
 /** @experimental */
 export class FieldExpressionExtension implements FormlyExtension {
@@ -84,6 +84,11 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     field.options._checkField(field, true);
   }
+
+  onDestroy(field: FormlyFieldConfigCache) {
+    delete field._expressionProperties;
+  }
+
 
   private _evalExpression(expression, parentExpression?) {
     expression = expression || (() => false);

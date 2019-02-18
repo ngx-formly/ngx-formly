@@ -3,15 +3,9 @@ import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angula
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
+import { FormlyExtension } from '../extensions';
 
 export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
-
-/** @experimental */
-export interface FormlyExtension {
-  prePopulate?(field: FormlyFieldConfig): void;
-  onPopulate?(field: FormlyFieldConfig): void;
-  postPopulate?(field: FormlyFieldConfig): void;
-}
 
 /**
  * Maintains list of formly field directive types. This can be used to register new field templates.
