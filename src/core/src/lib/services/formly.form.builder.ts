@@ -35,6 +35,14 @@ export class FormlyFormBuilder {
     this._buildForm({ fieldGroup, model, formControl, options });
   }
 
+  /** @internal */
+  destroyField(field: FormlyFieldConfigCache) {
+    this.getExtensions().forEach((extension: any) => extension.onDestroy && extension.onDestroy(field));
+    if (field.fieldGroup) {
+      field.fieldGroup.forEach((f) => this.destroyField(f));
+    }
+  }
+
   private _buildForm(field: FormlyFieldConfigCache) {
     this.getExtensions().forEach(extension => extension.prePopulate && extension.prePopulate(field));
     this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
