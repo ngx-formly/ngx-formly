@@ -117,6 +117,19 @@ describe('FormlyAttributes Component', () => {
       directive.triggerEventHandler('blur', {});
       expect(fixture.componentInstance.field.focus).toBeFalsy();
     });
+
+    it(`should focus the first element when mutliple formlyAttributes is present`, () => {
+      const fixture = createTestComponent(`
+        <input type="text" [formlyAttributes]="field">
+        <input type="text" [formlyAttributes]="field">
+        <input type="text" [formlyAttributes]="field">
+      `);
+      const elm = getFormlyAttributesElement(fixture.nativeElement);
+
+      fixture.componentInstance.field.focus = true;
+      fixture.detectChanges();
+      expect(document.activeElement === elm).toBeTruthy();
+    });
   });
 });
 
