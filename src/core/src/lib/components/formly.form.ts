@@ -1,8 +1,8 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy, ComponentFactoryResolver, Injector, Attribute } from '@angular/core';
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty } from '../utils';
+import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty, clone } from '../utils';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
@@ -20,15 +20,29 @@ import { debounceTime, map, tap } from 'rxjs/operators';
   `,
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
-  @Input() model: any = {};
   @Input() form: FormGroup | FormArray = new FormGroup({});
-  @Input() fields: FormlyFieldConfig[] = [];
-  @Input() options: FormlyFormOptions;
+
+  @Input()
+  set model(model: any) { this._model = this.immutable ? clone(model) : model; }
+  get model() { return this._model; }
+
+  @Input()
+    set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable ? clone(fields) : fields; }
+    get fields() { return this._fields; }
+
+  @Input()
+    set options(options: FormlyFormOptions) { this._options = this.immutable ? clone(options) : options; }
+    get options() { return this._options; }
+
   @Output() modelChange = new EventEmitter<any>();
 
   /** @internal */
   @Input() isRoot = true;
 
+  private immutable = false;
+  private _model: any;
+  private _fields: FormlyFieldConfig[];
+  private _options: FormlyFormOptions;
   private initialModel: any;
   private modelChangeSubs: Subscription[] = [];
 
@@ -47,9 +61,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     @Optional() private parentForm: NgForm,
+    // tslint:disable-next-line
+    @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
     @Optional() @SkipSelf() private parentFormlyForm: FormlyForm,
-  ) {}
+  ) {
+    this.immutable = immutable !== null;
+  }
 
   ngDoCheck() {
     this.checkExpressionChange();
