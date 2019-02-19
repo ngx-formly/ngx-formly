@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.5"></a>
+# [5.0.0-rc.5](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.4...v5.0.0-rc.5) (2019-02-19)
+
+
+### Bug Fixes
+
+* **core:** manage field focus of multi formlyAttributes ([#1433](https://github.com/ngx-formly/ngx-formly/issues/1433)) ([bcae130](https://github.com/ngx-formly/ngx-formly/commit/bcae130)), closes [#1428](https://github.com/ngx-formly/ngx-formly/issues/1428)
+* **core:** revert [#1427](https://github.com/ngx-formly/ngx-formly/issues/1427) in favor of immutable mode ([#1430](https://github.com/ngx-formly/ngx-formly/issues/1430)) ([#1431](https://github.com/ngx-formly/ngx-formly/issues/1431)) ([54dfcd4](https://github.com/ngx-formly/ngx-formly/commit/54dfcd4))
+
+
+### Features
+
+* **core:** add support for immutable mode ([#1430](https://github.com/ngx-formly/ngx-formly/issues/1430)) ([e6560c6](https://github.com/ngx-formly/ngx-formly/commit/e6560c6)), closes [#1429](https://github.com/ngx-formly/ngx-formly/issues/1429)
+
+
+
 <a name="5.0.0-rc.4"></a>
 # [5.0.0-rc.4](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.3...v5.0.0-rc.4) (2019-02-18)
 
