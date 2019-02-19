@@ -1,6 +1,6 @@
-import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck, Inject } from '@angular/core';
+import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck, Inject, OnDestroy } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
-import { wrapProperty } from '../utils';
+import { wrapProperty, defineHiddenProp } from '../utils';
 import { DOCUMENT } from '@angular/platform-browser';
 
 @Directive({
@@ -16,7 +16,7 @@ import { DOCUMENT } from '@angular/platform-browser';
     '(keypress)': 'to.keypress && to.keypress(field, $event)',
   },
 })
-export class FormlyAttributes implements OnChanges, DoCheck {
+export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   @Input('formlyAttributes') field: FormlyFieldConfig;
 
   private placeholder?: string;
@@ -47,6 +47,11 @@ export class FormlyAttributes implements OnChanges, DoCheck {
     return this.field.templateOptions || {};
   }
 
+  private get fieldAttrElements() { return this.field['_attrElements'] || []; }
+  private set fieldAttrElements(elements: any[]) {
+    defineHiddenProp(this.field, '_attrElements', elements);
+  }
+
   constructor(
     private renderer: Renderer2,
     private elementRef: ElementRef,
@@ -70,17 +75,25 @@ export class FormlyAttributes implements OnChanges, DoCheck {
         });
       }
 
-      wrapProperty(this.field, 'focus', (value) => {
-        if (!this.elementRef.nativeElement.focus) {
-          return;
-        }
+      this.attachAttrElement();
+      if (this.fieldAttrElements.length === 1) {
+        wrapProperty(this.field, 'focus', (value) => {
+          const element = this.fieldAttrElements ? this.fieldAttrElements[0] : null;
+          if (!element || !element.focus) {
+            return;
+          }
 
-        if (this.document.activeElement !== this.elementRef.nativeElement && value) {
-          this.elementRef.nativeElement.focus();
-        } else if (this.document.activeElement === this.elementRef.nativeElement && !value) {
-          this.elementRef.nativeElement.blur();
-        }
-      });
+          const isFocused = !!this.document.activeElement
+            && this.fieldAttrElements
+              .some(element => this.document.activeElement === element || element.contains(this.document.activeElement));
+
+          if (value && !isFocused) {
+            element.focus();
+          } else if (!value && isFocused) {
+            element.blur();
+          }
+        });
+      }
     }
   }
 
@@ -107,6 +120,18 @@ export class FormlyAttributes implements OnChanges, DoCheck {
       this.setAttribute('readonly', `${this.to.readonly}`);
       this.readonly = this.to.readonly;
     }
+  }
+
+  ngOnDestroy() {
+    this.detachAttrElement();
+  }
+
+  private attachAttrElement() {
+    this.fieldAttrElements = [...this.fieldAttrElements, this.elementRef.nativeElement];
+  }
+
+  private detachAttrElement() {
+    this.fieldAttrElements = this.fieldAttrElements.filter(element => element !== this.elementRef.nativeElement);
   }
 
   private setAttribute(attr: string, value: string) {
