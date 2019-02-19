@@ -1,8 +1,7 @@
-import { FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
+import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators } from '@angular/forms';
 import { isObject, FORMLY_VALIDATORS, defineHiddenProp } from '../../utils';
-import { FormlyExtension } from '../extension';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -11,11 +10,6 @@ export class FieldValidationExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
     this.initFieldValidation(field);
     this.initFieldAsyncValidation(field);
-  }
-
-  onDestroy(field: FormlyFieldConfigCache) {
-    delete field._validators;
-    delete field._asyncValidators;
   }
 
   private initFieldValidation(field: FormlyFieldConfigCache) {
