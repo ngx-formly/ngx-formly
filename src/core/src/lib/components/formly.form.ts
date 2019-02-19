@@ -92,8 +92,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.clearModelSubscriptions();
     this.checkExpressionChange$.unsubscribe();
-
-    this.formlyBuilder.destroyField({ fieldGroup: this.fields });
   }
 
   changeModel(event: { key: string, value: any }) {
