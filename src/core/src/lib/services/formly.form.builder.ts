@@ -3,6 +3,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyFormOptionsCache } from '../components/formly.field.config';
 import { Subject } from 'rxjs';
+import { defineHiddenProp } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -21,15 +22,15 @@ export class FormlyFormBuilder {
     }
 
     if (!options.fieldChanges) {
-      options.fieldChanges = new Subject<FormlyValueChangeEvent>();
+      defineHiddenProp(options, 'fieldChanges', new Subject<FormlyValueChangeEvent>());
     }
 
     if (!(<FormlyFormOptionsCache> options)._componentFactoryResolver) {
-      (<FormlyFormOptionsCache> options)._componentFactoryResolver = this.componentFactoryResolver;
+      defineHiddenProp(options, '_componentFactoryResolver', this.componentFactoryResolver);
     }
 
     if (!(<FormlyFormOptionsCache> options)._injector) {
-      (<FormlyFormOptionsCache> options)._injector = this.injector;
+      defineHiddenProp(options, '_injector', this.injector);
     }
 
     this._buildForm({ fieldGroup, model, formControl, options });

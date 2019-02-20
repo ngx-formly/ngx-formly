@@ -2,7 +2,7 @@ import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmi
 import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty, clone } from '../utils';
+import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty, clone, defineHiddenProp } from '../utils';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
@@ -23,16 +23,16 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input() form: FormGroup | FormArray = new FormGroup({});
 
   @Input()
-  set model(model: any) { this._model = this.immutable ? clone(model) : model; }
+  set model(model: any) { this._model = this.immutable && this.isRoot ? clone(model) : model; }
   get model() { return this._model; }
 
   @Input()
-    set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable ? clone(fields) : fields; }
-    get fields() { return this._fields; }
+  set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable && this.isRoot ? clone(fields) : fields; }
+  get fields() { return this._fields; }
 
   @Input()
-    set options(options: FormlyFormOptions) { this._options = this.immutable ? clone(options) : options; }
-    get options() { return this._options; }
+  set options(options: FormlyFormOptions) { this._options = this.immutable && this.isRoot ? clone(options) : options; }
+  get options() { return this._options; }
 
   @Output() modelChange = new EventEmitter<any>();
 
@@ -96,11 +96,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   changeModel(event: { key: string, value: any }) {
     assignModelValue(this.model, event.key, event.value);
-    this.modelChange.emit(this.model);
+    this.modelChange.emit(clone(this.model));
   }
 
   setOptions() {
-    this.options = this.options || {};
+    if (!this.options) {
+      this.options = {};
+    }
 
     if (!this.options.resetModel) {
       this.options.resetModel = (model ?: any) => {
@@ -123,7 +125,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (!this.options.parentForm) {
-      this.options.parentForm = this.parentFormGroup || this.parentForm;
+      defineHiddenProp(this.options, 'parentForm', this.parentFormGroup || this.parentForm);
     }
 
     if (this.options.parentForm) {
@@ -144,10 +146,14 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (!(<FormlyFormOptionsCache> this.options)._buildForm) {
-      (<FormlyFormOptionsCache> this.options)._buildForm = () => {
+      (<FormlyFormOptionsCache> this.options)._buildForm = (emitModelChange = false) => {
         this.clearModelSubscriptions();
         this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
         this.trackModelChanges(this.fields);
+
+        if (emitModelChange) {
+          this.modelChange.emit(clone(this.model));
+        }
       };
     }
 
@@ -164,11 +170,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (!(<FormlyFormOptionsCache> this.options)._componentFactoryResolver) {
-      (<FormlyFormOptionsCache> this.options)._componentFactoryResolver = this.componentFactoryResolver;
+      defineHiddenProp(this.options, '_componentFactoryResolver', this.componentFactoryResolver);
     }
 
     if (!(<FormlyFormOptionsCache> this.options)._injector) {
-      (<FormlyFormOptionsCache> this.options)._injector = this.injector;
+      defineHiddenProp(this.options, '_injector', this.injector);
     }
   }
 

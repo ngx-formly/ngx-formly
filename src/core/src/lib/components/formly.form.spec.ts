@@ -49,6 +49,40 @@ describe('FormlyForm Component', () => {
       ]});
   });
 
+  describe('immutable attr', () => {
+    beforeEach(() => {
+      testComponentInputs = {
+        form: new FormGroup({}),
+        options: {},
+        model: {},
+        fields: [{ key: 'city', type: 'text', defaultValue: 'test' }],
+      };
+    });
+
+    it('should not change the component inputs', () => {
+      const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      fixture.detectChanges();
+
+      expect(testComponentInputs.options).toEqual({});
+      expect(testComponentInputs.fields[0]).toEqual({ key: 'city', type: 'text', defaultValue: 'test' });
+      expect(testComponentInputs.model).toEqual({});
+    });
+
+    it('should not change the input model when a new value is emitted', () => {
+      const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+      const inputDe = fixture.debugElement.query(By.css('input')) as DebugElement;
+
+      inputDe.nativeElement.value = '***';
+      inputDe.nativeElement.dispatchEvent(newEvent('input', false));
+
+      expect(spy).toHaveBeenCalledWith({ city: '***' });
+      expect(testComponentInputs.model).toEqual({});
+      subscription.unsubscribe();
+    });
+  });
+
   describe('modelChange output', () => {
     beforeEach(() => {
       testComponentInputs = {
@@ -78,7 +112,8 @@ describe('FormlyForm Component', () => {
 
       testComponentInputs.form.get('foo').at(0).get('title').patchValue('***');
 
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith({ foo: [{}] });
       expect(spy).toHaveBeenCalledWith({ foo: [{ title: '***' }] });
       expect(testComponentInputs.model).toEqual({ foo: [{ title: '***' }] });
 
