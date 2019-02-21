@@ -1,7 +1,7 @@
 import { FormlyExtension } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, FormGroup, FormArray, FormControl, AbstractControlOptions } from '@angular/forms';
-import { getKeyPath, isNullOrUndefined } from '../../utils';
+import { getKeyPath, isNullOrUndefined, defineHiddenProp } from '../../utils';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
@@ -33,6 +33,10 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   private addFormControl(form: FormGroup | FormArray, field: FormlyFieldConfigCache, model: any, path: string | number) {
+    if (!field.formControl) {
+      defineHiddenProp(field, 'formControl', field.formControl);
+    }
+
     const abstractControlOptions = {
       validators: field._validators,
       asyncValidators: field._asyncValidators,

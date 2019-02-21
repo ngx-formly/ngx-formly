@@ -22,12 +22,12 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
 
-    (<any> this.options)._buildForm();
+    (<any> this.options)._buildForm(true);
   }
 
   remove(i: number) {
     this.model.splice(i, 1);
 
-    (<any> this.options)._buildForm();
+    (<any> this.options)._buildForm(true);
   }
 }
