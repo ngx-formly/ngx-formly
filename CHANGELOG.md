@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.6"></a>
+# [5.0.0-rc.6](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.5...v5.0.0-rc.6) (2019-02-21)
+
+
+### Bug Fixes
+
+* **core:** fix memory leak when using immutable attr ([#1434](https://github.com/ngx-formly/ngx-formly/issues/1434)) ([0885836](https://github.com/ngx-formly/ngx-formly/commit/0885836))
+
+
+
 <a name="5.0.0-rc.5"></a>
 # [5.0.0-rc.5](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.4...v5.0.0-rc.5) (2019-02-19)
 
