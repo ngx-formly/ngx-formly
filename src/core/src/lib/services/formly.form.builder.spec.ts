@@ -528,6 +528,14 @@ describe('FormlyFormBuilder service', () => {
 
       expect(field.key).toEqual('nested.title');
       expect(field.wrappers).toEqual(['label']);
+      expect(field.model).toEqual({ nested: { title: undefined } });
+    });
+    it('nested array key', () => {
+      field = { key: 'nested.0.title', type: 'input' };
+      builder.buildForm(form, [field], {}, {});
+
+      expect(field.key).toEqual('nested.0.title');
+      expect(field.model).toEqual({ nested: [{ title: undefined }] });
     });
 
     it('should not override wrappers if not empty', () => {
