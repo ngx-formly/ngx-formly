@@ -24,21 +24,18 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input() form: FormGroup | FormArray = new FormGroup({});
 
   @Input()
-  set model(model: any) { this._model = this.immutable && this.isRoot ? clone(model) : model; }
+  set model(model: any) { this._model = this.immutable ? clone(model) : model; }
   get model() { return this._model; }
 
   @Input()
-  set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable && this.isRoot ? clone(fields) : fields; }
+  set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable ? clone(fields) : fields; }
   get fields() { return this._fields; }
 
   @Input()
-  set options(options: FormlyFormOptions) { this._options = this.immutable && this.isRoot ? clone(options) : options; }
+  set options(options: FormlyFormOptions) { this._options = this.immutable ? clone(options) : options; }
   get options() { return this._options; }
 
   @Output() modelChange = new EventEmitter<any>();
-
-  /** @internal */
-  @Input() isRoot = true;
 
   private immutable = false;
   private _model: any;
@@ -71,7 +68,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.fields || this.fields.length === 0 || !this.isRoot) {
+    if (!this.fields || this.fields.length === 0) {
       return;
     }
 
@@ -153,7 +150,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private checkExpressionChange() {
-    if (this.isRoot && (<FormlyFormOptionsCache> this.options)._checkField) {
+    if ((<FormlyFormOptionsCache> this.options)._checkField) {
       (<FormlyFormOptionsCache> this.options)._checkField({
         fieldGroup: this.fields,
         model: this.model,
