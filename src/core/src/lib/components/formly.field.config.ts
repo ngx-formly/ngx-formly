@@ -1,4 +1,4 @@
-import { FormGroup, AbstractControl, FormGroupDirective, NgForm, FormArray, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { FormGroup, AbstractControl, FormGroupDirective, FormArray, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { TemplateManipulators } from '../services/formly.config';
@@ -258,7 +258,7 @@ export interface FormlyFormOptions {
   fieldChanges?: Subject<FormlyValueChangeEvent>;
   fieldTransform?: (fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[];
   showError?: (field: FieldType) => boolean;
-  parentForm?: FormGroupDirective | NgForm | null;
+  parentForm?: FormGroupDirective | null;
 }
 
 export interface FormlyValueChangeEvent {
