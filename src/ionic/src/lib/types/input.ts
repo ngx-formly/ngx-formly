@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-input',
   template: `
-    <ion-input *ngIf="to.type !== 'number' else numberTmp" [type]="to.type || 'text'" [formControl]="formControl" [formlyAttributes]="field" (ionChange)="change($event)"></ion-input>
+    <ion-input *ngIf="to.type !== 'number' else numberTmp" [type]="to.type || 'text'" [formControl]="formControl" [ionFormlyAttributes]="field"></ion-input>
     <ng-template #numberTmp>
-      <ion-input type="number" [formControl]="formControl" [formlyAttributes]="field" (ionChange)="change($event)"></ion-input>
+      <ion-input type="number" [formControl]="formControl" [ionFormlyAttributes]="field"></ion-input>
     </ng-template>
   `,
   styles: [':host { display: inherit; }'],

@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-checkbox',
   template: `
     <ion-checkbox
       [formControl]="formControl"
-      [formlyAttributes]="field"
-      (ionChange)="change($event)">
+      [ionFormlyAttributes]="field">
     </ion-checkbox>
   `,
 })

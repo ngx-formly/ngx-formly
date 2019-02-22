@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-range',
   template: `
-    <ion-range [min]="to.min"
+    <ion-range
+      [min]="to.min"
       [max]="to.max"
       [formControl]="formControl"
-      [formlyAttributes]="field"
-      (ionChange)="change($event)">
+      [ionFormlyAttributes]="field">
       <ion-label slot="start">{{ to.min }}</ion-label>
       <ion-label slot="end">{{ to.max }}</ion-label>
     </ion-range>

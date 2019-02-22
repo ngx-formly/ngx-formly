@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-datetime',
@@ -10,8 +10,7 @@ import { FieldType } from './field.type';
       [min]="to.min"
       [max]="to.max"
       [formControl]="formControl"
-      [formlyAttributes]="field"
-      (ionChange)="change($event)">
+      [ionFormlyAttributes]="field">
     </ion-datetime>
   `,
 })

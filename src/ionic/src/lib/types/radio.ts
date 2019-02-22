@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-radio',
@@ -7,8 +7,7 @@ import { FieldType } from './field.type';
     <ion-list>
       <ion-radio-group
         [formControl]="formControl"
-        [formlyAttributes]="field"
-        (ionChange)="change($event)">
+        [ionFormlyAttributes]="field">
         <ion-list-header>{{ to.label }}</ion-list-header>
         <ion-item *ngFor="let option of to.options | formlySelectOptions:field | async">
           <ion-label>{{ option.label }}</ion-label>
