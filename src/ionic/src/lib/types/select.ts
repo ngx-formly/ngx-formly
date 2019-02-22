@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-select',
   template: `
     <ion-select
       [formControl]="formControl"
-      [formlyAttributes]="field"
+      [ionFormlyAttributes]="field"
       [multiple]="to.multiple"
-      [interface]="to.interface"
-      (ionChange)="change($event)">
+      [interface]="to.interface">
       <ion-select-option *ngFor="let option of to.options | formlySelectOptions:field | async" [value]="option.value">
         {{ option.label }}
       </ion-select-option>

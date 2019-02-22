@@ -1,7 +1,7 @@
-import { Directive, HostListener, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck, Inject, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck, Inject, OnDestroy } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
 import { wrapProperty, defineHiddenProp } from '../utils';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Directive({
   selector: '[formlyAttributes]',
@@ -9,6 +9,8 @@ import { DOCUMENT } from '@angular/platform-browser';
     '[attr.name]': 'field.name',
     '[attr.step]': 'to.step',
 
+    '(focus)': 'onFocus($event)',
+    '(blur)': 'onBlur($event)',
     '(keyup)': 'to.keyup && to.keyup(field, $event)',
     '(keydown)': 'to.keydown && to.keydown(field, $event)',
     '(click)': 'to.click && to.click(field, $event)',
@@ -23,29 +25,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   private tabindex?: number;
   private readonly?: boolean;
   private document: Document;
-
-  @HostListener('focus', ['$event']) onFocus($event) {
-    if (!this.field.focus) {
-      this.field.focus = true;
-    }
-
-    if (this.to.focus) {
-      this.to.focus(this.field, $event);
-    }
-  }
-
-  @HostListener('blur', ['$event']) onBlur($event) {
-    if (this.field.focus) {
-      this.field.focus = false;
-    }
-
-    if (this.to.blur) {
-      this.to.blur(this.field, $event);
-    }
-  }
-  get to(): FormlyTemplateOptions {
-    return this.field.templateOptions || {};
-  }
+  get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
 
   private get fieldAttrElements() { return this.field['_attrElements'] || []; }
   private set fieldAttrElements(elements: any[]) {
@@ -79,19 +59,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       if (this.fieldAttrElements.length === 1) {
         wrapProperty(this.field, 'focus', (value) => {
           const element = this.fieldAttrElements ? this.fieldAttrElements[0] : null;
-          if (!element || !element.focus) {
+          if (!element) {
             return;
           }
 
-          const isFocused = !!this.document.activeElement
-            && this.fieldAttrElements
-              .some(element => this.document.activeElement === element || element.contains(this.document.activeElement));
-
-          if (value && !isFocused) {
-            element.focus();
-          } else if (!value && isFocused) {
-            element.blur();
-          }
+          this.focusElement(element, value);
         });
       }
     }
@@ -124,6 +96,42 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   ngOnDestroy() {
     this.detachAttrElement();
+  }
+
+  focusElement(element, value: boolean) {
+    if (!element.focus) {
+      return;
+    }
+
+    const isFocused = !!this.document.activeElement
+      && this.fieldAttrElements
+        .some(element => this.document.activeElement === element || element.contains(this.document.activeElement));
+
+    if (value && !isFocused) {
+      element.focus();
+    } else if (!value && isFocused) {
+      element.blur();
+    }
+  }
+
+  onFocus($event) {
+    if (!this.field.focus) {
+      this.field.focus = true;
+    }
+
+    if (this.to.focus) {
+      this.to.focus(this.field, $event);
+    }
+  }
+
+  onBlur($event) {
+    if (this.field.focus) {
+      this.field.focus = false;
+    }
+
+    if (this.to.blur) {
+      this.to.blur(this.field, $event);
+    }
   }
 
   private attachAttrElement() {

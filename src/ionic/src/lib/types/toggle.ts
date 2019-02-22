@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-toggle',
   template: `
     <ion-toggle
       [formControl]="formControl"
-      [formlyAttributes]="field"
-      (ionChange)="change($event)">
+      [ionFormlyAttributes]="field">
     </ion-toggle>
   `,
 })
