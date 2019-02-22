@@ -1,5 +1,5 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, SkipSelf, OnDestroy, ComponentFactoryResolver, Injector, Attribute } from '@angular/core';
-import { FormGroup, FormArray, NgForm, FormGroupDirective } from '@angular/forms';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute } from '@angular/core';
+import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty, clone, defineHiddenProp } from '../utils';
@@ -18,6 +18,7 @@ import { debounceTime, map, tap } from 'rxjs/operators';
     </formly-field>
     <ng-content></ng-content>
   `,
+  providers: [FormlyFormBuilder],
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input() form: FormGroup | FormArray = new FormGroup({});
@@ -58,13 +59,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
-    @Optional() private parentForm: NgForm,
     // tslint:disable-next-line
     @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
-    @Optional() @SkipSelf() private parentFormlyForm: FormlyForm,
   ) {
     this.immutable = immutable !== null;
   }
@@ -116,7 +113,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
         // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
         // but only when the current component is a root one.
-        if (!this.parentFormlyForm && this.options.parentForm && this.options.parentForm.control === this.form) {
+        if (this.options.parentForm && this.options.parentForm.control === this.form) {
           this.options.parentForm.resetForm(model);
         } else {
           this.form.reset(model);
@@ -124,11 +121,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       };
     }
 
-    if (!this.options.parentForm) {
-      defineHiddenProp(this.options, 'parentForm', this.parentFormGroup || this.parentForm);
-    }
-
-    if (this.options.parentForm) {
+    if (!this.options.parentForm && this.parentFormGroup) {
+      defineHiddenProp(this.options, 'parentForm', this.parentFormGroup);
       wrapProperty(this.options.parentForm, 'submitted', (newVal, oldVal) => {
         if (newVal !== !!oldVal) {
           (<FormlyFormOptionsCache> this.options)._markForCheck({
@@ -155,26 +149,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           this.modelChange.emit(clone(this.model));
         }
       };
-    }
-
-    if (!(<FormlyFormOptionsCache> this.options)._markForCheck) {
-      (<FormlyFormOptionsCache> this.options)._markForCheck = (field) => {
-        if (field._componentRefs) {
-          field._componentRefs.forEach(ref => ref.changeDetectorRef.markForCheck());
-        }
-
-        if (field.fieldGroup) {
-          field.fieldGroup.forEach(f => (<FormlyFormOptionsCache> this.options)._markForCheck(f));
-        }
-      };
-    }
-
-    if (!(<FormlyFormOptionsCache> this.options)._componentFactoryResolver) {
-      defineHiddenProp(this.options, '_componentFactoryResolver', this.componentFactoryResolver);
-    }
-
-    if (!(<FormlyFormOptionsCache> this.options)._injector) {
-      defineHiddenProp(this.options, '_injector', this.injector);
     }
   }
 
