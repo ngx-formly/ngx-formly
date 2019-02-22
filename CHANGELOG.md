@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.7"></a>
+# [5.0.0-rc.7](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.6...v5.0.0-rc.7) (2019-02-22)
+
+
+### Bug Fixes
+
+* **core:** assign a valid value for nested key model ([#1438](https://github.com/ngx-formly/ngx-formly/issues/1438)) ([1ac2c39](https://github.com/ngx-formly/ngx-formly/commit/1ac2c39)), closes [#1437](https://github.com/ngx-formly/ngx-formly/issues/1437)
+* **ionic:** user setFocus instead of native focus callback ([#1442](https://github.com/ngx-formly/ngx-formly/issues/1442)) ([309a9d6](https://github.com/ngx-formly/ngx-formly/commit/309a9d6)), closes [#1374](https://github.com/ngx-formly/ngx-formly/issues/1374)
+
+
+
 <a name="5.0.0-rc.6"></a>
 # [5.0.0-rc.6](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.5...v5.0.0-rc.6) (2019-02-21)
 
