@@ -1,16 +1,10 @@
+import { TestBed, inject } from '@angular/core/testing';
 import { FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-
 import { Subject, of } from 'rxjs';
-
-
-import { FormlyFieldConfig, FormlyFormBuilder, FieldArrayType, FormlyConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormBuilder, FieldArrayType, FormlyModule } from '@ngx-formly/core';
 import { MockComponent } from '../../test-utils';
 import { FormlyValueChangeEvent, FormlyFormOptionsCache } from '../../components/formly.field.config';
-import { FieldExpressionExtension } from './field-expression';
-import { FieldValidationExtension } from '../field-validation/field-validation';
-import { FieldFormExtension } from '../field-form/field-form';
-import { CoreExtension } from '../core/core';
 
 
 describe('FieldExpressionExtension', () => {
@@ -21,30 +15,29 @@ describe('FieldExpressionExtension', () => {
 
   beforeEach(() => {
     TestComponent = MockComponent({ selector: 'formly-test-cmp' });
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, RepeatComponent],
+      imports: [
+        FormlyModule.forRoot({
+          types: [
+            { name: 'input', component: TestComponent },
+            { name: 'checkbox', component: TestComponent },
+            { name: 'repeat', component: RepeatComponent },
+          ],
+          wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
+          validators: [{ name: 'required', validation: Validators.required }],
+        }),
+      ],
+    });
+  });
 
+  beforeEach(inject([FormlyFormBuilder], (formlyBuilder: FormlyFormBuilder) => {
     form = new FormGroup({});
     options = {
       fieldChanges: new Subject<FormlyValueChangeEvent>(),
     };
-    const config = new FormlyConfig();
-    config.addConfig({
-      types: [
-        { name: 'input', component: TestComponent },
-        { name: 'checkbox', component: TestComponent },
-        { name: 'repeat', component: FieldArrayType },
-      ],
-      wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
-      validators: [{ name: 'required', validation: Validators.required }],
-      extensions: [
-        { name: 'core', extension: new CoreExtension(config) },
-        { name: 'field-validation', extension: new FieldValidationExtension(config) },
-        { name: 'field-form', extension: new FieldFormExtension() },
-        { name: 'field-expression', extension: new FieldExpressionExtension() },
-      ],
-    });
-
-    builder = new FormlyFormBuilder(config, null, null);
-  });
+    builder = formlyBuilder;
+  }));
 
   describe('field visibility (hideExpression)', () => {
     it('should update field visibility', () => {
@@ -373,3 +366,9 @@ describe('FieldExpressionExtension', () => {
     });
   });
 });
+
+@Component({
+  selector: 'formly-repeat-section',
+  template: '',
+})
+class RepeatComponent extends FieldArrayType { }
