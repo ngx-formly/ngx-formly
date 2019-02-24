@@ -67,6 +67,31 @@ describe('FieldExpressionExtension', () => {
       expect(fields[1].templateOptions.hidden).toBeFalsy();
     });
 
+    it('should not override hide field within fieldGroup', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          hideExpression: () => false,
+          fieldGroup: [
+            {
+              key: 'test',
+              type: 'input',
+              hide: true,
+            },
+          ],
+        },
+      ];
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = options.fieldChanges.subscribe(spy);
+
+      builder.buildForm(form, fields, {}, options);
+
+      expect(fields[0].hide).toBeFalsy();
+      expect(fields[0].fieldGroup[0].hide).toBeTruthy();
+
+      expect(spy).toHaveBeenCalledTimes(2);
+      subscription.unsubscribe();
+    });
+
     it('should update field visibility within field arrays', () => {
       const fields: FormlyFieldConfig[] = [
         {
