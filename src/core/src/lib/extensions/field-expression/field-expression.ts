@@ -67,12 +67,18 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
     }
 
-    if (field.hideExpression || field.parent.hideExpression) {
+    if (field.hideExpression) {
       // delete hide value in order to force re-evaluate it in FormlyFormExpression.
       delete field.hide;
+
+      let parent = field.parent;
+      while (parent && !parent.hideExpression) {
+        parent = parent.parent;
+      }
+
       field.hideExpression = this._evalExpression(
         field.hideExpression,
-        field.parent && field.parent.hideExpression ? () => field.parent.hide : undefined,
+        parent && parent.hideExpression ? () => parent.hide : undefined,
       );
     }
   }
@@ -179,22 +185,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       // toggle hide
       field.hide = hideExpressionResult;
       field.templateOptions.hidden = hideExpressionResult;
-
-      if (field.formControl && field.key) {
-        const parent = this.fieldParentFormControl(field);
-        if (parent) {
-          const control = parent.get(`${this.fieldKey(field)}`);
-          if (hideExpressionResult === true && control) {
-            removeFieldControl(parent, this.fieldKey(field));
-          } else if (hideExpressionResult === false && !control) {
-            this.addFieldControl(parent, field);
-          }
-        }
-      }
-
-      if (field.options.fieldChanges) {
-        field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hideExpressionResult });
-      }
+      this.toggleFormControl(field, hideExpressionResult);
     }
 
     return markForCheck;
@@ -213,6 +204,30 @@ export class FieldExpressionExtension implements FormlyExtension {
       parent.push(field.formControl);
     } else if (parent instanceof FormGroup) {
       parent.addControl(`${this.fieldKey(field)}`, field.formControl);
+    }
+  }
+
+  private toggleFormControl(field: FormlyFieldConfig, hide: boolean) {
+    if (field.fieldGroup) {
+      field.fieldGroup
+        .filter(f => !f.hideExpression)
+        .forEach(f => this.toggleFormControl(f, hide));
+    }
+
+    if (field.formControl && field.key) {
+      const parent = this.fieldParentFormControl(field);
+      if (parent) {
+        const control = parent.get(`${this.fieldKey(field)}`);
+        if (hide === true && control) {
+          removeFieldControl(parent, this.fieldKey(field));
+        } else if (hide === false && !control) {
+          this.addFieldControl(parent, field);
+        }
+      }
+    }
+
+    if (field.options.fieldChanges) {
+      field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hide });
     }
   }
 
