@@ -11,4 +11,8 @@ import { FieldType } from '../templates/field.type';
     '[class]': 'field.fieldGroupClassName || ""',
   },
 })
-export class FormlyGroup extends FieldType {}
+export class FormlyGroup extends FieldType {
+  defaultOptions = {
+    defaultValue: {},
+  };
+}

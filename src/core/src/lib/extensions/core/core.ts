@@ -1,7 +1,7 @@
 import { FormlyExtension, FormlyConfig, TemplateManipulators } from '../../services/formly.config';
 import { FormlyFieldConfigCache, FormlyFieldConfig } from '../../components/formly.field.config';
-import { FormGroup, FormArray } from '@angular/forms';
-import { getFieldId, assignModelValue, isUndefined, clone, removeFieldControl, getFieldValue } from '../../utils';
+import { FormGroup } from '@angular/forms';
+import { getFieldId, assignModelValue, isUndefined, getFieldValue, reverseDeepMerge } from '../../utils';
 
 /** @experimental */
 export class CoreExtension implements FormlyExtension {
@@ -9,7 +9,6 @@ export class CoreExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) { }
 
   prePopulate(field: FormlyFieldConfigCache) {
-    this.formlyConfig.createComponentInstance(field);
     this.getFieldComponentInstance(field).prePopulate();
     if (field.parent) {
       return;
@@ -56,20 +55,19 @@ export class CoreExtension implements FormlyExtension {
       configurable: true,
     });
 
-    field.id = getFieldId(`formly_${this.formId}`, field, field['index']);
-    field.templateOptions = field.templateOptions || {};
-    field.modelOptions = field.modelOptions || {};
-    field.hooks = field.hooks || {};
-    if (field.lifecycle) {
-      console.warn(`NgxFormly: 'lifecycle' is deprecated since v5.0, use 'hooks' instead.`);
-    }
-
-    if (field.type && field.key) {
-      field.templateOptions = Object.assign({
+    reverseDeepMerge(field, {
+      id: getFieldId(`formly_${this.formId}`, field, field['index']),
+      hooks: {},
+      modelOptions: {},
+      templateOptions: !field.type || !field.key ? {} : {
         label: '',
         placeholder: '',
         focus: false,
-      }, field.templateOptions);
+      },
+    });
+
+    if (field.lifecycle) {
+      console.warn(`NgxFormly: 'lifecycle' is deprecated since v5.0, use 'hooks' instead.`);
     }
 
     if (field.template && field.type !== 'formly-template') {
@@ -79,11 +77,12 @@ export class CoreExtension implements FormlyExtension {
       field.type = 'formly-template';
     }
 
+    if (!field.type && field.fieldGroup) {
+      field.type = 'formly-group';
+    }
+
     if (field.type) {
       this.formlyConfig.getMergedField(field);
-    }
-    if (field.key && isUndefined(field.defaultValue) && (field.fieldGroup || field.fieldArray)) {
-      field.defaultValue = field.fieldArray ? [] : {};
     }
 
     if (!isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
@@ -91,28 +90,6 @@ export class CoreExtension implements FormlyExtension {
     }
 
     this.initFieldWrappers(field);
-    if (field.fieldArray) {
-      this.initFieldArray(field);
-    }
-
-    if (!field.type && field.fieldGroup) {
-      field.type = 'formly-group';
-    }
-  }
-
-  private initFieldArray(field: FormlyFieldConfigCache) {
-    field.fieldGroup = field.fieldGroup || [];
-    if (field.fieldGroup.length > field.model.length) {
-      for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
-        removeFieldControl(field.formControl as FormArray, i);
-        field.fieldGroup.splice(i, 1);
-      }
-    }
-
-    for (let i = field.fieldGroup.length; i < field.model.length; i++) {
-      const f = { ...clone(field.fieldArray), key: `${i}` };
-      field.fieldGroup.push(f);
-    }
   }
 
   private initFieldWrappers(field: FormlyFieldConfig) {
@@ -133,10 +110,8 @@ export class CoreExtension implements FormlyExtension {
   }
 
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
-    let instance: FormlyExtension = {};
-    if (field._componentFactory && field._componentFactory.componentRef) {
-      instance = field._componentFactory.componentRef.instance as any;
-    }
+    const componentRef = this.formlyConfig.createComponentInstance(field);
+    const instance: FormlyExtension = componentRef ? componentRef.instance as any : {};
 
     return {
       prePopulate: () => instance.prePopulate && instance.prePopulate(field),
