@@ -21,19 +21,20 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 
 **Supported UI libs**
 
-| UI                                                |   |
-| ------------------------------------------------- | - |
-| [Bootstrap](https://getbootstrap.com)             | ✅ |
-| [Ionic](https://ionicframework.com)               | ✅ |
-| [Kendo](http://www.telerik.com/kendo-angular-ui)  | ✅ |
-| [Material2](https://github.com/angular/material2) | ✅ |
-| [PrimeNG](http://primefaces.org/primeng/#/)       | ✅ |
-| [NativeScript](https://www.nativescript.org)      | ✅ |
+| UI                                                |                                                              |                                                                   |
+| ------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------- |
+| [Bootstrap](https://getbootstrap.com)             | [Demo](https://ngx-formly.github.io/ngx-formly/ui/bootstrap) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-bootstrap) |
+| [Material2](https://github.com/angular/material2) | [Demo](https://ngx-formly.github.io/ngx-formly/ui/material)  | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-material)  |
+| [Ionic](https://ionicframework.com)               | [Demo](https://ngx-formly.github.io/ngx-formly/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
+| [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://ngx-formly.github.io/ngx-formly/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
+| [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://ngx-formly.github.io/ngx-formly/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
+| [NativeScript](https://www.nativescript.org)      | ||
 
 **Which Version to use?**
 
 | Angular version | Formly version         |
 | --------------- | ---------------------- |
+| Angular >= 7    | `@ngx-formly/core@5.x` |
 | Angular >= 6    | `@ngx-formly/core@4.x` |
 | Angular >= 5    | `@ngx-formly/core@3.x` |
 | Angular >= 4    | `@ngx-formly/core@2.x` |
@@ -41,12 +42,6 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 
 #### Quick links
 * [Documentation, demos, and guides](https://ngx-formly.github.io/ngx-formly)
-* StackBlitz Template
-  * [UI Bootstrap](https://stackblitz.com/edit/ngx-formly-ui-bootstrap)
-  * [UI Material](https://stackblitz.com/edit/ngx-formly-ui-material)
-  * [UI Ionic](https://stackblitz.com/edit/ngx-formly-ui-ionic)
-  * [UI PrimeNG](https://stackblitz.com/edit/ngx-formly-ui-primeng)
-  * [UI Kendo](https://stackblitz.com/edit/ngx-formly-ui-kendo)
 
 ## Quick Start
 
@@ -59,37 +54,18 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
 #### 2. Choose and install your UI (pre-defined types/templates) package:
 
-- [Material2](https://github.com/angular/material2):
-  1. Ensure you have already installed material2 https://material.angular.io/guide/getting-started
-  2. Install `@ngx-formly/material`
+| UI                                                | Npm package name            | NgModule                    |
+| ------------------------------------------------- | --------------------------- | --------------------------- |
+| [Bootstrap](https://getbootstrap.com)             | `@ngx-formly/bootstrap`     | `FormlyBootstrapModule`     |
+| [Material2](https://github.com/angular/material2) | `@ngx-formly/material`      | `FormlyMaterialModule`      |
+| [Ionic](https://ionicframework.com)               | `@ngx-formly/ionic`         | `FormlyIonicModule`         |
+| [PrimeNG](http://primefaces.org/primeng/#/)       | `@ngx-formly/primeng`       | `FormlyPrimeNGModule`       |
+| [Kendo](http://www.telerik.com/kendo-angular-ui)  | `@ngx-formly/kendo`         | `FormlyKendoModule`         |
+| [NativeScript](https://www.nativescript.org)      | `@ngx-formly/nativescript`  | `FormlyNativescriptModule`  |
+
 ```bash
-  npm install @ngx-formly/material --save
+  npm install @ngx-formly/<package-name> --save
 ```
-
-- [Bootstrap](https://getbootstrap.com):
-  ```bash
-    npm install @ngx-formly/bootstrap --save
-  ```
-
-- [Ionic](https://ionicframework.com):
-  ```bash
-    npm install @ngx-formly/ionic --save
-  ```
-
-- [PrimeNG](http://primefaces.org/primeng/#/):
-  ```bash
-    npm install @ngx-formly/primeng --save
-  ```
-
-- [Kendo](http://www.telerik.com/kendo-angular-ui):
-  ```bash
-    npm install @ngx-formly/kendo --save
-  ```
-
-- [NativeScript](https://www.nativescript.org)
-  ```bash
-    npm install @ngx-formly/nativescript --save
-  ```
 
 #### 3. Import the `FormlyModule` and UI (pre-defined types/templates):
 
@@ -97,38 +73,32 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FormlyModule} from '@ngx-formly/core';
+
+/**
+ * - Bootstrap:     import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
+ * - Material2:     import {FormlyMaterialModule} from '@ngx-formly/material';
+ * - Ionic:         import {FormlyIonicModule} from '@ngx-formly/ionic'
+ * - PrimeNG:       import {FormlyPrimeNGModule} from '@ngx-formly/primeng';
+ * - Kendo:         import {FormlyKendoModule} from '@ngx-formly/kendo';
+ * - NativeScript:  import {FormlyNativescriptModule} from '@ngx-formly/nativescript';
+ */
 import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
-
-// for material2 import `FormlyMaterialModule`:
-// import {FormlyMaterialModule} from '@ngx-formly/material';
-
-// for ionic import `FormlyIonicModule`:
-// import {FormlyIonicModule} from '@ngx-formly/ionic';
-
-// for primeng import `FormlyPrimeNGModule`:
-// import {FormlyPrimeNGModule} from '@ngx-formly/primeng';
-
-// for kendo import `FormlyKendoModule`:
-// import {FormlyKendoModule} from '@ngx-formly/kendo';
 
 @NgModule({
   imports: [
     ...,
     ReactiveFormsModule,
     FormlyModule.forRoot(),
+
+    /**
+     * - Bootstrap:    FormlyBootstrapModule
+     * - Material2:    FormlyMaterialModule
+     * - Ionic:        FormlyIonicModule
+     * - PrimeNG:      FormlyPrimeNGModule
+     * - Kendo:        FormlyKendoModule
+     * - NativeScript: FormlyNativescriptModule
+     */
     FormlyBootstrapModule,
-
-    // for material2:
-    // FormlyMaterialModule
-
-    // for ionic:
-    // FormlyIonicModule
-
-    // for primeng:
-    // FormlyPrimeNGModule
-
-    // for kendo:
-    // FormlyKendoModule
   ],
 })
 export class AppModule {}
@@ -157,7 +127,6 @@ export class AppComponent {
     key: 'email',
     type: 'input',
     templateOptions: {
-      type: 'email',
       label: 'Email address',
       placeholder: 'Enter email',
       required: true,
@@ -216,12 +185,12 @@ If you want to set defaults for schematics such as generating components with sc
 
 See the [issues labeled enhancement](https://github.com/ngx-formly/ngx-formly/labels/enhancement)
 
-## Thanks
+## Credits
 
-A special thanks to [Kent C. Dodds](https://twitter.com/kentcdodds) for giving me opportunity to work on this.
-This library is maintained (with love) by me, [Mohammed Zama Khan](https://twitter.com/mohamedzamakhan).
-Thanks to all [contributors](https://github.com/ngx-formly/ngx-formly/graphs/contributors)!
-If you're trying to find angular-formly, go [here](https://github.com/ngx-formly/angular-formly)
+* [Abdellatif Ait boudad](https://github.com/aitboudad)
+* [Mohammed Zama Khan](https://twitter.com/mohamedzamakhan)
+* [Kent C. Dodds](https://twitter.com/kentcdodds)
+* [All contributors](https://github.com/ngx-formly/ngx-formly/graphs/contributors)!
 
 ## Contributors
 
@@ -230,11 +199,13 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 [<img alt="aitboudad" src="https://avatars2.githubusercontent.com/u/1753742?v=4&s=117" width="117">](https://github.com/aitboudad)[<img alt="mohammedzamakhan" src="https://avatars3.githubusercontent.com/u/2327532?v=4&s=117" width="117">](https://github.com/mohammedzamakhan)[<img alt="divyakumarjain" src="https://avatars2.githubusercontent.com/u/2039134?v=4&s=117" width="117">](https://github.com/divyakumarjain)[<img alt="couzic" src="https://avatars2.githubusercontent.com/u/1380322?v=4&s=117" width="117">](https://github.com/couzic)[<img alt="franzeal" src="https://avatars3.githubusercontent.com/u/7455769?v=4&s=117" width="117">](https://github.com/franzeal)[<img alt="juristr" src="https://avatars3.githubusercontent.com/u/542458?v=4&s=117" width="117">](https://github.com/juristr)
 
-[<img alt="beeman" src="https://avatars3.githubusercontent.com/u/36491?v=4&s=117" width="117">](https://github.com/beeman)[<img alt="thorgod" src="https://avatars3.githubusercontent.com/u/13910170?v=4&s=117" width="117">](https://github.com/thorgod)[<img alt="samtsai" src="https://avatars0.githubusercontent.com/u/225526?v=4&s=117" width="117">](https://github.com/samtsai)[<img alt="dwaldrum" src="https://avatars2.githubusercontent.com/u/386721?v=4&s=117" width="117">](https://github.com/dwaldrum)[<img alt="Krustie101" src="https://avatars2.githubusercontent.com/u/1636728?v=4&s=117" width="117">](https://github.com/Krustie101)[<img alt="MarcosEllys" src="https://avatars3.githubusercontent.com/u/6751242?v=4&s=117" width="117">](https://github.com/MarcosEllys)
+[<img alt="beeman" src="https://avatars3.githubusercontent.com/u/36491?v=4&s=117" width="117">](https://github.com/beeman)[<img alt="samtsai" src="https://avatars0.githubusercontent.com/u/225526?v=4&s=117" width="117">](https://github.com/samtsai)[<img alt="klemenoslaj" src="https://avatars2.githubusercontent.com/u/7548247?v=4&s=117" width="117">](https://github.com/klemenoslaj)[<img alt="thorgod" src="https://avatars3.githubusercontent.com/u/13910170?v=4&s=117" width="117">](https://github.com/thorgod)[<img alt="dwaldrum" src="https://avatars2.githubusercontent.com/u/386721?v=4&s=117" width="117">](https://github.com/dwaldrum)[<img alt="Krustie101" src="https://avatars2.githubusercontent.com/u/1636728?v=4&s=117" width="117">](https://github.com/Krustie101)
 
-[<img alt="AlexTalcura" src="https://avatars2.githubusercontent.com/u/20095773?v=4&s=117" width="117">](https://github.com/AlexTalcura)[<img alt="Dayvisson" src="https://avatars1.githubusercontent.com/u/12189515?v=4&s=117" width="117">](https://github.com/Dayvisson)[<img alt="jrgleason" src="https://avatars3.githubusercontent.com/u/1319151?v=4&s=117" width="117">](https://github.com/jrgleason)[<img alt="n3xus" src="https://avatars0.githubusercontent.com/u/510213?v=4&s=117" width="117">](https://github.com/n3xus)[<img alt="TheMcMurder" src="https://avatars1.githubusercontent.com/u/3059715?v=4&s=117" width="117">](https://github.com/TheMcMurder)[<img alt="kentcdodds" src="https://avatars0.githubusercontent.com/u/1500684?v=4&s=117" width="117">](https://github.com/kentcdodds)
+[<img alt="MarcosEllys" src="https://avatars3.githubusercontent.com/u/6751242?v=4&s=117" width="117">](https://github.com/MarcosEllys)[<img alt="Devqon" src="https://avatars3.githubusercontent.com/u/9316480?v=4&s=117" width="117">](https://github.com/Devqon)[<img alt="AlexTalcura" src="https://avatars2.githubusercontent.com/u/20095773?v=4&s=117" width="117">](https://github.com/AlexTalcura)[<img alt="bhaidar" src="https://avatars0.githubusercontent.com/u/1163421?v=4&s=117" width="117">](https://github.com/bhaidar)[<img alt="Dayvisson" src="https://avatars1.githubusercontent.com/u/12189515?v=4&s=117" width="117">](https://github.com/Dayvisson)[<img alt="n3xus" src="https://avatars0.githubusercontent.com/u/510213?v=4&s=117" width="117">](https://github.com/n3xus)
 
-[<img alt="LennardWesterveld" src="https://avatars2.githubusercontent.com/u/1076589?v=4&s=117" width="117">](https://github.com/LennardWesterveld)[<img alt="waffle-iron" src="https://avatars2.githubusercontent.com/u/6912981?v=4&s=117" width="117">](https://github.com/waffle-iron)[<img alt="NanFengCheong" src="https://avatars2.githubusercontent.com/u/7321833?v=4&s=117" width="117">](https://github.com/NanFengCheong)[<img alt="Pouja" src="https://avatars3.githubusercontent.com/u/2385144?v=4&s=117" width="117">](https://github.com/Pouja)[<img alt="Riron" src="https://avatars3.githubusercontent.com/u/5145523?v=4&s=117" width="117">](https://github.com/Riron)[<img alt="Ronen-dev" src="https://avatars3.githubusercontent.com/u/12510911?v=4&s=117" width="117">](https://github.com/Ronen-dev)
+[<img alt="jrgleason" src="https://avatars3.githubusercontent.com/u/1319151?v=4&s=117" width="117">](https://github.com/jrgleason)[<img alt="jdpnielsen" src="https://avatars3.githubusercontent.com/u/8746698?v=4&s=117" width="117">](https://github.com/jdpnielsen)[<img alt="TheMcMurder" src="https://avatars1.githubusercontent.com/u/3059715?v=4&s=117" width="117">](https://github.com/TheMcMurder)[<img alt="kenisteward" src="https://avatars3.githubusercontent.com/u/12831669?v=4&s=117" width="117">](https://github.com/kenisteward)[<img alt="kentcdodds" src="https://avatars0.githubusercontent.com/u/1500684?v=4&s=117" width="117">](https://github.com/kentcdodds)[<img alt="LennardWesterveld" src="https://avatars2.githubusercontent.com/u/1076589?v=4&s=117" width="117">](https://github.com/LennardWesterveld)
 
-[<img alt="blowsie" src="https://avatars2.githubusercontent.com/u/308572?v=4&s=117" width="117">](https://github.com/blowsie)[<img alt="thm1118" src="https://avatars0.githubusercontent.com/u/3632180?v=4&s=117" width="117">](https://github.com/thm1118)[<img alt="Tom-V" src="https://avatars2.githubusercontent.com/u/322654?v=4&s=117" width="117">](https://github.com/Tom-V)[<img alt="danielcrisp" src="https://avatars1.githubusercontent.com/u/1104814?v=4&s=117" width="117">](https://github.com/danielcrisp)[<img alt="francisco-sanchez-molina" src="https://avatars3.githubusercontent.com/u/9049706?v=4&s=117" width="117">](https://github.com/francisco-sanchez-molina)[<img alt="jdpnielsen" src="https://avatars3.githubusercontent.com/u/8746698?v=4&s=117" width="117">](https://github.com/jdpnielsen)
+[<img alt="waffle-iron" src="https://avatars2.githubusercontent.com/u/6912981?v=4&s=117" width="117">](https://github.com/waffle-iron)[<img alt="NanFengCheong" src="https://avatars2.githubusercontent.com/u/7321833?v=4&s=117" width="117">](https://github.com/NanFengCheong)[<img alt="Pouja" src="https://avatars3.githubusercontent.com/u/2385144?v=4&s=117" width="117">](https://github.com/Pouja)[<img alt="Riron" src="https://avatars3.githubusercontent.com/u/5145523?v=4&s=117" width="117">](https://github.com/Riron)[<img alt="Ronen-dev" src="https://avatars3.githubusercontent.com/u/12510911?v=4&s=117" width="117">](https://github.com/Ronen-dev)[<img alt="blowsie" src="https://avatars2.githubusercontent.com/u/308572?v=4&s=117" width="117">](https://github.com/blowsie)
+
+[<img alt="thm1118" src="https://avatars0.githubusercontent.com/u/3632180?v=4&s=117" width="117">](https://github.com/thm1118)[<img alt="Tom-V" src="https://avatars2.githubusercontent.com/u/322654?v=4&s=117" width="117">](https://github.com/Tom-V)[<img alt="danielcrisp" src="https://avatars1.githubusercontent.com/u/1104814?v=4&s=117" width="117">](https://github.com/danielcrisp)[<img alt="francisco-sanchez-molina" src="https://avatars3.githubusercontent.com/u/9049706?v=4&s=117" width="117">](https://github.com/francisco-sanchez-molina)[<img alt="enricouniurb" src="https://avatars1.githubusercontent.com/u/38656571?v=4&s=117" width="117">](https://github.com/enricouniurb)
 <!-- ALL-CONTRIBUTORS-LIST:END -->
