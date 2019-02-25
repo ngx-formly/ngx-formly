@@ -27,9 +27,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   private document: Document;
   get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
 
-  private get fieldAttrElements() { return this.field['_attrElements'] || []; }
+  private get fieldAttrElements() { return (this.field && this.field['_attrElements']) || []; }
   private set fieldAttrElements(elements: any[]) {
-    defineHiddenProp(this.field, '_attrElements', elements);
+    this.field && defineHiddenProp(this.field, '_attrElements', elements);
   }
 
   constructor(
