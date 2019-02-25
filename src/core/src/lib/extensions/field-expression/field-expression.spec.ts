@@ -80,7 +80,7 @@ describe('FieldExpressionExtension', () => {
           ],
         },
       ];
-      const spy = jasmine.createSpy('model change spy');
+      const spy = jasmine.createSpy('fieldChanges spy');
       const subscription = options.fieldChanges.subscribe(spy);
 
       builder.buildForm(form, fields, {}, options);

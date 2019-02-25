@@ -161,8 +161,10 @@ export function wrapProperty(field, prop, setFn: (newVal: any, oldVal?: any) => 
     configurable: true,
     get: () => value,
     set: newVal => {
-      setFn(newVal, value);
-      value = newVal;
+      if (newVal !== value) {
+        setFn(newVal, value);
+        value = newVal;
+      }
     },
   });
 }
