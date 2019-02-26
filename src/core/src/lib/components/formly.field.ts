@@ -6,7 +6,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
-import { defineHiddenProp, wrapProperty } from '../utils';
+import { defineHiddenProp } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 
@@ -112,11 +112,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
     const ref = this.formlyConfig.createComponentInstance(f, this.componentFactoryResolver, this.injector);
     if (ref) {
+      containerRef.insert(ref.hostView);
       this.attachComponentRef(ref, f);
-      wrapProperty(f, 'hide', hide => hide
-        ? containerRef.detach(0)
-        : containerRef.insert(ref.hostView, 0),
-      );
     }
   }
 
