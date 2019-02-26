@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.8"></a>
+# [5.0.0-rc.8](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.7...v5.0.0-rc.8) (2019-02-26)
+
+
+### Bug Fixes
+
+* **core:** avoid override hide field within fieldGroup ([#1444](https://github.com/ngx-formly/ngx-formly/issues/1444)) ([92057d4](https://github.com/ngx-formly/ngx-formly/commit/92057d4)), closes [#1259](https://github.com/ngx-formly/ngx-formly/issues/1259)
+
+
+
 <a name="5.0.0-rc.7"></a>
 # [5.0.0-rc.7](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.6...v5.0.0-rc.7) (2019-02-22)
 
