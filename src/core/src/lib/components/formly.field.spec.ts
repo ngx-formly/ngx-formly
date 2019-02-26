@@ -199,24 +199,6 @@ describe('FormlyField Component', () => {
     });
   });
 
-  it('should not render field type component when is hidden', () => {
-    testComponentInputs = {
-      form: new FormGroup({}),
-      field: {
-        key: 'title',
-        type: 'text',
-        hide: true,
-        formControl: new FormControl(),
-      },
-    };
-
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-    expect(getInputField(fixture.nativeElement)).toBeUndefined();
-
-    testComponentInputs.field.hide = false;
-    expect(getInputField(fixture.nativeElement)).toBeDefined();
-  });
-
   it('should render options Types', () => {
     testComponentInputs = {
       field: {
