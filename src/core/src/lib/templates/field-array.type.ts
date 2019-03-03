@@ -1,7 +1,7 @@
 import { Inject, Optional } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
-import { clone, isNullOrUndefined, removeFieldControl } from '../utils';
+import { clone, isNullOrUndefined } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
@@ -28,7 +28,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     field.fieldGroup = field.fieldGroup || [];
     if (field.fieldGroup.length > field.model.length) {
       for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
-        removeFieldControl(field.formControl as FormArray, i);
+        (field.formControl as FormArray).removeAt(i);
         field.fieldGroup.splice(i, 1);
       }
     }
