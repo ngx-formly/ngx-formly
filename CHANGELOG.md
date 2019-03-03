@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.9"></a>
+# [5.0.0-rc.9](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.8...v5.0.0-rc.9) (2019-03-03)
+
+
+### Bug Fixes
+
+* **core:** ensure repeat form is in sync with the model val ([#1451](https://github.com/ngx-formly/ngx-formly/issues/1451)) ([77feb5b](https://github.com/ngx-formly/ngx-formly/commit/77feb5b)), closes [#1450](https://github.com/ngx-formly/ngx-formly/issues/1450)
+
+
+
 <a name="5.0.0-rc.8"></a>
 # [5.0.0-rc.8](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.7...v5.0.0-rc.8) (2019-02-26)
 
