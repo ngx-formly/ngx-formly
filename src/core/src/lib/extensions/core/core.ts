@@ -110,7 +110,7 @@ export class CoreExtension implements FormlyExtension {
   }
 
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
-    const componentRef = this.formlyConfig.createComponentInstance(field);
+    const componentRef = this.formlyConfig.createComponent(field);
     const instance: FormlyExtension = componentRef ? componentRef.instance as any : {};
 
     return {
