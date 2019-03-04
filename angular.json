@@ -302,6 +302,36 @@
         }
       }
     },
+    "@ngx-formly/ng-zorro-antd": {
+      "root": "src/ng-zorro-antd",
+      "sourceRoot": "src/ng-zorro-antd/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "src/ng-zorro-antd/tsconfig.lib.json",
+            "project": "src/ng-zorro-antd/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/ng-zorro-antd/src/test.ts",
+            "tsConfig": "src/ng-zorro-antd/tsconfig.spec.json",
+            "karmaConfig": "src/ng-zorro-antd/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["src/ng-zorro-antd/tsconfig.lib.json", "src/ng-zorro-antd/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
     "@ngx-formly/nativescript": {
       "root": "src/ui/nativescript",
       "sourceRoot": "src/ui/nativescript/src",
