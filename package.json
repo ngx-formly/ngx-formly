@@ -12,7 +12,7 @@
     "lint:fix": "tslint --fix -p tsconfig.json",
     "commit": "npm run build && git-cz",
     "bundlesize": "npm run build && bundlesize",
-    "build": "npm run build:core && npm run build:bootstrap && npm run build:material && npm run build:ionic && npm run build:primeng && npm run build:kendo && npm run build:nativescript && npm run build:schematics && node .config/build.js",
+    "build": "npm run build:core && npm run build:bootstrap && npm run build:material && npm run build:ionic && npm run build:primeng && npm run build:kendo && npm run build:nativescript && npm run build:ng-zorro-antd && npm run build:schematics && node .config/build.js",
     "build:core": "ng build @ngx-formly/core",
     "build:bootstrap": "ng build @ngx-formly/bootstrap",
     "build:material": "ng build @ngx-formly/material",
@@ -20,6 +20,7 @@
     "build:primeng": "ng build @ngx-formly/primeng",
     "build:kendo": "ng build @ngx-formly/kendo",
     "build:nativescript": "ng build @ngx-formly/nativescript",
+    "build:ng-zorro-antd": "ng build @ngx-formly/ng-zorro-antd",
     "build:schematics": "cd src/schematics && npm run build && cd ../.. && npm run copy:schematics",
     "copy:schematics": "cpr src/schematics dist/@ngx-formly/schematics --delete-first --filter node_modules/",
     "release": "standard-version --prerelease rc && npm run build && node .config/publish.js",
@@ -165,6 +166,10 @@
     },
     {
       "path": "./dist/@ngx-formly/nativescript/bundles/ngx-formly-nativescript.umd.min.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/ng-zorro-antd/bundles/ngx-formly-ng-zorro-antd.umd.min.js",
       "maxSize": "5 kB"
     }
   ]

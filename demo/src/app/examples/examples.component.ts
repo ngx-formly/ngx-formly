@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'formly-demo-examples',
-  styleUrls: ['./examples.scss'],
   template: `
   <mat-sidenav-container style="min-height: 90% !important;" class="mat-typography">
     <mat-sidenav mode="side" opened="true" [style.width.px]="250" [fixedTopGap]="59" [fixedInViewport]="true">

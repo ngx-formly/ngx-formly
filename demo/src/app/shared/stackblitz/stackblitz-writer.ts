@@ -96,7 +96,7 @@ const dependencies = {
   },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
-    'ng-zorro-antd': '^7.0.5',
+    'ng-zorro-antd': '^7.0.0',
   },
 };
 
@@ -146,7 +146,7 @@ export class StackblitzWriter {
 
     const options: any = { type };
 
-    if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng'].indexOf(options.type) === -1) {
+    if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng', 'ng-zorro-antd'].indexOf(options.type) === -1) {
       if (appModuleContent.indexOf('@ngx-formly/bootstrap') !== -1) {
         options.type = 'bootstrap';
       } else if (appModuleContent.indexOf('@ngx-formly/material') !== -1) {
