@@ -51,6 +51,14 @@ const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       },
     },
   ],
+  'ng-zorro-antd': [
+    {
+      file: 'styles.scss',
+      filecontent: `
+      @import '~ng-zorro-antd/ng-zorro-antd.min.css';
+    `,
+    },
+  ],
 };
 
 const TAGS: string[] = ['angular', 'formly', 'example'];
@@ -118,6 +126,10 @@ const dependencies = {
     '@ngx-translate/core': '*',
     '@ngx-translate/http-loader': '*',
   },
+  'ng-zorro-antd': {
+    '@ngx-formly/ng-zorro-antd': formlyVersion,
+    'ng-zorro-antd': '^7.0.0',
+  },
 };
 
 const ngModule = {
@@ -126,6 +138,7 @@ const ngModule = {
   kendo: 'FormlyKendoModule',
   primeng: 'FormlyPrimeNGModule',
   ionic: 'FormlyIonicModule',
+  'ng-zorro-antd': 'FormlyNgZorroAntdModule',
 };
 
 /**
@@ -166,7 +179,7 @@ export class StackblitzWriter {
 
     const options: any = { type };
 
-    if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng'].indexOf(options.type) === -1) {
+    if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng', 'ng-zorro-antd'].indexOf(options.type) === -1) {
       if (appModuleContent.indexOf('@ngx-formly/bootstrap') !== -1) {
         options.type = 'bootstrap';
       } else if (appModuleContent.indexOf('@ngx-formly/material') !== -1) {
@@ -177,6 +190,8 @@ export class StackblitzWriter {
         options.type = 'ionic';
       } else if (appModuleContent.indexOf('@ngx-formly/primeng') !== -1) {
         options.type = 'primeng';
+      } else if (appModuleContent.indexOf('@ngx-formly/ng-zorro-antd') !== -1) {
+        options.type = 'ng-zorro-antd';
       }
     }
 
