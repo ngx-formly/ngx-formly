@@ -15,6 +15,10 @@ import { SharedModule } from '../shared';
           { path: 'ionic', loadChildren: () => import('./ui-ionic/config.module').then(m => m.ConfigModule) },
           { path: 'primeng', loadChildren: () => import('./ui-primeng/config.module').then(m => m.ConfigModule) },
           { path: 'kendo', loadChildren: () => import('./ui-kendo/config.module').then(m => m.ConfigModule) },
+          {
+            path: 'ng-zorro-antd',
+            loadChildren: () => import('./ui-ng-zorro-antd/config.module').then(m => m.ConfigModule),
+          },
         ],
       },
     ]),
