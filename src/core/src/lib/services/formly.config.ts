@@ -112,7 +112,7 @@ export class FormlyConfig {
       });
     }
 
-    const componentRef = this.createComponentInstance(field);
+    const componentRef = this.createComponent(field);
     if (componentRef && componentRef.instance && componentRef.instance.defaultOptions) {
       reverseDeepMerge(field, componentRef.instance.defaultOptions);
     }
@@ -123,7 +123,7 @@ export class FormlyConfig {
   }
 
   /** @internal */
-  createComponentInstance(
+  createComponent(
     field: FormlyFieldConfigCache = {},
     resolver?: ComponentFactoryResolver,
     injector?: Injector,
@@ -281,6 +281,7 @@ export interface ConfigOption {
   /** @deprecated use `extensions` instead */
   manipulators?: ManipulatorOption[];
   extras?: {
+    /** @deprecated use `extensions` instead */
     fieldTransform?: any,
     showError?: (field: FieldType) => boolean;
   };

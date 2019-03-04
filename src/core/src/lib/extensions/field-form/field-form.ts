@@ -90,10 +90,7 @@ export class FieldFormExtension implements FormlyExtension {
       });
     }
 
-    if (field) {
-      field.formControl = control;
-    }
-
+    field.formControl = control;
     if (form instanceof FormArray) {
       if (form.at(<number> path) !== control) {
         form.setControl(<number> path, control);
