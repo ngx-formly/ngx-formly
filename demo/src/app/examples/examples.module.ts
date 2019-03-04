@@ -58,6 +58,7 @@ import { ExamplesComponent } from './examples.component';
           { path: 'i18n', loadChildren: './advanced/i18n/config.module#ConfigModule' },
           { path: 'json-schema', loadChildren: './advanced/json-schema/config.module#ConfigModule' },
           { path: 'repeating-section', loadChildren: './advanced/repeating-section/config.module#ConfigModule' },
+          { path: 'repeating-section-input', loadChildren: './advanced/repeating-section-input/config.module#ConfigModule' },
           { path: 'datatable-integration', loadChildren: './advanced/datatable-integration/config.module#ConfigModule' },
           { path: 'multi-step-form', loadChildren: './advanced/multi-step-form/config.module#ConfigModule' },
           { path: 'tabs', loadChildren: './advanced/tabs/config.module#ConfigModule' },
