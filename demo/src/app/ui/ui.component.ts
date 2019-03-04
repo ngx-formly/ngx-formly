@@ -24,5 +24,6 @@ export class UIComponent {
     { href: '/ui/ionic', text: 'Ionic' },
     { href: '/ui/primeng', text: 'PrimeNG' },
     { href: '/ui/kendo', text: 'Kendo' },
+    { href: '/ui/ng-zorro-antd', text: 'Ng-Zorro-Antd' },
   ];
 }

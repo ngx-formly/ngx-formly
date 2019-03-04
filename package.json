@@ -76,6 +76,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.5",
     "nativescript-angular": "^7.2.2",
+    "ng-zorro-antd": "^7.0.0",
     "primeng": "^7.0.5",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
