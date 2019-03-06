@@ -525,18 +525,18 @@ describe('FormlyFormBuilder service', () => {
   describe('merge field options', () => {
     it('nested property key', () => {
       field = { key: 'nested.title', type: 'input' };
-      builder.buildForm(form, [field], {}, {});
+      builder.buildForm(form, [field], { nested: { title: 'test' } }, {});
 
       expect(field.key).toEqual('nested.title');
       expect(field.wrappers).toEqual(['label']);
-      expect(field.model).toEqual({ nested: { title: undefined } });
+      expect(field.model).toEqual({ nested: { title: 'test' } });
     });
     it('nested array key', () => {
       field = { key: 'nested.0.title', type: 'input' };
-      builder.buildForm(form, [field], {}, {});
+      builder.buildForm(form, [field], { nested: [{ title: 'test' }] }, {});
 
       expect(field.key).toEqual('nested.0.title');
-      expect(field.model).toEqual({ nested: [{ title: undefined }] });
+      expect(field.model).toEqual({ nested: [{ title: 'test' }] });
     });
 
     it('should not override wrappers if not empty', () => {
