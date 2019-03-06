@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.10"></a>
+# [5.0.0-rc.10](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.9...v5.0.0-rc.10) (2019-03-06)
+
+
+### Bug Fixes
+
+* **core:** avoid init model during addFormControl ([#1458](https://github.com/ngx-formly/ngx-formly/issues/1458)) ([2396d49](https://github.com/ngx-formly/ngx-formly/commit/2396d49)), closes [#1457](https://github.com/ngx-formly/ngx-formly/issues/1457)
+
+
+
 <a name="5.0.0-rc.9"></a>
 # [5.0.0-rc.9](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.8...v5.0.0-rc.9) (2019-03-03)
 
