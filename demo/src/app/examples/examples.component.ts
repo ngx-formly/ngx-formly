@@ -60,6 +60,7 @@ export class ExamplesComponent {
       { href: './advanced/i18n', text: 'i18n using ngx-translate' },
       { href: './advanced/json-schema', text: 'json-schema' },
       { href: './advanced/repeating-section', text: 'Repeating Section' },
+      { href: './advanced/repeating-section-input', text: 'Repeating Section With Length Input' },
       { href: './advanced/multi-step-form', text: 'Multi-Step Form' },
       { href: './advanced/tabs', text: 'Tabs Form' },
       { href: './advanced/datatable-integration', text: 'ngx-datatable Integration' },

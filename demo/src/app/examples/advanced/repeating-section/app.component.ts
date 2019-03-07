@@ -21,7 +21,6 @@ export class AppComponent {
         addText: 'Add another investment',
       },
       fieldArray: {
-        fieldGroupClassName: 'row',
         fieldGroup: [
           {
             className: 'col-sm-4',
