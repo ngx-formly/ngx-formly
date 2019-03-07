@@ -1,8 +1,8 @@
 import { Injectable, InjectionToken, ComponentRef, ComponentFactoryResolver, Injector } from '@angular/core';
-import { ValidationErrors, FormGroup, FormArray, AbstractControl } from '@angular/forms';
+import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
 
 export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
 
@@ -29,11 +29,7 @@ export class FormlyConfig {
     preWrapper: [],
     postWrapper: [],
   };
-  extras: {
-    fieldTransform?: ((fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[])[],
-    showError?: (field: FieldType) => boolean;
-  } = {
-    fieldTransform: undefined,
+  extras: ConfigOption['extras'] = {
     showError: function(field: FieldType) {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
@@ -283,6 +279,7 @@ export interface ConfigOption {
   extras?: {
     /** @deprecated use `extensions` instead */
     fieldTransform?: any,
+    immutable?: boolean,
     showError?: (field: FieldType) => boolean;
   };
 }
