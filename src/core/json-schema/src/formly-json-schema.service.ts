@@ -39,7 +39,7 @@ export class FormlyJsonschema {
       case 'object': {
         field.fieldGroup = [];
         Object.keys(jsonSchema.properties).forEach(p => {
-          const child = this._toFieldConfig(<JSONSchema7> jsonSchema.properties[p], key ? key + '.' + p : p);
+          const child = this._toFieldConfig(<JSONSchema7> jsonSchema.properties[p], p);
           if (Array.isArray(jsonSchema.required) && jsonSchema.required.indexOf(p) !== -1) {
             child.templateOptions.required = true;
           }

@@ -170,7 +170,7 @@ describe('Service: FormlyJsonschema', () => {
 
         const nestedProp: FormlyFieldConfig = {
           type: 'string',
-          key: 'nested.nestedProp',
+          key: 'nestedProp',
           templateOptions: { ...emmptyTemplateOptions },
           defaultValue: undefined,
         };
