@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.11"></a>
+# [5.0.0-rc.11](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.10...v5.0.0-rc.11) (2019-03-07)
+
+
+### Bug Fixes
+
+* **core:** pass a valid key for nested json-schema prop ([#1462](https://github.com/ngx-formly/ngx-formly/issues/1462)) ([dabe153](https://github.com/ngx-formly/ngx-formly/commit/dabe153))
+
+
+### Features
+
+* **core:** allow enable immutable mode through NgModule config ([#1460](https://github.com/ngx-formly/ngx-formly/issues/1460)) ([07438b2](https://github.com/ngx-formly/ngx-formly/commit/07438b2))
+
+
+
 <a name="5.0.0-rc.10"></a>
 # [5.0.0-rc.10](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.9...v5.0.0-rc.10) (2019-03-06)
 
