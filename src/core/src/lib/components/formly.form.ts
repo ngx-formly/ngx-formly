@@ -2,6 +2,7 @@ import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmi
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
+import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty, clone, defineHiddenProp } from '../utils';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
@@ -56,11 +57,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
+    formlyConfig: FormlyConfig,
     // tslint:disable-next-line
     @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
   ) {
-    this.immutable = immutable !== null;
+    this.immutable = (immutable !== null) || !!formlyConfig.extras.immutable;
   }
 
   ngDoCheck() {
