@@ -239,6 +239,76 @@ describe('Service: FormlyJsonschema', () => {
         expect(config3.templateOptions.valueProp('test')).toBe('test');
       });
 
+      describe('widget formlyConfig options merging', () => {
+
+        it('should merge a formlyConfig object specified in the widget property into the formly config', () => {
+          const schema: JSONSchema7 = JSON.parse(`{
+            "type": "integer",
+            "widget": {
+              "formlyConfig": {
+                "templateOptions": {
+                  "label": "Age"
+                }
+              }
+            }
+          }`);
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+
+          expect(config.templateOptions.label).toBe('Age');
+        });
+
+        it('should override properties that have already been set', () => {
+          const schema: JSONSchema7 = JSON.parse(`{
+            "type": "integer",
+            "title": "Person Age",
+            "widget": {
+              "formlyConfig": {
+                "templateOptions": {
+                  "label": "Age"
+                }
+              }
+            }
+          }`);
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+
+          expect(config.templateOptions.label).toBe('Age');
+        });
+
+      });
+
+      describe('FormlyJsonSchemaOptions map function', () => {
+
+        it('should allow to pass in a "map" function to further customize the mapping', () => {
+          const schema: JSONSchema7 = JSON.parse(`{
+            "type": "integer",
+            "title": "Person Age",
+            "widget": {
+              "formlyConfig": {
+                "templateOptions": {
+                  "label": "Age"
+                }
+              }
+            }
+          }`);
+
+          const config = formlyJsonschema.toFieldConfig(schema, {
+            map: (field: FormlyFieldConfig, mapSource: JSONSchema7) => {
+              // not a very real-world mapping scenario 😊
+              if (field.type === 'integer') {
+                field.templateOptions.label = 'my custom label';
+              }
+
+              return field;
+            },
+          });
+
+          expect(config.templateOptions.label).toBe('my custom label');
+        });
+
+      });
+
       // TODO: add support for adding custom labels to enum values using oneOf/const
       // https://github.com/json-schema-org/json-schema-spec/issues/57#issuecomment-247861695
       // it('should support enum as oneOf structure', () => {

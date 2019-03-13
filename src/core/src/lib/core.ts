@@ -9,3 +9,4 @@ export { FieldArrayType } from './templates/field-array.type';
 export { FieldWrapper } from './templates/field.wrapper';
 export { FormlyModule } from './core.module';
 export { defineHiddenProp as ɵdefineHiddenProp } from './utils';
+export { reverseDeepMerge as ɵreverseDeepMerge } from './utils';
