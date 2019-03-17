@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0-rc.12"></a>
+# [5.0.0-rc.12](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.11...v5.0.0-rc.12) (2019-03-17)
+
+
+### Bug Fixes
+
+* **material:** assign formly formField to MatDatepickerInput ([#1471](https://github.com/ngx-formly/ngx-formly/issues/1471)) ([c22b751](https://github.com/ngx-formly/ngx-formly/commit/c22b751))
+
+
+### Features
+
+* **core:** deep merge widget prop & add map callback ([#1467](https://github.com/ngx-formly/ngx-formly/issues/1467)) ([cdb33bb](https://github.com/ngx-formly/ngx-formly/commit/cdb33bb))
+
+
+
 <a name="5.0.0-rc.11"></a>
 # [5.0.0-rc.11](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.10...v5.0.0-rc.11) (2019-03-07)
 
