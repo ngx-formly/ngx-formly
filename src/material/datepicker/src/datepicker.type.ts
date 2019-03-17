@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { MatDatepickerInput } from '@angular/material/datepicker';
 
 @Component({
   selector: 'formly-field-mat-datepicker',
@@ -28,8 +29,10 @@ import { MatInput } from '@angular/material/input';
     </mat-datepicker>
   `,
 })
-export class FormlyDatepickerTypeComponent extends FieldType {
+export class FormlyDatepickerTypeComponent extends FieldType implements AfterViewInit {
   @ViewChild(MatInput) formFieldControl!: MatInput;
+  @ViewChild(MatDatepickerInput) datepickerInput!: MatDatepickerInput<any>;
+
   defaultOptions = {
     templateOptions: {
       datepickerOptions: {
@@ -37,4 +40,10 @@ export class FormlyDatepickerTypeComponent extends FieldType {
       },
     },
   };
+
+  ngAfterViewInit() {
+    super.ngAfterViewInit();
+    // temporary fix for https://github.com/angular/material2/issues/6728
+    (<any> this.datepickerInput)._formField = this.formField;
+  }
 }
