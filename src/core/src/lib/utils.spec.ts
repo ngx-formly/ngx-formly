@@ -265,6 +265,32 @@ describe('assignModelToFields', () => {
     expect(fields[0].model).toEqual(model);
   });
 
+  describe('with fieldArray', () => {
+    it('with empty fieldGroup', () => {
+      model = { array: [{ name: 'test' }] };
+      fields = [{ key: 'array', fieldArray: {} }];
+
+      assignModelToFields(fields, model);
+
+      expect(fields[0].model).toEqual([{ name: 'test' }]);
+    });
+
+    it('with fieldGroup', () => {
+      model = { array: [{ name: 'test' }] };
+      fields = [{ key: 'array', fieldArray: {}, fieldGroup: [{ key: '0', fieldGroup: [{ key: 'name' }] }] }];
+
+      assignModelToFields(fields, model);
+
+      expect(fields[0].fieldGroup[0].model).toEqual({ name: 'test' });
+      expect(fields[0].fieldGroup[0].fieldGroup[0].model).toEqual({ name: 'test' });
+
+      assignModelToFields(fields, {});
+
+      expect(fields[0].model).toEqual([]);
+      expect(fields[0].fieldGroup.length).toEqual(0);
+    });
+  });
+
   describe('with fieldGroup', () => {
     it('fieldGroup without key', () => {
       model = { city: 'foo' };
