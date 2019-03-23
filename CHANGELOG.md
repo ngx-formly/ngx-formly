@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.8.3"></a>
+## [4.8.3](https://github.com/formly-js/ngx-formly/compare/v4.8.2...v4.8.3) (2019-03-23)
+
+
+### Bug Fixes
+
+* **core:** reset fields of fieldArray on model change ([#1482](https://github.com/formly-js/ngx-formly/issues/1482)) ([edd6283](https://github.com/formly-js/ngx-formly/commit/edd6283)), closes [#1478](https://github.com/formly-js/ngx-formly/issues/1478)
+
+
+
 <a name="4.8.2"></a>
 ## [4.8.2](https://github.com/formly-js/ngx-formly/compare/v4.8.1...v4.8.2) (2018-11-09)
 
