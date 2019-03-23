@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.12...v5.0.0) (2019-03-23)
+
+To upgrade from 4.0 to 5.0 see [UPGRADE-5.0](./UPGRADE-5.0.md)
+
 <a name="5.0.0-rc.12"></a>
 # [5.0.0-rc.12](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.11...v5.0.0-rc.12) (2019-03-17)
 

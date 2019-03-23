@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/common",
-  "version": "5.0.0-rc.12",
+  "version": "5.0.0",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -22,7 +22,7 @@
     "build:nativescript": "ng build @ngx-formly/nativescript",
     "build:schematics": "cd src/schematics && npm run build && cd ../.. && npm run copy:schematics",
     "copy:schematics": "cpr src/schematics dist/@ngx-formly/schematics --delete-first --filter node_modules/",
-    "release": "standard-version --prerelease rc && npm run build && node .config/publish.js",
+    "release": "standard-version && npm run build && node .config/publish.js",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",
     "build:demo": "ng build --prod --base-href=\"/ngx-formly/\"",
