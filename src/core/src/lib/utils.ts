@@ -79,6 +79,10 @@ export function assignModelToFields(fields: FormlyFieldConfig[], model: any) {
     (field as any).model = model;
     if (field.key && (field.fieldGroup || field.fieldArray)) {
       (field as any).model = getFieldModel(model, field, true);
+
+      if (field.fieldGroup && field.fieldArray && field.model) {
+        field.fieldGroup.length = field.model.length;
+      }
     }
 
     if (field.fieldGroup) {
