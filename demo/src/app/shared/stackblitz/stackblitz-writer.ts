@@ -48,7 +48,7 @@ const TEMPLATE_FILES = {
 const TAGS: string[] = ['angular', 'formly', 'example'];
 const angularVersion = '^7.0.0';
 const materialVersion = '^7.0.0';
-const formlyVersion = '^5.0.0-rc';
+const formlyVersion = '^5.0.0';
 
 const dependencies = {
   core: {
@@ -60,7 +60,7 @@ const dependencies = {
     '@angular/platform-browser-dynamic': angularVersion,
     'core-js': '^2.4.1',
     'rxjs': '^6.4.0',
-    'zone.js': '^0.8.29',
+    'zone.js': '^0.9.0',
     'tslib': '^1.7.0',
 
     '@ngx-formly/core': formlyVersion,
@@ -87,7 +87,12 @@ const dependencies = {
   },
   ionic: {
     '@ngx-formly/ionic': formlyVersion,
-    '@ionic/angular': '^4.0.1',
+    '@ionic/angular': '4.0.0-beta.7', // workaround for https://github.com/ionic-team/ionic/issues/16354
+    '@angular-devkit/core': '*',
+    '@angular-devkit/schematics': '*',
+    '@angular/compiler-cli': '*',
+    '@angular/router': '*',
+    'typescript': '*',
   },
 };
 
@@ -246,7 +251,7 @@ export class StackblitzWriter {
     if (fileName === 'app.module.ts') {
       if (options.type === 'ionic') {
         filecontent = filecontent.replace(`'@angular/common';`, `'@angular/common';\nimport { IonicModule } from '@ionic/angular';`);
-        filecontent = filecontent.replace(`FormlyModule.forRoot`, `IonicModule.forRoot(AppComponent),\n    FormlyModule.forRoot`);
+        filecontent = filecontent.replace(`FormlyModule.forRoot`, `IonicModule.forRoot(),\n    FormlyModule.forRoot`);
       }
 
       if (filecontent.indexOf(`@ngx-formly/${options.type}'`) === -1) {
