@@ -43,6 +43,9 @@ const TEMPLATE_FILES = {
       @import "~@ionic/angular/css/flex-utils.css";
     ` },
   ],
+  'ng-zorro-antd': [
+    { file: 'styles.scss', filecontent: `@import '~ng-zorro-antd/ng-zorro-antd.css';`},
+  ],
 };
 
 const TAGS: string[] = ['angular', 'formly', 'example'];
@@ -94,6 +97,10 @@ const dependencies = {
     '@angular/router': '*',
     'typescript': '*',
   },
+  'ng-zorro-antd': {
+    '@ngx-formly/ng-zorro-antd': formlyVersion,
+    'ng-zorro-antd': '^7.0.0',
+  },
 };
 
 const ngModule = {
@@ -102,6 +109,7 @@ const ngModule = {
   kendo: 'FormlyKendoModule',
   primeng: 'FormlyPrimeNGModule',
   ionic: 'FormlyIonicModule',
+  'ng-zorro-antd': 'FormlyNgZorroAntdModule',
 };
 
 /**

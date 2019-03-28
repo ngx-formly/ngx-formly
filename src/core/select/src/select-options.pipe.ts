@@ -5,7 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Pipe({ name: 'formlySelectOptions' })
 export class FormlySelectOptionsPipe implements PipeTransform {
-  transform(options, field?: FormlyFieldConfig) {
+  transform(options, field?: FormlyFieldConfig): Observable<any> {
     if (!(options instanceof Observable)) {
       options = observableOf(options);
     }
