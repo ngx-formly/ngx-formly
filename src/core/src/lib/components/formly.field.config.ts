@@ -116,9 +116,19 @@ export interface FormlyFieldConfig {
   className?: string;
 
   /**
+   * You can specify your own css styles that will be applied to the `formly-field` component.
+   */
+  style?: string;
+
+  /**
    * Specify your own class that will be applied to the `formly-group` component.
    */
   fieldGroupClassName?: string;
+
+  /**
+   * Specify your own styles that will be applied to the `formly-group` component.
+   */
+  fieldGroupStyle?: string;
 
   /**
    * A field group is a way to group fields together, making advanced layout very simple.

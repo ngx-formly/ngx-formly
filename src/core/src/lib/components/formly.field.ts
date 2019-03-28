@@ -9,18 +9,21 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './
 import { defineHiddenProp } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'formly-field',
   template: `<ng-template #container></ng-template>`,
   host: {
     '[style.display]': 'field.hide ? "none":""',
+    '[style]': 'field.style? this.sanitizer.bypassSecurityTrustStyle(field.style) : this.sanitizer.bypassSecurityTrustStyle(style)',
     '[class]': 'field.className? field.className : className',
   },
 })
 export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input() field: FormlyFieldConfig;
   @Input('class') className: string = '';
+  @Input('style') style: string = '';
 
   warnDeprecation = false;
 
@@ -45,6 +48,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
+    private sanitizer: DomSanitizer,
     // tslint:disable-next-line
     @Attribute('hide-deprecation') hideDeprecation,
   ) {

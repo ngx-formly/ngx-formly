@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FieldType } from '../templates/field.type';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'formly-group',
@@ -9,10 +10,15 @@ import { FieldType } from '../templates/field.type';
   `,
   host: {
     '[class]': 'field.fieldGroupClassName || ""',
+    '[style]': 'field.fieldGroupStyle? this.sanitizer.bypassSecurityTrustStyle(field.fieldGroupStyle) : ""',
   },
 })
 export class FormlyGroup extends FieldType {
   defaultOptions = {
     defaultValue: {},
   };
+
+  constructor( private sanitizer: DomSanitizer ) {
+    super();
+  }
 }
