@@ -14,8 +14,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [rows]="to.rows"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
-      [tabindex]="to.tabindex || 0"
-      [readonly]="to.readonly">
+      [tabindex]="to.tabindex || 0">
     </textarea>
   `,
 })

@@ -5,7 +5,9 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-ng-zorro-antd-form-field',
   template: `
     <nz-form-item>
-      <nz-form-label>{{ to.label }}</nz-form-label>
+      <nz-form-label *ngIf="to.label && !to.hideLabel" [nzRequired]="to.required && !to.hideRequiredMarker">
+        {{ to.label }}
+      </nz-form-label>
       <nz-form-control>
         <ng-template #fieldComponent></ng-template>
       </nz-form-control>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
@@ -12,6 +12,7 @@ import { FIELD_TYPE_COMPONENTS, NG_ZORRO_ANTD_FORMLY_CONFIG } from './ui-ng-zorr
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     NgZorroAntdModule,
     FormlySelectModule,
     FormlyModule.forRoot(NG_ZORRO_ANTD_FORMLY_CONFIG),

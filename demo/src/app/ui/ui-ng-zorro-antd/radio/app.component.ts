@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
@@ -16,10 +16,9 @@ export class AppComponent {
       type: 'radio',
       templateOptions: {
         label: 'Radio',
-        placeholder: 'Placeholder',
         description: 'Description',
-        required: true,
         nzRequired: true,
+        required: true,
         options: [
           { value: 1, label: 'Option 1' },
           { value: 2, label: 'Option 2' },

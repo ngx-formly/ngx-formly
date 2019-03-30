@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ExamplesRouterViewerComponent } from '../../shared';
-import { CommonModule, CommonExampleConfigs, CommonExampleComponents, debugFields } from '../common';
-
-import { AppComponent } from './app.component';
 import { FormlyNgZorroAntdModule } from '@ngx-formly/ng-zorro-antd';
+
+import { SharedModule } from '../../shared';
+import { AppComponent } from './app.component';
+import { ExamplesRouterViewerComponent } from './examples-router-viewer/examples-router-viewer.component';
+import { NG_ZORRO_COMPONENTS, NG_ZORRO_EXAMPLE_CONFIGS, NG_ZORRO_EXAMPLE_MODULE } from './index';
 
 @NgModule({
   imports: [
-    CommonModule,
+    SharedModule,
+    ...NG_ZORRO_EXAMPLE_MODULE,
     FormlyNgZorroAntdModule,
     RouterModule.forChild([
       {
@@ -19,9 +21,8 @@ import { FormlyNgZorroAntdModule } from '@ngx-formly/ng-zorro-antd';
             path: '',
             component: ExamplesRouterViewerComponent,
             data: {
-              debugFields,
               examples: [
-                ...CommonExampleConfigs,
+                ...NG_ZORRO_EXAMPLE_CONFIGS,
               ],
             },
           },
@@ -29,10 +30,10 @@ import { FormlyNgZorroAntdModule } from '@ngx-formly/ng-zorro-antd';
       },
     ]),
   ],
-  declarations: [ AppComponent ],
+  declarations: [ AppComponent, ExamplesRouterViewerComponent ],
   entryComponents: [
     AppComponent,
-    ...CommonExampleComponents,
+    ...NG_ZORRO_COMPONENTS,
   ],
 })
 export class ConfigModule { }

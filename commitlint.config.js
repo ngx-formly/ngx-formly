@@ -15,7 +15,8 @@ module.exports = {
         'demo',
         'guides',
         'schematics',
-        'nativescript'
+        'nativescript',
+        'ng-zorro-antd'
       ]
     ],
     'scope-empty': [1, 'never'],

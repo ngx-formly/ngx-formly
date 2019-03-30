@@ -50,7 +50,18 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
     return this.demoComponentRef.instance.model;
   }
 
+  /**
+   * @description Generate debug form fields.
+   * If the value that the debug component eventually receives needs to be changed,
+   * trigger the hook function on the component at this stage.
+   */
   get debugModel() {
+    const mapFields = this.demoComponentRef.instance.mapFields;
+
+    if (typeof mapFields === 'function') {
+      mapFields();
+    }
+
     return this.demoComponentRef.instance.fields[0];
   }
 

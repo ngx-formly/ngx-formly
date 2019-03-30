@@ -5,6 +5,7 @@ import {
   FormlyFieldRadio,
   FormlyFieldSelect,
   FormlyFieldTextArea,
+  FormlyFieldInputNumber,
 } from './types/types';
 import { FormlyWrapperFormField } from './wrappers/wrappers';
 
@@ -13,6 +14,7 @@ export const FIELD_TYPE_COMPONENTS = [
   // types
   FormlyFieldCheckbox,
   FormlyFieldInput,
+  FormlyFieldInputNumber,
   FormlyFieldRadio,
   FormlyFieldSelect,
   FormlyFieldTextArea,
@@ -28,6 +30,11 @@ export const NG_ZORRO_ANTD_FORMLY_CONFIG: ConfigOption = {
       wrappers: ['form-field'],
     },
     {
+      name: 'input-number',
+      component: FormlyFieldInputNumber,
+      wrappers: ['form-field'],
+    },
+    {
       name: 'checkbox',
       component: FormlyFieldCheckbox,
       wrappers: ['form-field'],
@@ -40,7 +47,7 @@ export const NG_ZORRO_ANTD_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'radio',
       component: FormlyFieldRadio,
-      wrappers: [],
+      wrappers: ['form-field'],
     },
     // {
     //   name: 'toggle',

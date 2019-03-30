@@ -34,6 +34,7 @@ import { CopierService } from './copier/copier.service';
     MatTabsModule,
 
     ExamplesRouterViewerComponent,
+    ExampleViewerComponent,
   ],
   declarations: [
     ExampleViewerComponent,

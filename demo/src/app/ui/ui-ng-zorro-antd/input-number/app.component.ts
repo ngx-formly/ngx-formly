@@ -12,20 +12,13 @@ export class AppComponent {
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
-      key: 'Radio',
-      type: 'radio',
+      key: 'InputNumber',
+      type: 'input-number',
       templateOptions: {
-        label: 'Radio',
-        placeholder: 'Placeholder',
+        label: 'InputNumber',
+        nzPlaceHolder: 'Placeholder',
         description: 'Description',
         required: true,
-        nzRequired: true,
-        options: [
-          { value: 1, label: 'Option 1' },
-          { value: 2, label: 'Option 2' },
-          { value: 3, label: 'Option 3' },
-          { value: 4, label: 'Option 4' },
-        ],
       },
     },
   ];
