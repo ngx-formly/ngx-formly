@@ -194,13 +194,11 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     if (field.formControl && field.key) {
-      const parent = this.fieldParentFormControl(field);
-      if (parent) {
-        if (hide === true && field.formControl.parent) {
-          removeFieldControl(parent, field);
-        } else if (hide === false && !field.formControl.parent) {
-          addFieldControl(parent, field);
-        }
+      if (hide === true && field.formControl.parent) {
+        removeFieldControl(field.formControl.parent, field);
+      } else if (hide === false && !field.formControl.parent) {
+        const parent = this.fieldParentFormControl(field);
+        addFieldControl(parent, field);
       }
     }
 
