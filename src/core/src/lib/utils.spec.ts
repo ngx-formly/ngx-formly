@@ -98,20 +98,10 @@ describe('FormlyUtils service', () => {
       expect(keyPath).toEqual(['property1', 'property2', 4, 'property3']);
     });
 
-    it('should get the correct key path of length 5 with one index for a complex array key', () => {
-      let keyPath = getKeyPath({key: ['property1.property2[4].property3', 'property4']});
-      expect(keyPath).toEqual(['property1', 'property2', 4, 'property3', 'property4']);
-    });
-
-    it('should get the correct key path if the path contains a numeric path element',  () => {
-      let keyPath = getKeyPath({key: ['property1.2.property2']});
-      expect(keyPath).toEqual(['property1', 2, 'property2']);
-    });
-
     it('should attach the key path to the field config', () => {
       let fieldConfig = {key: 'property1.property2[4].property3'};
       getKeyPath(fieldConfig);
-      expect(fieldConfig['_formlyKeyPath'].path).toEqual(['property1', 'property2', 4, 'property3']);
+      expect(fieldConfig['_keyPath'].path).toEqual(['property1', 'property2', 4, 'property3']);
     });
 
     it('should refresh formlyKeyPath on key updated', () => {

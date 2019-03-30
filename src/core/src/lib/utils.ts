@@ -1,6 +1,7 @@
 import { FormlyFieldConfig } from './core';
 import { Observable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
+import { FormlyFieldConfigCache } from './components/formly.field.config';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
@@ -9,36 +10,28 @@ export function getFieldId(formId: string, field: FormlyFieldConfig, index: stri
   return [formId, type, field.key, index].join('_');
 }
 
-export function getKeyPath(field: {key?: string|string[], fieldGroup?: any, fieldArray?: any}): (string|number)[] {
-  /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
-  if (!(<any> field)['_formlyKeyPath'] || (<any> field)['_formlyKeyPath'].key !== field.key) {
-    let keyPath: (string|number)[] = [];
-    if (field.key) {
-      /* Also allow for an array key, hence the type check  */
-      let pathElements = typeof field.key === 'string' ? field.key.split('.') : field.key;
-      for (let pathElement of pathElements) {
-        if (typeof pathElement === 'string') {
-          /* replace paths of the form names[2] by names.2, cfr. angular formly */
-          pathElement = pathElement.replace(/\[(\w+)\]/g, '.$1');
-          keyPath = keyPath.concat(pathElement.split('.'));
-        } else {
-          keyPath.push(pathElement);
-        }
-      }
-      for (let i = 0; i < keyPath.length; i++) {
-        let pathElement = keyPath[i];
-        if (typeof pathElement === 'string' && /^\d+$/.test(pathElement))  {
-          keyPath[i] = parseInt(pathElement);
-        }
-      }
-    }
-    (<any> field)['_formlyKeyPath'] = {
-      key: field.key,
-      path: keyPath,
-    };
+export function getKeyPath(field: FormlyFieldConfigCache): (string | number)[] {
+  if (!field.key) {
+    return [];
   }
 
-  return (<any> field)['_formlyKeyPath'].path.slice(0);
+  /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
+  if (!field._keyPath || field._keyPath.key !== field.key) {
+    const path: (string | number)[] = [];
+    if (typeof field.key === 'number') {
+      path.push(field.key);
+    } else {
+      const key = field.key.indexOf('[') === -1
+        ? field.key
+        : field.key.replace(/\[(\w+)\]/g, '.$1');
+
+      (key.indexOf('.') !== -1 ? key.split('.') : [key])
+        .forEach(v => path.push(/^\d+$/.test(v) ? Number(v) : v));
+    }
+    field._keyPath = { key: field.key, path };
+  }
+
+  return field._keyPath.path.slice(0);
 }
 
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];

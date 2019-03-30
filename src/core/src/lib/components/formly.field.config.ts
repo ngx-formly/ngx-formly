@@ -189,6 +189,10 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
     component: any;
     componentRef?: ComponentRef<FieldType>;
   };
+  _keyPath?: {
+    key: string;
+    path: (string | number)[];
+  };
 }
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
