@@ -3,7 +3,6 @@ import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } fro
 import { isObject, isNullOrUndefined, isFunction, FORMLY_VALIDATORS, getKeyPath, defineHiddenProp } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter, removeFieldControl, addFieldControl } from './utils';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../services/formly.config';
 
 /** @experimental */
@@ -51,9 +50,8 @@ export class FieldExpressionExtension implements FormlyExtension {
             });
           }
         } else if (expressionProperty instanceof Observable) {
-          const subscription = (expressionProperty as Observable<any>).pipe(
-            tap(v => evalExpression(expressionValueSetter, { field }, [v, field.model, field])),
-          ).subscribe();
+          const subscription = (expressionProperty as Observable<any>)
+            .subscribe(v => evalExpression(expressionValueSetter, { field }, [v, field.model, field]));
 
           const onDestroy = field.hooks.onDestroy;
           field.hooks.onDestroy = (field) => {

@@ -5,7 +5,7 @@ import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp } from '../utils';
 import { Subscription } from 'rxjs';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-form',
@@ -48,12 +48,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private enableCheckExprDebounce = false;
   private checkExpressionChange$ = this.modelChange.pipe(
     debounceTime(this.enableCheckExprDebounce ? 100 : 0),
-    tap(() => {
-      this.enableCheckExprDebounce = true;
-      this.checkExpressionChange();
-      this.enableCheckExprDebounce = false;
-    }),
-  ).subscribe();
+  ).subscribe(() => {
+    this.enableCheckExprDebounce = true;
+    this.checkExpressionChange();
+    this.enableCheckExprDebounce = false;
+  });
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
@@ -165,21 +164,19 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
     fields.forEach(field => {
       if (field.key && field.type && !field.fieldGroup) {
-        const valueChanges = field.formControl.valueChanges.pipe(
-          field.modelOptions.debounce && field.modelOptions.debounce.default
-          ? debounceTime(field.modelOptions.debounce.default)
-          : tap(() => {}),
-          map(value => {
+        const valueChanges = field.modelOptions.debounce && field.modelOptions.debounce.default
+          ? field.formControl.valueChanges.pipe(debounceTime(field.modelOptions.debounce.default))
+          : field.formControl.valueChanges;
+
+        this.modelChangeSubs.push(valueChanges.subscribe(value => {
+          if (field.parsers && field.parsers.length > 0) {
             if (field.parsers && field.parsers.length > 0) {
               field.parsers.forEach(parserFn => value = parserFn(value));
             }
+          }
 
-            return value;
-          }),
-          tap(value => this.changeModel({ key: [...rootKey, field.key].join('.'), value })),
-        );
-
-        this.modelChangeSubs.push(valueChanges.subscribe());
+          this.changeModel({ key: [...rootKey, field.key].join('.'), value });
+        }));
       }
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {
