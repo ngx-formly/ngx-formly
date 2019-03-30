@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignModelValue, isNullOrUndefined, reverseDeepMerge, wrapProperty, clone, defineHiddenProp } from '../utils';
+import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp } from '../utils';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
@@ -135,7 +135,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (!this.options.updateInitialValue) {
-      this.options.updateInitialValue = () => this.initialModel = reverseDeepMerge({}, this.model);
+      this.options.updateInitialValue = () => this.initialModel = clone(this.model);
     }
 
     if (!(<FormlyFormOptionsCache> this.options)._buildForm) {
