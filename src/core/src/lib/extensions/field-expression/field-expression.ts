@@ -1,9 +1,9 @@
-import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { isObject, isNullOrUndefined, isFunction, FORMLY_VALIDATORS, getKeyPath, defineHiddenProp } from '../../utils';
-import { evalExpression, evalStringExpression, evalExpressionValueSetter, removeFieldControl, addFieldControl } from './utils';
+import { isObject, isNullOrUndefined, isFunction, FORMLY_VALIDATORS, defineHiddenProp } from '../../utils';
+import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
+import { unregisterControl, registerControl } from '../field-form/utils';
 
 /** @experimental */
 export class FieldExpressionExtension implements FormlyExtension {
@@ -195,22 +195,14 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     if (field.formControl && field.key) {
       if (hide === true && field.formControl.parent) {
-        removeFieldControl(field.formControl.parent, field);
+        unregisterControl(field);
       } else if (hide === false && !field.formControl.parent) {
-        const parent = this.fieldParentFormControl(field);
-        addFieldControl(parent, field);
+        registerControl(field);
       }
     }
 
     if (field.options.fieldChanges) {
       field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hide });
     }
-  }
-
-  private fieldParentFormControl(field: FormlyFieldConfig): FormArray | FormGroup {
-    const paths = getKeyPath(field);
-    paths.pop(); // remove last path
-
-    return (paths.length > 0 ? field.parent.formControl.get(paths) : field.parent.formControl) as any;
   }
 }

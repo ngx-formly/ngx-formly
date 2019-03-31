@@ -1,25 +1,14 @@
 import { FormlyExtension } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, FormGroup, FormArray, FormControl, AbstractControlOptions } from '@angular/forms';
-import { getKeyPath, isNullOrUndefined, defineHiddenProp, getFieldValue } from '../../utils';
+import { getKeyPath, defineHiddenProp, getFieldValue } from '../../utils';
+import { registerControl } from './utils';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
     if (field.key && field.type) {
-      const paths = getKeyPath(field);
-      let rootForm = field.parent.formControl as FormGroup;
-      paths.forEach((path, index) => {
-        // FormGroup/FormArray only allow string value for path
-        const formPath = path.toString();
-        // is last item
-        if (index === paths.length - 1) {
-          this.addFormControl(rootForm, field, formPath, getFieldValue(field));
-        } else {
-          this.addFormControl(rootForm, { key: formPath, fieldGroup: [], modelOptions: {}, templateOptions: {} }, formPath, typeof path === 'string' ? {} : []);
-          rootForm = <FormGroup> rootForm.get(formPath);
-        }
-      });
+      this.addFormControl(field);
     }
 
     if (field.fieldGroup && !field.formControl) {
@@ -27,7 +16,7 @@ export class FieldFormExtension implements FormlyExtension {
     }
   }
 
-  private addFormControl(form: FormGroup | FormArray, field: FormlyFieldConfigCache, path: string | number, value: any) {
+  private addFormControl(field: FormlyFieldConfigCache) {
     if (!field.formControl) {
       defineHiddenProp(field, 'formControl', field.formControl);
     }
@@ -39,16 +28,11 @@ export class FieldFormExtension implements FormlyExtension {
     } as AbstractControlOptions;
     let control: AbstractControl;
 
-    if (field.formControl instanceof AbstractControl || form.get(<string> path)) {
-      control = field.formControl || form.get(<string> path);
-      if (
-        !(isNullOrUndefined(control.value) && isNullOrUndefined(value))
-        && control.value !== value
-        && control instanceof FormControl
-      ) {
-        control.patchValue(value);
-      }
-
+    const form = field.parent.formControl as FormGroup;
+    const value = getFieldValue(field);
+    const paths = getKeyPath(field);
+    if (field.formControl instanceof AbstractControl || form.get(paths)) {
+      control = field.formControl || form.get(paths);
       if (abstractControlOptions.validators || abstractControlOptions.asyncValidators) {
         if (abstractControlOptions.validators) {
           control.setValidators(abstractControlOptions.validators);
@@ -86,14 +70,6 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     field.formControl = control;
-    if (form instanceof FormArray) {
-      if (form.at(<number> path) !== control) {
-        form.setControl(<number> path, control);
-      }
-    } else {
-      if (form.get(<string> path) !== control) {
-        form.setControl(<string> path, control);
-      }
-    }
+    registerControl(field);
   }
 }

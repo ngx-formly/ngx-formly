@@ -482,7 +482,7 @@ describe('FormlyFormBuilder service', () => {
 
       let control: FormControl = <FormControl> form.get('title');
       expect(control).not.toBeNull();
-      expect(control.value).toEqual('created by component');
+      expect(control.value).toBeUndefined();
     });
 
     it('should add form control to form When `hide` is false', () => {
