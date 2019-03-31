@@ -21,11 +21,11 @@ export class FieldFormExtension implements FormlyExtension {
       defineHiddenProp(field, 'formControl', field.formControl);
     }
 
-    const abstractControlOptions = {
+    const controlOptions: AbstractControlOptions = {
       validators: field._validators,
       asyncValidators: field._asyncValidators,
       updateOn: field.modelOptions.updateOn,
-    } as AbstractControlOptions;
+    };
     let control: AbstractControl;
 
     const form = field.parent.formControl as FormGroup;
@@ -33,12 +33,15 @@ export class FieldFormExtension implements FormlyExtension {
     const paths = getKeyPath(field);
     if (field.formControl instanceof AbstractControl || form.get(paths)) {
       control = field.formControl || form.get(paths);
-      if (abstractControlOptions.validators || abstractControlOptions.asyncValidators) {
-        if (abstractControlOptions.validators) {
-          control.setValidators(abstractControlOptions.validators);
+      if (
+        (controlOptions.validators !== control.validator)
+        || (controlOptions.asyncValidators !== control.asyncValidator)
+      ) {
+        if (controlOptions.validators !== control.validator) {
+          control.setValidators(controlOptions.validators);
         }
-        if (abstractControlOptions.asyncValidators) {
-          control.setAsyncValidators(abstractControlOptions.asyncValidators);
+        if (controlOptions.asyncValidators !== control.asyncValidator) {
+          control.setAsyncValidators(controlOptions.asyncValidators);
         }
         control.updateValueAndValidity();
       }
@@ -47,11 +50,11 @@ export class FieldFormExtension implements FormlyExtension {
       console.warn(`NgxFormly: '${component.name}::createControl' is deprecated since v5.0, use 'prePopulate' hook instead.`);
       control = component.createControl(value, field);
     } else if (field.fieldGroup && !field.fieldArray) {
-      control = new FormGroup({}, abstractControlOptions);
+      control = new FormGroup({}, controlOptions);
     } else if (field.fieldArray) {
-      control = new FormArray([], abstractControlOptions);
+      control = new FormArray([], controlOptions);
     } else {
-      control = new FormControl(value, abstractControlOptions);
+      control = new FormControl(value, controlOptions);
     }
 
     if (field.templateOptions.disabled) {

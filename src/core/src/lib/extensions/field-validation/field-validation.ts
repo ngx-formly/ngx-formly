@@ -1,24 +1,27 @@
 import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { AbstractControl, Validators } from '@angular/forms';
-import { isObject, FORMLY_VALIDATORS, defineHiddenProp } from '../../utils';
+import { AbstractControl, Validators, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
+import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined } from '../../utils';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
   onPopulate(field: FormlyFieldConfigCache) {
+    if (!field.parent) {
+      return;
+    }
+
     this.initFieldValidation(field);
     this.initFieldAsyncValidation(field);
   }
 
   private initFieldValidation(field: FormlyFieldConfigCache) {
-    if (field._validators) {
+    if (!isUndefined(field._validators)) {
       return;
     }
 
-    defineHiddenProp(field, '_validators', []);
-    this.initPredefinedFieldValidation(field);
+    const validators: ValidatorFn[] = this.getPredefinedFieldValidation(field);
     if (field.validators) {
       for (const validatorName in field.validators) {
         if (validatorName !== 'validation') {
@@ -31,7 +34,7 @@ export class FieldValidationExtension implements FormlyExtension {
             validator = validator.expression;
           }
 
-          field._validators.push((control: AbstractControl) => {
+          validators.push((control: AbstractControl) => {
             const isValid = validator(control, field);
             if (errorPath && field.formControl && field.formControl.get(errorPath)) {
               if (!isValid) {
@@ -53,18 +56,20 @@ export class FieldValidationExtension implements FormlyExtension {
             field.validators.validation = [field.validators.validation];
           }
           field.validators.validation
-            .forEach((validator: any) => field._validators.push(this.wrapNgValidatorFn(field, validator)));
+            .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator)));
         }
       }
     }
+
+    defineHiddenProp(field, '_validators', Validators.compose(validators));
   }
 
   private initFieldAsyncValidation(field: FormlyFieldConfigCache) {
-    if (field._asyncValidators) {
+    if (!isUndefined(field._asyncValidators)) {
       return;
     }
 
-    defineHiddenProp(field, '_asyncValidators', []);
+    const validators: AsyncValidatorFn[] = [];
     if (field.asyncValidators) {
       for (const validatorName in field.asyncValidators) {
         if (validatorName !== 'validation') {
@@ -73,7 +78,7 @@ export class FieldValidationExtension implements FormlyExtension {
             validator = validator.expression;
           }
 
-          field._asyncValidators.push((control: AbstractControl) => new Promise((resolve) => {
+          validators.push((control: AbstractControl) => new Promise((resolve) => {
             return validator(control, field).then((result: boolean) => {
               resolve(result ? null : { [validatorName]: true });
               // workaround for https://github.com/angular/angular/issues/13200
@@ -87,36 +92,36 @@ export class FieldValidationExtension implements FormlyExtension {
             field.asyncValidators.validation = [field.asyncValidators.validation];
           }
           field.asyncValidators.validation
-            .forEach((validator: any) => field._asyncValidators.push(this.wrapNgValidatorFn(field, validator) as any));
+            .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator) as any));
         }
       }
     }
+
+    defineHiddenProp(field, '_asyncValidators', Validators.composeAsync(validators));
   }
 
-  private initPredefinedFieldValidation(field: FormlyFieldConfigCache) {
-    FORMLY_VALIDATORS
+  private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn[] {
+    return FORMLY_VALIDATORS
       .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt)) || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]))
-      .forEach((opt) => {
-        field._validators.push((control: AbstractControl) => {
-          const value = field.templateOptions[opt];
-          if (value === false) {
-            return null;
-          }
-          switch (opt) {
-            case 'required':
-              return Validators.required(control);
-            case 'pattern':
-              return Validators.pattern(value)(control);
-            case 'minLength':
-              return Validators.minLength(value)(control);
-            case 'maxLength':
-              return Validators.maxLength(value)(control);
-            case 'min':
-              return Validators.min(value)(control);
-            case 'max':
-              return Validators.max(value)(control);
-          }
-        });
+      .map((opt) => (control: AbstractControl) => {
+        const value = field.templateOptions[opt];
+        if (value === false) {
+          return null;
+        }
+        switch (opt) {
+          case 'required':
+            return Validators.required(control);
+          case 'pattern':
+            return Validators.pattern(value)(control);
+          case 'minLength':
+            return Validators.minLength(value)(control);
+          case 'maxLength':
+            return Validators.maxLength(value)(control);
+          case 'min':
+            return Validators.min(value)(control);
+          case 'max':
+            return Validators.max(value)(control);
+        }
       });
   }
 
