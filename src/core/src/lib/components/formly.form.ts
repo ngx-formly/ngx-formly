@@ -170,9 +170,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
         this.modelChangeSubs.push(valueChanges.subscribe(value => {
           if (field.parsers && field.parsers.length > 0) {
-            if (field.parsers && field.parsers.length > 0) {
-              field.parsers.forEach(parserFn => value = parserFn(value));
-            }
+            field.parsers.forEach(parserFn => value = parserFn(value));
           }
 
           this.changeModel({ key: [...rootKey, field.key].join('.'), value });
