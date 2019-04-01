@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, Input } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -8,11 +8,11 @@ import { FieldWrapper } from '@ngx-formly/core';
       <nz-form-label
         *ngIf="to.label && !to.hideLabel"
         [nzRequired]="to.required && !to.hideRequiredMarker"
-        [nzSpan]="to.nzLabelSpan"
+        [nzSpan]="nzLabelSpan"
       >
         {{ to.label }}
       </nz-form-label>
-      <nz-form-control [nzSpan]="to.nzControlSpan">
+      <nz-form-control [nzSpan]="nzControlSpan">
         <ng-template #fieldComponent></ng-template>
       </nz-form-control>
     </nz-form-item>
@@ -23,4 +23,12 @@ import { FieldWrapper } from '@ngx-formly/core';
 })
 export class FormlyWrapperFormField extends FieldWrapper {
   @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent: ViewContainerRef;
+
+  get nzLabelSpan() {
+    return this.to!.nzLabelSpan || null;
+  }
+
+  get nzControlSpan() {
+    return this.to!.nzControlSpan || null;
+  }
 }
