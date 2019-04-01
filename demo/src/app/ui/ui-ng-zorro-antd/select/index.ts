@@ -7,9 +7,8 @@ import {
   NzDisabledFieldConfig,
   NzSizeFieldConfig,
   NzPlaceHolderFieldConfig,
+  debugFields,
 } from '../common';
-
-import { debugFields } from '../../common';
 
 const select = {
   title: 'Select type',
@@ -226,6 +225,9 @@ const NzTokenSeparatorsFieldConfig: FormlyFieldConfig = {
     label: 'nzTokenSeparators',
     placeholder: 'Available at multiple or tags mode',
   },
+  expressionProperties: {
+    'templateOptions.disabled': 'model.nzMode === "default"',
+  },
 };
 
 const NzLoadingFieldConfig: FormlyFieldConfig = {
@@ -266,7 +268,6 @@ const NzCustomContentFieldConfig: FormlyFieldConfig = {
     label: 'nzCustomContent',
   },
 };
-
 const SelectExampleConfig: NzDebugConfig = {
   debugFields: [
     ...debugFields,

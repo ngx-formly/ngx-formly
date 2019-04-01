@@ -3,8 +3,8 @@ import { AppModule as RadioAppModule } from './app.module';
 
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { debugFields } from '../../common';
 import {
+  debugFields,
   NzDebugConfig,
   NzAutoFocusFieldConfig,
   NzDisabledFieldConfig,

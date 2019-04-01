@@ -20,6 +20,7 @@
     "build:primeng": "ng build @ngx-formly/primeng",
     "build:kendo": "ng build @ngx-formly/kendo",
     "build:nativescript": "ng build @ngx-formly/nativescript",
+    "build:ng-zorro-antd": "ng build @ngx-formly/ng-zorro-antd",
     "build:schematics": "cd src/schematics && npm run build && cd ../.. && npm run copy:schematics",
     "copy:schematics": "cpr src/schematics dist/@ngx-formly/schematics --delete-first --filter node_modules/",
     "release": "standard-version && npm run build && node .config/publish.js",

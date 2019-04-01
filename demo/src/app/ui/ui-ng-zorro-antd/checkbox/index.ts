@@ -3,8 +3,7 @@ import { AppModule as CheckboxAppModule } from './app.module';
 
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { debugFields } from '../../common';
-import { NzDebugConfig, NzAutoFocusFieldConfig, NzDisabledFieldConfig } from '../common';
+import { debugFields, NzDebugConfig, NzAutoFocusFieldConfig, NzDisabledFieldConfig } from '../common';
 
 const checkbox = {
   title: 'Checkbox type',

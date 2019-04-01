@@ -2,13 +2,13 @@ import { AppModule as InputNumberAppModule } from './app.module';
 import { AppComponent as InputNumberAppComponent } from './app.component';
 
 import {
+  debugFields,
   NzSizeFieldConfig,
   NzDebugConfig,
   NzAutoFocusFieldConfig,
   NzDisabledFieldConfig,
   NzPlaceHolderFieldConfig,
 } from '../common';
-import { debugFields } from '../../common';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 const input = {

@@ -29,6 +29,7 @@ Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an o
 | [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://ngx-formly.github.io/ngx-formly/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://ngx-formly.github.io/ngx-formly/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
 | [NativeScript](https://www.nativescript.org)      | ||
+| [ng-zorro-antd](https://ng.ant.design/docs/introduce/en) | [Demo](https://ngx-formly.github.io/ngx-formly/ui/ng-zorro-antd) | ||
 
 **Which Version to use?**
 
@@ -62,6 +63,8 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 | [PrimeNG](http://primefaces.org/primeng/#/)       | `@ngx-formly/primeng`       | `FormlyPrimeNGModule`       |
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | `@ngx-formly/kendo`         | `FormlyKendoModule`         |
 | [NativeScript](https://www.nativescript.org)      | `@ngx-formly/nativescript`  | `FormlyNativescriptModule`  |
+
+| [ng-zorro-antd](https://ng.ant.design/docs/introduce/en) | `@ngx-formly/ng-zorro-antd` | `FormlyNgZorroAntdModule` |
 
 ```bash
   npm install @ngx-formly/<package-name> --save

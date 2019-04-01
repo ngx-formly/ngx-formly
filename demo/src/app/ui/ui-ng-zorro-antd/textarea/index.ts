@@ -3,8 +3,7 @@ import { AppModule as TextareaAppModule } from './app.module';
 
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { debugFields } from '../../common';
-import { NzDebugConfig, NzSizeFieldConfig } from '../common';
+import { debugFields, NzDebugConfig, NzSizeFieldConfig } from '../common';
 
 const textarea = {
   title: 'Textarea type',

@@ -1,4 +1,5 @@
-import { FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { debugFields as commonDebugFields } from '../../common';
 
 export interface DebugFile {
   file: string;
@@ -16,6 +17,33 @@ export interface NzDebugConfig {
   debugFields: FormlyFieldConfig[];
   exampleConfig: ExampleConfig;
 }
+
+const NzLabelSpanConfig: FormlyFieldConfig = {
+  key: 'nzLabelSpan',
+  type: 'input-number',
+  className: 'col-md-6',
+  templateOptions: {
+    label: 'nzLabelSpan',
+    nzMin: 0,
+    nzMax: 24,
+  },
+};
+
+const NzControlSpanConfig: FormlyFieldConfig = {
+  key: 'nzControlSpan',
+  type: 'input-number',
+  className: 'col-md-6',
+  templateOptions: {
+    label: 'nzControlSpan',
+    nzMin: 0,
+    nzMax: 24,
+  },
+};
+
+export const debugFields: FormlyFieldConfig[] = [
+  ...commonDebugFields,
+  { key: 'templateOptions', fieldGroupClassName: 'row', fieldGroup: [NzLabelSpanConfig, NzControlSpanConfig] },
+];
 
 export const NzSizeFieldConfig: FormlyFieldConfig = {
   key: 'nzSize',

@@ -1,8 +1,7 @@
 import { AppModule as InputAppModule } from './app.module';
 import { AppComponent as InputAppComponent } from './app.component';
 
-import { NzSizeFieldConfig, NzDebugConfig } from '../common';
-import { debugFields } from '../../common';
+import { debugFields, NzSizeFieldConfig, NzDebugConfig } from '../common';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 const input = {

@@ -1,14 +1,18 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, Input } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-wrapper-ng-zorro-antd-form-field',
   template: `
     <nz-form-item>
-      <nz-form-label *ngIf="to.label && !to.hideLabel" [nzRequired]="to.required && !to.hideRequiredMarker">
+      <nz-form-label
+        *ngIf="to.label && !to.hideLabel"
+        [nzRequired]="to.required && !to.hideRequiredMarker"
+        [nzSpan]="to.nzLabelSpan"
+      >
         {{ to.label }}
       </nz-form-label>
-      <nz-form-control>
+      <nz-form-control [nzSpan]="to.nzControlSpan">
         <ng-template #fieldComponent></ng-template>
       </nz-form-control>
     </nz-form-item>
