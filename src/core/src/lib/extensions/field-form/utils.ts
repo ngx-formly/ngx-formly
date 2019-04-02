@@ -11,31 +11,27 @@ export function unregisterControl(field: FormlyFieldConfig) {
       field.formControl.setParent(null);
     }
   } else if (form instanceof FormGroup) {
-    const key = getKeyPath(field).pop();
-    form.removeControl(`${key}`);
+    const paths = getKeyPath(field);
+    form.removeControl(paths[paths.length - 1]);
     field.formControl.setParent(null);
   }
 }
 
 export function registerControl(field: FormlyFieldConfig) {
-  const paths = getKeyPath(field);
-  const key = '' + paths.pop();
-
   let parent = field.parent.formControl as FormGroup;
-  if (paths.length > 0) {
-    paths.forEach((path) => {
-      path = '' + path;
-      if (!parent.get(path)) {
-        registerControl({
-          key: path,
-          formControl: new FormGroup({}),
-          model: typeof path === 'string' ? {} : [],
-          parent: { formControl: parent },
-        });
-      }
 
-      parent = <FormGroup> parent.get(path);
-    });
+  const paths = getKeyPath(field);
+  for (let i = 0; i < (paths.length - 1); i++) {
+    const path = paths[i];
+    if (!parent.get([path])) {
+      registerControl({
+        key: path,
+        formControl: new FormGroup({}),
+        parent: { formControl: parent },
+      });
+    }
+
+    parent = <FormGroup> parent.get([path]);
   }
 
   const value = getFieldValue(field);
@@ -47,8 +43,8 @@ export function registerControl(field: FormlyFieldConfig) {
   ) {
     control.patchValue(value, { emitEvent: false });
   }
-
-  if (parent.get(key) !== control) {
+  const key = paths[paths.length - 1];
+  if (parent.get([key]) !== control) {
     parent.setControl(key, control);
   }
 }

@@ -10,25 +10,18 @@ export function getFieldId(formId: string, field: FormlyFieldConfig, index: stri
   return [formId, type, field.key, index].join('_');
 }
 
-export function getKeyPath(field: FormlyFieldConfigCache): (string | number)[] {
+export function getKeyPath(field: FormlyFieldConfigCache): string[] {
   if (!field.key) {
     return [];
   }
 
   /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
   if (!field._keyPath || field._keyPath.key !== field.key) {
-    const path: (string | number)[] = [];
-    if (typeof field.key === 'number') {
-      path.push(field.key);
-    } else {
-      const key = field.key.indexOf('[') === -1
-        ? field.key
-        : field.key.replace(/\[(\w+)\]/g, '.$1');
+    const key = field.key.indexOf('[') === -1
+      ? field.key
+      : field.key.replace(/\[(\w+)\]/g, '.$1');
 
-      (key.indexOf('.') !== -1 ? key.split('.') : [key])
-        .forEach(v => path.push(/^\d+$/.test(v) ? Number(v) : v));
-    }
-    field._keyPath = { key: field.key, path };
+    field._keyPath = { key: field.key, path: key.indexOf('.') !== -1 ? key.split('.') : [key] };
   }
 
   return field._keyPath.path.slice(0);
@@ -36,7 +29,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): (string | number)[] {
 
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
 
-export function assignModelValue(model: any, path: string | (string | number)[], value: any) {
+export function assignModelValue(model: any, path: string | string[], value: any) {
   if (typeof path === 'string') {
     path = getKeyPath({key: path});
   }
@@ -44,7 +37,7 @@ export function assignModelValue(model: any, path: string | (string | number)[],
   if (path.length > 1) {
     const e = path.shift();
     if (!model[e] || !isObject(model[e])) {
-      model[e] = typeof path[0] === 'string' ? {} : [];
+      model[e] = /^\d+$/.test(path[0]) ? [] : {};
     }
     assignModelValue(model[e], path, value);
   } else {

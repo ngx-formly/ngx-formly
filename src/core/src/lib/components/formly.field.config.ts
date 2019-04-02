@@ -191,7 +191,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   };
   _keyPath?: {
     key: string;
-    path: (string | number)[];
+    path: string[];
   };
 }
 

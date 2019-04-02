@@ -1,7 +1,7 @@
 import { FormlyExtension, FormlyConfig, TemplateManipulators } from '../../services/formly.config';
 import { FormlyFieldConfigCache, FormlyFieldConfig } from '../../components/formly.field.config';
 import { FormGroup } from '@angular/forms';
-import { getFieldId, assignModelValue, isUndefined, getFieldValue, reverseDeepMerge } from '../../utils';
+import { getFieldId, assignModelValue, isUndefined, getFieldValue, reverseDeepMerge, getKeyPath } from '../../utils';
 
 /** @experimental */
 export class CoreExtension implements FormlyExtension {
@@ -86,7 +86,7 @@ export class CoreExtension implements FormlyExtension {
     }
 
     if (!isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-      assignModelValue(root.model, field.key, field.defaultValue);
+      assignModelValue(root.model, getKeyPath(field), field.defaultValue);
     }
 
     this.initFieldWrappers(field);
