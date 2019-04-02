@@ -78,7 +78,7 @@ describe('FormlyUtils service', () => {
 
     it('should get the correct key path of length 2 for a simple string with an index', () => {
       let keyPath = getKeyPath({key: 'property[2]'});
-      expect(keyPath).toEqual(['property', 2]);
+      expect(keyPath).toEqual(['property', '2']);
     });
 
     it('should get the correct key path of length 3 for a simple nested property', () => {
@@ -88,18 +88,18 @@ describe('FormlyUtils service', () => {
 
     it('should get the correct key path of length 4 with one index for a nested property containing 1 index property',  () => {
       let keyPath = getKeyPath({key: 'property1.property2[4].property3'});
-      expect(keyPath).toEqual(['property1', 'property2', 4, 'property3']);
+      expect(keyPath).toEqual(['property1', 'property2', '4', 'property3']);
     });
 
     it('should attach the key path to the field config', () => {
       let fieldConfig = {key: 'property1.property2[4].property3'};
       getKeyPath(fieldConfig);
-      expect(fieldConfig['_keyPath'].path).toEqual(['property1', 'property2', 4, 'property3']);
+      expect(fieldConfig['_keyPath'].path).toEqual(['property1', 'property2', '4', 'property3']);
     });
 
     it('should refresh formlyKeyPath on key updated', () => {
       const fieldConfig = { key: 'property1.property2[4].property3' };
-      expect(getKeyPath(fieldConfig)).toEqual(['property1', 'property2', 4, 'property3']);
+      expect(getKeyPath(fieldConfig)).toEqual(['property1', 'property2', '4', 'property3']);
 
       fieldConfig.key = 'ddd';
       expect(getKeyPath(fieldConfig)).toEqual(['ddd']);
