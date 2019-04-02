@@ -28,9 +28,6 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
 
   private get fieldAttrElements() { return (this.field && this.field['_attrElements']) || []; }
-  private set fieldAttrElements(elements: any[]) {
-    this.field && defineHiddenProp(this.field, '_attrElements', elements);
-  }
 
   constructor(
     private renderer: Renderer2,
@@ -135,11 +132,18 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   private attachAttrElement() {
-    this.fieldAttrElements = [...this.fieldAttrElements, this.elementRef.nativeElement];
+    if (!this.field['_attrElements']) {
+      defineHiddenProp(this.field, '_attrElements', [this.elementRef.nativeElement]);
+    } else {
+      this.field['_attrElements'].push(this.elementRef.nativeElement);
+    }
   }
 
   private detachAttrElement() {
-    this.fieldAttrElements = this.fieldAttrElements.filter(element => element !== this.elementRef.nativeElement);
+    const index = this.fieldAttrElements.findIndex(element => element !== this.elementRef.nativeElement);
+    if (index !== -1) {
+      this.field['_attrElements'].splice(index, 1);
+    }
   }
 
   private setAttribute(attr: string, value: string) {
