@@ -63,10 +63,6 @@ export function getFieldValue(field: FormlyFieldConfig): any {
   return model;
 }
 
-export function getKey(controlKey: string, actualKey: string) {
-  return actualKey ? actualKey + '.' + controlKey : controlKey;
-}
-
 export function reverseDeepMerge(dest: any, ...args: any[]) {
   args.forEach(src => {
     for (let srcArg in src) {
