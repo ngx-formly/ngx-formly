@@ -29,20 +29,17 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
 
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
 
-export function assignModelValue(model: any, path: string | string[], value: any) {
-  if (typeof path === 'string') {
-    path = getKeyPath({key: path});
+export function assignModelValue(model: any, paths: string[], value: any) {
+  for (let i = 0; i < (paths.length - 1); i++) {
+    const path = paths[i];
+    if (!model[path] || !isObject(model[path])) {
+      model[path] = /^\d+$/.test(path) ? [] : {};
+    }
+
+    model = model[path];
   }
 
-  if (path.length > 1) {
-    const e = path.shift();
-    if (!model[e] || !isObject(model[e])) {
-      model[e] = /^\d+$/.test(path[0]) ? [] : {};
-    }
-    assignModelValue(model[e], path, value);
-  } else {
-    model[path[0]] = value;
-  }
+  model[paths[paths.length - 1]] = value;
 }
 
 export function getFieldValue(field: FormlyFieldConfig): any {
