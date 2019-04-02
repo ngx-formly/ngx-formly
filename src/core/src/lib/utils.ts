@@ -116,7 +116,7 @@ export function clone(value: any): any {
     return null;
   }
 
-  if (Object.prototype.toString.call(value) === '[object Date]') {
+  if (value instanceof Date) {
     return new Date(value.getTime());
   }
 
