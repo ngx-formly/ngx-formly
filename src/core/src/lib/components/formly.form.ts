@@ -90,7 +90,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   changeModel(event: { key: string, value: any }) {
-    assignModelValue(this.model, event.key, event.value);
+    assignModelValue(this.model, event.key.split('.'), event.value);
     this.modelChange.emit(clone(this.model));
   }
 
