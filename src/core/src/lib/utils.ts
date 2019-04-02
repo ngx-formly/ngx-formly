@@ -53,11 +53,12 @@ export function assignModelValue(model: any, path: string | (string | number)[],
 }
 
 export function getFieldValue(field: FormlyFieldConfig): any {
-  const paths = getKeyPath(field);
   let model = field.parent.model;
-  while (model && paths.length > 0) {
-    const e = paths.shift();
-    model = model[e];
+  for (const path of getKeyPath(field)) {
+    if (!model) {
+      return model;
+    }
+    model = model[path];
   }
 
   return model;
