@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKey, getKeyPath, clone } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKeyPath, clone } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
 
@@ -43,13 +43,6 @@ describe('FormlyUtils service', () => {
       expect(getFieldValue({ parent: { model }, key: 'value' })).toBe(2);
       expect(getFieldValue({ parent: { model }, key: 'looks.nested' })).toBe(undefined);
       expect(getFieldValue({ parent: { model }, key: 'nested.value' })).toBe('bar');
-    });
-  });
-
-  describe('getKey', () => {
-    it('should properly get key', () => {
-      expect(getKey('key', 'path.to.save')).toBe('path.to.save.key');
-      expect(getKey('key', undefined)).toBe('key');
     });
   });
 
