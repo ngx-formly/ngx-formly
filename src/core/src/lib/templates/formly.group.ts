@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from '../templates/field.type';
+import { FieldType } from './field.type';
 
 @Component({
   selector: 'formly-group',
