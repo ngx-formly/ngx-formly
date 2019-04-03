@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.1"></a>
+## [5.0.1](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0...v5.0.1) (2019-04-03)
+
+
+### Bug Fixes
+
+* **core:** improve performance for FieldArrayType ([#1511](https://github.com/ngx-formly/ngx-formly/issues/1511)) ([cef8b96](https://github.com/ngx-formly/ngx-formly/commit/cef8b96)), closes [#1489](https://github.com/ngx-formly/ngx-formly/issues/1489)
+
+
+### Performance Improvements
+
+* **core:** avoid mixin string and number for KeyPath ([dffe082](https://github.com/ngx-formly/ngx-formly/commit/dffe082))
+* **core:** avoid recursive calls for assignModelValue ([63310d2](https://github.com/ngx-formly/ngx-formly/commit/63310d2))
+* **core:** avoid using unnecessary rxjs operators ([#1499](https://github.com/ngx-formly/ngx-formly/issues/1499)) ([cc59fcf](https://github.com/ngx-formly/ngx-formly/commit/cc59fcf))
+* **core:** check date type using instanceof ([2d108db](https://github.com/ngx-formly/ngx-formly/commit/2d108db))
+* **core:** reduce regex calls for getKeyPath ([#1501](https://github.com/ngx-formly/ngx-formly/issues/1501)) ([9e78c04](https://github.com/ngx-formly/ngx-formly/commit/9e78c04))
+* **core:** rely on push instead of spread operaror ([4c363b2](https://github.com/ngx-formly/ngx-formly/commit/4c363b2))
+* **core:** skip fieldParentFormControl call when field has parent ([#1500](https://github.com/ngx-formly/ngx-formly/issues/1500)) ([f5de20b](https://github.com/ngx-formly/ngx-formly/commit/f5de20b))
+* **core:** updateValidity only when validators/asyncValidator change ([#1504](https://github.com/ngx-formly/ngx-formly/issues/1504)) ([57a2087](https://github.com/ngx-formly/ngx-formly/commit/57a2087))
+* **core:** use for-of instead of while for getFieldValue ([a9841fb](https://github.com/ngx-formly/ngx-formly/commit/a9841fb))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0-rc.12...v5.0.0) (2019-03-23)
 
