@@ -137,10 +137,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
-    if (!field._componentRefs) {
-      defineHiddenProp(field, '_componentRefs', [ref]);
-    } else {
+    if (field._componentRefs) {
       field._componentRefs.push(ref);
+    } else {
+      defineHiddenProp(field, '_componentRefs', [ref]);
     }
     Object.assign(ref.instance, { field });
   }

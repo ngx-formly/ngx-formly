@@ -5,7 +5,7 @@ import { FormlyField } from './components/formly.field';
 import { FormlyAttributes } from './components/formly.attributes';
 import { FormlyConfig, ConfigOption, FORMLY_CONFIG } from './services/formly.config';
 import { FormlyFormBuilder } from './services/formly.form.builder';
-import { FormlyGroup } from './components/formly.group';
+import { FormlyGroup } from './templates/formly.group';
 import { FormlyValidationMessage } from './templates/formly.validation-message';
 import { FormlyTemplateType } from './templates/field-template.type';
 

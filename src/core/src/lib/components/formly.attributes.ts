@@ -132,10 +132,10 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   private attachAttrElement() {
-    if (!this.field['_attrElements']) {
-      defineHiddenProp(this.field, '_attrElements', [this.elementRef.nativeElement]);
-    } else {
+    if (this.field['_attrElements']) {
       this.field['_attrElements'].push(this.elementRef.nativeElement);
+    } else {
+      defineHiddenProp(this.field, '_attrElements', [this.elementRef.nativeElement]);
     }
   }
 
