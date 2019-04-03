@@ -1,6 +1,6 @@
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
-import { getKeyPath, getFieldValue, isNullOrUndefined } from '../../utils';
+import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp } from '../../utils';
 
 export function unregisterControl(field: FormlyFieldConfig) {
   const form = field.formControl.parent as FormArray | FormGroup;
@@ -17,8 +17,28 @@ export function unregisterControl(field: FormlyFieldConfig) {
   }
 }
 
-export function registerControl(field: FormlyFieldConfig) {
+export function registerControl(field: FormlyFieldConfig, control?: any) {
+  control = control || field.formControl;
+  if (!field.formControl && control) {
+    defineHiddenProp(field, 'formControl', control);
+    if (field.templateOptions.disabled && control.enabled) {
+      control.disable();
+    }
+
+    if (delete field.templateOptions.disabled) {
+      Object.defineProperty(field.templateOptions, 'disabled', {
+        get: () => !field.formControl.enabled,
+        set: (value: boolean) => value ? field.formControl.disable() : field.formControl.enable(),
+        enumerable: true,
+        configurable: true,
+      });
+    }
+  }
+
   let parent = field.parent.formControl as FormGroup;
+  if (!parent) {
+    return;
+  }
 
   const paths = getKeyPath(field);
   for (let i = 0; i < (paths.length - 1); i++) {
@@ -35,7 +55,6 @@ export function registerControl(field: FormlyFieldConfig) {
   }
 
   const value = getFieldValue(field);
-  const control = field.formControl;
   if (
     !(isNullOrUndefined(control.value) && isNullOrUndefined(value))
     && control.value !== value
