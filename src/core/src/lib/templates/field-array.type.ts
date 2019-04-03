@@ -3,8 +3,9 @@ import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, isNullOrUndefined } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
-import { FormlyFieldConfig } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
+import { registerControl } from '../extensions/field-form/utils';
 
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
   formControl: FormArray;
@@ -21,10 +22,6 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   }
 
   onPopulate(field: FormlyFieldConfig) {
-    if (!field.parent) {
-      return;
-    }
-
     field.fieldGroup = field.fieldGroup || [];
     if (field.fieldGroup.length > field.model.length) {
       for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
@@ -37,6 +34,21 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
       const f = { ...clone(field.fieldArray), key: `${i}` };
       field.fieldGroup.push(f);
     }
+  }
+
+  postPopulate(field: FormlyFieldConfigCache) {
+    if (field.formControl) {
+      return;
+    }
+
+    registerControl(field, new FormArray(
+      field.fieldGroup.map(f => f.formControl),
+      {
+        validators: field._validators,
+        asyncValidators: field._asyncValidators,
+        updateOn: field.modelOptions.updateOn,
+      },
+    ));
   }
 
   add(i?: number, initialModel?: any) {
