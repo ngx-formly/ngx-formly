@@ -105,3 +105,51 @@ export const NzPlaceHolderFieldConfig: FormlyFieldConfig = {
     label: 'nzPlaceHolder',
   },
 };
+
+export const NzAllowClearFieldConfig: FormlyFieldConfig = {
+  key: 'nzAllowClear',
+  type: 'checkbox',
+  className: 'col-md-4',
+  defaultValue: true,
+  templateOptions: {
+    label: 'nzAllowClear',
+  },
+};
+
+export const NzNotFoundContentFieldConfig: FormlyFieldConfig = {
+  key: 'nzNotFoundContent',
+  type: 'input',
+  className: 'col-md-4',
+  templateOptions: {
+    label: 'nzNotFoundContent',
+  },
+};
+
+export const NzShowArrowFieldConfig: FormlyFieldConfig = {
+  key: 'nzShowArrow',
+  type: 'checkbox',
+  className: 'col-md-4',
+  defaultValue: true,
+  templateOptions: {
+    label: 'nzShowArrow',
+  },
+};
+
+export const NzShowSearchFieldConfig: FormlyFieldConfig = {
+  key: 'nzShowSearch',
+  type: 'checkbox',
+  className: 'col-md-4',
+  templateOptions: {
+    label: 'nzShowSearch',
+  },
+};
+
+export const NzShowInputFieldConfig: FormlyFieldConfig = {
+  key: 'nzShowInput',
+  type: 'checkbox',
+  className: 'col-md-4',
+  defaultValue: true,
+  templateOptions: {
+    label: 'nzShowInput',
+  },
+};

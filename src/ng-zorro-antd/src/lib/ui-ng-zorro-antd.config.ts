@@ -6,12 +6,14 @@ import {
   FormlyFieldSelect,
   FormlyFieldTextArea,
   FormlyFieldInputNumber,
+  FormlyFieldCascader,
 } from './types/types';
 import { FormlyWrapperFormField } from './wrappers/wrappers';
 
 
 export const FIELD_TYPE_COMPONENTS = [
   // types
+  FormlyFieldCascader,
   FormlyFieldCheckbox,
   FormlyFieldInput,
   FormlyFieldInputNumber,
@@ -24,6 +26,11 @@ export const FIELD_TYPE_COMPONENTS = [
 
 export const NG_ZORRO_ANTD_FORMLY_CONFIG: ConfigOption = {
   types: [
+    {
+      name: 'cascader',
+      component: FormlyFieldCascader,
+      wrappers: ['form-field'],
+    },
     {
       name: 'input',
       component: FormlyFieldInput,

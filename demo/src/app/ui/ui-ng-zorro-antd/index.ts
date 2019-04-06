@@ -4,8 +4,10 @@ import { InputNumberAppComponent, InputNumberExampleConfig, InputNumberAppModule
 import { CheckboxAppComponent, CheckboxAppModule, CheckboxExampleConfig } from './checkbox';
 import { RadioAppComponent, RadioAppModule, RadioExampleConfig } from './radio';
 import { SelectAppComponent, SelectAppModule, SelectExampleConfig } from './select';
+import { CascaderExampleConfig, CascaderAppComponent, CascaderAppModule } from './cascader';
 
 export const NG_ZORRO_COMPONENTS = [
+  CascaderAppComponent,
   InputAppComponent,
   TextareaAppComponent,
   InputNumberAppComponent,
@@ -15,6 +17,7 @@ export const NG_ZORRO_COMPONENTS = [
 ];
 
 export const NG_ZORRO_EXAMPLE_CONFIGS = [
+  CascaderExampleConfig,
   InputExampleConfig,
   TextareaExampleConfig,
   InputNumberExampleConfig,
@@ -24,6 +27,7 @@ export const NG_ZORRO_EXAMPLE_CONFIGS = [
 ];
 
 export const NG_ZORRO_EXAMPLE_MODULE = [
+  CascaderAppModule,
   InputAppModule,
   TextareaAppModule,
   InputNumberAppModule,

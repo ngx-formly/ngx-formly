@@ -8,6 +8,10 @@ import {
   NzSizeFieldConfig,
   NzPlaceHolderFieldConfig,
   debugFields,
+  NzAllowClearFieldConfig,
+  NzNotFoundContentFieldConfig,
+  NzShowArrowFieldConfig,
+  NzShowSearchFieldConfig,
 } from '../common';
 
 const select = {
@@ -50,16 +54,6 @@ const NzAutoClearSearchValueFieldConfig: FormlyFieldConfig = {
   className: 'col-md-4',
   templateOptions: {
     label: 'nzAutoClearSearchValue',
-  },
-};
-
-const NzAllowClearFieldConfig: FormlyFieldConfig = {
-  key: 'nzAllowClear',
-  type: 'checkbox',
-  className: 'col-md-4',
-  defaultValue: true,
-  templateOptions: {
-    label: 'nzAllowClear',
   },
 };
 
@@ -140,34 +134,6 @@ const NzModeFieldConfig: FormlyFieldConfig = {
       { value: 'multiple', label: 'multiple' },
       { value: 'tags', label: 'tags' },
     ],
-  },
-};
-
-const NzNotFoundContentFieldConfig: FormlyFieldConfig = {
-  key: 'nzNotFoundContent',
-  type: 'input',
-  className: 'col-md-4',
-  templateOptions: {
-    label: 'nzNotFoundContent',
-  },
-};
-
-const NzShowArrowFieldConfig: FormlyFieldConfig = {
-  key: 'nzShowArrow',
-  type: 'checkbox',
-  className: 'col-md-4',
-  defaultValue: true,
-  templateOptions: {
-    label: 'nzShowArrow',
-  },
-};
-
-const NzShowSearchFieldConfig: FormlyFieldConfig = {
-  key: 'nzShowSearch',
-  type: 'checkbox',
-  className: 'col-md-4',
-  templateOptions: {
-    label: 'nzShowSearch',
   },
 };
 
