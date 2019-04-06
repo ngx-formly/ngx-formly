@@ -5,7 +5,12 @@ import { MatInput } from '@angular/material/input';
 @Component({
   selector: 'formly-field-mat-native-select',
   template: `
-    <select matNativeControl [formControl]="formControl" [formlyAttributes]="field">
+    <select matNativeControl
+      [id]="id"
+      [readonly]="to.readonly"
+      [errorStateMatcher]="errorStateMatcher"
+      [formControl]="formControl"
+      [formlyAttributes]="field">
       <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
       <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
         <optgroup *ngIf="item.group" label="{{item.label}}">
