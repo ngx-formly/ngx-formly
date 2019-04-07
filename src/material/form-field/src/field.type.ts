@@ -69,6 +69,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   get placeholder() { return this.to.placeholder || ''; }
   get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
   get value() { return this.formControl.value; }
+  set value(value) { this.formControl.patchValue(value); }
   get ngControl() { return this.formControl as any; }
   get empty() { return !this.formControl.value; }
   get shouldLabelFloat() { return this.focused || !this.empty; }
