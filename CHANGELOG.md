@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.2"></a>
+## [5.0.2](https://github.com/ngx-formly/ngx-formly/compare/v5.0.1...v5.0.2) (2019-04-08)
+
+
+### Bug Fixes
+
+* **material:** add errorStateMatcher to autocomplete example ([#1517](https://github.com/ngx-formly/ngx-formly/issues/1517)) ([4606db9](https://github.com/ngx-formly/ngx-formly/commit/4606db9))
+* **material:** add FieldType set value ([#1515](https://github.com/ngx-formly/ngx-formly/issues/1515)) ([93268e4](https://github.com/ngx-formly/ngx-formly/commit/93268e4))
+* **material:** add missing attrs to native-select ([#1514](https://github.com/ngx-formly/ngx-formly/issues/1514)) ([8200078](https://github.com/ngx-formly/ngx-formly/commit/8200078))
+
+
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/ngx-formly/ngx-formly/compare/v5.0.0...v5.0.1) (2019-04-03)
 
