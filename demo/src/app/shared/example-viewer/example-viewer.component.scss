@@ -15,6 +15,9 @@
   display: flex;
   justify-content: center;
   padding: 8px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .docs-example-viewer-title-spacer {
