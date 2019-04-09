@@ -1,4 +1,31 @@
 <ngx-loading-bar [color]="'#fafafa'"></ngx-loading-bar>
+
+<mat-toolbar color="primary" class="mat-elevation-z6 app-navbar">
+  <a mat-button routerLink="" routerLinkActive="" #homeLink="routerLinkActive"
+    [routerLinkActiveOptions]="{ exact: true }">
+    <img src="https://material.angular.io/assets/img/homepage/angular-white-transparent.svg">
+    FORMLY
+  </a>
+
+  <ng-container *ngIf="isSmallDevice$ | async else mainMenu">
+    <span class="spacer" [style.flex]="'1 1 auto'"></span>
+    <a mat-button href="https://github.com/ngx-formly/ngx-formly">
+      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
+    </a>
+    <button mat-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </ng-container>
+  <ng-template #mainMenu>
+    <a *ngFor="let link of menu" mat-button [routerLink]="link.path">{{ link.title }}</a>
+    <span class="spacer" [style.flex]="'1 1 auto'"></span>
+    <a mat-button href="https://github.com/ngx-formly/ngx-formly">
+      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
+      GitHub
+    </a>
+  </ng-template>
+</mat-toolbar>
+
 <mat-sidenav-container fullscreen [style.top]="'56px'" class="mat-typography">
   <mat-sidenav
     [mode]="(isSmallDevice$ | async) ? 'over' : 'side'"
@@ -33,33 +60,6 @@
       </ng-container>
     </ng-container>
   </mat-sidenav>
-
-  <div>
-    <mat-toolbar color="primary" class="mat-elevation-z6 app-navbar">
-      <a mat-button routerLink="" routerLinkActive="" #homeLink="routerLinkActive" [routerLinkActiveOptions]="{ exact: true }">
-        <img src="https://material.angular.io/assets/img/homepage/angular-white-transparent.svg">
-        FORMLY
-      </a>
-
-      <ng-container *ngIf="isSmallDevice$ | async else mainMenu">
-        <span class="spacer" [style.flex]="'1 1 auto'"></span>
-        <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-          <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
-        </a>
-        <button mat-button (click)="sidenav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-      </ng-container>
-      <ng-template #mainMenu>
-        <a *ngFor="let link of menu" mat-button [routerLink]="link.path">{{ link.title }}</a>
-        <span class="spacer" [style.flex]="'1 1 auto'"></span>
-        <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-          <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
-          GitHub
-        </a>
-      </ng-template>
-    </mat-toolbar>
-  </div>
 
   <router-outlet></router-outlet>
 </mat-sidenav-container>
