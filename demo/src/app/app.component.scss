@@ -1,0 +1,52 @@
+.app-navbar {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 56px;
+
+  img {
+    height: 26px;
+    margin: 0 4px 3px 0;
+  }
+}
+
+::ng-deep .mat-sidenav {
+  min-width: 250px;
+  padding-top: 8px;
+  .mat-drawer-inner-container {
+    a {
+      text-align: left;
+      width: 100%;
+      border-radius: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+
+      &.active {
+        color: rgba(0, 0, 0, 0.26);
+      }
+    }
+
+    .menu-item {
+      text-transform: uppercase;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+    }
+
+    .menu-subitem, .menu-subheader {
+      padding-left: 30px;
+      color: #6e6e6e;
+    }
+
+    .menu-subheader {
+      font-size: 10px;
+      padding: 16px;
+    }
+  }
+}

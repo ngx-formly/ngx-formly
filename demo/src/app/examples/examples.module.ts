@@ -2,13 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared';
 
-import { ExamplesComponent } from './examples.component';
-
 @NgModule({
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: '', component: ExamplesComponent, children: [
+      { path: '', children: [
         { path: '', pathMatch: 'full', redirectTo: 'introduction' },
         // Intro
         { path: 'introduction', loadChildren: './introduction/config.module#ConfigModule' },
@@ -79,9 +77,6 @@ import { ExamplesComponent } from './examples.component';
         ]},
       ] },
     ]),
-  ],
-  declarations: [
-    ExamplesComponent,
   ],
 })
 export class ExamplesModule { }
