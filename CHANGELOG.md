@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.3"></a>
+## [5.0.3](https://github.com/ngx-formly/ngx-formly/compare/v5.0.2...v5.0.3) (2019-04-15)
+
+
+### Bug Fixes
+
+* **core:** disable control when parent is disabled ([#1529](https://github.com/ngx-formly/ngx-formly/issues/1529)) ([2434984](https://github.com/ngx-formly/ngx-formly/commit/2434984)), closes [#1528](https://github.com/ngx-formly/ngx-formly/issues/1528)
+
+
+
 <a name="5.0.2"></a>
 ## [5.0.2](https://github.com/ngx-formly/ngx-formly/compare/v5.0.1...v5.0.2) (2019-04-08)
 
