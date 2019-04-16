@@ -255,6 +255,13 @@ describe('FormlyForm Component', () => {
     });
   });
 
+  it('should fallback null fields to empty array', () => {
+    testComponentInputs = { fields: null };
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    expect(fixture.componentInstance.formlyForm.fields).toEqual([]);
+  });
+
   it('should reset model', () => {
     testComponentInputs = {
       fields: [{
