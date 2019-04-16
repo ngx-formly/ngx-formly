@@ -64,7 +64,7 @@ export abstract class FieldType extends CoreFieldType implements OnInit, AfterVi
   get shouldPlaceholderFloat() { return !!this.to.placeholder; }
   get value() { return this.formControl.value; }
   get ngControl() { return this.formControl as any; }
-  get empty() { return !this.formControl.value; }
+  get empty() { return this.formControl.value === null || typeof this.formControl.value === "undefined"; }
   get shouldLabelFloat() { return this.focused || !this.empty; }
   get formField(): MatFormField { return (<any>this.field)['__formField__']; }
 }
