@@ -8,10 +8,18 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
   @ViewChild('matSuffix') matSuffix!: TemplateRef<any>;
 
-  formFieldControl: MatFormFieldControl<any> = this;
+  get formFieldControl() { return this._control || this; }
+  set formFieldControl(control: MatFormFieldControl<any>) {
+    this._control = control;
+    if (this.formField && control !== this.formField._control) {
+      this.formField._control = control;
+    }
+  }
+
   errorStateMatcher = new FormlyErrorStateMatcher(this);
   stateChanges = new Subject<void>();
   _errorState = false;
+  private _control!: MatFormFieldControl<any>;
 
   ngOnInit() {
     if (this.formField) {
@@ -73,5 +81,5 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   get ngControl() { return this.formControl as any; }
   get empty() { return !this.formControl.value; }
   get shouldLabelFloat() { return this.focused || !this.empty; }
-  get formField(): MatFormField { return (<any>this.field)['__formField__']; }
+  get formField(): MatFormField { return this.field ? (<any>this.field)['__formField__'] : null; }
 }
