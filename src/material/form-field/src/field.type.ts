@@ -79,7 +79,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   get value() { return this.formControl.value; }
   set value(value) { this.formControl.patchValue(value); }
   get ngControl() { return this.formControl as any; }
-  get empty() { return !this.formControl.value; }
+  get empty() { return this.value === undefined || this.value === null || this.value === ''; }
   get shouldLabelFloat() { return this.focused || !this.empty; }
   get formField(): MatFormField { return this.field ? (<any>this.field)['__formField__'] : null; }
 }
