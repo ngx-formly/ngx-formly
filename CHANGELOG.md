@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.4"></a>
+## [5.0.4](https://github.com/ngx-formly/ngx-formly/compare/v5.0.3...v5.0.4) (2019-04-17)
+
+
+### Bug Fixes
+
+* **core:** fallback null fields to empty array ([#1534](https://github.com/ngx-formly/ngx-formly/issues/1534)) ([3608925](https://github.com/ngx-formly/ngx-formly/commit/3608925)), closes [#1530](https://github.com/ngx-formly/ngx-formly/issues/1530)
+* avoid using forRoot for UI ([#1537](https://github.com/ngx-formly/ngx-formly/issues/1537)) ([72a6b7f](https://github.com/ngx-formly/ngx-formly/commit/72a6b7f)), closes [#1535](https://github.com/ngx-formly/ngx-formly/issues/1535)
+* **material:** adjust empty value for number/bool type ([#1538](https://github.com/ngx-formly/ngx-formly/issues/1538)) ([5916765](https://github.com/ngx-formly/ngx-formly/commit/5916765))
+* **material:** take account of formFieldControl changes ([#1533](https://github.com/ngx-formly/ngx-formly/issues/1533)) ([aa5c645](https://github.com/ngx-formly/ngx-formly/commit/aa5c645)), closes [#1029](https://github.com/ngx-formly/ngx-formly/issues/1029)
+
+
+### Reverts
+
+* disable control when parent is disabled ([#1539](https://github.com/ngx-formly/ngx-formly/issues/1539)) ([9f033d4](https://github.com/ngx-formly/ngx-formly/commit/9f033d4))
+
+
+
 <a name="5.0.3"></a>
 ## [5.0.3](https://github.com/ngx-formly/ngx-formly/compare/v5.0.2...v5.0.3) (2019-04-15)
 
