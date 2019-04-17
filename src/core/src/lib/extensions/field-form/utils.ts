@@ -25,12 +25,14 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
       control.disable();
     }
 
-    Object.defineProperty(field.templateOptions, 'disabled', {
-      get: () => !field.formControl.enabled,
-      set: (value: boolean) => value ? field.formControl.disable() : field.formControl.enable(),
-      enumerable: true,
-      configurable: true,
-    });
+    if (delete field.templateOptions.disabled) {
+      Object.defineProperty(field.templateOptions, 'disabled', {
+        get: () => !field.formControl.enabled,
+        set: (value: boolean) => value ? field.formControl.disable() : field.formControl.enable(),
+        enumerable: true,
+        configurable: true,
+      });
+    }
   }
 
   let parent = field.parent.formControl as FormGroup;
@@ -62,10 +64,6 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
   }
   const key = paths[paths.length - 1];
   if (parent.get([key]) !== control) {
-    if (parent.disabled && control.enabled) {
-      control.disable();
-    }
-
     parent.setControl(key, control);
   }
 }

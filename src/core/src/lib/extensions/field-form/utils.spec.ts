@@ -49,7 +49,7 @@ describe('registerControl', () => {
     expect(field.formControl.parent).not.toBeNull();
   });
 
-  it('should take account of model changes', () => {
+  it('should take account of  model changes', () => {
     const field = {
       key: '0',
       formControl: new FormControl(),
@@ -61,23 +61,6 @@ describe('registerControl', () => {
 
     registerControl(field);
     expect(field.formControl.value).toEqual('test');
-  });
-
-  it('should disable control if parent is disabled', () => {
-    const field = {
-      key: '0',
-      formControl: new FormControl(),
-      parent: {
-        model: { '0': 'test' },
-        formControl: new FormGroup({}),
-      },
-    };
-
-    field.parent.formControl.disable();
-
-    registerControl(field);
-    expect(field.formControl.parent).not.toBeNull();
-    expect(field.formControl.disabled).toBeTruthy();
   });
 });
 
