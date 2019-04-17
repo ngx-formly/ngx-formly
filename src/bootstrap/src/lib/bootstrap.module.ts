@@ -14,7 +14,7 @@ import { FormlyBootstrapAddonsModule } from '@ngx-formly/bootstrap/addons';
     CommonModule,
     ReactiveFormsModule,
     FormlySelectModule,
-    FormlyModule.forRoot(BOOTSTRAP_FORMLY_CONFIG),
+    FormlyModule.forChild(BOOTSTRAP_FORMLY_CONFIG),
     FormlyBootstrapAddonsModule,
   ],
 })
