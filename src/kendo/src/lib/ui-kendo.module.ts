@@ -15,7 +15,7 @@ import { KENDO_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-kendo.config';
     DropDownsModule,
     ReactiveFormsModule,
     FormlySelectModule,
-    FormlyModule.forRoot(KENDO_FORMLY_CONFIG),
+    FormlyModule.forChild(KENDO_FORMLY_CONFIG),
   ],
 })
 export class FormlyKendoModule {}

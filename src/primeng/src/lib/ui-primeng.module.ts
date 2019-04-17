@@ -25,7 +25,7 @@ import { PRIME_NG_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-primeng.conf
 
     ReactiveFormsModule,
     FormlySelectModule,
-    FormlyModule.forRoot(PRIME_NG_FORMLY_CONFIG),
+    FormlyModule.forChild(PRIME_NG_FORMLY_CONFIG),
   ],
 })
 export class FormlyPrimeNGModule {}
