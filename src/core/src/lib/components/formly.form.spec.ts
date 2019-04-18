@@ -360,7 +360,7 @@ describe('FormlyForm Component', () => {
           placeholder: 'Title',
         },
       };
-      testComponentInputs = { fields: [field], model: { address: { city: '' } } };
+      testComponentInputs = { fields: [field], options: { formState: { blah: 1 } }, model: { address: { city: '' } } };
     });
 
     it('should hide field using a boolean value', () => {
@@ -390,6 +390,18 @@ describe('FormlyForm Component', () => {
       field.hideExpression = () => false;
       fixture.detectChanges();
       expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('');
+    });
+
+    it('should provide model, formState and field', () => {
+      const spy = jasmine.createSpy('hideExpression spy');
+      field.hideExpression = spy;
+
+      const fixture = createTestComponent('<formly-form [fields]="fields" [options]="options" [model]="model"></formly-form>');
+      fixture.detectChanges();
+      const args = spy.calls.mostRecent().args;
+      expect(args[0]).toEqual(testComponentInputs.model);
+      expect(args[1]).toEqual(testComponentInputs.options.formState);
+      expect(args[2]).toEqual(field);
     });
 
     it('should apply model changes when form is enabled', () => {
