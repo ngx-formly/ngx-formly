@@ -12,6 +12,16 @@
 
     <span class="spacer" [style.flex]="'1 1 auto'"></span>
 
+    <button mat-button [matMenuTriggerFor]="menu">
+      V4
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+      <a href="https://ngx-formly.github.io/ngx-formly/" mat-menu-item>V5</a>
+      <a href="https://ngx-formly.github.io/ngx-formly/v4/" mat-menu-item>V4</a>
+      <a href="https://ngx-formly.github.io/ngx-formly/next/" mat-menu-item>Next</a>
+    </mat-menu>
+
     <a mat-button href="https://github.com/formly-js/ngx-formly">
       <img style="height: 26px;" src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" alt="">
       GitHub
