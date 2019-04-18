@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
@@ -20,6 +21,7 @@ import { filter, tap } from 'rxjs/operators';
 
     SharedModule,
     LoadingBarRouterModule,
+    MatMenuModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'guide', loadChildren: './guides/guides.module#GuidesModule' },
