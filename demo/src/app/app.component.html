@@ -1,6 +1,6 @@
 <ngx-loading-bar [color]="'#fafafa'"></ngx-loading-bar>
 
-<mat-toolbar color="primary" class="mat-elevation-z6 app-navbar">
+<mat-toolbar color="primary" class="mat-elevation-z6 app-navbar" [class.navbar-small]="isSmallDevice$ | async">
   <a mat-button routerLink="" routerLinkActive="" #homeLink="routerLinkActive"
     [routerLinkActiveOptions]="{ exact: true }">
     <img src="https://material.angular.io/assets/img/homepage/angular-white-transparent.svg">
@@ -9,6 +9,7 @@
 
   <ng-container *ngIf="isSmallDevice$ | async else mainMenu">
     <span class="spacer" [style.flex]="'1 1 auto'"></span>
+    <ng-container *ngTemplateOutlet="version"></ng-container>
     <a mat-button href="https://github.com/ngx-formly/ngx-formly">
       <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
     </a>
@@ -19,6 +20,8 @@
   <ng-template #mainMenu>
     <a *ngFor="let link of menu" mat-button [routerLink]="link.path">{{ link.title }}</a>
     <span class="spacer" [style.flex]="'1 1 auto'"></span>
+
+    <ng-container *ngTemplateOutlet="version"></ng-container>
     <a mat-button href="https://github.com/ngx-formly/ngx-formly">
       <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
       GitHub
@@ -63,3 +66,15 @@
 
   <router-outlet></router-outlet>
 </mat-sidenav-container>
+
+<ng-template #version>
+  <button mat-button [matMenuTriggerFor]="menu">
+    V5
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+    <a disabled mat-menu-item>V5</a>
+    <a href="https://ngx-formly.github.io/ngx-formly/v4" mat-menu-item>V4</a>
+    <a href="https://ngx-formly.github.io/ngx-formly/next/" mat-menu-item>Next</a>
+  </mat-menu>
+</ng-template>

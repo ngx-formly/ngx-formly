@@ -11,6 +11,11 @@
     height: 26px;
     margin: 0 4px 3px 0;
   }
+
+  &.navbar-small .mat-button {
+    padding: 0 8px;
+    min-width: unset;
+  }
 }
 
 ::ng-deep .mat-sidenav {
