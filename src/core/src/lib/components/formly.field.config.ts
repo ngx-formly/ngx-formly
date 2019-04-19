@@ -97,12 +97,12 @@ export interface FormlyFieldConfig {
   /**
    * Conditionally hiding Field based on values from other Fields
    */
-  hideExpression?: boolean | string | ((model: any, formState: any) => boolean);
+  hideExpression?: boolean | string | ((model: any, formState: any, field: FormlyFieldConfig) => boolean);
 
   /**
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
-  expressionProperties?: { [property: string]: string | ((model: any, formState: any) => any) | Observable<any> };
+  expressionProperties?: { [property: string]: string | ((model: any, formState: any, field: FormlyFieldConfig) => any) | Observable<any> };
 
   /**
    * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.

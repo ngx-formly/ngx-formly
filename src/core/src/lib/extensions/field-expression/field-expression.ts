@@ -89,11 +89,11 @@ export class FieldExpressionExtension implements FormlyExtension {
   private _evalExpression(expression, parentExpression?) {
     expression = expression || (() => false);
     if (typeof expression === 'string') {
-      expression = evalStringExpression(expression, ['model', 'formState']);
+      expression = evalStringExpression(expression, ['model', 'formState', 'field']);
     }
 
     return parentExpression
-      ? (model: any, formState: any) => parentExpression() || expression(model, formState)
+      ? (model: any, formState: any, field: FormlyFieldConfig) => parentExpression() || expression(model, formState, field)
       : expression;
   }
 
@@ -123,7 +123,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
 
     for (const key in expressionProperties) {
-      let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState]);
+      let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState, field]);
       if (key === 'templateOptions.disabled') {
         expressionValue = !!expressionValue;
       }
@@ -172,7 +172,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     const hideExpressionResult: boolean = !!evalExpression(
       field.hideExpression,
       { field },
-      [field.model, field.options.formState],
+      [field.model, field.options.formState, field],
     );
     let markForCheck = false;
     if (hideExpressionResult !== field.hide || ignoreCache) {
