@@ -15,6 +15,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher"
       [aria-labelledby]="formField?._labelId"
+      [disableOptionCentering]="to.disableOptionCentering"
       >
       <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
         <mat-optgroup *ngIf="item.group" [label]="item.label">
