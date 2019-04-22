@@ -1,21 +1,18 @@
-<img src="https://raw.githubusercontent.com/ngx-formly/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
+<div align="center">
+  <img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png">
+  <br />
+  JSON powered / Dynamic forms in Angular
+  <br /><br />
+
+  [![Npm version](https://badge.fury.io/js/%40ngx-formly%2Fcore.svg)](https://npmjs.org/package/@ngx-formly/core)
+  [![Downloads](http://img.shields.io/npm/dm/@ngx-formly/core.svg)](https://npmjs.org/package/@ngx-formly/core)
+  [![Gitter](https://badges.gitter.im/formly-js/ng2-formly.svg)](https://gitter.im/formly-js/ng2-formly)
+  [![Build Status](https://api.travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)](https://api.travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)
+</div>
+
+---
 
 # @ngx-formly
-[![Angular Style Guide](https://mgechev.github.io/angular2-style-guide/images/badge.svg)](https://angular.io/styleguide)
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
-[![Stories in Ready](https://badge.waffle.io/ngx-formly/ngx-formly.png?label=ready&title=Ready)](https://waffle.io/ngx-formly/ngx-formly)
-
-Status:
-[![Build Status](https://travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)](https://travis-ci.org/ngx-formly/ngx-formly)
-[![npm version](https://badge.fury.io/js/%40ngx-formly%2Fcore.svg)](https://badge.fury.io/js/%40ngx-formly%2Fcore)
-[![devDependencies Status](https://david-dm.org/ngx-formly/ngx-formly/dev-status.svg)](https://david-dm.org/ngx-formly/ngx-formly?type=dev)
-[![Package Quality](http://npm.packagequality.com/shield/ngx-formly.png)](http://packagequality.com/#?package=ng-formly)
-[![Known Vulnerabilities](https://snyk.io/test/github/ngx-formly/ngx-formly/badge.svg)](https://snyk.io/test/github/ngx-formly/ngx-formly)
-[![codecov.io](http://codecov.io/github/ngx-formly/ngx-formly/coverage.svg?branch=master)](http://codecov.io/github/ngx-formly/ngx-formly?branch=master)
-
-Links:
-[![Gitter](https://badges.gitter.im/formly-js/ng2-formly.svg)](https://gitter.im/formly-js/ng2-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an on [Angular Reactive Forms](https://angular.io/guide/reactive-forms)) that bring unmatched maintainability to your application's forms.
 
