@@ -8,6 +8,7 @@ import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { FormlyFieldSelect } from './select.type';
+import { MatPseudoCheckboxModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [FormlyFieldSelect],
@@ -15,6 +16,7 @@ import { FormlyFieldSelect } from './select.type';
     CommonModule,
     ReactiveFormsModule,
     MatSelectModule,
+    MatPseudoCheckboxModule,
 
     FormlyMatFormFieldModule,
     FormlySelectModule,
