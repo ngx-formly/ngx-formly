@@ -511,7 +511,7 @@ describe('FormlyForm Component', () => {
       it('should update model and assign it into formControl', () => {
         model.title = 'test';
         field.expressionProperties = {
-          'model.title': `this.field.templateOptions.disabled ? '':model.title`,
+          'model.title': `field.templateOptions.disabled ? '':model.title`,
         };
 
         const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
@@ -528,7 +528,7 @@ describe('FormlyForm Component', () => {
       it('should update model and assign it into formControl within nested form', () => {
         model.title = 'test';
         field.expressionProperties = {
-          'model.title': `this.field.templateOptions.disabled ? '':model.title`,
+          'model.title': `field.templateOptions.disabled ? '':model.title`,
         };
 
         delete field.key;

@@ -58,7 +58,7 @@ export class AppComponent {
       expressionProperties: {
         'templateOptions.options': 'formState.selectOptionsData.teams.filter(team => team.sportId === model.sport)',
         // reset model when updating select options
-        'model.team': `this.field.templateOptions.options.find(o => o.id === model.team) ? model.team:null`,
+        'model.team': `field.templateOptions.options.find(o => o.id === model.team) ? model.team:null`,
       },
     },
     {
@@ -73,7 +73,7 @@ export class AppComponent {
       expressionProperties: {
         'templateOptions.options': 'formState.selectOptionsData.players.filter(player => player.teamId === model.team)',
         // reset model when updating select options
-        'model.player': `this.field.templateOptions.options.find(o => o.id === model.player) ? model.player:null`,
+        'model.player': `field.templateOptions.options.find(o => o.id === model.player) ? model.player:null`,
       },
     },
   ];
