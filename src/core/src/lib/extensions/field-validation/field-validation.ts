@@ -1,103 +1,41 @@
 import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { AbstractControl, Validators, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
-import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined } from '../../utils';
+import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
+import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined, isPromise } from '../../utils';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent) {
+    if (!field.parent || !field.key) {
       return;
     }
 
-    this.initFieldValidation(field);
-    this.initFieldAsyncValidation(field);
+    this.initFieldValidation(field, 'validators');
+    this.initFieldValidation(field, 'asyncValidators');
   }
 
-  private initFieldValidation(field: FormlyFieldConfigCache) {
-    if (!isUndefined(field._validators)) {
+  private initFieldValidation(field: FormlyFieldConfigCache, type: 'validators' | 'asyncValidators') {
+    if (!isUndefined(field['_' + type])) {
       return;
     }
 
-    const validators: ValidatorFn[] = this.getPredefinedFieldValidation(field);
-    if (field.validators) {
-      for (const validatorName in field.validators) {
-        if (validatorName !== 'validation') {
-          let validator = field.validators[validatorName];
-          let errorPath;
-          let message;
-          if (isObject(validator)) {
-            errorPath = validator.errorPath;
-            message = validator.message;
-            validator = validator.expression;
-          }
-
-          validators.push((control: AbstractControl) => {
-            const isValid = validator(control, field);
-            if (errorPath && field.formControl && field.formControl.get(errorPath)) {
-              if (!isValid) {
-                field.formControl.get(errorPath).setErrors({
-                  ...(field.formControl.get(errorPath).errors || {}),
-                  [validatorName]: { message },
-                });
-              } else {
-                const errors = (field.formControl.get(errorPath).errors || {});
-                delete errors[validatorName];
-                field.formControl.get(errorPath).setErrors(Object.keys(errors).length === 0 ? null : errors);
-              }
-            }
-
-            return isValid ? null : { [validatorName]: errorPath ? { errorPath } : true };
-          });
-        } else {
-          if (!Array.isArray(field.validators.validation)) {
-            field.validators.validation = [field.validators.validation];
-          }
-          field.validators.validation
-            .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator)));
-        }
+    const validators: ValidatorFn[] = type === 'validators' ? this.getPredefinedFieldValidation(field) : [];
+    if (field[type]) {
+      for (const validatorName in field[type]) {
+        validatorName === 'validation'
+          ? validators.push(...field[type].validation.map(v => this.wrapNgValidatorFn(field, v)))
+          : validators.push(this.wrapNgValidatorFn(field, field[type][validatorName], validatorName))
+        ;
       }
     }
 
-    defineHiddenProp(field, '_validators', Validators.compose(validators));
-  }
-
-  private initFieldAsyncValidation(field: FormlyFieldConfigCache) {
-    if (!isUndefined(field._asyncValidators)) {
-      return;
-    }
-
-    const validators: AsyncValidatorFn[] = [];
-    if (field.asyncValidators) {
-      for (const validatorName in field.asyncValidators) {
-        if (validatorName !== 'validation') {
-          let validator = field.asyncValidators[validatorName];
-          if (isObject(validator)) {
-            validator = validator.expression;
-          }
-
-          validators.push((control: AbstractControl) => new Promise((resolve) => {
-            return validator(control, field).then((result: boolean) => {
-              resolve(result ? null : { [validatorName]: true });
-              // workaround for https://github.com/angular/angular/issues/13200
-              if (field.options && field.options._markForCheck) {
-                field.options._markForCheck(field);
-              }
-            });
-          }));
-        } else {
-          if (!Array.isArray(field.asyncValidators.validation)) {
-            field.asyncValidators.validation = [field.asyncValidators.validation];
-          }
-          field.asyncValidators.validation
-            .forEach((validator: any) => validators.push(this.wrapNgValidatorFn(field, validator) as any));
-        }
-      }
-    }
-
-    defineHiddenProp(field, '_asyncValidators', Validators.composeAsync(validators));
+    defineHiddenProp(
+      field,
+      '_' + type,
+      type === 'validators' ? Validators.compose(validators) : Validators.composeAsync(validators as any),
+    );
   }
 
   private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn[] {
@@ -125,11 +63,52 @@ export class FieldValidationExtension implements FormlyExtension {
       });
   }
 
-  private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: string | FieldValidatorFn) {
-    validator = typeof validator === 'string'
-      ? this.formlyConfig.getValidator(validator).validation
-      : validator;
+  private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: string | FieldValidatorFn, validatorName?: string) {
+    return (control: AbstractControl) => {
+      let validatorFn = validator as FieldValidatorFn;
+      if (typeof validator === 'string') {
+        validatorFn = this.formlyConfig.getValidator(validator).validation;
+      }
+      if (isObject(validator)) {
+        validatorFn = (validator as any).expression;
+      }
 
-    return (control: AbstractControl) => (validator as FieldValidatorFn)(control, field);
+      const isValid = validatorFn(control, field);
+      if (validatorName) {
+        if (isPromise(isValid)) {
+          return isValid.then((result: boolean) => {
+            // workaround for https://github.com/angular/angular/issues/13200
+            if (field.options && field.options._markForCheck) {
+              field.options._markForCheck(field);
+            }
+
+            return this.handleResult(field, result, { validatorName, validator });
+          });
+        }
+
+        return this.handleResult(field, isValid, { validatorName, validator });
+      }
+
+      return isValid;
+    };
+  }
+
+  private handleResult(field: FormlyFieldConfigCache, isValid, { validatorName, validator }) {
+    if (isObject(validator) && field.formControl && validator.errorPath) {
+      const control = field.formControl.get(validator.errorPath);
+      if (control) {
+        const controlErrors = (control.errors || {});
+        if (!isValid) {
+          control.setErrors({ ...controlErrors, [validatorName]: { message: validator.message } });
+        } else {
+          delete controlErrors[validatorName];
+          control.setErrors(Object.keys(controlErrors).length === 0 ? null : controlErrors);
+        }
+      }
+
+      return isValid ? null : { [validatorName]: { errorPath: validator.errorPath } };
+    }
+
+    return isValid ? null : { [validatorName]: true };
   }
 }
