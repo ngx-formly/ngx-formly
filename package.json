@@ -29,7 +29,8 @@
     "gh-pages": "gh-pages --add --dist dist/app --repo=https://$GH_TOKEN@github.com/formly-js/ngx-formly.git",
     "test": "ng test @ngx-formly/core --browsers ChromeHeadless && ng test @ngx-formly/bootstrap --browsers ChromeHeadless && ng test @ngx-formly/material --browsers ChromeHeadless && cd src/schematics && npm run test",
     "test:watch": "ng test @ngx-formly/core --watch",
-    "commitmsg": "commitlint -e $GIT_PARAMS"
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "github-release": "conventional-github-releaser -p angular -t $GH_TOKEN --draft"
   },
   "keywords": [
     "angular",
@@ -104,6 +105,7 @@
     "codecov": "^3.2.0",
     "codelyzer": "^4.5.0",
     "commitizen": "^3.0.7",
+    "conventional-github-releaser": "^3.1.2",
     "cpr": "^3.0.1",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.0.1",
