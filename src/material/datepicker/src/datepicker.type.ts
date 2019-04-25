@@ -18,10 +18,10 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex || 0"
       [readonly]="to.readonly">
-    <ng-template #matPrefix *ngIf="to.datepickerOptions.prefixIcon">
+    <ng-template #matPrefix *ngIf="to.datepickerTogglePosition ==='prefix'">
       <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
     </ng-template>
-    <ng-template #matSuffix *ngIf="!to.datepickerOptions.prefixIcon">
+    <ng-template #matSuffix *ngIf="to.datepickerTogglePosition ==='suffix'">
       <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
     </ng-template>
     <mat-datepicker #picker
