@@ -18,14 +18,14 @@ install:
 
 script:
 - npm run lint
-- commitlint-travis
+- test $TRAVIS_PULL_REQUEST != "false" && commitlint-travis
 - npm run test
 - npm run bundlesize
 - npm run build:demo
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
   - test $TRAVIS_PULL_REQUEST == "false" && npm run gh-pages
+  - test $TRAVIS_TAG != "" && npm run github-release
 
 addons:
   apt:
