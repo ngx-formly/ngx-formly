@@ -30,8 +30,8 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   ngAfterViewInit() {
     if (this.matPrefix || this.matSuffix) {
       setTimeout(() => {
-        defineHiddenProp(this.field, '_matPrefix', this.matPrefix);
-        defineHiddenProp(this.field, '_matSuffix', this.matSuffix);
+        defineHiddenProp(this.field, '_matprefix', this.matPrefix);
+        defineHiddenProp(this.field, '_matsuffix', this.matSuffix);
         (<any> this.options)._markForCheck(this.field);
       });
     }
