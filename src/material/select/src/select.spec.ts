@@ -10,6 +10,7 @@ import { FormlyModule, FormlyForm } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormlyFieldSelect } from './select.type';
 import { of as observableOf } from 'rxjs';
+import { MatPseudoCheckboxModule } from '@angular/material/core';
 
 const createTestComponent = (html: string) =>
   createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -23,6 +24,7 @@ describe('ui-material: Formly Field Select Component', () => {
       imports: [
         NoopAnimationsModule,
         MatSelectModule,
+        MatPseudoCheckboxModule,
         ReactiveFormsModule,
         FormlySelectModule,
         FormlyModule.forRoot({
@@ -98,6 +100,91 @@ describe('ui-material: Formly Field Select Component', () => {
 
   });
 
+  describe('multi select', () => {
+
+    beforeEach(() => {
+      testComponentInputs = {
+        form: new FormGroup({}),
+        options: {},
+        model: {},
+      };
+
+      testComponentInputs.fields = [{
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          multiple: true,
+          selectAllOption: 'Select All',
+          options: [
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: '3', name: 'Martial Arts' },
+          ],
+          valueProp: 'id',
+          labelProp: 'name',
+        },
+      }];
+    });
+
+    it('should have a "Select All" option if configured', () => {
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+
+      trigger.click();
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(1 + 3);
+    });
+
+    it('should select all options if clicking the "Select All" option', () => {
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+
+      trigger.click();
+      fixture.detectChanges();
+
+      const selectAllOption = fixture.debugElement.queryAll(By.css('mat-option'))[0].nativeElement;
+      selectAllOption.click();
+      fixture.detectChanges();
+
+      expect(testComponentInputs.form.get('sportId').value.length).toEqual(3);
+
+      // clicking again should deselect all
+      selectAllOption.click();
+      fixture.detectChanges();
+
+      expect(testComponentInputs.form.get('sportId').value.length).toEqual(0);
+    });
+
+    it('should use the selectAllOption prop as label for the option entry', () => {
+      testComponentInputs.fields = [{
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          multiple: true,
+          selectAllOption: 'Click me!!',
+          options: [
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: '3', name: 'Martial Arts' },
+          ],
+          valueProp: 'id',
+          labelProp: 'name',
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+
+      trigger.click();
+      fixture.detectChanges();
+
+      const selectAllOption = fixture.debugElement.queryAll(By.css('mat-option'))[0].nativeElement;
+      expect(selectAllOption.innerHTML).toContain('Click me!!');
+    });
+
+  });
+
 });
 
 @Component({ selector: 'formly-form-test', template: '', entryComponents: [] })
@@ -105,7 +192,7 @@ class TestComponent {
   @ViewChild(FormlyForm) formlyForm: FormlyForm;
 
   fields = testComponentInputs.fields;
-  form = testComponentInputs.form;
+  form: FormGroup = testComponentInputs.form;
   model = testComponentInputs.model || {};
   options = testComponentInputs.options;
 }
