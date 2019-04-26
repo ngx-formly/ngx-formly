@@ -7,8 +7,8 @@ import { Subject } from 'rxjs';
 import { FieldType } from './field.type';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
-  _matPrefix: TemplateRef<any>;
-  _matSuffix: TemplateRef<any>;
+  _matprefix: TemplateRef<any>;
+  _matsuffix: TemplateRef<any>;
   __formField__: FormlyWrapperFormField;
   _componentFactory: any;
 }
@@ -30,11 +30,11 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       </mat-label>
 
       <ng-container matPrefix>
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : formlyField._matPrefix"></ng-container>
+        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : formlyField._matprefix"></ng-container>
       </ng-container>
 
       <ng-container matSuffix>
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matSuffix"></ng-container>
+        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matsuffix"></ng-container>
       </ng-container>
 
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->

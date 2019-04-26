@@ -1,4 +1,5 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
+import { ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput } from '@angular/material/datepicker';
@@ -18,7 +19,7 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex || 0"
       [readonly]="to.readonly">
-    <ng-template #matSuffix>
+    <ng-template #datepickerToggle>
       <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
     </ng-template>
     <mat-datepicker #picker
@@ -32,11 +33,13 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
 export class FormlyDatepickerTypeComponent extends FieldType implements AfterViewInit {
   @ViewChild(MatInput) formFieldControl!: MatInput;
   @ViewChild(MatDatepickerInput) datepickerInput!: MatDatepickerInput<any>;
+  @ViewChild('datepickerToggle') datepickerToggle!: TemplateRef<any>;
 
   defaultOptions = {
     templateOptions: {
       datepickerOptions: {
         startView: 'month',
+        datepickerTogglePosition: 'suffix',
       },
     },
   };
@@ -45,5 +48,9 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
     super.ngAfterViewInit();
     // temporary fix for https://github.com/angular/material2/issues/6728
     (<any> this.datepickerInput)._formField = this.formField;
+
+    setTimeout(() => {
+      defineHiddenProp(this.field, '_mat' + this.to.datepickerOptions.datepickerTogglePosition, this.datepickerToggle);
+    });
   }
 }
