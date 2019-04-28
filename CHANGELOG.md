@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.0"></a>
+# [5.1.0](https://github.com/ngx-formly/ngx-formly/compare/v5.0.4...v5.1.0) (2019-04-28)
+
+
+### Features
+
+* **core:** add field arg to hideExpression and expressionProperties ([#1544](https://github.com/ngx-formly/ngx-formly/issues/1544)) ([24998ad](https://github.com/ngx-formly/ngx-formly/commit/24998ad)), closes [#704](https://github.com/ngx-formly/ngx-formly/issues/704)
+* **core:** deprecate usage of `this.field` in expressionProperties ([#1550](https://github.com/ngx-formly/ngx-formly/issues/1550)) ([b6172b4](https://github.com/ngx-formly/ngx-formly/commit/b6172b4))
+* **material:** add disableOptionCentering support for mat-select ([#1545](https://github.com/ngx-formly/ngx-formly/issues/1545)) ([9c655c6](https://github.com/ngx-formly/ngx-formly/commit/9c655c6))
+* **material:** add select all option to multiselect ([#1552](https://github.com/ngx-formly/ngx-formly/issues/1552)) ([144f5fa](https://github.com/ngx-formly/ngx-formly/commit/144f5fa))
+* **material:** adds datepicker toggle positioning support ([#1560](https://github.com/ngx-formly/ngx-formly/issues/1560)) ([63698b3](https://github.com/ngx-formly/ngx-formly/commit/63698b3))
+
+
+
 <a name="5.0.4"></a>
 ## [5.0.4](https://github.com/ngx-formly/ngx-formly/compare/v5.0.3...v5.0.4) (2019-04-17)
 
