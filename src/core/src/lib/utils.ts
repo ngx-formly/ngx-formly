@@ -97,6 +97,10 @@ export function isObject(x: any) {
   return x != null && typeof x === 'object';
 }
 
+export function isPromise(obj: any): obj is Promise<any> {
+  return !!obj && typeof obj.then === 'function';
+}
+
 export function clone(value: any): any {
   if (!isObject(value) || value instanceof RegExp || value instanceof Observable || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity) {
     return value;
