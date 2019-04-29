@@ -229,37 +229,37 @@
       }
     },
     "@ngx-formly/bootstrap": {
-      "root": "src/bootstrap",
-      "sourceRoot": "src/bootstrap/src",
+      "root": "src/ui/bootstrap",
+      "sourceRoot": "src/ui/bootstrap/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "src/bootstrap/tsconfig.lib.json",
-            "project": "src/bootstrap/ng-package.json"
+            "tsConfig": "src/ui/bootstrap/tsconfig.lib.json",
+            "project": "src/ui/bootstrap/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "src/bootstrap/ng-package.prod.json"
+              "project": "src/ui/bootstrap/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/bootstrap/src/test.ts",
-            "tsConfig": "src/bootstrap/tsconfig.spec.json",
-            "karmaConfig": "src/bootstrap/karma.conf.js"
+            "main": "src/ui/bootstrap/src/test.ts",
+            "tsConfig": "src/ui/bootstrap/tsconfig.spec.json",
+            "karmaConfig": "src/ui/bootstrap/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/bootstrap/tsconfig.lib.json",
-              "src/bootstrap/tsconfig.spec.json"
+              "src/ui/bootstrap/tsconfig.lib.json",
+              "src/ui/bootstrap/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -269,37 +269,37 @@
       }
     },
     "@ngx-formly/ionic": {
-      "root": "src/ionic",
-      "sourceRoot": "src/ionic/src",
+      "root": "src/ui/ionic",
+      "sourceRoot": "src/ui/ionic/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "src/ionic/tsconfig.lib.json",
-            "project": "src/ionic/ng-package.json"
+            "tsConfig": "src/ui/ionic/tsconfig.lib.json",
+            "project": "src/ui/ionic/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "src/ionic/ng-package.prod.json"
+              "project": "src/ui/ionic/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/ionic/src/test.ts",
-            "tsConfig": "src/ionic/tsconfig.spec.json",
-            "karmaConfig": "src/ionic/karma.conf.js"
+            "main": "src/ui/ionic/src/test.ts",
+            "tsConfig": "src/ui/ionic/tsconfig.spec.json",
+            "karmaConfig": "src/ui/ionic/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/ionic/tsconfig.lib.json",
-              "src/ionic/tsconfig.spec.json"
+              "src/ui/ionic/tsconfig.lib.json",
+              "src/ui/ionic/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -309,37 +309,37 @@
       }
     },
     "@ngx-formly/kendo": {
-      "root": "src/kendo",
-      "sourceRoot": "src/kendo/src",
+      "root": "src/ui/kendo",
+      "sourceRoot": "src/ui/kendo/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "src/kendo/tsconfig.lib.json",
-            "project": "src/kendo/ng-package.json"
+            "tsConfig": "src/ui/kendo/tsconfig.lib.json",
+            "project": "src/ui/kendo/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "src/kendo/ng-package.prod.json"
+              "project": "src/ui/kendo/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/kendo/src/test.ts",
-            "tsConfig": "src/kendo/tsconfig.spec.json",
-            "karmaConfig": "src/kendo/karma.conf.js"
+            "main": "src/ui/kendo/src/test.ts",
+            "tsConfig": "src/ui/kendo/tsconfig.spec.json",
+            "karmaConfig": "src/ui/kendo/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/kendo/tsconfig.lib.json",
-              "src/kendo/tsconfig.spec.json"
+              "src/ui/kendo/tsconfig.lib.json",
+              "src/ui/kendo/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -349,37 +349,37 @@
       }
     },
     "@ngx-formly/material": {
-      "root": "src/material",
-      "sourceRoot": "src/material/src",
+      "root": "src/ui/material",
+      "sourceRoot": "src/ui/material/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "src/material/tsconfig.lib.json",
-            "project": "src/material/ng-package.json"
+            "tsConfig": "src/ui/material/tsconfig.lib.json",
+            "project": "src/ui/material/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "src/material/ng-package.prod.json"
+              "project": "src/ui/material/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/material/src/test.ts",
-            "tsConfig": "src/material/tsconfig.spec.json",
-            "karmaConfig": "src/material/karma.conf.js"
+            "main": "src/ui/material/src/test.ts",
+            "tsConfig": "src/ui/material/tsconfig.spec.json",
+            "karmaConfig": "src/ui/material/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/material/tsconfig.lib.json",
-              "src/material/tsconfig.spec.json"
+              "src/ui/material/tsconfig.lib.json",
+              "src/ui/material/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -389,37 +389,37 @@
       }
     },
     "@ngx-formly/primeng": {
-      "root": "src/primeng",
-      "sourceRoot": "src/primeng/src",
+      "root": "src/ui/primeng",
+      "sourceRoot": "src/ui/primeng/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "src/primeng/tsconfig.lib.json",
-            "project": "src/primeng/ng-package.json"
+            "tsConfig": "src/ui/primeng/tsconfig.lib.json",
+            "project": "src/ui/primeng/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "src/primeng/ng-package.prod.json"
+              "project": "src/ui/primeng/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/primeng/src/test.ts",
-            "tsConfig": "src/primeng/tsconfig.spec.json",
-            "karmaConfig": "src/primeng/karma.conf.js"
+            "main": "src/ui/primeng/src/test.ts",
+            "tsConfig": "src/ui/primeng/tsconfig.spec.json",
+            "karmaConfig": "src/ui/primeng/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/primeng/tsconfig.lib.json",
-              "src/primeng/tsconfig.spec.json"
+              "src/ui/primeng/tsconfig.lib.json",
+              "src/ui/primeng/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -429,37 +429,37 @@
       }
     },
     "@ngx-formly/nativescript": {
-      "root": "src/nativescript",
-      "sourceRoot": "src/nativescript/src",
+      "root": "src/ui/nativescript",
+      "sourceRoot": "src/ui/nativescript/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "src/nativescript/tsconfig.lib.json",
-            "project": "src/nativescript/ng-package.json"
+            "tsConfig": "src/ui/nativescript/tsconfig.lib.json",
+            "project": "src/ui/nativescript/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "src/nativescript/ng-package.prod.json"
+              "project": "src/ui/nativescript/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/nativescript/src/test.ts",
-            "tsConfig": "src/nativescript/tsconfig.spec.json",
-            "karmaConfig": "src/nativescript/karma.conf.js"
+            "main": "src/ui/nativescript/src/test.ts",
+            "tsConfig": "src/ui/nativescript/tsconfig.spec.json",
+            "karmaConfig": "src/ui/nativescript/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/nativescript/tsconfig.lib.json",
-              "src/nativescript/tsconfig.spec.json"
+              "src/ui/nativescript/tsconfig.lib.json",
+              "src/ui/nativescript/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
