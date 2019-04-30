@@ -80,6 +80,7 @@ export class AppComponent {
         { path: '/examples/advanced/repeating-section-input', title: 'Repeating Section With Length Input' },
         { path: '/examples/advanced/multi-step-form', title: 'Multi-Step Form' },
         { path: '/examples/advanced/tabs', title: 'Tabs Form' },
+        { path: '/examples/advanced/grid-integration', title: 'ag-grid Integration' },
         { path: '/examples/advanced/datatable-integration', title: 'ngx-datatable Integration' },
 
         { title: 'Other' },

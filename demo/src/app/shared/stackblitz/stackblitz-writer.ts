@@ -94,6 +94,16 @@ const dependencies = {
     '@angular/router': '*',
     'typescript': '*',
   },
+  // non UI framework libraries
+  'ag-grid': {
+    'ag-grid-angular': '*',
+    'ag-grid-community': '*',
+    '@angular/compiler-cli': angularVersion,
+    'typescript': '*',
+  },
+  'ngx-datatable': {
+    '@swimlane/ngx-datatable': '*',
+  },
 };
 
 const ngModule = {
@@ -164,6 +174,14 @@ export class StackblitzWriter {
       options.useAnimation = true;
     }
 
+    if (appModuleContent.indexOf('ag-grid-angular') !== -1) {
+      options.includeAgGrid = true;
+    }
+
+    if (appModuleContent.indexOf('@swimlane/ngx-datatable') !== -1) {
+      options.includeNgxDatable = true;
+    }
+
     const deps = {
       ...dependencies.core,
       ...dependencies[options.type],
@@ -176,6 +194,14 @@ export class StackblitzWriter {
     if (options.includeMaterial) {
       deps['@angular/cdk'] = materialVersion;
       deps['@angular/material'] = materialVersion;
+    }
+
+    if (options.includeAgGrid) {
+      Object.assign(deps, dependencies['ag-grid']);
+    }
+
+    if (options.includeNgxDatable) {
+      Object.assign(deps, dependencies['ngx-datatable']);
     }
 
     this._appendFormInput(form, 'dependencies', JSON.stringify(deps));
@@ -274,6 +300,12 @@ export class StackblitzWriter {
       if (options.type !== 'material' && options.includeMaterial) {
         filecontent = `${filecontent}\n@import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; `;
       }
+
+      if (options.includeAgGrid) {
+        filecontent = `${filecontent}\n@import '~ag-grid-community/dist/styles/ag-grid.css'; `;
+        filecontent = `${filecontent}\n@import '~ag-grid-community/dist/styles/ag-theme-balham.css'; `;
+      }
+
     } else if (fileName === 'user.service.ts') {
       filecontent = filecontent.replace(/_json/g, '.json');
     }
