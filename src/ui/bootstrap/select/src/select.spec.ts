@@ -1,12 +1,12 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { createGenericTestComponent } from '../../../../../core/src/lib/test-utils';
+import { createGenericTestComponent } from '../../../../core/src/lib/test-utils';
 import { By } from '@angular/platform-browser';
 
 import { Component, ViewChild } from '@angular/core';
 import { FormlyModule, FormlyForm } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldSelect } from './select';
+import { FormlyFieldSelect } from './select.type';
 import { of as observableOf } from 'rxjs';
 
 const createTestComponent = (html: string) =>
