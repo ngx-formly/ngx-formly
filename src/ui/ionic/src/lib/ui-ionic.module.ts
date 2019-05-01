@@ -1,22 +1,27 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { FormlyModule } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/core/select';
-import { IONIC_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-ionic.config';
-import { IonFormlyAttributes } from './formly.attributes';
+import { FormlyFormFieldModule } from '@ngx-formly/ionic/form-field';
+import { FormlyInputModule } from '@ngx-formly/ionic/input';
+import { FormlyTextAreaModule } from '@ngx-formly/ionic/textarea';
+import { FormlyRadioModule } from '@ngx-formly/ionic/radio';
+import { FormlyCheckboxModule } from '@ngx-formly/ionic/checkbox';
+import { FormlySelectModule } from '@ngx-formly/ionic/select';
+import { FormlyToggleModule } from '@ngx-formly/ionic/toggle';
+import { FormlySliderModule } from '@ngx-formly/ionic/slider';
+import { FormlyDatetimeModule } from '@ngx-formly/ionic/datetime';
 
 @NgModule({
-  declarations: [FIELD_TYPE_COMPONENTS, IonFormlyAttributes],
   imports: [
-    CommonModule,
-    IonicModule,
-    ReactiveFormsModule,
+    FormlyFormFieldModule,
+    FormlyInputModule,
+    FormlyTextAreaModule,
+    FormlyRadioModule,
+    FormlyCheckboxModule,
     FormlySelectModule,
-    FormlyModule.forChild(IONIC_FORMLY_CONFIG),
+    FormlyToggleModule,
+    FormlySliderModule,
+    FormlyDatetimeModule,
   ],
   exports: [IonFormlyAttributes],
 })
-export class FormlyIonicModule {
-}
+export class FormlyIonicModule { }
+
