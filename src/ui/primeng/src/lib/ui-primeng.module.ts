@@ -1,31 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CheckboxModule } from 'primeng/checkbox';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { DropdownModule } from 'primeng/dropdown';
-
-import { FormlyModule } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/core/select';
-import { PRIME_NG_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-primeng.config';
+import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
+import { FormlyInputModule } from '@ngx-formly/primeng/input';
+import { FormlyTextAreaModule } from '@ngx-formly/primeng/textarea';
+import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
+import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
+import { FormlySelectModule } from '@ngx-formly/primeng/select';
 
 @NgModule({
-  declarations: FIELD_TYPE_COMPONENTS,
   imports: [
-    CommonModule,
-
-    InputTextModule,
-    InputTextareaModule,
-    CheckboxModule,
-    RadioButtonModule,
-    DropdownModule,
-
-    ReactiveFormsModule,
+    FormlyFormFieldModule,
+    FormlyInputModule,
+    FormlyTextAreaModule,
+    FormlyRadioModule,
+    FormlyCheckboxModule,
     FormlySelectModule,
-    FormlyModule.forChild(PRIME_NG_FORMLY_CONFIG),
   ],
 })
-export class FormlyPrimeNGModule {}
+export class FormlyPrimeNGModule { }
+
