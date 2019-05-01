@@ -15,4 +15,4 @@ import { FieldType } from '@ngx-formly/core';
   `,
   styles: [':host { display: inherit; }'],
 })
-export class FormlyFieldRange extends FieldType {}
+export class FormlyFieldSlider extends FieldType {}
