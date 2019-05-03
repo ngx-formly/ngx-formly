@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.1"></a>
+## [5.1.1](https://github.com/ngx-formly/ngx-formly/compare/v5.1.0...v5.1.1) (2019-05-03)
+
+
+### Bug Fixes
+
+* **core:** allow passing a non array to the validation property ([#1575](https://github.com/ngx-formly/ngx-formly/issues/1575)) ([3cdc8fa](https://github.com/ngx-formly/ngx-formly/commit/3cdc8fa)), closes [#1573](https://github.com/ngx-formly/ngx-formly/issues/1573)
+
+
+
 <a name="5.1.0"></a>
 # [5.1.0](https://github.com/ngx-formly/ngx-formly/compare/v5.0.4...v5.1.0) (2019-04-28)
 
