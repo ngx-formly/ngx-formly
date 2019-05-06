@@ -86,7 +86,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
 
     if (this.readonly !== this.to.readonly) {
-      this.setAttribute('readonly', `${this.to.readonly}`);
+      if (this.to.readonly) {
+        this.setAttribute('readonly', 'readonly');
+      } else {
+        this.renderer.removeAttribute(this.elementRef.nativeElement, 'readonly');
+      }
       this.readonly = this.to.readonly;
     }
   }
