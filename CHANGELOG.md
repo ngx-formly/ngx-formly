@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.2"></a>
+## [5.1.2](https://github.com/ngx-formly/ngx-formly/compare/v5.1.1...v5.1.2) (2019-05-06)
+
+
+### Bug Fixes
+
+* **core:** remove readonly when passing falsy value ([#1576](https://github.com/ngx-formly/ngx-formly/issues/1576)) ([2aaa80a](https://github.com/ngx-formly/ngx-formly/commit/2aaa80a)), closes [#1566](https://github.com/ngx-formly/ngx-formly/issues/1566)
+
+
+
 <a name="5.1.1"></a>
 ## [5.1.1](https://github.com/ngx-formly/ngx-formly/compare/v5.1.0...v5.1.1) (2019-05-03)
 
