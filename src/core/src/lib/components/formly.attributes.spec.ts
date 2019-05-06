@@ -42,6 +42,16 @@ describe('FormlyAttributes Component', () => {
         expect(fixture.componentInstance.field.focus).toBeFalsy();
       });
 
+      it('should handle readonly attribute', () => {
+        const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
+        const elm = getFormlyAttributesElement(fixture.nativeElement);
+
+        expect(elm.getAttribute('readonly')).toBe('readonly');
+        fixture.componentInstance.field.templateOptions.readonly = false;
+        fixture.detectChanges();
+        expect(elm.getAttribute('readonly')).toBe(null);
+      });
+
       it('should change element attribute on edit templateOptions attributes', () => {
         const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
         const elm = getFormlyAttributesElement(fixture.nativeElement);
@@ -148,6 +158,7 @@ class TestComponent {
       placeholder: 'Title',
       tabindex: 5,
       step: 2,
+      readonly: true,
       attributes: {
         min: 5,
         max: 10,
