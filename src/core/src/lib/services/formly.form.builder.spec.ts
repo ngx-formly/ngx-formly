@@ -94,6 +94,20 @@ describe('FormlyFormBuilder service', () => {
       expect(fields[0].formControl).toEqual(fields[1].formControl);
     });
 
+    it('should not override existing formcontrol validation when re-build form', () => {
+      form.addControl('test', new FormControl());
+      const fields: FormlyFieldConfig[] = [
+        { key: 'test', type: 'input' },
+      ];
+
+      builder.buildForm(form, fields, {}, {});
+      fields[0].formControl.setValidators(Validators.required);
+      fields[0].formControl.updateValueAndValidity();
+
+      builder.buildForm(form, fields, {}, {});
+      expect(form.valid).toBeFalsy();
+    });
+
     it('should update the formcontrol validation for a built form', () => {
       form.addControl('test', new FormControl());
       const fields: FormlyFieldConfig[] = [

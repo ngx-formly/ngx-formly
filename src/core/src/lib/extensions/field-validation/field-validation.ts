@@ -18,6 +18,14 @@ export class FieldValidationExtension implements FormlyExtension {
 
   private initFieldValidation(field: FormlyFieldConfigCache, type: 'validators' | 'asyncValidators') {
     if (!isUndefined(field['_' + type])) {
+      // Avoid overriding existing validators defined through directive (https://github.com/ngx-formly/ngx-formly/issues/1578)
+      if (field.formControl) {
+        const validator = type === 'validators' ? field.formControl.validator : field.formControl.asyncValidator;
+        if (field['_' + type] !== validator) {
+          field['_' + type] = validator;
+        }
+      }
+
       return;
     }
 
