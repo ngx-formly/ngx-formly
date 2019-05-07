@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.3"></a>
+## [5.1.3](https://github.com/ngx-formly/ngx-formly/compare/v5.1.2...v5.1.3) (2019-05-07)
+
+
+### Bug Fixes
+
+* **core:** avoid overriding validators from directive ([#1579](https://github.com/ngx-formly/ngx-formly/issues/1579)) ([a9eecd2](https://github.com/ngx-formly/ngx-formly/commit/a9eecd2)), closes [#1578](https://github.com/ngx-formly/ngx-formly/issues/1578)
+
+
+
 <a name="5.1.2"></a>
 ## [5.1.2](https://github.com/ngx-formly/ngx-formly/compare/v5.1.1...v5.1.2) (2019-05-06)
 
