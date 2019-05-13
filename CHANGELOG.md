@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.4"></a>
+## [5.1.4](https://github.com/ngx-formly/ngx-formly/compare/v5.1.3...v5.1.4) (2019-05-13)
+
+
+### Bug Fixes
+
+* **core:** assign a valid model for array index key ([#1587](https://github.com/ngx-formly/ngx-formly/issues/1587)) ([54024c9](https://github.com/ngx-formly/ngx-formly/commit/54024c9)), closes [#1584](https://github.com/ngx-formly/ngx-formly/issues/1584)
+
+
+
 <a name="5.1.3"></a>
 ## [5.1.3](https://github.com/ngx-formly/ngx-formly/compare/v5.1.2...v5.1.3) (2019-05-07)
 
