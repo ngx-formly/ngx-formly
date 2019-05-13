@@ -33,7 +33,7 @@ export function assignModelValue(model: any, paths: string[], value: any) {
   for (let i = 0; i < (paths.length - 1); i++) {
     const path = paths[i];
     if (!model[path] || !isObject(model[path])) {
-      model[path] = /^\d+$/.test(path) ? [] : {};
+      model[path] = /^\d+$/.test(paths[i + 1]) ? [] : {};
     }
 
     model = model[path];

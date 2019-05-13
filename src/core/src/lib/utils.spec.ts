@@ -17,15 +17,23 @@ describe('FormlyUtils service', () => {
   });
 
   describe('assignModelValue', () => {
-    it('should properly assign model value', () => {
-      let model = {};
+    it('should assign model value', () => {
+      const model = { name: null };
+      assignModelValue(model, ['name'], 'foo');
+      expect(model).toEqual({ name: 'foo' });
+    });
+
+    it('should assign value with nested path', () => {
+      const model = { path: 'test' };
       assignModelValue(model, ['path', 'to', 'save'], 2);
       expect(model['path']['to']['save']).toBe(2);
     });
-    it('should properly assign object to string value', () => {
-      let model = { path: 'test' };
-      assignModelValue(model, ['path', 'to', 'save'], 2);
-      expect(model['path']['to']['save']).toBe(2);
+
+    it('should assign value with nested array path', () => {
+      const model = {};
+      assignModelValue(model, ['path', '0'], 'test');
+      expect(Array.isArray(model['path'])).toBeTruthy();
+      expect(model['path'][0]).toBe('test');
     });
   });
 
