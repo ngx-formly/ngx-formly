@@ -124,13 +124,15 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   private createWrapperRef<T extends FieldWrapper>(
-    field: FormlyFieldConfig,
+    field: FormlyFieldConfigCache,
     containerRef: ViewContainerRef,
     config: { component: Type<T>; },
   ) {
-    const ref = containerRef.createComponent<T>(
-      this.componentFactoryResolver.resolveComponentFactory(config.component),
-    );
+    const cfr = field.options && field.options._componentFactoryResolver
+      ? field.options._componentFactoryResolver
+      : this.componentFactoryResolver;
+
+    const ref = containerRef.createComponent<T>(cfr.resolveComponentFactory(config.component));
     this.attachComponentRef(ref, field);
 
     return ref.instance.fieldComponent;
