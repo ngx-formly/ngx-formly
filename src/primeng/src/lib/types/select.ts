@@ -10,7 +10,8 @@ import { FieldType } from '@ngx-formly/core';
       [options]="to.options | formlySelectOptions:field | async"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [showClear]="!to.required">
+      [showClear]="!to.required"
+      (onChange)="to.change && to.change(field, $event)">
     </p-dropdown>
   `,
 })
