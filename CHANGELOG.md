@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.6"></a>
+## [5.1.6](https://github.com/ngx-formly/ngx-formly/compare/v5.1.5...v5.1.6) (2019-05-24)
+
+
+### Bug Fixes
+
+* add missing change event for primeng & kendo ([#1596](https://github.com/ngx-formly/ngx-formly/issues/1596)) ([258afa0](https://github.com/ngx-formly/ngx-formly/commit/258afa0)), closes [#1595](https://github.com/ngx-formly/ngx-formly/issues/1595)
+
+
+
 <a name="5.1.5"></a>
 ## [5.1.5](https://github.com/ngx-formly/ngx-formly/compare/v5.1.4...v5.1.5) (2019-05-20)
 
