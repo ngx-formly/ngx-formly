@@ -9,7 +9,8 @@ import { FieldType } from '@ngx-formly/core';
       binary="true"
       [label]="to.label"
       [formControl]="formControl"
-      [formlyAttributes]="field">
+      [formlyAttributes]="field"
+      (valueChange)="to.change && to.change(field, $event)">
     </p-checkbox>
   `,
 })
