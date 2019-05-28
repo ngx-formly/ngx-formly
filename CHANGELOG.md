@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.7"></a>
+## [5.1.7](https://github.com/ngx-formly/ngx-formly/compare/v5.1.6...v5.1.7) (2019-05-28)
+
+
+### Bug Fixes
+
+* **core:** add missing disabled & required html attribute ([#1603](https://github.com/ngx-formly/ngx-formly/issues/1603)) ([cbb3f91](https://github.com/ngx-formly/ngx-formly/commit/cbb3f91)), closes [#1582](https://github.com/ngx-formly/ngx-formly/issues/1582) [#1601](https://github.com/ngx-formly/ngx-formly/issues/1601)
+* **core:** keep formcontrol state on remove fieldArray ([#1602](https://github.com/ngx-formly/ngx-formly/issues/1602)) ([85433eb](https://github.com/ngx-formly/ngx-formly/commit/85433eb))
+* **core:** throw Error when `forRoot` call is missing ([#1604](https://github.com/ngx-formly/ngx-formly/issues/1604)) ([48d9dae](https://github.com/ngx-formly/ngx-formly/commit/48d9dae))
+
+
+
 <a name="5.1.6"></a>
 ## [5.1.6](https://github.com/ngx-formly/ngx-formly/compare/v5.1.5...v5.1.6) (2019-05-24)
 
