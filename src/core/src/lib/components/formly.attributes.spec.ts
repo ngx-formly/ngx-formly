@@ -30,7 +30,11 @@ describe('FormlyAttributes Component', () => {
       it('should set element attribute if it is present in the templateOptions', () => {
         const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
         const elm = getFormlyAttributesElement(fixture.nativeElement);
+        fixture.componentInstance.field.templateOptions.disabled = true;
+        fixture.detectChanges();
 
+        expect(elm.getAttribute('disabled')).toBe('disabled');
+        expect(elm.getAttribute('required')).toBe('required');
         expect(elm.getAttribute('placeholder')).toBe('Title');
         expect(elm.getAttribute('tabindex')).toBe('5');
         expect(elm.getAttribute('step')).toBe('2');
@@ -80,7 +84,7 @@ describe('FormlyAttributes Component', () => {
         fixture.detectChanges();
 
         expect(elm.getAttribute('placeholder')).toBe('Title Edit');
-        expect(elm.getAttribute('tabindex')).toEqual('0');
+        expect(elm.getAttribute('tabindex')).toBeNull();
         expect(elm.getAttribute('step')).toBeNull();
         expect(fixture.componentInstance.field.focus).toBeTruthy();
       });
@@ -96,7 +100,7 @@ describe('FormlyAttributes Component', () => {
 
           fixture.detectChanges();
 
-          expect(elm.getAttribute('tabindex')).toEqual('0');
+          expect(elm.getAttribute('tabindex')).toBeNull();
           expect(elm.getAttribute('step')).toBeNull();
           expect(fixture.componentInstance.field.focus).toBeTruthy();
       });
@@ -159,6 +163,7 @@ class TestComponent {
       tabindex: 5,
       step: 2,
       readonly: true,
+      required: true,
       attributes: {
         min: 5,
         max: 10,
