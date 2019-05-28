@@ -14,6 +14,10 @@ export class FormlyFormBuilder {
   ) {}
 
   buildForm(formControl: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+    if (!this.formlyConfig.extensions.core) {
+      throw new Error('NgxFormly: missing `forRoot()` call. use `forRoot()` when registering the `FormlyModule`.');
+    }
+
     this._buildForm({ fieldGroup, model, formControl, options: this._setOptions(options) });
   }
 
