@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck, Inject, OnDestroy } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
-import { wrapProperty, defineHiddenProp } from '../utils';
+import { wrapProperty, defineHiddenProp, FORMLY_VALIDATORS } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
@@ -21,10 +21,16 @@ import { DOCUMENT } from '@angular/common';
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   @Input('formlyAttributes') field: FormlyFieldConfig;
 
-  private placeholder?: string;
-  private tabindex?: number;
-  private readonly?: boolean;
   private document: Document;
+  private uiAttributesCache: any = {};
+  private uiAttributes = [
+    ...FORMLY_VALIDATORS,
+    'tabindex',
+    'placeholder',
+    'readonly',
+    'disabled',
+  ];
+
   get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
 
   private get fieldAttrElements() { return (this.field && this.field['_attrElements']) || []; }
@@ -75,24 +81,17 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * Material issue: https://github.com/angular/material2/issues/14024
    */
   ngDoCheck() {
-    if (this.placeholder !== this.to.placeholder) {
-      this.setAttribute('placeholder', this.to.placeholder);
-      this.placeholder = this.to.placeholder;
-    }
-
-    if (this.tabindex !== this.to.tabindex) {
-      this.setAttribute('tabindex', `${this.to.tabindex || 0}`);
-      this.tabindex = this.to.tabindex;
-    }
-
-    if (this.readonly !== this.to.readonly) {
-      if (this.to.readonly) {
-        this.setAttribute('readonly', 'readonly');
-      } else {
-        this.renderer.removeAttribute(this.elementRef.nativeElement, 'readonly');
+    this.uiAttributes.forEach(attr => {
+      const value = this.to[attr];
+      if (this.uiAttributesCache[attr] !== value) {
+        this.uiAttributesCache[attr] = value;
+        if (value || value === 0) {
+          this.setAttribute(attr, value === true ? attr : `${value}`);
+        } else {
+          this.renderer.removeAttribute(this.elementRef.nativeElement, attr);
+        }
       }
-      this.readonly = this.to.readonly;
-    }
+    });
   }
 
   ngOnDestroy() {
