@@ -92,6 +92,26 @@ describe('FormlyForm Component', () => {
       };
     });
 
+    it('should keep formControl instance on remove item for repeat section', () => {
+      testComponentInputs.model = { foo: [1, 2] };
+      testComponentInputs.fields = [{
+        key: 'foo',
+        type: 'repeat',
+        fieldArray: { type: 'text' },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+      const formArray = testComponentInputs.fields[0].formControl;
+
+      const formControl = formArray.at(1);
+      fixture.nativeElement.querySelector('#remove-0').click();
+      fixture.detectChanges();
+
+      expect(formArray.controls.length).toEqual(1);
+      expect(formArray.at(0)).toEqual(formControl);
+    });
+
     it('should emit `modelChange` when model repeat section is changed', () => {
       testComponentInputs.fields = [{
         key: 'foo',
