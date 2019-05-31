@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.8"></a>
+## [5.1.8](https://github.com/ngx-formly/ngx-formly/compare/v5.1.7...v5.1.8) (2019-05-31)
+
+
+### Bug Fixes
+
+* **core:** avoid rerender on model change with immutable mode ([#1610](https://github.com/ngx-formly/ngx-formly/issues/1610)) ([16fc39e](https://github.com/ngx-formly/ngx-formly/commit/16fc39e)), closes [#1429](https://github.com/ngx-formly/ngx-formly/issues/1429)
+
+
+
 <a name="5.1.7"></a>
 ## [5.1.7](https://github.com/ngx-formly/ngx-formly/compare/v5.1.6...v5.1.7) (2019-05-28)
 
