@@ -22,15 +22,15 @@ import { debounceTime } from 'rxjs/operators';
   providers: [FormlyFormBuilder],
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
-  @Input() form: FormGroup | FormArray = new FormGroup({});
+  @Input() form: FormGroup | FormArray;
 
   @Input()
   set model(model: any) { this._model = this.immutable ? clone(model) : model; }
-  get model() { return this._model; }
+  get model() { return this._model || {}; }
 
   @Input()
   set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable ? clone(fields) : fields; }
-  get fields() { return this._fields; }
+  get fields() { return this._fields || []; }
 
   @Input()
   set options(options: FormlyFormOptions) { this._options = this.immutable ? clone(options) : options; }
@@ -70,8 +70,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.fields || changes.form || changes.model) {
-      this.fields = this.fields || [];
-      this.model = this.model || {};
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
       this.clearModelSubscriptions();
@@ -148,7 +146,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private checkExpressionChange() {
-    if ((<FormlyFormOptionsCache> this.options)._checkField) {
+    if (this.options && (<FormlyFormOptionsCache> this.options)._checkField) {
       (<FormlyFormOptionsCache> this.options)._checkField({
         fieldGroup: this.fields,
         model: this.model,

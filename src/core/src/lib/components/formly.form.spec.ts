@@ -68,6 +68,17 @@ describe('FormlyForm Component', () => {
       expect(testComponentInputs.model).toEqual({});
     });
 
+    it('should not change the fields when a model change', () => {
+      const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      fixture.detectChanges();
+
+      const fields = fixture.componentInstance.formlyForm.fields;
+      fixture.componentInstance.model = { city: 'foo' };
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.formlyForm.fields).toBe(fields);
+    });
+
     it('should not change the input model when a new value is emitted', () => {
       const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       const spy = jasmine.createSpy('model change spy');
