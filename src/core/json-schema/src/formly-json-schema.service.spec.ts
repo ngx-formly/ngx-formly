@@ -15,8 +15,7 @@ describe('Service: FormlyJsonschema', () => {
   });
 
   describe('keyword support', () => {
-    // TODO: Add support for exclusiveMinimum, exclusiveMaximum
-    // https://json-schema.org/latest/json-schema-validation.html#numeric
+    // https://json-schema.org/latest/json-schema-validation.html#rfc.section.6.1
     describe('type keywords', () => {
       it('should guess type as object when properties is set', () => {
         const schema: JSONSchema7 = {
@@ -29,6 +28,8 @@ describe('Service: FormlyJsonschema', () => {
       });
     });
 
+    // TODO: Add support for exclusiveMinimum, exclusiveMaximum
+    // https://json-schema.org/latest/json-schema-validation.html#numeric
     describe('number validation keywords', () => {
       it('should support minimum, maximum and multipleOf', () => {
         const numSchema: JSONSchema7 = {
@@ -336,6 +337,112 @@ describe('Service: FormlyJsonschema', () => {
       // });
     });
 
+    // https://json-schema.org/latest/json-schema-validation.html#rfc.section.9
+    describe('Schema Re-Use With "definitions"', () => {
+      it('should resolve a schema definition', () => {
+        const schema: JSONSchema7 = {
+          'definitions': {
+            'address': { 'type': 'string' },
+          },
+          'type': 'object',
+          'properties': {
+            'billing_address': { '$ref': '#/definitions/address' },
+          },
+        };
+
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.fieldGroup[0]).toEqual({
+          key: 'billing_address',
+          type: 'string',
+          defaultValue: undefined,
+          templateOptions: emmptyTemplateOptions,
+        });
+      });
+
+      it('should use the locally defined annotations', () => {
+        const schema: JSONSchema7 = {
+          'definitions': {
+            'address': {
+              'type': 'string',
+              'title': 'Address',
+              'description': 'default address',
+              'default': 'Foo',
+            },
+          },
+          'type': 'object',
+          'properties': {
+            'billing_address': {
+              '$ref': '#/definitions/address',
+              'title': 'Billing address',
+              'description': 'default billing address',
+              'default': 'bar',
+            },
+          },
+        };
+
+        const config = formlyJsonschema.toFieldConfig(schema);
+        const addressField = config.fieldGroup[0];
+        expect(addressField.templateOptions.label).toEqual('Billing address');
+        expect(addressField.templateOptions.description).toEqual('default billing address');
+        expect(addressField.defaultValue).toEqual('bar');
+      });
+
+      it('should resolve a nested schema definition', () => {
+        const schema: JSONSchema7 = {
+          'definitions': {
+            'address1': { '$ref': '#/definitions/address2', 'title': 'address1' },
+            'address2': { 'type': 'string', 'title': 'address2' },
+          },
+          'type': 'object',
+          'properties': {
+            'address': { '$ref': '#/definitions/address1' },
+          },
+        };
+
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.fieldGroup[0]).toEqual({
+          key: 'address',
+          type: 'string',
+          defaultValue: undefined,
+          templateOptions: {
+            ...emmptyTemplateOptions,
+            label: 'address1',
+          },
+        });
+      });
+
+      it('should resolve a recusive schema definition', () => {
+        const schema: JSONSchema7 = {
+          'definitions': {
+            'person': {
+              'type': 'array',
+              'items': { '$ref': '#/definitions/person' },
+            },
+          },
+
+          'type': 'object',
+
+          'properties': {
+            'person': { '$ref': '#/definitions/person' },
+          },
+        };
+
+        const config = formlyJsonschema.toFieldConfig(schema).fieldGroup[0];
+
+        const expectedConfig = {
+          type: 'array',
+          defaultValue: undefined,
+          templateOptions: emmptyTemplateOptions,
+          fieldGroup: [],
+          fieldArray: jasmine.any(Object) as any,
+        };
+
+        expect(config.fieldArray).toEqual(expectedConfig);
+        expect(config.fieldArray.fieldArray).toEqual(expectedConfig);
+        expect(config.fieldArray.fieldArray.fieldArray).toEqual(expectedConfig);
+
+      });
+    });
     // TODO: discuss support of writeOnly. Note: this may not be needed.
     // TODO: discuss support of examples. By spec, default can be used in its place.
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.10

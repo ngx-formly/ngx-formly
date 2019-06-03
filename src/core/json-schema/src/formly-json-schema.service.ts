@@ -27,6 +27,10 @@ export class FormlyJsonschema {
   }
 
   private _toFieldConfig(schema: JSONSchema7, options: IOptions): FormlyFieldConfig {
+    if (schema.$ref) {
+      schema = this.resolveDefinition(schema, options);
+    }
+
     let field: FormlyFieldConfig = {
       type: this.guessType(schema),
       defaultValue: schema.default,
@@ -111,6 +115,37 @@ export class FormlyJsonschema {
     // if there is a map function passed in, use it to allow the user to
     // further customize how fields are being mapped
     return options.map ? options.map(field, schema) : field;
+  }
+
+  private resolveDefinition(schema: JSONSchema7, options: IOptions): JSONSchema7 {
+    const [uri, pointer] = schema.$ref.split('#/');
+    if (uri) {
+      throw Error(`Remote schemas for ${schema.$ref} not supported yet.`);
+    }
+
+    const definition = !pointer ? null : pointer.split('/').reduce(
+      (def, path) => def && def.hasOwnProperty(path) ? def[path] : null,
+      options.schema,
+    );
+
+    if (!definition) {
+      throw Error(`Cannot find a definition for ${schema.$ref}.`);
+    }
+
+    if (definition.$ref) {
+      return this.resolveDefinition(definition, options);
+    }
+
+    return {
+      ...definition,
+      ...['title', 'description', 'default'].reduce((annotation, p) => {
+        if (schema.hasOwnProperty(p)) {
+          annotation[p] = schema[p];
+        }
+
+        return annotation;
+      }, {}),
+    };
   }
 
   private guessType(schema: JSONSchema7) {
