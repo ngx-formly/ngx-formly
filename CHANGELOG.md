@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.9"></a>
+## [5.1.9](https://github.com/ngx-formly/ngx-formly/compare/v5.1.8...v5.1.9) (2019-06-04)
+
+
+### Bug Fixes
+
+* **material:** multi-select when passing observable data ([#1614](https://github.com/ngx-formly/ngx-formly/issues/1614)) ([e74bd4e](https://github.com/ngx-formly/ngx-formly/commit/e74bd4e))
+
+
+
 <a name="5.1.8"></a>
 ## [5.1.8](https://github.com/ngx-formly/ngx-formly/compare/v5.1.7...v5.1.8) (2019-05-31)
 
