@@ -118,10 +118,17 @@ export function clone(value: any): any {
     return value.slice(0).map(v => clone(v));
   }
 
-  value = Object.assign({}, value);
-  Object.keys(value).forEach(k => value[k] = clone(value[k]));
+  return Object.keys(value).reduce((newVal, prop) => {
+    const propDescriptor = Object.getOwnPropertyDescriptor(value, prop);
 
-  return value;
+    if (propDescriptor.get) {
+      Object.defineProperty(newVal, prop, { ...propDescriptor, get: () => clone(value[prop]) });
+    } else {
+      newVal[prop] = clone(value[prop]);
+    }
+
+    return newVal;
+  }, {});
 }
 
 export function defineHiddenProp(field, prop, defaultValue) {

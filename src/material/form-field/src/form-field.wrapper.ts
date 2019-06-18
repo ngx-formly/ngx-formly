@@ -64,7 +64,7 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     defineHiddenProp(this.field, '__formField__', this.formField);
 
     const fieldComponent = this.formlyField['_componentFactory'];
-    if (!(fieldComponent.componentRef.instance instanceof FieldType)) {
+    if (fieldComponent && !(fieldComponent.componentRef.instance instanceof FieldType)) {
       console.warn(`Component '${fieldComponent.component.prototype.constructor.name}' must extend 'FieldType' from '@ngx-formly/material'.`);
     }
 
