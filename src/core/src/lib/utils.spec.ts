@@ -143,4 +143,14 @@ describe('clone', () => {
     expect(clone(d)).toEqual(d);
     expect(clone(d) === d).toBeFalsy();
   });
+
+  it('Enumerable getter', () => {
+    const d = {};
+    Object.defineProperty(d, 'a', { get: () => 'test', enumerable: true });
+    const value = clone(d);
+
+    const propDescriptor = Object.getOwnPropertyDescriptor(value, 'a');
+    expect(propDescriptor.get).toBeDefined();
+    expect(propDescriptor.enumerable).toBeTruthy();
+  });
 });
