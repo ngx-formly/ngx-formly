@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
 
 @Component({
@@ -11,7 +11,6 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [id]="id"
       [formlyAttributes]="field"
       [tabindex]="to.tabindex || 0"
-      (change)="change($event)"
       [indeterminate]="to.indeterminate && formControl.value === null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">
@@ -39,12 +38,6 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, OnD
   onContainerClick(event: MouseEvent): void {
     this.checkbox.focus();
     super.onContainerClick(event);
-  }
-
-  change($event: MatCheckboxChange) {
-    if (this.to.change) {
-      this.to.change(this.field, $event);
-    }
   }
 
   ngAfterViewInit() {

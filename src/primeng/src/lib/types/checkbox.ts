@@ -10,7 +10,7 @@ import { FieldType } from '@ngx-formly/core';
       [label]="to.label"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      (valueChange)="to.change && to.change(field, $event)">
+      (onChange)="to.change && to.change(field, $event)">
     </p-checkbox>
   `,
 })
