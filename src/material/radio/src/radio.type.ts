@@ -31,12 +31,8 @@ export class FormlyFieldRadio extends FieldType {
   };
 
   onContainerClick(event: MouseEvent): void {
-    if (this.radioGroup._radios.length) {
-      if (this.radioGroup.selected) {
-        this.radioGroup.selected.focus();
-      } else {
-        this.radioGroup._radios.first.focus();
-      }
+    if (this.radioGroup._radios.length && !this.radioGroup.selected) {
+      this.radioGroup._radios.first.focus();
     }
     super.onContainerClick(event);
   }
