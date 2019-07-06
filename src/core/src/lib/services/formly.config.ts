@@ -138,7 +138,7 @@ export class FormlyConfig {
       resolver = field.parent.options._componentFactoryResolver;
     }
     if (!injector) {
-      injector = field.parent.options._injector;
+      injector = this.getFieldInjector(field);
     }
 
     defineHiddenProp(field, '_componentFactory', {
@@ -218,6 +218,15 @@ export class FormlyConfig {
     if (!this.types[name].wrappers) {
       this.types[name].wrappers = extendedType.wrappers;
     }
+  }
+
+  private getFieldInjector(field: FormlyFieldConfigCache = {}) {
+    const parent = field.parent;
+    if (parent._componentFactory && parent._componentFactory.componentRef) {
+      return parent._componentFactory.componentRef.injector;
+    }
+
+    return parent.options._injector;
   }
 }
 export interface TypeOption {

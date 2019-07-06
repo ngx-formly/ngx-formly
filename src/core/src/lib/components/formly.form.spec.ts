@@ -22,7 +22,15 @@ let testComponentInputs;
 describe('FormlyForm Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TestFormComponent, FormlyFieldText, FormlyWrapperLabel, RepeatComponent],
+      declarations: [
+        TestComponent,
+        TestFormComponent,
+        FormlyFieldText,
+        FormlyWrapperLabel,
+        RepeatComponent,
+        ParentComponent,
+        ChildComponent,
+      ],
       imports: [
         ReactiveFormsModule,
         FormlyModule.forRoot({
@@ -39,6 +47,14 @@ describe('FormlyForm Component', () => {
             {
               name: 'repeat',
               component: RepeatComponent,
+            },
+            {
+              name: 'parent',
+              component: ParentComponent,
+            },
+            {
+              name: 'child',
+              component: ChildComponent,
             },
           ],
           wrappers: [{
@@ -1029,6 +1045,32 @@ describe('FormlyForm Component', () => {
       });
     });
   });
+
+  describe('component-level injectors', () => {
+    it('should inject parent service to child type', () => {
+      testComponentInputs.fields = [{
+        type: 'parent',
+        fieldGroup: [{
+          type: 'child',
+          fieldGroup: [{ key: 'email', type: 'text' }],
+        }],
+      }];
+
+      // should inject `ParentService` in `ChildComponent` without raising an error
+      createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    });
+
+    it('should throw an error if child has no parent', () => {
+      testComponentInputs.fields = [{
+        type: 'child',
+        fieldGroup: [{ key: 'email', type: 'text' }],
+      }];
+
+      const createComponent = () => createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      expect(createComponent).toThrowError(/No provider for ParentService!/i);
+    });
+  });
+
 });
 
 @Component({
@@ -1076,3 +1118,26 @@ class TestComponent {
   `,
 })
 class RepeatComponent extends FieldArrayType {}
+
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class ParentService {}
+
+
+@Component({
+  selector: 'formly-parent',
+  template: `<ng-content></ng-content>`,
+  providers: [ParentService],
+})
+export class ParentComponent {
+  constructor(public parent: ParentService) {}
+}
+
+@Component({
+  selector: 'formly-child',
+  template: `<ng-content></ng-content>`,
+})
+export class ChildComponent {
+  constructor(public parent: ParentService) {}
+}
