@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, AfterViewChecked, ElementRef } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
@@ -22,6 +22,7 @@ import { FieldType } from '@ngx-formly/core';
 
     <ng-template #singleSelect>
       <select class="form-control"
+        #select
         [formControl]="formControl"
         [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
@@ -39,8 +40,21 @@ import { FieldType } from '@ngx-formly/core';
     </ng-template>
   `,
 })
-export class FormlyFieldSelect extends FieldType {
+export class FormlyFieldSelect extends FieldType implements AfterViewChecked {
+  @ViewChild('select') select!: ElementRef<HTMLSelectElement>;
   defaultOptions = {
     templateOptions: { options: [] },
   };
+
+  // workaround for https://github.com/angular/angular/issues/10010
+  ngAfterViewChecked() {
+    if (!this.to.multiple && !this.to.placeholder && this.formControl.value === null) {
+      const selectEl = this.select.nativeElement;
+      if (selectEl.selectedIndex !== -1
+        && (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value !== null)
+      ) {
+        this.select.nativeElement.selectedIndex = -1;
+      }
+    }
+  }
 }
