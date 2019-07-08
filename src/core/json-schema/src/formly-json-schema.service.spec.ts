@@ -15,18 +15,20 @@ describe('Service: FormlyJsonschema', () => {
   });
 
   describe('keyword support', () => {
-    // TODO: Add support for exclusiveMinimum, exclusiveMaximum and multipleOf
+    // TODO: Add support for exclusiveMinimum, exclusiveMaximum
     // https://json-schema.org/latest/json-schema-validation.html#numeric
     describe('number validation keywords', () => {
-      it('should support minimum and maximum', () => {
+      it('should support minimum, maximum and multipleOf', () => {
         const numSchema: JSONSchema7 = {
           type: 'number',
           minimum: 5,
           maximum: 10,
+          multipleOf: 5,
         };
         const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
         expect(formlyConfig.templateOptions.min).toBe(numSchema.minimum);
         expect(formlyConfig.templateOptions.max).toBe(numSchema.maximum);
+        expect(formlyConfig.templateOptions.step).toBe(numSchema.multipleOf);
       });
     });
 
