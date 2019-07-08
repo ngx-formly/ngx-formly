@@ -12,86 +12,95 @@ export interface FormlyJsonschemaOptions {
   map?: (mappedField: FormlyFieldConfig, mapSource: JSONSchema7) => FormlyFieldConfig;
 }
 
+interface IOptions extends FormlyJsonschemaOptions {
+  schema: JSONSchema7;
+}
+
 @Injectable({ providedIn: 'root' })
 export class FormlyJsonschema {
-  toFieldConfig(jsonSchema: JSONSchema7, options?: FormlyJsonschemaOptions): FormlyFieldConfig {
-    return this._toFieldConfig(jsonSchema, null, options);
+  toFieldConfig(schema: JSONSchema7, options?: FormlyJsonschemaOptions): FormlyFieldConfig {
+    return this._toFieldConfig(schema, { schema, ...(options || {}) });
   }
 
-  _toFieldConfig(jsonSchema: JSONSchema7, key?: string, options?: FormlyJsonschemaOptions): FormlyFieldConfig {
+  private _toFieldConfig(schema: JSONSchema7, options: IOptions): FormlyFieldConfig {
     let field: FormlyFieldConfig = {
-      ...(key ? { key } : {}),
-      type: jsonSchema.type as JSONSchema7TypeName,
-      defaultValue: jsonSchema.default,
+      type: schema.type as JSONSchema7TypeName,
+      defaultValue: schema.default,
       templateOptions: {
-        min: jsonSchema.minimum,
-        max: jsonSchema.maximum,
-        minLength: jsonSchema.minLength,
-        maxLength: jsonSchema.maxLength,
-        label: jsonSchema.title,
-        readonly: jsonSchema.readOnly,
-        pattern: jsonSchema.pattern,
-        description: jsonSchema.description,
+        label: schema.title,
+        readonly: schema.readOnly,
+        description: schema.description,
       },
     };
 
-    if (jsonSchema.enum) {
-      if (field.type === 'integer' || field.type === 'number') {
+    switch (field.type) {
+      case 'number':
+      case 'integer': {
         field.parsers = [Number];
+        if (schema.hasOwnProperty('minimum')) {
+          field.templateOptions.min = schema.minimum;
+        }
+        if (schema.hasOwnProperty('maximum')) {
+          field.templateOptions.max = schema.maximum;
+        }
+        break;
       }
-      field.type = 'enum';
-      field.templateOptions.options = jsonSchema.enum;
-      field.templateOptions.labelProp = item => item;
-      field.templateOptions.valueProp = item => item;
-    }
-
-    switch (jsonSchema.type) {
+      case 'string': {
+        ['minLength', 'maxLength', 'pattern'].forEach(prop => {
+          if (schema.hasOwnProperty(prop)) {
+            field.templateOptions[prop] = schema[prop];
+          }
+        });
+        break;
+      }
       case 'object': {
         field.fieldGroup = [];
-        Object.keys(jsonSchema.properties).forEach(p => {
-          const child = this._toFieldConfig(<JSONSchema7> jsonSchema.properties[p], p, options);
-          if (Array.isArray(jsonSchema.required) && jsonSchema.required.indexOf(p) !== -1) {
-            child.templateOptions.required = true;
+        Object.keys(schema.properties || {}).forEach(key => {
+          const f = this._toFieldConfig(<JSONSchema7> schema.properties[key], options);
+          field.fieldGroup.push(f);
+          f.key = key;
+          if (Array.isArray(schema.required) && schema.required.indexOf(key) !== -1) {
+            f.templateOptions.required = true;
           }
-          field.fieldGroup.push(child);
         });
         break;
       }
       case 'array': {
-        if (!Array.isArray(jsonSchema.items)) {
-          field.fieldArray = this._toFieldConfig(jsonSchema.items as JSONSchema7, key, options);
-        } else {
-          field['_fieldArray'] = [];
-          field.fieldGroup = [];
-          jsonSchema.items.forEach(item => field['_fieldArray'].push(this._toFieldConfig(<JSONSchema7> item, key, options)));
-          if (jsonSchema.additionalItems) {
-            field['_additionalFieldArray'] = this._toFieldConfig(<JSONSchema7> jsonSchema.additionalItems, key, options);
-          }
+        field.fieldGroup = [];
+        Object.defineProperty(field, 'fieldArray', {
+          get: () => {
+            if (!Array.isArray(schema.items)) {
+              // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
+              return this._toFieldConfig(<JSONSchema7> schema.items, options);
+            }
 
-          Object.defineProperty(field, 'fieldArray', {
-            get: () => {
-              return field['_fieldArray'][field.fieldGroup.length] || field['_additionalFieldArray'];
-            },
-            enumerable: true,
-            configurable: true,
-          });
-        }
+            const itemSchema = schema.items[field.fieldGroup.length]
+              ? schema.items[field.fieldGroup.length]
+              : schema.additionalItems;
+
+            return itemSchema
+              ? this._toFieldConfig(<JSONSchema7> itemSchema, options)
+              : null;
+          },
+          enumerable: true,
+          configurable: true,
+        });
         break;
       }
     }
 
+    if (schema.enum) {
+      field.type = 'enum';
+      field.templateOptions.options = schema.enum.map(value => ({ value, label: value }));
+    }
+
     // map in possible formlyConfig options from the widget property
-    if (jsonSchema['widget'] && jsonSchema['widget'].formlyConfig) {
-      const widgetConfig = jsonSchema['widget'].formlyConfig;
-      field = reverseDeepMerge(widgetConfig, field);
+    if (schema['widget'] && schema['widget'].formlyConfig) {
+      field = reverseDeepMerge(schema['widget'].formlyConfig, field);
     }
 
     // if there is a map function passed in, use it to allow the user to
     // further customize how fields are being mapped
-    if (options && options.map) {
-      field = options.map(field, jsonSchema);
-    }
-
-    return field;
+    return options.map ? options.map(field, schema) : field;
   }
 }
