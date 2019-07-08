@@ -28,7 +28,7 @@ export class FormlyJsonschema {
 
   private _toFieldConfig(schema: JSONSchema7, options: IOptions): FormlyFieldConfig {
     let field: FormlyFieldConfig = {
-      type: schema.type as JSONSchema7TypeName,
+      type: this.guessType(schema),
       defaultValue: schema.default,
       templateOptions: {
         label: schema.title,
@@ -111,5 +111,14 @@ export class FormlyJsonschema {
     // if there is a map function passed in, use it to allow the user to
     // further customize how fields are being mapped
     return options.map ? options.map(field, schema) : field;
+  }
+
+  private guessType(schema: JSONSchema7) {
+    const type = schema.type as JSONSchema7TypeName;
+    if (!type && schema.properties) {
+      return 'object';
+    }
+
+    return type;
   }
 }
