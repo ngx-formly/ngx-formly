@@ -6,13 +6,8 @@ import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 describe('Service: FormlyJsonschema', () => {
   let formlyJsonschema: FormlyJsonschema;
   const emmptyTemplateOptions: FormlyTemplateOptions = {
-    min: undefined,
-    max: undefined,
-    minLength: undefined,
-    maxLength: undefined,
     label: undefined,
     readonly: undefined,
-    pattern: undefined,
     description: undefined,
   };
   beforeEach(() => {
@@ -75,6 +70,7 @@ describe('Service: FormlyJsonschema', () => {
             defaultValue: undefined,
             templateOptions: { ...emmptyTemplateOptions },
             fieldArray: childConfig,
+            fieldGroup: [],
          };
 
          expect(config).toEqual(baseConfig);
@@ -92,7 +88,7 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(schema);
 
         const childConfig: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'string', defaultValue: undefined };
-        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'number', defaultValue: undefined };
+        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'number', defaultValue: undefined, parsers: [Number] };
 
         expect(config.fieldArray).toEqual(childConfig);
         // TODO: is this the best way to test this?
@@ -116,7 +112,7 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(schema);
 
         const childConfig: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'string', defaultValue: undefined };
-        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'number', defaultValue: undefined };
+        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'number', defaultValue: undefined, parsers: [Number]};
         const childConfig3: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'boolean', defaultValue: undefined };
 
         expect(config.fieldArray).toEqual(childConfig);
@@ -166,6 +162,7 @@ describe('Service: FormlyJsonschema', () => {
           key: 'notRequired',
           templateOptions: { ...emmptyTemplateOptions },
           defaultValue: undefined,
+          parsers: [Number],
         };
 
         const nestedProp: FormlyFieldConfig = {
@@ -203,8 +200,7 @@ describe('Service: FormlyJsonschema', () => {
       it('should support enum as strig array values', () => {
         const schemaStringEnum: JSONSchema7 = {
           type: 'string',
-          enum: ['The', 'Best', 'Forms',
-          ],
+          enum: ['The', 'Best', 'Forms'],
         };
 
         const schemaNumberEnum: JSONSchema7 = {
@@ -217,26 +213,22 @@ describe('Service: FormlyJsonschema', () => {
           enum: [1, 2, 3, 4, 5],
         };
 
+        const enumOptions = schemaEnum => schemaEnum.map(value => ({ value, label: value }));
+
         // labelProp and valueProp should be a function that returns what it is given
         const config = formlyJsonschema.toFieldConfig(schemaStringEnum);
         expect(config.type).toBe('enum');
-        expect(config.templateOptions.options).toEqual(schemaStringEnum.enum);
-        expect(config.templateOptions.labelProp('test')).toBe('test');
-        expect(config.templateOptions.valueProp('test')).toBe('test');
+        expect(config.templateOptions.options).toEqual(enumOptions(schemaStringEnum.enum));
 
         const config2 = formlyJsonschema.toFieldConfig(schemaNumberEnum);
         expect(config2.parsers).toEqual([Number]);
         expect(config2.type).toBe('enum');
-        expect(config2.templateOptions.options).toEqual(schemaNumberEnum.enum);
-        expect(config2.templateOptions.labelProp('test')).toBe('test');
-        expect(config2.templateOptions.valueProp('test')).toBe('test');
+        expect(config2.templateOptions.options).toEqual(enumOptions(schemaNumberEnum.enum));
 
         const config3 = formlyJsonschema.toFieldConfig(schemaIntegerEnum);
         expect(config3.parsers).toEqual([Number]);
         expect(config3.type).toBe('enum');
-        expect(config3.templateOptions.options).toEqual(schemaIntegerEnum.enum);
-        expect(config3.templateOptions.labelProp('test')).toBe('test');
-        expect(config3.templateOptions.valueProp('test')).toBe('test');
+        expect(config3.templateOptions.options).toEqual(enumOptions(schemaIntegerEnum.enum));
       });
 
       describe('widget formlyConfig options merging', () => {
