@@ -12,6 +12,10 @@ export interface FormlyJsonschemaOptions {
   map?: (mappedField: FormlyFieldConfig, mapSource: JSONSchema7) => FormlyFieldConfig;
 }
 
+function isEmpty(v) {
+  return v === '' || v === undefined || v === null;
+}
+
 interface IOptions extends FormlyJsonschemaOptions {
   schema: JSONSchema7;
 }
@@ -36,7 +40,7 @@ export class FormlyJsonschema {
     switch (field.type) {
       case 'number':
       case 'integer': {
-        field.parsers = [Number];
+        field.parsers = [v => isEmpty(v) ? null : Number(v)];
         if (schema.hasOwnProperty('minimum')) {
           field.templateOptions.min = schema.minimum;
         }
