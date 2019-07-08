@@ -15,7 +15,8 @@ module.exports = {
         'demo',
         'guides',
         'schematics',
-        'nativescript'
+        'nativescript',
+        'json-schema'
       ]
     ],
     'scope-empty': [1, 'never'],

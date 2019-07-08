@@ -40,8 +40,13 @@ export class FormlyJsonschema {
         if (schema.hasOwnProperty('minimum')) {
           field.templateOptions.min = schema.minimum;
         }
+
         if (schema.hasOwnProperty('maximum')) {
           field.templateOptions.max = schema.maximum;
+        }
+
+        if (schema.hasOwnProperty('multipleOf')) {
+          field.templateOptions.step = schema.multipleOf;
         }
         break;
       }
