@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.2.0"></a>
+# [5.2.0](https://github.com/ngx-formly/ngx-formly/compare/v5.1.9...v5.2.0) (2019-07-08)
+
+
+### Bug Fixes
+
+* **bootstrap:** select empty option when value is null ([#1652](https://github.com/ngx-formly/ngx-formly/issues/1652)) ([50a1138](https://github.com/ngx-formly/ngx-formly/commit/50a1138)), closes [#1625](https://github.com/ngx-formly/ngx-formly/issues/1625)
+* **core:** restore support component-level injectors for types ([#1651](https://github.com/ngx-formly/ngx-formly/issues/1651)) ([165ac75](https://github.com/ngx-formly/ngx-formly/commit/165ac75)), closes [#1622](https://github.com/ngx-formly/ngx-formly/issues/1622)
+* **material:** avoid handling focus for selected radio option ([#1648](https://github.com/ngx-formly/ngx-formly/issues/1648)) ([44535ac](https://github.com/ngx-formly/ngx-formly/commit/44535ac)), closes [#1631](https://github.com/ngx-formly/ngx-formly/issues/1631)
+* **material:** remove duplicated change event listener ([#1649](https://github.com/ngx-formly/ngx-formly/issues/1649)) ([d28f7a8](https://github.com/ngx-formly/ngx-formly/commit/d28f7a8)), closes [#1644](https://github.com/ngx-formly/ngx-formly/issues/1644)
+
+
+### Features
+
+* **core:** take account of enumerable getter on clone ([#1637](https://github.com/ngx-formly/ngx-formly/issues/1637)) ([66239d9](https://github.com/ngx-formly/ngx-formly/commit/66239d9))
+
+
+
 <a name="5.1.9"></a>
 ## [5.1.9](https://github.com/ngx-formly/ngx-formly/compare/v5.1.8...v5.1.9) (2019-06-04)
 
