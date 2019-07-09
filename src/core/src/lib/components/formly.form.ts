@@ -56,7 +56,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
-    formlyConfig: FormlyConfig,
+    private formlyConfig: FormlyConfig,
     // tslint:disable-next-line
     @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
@@ -65,7 +65,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngDoCheck() {
-    this.checkExpressionChange();
+    if (this.formlyConfig.extras.checkExpressionOn === 'changeDetectionCheck') {
+      this.checkExpressionChange();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -30,6 +30,7 @@ export class FormlyConfig {
     postWrapper: [],
   };
   extras: ConfigOption['extras'] = {
+    checkExpressionOn: 'changeDetectionCheck',
     showError: function(field: FieldType) {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
     },
@@ -290,5 +291,12 @@ export interface ConfigOption {
     fieldTransform?: any,
     immutable?: boolean,
     showError?: (field: FieldType) => boolean;
+
+    /**
+     * Defines the option which formly rely on to check field expression properties.
+     * - `modelChange`: perform a check when the value of the form control changes.
+     * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.
+    */
+    checkExpressionOn?: 'modelChange' | 'changeDetectionCheck',
   };
 }
