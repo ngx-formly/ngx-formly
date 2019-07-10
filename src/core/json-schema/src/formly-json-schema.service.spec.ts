@@ -199,6 +199,69 @@ describe('Service: FormlyJsonschema', () => {
         expect(config.fieldGroup[1]).toEqual(child2);
         expect(config.fieldGroup[2]).toEqual(nested);
       });
+
+      describe('dependencies', () => {
+        describe('with property dependencies', () => {
+          it('should ignore required properties if required is defined', () => {
+            const schema: JSONSchema7 = {
+              'type': 'object',
+              'properties': {
+                'credit_card': { 'type': 'number' },
+                'billing_address': { 'type': 'string' },
+              },
+              'required': ['credit_card'],
+              'dependencies': {
+                'credit_card': ['billing_address'],
+              },
+            };
+
+            const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
+
+            expect(config[0].templateOptions.required).toBeTruthy();
+            expect(config[0].expressionProperties).toBeUndefined();
+          });
+
+          it('should add required properties', () => {
+            const schema: JSONSchema7 = {
+              'type': 'object',
+              'properties': {
+                'credit_card': { 'type': 'number' },
+                'billing_address': { 'type': 'string' },
+              },
+              'dependencies': {
+                'credit_card': ['billing_address'],
+              },
+            };
+
+            const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
+            const requiredExpr = config[1].expressionProperties['templateOptions.required'] as any;
+            expect(requiredExpr({ credit_card: null })).toBeFalsy();
+            expect(requiredExpr({ credit_card: 121223233 })).toBeTruthy();
+          });
+        });
+
+        it('with schema dependencies', () => {
+          const schema: JSONSchema7 = {
+            'type': 'object',
+            'properties': {
+              'credit_card': { 'type': 'number' },
+            },
+            'dependencies': {
+              'credit_card': {
+                'properties': {
+                  'billing_address': { 'type': 'string' },
+                },
+                'required': ['billing_address'],
+              },
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
+          const hideExpr = config[1].hideExpression as any;
+          expect(hideExpr({ credit_card: null })).toBeTruthy();
+          expect(hideExpr({ credit_card: 121223233 })).toBeFalsy();
+        });
+      });
     });
 
     // https://json-schema.org/latest/json-schema-validation.html#general

@@ -68,12 +68,26 @@ export class FormlyJsonschema {
       }
       case 'object': {
         field.fieldGroup = [];
+
+        const [propDeps, schemaDeps] = this.resolveDependencies(schema);
         Object.keys(schema.properties || {}).forEach(key => {
           const f = this._toFieldConfig(<JSONSchema7> schema.properties[key], options);
           field.fieldGroup.push(f);
           f.key = key;
           if (Array.isArray(schema.required) && schema.required.indexOf(key) !== -1) {
             f.templateOptions.required = true;
+          }
+          if (!f.templateOptions.required && propDeps[key]) {
+            f.expressionProperties = {
+              'templateOptions.required': m => m && propDeps[key].some(k => !isEmpty(m[k])),
+            };
+          }
+
+          if (schemaDeps[key]) {
+            field.fieldGroup.push({
+              ...this._toFieldConfig(schemaDeps[key], options),
+              hideExpression: m => !m || isEmpty(m[key]),
+            });
           }
         });
         break;
@@ -146,6 +160,30 @@ export class FormlyJsonschema {
         return annotation;
       }, {}),
     };
+  }
+
+  private resolveDependencies(schema: JSONSchema7) {
+    const deps = {};
+    const schemaDeps = {};
+
+    Object.keys(schema.dependencies || {}).forEach(prop => {
+      const dependency = schema.dependencies[prop] as JSONSchema7;
+      if (Array.isArray(dependency)) {
+        // Property dependencies
+        dependency.forEach(dep => {
+          if (!deps[dep]) {
+            deps[dep] = [prop];
+          } else {
+            deps[dep].push(prop);
+          }
+        });
+      } else {
+        // schema dependencies
+        schemaDeps[prop] = dependency;
+      }
+    });
+
+    return [deps, schemaDeps];
   }
 
   private guessType(schema: JSONSchema7) {

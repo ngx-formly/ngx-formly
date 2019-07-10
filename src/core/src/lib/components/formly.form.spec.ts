@@ -1048,23 +1048,33 @@ describe('FormlyForm Component', () => {
 
   describe('component-level injectors', () => {
     it('should inject parent service to child type', () => {
-      testComponentInputs.fields = [{
-        type: 'parent',
-        fieldGroup: [{
-          type: 'child',
-          fieldGroup: [{ key: 'email', type: 'text' }],
+      testComponentInputs = {
+        form: new FormGroup({}),
+        options: {},
+        model: {},
+        fields: [{
+          type: 'parent',
+          fieldGroup: [{
+            type: 'child',
+            fieldGroup: [{ key: 'email', type: 'text' }],
+          }],
         }],
-      }];
+      };
 
       // should inject `ParentService` in `ChildComponent` without raising an error
       createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
     });
 
     it('should throw an error if child has no parent', () => {
-      testComponentInputs.fields = [{
-        type: 'child',
-        fieldGroup: [{ key: 'email', type: 'text' }],
-      }];
+      testComponentInputs = {
+        form: new FormGroup({}),
+        options: { },
+        model: { },
+        fields: [{
+          type: 'child',
+          fieldGroup: [{ key: 'email', type: 'text' }],
+        }],
+      };
 
       const createComponent = () => createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       expect(createComponent).toThrowError(/No provider for ParentService!/i);
