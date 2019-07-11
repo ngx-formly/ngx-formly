@@ -12,9 +12,18 @@
 
 ---
 
-# @ngx-formly
+Formly is a dynamic (JSON powered) form library for Angular that bring unmatched maintainability to your application's forms.
 
-Ngx Formly is a dynamic JSON powered form library for Angular (mainly based an on [Angular Reactive Forms](https://angular.io/guide/reactive-forms)) that bring unmatched maintainability to your application's forms.
+## Features
+
+- 🔥 Automatic forms generation
+- 📝 Easy to extend with custom field type, validation, wrapper and extension.
+- ⚡️ Support multiple schemas:
+    - Formly Schema (core)
+    - JSON Schema
+- 😍 A bunch of themes, out of the box!
+- 💪 Build on top of [Angular Reactive Forms](https://angular.io/guide/reactive-forms)
+- 😱 Drag and Drop Editor (coming 🔜)
 
 **Supported UI libs**
 
