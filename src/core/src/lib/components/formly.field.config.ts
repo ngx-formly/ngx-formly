@@ -1,4 +1,4 @@
-import { FormGroup, AbstractControl, FormGroupDirective, FormArray, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { FormGroup, AbstractControl, FormGroupDirective, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { TemplateManipulators } from '../services/formly.config';
@@ -153,12 +153,7 @@ export interface FormlyFieldConfig {
     updateOn?: 'change' | 'blur' | 'submit';
   };
 
-  hooks?: FormlyLifeCycleOptions<FormlyHookFn>;
-
-  /**
-   * @deprecated use `hooks` instead
-   */
-  lifecycle?: FormlyLifeCycleOptions;
+  hooks?: FormlyHookConfig;
 
   /**
    * Use `defaultValue` to initialize it the model. If this is provided and the value of the model at compile-time is undefined, then the value of the model will be assigned to `defaultValue`.
@@ -228,23 +223,19 @@ export interface FormlyTemplateOptions {
   [additionalProperties: string]: any;
 }
 
-export interface FormlyLifeCycleFn {
-  (form?: FormGroup, field?: FormlyFieldConfig, model?: any, options?: FormlyFormOptions): void;
-}
-
 export interface FormlyHookFn {
   (field?: FormlyFieldConfig): void;
 }
 
-export interface FormlyLifeCycleOptions<T = FormlyLifeCycleFn> {
-  onInit?: T;
-  onChanges?: T;
-  doCheck?: T;
-  afterContentInit?: T;
-  afterContentChecked?: T;
-  afterViewInit?: T;
-  afterViewChecked?: T;
-  onDestroy?: T;
+export interface FormlyHookConfig {
+  onInit?: FormlyHookFn;
+  onChanges?: FormlyHookFn;
+  doCheck?: FormlyHookFn;
+  afterContentInit?: FormlyHookFn;
+  afterContentChecked?: FormlyHookFn;
+  afterViewInit?: FormlyHookFn;
+  afterViewChecked?: FormlyHookFn;
+  onDestroy?: FormlyHookFn;
   [additionalProperties: string]: any;
 }
 
@@ -261,7 +252,6 @@ export interface FormlyFormOptions {
   resetModel?: (model?: any) => void;
   formState?: any;
   fieldChanges?: Subject<FormlyValueChangeEvent>;
-  fieldTransform?: (fields: FormlyFieldConfig[], model: any, form: FormGroup | FormArray, options: FormlyFormOptions) => FormlyFieldConfig[];
   showError?: (field: FieldType) => boolean;
   parentForm?: FormGroupDirective | null;
 }
@@ -271,4 +261,3 @@ export interface FormlyValueChangeEvent {
   type: string;
   value: any;
 }
-
