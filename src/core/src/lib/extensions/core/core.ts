@@ -1,6 +1,5 @@
 import { FormlyExtension, FormlyConfig, TemplateManipulators } from '../../services/formly.config';
 import { FormlyFieldConfigCache, FormlyFieldConfig } from '../../components/formly.field.config';
-import { FormGroup } from '@angular/forms';
 import { getFieldId, assignModelValue, isUndefined, getFieldValue, reverseDeepMerge, getKeyPath } from '../../utils';
 
 /** @experimental */
@@ -10,20 +9,6 @@ export class CoreExtension implements FormlyExtension {
 
   prePopulate(field: FormlyFieldConfigCache) {
     this.getFieldComponentInstance(field).prePopulate();
-    if (field.parent) {
-      return;
-    }
-
-    const fieldTransforms = (field.options && field.options.fieldTransform) || this.formlyConfig.extras.fieldTransform;
-    (Array.isArray(fieldTransforms) ? fieldTransforms : [fieldTransforms]).forEach(fieldTransform => {
-      if (fieldTransform) {
-        console.warn(`NgxFormly: fieldTransform is deprecated since v5.0, use custom extension instead.`);
-        const fieldGroup = fieldTransform(field.fieldGroup, field.model, <FormGroup>field.formControl, field.options);
-        if (!fieldGroup) {
-          throw new Error('fieldTransform must return an array of fields');
-        }
-      }
-    });
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
@@ -67,14 +52,7 @@ export class CoreExtension implements FormlyExtension {
       },
     });
 
-    if (field.lifecycle) {
-      console.warn(`NgxFormly: 'lifecycle' is deprecated since v5.0, use 'hooks' instead.`);
-    }
-
-    if (field.template && field.type !== 'formly-template') {
-      if (field.type) {
-        console.warn(`NgxFormly: passing 'type' property is not allowed when 'template' is set.`);
-      }
+    if (field.template) {
       field.type = 'formly-template';
     }
 
