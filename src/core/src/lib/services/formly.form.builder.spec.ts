@@ -16,13 +16,12 @@ describe('FormlyFormBuilder service', () => {
   beforeEach(() => {
     TestComponent = MockComponent({ selector: 'formly-test-cmp' });
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TestComponentThatCreatesControl, RepeatComponent],
+      declarations: [TestComponent, RepeatComponent],
       imports: [
         FormlyModule.forRoot({
           types: [
             { name: 'input', component: TestComponent },
             { name: 'array', component: RepeatComponent },
-            { name: 'input-createcontrol', component: TestComponentThatCreatesControl },
           ],
           wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
           validators: [{ name: 'required', validation: Validators.required }],
@@ -489,16 +488,6 @@ describe('FormlyFormBuilder service', () => {
   });
 
   describe('form control creation and addition', () => {
-    it('should let component create the form control', () =>  {
-      let field = { key: 'title', type: 'input-createcontrol' };
-
-      builder.buildForm(form, [field], {}, {});
-
-      let control: FormControl = <FormControl> form.get('title');
-      expect(control).not.toBeNull();
-      expect(control.value).toBeUndefined();
-    });
-
     it('should add form control to form When `hide` is false', () => {
       field = {
         key: 'title',
@@ -707,16 +696,6 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 });
-
-@Component({
-  selector: 'formly-test-component',
-  template: '',
-})
-export class TestComponentThatCreatesControl {
-  static createControl(model, field) {
-    return new FormControl('created by component');
-  }
-}
 
 @Component({
   selector: 'formly-repeat-section',

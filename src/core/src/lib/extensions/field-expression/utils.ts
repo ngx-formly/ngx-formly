@@ -1,9 +1,5 @@
 export function evalStringExpression(expression: string, argNames: string[]) {
   try {
-    if (expression.indexOf('this.field') !== -1) {
-      console.warn(`NgxFormly: using 'this.field' in expressionProperties is deprecated since v5.1, use 'field' instead.`);
-    }
-
     return Function(...argNames, `return ${expression};`) as any;
   } catch (error) {
     console.error(error);
