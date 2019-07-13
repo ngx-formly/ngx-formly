@@ -23,11 +23,6 @@ export class FieldValidationExtension implements FormlyExtension {
 
     if (field[type]) {
       for (const validatorName in field[type]) {
-        if (validatorName === 'validation' && !Array.isArray(field[type].validation)) {
-          field[type].validation = [field[type].validation];
-          console.warn(`NgxFormly(${field.key}): passing a non array value to the 'validation' is deprecated, pass an array instead`);
-        }
-
         validatorName === 'validation'
           ? validators.push(...field[type].validation.map(v => this.wrapNgValidatorFn(field, v)))
           : validators.push(this.wrapNgValidatorFn(field, field[type][validatorName], validatorName))

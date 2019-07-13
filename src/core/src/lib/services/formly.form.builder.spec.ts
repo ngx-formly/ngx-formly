@@ -16,13 +16,12 @@ describe('FormlyFormBuilder service', () => {
   beforeEach(() => {
     TestComponent = MockComponent({ selector: 'formly-test-cmp' });
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TestComponentThatCreatesControl, RepeatComponent],
+      declarations: [TestComponent, RepeatComponent],
       imports: [
         FormlyModule.forRoot({
           types: [
             { name: 'input', component: TestComponent },
             { name: 'array', component: RepeatComponent },
-            { name: 'input-createcontrol', component: TestComponentThatCreatesControl },
           ],
           wrappers: [{ name: 'label', component: TestComponent, types: ['input'] }],
           validators: [{ name: 'required', validation: Validators.required }],
@@ -800,16 +799,6 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 });
-
-@Component({
-  selector: 'formly-test-component',
-  template: '',
-})
-export class TestComponentThatCreatesControl {
-  static createControl(model, field) {
-    return new FormControl('created by component');
-  }
-}
 
 @Component({
   selector: 'formly-repeat-section',

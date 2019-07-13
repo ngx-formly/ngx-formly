@@ -65,7 +65,3 @@ The `formState` property is passed to all fields and is a mechanism for communic
 ### resetModel and updateInitialValue
 
 This also receives the methods `resetModel` and `updateInitialValue` which will invoke all of the field's resetModel and updateInitialValue respectively.
-
-### fieldTransform
-
-Allows you to modify/convert the fields before Formly handles them or validates them.
