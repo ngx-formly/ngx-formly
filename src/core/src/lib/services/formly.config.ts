@@ -49,10 +49,6 @@ export class FormlyConfig {
     if (config.wrappers) {
       config.wrappers.forEach(wrapper => this.setWrapper(wrapper));
     }
-    if (config.manipulators) {
-      console.warn(`NgxFormly: passing 'manipulators' config is deprecated, use custom extension instead.`);
-      config.manipulators.forEach(manipulator => this.setManipulator(manipulator));
-    }
     if (config.validationMessages) {
       config.validationMessages.forEach(validation => this.addValidatorMessage(validation.name, validation.message));
     }
@@ -191,10 +187,6 @@ export class FormlyConfig {
     return this.messages[name];
   }
 
-  setManipulator(manipulator: ManipulatorOption) {
-    new manipulator.class()[manipulator.method](this);
-  }
-
   private mergeExtendedType(name: string) {
     if (!this.types[name].extends) {
       return;
@@ -244,11 +236,6 @@ export interface ValidationMessageOption {
   message: string | ((error: any, field: FormlyFieldConfig) => string | Observable<string>);
 }
 
-export interface ManipulatorOption {
-  class?: { new (): any };
-  method?: string;
-}
-
 export interface ManipulatorWrapper {
   (f: FormlyFieldConfig): string;
 }
@@ -264,12 +251,7 @@ export interface ConfigOption {
   validators?: ValidatorOption[];
   extensions?: ExtensionOption[];
   validationMessages?: ValidationMessageOption[];
-
-  /** @deprecated use `extensions` instead */
-  manipulators?: ManipulatorOption[];
   extras?: {
-    /** @deprecated use `extensions` instead */
-    fieldTransform?: any,
     immutable?: boolean,
     showError?: (field: FieldType) => boolean;
 

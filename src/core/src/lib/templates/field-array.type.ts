@@ -1,10 +1,8 @@
-import { Inject, Optional } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, isNullOrUndefined, assignFieldValue } from '../utils';
-import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFieldConfig } from '../components/formly.field.config';
-import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
+import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 import { Directive } from '@angular/core';
 
@@ -19,14 +17,6 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   defaultOptions: any = {
     defaultValue: [],
   };
-
-  constructor(@Inject(FORMLY_CONFIG) @Optional() builder?: FormlyFormBuilder) {
-    super();
-
-    if (builder instanceof FormlyFormBuilder) {
-      console.warn(`NgxFormly: passing 'FormlyFormBuilder' to '${this.constructor.name}' type is not required anymore, you may remove it!`);
-    }
-  }
 
   onPopulate(field: FormlyFieldConfig) {
     if (!field.formControl && field.key) {
