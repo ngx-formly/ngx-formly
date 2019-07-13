@@ -12,7 +12,7 @@ function createField(field: FormlyFieldConfig): FormlyFieldConfig {
 describe('FieldFormExtension', () => {
   let extension: FieldFormExtension;
   beforeEach(() => {
-    extension = new FieldFormExtension(null);
+    extension = new FieldFormExtension();
   });
 
   describe('field', () => {

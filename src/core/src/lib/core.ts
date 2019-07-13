@@ -4,7 +4,7 @@ export { FormlyField } from './components/formly.field';
 export { FormlyAttributes } from './components/formly.attributes';
 export { FORMLY_CONFIG, FormlyConfig, ConfigOption, FormlyExtension } from './services/formly.config';
 export { FormlyFormBuilder } from './services/formly.form.builder';
-export { FieldType, Field } from './templates/field.type';
+export { FieldType } from './templates/field.type';
 export { FieldArrayType } from './templates/field-array.type';
 export { FieldWrapper } from './templates/field.wrapper';
 export { FormlyModule } from './core.module';

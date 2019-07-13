@@ -70,9 +70,6 @@ describe('FormlyField Component', () => {
               component: AsyncWrapperComponent,
             },
           ],
-          manipulators: [
-            { class: Manipulator, method: 'run' },
-          ],
         }),
       ],
     });
@@ -278,7 +275,6 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         formControl: new FormControl(),
-        lifecycle: {},
         templateOptions: {
           placeholder: 'Title',
         },
@@ -297,20 +293,17 @@ describe('FormlyField Component', () => {
     testComponentInputs = {
       field: {
         type: 'formly-group',
-        lifecycle: {},
         fieldGroup: [
           {
             key: 'title1',
             type: 'text',
             formControl: new FormControl(),
-            lifecycle: {},
             templateOptions: { placeholder: 'Title1' },
           },
           {
             key: 'title2',
             type: 'text',
             formControl: new FormControl(),
-            lifecycle: {},
             templateOptions: { placeholder: 'Title2' },
           },
         ],
@@ -330,7 +323,6 @@ describe('FormlyField Component', () => {
         field: {
           key: 'title',
           type: 'text',
-          lifecycle: {},
           templateOptions: {
             label: 'Title',
             placeholder: 'Title',
@@ -367,7 +359,6 @@ describe('FormlyField Component', () => {
         type: 'text',
         formControl: new FormControl(),
         optionsTypes: ['other'],
-        lifecycle: {},
         templateOptions: {
           placeholder: 'Title',
         },
@@ -459,22 +450,6 @@ export class FormlyFieldText extends FieldType {}
   `,
 })
 export class FormlyWrapperLabel extends FieldWrapper {
-}
-
-export class Manipulator {
-  run(fc) {
-    fc.templateManipulators.postWrapper.push((field) => {
-      if (field && field.templateOptions && field.templateOptions.postWrapper) {
-        return 'label';
-      }
-    });
-
-    fc.templateManipulators.preWrapper.push((field) => {
-      if (field && field.templateOptions && field.templateOptions.preWrapper) {
-        return 'label';
-      }
-    });
-  }
 }
 
 @Component({
