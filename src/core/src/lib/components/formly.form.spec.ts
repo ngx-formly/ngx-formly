@@ -2,8 +2,8 @@ import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testin
 import { createGenericTestComponent, newEvent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
-import { Component, ViewChild, DebugElement } from '@angular/core';
-import { FormlyModule } from '../core';
+import { Component, Injectable, ViewChild, DebugElement } from '@angular/core';
+import { FormlyModule, FormlyConfig } from '../core';
 import { FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFormOptions } from './formly.field.config';
@@ -650,6 +650,30 @@ describe('FormlyForm Component', () => {
     });
   });
 
+  it('should check expression on modelChange only', fakeAsync(() => {
+    testComponentInputs = {
+      fields: [{
+        key: 'name',
+        type: 'text',
+        hideExpression: 'model.name',
+      }],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    const config = TestBed.get(FormlyConfig);
+    config.extras.checkExpressionOn = 'modelChange';
+
+    testComponentInputs.model.name = 'test';
+    fixture.detectChanges();
+    expect(testComponentInputs.fields[0].hide).toBeFalsy();
+
+    testComponentInputs.fields[0].formControl.setValue('test');
+    tick(100);
+    expect(testComponentInputs.fields[0].hide).toBeTruthy();
+  }));
+
   describe('options', () => {
     let field, model, form: FormGroup, options: FormlyFormOptions;
     beforeEach(() => {
@@ -1128,8 +1152,6 @@ class TestComponent {
   `,
 })
 class RepeatComponent extends FieldArrayType {}
-
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ParentService {}
