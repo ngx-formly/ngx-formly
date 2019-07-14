@@ -1,5 +1,5 @@
 import { OnInit, OnDestroy, AfterViewInit, TemplateRef, ViewChild, Type } from '@angular/core';
-import { FieldType as CoreFieldType, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType as CoreFieldType, FormlyFieldConfig } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { FormlyErrorStateMatcher } from './formly.error-state-matcher';
@@ -28,12 +28,11 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   ngAfterViewInit() {
-    if (this.matPrefix || this.matSuffix) {
-      setTimeout(() => {
-        defineHiddenProp(this.field, '_matprefix', this.matPrefix);
-        defineHiddenProp(this.field, '_matsuffix', this.matSuffix);
-        (<any> this.options)._markForCheck(this.field);
-      });
+    if (this.matPrefix) {
+      this.to.prefix = this.matPrefix;
+    }
+    if (this.matSuffix) {
+      this.to.prefix = this.matSuffix;
     }
   }
 

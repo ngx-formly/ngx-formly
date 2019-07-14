@@ -1,5 +1,9 @@
 import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef, ElementRef, ViewContainerRef } from '@angular/core';
-import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig } from '@ngx-formly/core';
+import {
+  ɵdefineHiddenProp as defineHiddenProp,
+  ɵwrapProperty as wrapProperty,
+  FormlyFieldConfig, FieldWrapper,
+} from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
 
@@ -25,12 +29,12 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
         <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
       </mat-label>
 
-      <ng-container matPrefix *ngIf="to.prefix || field._matprefix">
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : field._matprefix"></ng-container>
+      <ng-container matPrefix *ngIf="field._matprefix">
+        <ng-container *ngTemplateOutlet="field._matprefix"></ng-container>
       </ng-container>
 
-      <ng-container matSuffix *ngIf="to.suffix || field._matsuffix">
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : field._matsuffix"></ng-container>
+      <ng-container matSuffix *ngIf="field._matsuffix">
+        <ng-container *ngTemplateOutlet="field._matsuffix"></ng-container>
       </ng-container>
 
       <mat-error>
@@ -61,6 +65,14 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
 
   ngOnInit() {
     defineHiddenProp(this.field, '__formField__', this.formField);
+    ['prefix', 'suffix'].forEach(type => wrapProperty(
+      this.to,
+      type,
+      (value: TemplateRef<any>) => value && Promise.resolve().then(() => {
+        (<any> this.field)[`_mat${type}`] = value;
+        (<any> this.options)._markForCheck(this.field);
+      }),
+    ));
 
     // fix for https://github.com/angular/material2/issues/11437
     if (this.field.hide && this.field.templateOptions!.appearance === 'outline') {
