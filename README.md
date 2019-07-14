@@ -187,6 +187,9 @@ If you want to set defaults for schematics such as generating components with sc
   ng add @ngx-formly/schematics --ui-theme=material
 ```
 
+## Using formly with ngx-translate
+Have a look at this [blitz](https://stackblitz.com/edit/angular-k8dzcs)
+
 ## Roadmap
 
 See the [issues labeled enhancement](https://github.com/ngx-formly/ngx-formly/labels/enhancement)
