@@ -1,5 +1,9 @@
 import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef } from '@angular/core';
-import { ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig, FieldWrapper } from '@ngx-formly/core';
+import {
+  ɵdefineHiddenProp as defineHiddenProp,
+  ɵwrapProperty as wrapProperty,
+  FormlyFieldConfig, FieldWrapper,
+} from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
@@ -26,11 +30,11 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       </mat-label>
 
       <ng-container matPrefix>
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : field._matprefix"></ng-container>
+        <ng-container *ngTemplateOutlet="field._matprefix"></ng-container>
       </ng-container>
 
       <ng-container matSuffix>
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : field._matsuffix"></ng-container>
+        <ng-container *ngTemplateOutlet="field._matsuffix"></ng-container>
       </ng-container>
 
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
@@ -54,6 +58,14 @@ export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDe
 
   ngOnInit() {
     defineHiddenProp(this.field, '__formField__', this.formField);
+    ['prefix', 'suffix'].forEach(type => wrapProperty(
+      this.to,
+      type,
+      (value: TemplateRef<any>) => value && Promise.resolve().then(() => {
+        (<any> this.field)[`_mat${type}`] = value;
+        (<any> this.options)._markForCheck(this.field);
+      }),
+    ));
 
     // fix for https://github.com/angular/material2/issues/11437
     if (this.field.hide && this.field.templateOptions!.appearance === 'outline') {
