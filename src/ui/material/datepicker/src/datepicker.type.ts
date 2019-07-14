@@ -59,21 +59,9 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
 
   ngAfterViewInit() {
     super.ngAfterViewInit();
+    this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
+
     // temporary fix for https://github.com/angular/material2/issues/6728
     (<any> this.datepickerInput)._formField = this.formField;
-
-    setTimeout(() => {
-      switch (this.to.datepickerOptions.datepickerTogglePosition) {
-        case 'suffix':
-          this.to._matSuffix = this.datepickerToggle;
-          break;
-
-        case 'prefix':
-          this.to._matPrefix = this.datepickerToggle;
-          break;
-      }
-
-      (<any> this.options)._markForCheck(this.field);
-    });
   }
 }
