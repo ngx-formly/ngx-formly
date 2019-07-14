@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef } from '@angular/core';
 import { ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig, FieldWrapper } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 
@@ -43,7 +43,6 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
-  @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent!: ViewContainerRef;
   @ViewChild(MatFormField) formField!: MatFormField;
   field!: MatFormlyFieldConfig;
 
