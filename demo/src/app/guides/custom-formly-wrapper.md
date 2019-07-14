@@ -53,7 +53,6 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
     `,
   })
   export class PanelWrapperComponent extends FieldWrapper {
-    @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
   }
   ```
 

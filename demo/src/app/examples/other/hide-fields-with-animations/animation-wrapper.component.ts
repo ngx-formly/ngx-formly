@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 import { trigger, state, style, transition, animate, group } from '@angular/animations';
@@ -48,5 +48,4 @@ const SlideInOutAnimation = [
   animations: [SlideInOutAnimation],
 })
 export class AnimationWrapperComponent extends FieldWrapper {
-  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 }

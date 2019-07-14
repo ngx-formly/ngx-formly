@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -30,7 +30,6 @@ import { FieldWrapper } from '@ngx-formly/core';
   `,
 })
 export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
-  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent!: ViewContainerRef;
   @ViewChild('matPrefix') matPrefix: TemplateRef<any>;
   @ViewChild('matSuffix') matSuffix: TemplateRef<any>;
 
