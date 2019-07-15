@@ -135,6 +135,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     const ref = containerRef.createComponent<T>(cfr.resolveComponentFactory(config.component));
     this.attachComponentRef(ref, field);
 
+    if (!ref.instance.fieldComponent) {
+      throw Error(`${config.component.prototype.constructor.name}#fieldComponent: missing 'static' flag for '@ViewChild' query, it should be explicitly defined by '@ViewChild(..., { static: true })'.`);
+    }
+
     return ref.instance.fieldComponent;
   }
 
