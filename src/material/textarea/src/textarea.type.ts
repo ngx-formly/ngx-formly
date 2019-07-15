@@ -15,7 +15,10 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex || 0"
-      [readonly]="to.readonly">
+      [readonly]="to.readonly"
+      [cdkTextareaAutosize]="to.autosize"
+      [cdkAutosizeMinRows]="to.autosizeMinRows"
+      [cdkAutosizeMaxRows]="to.autosizeMaxRows">
     </textarea>
   `,
 })
