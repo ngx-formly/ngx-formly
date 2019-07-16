@@ -1,0 +1,174 @@
+{
+  "name": "@ngx-formly/common",
+  "version": "5.2.0",
+  "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
+  "contributors": [
+    "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
+    "Kent C. Dodds <kent@doddsfamily.us>"
+  ],
+  "scripts": {
+    "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
+    "lint": "tslint -p tsconfig.json",
+    "lint:fix": "tslint --fix -p tsconfig.json",
+    "commit": "npm run build && git-cz",
+    "bundlesize": "npm run build && bundlesize",
+    "build": "npm run build:core && npm run build:bootstrap && npm run build:material && npm run build:ionic && npm run build:primeng && npm run build:kendo && npm run build:nativescript && npm run build:schematics && node .config/build.js",
+    "build:core": "ng build @ngx-formly/core",
+    "build:bootstrap": "ng build @ngx-formly/bootstrap",
+    "build:material": "ng build @ngx-formly/material",
+    "build:ionic": "ng build @ngx-formly/ionic",
+    "build:primeng": "ng build @ngx-formly/primeng",
+    "build:kendo": "ng build @ngx-formly/kendo",
+    "build:nativescript": "ng build @ngx-formly/nativescript",
+    "build:schematics": "cd src/schematics && npm run build && cd ../.. && npm run copy:schematics",
+    "copy:schematics": "cpr src/schematics dist/@ngx-formly/schematics --delete-first --filter node_modules/",
+    "release": "standard-version && npm run build && node .config/publish.js",
+    "start": "ng serve --port 4100 --open",
+    "demo": "npm run start",
+    "build:demo": "ng build --prod --base-href=\"/ngx-formly/\"",
+    "gh-pages": "gh-pages --add --dist dist/app --repo=https://$GH_TOKEN@github.com/formly-js/ngx-formly.git",
+    "test": "ng test @ngx-formly/core --browsers ChromeHeadless && ng test @ngx-formly/bootstrap --browsers ChromeHeadless && ng test @ngx-formly/material --browsers ChromeHeadless && cd src/schematics && npm run test",
+    "test:watch": "ng test @ngx-formly/core --watch",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "github-release": "conventional-github-releaser -p angular -t $GH_TOKEN --draft"
+  },
+  "keywords": [
+    "angular",
+    "forms",
+    "ng-formly",
+    "ngx-formly",
+    "formly",
+    "angular 2",
+    "angular 2 forms",
+    "json forms",
+    "form library"
+  ],
+  "license": "MIT",
+  "description": "@ngx-formly is an Angular 2 module which has Components to help customize and render JavaScript/JSON configured forms. The `formly-form` Component and the FormlyConfig service are very powerful and bring unmatched maintainability to your application's forms.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngx-formly/ngx-formly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ngx-formly/ngx-formly/issues"
+  },
+  "homepage": "https://github.com/ngx-formly/ngx-formly#readme",
+  "dependencies": {
+    "@angular/animations": "^7.2.7",
+    "@angular/cdk": "^7.3.3",
+    "@angular/common": "^7.2.7",
+    "@angular/core": "^7.2.7",
+    "@angular/forms": "^7.2.7",
+    "@angular/material": "^7.3.3",
+    "@angular/platform-browser": "^7.2.7",
+    "@angular/platform-browser-dynamic": "^7.2.7",
+    "@angular/router": "^7.2.7",
+    "@ionic/angular": "^4.0.2",
+    "@ngx-loading-bar/core": "^4.2.0",
+    "@ngx-loading-bar/router": "^4.2.0",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
+    "@progress/kendo-angular-dropdowns": "^3.5.1",
+    "@progress/kendo-angular-inputs": "^4.1.0",
+    "@progress/kendo-angular-intl": "^1.7.0",
+    "@progress/kendo-angular-l10n": "^1.3.0",
+    "@progress/kendo-theme-default": "^3.3.1",
+    "@swimlane/ngx-datatable": "^14.0.0",
+    "ag-grid-angular": "^20.2.0",
+    "ag-grid-community": "^20.2.0",
+    "bootstrap": "^4.3.1",
+    "core-js": "^2.6.5",
+    "nativescript-angular": "^7.2.2",
+    "primeng": "^7.0.5",
+    "rxjs": "^6.4.0",
+    "rxjs-compat": "^6.4.0",
+    "tns-core-modules": "^5.2.2",
+    "tslib": "^1.9.2",
+    "zone.js": "^0.8.29"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^0.13.4",
+    "@angular-devkit/build-ng-packagr": "^0.13.4",
+    "@angular-devkit/core": "^7.3.4",
+    "@angular-devkit/schematics": "^7.3.4",
+    "@angular/cli": "^7.3.4",
+    "@angular/compiler": "^7.2.7",
+    "@angular/compiler-cli": "^7.2.7",
+    "@angular/language-service": "^7.2.7",
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-angular": "^7.5.0",
+    "@commitlint/travis-cli": "^7.5.2",
+    "@schematics/angular": "^7.3.4",
+    "@types/jasmine": "^3.3.9",
+    "@types/jasminewd2": "^2.0.6",
+    "@types/json-schema": "^7.0.3",
+    "@types/node": "^10.12.29",
+    "bundlesize": "^0.17.1",
+    "codecov": "^3.2.0",
+    "codelyzer": "^4.5.0",
+    "commitizen": "^3.0.7",
+    "conventional-github-releaser": "^3.1.2",
+    "cpr": "^3.0.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "gh-pages": "^2.0.1",
+    "github-contributors-list": "^1.2.3",
+    "highlight-loader": "^0.7.3",
+    "html-loader": "^0.5.5",
+    "husky": "^1.3.1",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jasmine": "^3.3.1",
+    "jasmine-core": "~3.3.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "json-formatter-js": "^2.2.0",
+    "karma": "^4.0.1",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "^2.0.5",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
+    "markdown-loader": "^5.0.0",
+    "ng-packagr": "^4.7.1",
+    "protractor": "^5.4.2",
+    "raw-loader": "^1.0.0",
+    "remap-istanbul": "^0.13.0",
+    "standard-version": "^5.0.1",
+    "ts-node": "^8.0.2",
+    "tsickle": "^0.34.3",
+    "tslint": "^5.13.1",
+    "typescript": "~3.2.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/@ngx-formly/core/bundles/ngx-formly-core.umd.min.js",
+      "maxSize": "15 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/bootstrap/bundles/ngx-formly-bootstrap.umd.min.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/material/bundles/ngx-formly-material.umd.min.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/ionic/bundles/ngx-formly-ionic.umd.min.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/primeng/bundles/ngx-formly-primeng.umd.min.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/kendo/bundles/ngx-formly-kendo.umd.min.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/nativescript/bundles/ngx-formly-nativescript.umd.min.js",
+      "maxSize": "5 kB"
+    }
+  ]
+}

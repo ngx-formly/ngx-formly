@@ -1,0 +1,37 @@
+language: node_js
+sudo: false
+dist: trusty
+cache:
+  directories:
+    - $HOME/.npm
+node_js:
+  - "10"
+
+before_install:
+  - npm i -g npm
+  - "export CHROME_BIN=/usr/bin/google-chrome"
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+
+install:
+  - npm ci
+
+script:
+- npm run lint
+- if [ ! "$TRAVIS_PULL_REQUEST" = "false" ]; then commitlint-travis; fi
+- npm run test
+- npm run bundlesize
+- npm run build:demo
+
+after_success:
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run gh-pages; fi
+  - if [ -n "$TRAVIS_TAG" ]; then npm run github-release; fi
+
+addons:
+  apt:
+    packages:
+      - google-chrome-stable
+
+env:
+  global:
+    secure: GywEi6rCdMo68c+2aSxF31yAtciDWgQ4A++zUXKXqFFlMRrzsSlgo0+US+eT/+Kaz5CZIXIKJiWRmbPdhgJKs1rkVE7CJiZokdDdgfoEy8xAmlMhjbYN44Y0j5S9bIlhwqR9kW9kNg2sj5/Kv88bjSXehmT+RdOFfGN5gkxTzhs=
