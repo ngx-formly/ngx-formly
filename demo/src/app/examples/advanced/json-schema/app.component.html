@@ -1,0 +1,13 @@
+
+<div style="margin-bottom: 20px;">
+  <button *ngFor="let example of examples"
+  (click)="loadExample(example)"
+  class="btn" [class.btn-primary]="type === example">
+    {{ example }}
+  </button>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="submit()" *ngIf="fields">
+  <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
+  <button type="submit" class="btn btn-primary submit-button" [disabled]="!form.valid">Submit</button>
+</form>

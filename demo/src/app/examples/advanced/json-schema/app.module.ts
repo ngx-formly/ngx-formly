@@ -1,24 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+import { MatMenuModule } from '@angular/material/menu';
 import { AppComponent } from './app.component';
 import { ArrayTypeComponent } from './array.type';
+import { ObjectTypeComponent } from './object.type';
 
-export function minlengthValidationMessage(err, field) {
+export function minlengthValidationMessage(err, field: FormlyFieldConfig) {
   return `Should have atleast ${field.templateOptions.minLength} characters`;
 }
 
-export function maxlengthValidationMessage(err, field) {
+export function maxlengthValidationMessage(err, field: FormlyFieldConfig) {
   return `This value should be less than ${field.templateOptions.maxLength} characters`;
 }
 
-export function minValidationMessage(err, field) {
+export function minValidationMessage(err, field: FormlyFieldConfig) {
   return `This value should be more than ${field.templateOptions.min}`;
 }
 
-export function maxValidationMessage(err, field) {
+export function maxValidationMessage(err, field: FormlyFieldConfig) {
   return `This value should be less than ${field.templateOptions.max}`;
 }
 
@@ -27,6 +30,8 @@ export function maxValidationMessage(err, field) {
     CommonModule,
     ReactiveFormsModule,
     FormlyBootstrapModule,
+    HttpClientModule,
+    MatMenuModule,
     FormlyModule.forRoot({
       validationMessages: [
         { name: 'required', message: 'This field is required' },
@@ -55,16 +60,17 @@ export function maxValidationMessage(err, field) {
             },
           },
         },
-        { name: 'object', extends: 'formly-group' },
         { name: 'boolean', extends: 'checkbox' },
-        { name: 'array', component: ArrayTypeComponent },
         { name: 'enum', extends: 'select' },
+        { name: 'array', component: ArrayTypeComponent },
+        { name: 'object', component: ObjectTypeComponent },
       ],
     }),
   ],
   declarations: [
     AppComponent,
     ArrayTypeComponent,
+    ObjectTypeComponent,
   ],
 })
 export class AppModule { }
