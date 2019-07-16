@@ -76,7 +76,7 @@ export class AppComponent {
         { title: 'Advanced' },
         { path: '/examples/advanced/i18n', title: 'i18n ngx-translate' },
         { path: '/examples/advanced/i18n-alternative', title: 'i18n ngx-translate (alternative approach)' },
-        { path: '/examples/advanced/json-schema', title: 'json-schema' },
+        { path: '/examples/advanced/json-schema', title: 'Json schema' },
         { path: '/examples/advanced/repeating-section', title: 'Repeating Section' },
         { path: '/examples/advanced/repeating-section-input', title: 'Repeating Section With Length Input' },
         { path: '/examples/advanced/multi-step-form', title: 'Multi-Step Form' },
