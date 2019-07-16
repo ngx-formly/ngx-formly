@@ -54,6 +54,7 @@ import { SharedModule } from '../shared';
         // Advanced
         { path: 'advanced', children: [
           { path: 'i18n', loadChildren: './advanced/i18n/config.module#ConfigModule' },
+          { path: 'i18n-alternative', loadChildren: './advanced/i18n-alternative/config.module#ConfigModule' },
           { path: 'json-schema', loadChildren: './advanced/json-schema/config.module#ConfigModule' },
           { path: 'repeating-section', loadChildren: './advanced/repeating-section/config.module#ConfigModule' },
           { path: 'repeating-section-input', loadChildren: './advanced/repeating-section-input/config.module#ConfigModule' },
