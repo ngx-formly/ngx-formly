@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import { ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
+import { AbstractControl } from '@angular/forms';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -53,8 +54,17 @@ export class FormlyJsonschema {
           field.templateOptions.max = schema.maximum;
         }
 
+        if (schema.hasOwnProperty('exclusiveMinimum')) {
+          this.addValidator(field, 'exclusiveMinimum', c => isEmpty(c.value) || (c.value > schema.exclusiveMinimum));
+        }
+
+        if (schema.hasOwnProperty('exclusiveMaximum')) {
+          this.addValidator(field, 'exclusiveMaximum', c => isEmpty(c.value) || (c.value < schema.exclusiveMaximum));
+        }
+
         if (schema.hasOwnProperty('multipleOf')) {
           field.templateOptions.step = schema.multipleOf;
+          this.addValidator(field, 'multipleOf', c => isEmpty(c.value) || (c.value % schema.multipleOf === 0));
         }
         break;
       }
@@ -193,5 +203,10 @@ export class FormlyJsonschema {
     }
 
     return type;
+  }
+
+  private addValidator(field: FormlyFieldConfig, name: string, validator: (control: AbstractControl) => boolean) {
+    field.validators = field.validators || {};
+    field.validators[name] = validator;
   }
 }

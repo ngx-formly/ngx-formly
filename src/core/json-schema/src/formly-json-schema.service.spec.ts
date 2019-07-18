@@ -2,6 +2,7 @@
 import { FormlyJsonschema } from './formly-json-schema.service';
 import { JSONSchema7 } from 'json-schema';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
+import { FormControl } from '@angular/forms';
 
 describe('Service: FormlyJsonschema', () => {
   let formlyJsonschema: FormlyJsonschema;
@@ -28,7 +29,6 @@ describe('Service: FormlyJsonschema', () => {
       });
     });
 
-    // TODO: Add support for exclusiveMinimum, exclusiveMaximum
     // https://json-schema.org/latest/json-schema-validation.html#numeric
     describe('number validation keywords', () => {
       it('should support minimum, maximum and multipleOf', () => {
@@ -36,12 +36,52 @@ describe('Service: FormlyJsonschema', () => {
           type: 'number',
           minimum: 5,
           maximum: 10,
-          multipleOf: 5,
         };
         const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
         expect(formlyConfig.templateOptions.min).toBe(numSchema.minimum);
         expect(formlyConfig.templateOptions.max).toBe(numSchema.maximum);
+      });
+
+      it('should support exclusiveMinimum', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'number',
+          exclusiveMinimum: 5,
+        };
+        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
+
+        const exclusiveMinimum = formlyConfig.validators.exclusiveMinimum;
+        expect(exclusiveMinimum).toBeDefined();
+        expect(exclusiveMinimum(new FormControl(4))).toBeFalsy();
+        expect(exclusiveMinimum(new FormControl(5))).toBeFalsy();
+        expect(exclusiveMinimum(new FormControl(6))).toBeTruthy();
+      });
+
+      it('should support exclusiveMaximum', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'number',
+          exclusiveMaximum: 10,
+        };
+        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
+
+        const exclusiveMaximum = formlyConfig.validators.exclusiveMaximum;
+        expect(exclusiveMaximum).toBeDefined();
+        expect(exclusiveMaximum(new FormControl(10))).toBeFalsy();
+        expect(exclusiveMaximum(new FormControl(11))).toBeFalsy();
+        expect(exclusiveMaximum(new FormControl(6))).toBeTruthy();
+      });
+
+      it('should support multipleOf', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'number',
+          multipleOf: 5,
+        };
+        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
         expect(formlyConfig.templateOptions.step).toBe(numSchema.multipleOf);
+
+        const multipleOfValidator = formlyConfig.validators.multipleOf;
+        expect(multipleOfValidator).toBeDefined();
+        expect(multipleOfValidator(new FormControl(9))).toBeFalsy();
+        expect(multipleOfValidator(new FormControl(10))).toBeTruthy();
       });
     });
 
