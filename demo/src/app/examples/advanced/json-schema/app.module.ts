@@ -10,19 +10,31 @@ import { ArrayTypeComponent } from './array.type';
 import { ObjectTypeComponent } from './object.type';
 
 export function minlengthValidationMessage(err, field: FormlyFieldConfig) {
-  return `Should have atleast ${field.templateOptions.minLength} characters`;
+  return `should NOT be shorter than ${field.templateOptions.minLength} characters`;
 }
 
 export function maxlengthValidationMessage(err, field: FormlyFieldConfig) {
-  return `This value should be less than ${field.templateOptions.maxLength} characters`;
+  return `should NOT be longer than ${field.templateOptions.maxLength} characters`;
 }
 
 export function minValidationMessage(err, field: FormlyFieldConfig) {
-  return `This value should be more than ${field.templateOptions.min}`;
+  return `should be >= ${field.templateOptions.min}`;
 }
 
 export function maxValidationMessage(err, field: FormlyFieldConfig) {
-  return `This value should be less than ${field.templateOptions.max}`;
+  return `should be <= ${field.templateOptions.max}`;
+}
+
+export function multipleOfValidationMessage(err, field: FormlyFieldConfig) {
+  return `should be multiple of ${field.templateOptions.step}`;
+}
+
+export function exclusiveMinimumValidationMessage(err, field: FormlyFieldConfig) {
+  return `should be > ${field.templateOptions.step}`;
+}
+
+export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig) {
+  return `should be < ${field.templateOptions.step}`;
 }
 
 @NgModule({
@@ -39,6 +51,9 @@ export function maxValidationMessage(err, field: FormlyFieldConfig) {
         { name: 'maxlength', message: maxlengthValidationMessage },
         { name: 'min', message: minValidationMessage },
         { name: 'max', message: maxValidationMessage },
+        { name: 'multipleOf', message: multipleOfValidationMessage },
+        { name: 'exclusiveMinimum', message: exclusiveMinimumValidationMessage },
+        { name: 'exclusiveMaximum', message: exclusiveMaximumValidationMessage },
       ],
       types: [
         { name: 'string', extends: 'input' },
