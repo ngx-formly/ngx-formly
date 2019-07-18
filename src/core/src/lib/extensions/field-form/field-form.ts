@@ -1,7 +1,7 @@
 import { FormlyExtension } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
-import { getKeyPath, getFieldValue } from '../../utils';
+import { getKeyPath, getFieldValue, defineHiddenProp } from '../../utils';
 import { registerControl } from './utils';
 
 /** @experimental */
@@ -16,8 +16,8 @@ export class FieldFormExtension implements FormlyExtension {
       this.addFormControl(field);
     }
 
-    if (field.fieldGroup && !field.formControl) {
-      field.formControl = field.parent.formControl;
+    if (field.parent && field.fieldGroup && !field.key) {
+      defineHiddenProp(field, 'formControl', field.parent.formControl);
     }
   }
 
