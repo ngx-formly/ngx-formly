@@ -579,6 +579,48 @@ describe('Service: FormlyJsonschema', () => {
         expect(config.fieldGroup[0].fieldGroup[0].key).toEqual('type');
         expect(config.fieldGroup[0].fieldGroup[0].type).toEqual('enum');
       });
+
+      it('should handle nested allOf  ', () => {
+        const schema: JSONSchema7 = {
+          'definitions': {
+            'baseAddress': {
+              'type': 'object',
+              'properties': {
+                'street_address': { 'type': 'string' },
+                'city':           { 'type': 'string' },
+                'state':          { 'type': 'string' },
+              },
+              'required': ['street_address', 'city', 'state'],
+            },
+            'mailingAddress': {
+              allOf: [
+                {'$ref': '#/definitions/baseAddress'},
+                { 'properties': {
+                    'country': { 'type': 'string' },
+                  },
+                },
+              ],
+            },
+          },
+          'type': 'object',
+          'properties': {
+            'billing_address': {
+              allOf: [
+                {'$ref': '#/definitions/mailingAddress'},
+                { 'properties': {
+                    'type': { 'enum': [ 'residential', 'business' ] },
+                  },
+                },
+              ],
+            },
+          },
+        };
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.fieldGroup[0].fieldGroup[0].key).toEqual('type');
+        expect(config.fieldGroup[0].fieldGroup[0].type).toEqual('enum');
+        expect(config.fieldGroup[0].fieldGroup[1].key).toEqual('country');
+        expect(config.fieldGroup[0].fieldGroup[1].type).toEqual('string');
+      });
     });
     // TODO: discuss support of writeOnly. Note: this may not be needed.
     // TODO: discuss support of examples. By spec, default can be used in its place.
