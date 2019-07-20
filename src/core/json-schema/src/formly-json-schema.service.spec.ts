@@ -579,7 +579,7 @@ describe('Service: FormlyJsonschema', () => {
         expect(config.fieldGroup[0].fieldGroup[0].key).toEqual('type');
         expect(config.fieldGroup[0].fieldGroup[0].type).toEqual('enum');
       });
-    })
+    });
     // TODO: discuss support of writeOnly. Note: this may not be needed.
     // TODO: discuss support of examples. By spec, default can be used in its place.
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.10
