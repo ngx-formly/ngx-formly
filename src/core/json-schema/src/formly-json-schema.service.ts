@@ -149,14 +149,13 @@ export class FormlyJsonschema {
     if (!schema.allOf.length) {
       throw Error(`allOf array can not be empty ${schema.allOf}.`);
     }
-    const combined = schema.allOf.reduce((prev: JSONSchema7, curr: JSONSchema7) => {
-      if (curr.$ref) {
-        return this.resolveDefinition(curr, options);
-      }
-      return reverseDeepMerge(curr, prev);
-    }, {});
     return {
-      ...combined,
+      ...schema.allOf.reduce((prev: JSONSchema7, curr: JSONSchema7) => {
+        if (curr.$ref) {
+          return this.resolveDefinition(curr, options);
+        }
+        return reverseDeepMerge(curr, prev);
+      }, {}),
     };
   }
   private resolveDefinition(schema: JSONSchema7, options: IOptions): JSONSchema7 {
