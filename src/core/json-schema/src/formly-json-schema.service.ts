@@ -32,6 +32,10 @@ export class FormlyJsonschema {
       schema = this.resolveDefinition(schema, options);
     }
 
+    if (schema.allOf) {
+      schema = this.resolveAllOf(schema, options);
+    }
+
     let field: FormlyFieldConfig = {
       type: this.guessType(schema),
       defaultValue: schema.default,
@@ -141,6 +145,20 @@ export class FormlyJsonschema {
     return options.map ? options.map(field, schema) : field;
   }
 
+  private resolveAllOf(schema: JSONSchema7, options: IOptions) {
+    if (!schema.allOf.length) {
+      throw Error(`allOf array can not be empty ${schema.allOf}.`);
+    }
+    const combined = schema.allOf.reduce((prev: JSONSchema7, curr: JSONSchema7) => {
+      if (curr.$ref) {
+        return this.resolveDefinition(curr, options);
+      }
+      return reverseDeepMerge(curr, prev);
+    }, {});
+    return {
+      ...combined,
+    };
+  }
   private resolveDefinition(schema: JSONSchema7, options: IOptions): JSONSchema7 {
     const [uri, pointer] = schema.$ref.split('#/');
     if (uri) {
