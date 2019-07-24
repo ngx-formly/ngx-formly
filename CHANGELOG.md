@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.3.0"></a>
+# [5.3.0](https://github.com/ngx-formly/ngx-formly/compare/v5.2.0...v5.3.0) (2019-07-24)
+
+
+### Bug Fixes
+
+* **core:** add warn for missing static flag for @ViewChild ([#1673](https://github.com/ngx-formly/ngx-formly/issues/1673)) ([b0972a2](https://github.com/ngx-formly/ngx-formly/commit/b0972a2)), closes [#1633](https://github.com/ngx-formly/ngx-formly/issues/1633)
+* **core:** avoid assigning defaultValue by reference ([#1687](https://github.com/ngx-formly/ngx-formly/issues/1687)) ([4ac1fe3](https://github.com/ngx-formly/ngx-formly/commit/4ac1fe3)), closes [#1684](https://github.com/ngx-formly/ngx-formly/issues/1684)
+* **core:** override existing form group instance on re-build ([#1680](https://github.com/ngx-formly/ngx-formly/issues/1680)) ([8ddffee](https://github.com/ngx-formly/ngx-formly/commit/8ddffee)), closes [#1677](https://github.com/ngx-formly/ngx-formly/issues/1677)
+* **json-schema:** handle passing empty value for number type ([#1657](https://github.com/ngx-formly/ngx-formly/issues/1657)) ([070f558](https://github.com/ngx-formly/ngx-formly/commit/070f558))
+
+
+### Features
+
+* **core:** allow check expression on model changes only ([#1662](https://github.com/ngx-formly/ngx-formly/issues/1662)) ([32cde3c](https://github.com/ngx-formly/ngx-formly/commit/32cde3c)), closes [#1620](https://github.com/ngx-formly/ngx-formly/issues/1620)
+* **json-schema:** add support for $ref ([#1658](https://github.com/ngx-formly/ngx-formly/issues/1658)) ([2e52ffa](https://github.com/ngx-formly/ngx-formly/commit/2e52ffa))
+* **json-schema:** add support for dependencies ([#1659](https://github.com/ngx-formly/ngx-formly/issues/1659)) ([af5d5ac](https://github.com/ngx-formly/ngx-formly/commit/af5d5ac))
+* **json-schema:** add support for exclusiveMinimum & exclusiveMaximum ([#1682](https://github.com/ngx-formly/ngx-formly/issues/1682)) ([99da1bf](https://github.com/ngx-formly/ngx-formly/commit/99da1bf))
+* **json-schema:** add support for multipleOf ([#1655](https://github.com/ngx-formly/ngx-formly/issues/1655)) ([c7601e7](https://github.com/ngx-formly/ngx-formly/commit/c7601e7))
+* **json-schema:** guess object type ([#1656](https://github.com/ngx-formly/ngx-formly/issues/1656)) ([912edf7](https://github.com/ngx-formly/ngx-formly/commit/912edf7))
+* **material:** add textarea autosize ([#1672](https://github.com/ngx-formly/ngx-formly/issues/1672)) ([3937eca](https://github.com/ngx-formly/ngx-formly/commit/3937eca)), closes [#1670](https://github.com/ngx-formly/ngx-formly/issues/1670)
+
+
+
 <a name="5.2.0"></a>
 # [5.2.0](https://github.com/ngx-formly/ngx-formly/compare/v5.1.9...v5.2.0) (2019-07-08)
 
