@@ -39,7 +39,7 @@ export function assignModelValue(model: any, paths: string[], value: any) {
     model = model[path];
   }
 
-  model[paths[paths.length - 1]] = value;
+  model[paths[paths.length - 1]] = clone(value);
 }
 
 export function getFieldValue(field: FormlyFieldConfig): any {
