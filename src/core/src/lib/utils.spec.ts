@@ -35,6 +35,13 @@ describe('FormlyUtils service', () => {
       expect(Array.isArray(model['path'])).toBeTruthy();
       expect(model['path'][0]).toBe('test');
     });
+
+    it('should avoid assigning value by reference', () => {
+      const defaultValue = {};
+      const model = { array: null };
+      assignModelValue(model, ['array'], defaultValue);
+      expect(model.array).not.toBe(defaultValue);
+    });
   });
 
   describe('getFieldValue', () => {
