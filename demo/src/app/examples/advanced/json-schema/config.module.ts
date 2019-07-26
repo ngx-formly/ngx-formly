@@ -29,6 +29,7 @@ import { AppComponent } from './app.component';
               { file: 'assets/json-schema/numbers.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/numbers_json'), filecontent: require('!!raw-loader!./assets/numbers_json') },
               { file: 'assets/json-schema/references.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/references_json'), filecontent: require('!!raw-loader!./assets/references_json') },
               { file: 'assets/json-schema/schema_dependencies.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/schema_dependencies_json'), filecontent: require('!!raw-loader!./assets/schema_dependencies_json') },
+              { file: 'assets/json-schema/allOf.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/allOf_json'), filecontent: require('!!raw-loader!./assets/allOf_json') },
             ],
           }],
         },
