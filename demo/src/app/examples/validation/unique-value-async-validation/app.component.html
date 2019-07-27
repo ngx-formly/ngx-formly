@@ -1,9 +1,0 @@
-<b>Existing usernames</b>
-<ul>
-  <li *ngFor="let u of existingUsers">{{ u }}</li>
-</ul>
-
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
-  <button type="submit" class="btn btn-primary submit-button">Submit</button>
-</form>
