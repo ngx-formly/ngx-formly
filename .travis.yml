@@ -21,10 +21,9 @@ script:
 - if [ ! "$TRAVIS_PULL_REQUEST" = "false" ]; then commitlint-travis; fi
 - npm run test
 - npm run bundlesize
-- npm run build:demo
 
 after_success:
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run gh-pages; fi
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run deploy; fi
   - if [ -n "$TRAVIS_TAG" ]; then npm run github-release; fi
 
 addons:
