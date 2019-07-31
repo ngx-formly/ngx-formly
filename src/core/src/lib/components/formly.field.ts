@@ -37,7 +37,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
-  @ViewChild('container', {read: ViewContainerRef}) containerRef: ViewContainerRef;
+  // TODO: remove `any`, once dropping angular `V7` support.
+  @ViewChild('container', <any> {read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
 
   refsUnsubscribe = () => {};
 
