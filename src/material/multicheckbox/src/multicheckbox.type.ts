@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
   selector: 'formly-field-mat-multicheckbox',
@@ -19,6 +20,8 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
+  @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;
+
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
@@ -37,5 +40,12 @@ export class FormlyFieldMultiCheckbox extends FieldType {
       this.formControl.patchValue({ ...this.formControl.value, [value]: checked });
     }
     this.formControl.markAsTouched();
+  }
+
+  onContainerClick(event: MouseEvent): void {
+    if (this.checkboxes.length) {
+      this.checkboxes.first.focus();
+    }
+    super.onContainerClick(event);
   }
 }
