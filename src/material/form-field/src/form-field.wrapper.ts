@@ -1,8 +1,9 @@
-import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef, ElementRef } from '@angular/core';
 import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 import { FieldType } from './field.type';
 
@@ -54,8 +55,17 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
   _errorState = false;
   private initialGapCalculated = false;
 
-  constructor(private renderer: Renderer2) {
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private focusMonitor: FocusMonitor,
+  ) {
     super();
+
+    focusMonitor.monitor(elementRef, true).subscribe(origin => {
+      this.field.focus = !!origin;
+      this.stateChanges.next();
+    });
   }
 
   ngOnInit() {
@@ -93,6 +103,7 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
   ngOnDestroy() {
     delete this.formlyField.__formField__;
     this.stateChanges.complete();
+    this.focusMonitor.stopMonitoring(this.elementRef);
   }
 
   setDescribedByIds(ids: string[]): void { }
