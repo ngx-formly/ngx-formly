@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test-utils';
 
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   FormlyModule,
@@ -248,7 +248,6 @@ export class FormlyFieldText extends FieldType {}
   `,
 })
 export class FormlyWrapperLabel extends FieldWrapper {
-  @ViewChild('fieldComponent', {read: ViewContainerRef}) fieldComponent: ViewContainerRef;
 }
 
 export class Manipulator {
