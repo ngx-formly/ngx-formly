@@ -3,5 +3,6 @@ import { FieldType } from './field.type';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
 export abstract class FieldWrapper<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> {
-  @ViewChild('fieldComponent', { read: ViewContainerRef }) fieldComponent: ViewContainerRef;
+  // TODO: remove `any`, once dropping angular `V7` support.
+  @ViewChild('fieldComponent', <any>{ read: ViewContainerRef, static: true }) fieldComponent: ViewContainerRef;
 }
