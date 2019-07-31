@@ -23,6 +23,7 @@ export class AppComponent {
     'numbers',
     'references',
     'schema_dependencies',
+    'allOf',
   ];
 
   constructor(
