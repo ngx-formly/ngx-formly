@@ -4,7 +4,7 @@ const { copySync } = require('fs-extra');
 const { join } = require('path');
 const { execSync } = require('child_process');
 const basePath = join(process.cwd(), 'dist/app');
-const branch = execSync(`git branch | sed -n '/\* /s///p'`).toString().trim();
+const branch = process.env.TRAVIS_BRANCH || execSync(`git branch | sed -n '/\* /s///p'`).toString().trim();
 const isStableVersion = branch === 'v5';
 // build demo
 execSync(

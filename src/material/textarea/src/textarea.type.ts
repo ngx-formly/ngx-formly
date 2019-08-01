@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FieldType } from '@ngx-formly/material/form-field';
+import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
 
 @Component({
   selector: 'formly-field-mat-textarea',
@@ -21,6 +22,11 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [cdkAutosizeMaxRows]="to.autosizeMaxRows">
     </textarea>
   `,
+  providers: [
+    // fix for https://github.com/ngx-formly/ngx-formly/issues/1688
+    // rely on formControl value instead of elementRef which return empty value in Firefox.
+    { provide: MAT_INPUT_VALUE_ACCESSOR, useExisting: FormlyFieldTextArea },
+  ],
 })
 export class FormlyFieldTextArea extends FieldType implements OnInit {
   @ViewChild(MatInput) formFieldControl!: MatInput;
