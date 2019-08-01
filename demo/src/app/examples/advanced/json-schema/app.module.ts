@@ -9,6 +9,14 @@ import { AppComponent } from './app.component';
 import { ArrayTypeComponent } from './array.type';
 import { ObjectTypeComponent } from './object.type';
 
+export function minItemsValidationMessage(err, field: FormlyFieldConfig) {
+  return `should NOT have fewer than ${field.templateOptions.minItems} items`;
+}
+
+export function maxItemsValidationMessage(err, field: FormlyFieldConfig) {
+  return `should NOT have more than ${field.templateOptions.maxItems} items`;
+}
+
 export function minlengthValidationMessage(err, field: FormlyFieldConfig) {
   return `should NOT be shorter than ${field.templateOptions.minLength} characters`;
 }
@@ -54,6 +62,8 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
         { name: 'multipleOf', message: multipleOfValidationMessage },
         { name: 'exclusiveMinimum', message: exclusiveMinimumValidationMessage },
         { name: 'exclusiveMaximum', message: exclusiveMaximumValidationMessage },
+        { name: 'minItems', message: minItemsValidationMessage },
+        { name: 'maxItems', message: maxItemsValidationMessage },
       ],
       types: [
         { name: 'string', extends: 'input' },
