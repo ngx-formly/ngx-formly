@@ -108,6 +108,16 @@ export class FormlyJsonschema {
       }
       case 'array': {
         field.fieldGroup = [];
+
+        if (schema.hasOwnProperty('minItems')) {
+          field.templateOptions.minItems = schema.minItems;
+          this.addValidator(field, 'minItems', c => isEmpty(c.value) || (c.value.length >= schema.minItems));
+        }
+        if (schema.hasOwnProperty('maxItems')) {
+          field.templateOptions.maxItems = schema.maxItems;
+          this.addValidator(field, 'maxItems', c => isEmpty(c.value) || (c.value.length <= schema.maxItems));
+        }
+
         Object.defineProperty(field, 'fieldArray', {
           get: () => {
             if (!Array.isArray(schema.items)) {

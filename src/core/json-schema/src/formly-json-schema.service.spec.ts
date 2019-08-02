@@ -108,7 +108,7 @@ describe('Service: FormlyJsonschema', () => {
       });
     });
 
-    // TODO: Add support for minItems, maxItems, uniqueItems, contains
+    // TODO: Add support for uniqueItems, contains
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.6.4
     describe('array validation keywords', () => {
       it('supports array items keyword as object', () => {
@@ -181,6 +181,37 @@ describe('Service: FormlyJsonschema', () => {
         // is greater than the number of items array config validatoins
         expect(config.fieldArray).toEqual(childConfig3);
         expect(config.type).toEqual('array');
+      });
+
+      it('should support minItems', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'array',
+          minItems: 2,
+        };
+        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
+        expect(formlyConfig.templateOptions.minItems).toBe(numSchema.minItems);
+
+        const minItemsValidator = formlyConfig.validators.minItems;
+        expect(minItemsValidator).toBeDefined();
+        expect(minItemsValidator(new FormControl([1]))).toBeFalsy();
+        expect(minItemsValidator(new FormControl([]))).toBeFalsy();
+        expect(minItemsValidator(new FormControl([1, 2]))).toBeTruthy();
+        expect(minItemsValidator(new FormControl([1, 2, 3]))).toBeTruthy();
+      });
+
+      it('should support maxItems', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'array',
+          maxItems: 2,
+        };
+        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
+        expect(formlyConfig.templateOptions.maxItems).toBe(numSchema.maxItems);
+
+        const maxItemsValidator = formlyConfig.validators.maxItems;
+        expect(maxItemsValidator).toBeDefined();
+        expect(maxItemsValidator(new FormControl([1, 2, 3]))).toBeFalsy();
+        expect(maxItemsValidator(new FormControl([1, 2]))).toBeTruthy();
+        expect(maxItemsValidator(new FormControl([]))).toBeTruthy();
       });
     });
 
