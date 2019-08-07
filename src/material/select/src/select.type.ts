@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { Component, ViewChild } from '@angular/core';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
@@ -8,12 +8,11 @@ import { FieldType } from '@ngx-formly/material/form-field';
     <ng-template #selectAll let-selectOptions="selectOptions">
       <mat-option (click)="toggleSelectAll(selectOptions)">
         <mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
-          [state]="getState(selectOptions)">
+          [state]="getSelectAllState(selectOptions)">
         </mat-pseudo-checkbox>
         {{ to.selectAllOption }}
       </mat-option>
     </ng-template>
-
 
     <mat-select [id]="id"
       [formControl]="formControl"
@@ -43,24 +42,25 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
 })
 export class FormlyFieldSelect extends FieldType {
+  @ViewChild(MatSelect) formFieldControl!: MatSelect;
+
   defaultOptions = {
     templateOptions: { options: [] },
   };
 
-  get value() { return this.formControl.value || []; }
-  getState(options: any[]) {
-    if (this.value.length > 0) {
-      return this.value.length !== options.length
-        ? 'indeterminate'
-        : 'checked';
+  getSelectAllState(options: any[]) {
+    if (this.empty || this.value.length === 0) {
+      return '';
     }
 
-    return '';
+    return this.value.length !== options.length
+      ? 'indeterminate'
+      : 'checked';
   }
 
   toggleSelectAll(options: any[]) {
     this.formControl.setValue(
-      this.value.length !== options.length
+      !this.value || this.value.length !== options.length
         ? options.map(x => x.value)
         : [],
     );
