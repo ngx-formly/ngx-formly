@@ -12,7 +12,7 @@ export class FieldFormExtension implements FormlyExtension {
       return;
     }
 
-    if (field.key && field.type) {
+    if (field.key) {
       this.addFormControl(field);
     }
 
