@@ -173,13 +173,6 @@ describe('FormlyFormBuilder service', () => {
   });
 
   describe('initialise default TemplateOptions', () => {
-    it('should not set the default value if the specified key or type is undefined', () => {
-      field = { key: 'title' };
-      builder.buildForm(form, [field], {}, {});
-
-      expect(field.templateOptions).toEqual({});
-    });
-
     it('should set the default value if the specified key and type is defined', () => {
       field = { key: 'title', type: 'input', templateOptions: { placeholder: 'Title' } };
       builder.buildForm(form, [field], {}, {});
@@ -489,16 +482,6 @@ describe('FormlyFormBuilder service', () => {
   });
 
   describe('form control creation and addition', () => {
-    it('should let component create the form control', () =>  {
-      let field = { key: 'title', type: 'input-createcontrol' };
-
-      builder.buildForm(form, [field], {}, {});
-
-      let control: FormControl = <FormControl> form.get('title');
-      expect(control).not.toBeNull();
-      expect(control.value).toBeUndefined();
-    });
-
     it('should add form control to form When `hide` is false', () => {
       field = {
         key: 'title',
