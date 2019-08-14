@@ -118,7 +118,7 @@ export function clone(value: any): any {
     return value.slice(0).map(v => clone(v));
   }
 
-  if (calue.clone && value.clone()) {
+  if (value.clone && value.clone()) {
     return value.clone();
   }
 
