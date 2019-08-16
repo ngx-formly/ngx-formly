@@ -150,6 +150,19 @@ describe('clone', () => {
     expect(clone(d)).toEqual(d);
     expect(clone(d) === d).toBeFalsy();
   });
+  it('Object with methods', () => {
+    class Foo {
+      constructor(public foo = '') {}
+      method() { return this.foo; }
+    }
+    const foo = new Foo('test');
+    const clonedFoo = clone(foo);
+    expect(clonedFoo).toEqual(foo);
+    expect(clonedFoo === foo).toBeFalsy();
+    // method of the base class have been copied
+    expect(clonedFoo.method).toBeTruthy();
+    expect(clonedFoo.method()).toEqual(foo.method());
+  });
 
   it('Enumerable getter', () => {
     const d = {};

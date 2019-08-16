@@ -118,21 +118,9 @@ export function clone(value: any): any {
     return value.slice(0).map(v => clone(v));
   }
 
-  if (value.clone && value.clone()) {
-    return value.clone();
-  }
-
-  return Object.keys(value).reduce((newVal, prop) => {
-    const propDescriptor = Object.getOwnPropertyDescriptor(value, prop);
-
-    if (propDescriptor.get) {
-      Object.defineProperty(newVal, prop, { ...propDescriptor, get: () => clone(value[prop]) });
-    } else {
-      newVal[prop] = clone(value[prop]);
-    }
-
-    return newVal;
-  }, {});
+  // best way to clone a js object maybe
+  // https://stackoverflow.com/questions/41474986/how-to-clone-a-javascript-es6-class-instance
+  return Object.assign(Object.create( Object.getPrototypeOf(value)), value);
 }
 
 export function defineHiddenProp(field, prop, defaultValue) {
