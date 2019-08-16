@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 import { FormlyModule } from '../core';
 import { FormlyAttributes } from './formly.attributes';
 import { FormlyFieldConfig } from './formly.field.config';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -104,7 +104,15 @@ describe('FormlyAttributes Component', () => {
           expect(elm.getAttribute('step')).toBeNull();
           expect(fixture.componentInstance.field.focus).toBeTruthy();
       });
+  });
 
+  it(`should mark formControl as dirty on trigger change Event`, () => {
+    const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
+    const input = fixture.debugElement.query(By.css('input'));
+    input.triggerEventHandler('change', {});
+
+    const formControl = fixture.componentInstance.field.formControl;
+    expect(formControl.dirty).toBeTruthy();
   });
 
   describe('focus the element', () => {
@@ -158,6 +166,7 @@ class TestComponent {
     key: 'title',
     name: 'title-name',
     id: 'title-id',
+    formControl: new FormControl(),
     templateOptions: {
       placeholder: 'Title',
       tabindex: 5,

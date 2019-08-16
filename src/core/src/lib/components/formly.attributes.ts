@@ -14,7 +14,7 @@ import { DOCUMENT } from '@angular/common';
     '(keyup)': 'to.keyup && to.keyup(field, $event)',
     '(keydown)': 'to.keydown && to.keydown(field, $event)',
     '(click)': 'to.click && to.click(field, $event)',
-    '(change)': 'to.change && to.change(field, $event)',
+    '(change)': 'onChange($event)',
     '(keypress)': 'to.keypress && to.keypress(field, $event)',
   },
 })
@@ -114,7 +114,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
   }
 
-  onFocus($event) {
+  onFocus($event: any) {
     if (!this.field.focus) {
       this.field.focus = true;
     }
@@ -124,13 +124,23 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
   }
 
-  onBlur($event) {
+  onBlur($event: any) {
     if (this.field.focus) {
       this.field.focus = false;
     }
 
     if (this.to.blur) {
       this.to.blur(this.field, $event);
+    }
+  }
+
+  onChange($event: any) {
+    if (this.to.change) {
+      this.to.change(this.field, $event);
+    }
+
+    if (this.field.formControl) {
+      this.field.formControl.markAsDirty();
     }
   }
 
