@@ -150,6 +150,34 @@ describe('clone', () => {
     expect(clone(d)).toEqual(d);
     expect(clone(d) === d).toBeFalsy();
   });
+  it('Object with methods', () => {
+    class Foo {
+      constructor(public foo = '') {}
+      method() { return this.foo; }
+    }
+    const foo = new Foo('test');
+    const clonedFoo = clone(foo);
+    expect(clonedFoo).toEqual(foo);
+    expect(clonedFoo === foo).toBeFalsy();
+    // method of the base class have been copied
+    expect(clonedFoo.method).toBeTruthy();
+    expect(clonedFoo.method()).toEqual(foo.method());
+  });
+  it('Deep object', () => {
+    class Foo {
+      constructor(public foo = '') {}
+    }
+    class Bar {
+      constructor(public bar = '', public foo = new Foo(bar)) {}
+    }
+    const bar = new Bar('test');
+    const clonedBar = clone(bar);
+    expect(clonedBar).toEqual(bar);
+    expect(clonedBar === bar).toBeFalsy();
+    // properties of the base class have been deep copied
+    expect(clonedBar.foo).toEqual(bar.foo);
+    expect(clonedBar.foo === bar.foo).toBeFalsy();
+  });
 
   it('Enumerable getter', () => {
     const d = {};
