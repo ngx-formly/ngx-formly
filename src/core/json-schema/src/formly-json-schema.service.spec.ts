@@ -706,6 +706,44 @@ describe('Service: FormlyJsonschema', () => {
           { key: 'lastname', required: true },
         ]);
       });
+
+      describe('merges conflict', () => {
+        xit('uniqueItems', () => {
+          const schema: JSONSchema7 = {
+            type: 'string',
+            allOf: [
+              { uniqueItems: false },
+              { uniqueItems: true },
+            ],
+          };
+          const { templateOptions } = formlyJsonschema.toFieldConfig(schema);
+          expect(templateOptions.uniqueItems).toBeTruthy();
+        });
+
+        it('minLength', () => {
+          const schema: JSONSchema7 = {
+            type: 'string',
+            allOf: [
+              { minLength: 10 },
+              { minLength: 100 },
+            ],
+          };
+          const { templateOptions } = formlyJsonschema.toFieldConfig(schema);
+          expect(templateOptions.minLength).toEqual(100);
+        });
+
+        it('maxLength', () => {
+          const schema: JSONSchema7 = {
+            type: 'string',
+            allOf: [
+              { maxLength: 10 },
+              { maxLength: 100 },
+            ],
+          };
+          const { templateOptions } = formlyJsonschema.toFieldConfig(schema);
+          expect(templateOptions.maxLength).toEqual(10);
+        });
+      });
     });
     // TODO: discuss support of writeOnly. Note: this may not be needed.
     // TODO: discuss support of examples. By spec, default can be used in its place.
