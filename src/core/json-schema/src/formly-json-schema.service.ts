@@ -47,6 +47,10 @@ export class FormlyJsonschema {
     };
 
     switch (field.type) {
+      case 'null': {
+        this.addValidator(field, 'null', c => c.value === null);
+        break;
+      }
       case 'number':
       case 'integer': {
         field.parsers = [v => isEmpty(v) ? null : Number(v)];

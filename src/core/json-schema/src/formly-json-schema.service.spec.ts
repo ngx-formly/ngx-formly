@@ -85,6 +85,19 @@ describe('Service: FormlyJsonschema', () => {
       });
     });
 
+    describe('null type', () => {
+      it('should support null validation', () => {
+        const stringSchema: JSONSchema7 = {
+          type: 'null',
+        };
+        const { type, validators } = formlyJsonschema.toFieldConfig(stringSchema);
+        expect(type).toEqual('null');
+        expect(validators.null).toBeDefined();
+        expect(validators.null(new FormControl(null))).toBeTruthy();
+        expect(validators.null(new FormControl([1, 2, 3]))).toBeFalsy();
+      });
+    });
+
     // https://json-schema.org/latest/json-schema-validation.html#string
     describe('string validation keywords', () => {
       it('should support pattern', () => {

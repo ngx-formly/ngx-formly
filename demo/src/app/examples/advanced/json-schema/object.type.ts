@@ -6,7 +6,7 @@ import { FieldType } from '@ngx-formly/core';
   template: `
     <legend *ngIf="to.label">{{ to.label }}</legend>
     <p *ngIf="to.description">{{ to.description }}</p>
-    <div class="alert alert-danger" role="alert" *ngIf="showError">
+    <div class="alert alert-danger" role="alert" *ngIf="showError && formControl.errors">
       <formly-validation-message [field]="field"></formly-validation-message>
     </div>
 
