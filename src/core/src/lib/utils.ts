@@ -58,11 +58,7 @@ export function reverseDeepMerge(dest: any, ...args: any[]) {
   args.forEach(src => {
     for (let srcArg in src) {
       if (isNullOrUndefined(dest[srcArg]) || isBlankString(dest[srcArg])) {
-        if (isFunction(src[srcArg])) {
-          dest[srcArg] = src[srcArg];
-        } else {
-          dest[srcArg] = clone(src[srcArg]);
-        }
+        dest[srcArg] = clone(src[srcArg]);
       } else if (objAndSameType(dest[srcArg], src[srcArg])) {
         reverseDeepMerge(dest[srcArg], src[srcArg]);
       }
@@ -138,7 +134,7 @@ export function clone(value: any): any {
   }, c);
 }
 
-export function defineHiddenProp(field, prop, defaultValue) {
+export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
   Object.defineProperty(field, prop, { enumerable: false, writable: true, configurable: true });
   field[prop] = defaultValue;
 }

@@ -59,10 +59,12 @@ export class FormlyJsonschema {
         }
 
         if (schema.hasOwnProperty('exclusiveMinimum')) {
+          field.templateOptions.exclusiveMinimum = schema.exclusiveMinimum;
           this.addValidator(field, 'exclusiveMinimum', c => isEmpty(c.value) || (c.value > schema.exclusiveMinimum));
         }
 
         if (schema.hasOwnProperty('exclusiveMaximum')) {
+          field.templateOptions.exclusiveMaximum = schema.exclusiveMaximum;
           this.addValidator(field, 'exclusiveMaximum', c => isEmpty(c.value) || (c.value < schema.exclusiveMaximum));
         }
 
@@ -160,20 +162,39 @@ export class FormlyJsonschema {
       throw Error(`allOf array can not be empty ${allOf}.`);
     }
 
-    return allOf.reduce((schema: JSONSchema7, curr: JSONSchema7) => {
-      if (curr.$ref) {
-        curr = this.resolveDefinition(curr, options);
+    return allOf.reduce((base: JSONSchema7, schema: JSONSchema7) => {
+      if (schema.$ref) {
+        schema = this.resolveDefinition(schema, options);
       }
 
-      if (curr.allOf) {
-        curr = this.resolveAllOf(curr, options);
+      if (schema.allOf) {
+        schema = this.resolveAllOf(schema, options);
+      }
+      if (base.required && schema.required) {
+        base.required = [...base.required, ...schema.required];
       }
 
-      if (curr.required && schema.required) {
-        schema.required = [...schema.required, ...curr.required];
+      if (schema.uniqueItems) {
+        base.uniqueItems = schema.uniqueItems;
       }
 
-      return reverseDeepMerge(schema, curr);
+      // resolve to min value
+      ['maxLength', 'maximum', 'exclusiveMaximum', 'maxItems', 'maxProperties']
+        .forEach(prop => {
+          if (!isEmpty(base[prop]) && !isEmpty(schema[prop])) {
+            base[prop] = base[prop] < schema[prop] ? base[prop] : schema[prop];
+          }
+        });
+
+      // resolve to max value
+      ['minLength', 'minimum', 'exclusiveMinimum', 'minItems', 'minProperties']
+        .forEach(prop => {
+          if (!isEmpty(base[prop]) && !isEmpty(schema[prop])) {
+            base[prop] = base[prop] > schema[prop] ? base[prop] : schema[prop];
+          }
+        });
+
+      return reverseDeepMerge(base, schema);
     }, baseSchema);
   }
 
