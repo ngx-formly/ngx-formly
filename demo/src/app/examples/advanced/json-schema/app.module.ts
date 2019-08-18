@@ -8,6 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AppComponent } from './app.component';
 import { ArrayTypeComponent } from './array.type';
 import { ObjectTypeComponent } from './object.type';
+import { NullTypeComponent } from './null.type';
 
 export function minItemsValidationMessage(err, field: FormlyFieldConfig) {
   return `should NOT have fewer than ${field.templateOptions.minItems} items`;
@@ -55,6 +56,7 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
     FormlyModule.forRoot({
       validationMessages: [
         { name: 'required', message: 'This field is required' },
+        { name: 'null', message: 'should be null' },
         { name: 'minlength', message: minlengthValidationMessage },
         { name: 'maxlength', message: maxlengthValidationMessage },
         { name: 'min', message: minValidationMessage },
@@ -87,6 +89,7 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
         },
         { name: 'boolean', extends: 'checkbox' },
         { name: 'enum', extends: 'select' },
+        { name: 'null', component: NullTypeComponent, wrappers: ['form-field'] },
         { name: 'array', component: ArrayTypeComponent },
         { name: 'object', component: ObjectTypeComponent },
       ],
@@ -96,6 +99,7 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
     AppComponent,
     ArrayTypeComponent,
     ObjectTypeComponent,
+    NullTypeComponent,
   ],
 })
 export class AppModule { }
