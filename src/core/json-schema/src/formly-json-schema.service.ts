@@ -155,19 +155,26 @@ export class FormlyJsonschema {
     return options.map ? options.map(field, schema) : field;
   }
 
-  private resolveAllOf(schema: JSONSchema7, options: IOptions) {
-    if (!schema.allOf.length) {
-      throw Error(`allOf array can not be empty ${schema.allOf}.`);
+  private resolveAllOf({ allOf, ...baseSchema }: JSONSchema7, options: IOptions) {
+    if (!allOf.length) {
+      throw Error(`allOf array can not be empty ${allOf}.`);
     }
-    return schema.allOf.reduce((prev: JSONSchema7, curr: JSONSchema7) => {
-        if (curr.$ref) {
-          curr = this.resolveDefinition(curr, options);
-        }
-        if (curr.allOf) {
-          curr = this.resolveAllOf(curr, options);
-        }
-        return reverseDeepMerge(curr, prev);
-      }, {});
+
+    return allOf.reduce((schema: JSONSchema7, curr: JSONSchema7) => {
+      if (curr.$ref) {
+        curr = this.resolveDefinition(curr, options);
+      }
+
+      if (curr.allOf) {
+        curr = this.resolveAllOf(curr, options);
+      }
+
+      if (curr.required && schema.required) {
+        schema.required = [...schema.required, ...curr.required];
+      }
+
+      return reverseDeepMerge(schema, curr);
+    }, baseSchema);
   }
 
   private resolveDefinition(schema: JSONSchema7, options: IOptions): JSONSchema7 {

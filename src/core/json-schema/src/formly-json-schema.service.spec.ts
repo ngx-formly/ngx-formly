@@ -580,7 +580,7 @@ describe('Service: FormlyJsonschema', () => {
 
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.6.7
     describe('Schema allOf support', () => {
-      it('should merge allOf array into single object ', () => {
+      it('should merge allOf array into single object', () => {
         const schema: JSONSchema7 = {
           'definitions': {
             'address': {
@@ -606,12 +606,17 @@ describe('Service: FormlyJsonschema', () => {
             },
           },
         };
-        const config = formlyJsonschema.toFieldConfig(schema);
-        expect(config.fieldGroup[0].fieldGroup[0].key).toEqual('type');
-        expect(config.fieldGroup[0].fieldGroup[0].type).toEqual('enum');
+        const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
+        const expected = fieldGroup[0].fieldGroup.map(({key, type, templateOptions: { required } }) => ({ key, type, required }));
+        expect(expected).toEqual([
+          { key: 'street_address', type: 'string', required: true },
+          { key: 'city', type: 'string', required: true },
+          { key: 'state', type: 'string', required: true },
+          { key: 'type', type: 'enum', required: undefined },
+        ]);
       });
 
-      it('should handle nested allOf  ', () => {
+      it('should handle nested allOf', () => {
         const schema: JSONSchema7 = {
           'definitions': {
             'baseAddress': {
@@ -646,11 +651,60 @@ describe('Service: FormlyJsonschema', () => {
             },
           },
         };
-        const config = formlyJsonschema.toFieldConfig(schema);
-        expect(config.fieldGroup[0].fieldGroup[0].key).toEqual('type');
-        expect(config.fieldGroup[0].fieldGroup[0].type).toEqual('enum');
-        expect(config.fieldGroup[0].fieldGroup[1].key).toEqual('country');
-        expect(config.fieldGroup[0].fieldGroup[1].type).toEqual('string');
+        const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
+        const expected = fieldGroup[0].fieldGroup.map(({key, type, templateOptions: { required } }) => ({ key, type, required }));
+        expect(expected).toEqual([
+          { key: 'street_address', type: 'string', required: true },
+          { key: 'city', type: 'string', required: true },
+          { key: 'state', type: 'string', required: true },
+          { key: 'country', type: 'string', required: undefined },
+          { key: 'type', type: 'enum', required: undefined },
+        ]);
+      });
+
+      it('should merge required fields', () => {
+        const schema: JSONSchema7 = {
+          'allOf': [
+            {
+              'properties': { 'firstname': {'type': 'string'} },
+              'required': ['firstname'],
+            },
+            {
+              'properties': { 'lastname': {'type': 'string'} },
+              'required': ['lastname'],
+            },
+          ],
+        };
+        const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
+        const expected = fieldGroup.map(({key, templateOptions: { required } }) => ({ key, required }));
+        expect(expected).toEqual([
+          { key: 'firstname', required: true },
+          { key: 'lastname', required: true },
+        ]);
+      });
+
+      it('should merge allOf with base schema', () => {
+        const schema: JSONSchema7 = {
+          'properties': { 'firstname': {'type': 'string'} },
+          'required': ['firstname'],
+          'allOf': [
+            {
+              'properties': { 'familyname': {'type': 'string'} },
+              'required': ['familyname'],
+            },
+            {
+              'properties': { 'lastname': {'type': 'string'} },
+              'required': ['lastname'],
+            },
+          ],
+        };
+        const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
+        const expected = fieldGroup.map(({key, templateOptions: { required } }) => ({ key, required }));
+        expect(expected).toEqual([
+          { key: 'firstname', required: true },
+          { key: 'familyname', required: true },
+          { key: 'lastname', required: true },
+        ]);
       });
     });
     // TODO: discuss support of writeOnly. Note: this may not be needed.
