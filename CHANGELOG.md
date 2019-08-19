@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.4.0"></a>
+# [5.4.0](https://github.com/ngx-formly/ngx-formly/compare/v5.3.0...v5.4.0) (2019-08-19)
+
+
+### Bug Fixes
+
+* **core:** better cloning ([#1725](https://github.com/ngx-formly/ngx-formly/issues/1725)) ([0b71eba](https://github.com/ngx-formly/ngx-formly/commit/0b71eba)), closes [#1719](https://github.com/ngx-formly/ngx-formly/issues/1719)
+* **core:** mark formControl as dirty on change event ([#1727](https://github.com/ngx-formly/ngx-formly/issues/1727)) ([8c29130](https://github.com/ngx-formly/ngx-formly/commit/8c29130)), closes [#1721](https://github.com/ngx-formly/ngx-formly/issues/1721)
+* **material:** disable floating label when select value is empty ([#1707](https://github.com/ngx-formly/ngx-formly/issues/1707)) ([a462a72](https://github.com/ngx-formly/ngx-formly/commit/a462a72))
+* **material:** float textarea label when value is set ([#1697](https://github.com/ngx-formly/ngx-formly/issues/1697)) ([c6461d4](https://github.com/ngx-formly/ngx-formly/commit/c6461d4)), closes [#1688](https://github.com/ngx-formly/ngx-formly/issues/1688)
+* **material:** improve handling focus for custom form-field ([#1696](https://github.com/ngx-formly/ngx-formly/issues/1696)) ([057eaa9](https://github.com/ngx-formly/ngx-formly/commit/057eaa9)), closes [#1691](https://github.com/ngx-formly/ngx-formly/issues/1691)
+
+
+### Features
+
+* **core:** add support of ivy ([#1695](https://github.com/ngx-formly/ngx-formly/issues/1695)) ([ce3759d](https://github.com/ngx-formly/ngx-formly/commit/ce3759d)), closes [#1693](https://github.com/ngx-formly/ngx-formly/issues/1693)
+* **core:** generate FormControl when `key` is set ([#1714](https://github.com/ngx-formly/ngx-formly/issues/1714)) ([562cb44](https://github.com/ngx-formly/ngx-formly/commit/562cb44)), closes [#1711](https://github.com/ngx-formly/ngx-formly/issues/1711)
+* **core:** mark define fieldComponent optional for custom wrapper ([#1694](https://github.com/ngx-formly/ngx-formly/issues/1694)) ([a013fe2](https://github.com/ngx-formly/ngx-formly/commit/a013fe2))
+* **json-schema:** add support for minItems and maxItems ([#1698](https://github.com/ngx-formly/ngx-formly/issues/1698)) ([2d6fcd4](https://github.com/ngx-formly/ngx-formly/commit/2d6fcd4))
+* **json-schema:** adds allOf support ([#1683](https://github.com/ngx-formly/ngx-formly/issues/1683)) ([d8e9585](https://github.com/ngx-formly/ngx-formly/commit/d8e9585))
+* **json-schema:** merge required and base schema on resolve allOf ([#1728](https://github.com/ngx-formly/ngx-formly/issues/1728)) ([f43ad58](https://github.com/ngx-formly/ngx-formly/commit/f43ad58))
+* **json-schema:** resolve allOf merge conflits ([#1729](https://github.com/ngx-formly/ngx-formly/issues/1729)) ([bf108ba](https://github.com/ngx-formly/ngx-formly/commit/bf108ba))
+* **json-schema:** support null type ([#1730](https://github.com/ngx-formly/ngx-formly/issues/1730)) ([7d5ac6a](https://github.com/ngx-formly/ngx-formly/commit/7d5ac6a))
+
+
+
 <a name="5.3.0"></a>
 # [5.3.0](https://github.com/ngx-formly/ngx-formly/compare/v5.2.0...v5.3.0) (2019-07-24)
 
