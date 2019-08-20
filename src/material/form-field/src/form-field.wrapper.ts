@@ -49,7 +49,8 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
   providers: [{ provide: MatFormFieldControl, useExisting: FormlyWrapperFormField }],
 })
 export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> implements OnInit, OnDestroy, MatFormFieldControl<any>, AfterViewInit, AfterContentChecked {
-  @ViewChild(MatFormField) formField!: MatFormField;
+  // TODO: remove `any`, once dropping angular `V7` support.
+  @ViewChild(MatFormField, <any> { static: true }) formField!: MatFormField;
 
   stateChanges = new Subject<void>();
   _errorState = false;
