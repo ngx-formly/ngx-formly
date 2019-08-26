@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.4.1"></a>
+## [5.4.1](https://github.com/ngx-formly/ngx-formly/compare/v5.4.0...v5.4.1) (2019-08-26)
+
+
+### Bug Fixes
+
+* **core:** avoid removing the wrong formControl instance on hide ([#1741](https://github.com/ngx-formly/ngx-formly/issues/1741)) ([9a68aaf](https://github.com/ngx-formly/ngx-formly/commit/9a68aaf)), closes [#1700](https://github.com/ngx-formly/ngx-formly/issues/1700)
+* **material:** enable static query for formFieldControl ([#1740](https://github.com/ngx-formly/ngx-formly/issues/1740)) ([512befe](https://github.com/ngx-formly/ngx-formly/commit/512befe))
+* **material:** enable static query for MatFormField ([#1733](https://github.com/ngx-formly/ngx-formly/issues/1733)) ([038c22d](https://github.com/ngx-formly/ngx-formly/commit/038c22d))
+
+
+
 <a name="5.4.0"></a>
 # [5.4.0](https://github.com/ngx-formly/ngx-formly/compare/v5.3.0...v5.4.0) (2019-08-19)
 
