@@ -84,6 +84,14 @@ describe('unregisterControl', () => {
     expect(field.formControl.parent).toBeNull();
   });
 
+  it('FormGroup control != field control', () => {
+    const field = { key: '0', formControl: new FormControl() };
+    const parent = new FormGroup({ '0': new FormControl() });
+
+    unregisterControl(field);
+    expect(parent.get('0')).not.toBeNull();
+  });
+
   it('FormGroup with nested field key', () => {
     const field = { key: 'test.0', formControl: new FormControl() };
     const parent = new FormGroup({ test: new FormGroup({ '0': field.formControl }) });

@@ -12,7 +12,10 @@ export function unregisterControl(field: FormlyFieldConfig) {
     }
   } else if (form instanceof FormGroup) {
     const paths = getKeyPath(field);
-    form.removeControl(paths[paths.length - 1]);
+    const key = paths[paths.length - 1];
+    if (form.get([key]) === field.formControl) {
+      form.removeControl(key);
+    }
     field.formControl.setParent(null);
   }
 }
