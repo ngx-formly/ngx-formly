@@ -8,6 +8,7 @@
   [![Downloads](http://img.shields.io/npm/dm/@ngx-formly/core.svg)](https://npmjs.org/package/@ngx-formly/core)
   [![Gitter](https://badges.gitter.im/formly-js/ng2-formly.svg)](https://gitter.im/formly-js/ng2-formly)
   [![Build Status](https://api.travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)](https://api.travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)
+  [![Twitter](https://img.shields.io/badge/twitter-@formlydev-blue.svg)](https://twitter.com/formlydev)
 </div>
 
 ---
