@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 import { Subject, of } from 'rxjs';
 import { FormlyFieldConfig, FormlyFormBuilder, FieldArrayType, FormlyModule } from '@ngx-formly/core';
@@ -132,6 +132,38 @@ describe('FieldExpressionExtension', () => {
 
       expect(cityField.templateOptions.hidden).toBeFalsy();
       expect(cityField.hide).toBeFalsy();
+    });
+
+    it('should support multiple field with the same key', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'key1',
+          type: 'input',
+          formControl: new FormControl(),
+          hideExpression: model => model.type,
+        },
+        {
+          key: 'key1',
+          type: 'input',
+          formControl: new FormControl(),
+          hideExpression: model => !model.type,
+        },
+      ];
+      const model = { type: false };
+      builder.buildForm(form, fields, model, options);
+
+      options._checkField({ formControl: form, fieldGroup: fields, model, options });
+      expect(fields[0].hide).toBeFalsy();
+      expect(fields[0].formControl).toEqual(form.get('key1'));
+      expect(fields[1].hide).toBeTruthy();
+      expect(fields[1].formControl).not.toEqual(form.get('key1'));
+
+      model.type = true;
+      options._checkField({ formControl: form, fieldGroup: fields, model, options });
+      expect(fields[0].hide).toBeTruthy();
+      expect(fields[0].formControl).not.toEqual(form.get('key1'));
+      expect(fields[1].hide).toBeFalsy();
+      expect(fields[1].formControl).toEqual(form.get('key1'));
     });
   });
 
