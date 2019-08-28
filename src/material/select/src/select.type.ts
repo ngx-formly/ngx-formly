@@ -23,7 +23,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [multiple]="to.multiple"
       (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher"
-      [aria-labelledby]="formField?._labelId"
+      [aria-labelledby]="_getAriaLabelledby()"
       [disableOptionCentering]="to.disableOptionCentering"
       >
       <ng-container *ngIf="to.options | formlySelectOptions:field | async as selectOptions">
@@ -74,5 +74,17 @@ export class FormlyFieldSelect extends FieldType {
 
   compareWith(o1: any, o2: any) {
     return o1 === o2;
+  }
+
+  _getAriaLabelledby() {
+    if (this.to.attributes && this.to.attributes['aria-labelledby']) {
+      return this.to.attributes['aria-labelledby'];
+    }
+
+    if (this.formField && this.formField._labelId) {
+      return this.formField._labelId;
+    }
+
+    return null;
   }
 }

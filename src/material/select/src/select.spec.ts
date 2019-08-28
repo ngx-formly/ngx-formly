@@ -221,6 +221,23 @@ describe('ui-material: Formly Field Select Component', () => {
       expect(selectAllOption.innerHTML).toContain('Click me!!');
     }));
 
+    it('should correctly use custom aria-labelledby', () => {
+      testComponentInputs.fields = [{
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          attributes: {
+            'aria-labelledby': 'TEST_LABEL',
+          },
+          options: [],
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const selectEl = fixture.debugElement.query(By.css('.mat-select')).nativeElement;
+
+      expect(selectEl.getAttribute('aria-labelledby')).toBe('TEST_LABEL');
+    });
   });
 
 });
