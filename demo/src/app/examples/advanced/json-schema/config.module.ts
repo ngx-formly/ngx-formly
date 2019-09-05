@@ -23,6 +23,7 @@ import { AppComponent } from './app.component';
               { file: 'app.module.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'), filecontent: require('!!raw-loader!./app.module.ts') },
               { file: 'array.type.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./array.type.ts'), filecontent: require('!!raw-loader!./array.type.ts') },
               { file: 'object.type.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./object.type.ts'), filecontent: require('!!raw-loader!./object.type.ts') },
+              { file: 'null.type.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./null.type.ts'), filecontent: require('!!raw-loader!./null.type.ts') },
               { file: 'assets/json-schema/simple.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/simple_json'), filecontent: require('!!raw-loader!./assets/simple_json') },
               { file: 'assets/json-schema/nested.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/nested_json'), filecontent: require('!!raw-loader!./assets/nested_json') },
               { file: 'assets/json-schema/arrays.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/arrays_json'), filecontent: require('!!raw-loader!./assets/arrays_json') },
