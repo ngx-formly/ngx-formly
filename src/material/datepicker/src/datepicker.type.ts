@@ -51,6 +51,7 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
 
     setTimeout(() => {
       defineHiddenProp(this.field, '_mat' + this.to.datepickerOptions.datepickerTogglePosition, this.datepickerToggle);
+      (<any> this.options)._markForCheck(this.field);
     });
   }
 }
