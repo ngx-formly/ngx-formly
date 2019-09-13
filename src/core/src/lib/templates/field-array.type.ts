@@ -1,7 +1,7 @@
 import { Inject, Optional } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
-import { clone, isNullOrUndefined } from '../utils';
+import { clone, isNullOrUndefined, assignModelValue, getKeyPath } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
@@ -23,6 +23,10 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
   onPopulate(field: FormlyFieldConfig) {
     field.fieldGroup = field.fieldGroup || [];
+    if (!field.model) {
+      return;
+    }
+
     if (field.fieldGroup.length > field.model.length) {
       for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
         (field.formControl as FormArray).removeAt(i);
@@ -53,6 +57,10 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
   add(i?: number, initialModel?: any) {
     i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
+    if (!this.model) {
+      assignModelValue(this.field.parent.model, getKeyPath(this.field), []);
+    }
+
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
 
     (<any> this.options)._buildForm(true);
