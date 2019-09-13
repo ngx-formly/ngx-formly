@@ -263,6 +263,16 @@ export class FormlyJsonschema {
       return 'object';
     }
 
+    if (Array.isArray(type)) {
+      if (type.length === 1) {
+        return type[0];
+      }
+
+      if (type.length === 2 && type.includes('null')) {
+        return type[type[0] === 'null' ? 1 : 0];
+      }
+    }
+
     return type;
   }
 
