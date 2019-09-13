@@ -5,13 +5,10 @@ cache:
   directories:
     - $HOME/.npm
 node_js:
-  - "10"
+  - "12"
 
 before_install:
   - npm i -g npm
-  - "export CHROME_BIN=/usr/bin/google-chrome"
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
 
 install:
   - npm ci
@@ -27,9 +24,7 @@ after_success:
   - if [ -n "$TRAVIS_TAG" ]; then npm run github-release; fi
 
 addons:
-  apt:
-    packages:
-      - google-chrome-stable
+  chrome: stable
 
 env:
   global:
