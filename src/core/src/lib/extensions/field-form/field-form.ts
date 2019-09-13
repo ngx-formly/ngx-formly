@@ -8,7 +8,7 @@ import { registerControl } from './utils';
 export class FieldFormExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
     // TODO: add an option to skip extension
-    if (field.fieldArray) {
+    if (field.fieldArray || field.type === 'array') {
       return;
     }
 
