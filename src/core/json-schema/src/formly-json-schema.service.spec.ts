@@ -27,6 +27,18 @@ describe('Service: FormlyJsonschema', () => {
         const formlyConfig = formlyJsonschema.toFieldConfig(schema);
         expect(formlyConfig.type).toBe('object');
       });
+
+      it('should guess a single array value', () => {
+        const schema: JSONSchema7 = { type: ['string'] };
+        const formlyConfig = formlyJsonschema.toFieldConfig(schema);
+        expect(formlyConfig.type).toBe('string');
+      });
+
+      it('should support nullable field type', () => {
+        const schema: JSONSchema7 = { type: ['null', 'string'] };
+        const formlyConfig = formlyJsonschema.toFieldConfig(schema);
+        expect(formlyConfig.type).toBe('string');
+      });
     });
 
     // https://json-schema.org/latest/json-schema-validation.html#numeric
