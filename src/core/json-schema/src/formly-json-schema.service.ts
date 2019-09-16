@@ -137,7 +137,7 @@ export class FormlyJsonschema {
 
             return itemSchema
               ? this._toFieldConfig(<JSONSchema7> itemSchema, options)
-              : null;
+              : {};
           },
           enumerable: true,
           configurable: true,

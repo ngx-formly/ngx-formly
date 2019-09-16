@@ -170,13 +170,15 @@ describe('Service: FormlyJsonschema', () => {
         const childConfig: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'string', defaultValue: undefined };
         const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'number', defaultValue: undefined, parsers: [jasmine.any(Function)] };
 
+        expect(config.type).toEqual('array');
         expect(config.fieldArray).toEqual(childConfig);
         // TODO: is this the best way to test this?
         // artificially increase the length of the fieldGroup
         // since the getter that is defined is based on that.
         config.fieldGroup.push(null);
         expect(config.fieldArray).toEqual(childConfig2);
-        expect(config.type).toEqual('array');
+        config.fieldGroup.push(null);
+        expect(config.fieldArray).toEqual({});
       });
 
       it('supports array additionalitems wheh array items are defined as an array of schemas', () => {

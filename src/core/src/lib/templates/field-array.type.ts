@@ -5,7 +5,7 @@ import { clone, isNullOrUndefined, assignModelValue, getKeyPath } from '../utils
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
-import { registerControl } from '../extensions/field-form/utils';
+import { registerControl, unregisterControl } from '../extensions/field-form/utils';
 
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
   formControl: FormArray;
@@ -23,18 +23,16 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
   onPopulate(field: FormlyFieldConfig) {
     field.fieldGroup = field.fieldGroup || [];
-    if (!field.model) {
-      return;
-    }
 
-    if (field.fieldGroup.length > field.model.length) {
-      for (let i = field.fieldGroup.length; i >= field.model.length; --i) {
-        (field.formControl as FormArray).removeAt(i);
+    const length = field.model ? field.model.length : 0;
+    if (field.fieldGroup.length > length) {
+      for (let i = field.fieldGroup.length - 1; i >= length; --i) {
+        unregisterControl(field.fieldGroup[i]);
         field.fieldGroup.splice(i, 1);
       }
     }
 
-    for (let i = field.fieldGroup.length; i < field.model.length; i++) {
+    for (let i = field.fieldGroup.length; i < length; i++) {
       const f = { ...clone(field.fieldArray), key: `${i}` };
       field.fieldGroup.push(f);
     }
@@ -68,7 +66,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
   remove(i: number) {
     this.model.splice(i, 1);
-    this.formControl.removeAt(i);
+    unregisterControl(this.field.fieldGroup[i]);
     this.field.fieldGroup.splice(i, 1);
     this.field.fieldGroup.forEach((f, key) => f.key = `${key}`);
 
