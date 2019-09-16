@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.4.2"></a>
+## [5.4.2](https://github.com/ngx-formly/ngx-formly/compare/v5.4.1...v5.4.2) (2019-09-16)
+
+
+### Bug Fixes
+
+* **core:** allow nullable value for array type ([#1780](https://github.com/ngx-formly/ngx-formly/issues/1780)) ([d8f5f61](https://github.com/ngx-formly/ngx-formly/commit/d8f5f61)), closes [#1764](https://github.com/ngx-formly/ngx-formly/issues/1764)
+* **core:** avoid checking parent field on eval hide expression ([#1749](https://github.com/ngx-formly/ngx-formly/issues/1749)) ([087523b](https://github.com/ngx-formly/ngx-formly/commit/087523b)), closes [#1700](https://github.com/ngx-formly/ngx-formly/issues/1700)
+* **json-schema:** guess nullable and single array type ([#1781](https://github.com/ngx-formly/ngx-formly/issues/1781)) ([dabf2a6](https://github.com/ngx-formly/ngx-formly/commit/dabf2a6)), closes [#1777](https://github.com/ngx-formly/ngx-formly/issues/1777)
+* **json-schema:** set valid fieldArray when additionalItems is empty ([#1784](https://github.com/ngx-formly/ngx-formly/issues/1784)) ([4413193](https://github.com/ngx-formly/ngx-formly/commit/4413193)), closes [#1777](https://github.com/ngx-formly/ngx-formly/issues/1777)
+* **material:** ensure showing datepicker icon when OnPush enabled ([#1767](https://github.com/ngx-formly/ngx-formly/issues/1767)) ([6ef3e57](https://github.com/ngx-formly/ngx-formly/commit/6ef3e57)), closes [#1766](https://github.com/ngx-formly/ngx-formly/issues/1766)
+* **material:** use passed aria-labelledby attr for select type ([#1748](https://github.com/ngx-formly/ngx-formly/issues/1748)) ([b8f1834](https://github.com/ngx-formly/ngx-formly/commit/b8f1834)), closes [#1746](https://github.com/ngx-formly/ngx-formly/issues/1746)
+
+
+
 <a name="5.4.1"></a>
 ## [5.4.1](https://github.com/ngx-formly/ngx-formly/compare/v5.4.0...v5.4.1) (2019-08-26)
 
