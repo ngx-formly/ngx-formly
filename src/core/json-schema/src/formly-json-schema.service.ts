@@ -13,7 +13,7 @@ export interface FormlyJsonschemaOptions {
   map?: (mappedField: FormlyFieldConfig, mapSource: JSONSchema7) => FormlyFieldConfig;
 }
 
-function isEmpty(v) {
+function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
 }
 
@@ -79,6 +79,11 @@ export class FormlyJsonschema {
         break;
       }
       case 'string': {
+        const schemaType = schema.type as JSONSchema7TypeName;
+        if (Array.isArray(schemaType) && schemaType.includes('null')) {
+          field.parsers = [v => isEmpty(v) ? null : v];
+        }
+
         ['minLength', 'maxLength', 'pattern'].forEach(prop => {
           if (schema.hasOwnProperty(prop)) {
             field.templateOptions[prop] = schema[prop];
