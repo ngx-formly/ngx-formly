@@ -31,6 +31,8 @@ import { AppComponent } from './app.component';
               { file: 'assets/json-schema/references.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/references_json'), filecontent: require('!!raw-loader!./assets/references_json') },
               { file: 'assets/json-schema/schema_dependencies.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/schema_dependencies_json'), filecontent: require('!!raw-loader!./assets/schema_dependencies_json') },
               { file: 'assets/json-schema/allOf.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/allOf_json'), filecontent: require('!!raw-loader!./assets/allOf_json') },
+              { file: 'assets/json-schema/null_field.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/null_field_json'), filecontent: require('!!raw-loader!./assets/null_field_json') },
+              { file: 'assets/json-schema/nullable.json', content: require('!!highlight-loader?raw=true&lang=typescript!./assets/nullable_json'), filecontent: require('!!raw-loader!./assets/nullable_json') },
             ],
           }],
         },
