@@ -24,20 +24,20 @@ describe('Service: FormlyJsonschema', () => {
             string: { type: 'string' },
           },
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(schema);
-        expect(formlyConfig.type).toBe('object');
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.type).toBe('object');
       });
 
       it('should guess a single array value', () => {
         const schema: JSONSchema7 = { type: ['string'] };
-        const formlyConfig = formlyJsonschema.toFieldConfig(schema);
-        expect(formlyConfig.type).toBe('string');
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.type).toBe('string');
       });
 
       it('should support nullable field type', () => {
         const schema: JSONSchema7 = { type: ['null', 'string'] };
-        const formlyConfig = formlyJsonschema.toFieldConfig(schema);
-        expect(formlyConfig.type).toBe('string');
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.type).toBe('string');
       });
     });
 
@@ -49,9 +49,9 @@ describe('Service: FormlyJsonschema', () => {
           minimum: 5,
           maximum: 10,
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
-        expect(formlyConfig.templateOptions.min).toBe(numSchema.minimum);
-        expect(formlyConfig.templateOptions.max).toBe(numSchema.maximum);
+        const config = formlyJsonschema.toFieldConfig(numSchema);
+        expect(config.templateOptions.min).toBe(numSchema.minimum);
+        expect(config.templateOptions.max).toBe(numSchema.maximum);
       });
 
       it('should support exclusiveMinimum', () => {
@@ -59,9 +59,9 @@ describe('Service: FormlyJsonschema', () => {
           type: 'number',
           exclusiveMinimum: 5,
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
+        const config = formlyJsonschema.toFieldConfig(numSchema);
 
-        const exclusiveMinimum = formlyConfig.validators.exclusiveMinimum;
+        const exclusiveMinimum = config.validators.exclusiveMinimum;
         expect(exclusiveMinimum).toBeDefined();
         expect(exclusiveMinimum(new FormControl(4))).toBeFalsy();
         expect(exclusiveMinimum(new FormControl(5))).toBeFalsy();
@@ -73,9 +73,9 @@ describe('Service: FormlyJsonschema', () => {
           type: 'number',
           exclusiveMaximum: 10,
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
+        const config = formlyJsonschema.toFieldConfig(numSchema);
 
-        const exclusiveMaximum = formlyConfig.validators.exclusiveMaximum;
+        const exclusiveMaximum = config.validators.exclusiveMaximum;
         expect(exclusiveMaximum).toBeDefined();
         expect(exclusiveMaximum(new FormControl(10))).toBeFalsy();
         expect(exclusiveMaximum(new FormControl(11))).toBeFalsy();
@@ -87,10 +87,10 @@ describe('Service: FormlyJsonschema', () => {
           type: 'number',
           multipleOf: 5,
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
-        expect(formlyConfig.templateOptions.step).toBe(numSchema.multipleOf);
+        const config = formlyJsonschema.toFieldConfig(numSchema);
+        expect(config.templateOptions.step).toBe(numSchema.multipleOf);
 
-        const multipleOfValidator = formlyConfig.validators.multipleOf;
+        const multipleOfValidator = config.validators.multipleOf;
         expect(multipleOfValidator).toBeDefined();
         expect(multipleOfValidator(new FormControl(9))).toBeFalsy();
         expect(multipleOfValidator(new FormControl(10))).toBeTruthy();
@@ -99,10 +99,10 @@ describe('Service: FormlyJsonschema', () => {
 
     describe('null type', () => {
       it('should support null validation', () => {
-        const stringSchema: JSONSchema7 = {
+        const schema: JSONSchema7 = {
           type: 'null',
         };
-        const { type, validators } = formlyJsonschema.toFieldConfig(stringSchema);
+        const { type, validators } = formlyJsonschema.toFieldConfig(schema);
         expect(type).toEqual('null');
         expect(validators.null).toBeDefined();
         expect(validators.null(new FormControl(null))).toBeTruthy();
@@ -113,23 +113,33 @@ describe('Service: FormlyJsonschema', () => {
     // https://json-schema.org/latest/json-schema-validation.html#string
     describe('string validation keywords', () => {
       it('should support pattern', () => {
-        const stringSchema: JSONSchema7 = {
+        const schema: JSONSchema7 = {
           type: 'string',
           pattern: 'Hello World!',
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(stringSchema);
-        expect(formlyConfig.templateOptions.pattern).toBe(stringSchema.pattern);
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.templateOptions.pattern).toBe(schema.pattern);
       });
 
       it('should support minLength and maxLength', () => {
-        const stringSchema: JSONSchema7 = {
+        const schema: JSONSchema7 = {
           type: 'string',
           minLength: 5,
           maxLength: 10,
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(stringSchema);
-        expect(formlyConfig.templateOptions.minLength).toBe(stringSchema.minLength);
-        expect(formlyConfig.templateOptions.maxLength).toBe(stringSchema.maxLength);
+        const config = formlyJsonschema.toFieldConfig(schema);
+        expect(config.templateOptions.minLength).toBe(schema.minLength);
+        expect(config.templateOptions.maxLength).toBe(schema.maxLength);
+      });
+
+      it('should set nullable string type to `null` if empty', () => {
+        const schema: JSONSchema7 = {
+          type: ['string', 'null'],
+        };
+
+        const { parsers: [nullIfEmpty] } = formlyJsonschema.toFieldConfig(schema);
+        expect(nullIfEmpty('')).toBeNull();
+        expect(nullIfEmpty('test')).toEqual('test');
       });
     });
 
@@ -215,10 +225,10 @@ describe('Service: FormlyJsonschema', () => {
           type: 'array',
           minItems: 2,
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
-        expect(formlyConfig.templateOptions.minItems).toBe(numSchema.minItems);
+        const config = formlyJsonschema.toFieldConfig(numSchema);
+        expect(config.templateOptions.minItems).toBe(numSchema.minItems);
 
-        const minItemsValidator = formlyConfig.validators.minItems;
+        const minItemsValidator = config.validators.minItems;
         expect(minItemsValidator).toBeDefined();
         expect(minItemsValidator(new FormControl([1]))).toBeFalsy();
         expect(minItemsValidator(new FormControl([]))).toBeFalsy();
@@ -231,10 +241,10 @@ describe('Service: FormlyJsonschema', () => {
           type: 'array',
           maxItems: 2,
         };
-        const formlyConfig = formlyJsonschema.toFieldConfig(numSchema);
-        expect(formlyConfig.templateOptions.maxItems).toBe(numSchema.maxItems);
+        const config = formlyJsonschema.toFieldConfig(numSchema);
+        expect(config.templateOptions.maxItems).toBe(numSchema.maxItems);
 
-        const maxItemsValidator = formlyConfig.validators.maxItems;
+        const maxItemsValidator = config.validators.maxItems;
         expect(maxItemsValidator).toBeDefined();
         expect(maxItemsValidator(new FormControl([1, 2, 3]))).toBeFalsy();
         expect(maxItemsValidator(new FormControl([1, 2]))).toBeTruthy();
