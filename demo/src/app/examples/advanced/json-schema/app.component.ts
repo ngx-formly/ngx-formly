@@ -24,6 +24,8 @@ export class AppComponent {
     'references',
     'schema_dependencies',
     'allOf',
+    'null_field',
+    'nullable',
   ];
 
   constructor(
