@@ -76,7 +76,6 @@ describe('FormlyUtils service', () => {
   });
 
   describe('getKeyPath', () => {
-
     it('should get an empty key path for an empty key', () => {
       let keyPath = getKeyPath({});
       expect(keyPath).toEqual([]);
@@ -131,6 +130,14 @@ describe('clone', () => {
   it('Observable', () => {
     const v = of(['clone']);
     expect(clone(v)).toEqual(v);
+  });
+
+  it('FileList', () => {
+    const blob = new Blob();
+    const file = new File([], 'test');
+
+    expect(clone(blob)).toEqual(blob);
+    expect(clone(file)).toEqual(file);
   });
 
   it('Date', () => {
