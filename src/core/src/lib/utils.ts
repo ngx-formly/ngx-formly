@@ -98,8 +98,20 @@ export function isPromise(obj: any): obj is Promise<any> {
 }
 
 export function clone(value: any): any {
-  if (!isObject(value) || value instanceof RegExp || value instanceof Observable || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity) {
+  if (
+    !isObject(value)
+    || value instanceof RegExp
+    || value instanceof Observable
+    || value instanceof FileList
+    || value instanceof File
+    || value instanceof Blob
+    || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity) {
     return value;
+  }
+
+  // https://github.com/moment/moment/blob/master/moment.js#L252
+  if (value._isAMomentObject && isFunction(value.clone)) {
+    return value.clone();
   }
 
   if (value instanceof AbstractControl) {
