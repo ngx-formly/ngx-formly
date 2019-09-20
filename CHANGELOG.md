@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.4.3"></a>
+## [5.4.3](https://github.com/ngx-formly/ngx-formly/compare/v5.4.2...v5.4.3) (2019-09-20)
+
+
+### Bug Fixes
+
+* **core:** better clone for File and moment.js instance ([#1789](https://github.com/ngx-formly/ngx-formly/issues/1789)) ([d810035](https://github.com/ngx-formly/ngx-formly/commit/d810035)), closes [#1788](https://github.com/ngx-formly/ngx-formly/issues/1788)
+* **core:** skip _markForCheck call during init ([#1792](https://github.com/ngx-formly/ngx-formly/issues/1792)) ([718920a](https://github.com/ngx-formly/ngx-formly/commit/718920a))
+* **json-schema:** set nullable string type to `null` if empty ([#1787](https://github.com/ngx-formly/ngx-formly/issues/1787)) ([8d4985b](https://github.com/ngx-formly/ngx-formly/commit/8d4985b))
+
+
+
 <a name="5.4.2"></a>
 ## [5.4.2](https://github.com/ngx-formly/ngx-formly/compare/v5.4.1...v5.4.2) (2019-09-16)
 
