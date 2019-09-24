@@ -18,9 +18,14 @@
   }
 }
 
+::ng-deep .mat-drawer-container {
+  background-color: #fff;
+}
+
 ::ng-deep .mat-sidenav {
   min-width: 250px;
   padding-top: 8px;
+
   .mat-drawer-inner-container {
     a {
       text-align: left;

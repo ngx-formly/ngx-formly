@@ -28,13 +28,7 @@ export class FormlyJsonschema {
   }
 
   private _toFieldConfig(schema: JSONSchema7, options: IOptions): FormlyFieldConfig {
-    if (schema.$ref) {
-      schema = this.resolveDefinition(schema, options);
-    }
-
-    if (schema.allOf) {
-      schema = this.resolveAllOf(schema, options);
-    }
+    schema = this.resolveSchema(schema, options);
 
     let field: FormlyFieldConfig = {
       type: this.guessType(schema),
@@ -166,19 +160,25 @@ export class FormlyJsonschema {
     return options.map ? options.map(field, schema) : field;
   }
 
+  private resolveSchema(schema: JSONSchema7, options: IOptions) {
+    if (schema.$ref) {
+      schema = this.resolveDefinition(schema, options);
+    }
+
+    if (schema.allOf) {
+      schema = this.resolveAllOf(schema, options);
+    }
+
+    return schema;
+  }
+
   private resolveAllOf({ allOf, ...baseSchema }: JSONSchema7, options: IOptions) {
     if (!allOf.length) {
       throw Error(`allOf array can not be empty ${allOf}.`);
     }
 
     return allOf.reduce((base: JSONSchema7, schema: JSONSchema7) => {
-      if (schema.$ref) {
-        schema = this.resolveDefinition(schema, options);
-      }
-
-      if (schema.allOf) {
-        schema = this.resolveAllOf(schema, options);
-      }
+      schema = this.resolveSchema(schema, options);
       if (base.required && schema.required) {
         base.required = [...base.required, ...schema.required];
       }
