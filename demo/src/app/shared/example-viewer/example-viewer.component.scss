@@ -1,6 +1,6 @@
 :host {
   display: block;
-  padding: 20px 0;
+  padding: 15px;
 }
 
 .docs-example-viewer-wrapper {
@@ -41,5 +41,6 @@
 }
 
 .docs-example-viewer-body {
-  padding: 30px;
+  flex: 1 1 auto;
+  padding: .5rem;
 }
