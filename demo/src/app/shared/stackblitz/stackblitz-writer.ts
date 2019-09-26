@@ -10,10 +10,10 @@ const COPYRIGHT =
 
 const TEMPLATE_FILES = {
   core: [
-    { file: 'polyfills.ts', filecontent: require('!!raw-loader!../../../assets/stackblitz/polyfills.ts') },
-    { file: 'angular.json', filecontent: require('!!raw-loader!../../../assets/stackblitz/angular_json') },
-    { file: 'main.ts', filecontent: require('!!raw-loader!../../../assets/stackblitz/main.ts') },
-    { file: 'index.html', filecontent: require('!!raw-loader!../../../assets/stackblitz/index.html') },
+    { file: 'polyfills.ts', filecontent: require('!!raw-loader!@assets/stackblitz/polyfills.ts') },
+    { file: 'angular.json', filecontent: require('!!raw-loader!@assets/stackblitz/angular_json') },
+    { file: 'main.ts', filecontent: require('!!raw-loader!@assets/stackblitz/main.ts') },
+    { file: 'index.html', filecontent: require('!!raw-loader!@assets/stackblitz/index.html') },
   ],
   bootstrap: [
     { file: 'styles.scss', filecontent: `@import '~bootstrap/scss/bootstrap.scss';` },
@@ -104,6 +104,10 @@ const dependencies = {
   'ngx-datatable': {
     '@swimlane/ngx-datatable': '*',
   },
+  'ngx-translate': {
+    '@ngx-translate/core': '*',
+    '@ngx-translate/http-loader': '*',
+  },
 };
 
 const ngModule = {
@@ -182,6 +186,10 @@ export class StackblitzWriter {
       options.includeNgxDatable = true;
     }
 
+    if (appModuleContent.indexOf('@ngx-translate/core') !== -1) {
+      options.includeNgxTranslate = true;
+    }
+
     const deps = {
       ...dependencies.core,
       ...dependencies[options.type],
@@ -202,6 +210,10 @@ export class StackblitzWriter {
 
     if (options.includeNgxDatable) {
       Object.assign(deps, dependencies['ngx-datatable']);
+    }
+
+    if (options.includeNgxTranslate) {
+      Object.assign(deps, dependencies['ngx-translate']);
     }
 
     this._appendFormInput(form, 'dependencies', JSON.stringify(deps));
@@ -305,10 +317,8 @@ export class StackblitzWriter {
         filecontent = `${filecontent}\n@import '~ag-grid-community/dist/styles/ag-grid.css'; `;
         filecontent = `${filecontent}\n@import '~ag-grid-community/dist/styles/ag-theme-balham.css'; `;
       }
-
-    } else if (fileName === 'user.service.ts') {
-      filecontent = filecontent.replace(/_json/g, '.json');
     }
+    filecontent = filecontent.replace(/_json/g, '.json');
 
     return filecontent;
   }
