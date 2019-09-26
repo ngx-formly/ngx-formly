@@ -40,10 +40,10 @@
           {
             "properties": {
               "type": {
-                "title": "Type",
+                "title": "Housing type",
                 "enum": [
-                  "residential",
-                  "business"
+                  "Residential",
+                  "Business"
                 ]
               }
             },

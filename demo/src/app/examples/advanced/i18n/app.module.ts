@@ -10,7 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient, 'assets/i18n/');
+  return new TranslateHttpLoader(httpClient, 'assets/i18n/', '_json');
 }
 
 import { AppComponent } from './app.component';

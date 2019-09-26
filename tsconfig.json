@@ -20,6 +20,9 @@
       "@ngx-formly/*": [
         "src/*/src/public_api"
       ],
+      "@assets/*": [
+        "demo/src/assets/*"
+      ]
     }
   },
   "exclude": [

@@ -36,7 +36,7 @@ export class AppComponent {
   }
 
   loadExample(type: string) {
-    this.http.get<any>(`assets/json-schema/${type}.json`).pipe(
+    this.http.get<any>(`assets/json-schema/${type}_json`).pipe(
       tap(({ schema, model }) => {
         this.type = type;
         this.form = new FormGroup({});
