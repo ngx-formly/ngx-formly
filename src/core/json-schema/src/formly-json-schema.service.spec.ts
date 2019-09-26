@@ -487,15 +487,44 @@ describe('Service: FormlyJsonschema', () => {
 
       });
 
-      // TODO: add support for adding custom labels to enum values using oneOf/const
       // https://github.com/json-schema-org/json-schema-spec/issues/57#issuecomment-247861695
-      // it('should support enum as oneOf structure', () => {
-      //   const schema: JSONSchema7 = {
-      //     type: 'number',
-      //   };
+      describe('enum as oneOf/anyOf structure', () => {
+        it('should support enum as oneOf/const structure', () => {
+          const schema: JSONSchema7 = {
+            type: 'number',
+            oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+          };
 
-      //   const config = formlyJsonschema.toFieldConfig(schema);
-      // });
+          const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
+
+          expect(type).toEqual('enum');
+          expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+        });
+
+        it('should support enum as oneOf/enum structure', () => {
+          const schema: JSONSchema7 = {
+            type: 'number',
+            oneOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+          };
+
+          const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
+
+          expect(type).toEqual('enum');
+          expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+        });
+
+        it('should support enum as anyOf structure', () => {
+          const schema: JSONSchema7 = {
+            type: 'number',
+            anyOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+          };
+
+          const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
+
+          expect(type).toEqual('enum');
+          expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+        });
+      });
 
       // TODO: discuss const support possibly as hidden, already set field
       // it('should support cosnt', () => {

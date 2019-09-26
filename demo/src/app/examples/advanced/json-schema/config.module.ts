@@ -33,6 +33,7 @@ import { AppComponent } from './app.component';
               { file: 'assets/json-schema/allOf.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/allOf_json'), filecontent: require('!!raw-loader!@assets/json-schema/allOf_json') },
               { file: 'assets/json-schema/null_field.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/null_field_json'), filecontent: require('!!raw-loader!@assets/json-schema/null_field_json') },
               { file: 'assets/json-schema/nullable.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/nullable_json'), filecontent: require('!!raw-loader!@assets/json-schema/nullable_json') },
+              { file: 'assets/json-schema/select_alternatives.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/select_alternatives_json'), filecontent: require('!!raw-loader!@assets/json-schema/select_alternatives_json') },
             ],
           }],
         },

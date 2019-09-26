@@ -26,6 +26,7 @@ export class AppComponent {
     'allOf',
     'null_field',
     'nullable',
+    'select_alternatives',
   ];
 
   constructor(
