@@ -6,9 +6,6 @@ import { DOCUMENT } from '@angular/common';
 @Directive({
   selector: '[formlyAttributes]',
   host: {
-    '[attr.name]': 'field.name',
-    '[attr.step]': 'to.step',
-
     '(focus)': 'onFocus($event)',
     '(blur)': 'onBlur($event)',
     '(keyup)': 'to.keyup && to.keyup(field, $event)',
@@ -29,6 +26,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     'placeholder',
     'readonly',
     'disabled',
+    'step',
   ];
 
   get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
@@ -45,11 +43,14 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'id', this.field.id);
+      ['id', 'name'].forEach(attr => {
+        this.field[attr] && this.setAttribute(attr, this.field[attr]);
+      });
+
       if (this.to && this.to.attributes) {
         wrapProperty(this.to, 'attributes', (newVal, oldValue) => {
           if (oldValue) {
-            Object.keys(oldValue).forEach(attr => this.renderer.removeAttribute(this.elementRef.nativeElement, attr));
+            Object.keys(oldValue).forEach(attr => this.removeAttribute(attr));
           }
 
           if (newVal) {
@@ -88,7 +89,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
         if (value || value === 0) {
           this.setAttribute(attr, value === true ? attr : `${value}`);
         } else {
-          this.renderer.removeAttribute(this.elementRef.nativeElement, attr);
+          this.removeAttribute(attr);
         }
       }
     });
@@ -161,5 +162,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   private setAttribute(attr: string, value: string) {
     this.renderer.setAttribute(this.elementRef.nativeElement, attr, value);
+  }
+
+  private removeAttribute(attr: string) {
+    this.renderer.removeAttribute(this.elementRef.nativeElement, attr);
   }
 }

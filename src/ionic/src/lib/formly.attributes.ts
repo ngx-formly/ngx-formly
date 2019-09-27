@@ -5,8 +5,6 @@ import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
   // tslint:disable-next-line
   selector: '[ionFormlyAttributes]',
   host: {
-    '[attr.name]': 'field.name',
-    '[attr.step]': 'to.step',
     '(keyup)': 'to.keyup && to.keyup(field, $event)',
     '(keydown)': 'to.keydown && to.keydown(field, $event)',
     '(click)': 'to.click && to.click(field, $event)',

@@ -6,7 +6,7 @@ import { FieldType } from '@ngx-formly/core';
   template: `
     <p-radioButton *ngFor="let option of to.options | formlySelectOptions:field | async"
       [class.ng-dirty]="showError"
-      [name]="id"
+      [name]="field.name || id"
       [formControl]="formControl"
       [label]="option.label"
       [value]="option.value">
