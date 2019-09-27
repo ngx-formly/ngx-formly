@@ -145,9 +145,9 @@ export class FormlyJsonschema {
       }
     }
 
-    if (schema.enum) {
+    if (this.isEnum(schema)) {
       field.type = 'enum';
-      field.templateOptions.options = schema.enum.map(value => ({ value, label: value }));
+      field.templateOptions.options = this.toEnumOptions(schema);
     }
 
     // map in possible formlyConfig options from the widget property
@@ -284,5 +284,35 @@ export class FormlyJsonschema {
   private addValidator(field: FormlyFieldConfig, name: string, validator: (control: AbstractControl) => boolean) {
     field.validators = field.validators || {};
     field.validators[name] = validator;
+  }
+
+  private isEnum(schema: JSONSchema7) {
+    const isConst = (s: JSONSchema7) => s.hasOwnProperty('const') || (s.enum && s.enum.length === 1);
+
+    return schema.enum
+      || (schema.anyOf && schema.anyOf.every(isConst))
+      || (schema.oneOf && schema.oneOf.every(isConst));
+  }
+
+  private toEnumOptions(schema: JSONSchema7) {
+    if (schema.enum) {
+      return schema.enum.map(value => ({ value, label: value }));
+    }
+
+    const toEnum = (s: JSONSchema7) => {
+      const value = s.hasOwnProperty('const') ? s.const : s.enum[0];
+
+      return { value: value, label: s.title || value };
+    };
+
+    if (schema.anyOf) {
+      return schema.anyOf.map(toEnum);
+    }
+
+    if (schema.oneOf) {
+      return schema.oneOf.map(toEnum);
+    }
+
+    return [];
   }
 }
