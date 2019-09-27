@@ -1,6 +1,6 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { FormlyFieldConfig, FieldArrayType } from '@ngx-formly/core';
-import { TableColumn } from '@swimlane/ngx-datatable/release/types';
+import { TableColumn } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'formly-field-datatable',

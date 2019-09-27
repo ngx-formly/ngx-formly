@@ -72,7 +72,7 @@
     "@progress/kendo-angular-intl": "^1.7.1",
     "@progress/kendo-angular-l10n": "^1.4.1",
     "@progress/kendo-theme-default": "^3.7.0",
-    "@swimlane/ngx-datatable": "^14.0.0",
+    "@swimlane/ngx-datatable": "^16.0.0",
     "ag-grid-angular": "^20.2.0",
     "ag-grid-community": "^20.2.0",
     "bootstrap": "^4.3.1",
