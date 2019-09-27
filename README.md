@@ -201,7 +201,7 @@ See the [issues labeled enhancement](https://github.com/ngx-formly/ngx-formly/la
 
 ## Contributors
 
-Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 [<img alt="aitboudad" src="https://avatars2.githubusercontent.com/u/1753742?v=4&s=117" width="117">](https://github.com/aitboudad)[<img alt="mohammedzamakhan" src="https://avatars3.githubusercontent.com/u/2327532?v=4&s=117" width="117">](https://github.com/mohammedzamakhan)[<img alt="divyakumarjain" src="https://avatars2.githubusercontent.com/u/2039134?v=4&s=117" width="117">](https://github.com/divyakumarjain)[<img alt="couzic" src="https://avatars2.githubusercontent.com/u/1380322?v=4&s=117" width="117">](https://github.com/couzic)[<img alt="juristr" src="https://avatars3.githubusercontent.com/u/542458?v=4&s=117" width="117">](https://github.com/juristr)[<img alt="franzeal" src="https://avatars3.githubusercontent.com/u/7455769?v=4&s=117" width="117">](https://github.com/franzeal)

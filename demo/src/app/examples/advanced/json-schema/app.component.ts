@@ -23,9 +23,11 @@ export class AppComponent {
     'numbers',
     'references',
     'schema_dependencies',
-    'allOf',
     'null_field',
     'nullable',
+    'allOf',
+    'anyOf',
+    'oneOf',
     'select_alternatives',
   ];
 
