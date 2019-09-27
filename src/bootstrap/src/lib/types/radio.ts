@@ -12,7 +12,7 @@ import { FieldType } from '@ngx-formly/core';
           [id]="id + '_' + i"
           [class.form-check-input]="to.formCheck !== 'custom'"
           [class.custom-control-input]="to.formCheck === 'custom'"
-          [name]="id"
+          [name]="field.name || id"
           [class.is-invalid]="showError"
           [attr.value]="option.value"
           [value]="option.value"

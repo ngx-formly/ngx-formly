@@ -8,6 +8,7 @@ import { FieldType } from '@ngx-formly/core';
       <input
         type="radio"
         [id]="id + '_' + i"
+        [name]="field.name || id"
         [value]="option.value"
         [formControl]="formControl"
         [formlyAttributes]="field" class="k-radio" />
