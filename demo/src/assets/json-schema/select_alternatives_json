@@ -92,6 +92,19 @@
             }
           }
         }
+      },
+      "select6": {
+        "type": "array",
+        "title": "Select 6: Multiselect",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "enum": [
+            "Option 1",
+            "Option 2",
+            "Option 3"
+          ]
+        }
       }
     }
   },
