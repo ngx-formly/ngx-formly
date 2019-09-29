@@ -49,9 +49,9 @@ describe('Service: FormlyJsonschema', () => {
           minimum: 5,
           maximum: 10,
         };
-        const config = formlyJsonschema.toFieldConfig(numSchema);
-        expect(config.templateOptions.min).toBe(numSchema.minimum);
-        expect(config.templateOptions.max).toBe(numSchema.maximum);
+        const { templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
+        expect(to.min).toBe(numSchema.minimum);
+        expect(to.max).toBe(numSchema.maximum);
       });
 
       it('should support exclusiveMinimum', () => {
@@ -117,8 +117,8 @@ describe('Service: FormlyJsonschema', () => {
           type: 'string',
           pattern: 'Hello World!',
         };
-        const config = formlyJsonschema.toFieldConfig(schema);
-        expect(config.templateOptions.pattern).toBe(schema.pattern);
+        const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+        expect(to.pattern).toBe(schema.pattern);
       });
 
       it('should support minLength and maxLength', () => {
@@ -127,9 +127,9 @@ describe('Service: FormlyJsonschema', () => {
           minLength: 5,
           maxLength: 10,
         };
-        const config = formlyJsonschema.toFieldConfig(schema);
-        expect(config.templateOptions.minLength).toBe(schema.minLength);
-        expect(config.templateOptions.maxLength).toBe(schema.maxLength);
+        const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+        expect(to.minLength).toBe(schema.minLength);
+        expect(to.maxLength).toBe(schema.maxLength);
       });
 
       it('should set nullable string type to `null` if empty', () => {
@@ -401,146 +401,114 @@ describe('Service: FormlyJsonschema', () => {
         expect(config.type).toBe(schema.type);
       });
 
-      it('should support enum as strig array values', () => {
-        const schemaStringEnum: JSONSchema7 = {
-          type: 'string',
-          enum: ['The', 'Best', 'Forms'],
-        };
+      describe('should support enum type', () => {
+        it('should support enum as strig array values', () => {
+          const schemaStringEnum: JSONSchema7 = {
+            type: 'string',
+            enum: ['The', 'Best', 'Forms'],
+          };
 
-        const schemaNumberEnum: JSONSchema7 = {
-          type: 'number',
-          enum: [1, 1.233333, 42, 1234163],
-        };
+          const schemaNumberEnum: JSONSchema7 = {
+            type: 'number',
+            enum: [1, 1.233333, 42, 1234163],
+          };
 
-        const schemaIntegerEnum: JSONSchema7 = {
-          type: 'integer',
-          enum: [1, 2, 3, 4, 5],
-        };
+          const schemaIntegerEnum: JSONSchema7 = {
+            type: 'integer',
+            enum: [1, 2, 3, 4, 5],
+          };
 
-        const enumOptions = schemaEnum => schemaEnum.map(value => ({ value, label: value }));
+          const enumOptions = schemaEnum => schemaEnum.map(value => ({ value, label: value }));
 
-        // labelProp and valueProp should be a function that returns what it is given
-        const config = formlyJsonschema.toFieldConfig(schemaStringEnum);
-        expect(config.type).toBe('enum');
-        expect(config.templateOptions.options).toEqual(enumOptions(schemaStringEnum.enum));
+          // labelProp and valueProp should be a function that returns what it is given
+          const config = formlyJsonschema.toFieldConfig(schemaStringEnum);
+          expect(config.type).toBe('enum');
+          expect(config.templateOptions.options).toEqual(enumOptions(schemaStringEnum.enum));
 
-        const config2 = formlyJsonschema.toFieldConfig(schemaNumberEnum);
-        expect(config2.parsers).toEqual([jasmine.any(Function)]);
-        expect(config2.type).toBe('enum');
-        expect(config2.templateOptions.options).toEqual(enumOptions(schemaNumberEnum.enum));
+          const config2 = formlyJsonschema.toFieldConfig(schemaNumberEnum);
+          expect(config2.parsers).toEqual([jasmine.any(Function)]);
+          expect(config2.type).toBe('enum');
+          expect(config2.templateOptions.options).toEqual(enumOptions(schemaNumberEnum.enum));
 
-        const config3 = formlyJsonschema.toFieldConfig(schemaIntegerEnum);
-        expect(config3.parsers).toEqual([jasmine.any(Function)]);
-        expect(config3.type).toBe('enum');
-        expect(config3.templateOptions.options).toEqual(enumOptions(schemaIntegerEnum.enum));
-      });
-
-      describe('widget formlyConfig options merging', () => {
-
-        it('should merge a formlyConfig object specified in the widget property into the formly config', () => {
-          const schema: JSONSchema7 = JSON.parse(`{
-            "type": "integer",
-            "widget": {
-              "formlyConfig": {
-                "templateOptions": {
-                  "label": "Age"
-                }
-              }
-            }
-          }`);
-
-          const config = formlyJsonschema.toFieldConfig(schema);
-
-          expect(config.templateOptions.label).toBe('Age');
+          const config3 = formlyJsonschema.toFieldConfig(schemaIntegerEnum);
+          expect(config3.parsers).toEqual([jasmine.any(Function)]);
+          expect(config3.type).toBe('enum');
+          expect(config3.templateOptions.options).toEqual(enumOptions(schemaIntegerEnum.enum));
         });
 
-        it('should override properties that have already been set', () => {
-          const schema: JSONSchema7 = JSON.parse(`{
-            "type": "integer",
-            "title": "Person Age",
-            "widget": {
-              "formlyConfig": {
-                "templateOptions": {
-                  "label": "Age"
-                }
-              }
-            }
-          }`);
+        // https://github.com/json-schema-org/json-schema-spec/issues/57#issuecomment-247861695
+        describe('enum as oneOf/anyOf structure', () => {
+          it('should support enum as oneOf/const structure', () => {
+            const schema: JSONSchema7 = {
+              type: 'number',
+              oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+            };
 
-          const config = formlyJsonschema.toFieldConfig(schema);
+            const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
 
-          expect(config.templateOptions.label).toBe('Age');
-        });
-
-      });
-
-      describe('FormlyJsonSchemaOptions map function', () => {
-
-        it('should allow to pass in a "map" function to further customize the mapping', () => {
-          const schema: JSONSchema7 = JSON.parse(`{
-            "type": "integer",
-            "title": "Person Age",
-            "widget": {
-              "formlyConfig": {
-                "templateOptions": {
-                  "label": "Age"
-                }
-              }
-            }
-          }`);
-
-          const config = formlyJsonschema.toFieldConfig(schema, {
-            map: (field: FormlyFieldConfig, mapSource: JSONSchema7) => {
-              // not a very real-world mapping scenario 😊
-              if (field.type === 'integer') {
-                field.templateOptions.label = 'my custom label';
-              }
-
-              return field;
-            },
+            expect(type).toEqual('enum');
+            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
           });
 
-          expect(config.templateOptions.label).toBe('my custom label');
+          it('should support enum as oneOf/enum structure', () => {
+            const schema: JSONSchema7 = {
+              type: 'number',
+              oneOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+            };
+
+            const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
+
+            expect(type).toEqual('enum');
+            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+          });
+
+          it('should support enum as anyOf structure', () => {
+            const schema: JSONSchema7 = {
+              type: 'number',
+              anyOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+            };
+
+            const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
+
+            expect(type).toEqual('enum');
+            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+          });
         });
 
-      });
+        describe('enum as uniqueItems & array structure', () => {
+          it('with simple enum item schema definition', () => {
+            const numSchema: JSONSchema7 = {
+              type: 'array',
+              uniqueItems: true,
+              items: {
+                type: 'string',
+                enum: ['The', 'Best', 'Forms'],
+              },
+            };
+            const { type, validators, templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
 
-      // https://github.com/json-schema-org/json-schema-spec/issues/57#issuecomment-247861695
-      describe('enum as oneOf/anyOf structure', () => {
-        it('should support enum as oneOf/const structure', () => {
-          const schema: JSONSchema7 = {
-            type: 'number',
-            oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
-          };
+            expect(type).toEqual('enum');
+            expect(to.multiple).toBeTruthy();
+            expect(validators.uniqueItems).toBeDefined();
+          });
 
-          const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
+          it('with nested item schema definition', () => {
+            const numSchema: JSONSchema7 = {
+              'definitions': {
+                'foo': {
+                  'type': 'string',
+                  oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+                },
+              },
+              type: 'array',
+              uniqueItems: true,
+              items: { '$ref': '#/definitions/foo' },
+            };
 
-          expect(type).toEqual('enum');
-          expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
-        });
-
-        it('should support enum as oneOf/enum structure', () => {
-          const schema: JSONSchema7 = {
-            type: 'number',
-            oneOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
-          };
-
-          const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
-
-          expect(type).toEqual('enum');
-          expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
-        });
-
-        it('should support enum as anyOf structure', () => {
-          const schema: JSONSchema7 = {
-            type: 'number',
-            anyOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
-          };
-
-          const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
-
-          expect(type).toEqual('enum');
-          expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            const { type, templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
+            expect(type).toEqual('enum');
+            expect(to.multiple).toBeTruthy();
+          });
         });
       });
 
@@ -800,8 +768,8 @@ describe('Service: FormlyJsonschema', () => {
               { uniqueItems: true },
             ],
           };
-          const { templateOptions } = formlyJsonschema.toFieldConfig(schema);
-          expect(templateOptions.uniqueItems).toBeTruthy();
+          const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+          expect(to.uniqueItems).toBeTruthy();
         });
 
         it('minLength', () => {
@@ -812,8 +780,8 @@ describe('Service: FormlyJsonschema', () => {
               { minLength: 100 },
             ],
           };
-          const { templateOptions } = formlyJsonschema.toFieldConfig(schema);
-          expect(templateOptions.minLength).toEqual(100);
+          const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+          expect(to.minLength).toEqual(100);
         });
 
         it('maxLength', () => {
@@ -824,8 +792,8 @@ describe('Service: FormlyJsonschema', () => {
               { maxLength: 100 },
             ],
           };
-          const { templateOptions } = formlyJsonschema.toFieldConfig(schema);
-          expect(templateOptions.maxLength).toEqual(10);
+          const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+          expect(to.maxLength).toEqual(10);
         });
       });
     });
@@ -841,12 +809,77 @@ describe('Service: FormlyJsonschema', () => {
           default: 'Super Heroic Forms Generator',
           type: 'string',
         };
-        const config = formlyJsonschema.toFieldConfig(schema);
-        expect(config.templateOptions.label).toBe(schema.title);
-        expect(config.defaultValue).toBe(schema.default);
-        expect(config.templateOptions.description).toBe(schema.description);
-        expect(config.templateOptions.readonly).toBe(schema.readOnly);
+        const { defaultValue, templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+        expect(to.label).toBe(schema.title);
+        expect(defaultValue).toBe(schema.default);
+        expect(to.description).toBe(schema.description);
+        expect(to.readonly).toBe(schema.readOnly);
       });
+    });
+  });
+
+  describe('widget formlyConfig options merging', () => {
+    it('should merge a formlyConfig object specified in the widget property into the formly config', () => {
+      const schema: JSONSchema7 = JSON.parse(`{
+        "type": "integer",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "label": "Age"
+            }
+          }
+        }
+      }`);
+
+      const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+      expect(to.label).toBe('Age');
+    });
+
+    it('should override properties that have already been set', () => {
+      const schema: JSONSchema7 = JSON.parse(`{
+        "type": "integer",
+        "title": "Person Age",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "label": "Age"
+            }
+          }
+        }
+      }`);
+
+      const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+
+      expect(to.label).toBe('Age');
+    });
+  });
+
+  describe('FormlyJsonSchemaOptions map function', () => {
+    it('should allow to pass in a "map" function to further customize the mapping', () => {
+      const schema: JSONSchema7 = JSON.parse(`{
+        "type": "integer",
+        "title": "Person Age",
+        "widget": {
+          "formlyConfig": {
+            "templateOptions": {
+              "label": "Age"
+            }
+          }
+        }
+      }`);
+
+      const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema, {
+        map: (field: FormlyFieldConfig, mapSource: JSONSchema7) => {
+          // not a very real-world mapping scenario 😊
+          if (field.type === 'integer') {
+            field.templateOptions.label = 'my custom label';
+          }
+
+          return field;
+        },
+      });
+
+      expect(to.label).toBe('my custom label');
     });
   });
 });

@@ -112,8 +112,6 @@ export class FormlyJsonschema {
         break;
       }
       case 'array': {
-        field.fieldGroup = [];
-
         if (schema.hasOwnProperty('minItems')) {
           field.templateOptions.minItems = schema.minItems;
           this.addValidator(field, 'minItems', ({ value }) => isEmpty(value) || (value.length >= schema.minItems));
@@ -137,29 +135,40 @@ export class FormlyJsonschema {
           });
         }
 
-        Object.defineProperty(field, 'fieldArray', {
-          get: () => {
-            if (!Array.isArray(schema.items)) {
-              // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-              return this._toFieldConfig(<JSONSchema7> schema.items, options);
-            }
+        // resolve items schema needed for isEnum check
+        if (schema.items && !Array.isArray(schema.items)) {
+          schema.items = this.resolveSchema(<JSONSchema7> schema.items, options);
+        }
 
-            const itemSchema = schema.items[field.fieldGroup.length]
-              ? schema.items[field.fieldGroup.length]
-              : schema.additionalItems;
+        // TODO: remove isEnum check once adding an option to skip extension
+        if (!this.isEnum(schema)) {
+          field.fieldGroup = [];
+          Object.defineProperty(field, 'fieldArray', {
+            get: () => {
+              if (!Array.isArray(schema.items)) {
+                // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
+                return this._toFieldConfig(<JSONSchema7> schema.items, options);
+              }
 
-            return itemSchema
-              ? this._toFieldConfig(<JSONSchema7> itemSchema, options)
-              : {};
-          },
-          enumerable: true,
-          configurable: true,
-        });
+              const itemSchema = schema.items[field.fieldGroup.length]
+                ? schema.items[field.fieldGroup.length]
+                : schema.additionalItems;
+
+              return itemSchema
+                ? this._toFieldConfig(<JSONSchema7> itemSchema, options)
+                : {};
+            },
+            enumerable: true,
+            configurable: true,
+          });
+        }
+
         break;
       }
     }
 
     if (this.isEnum(schema)) {
+      field.templateOptions.multiple = field.type === 'array';
       field.type = 'enum';
       field.templateOptions.options = this.toEnumOptions(schema);
     }
@@ -305,7 +314,8 @@ export class FormlyJsonschema {
 
     return schema.enum
       || (schema.anyOf && schema.anyOf.every(isConst))
-      || (schema.oneOf && schema.oneOf.every(isConst));
+      || (schema.oneOf && schema.oneOf.every(isConst))
+      || schema.uniqueItems && schema.items && !Array.isArray(schema.items) && this.isEnum(<JSONSchema7> schema.items);
   }
 
   private toEnumOptions(schema: JSONSchema7) {
@@ -327,6 +337,6 @@ export class FormlyJsonschema {
       return schema.oneOf.map(toEnum);
     }
 
-    return [];
+    return this.toEnumOptions(<JSONSchema7> schema.items);
   }
 }
