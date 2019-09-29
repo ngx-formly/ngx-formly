@@ -66,6 +66,7 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
         { name: 'exclusiveMaximum', message: exclusiveMaximumValidationMessage },
         { name: 'minItems', message: minItemsValidationMessage },
         { name: 'maxItems', message: maxItemsValidationMessage },
+        { name: 'uniqueItems', message: 'should NOT have duplicate items' },
       ],
       types: [
         { name: 'string', extends: 'input' },
