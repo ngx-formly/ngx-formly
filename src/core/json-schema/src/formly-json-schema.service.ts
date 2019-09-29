@@ -42,7 +42,7 @@ export class FormlyJsonschema {
 
     switch (field.type) {
       case 'null': {
-        this.addValidator(field, 'null', c => c.value === null);
+        this.addValidator(field, 'null', ({ value }) => value === null);
         break;
       }
       case 'number':
@@ -58,17 +58,17 @@ export class FormlyJsonschema {
 
         if (schema.hasOwnProperty('exclusiveMinimum')) {
           field.templateOptions.exclusiveMinimum = schema.exclusiveMinimum;
-          this.addValidator(field, 'exclusiveMinimum', c => isEmpty(c.value) || (c.value > schema.exclusiveMinimum));
+          this.addValidator(field, 'exclusiveMinimum', ({ value }) => isEmpty(value) || (value > schema.exclusiveMinimum));
         }
 
         if (schema.hasOwnProperty('exclusiveMaximum')) {
           field.templateOptions.exclusiveMaximum = schema.exclusiveMaximum;
-          this.addValidator(field, 'exclusiveMaximum', c => isEmpty(c.value) || (c.value < schema.exclusiveMaximum));
+          this.addValidator(field, 'exclusiveMaximum', ({ value }) => isEmpty(value) || (value < schema.exclusiveMaximum));
         }
 
         if (schema.hasOwnProperty('multipleOf')) {
           field.templateOptions.step = schema.multipleOf;
-          this.addValidator(field, 'multipleOf', c => isEmpty(c.value) || (c.value % schema.multipleOf === 0));
+          this.addValidator(field, 'multipleOf', ({ value }) => isEmpty(value) || (value % schema.multipleOf === 0));
         }
         break;
       }
@@ -116,11 +116,25 @@ export class FormlyJsonschema {
 
         if (schema.hasOwnProperty('minItems')) {
           field.templateOptions.minItems = schema.minItems;
-          this.addValidator(field, 'minItems', c => isEmpty(c.value) || (c.value.length >= schema.minItems));
+          this.addValidator(field, 'minItems', ({ value }) => isEmpty(value) || (value.length >= schema.minItems));
         }
         if (schema.hasOwnProperty('maxItems')) {
           field.templateOptions.maxItems = schema.maxItems;
-          this.addValidator(field, 'maxItems', c => isEmpty(c.value) || (c.value.length <= schema.maxItems));
+          this.addValidator(field, 'maxItems', ({ value }) => isEmpty(value) || (value.length <= schema.maxItems));
+        }
+        if (schema.hasOwnProperty('uniqueItems')) {
+          field.templateOptions.uniqueItems = schema.uniqueItems;
+          this.addValidator(field, 'uniqueItems', ({ value }) => {
+            if (isEmpty(value) || !schema.uniqueItems) {
+              return true;
+            }
+
+            const uniqueItems = Array.from(
+              new Set(value.map((v: any) => JSON.stringify(v))),
+            );
+
+            return uniqueItems.length === value.length;
+          });
         }
 
         Object.defineProperty(field, 'fieldArray', {

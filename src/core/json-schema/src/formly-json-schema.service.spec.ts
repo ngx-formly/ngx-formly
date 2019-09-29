@@ -143,7 +143,7 @@ describe('Service: FormlyJsonschema', () => {
       });
     });
 
-    // TODO: Add support for uniqueItems, contains
+    // TODO: Add support for contains
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.6.4
     describe('array validation keywords', () => {
       it('supports array items keyword as object', () => {
@@ -249,6 +249,24 @@ describe('Service: FormlyJsonschema', () => {
         expect(maxItemsValidator(new FormControl([1, 2, 3]))).toBeFalsy();
         expect(maxItemsValidator(new FormControl([1, 2]))).toBeTruthy();
         expect(maxItemsValidator(new FormControl([]))).toBeTruthy();
+      });
+
+      it('should support uniqueItems', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'array',
+          uniqueItems: true,
+        };
+        const config = formlyJsonschema.toFieldConfig(numSchema);
+        expect(config.templateOptions.uniqueItems).toBeTruthy();
+
+        const uniqueItemsValidator = config.validators.uniqueItems;
+        expect(uniqueItemsValidator).toBeDefined();
+        expect(uniqueItemsValidator(new FormControl(null))).toBeTruthy();
+        expect(uniqueItemsValidator(new FormControl([1, 2, 3]))).toBeTruthy();
+        expect(uniqueItemsValidator(new FormControl([1, 2, 2]))).toBeFalsy();
+
+        expect(uniqueItemsValidator(new FormControl([{ a: 2 }, { a: 1 }]))).toBeTruthy();
+        expect(uniqueItemsValidator(new FormControl([{ a: 1 }, { a: 1 }]))).toBeFalsy();
       });
     });
 
@@ -774,9 +792,9 @@ describe('Service: FormlyJsonschema', () => {
       });
 
       describe('merges conflict', () => {
-        xit('uniqueItems', () => {
+        it('uniqueItems', () => {
           const schema: JSONSchema7 = {
-            type: 'string',
+            type: 'array',
             allOf: [
               { uniqueItems: false },
               { uniqueItems: true },
