@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import { ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -15,6 +16,27 @@ export interface FormlyJsonschemaOptions {
 
 function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
+}
+
+function clearFieldModel(field: FormlyFieldConfig) {
+  if (field.key) {
+    field.formControl.patchValue(undefined);
+    delete field.model[field.key];
+  } else if (field.fieldGroup) {
+    field.fieldGroup.forEach(f => clearFieldModel(f));
+  }
+}
+
+function checkField(field: FormlyFieldConfig) {
+  (field.options as any)._checkField(field);
+}
+
+function isFieldValid(field: FormlyFieldConfig): boolean {
+  if (field.key) {
+    return field.formControl.valid;
+  }
+
+  return field.fieldGroup.every(f => isFieldValid(f));
 }
 
 interface IOptions extends FormlyJsonschemaOptions {
@@ -109,6 +131,20 @@ export class FormlyJsonschema {
             });
           }
         });
+
+        if (schema.oneOf) {
+          field.fieldGroup.push(this.resolveMultiSchema(
+            <JSONSchema7[]> schema.oneOf,
+            options,
+          ));
+        }
+
+        if (schema.anyOf) {
+          field.fieldGroup.push(this.resolveMultiSchema(
+            <JSONSchema7[]> schema.anyOf,
+            options,
+          ));
+        }
         break;
       }
       case 'array': {
@@ -228,6 +264,49 @@ export class FormlyJsonschema {
 
       return reverseDeepMerge(base, schema);
     }, baseSchema);
+  }
+
+  private resolveMultiSchema(schemas: JSONSchema7[], options: IOptions): FormlyFieldConfig {
+    let subscription: Subscription = null;
+
+    return {
+      type: 'multischema',
+      fieldGroup: [
+        {
+          type: 'enum',
+          templateOptions: {
+            options: schemas
+              .map((s, i) => ({ label: s.title, value: i })),
+          },
+          hooks: {
+            onInit(f) {
+              const anyOfField = f.parent.fieldGroup[1];
+              const value = anyOfField.fieldGroup.findIndex(isFieldValid);
+              f.formControl = new FormControl(value !== -1 ? value : 0);
+              setTimeout(() => checkField(anyOfField));
+
+              subscription = f.formControl.valueChanges.subscribe(v => {
+                clearFieldModel(anyOfField);
+                checkField(anyOfField);
+              });
+            },
+            onDestroy() {
+              subscription && subscription.unsubscribe();
+            },
+          },
+        },
+        {
+          fieldGroup: schemas.map((s, i) => ({
+            ...this._toFieldConfig(s, options),
+            hideExpression: (m, fs, f) => {
+              const control = f.parent.parent.fieldGroup[0].formControl;
+
+              return !control || control.value !== i;
+            },
+          })),
+        },
+      ],
+    };
   }
 
   private resolveDefinition(schema: JSONSchema7, options: IOptions): JSONSchema7 {

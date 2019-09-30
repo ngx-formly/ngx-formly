@@ -1,8 +1,10 @@
 
 import { FormlyJsonschema } from './formly-json-schema.service';
 import { JSONSchema7 } from 'json-schema';
-import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
-import { FormControl } from '@angular/forms';
+import { FormlyFieldConfig, FormlyTemplateOptions, FormlyFormBuilder, FormlyModule } from '@ngx-formly/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { inject, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { MockComponent } from 'src/core/src/lib/test-utils';
 
 describe('Service: FormlyJsonschema', () => {
   let formlyJsonschema: FormlyJsonschema;
@@ -797,6 +799,70 @@ describe('Service: FormlyJsonschema', () => {
         });
       });
     });
+
+    describe('Multi-Schema (oneOf, anyOf) support', () => {
+      let schema: JSONSchema7;
+      let builder: FormlyFormBuilder;
+
+      beforeEach(() => {
+        const TestComponent = MockComponent({ selector: 'formly-test-cmp' });
+        TestBed.configureTestingModule({
+          declarations: [TestComponent],
+          imports: [
+            FormlyModule.forRoot({
+              types: [
+                { name: 'object', component: TestComponent },
+                { name: 'multischema', component: TestComponent },
+                { name: 'enum', component: TestComponent },
+                { name: 'string', component: TestComponent },
+              ],
+            }),
+          ],
+        });
+      });
+
+      beforeEach(inject([FormlyFormBuilder], (formlyBuilder: FormlyFormBuilder) => {
+        builder = formlyBuilder;
+        schema = {
+          type: 'object',
+          oneOf: [
+            {
+              properties: { foo: { type: 'string' } },
+              required: ['foo'],
+            },
+            { properties: { bar: { type: 'string' } } },
+          ],
+          anyOf: [
+            { properties: { foo: { type: 'string' } } },
+            { properties: { bar: { type: 'string' } } },
+          ],
+        };
+      }));
+
+      it('should render multischema type when oneOf/anyOf is present', () => {
+        const { fieldGroup: [{ type: oneOfType }, { type: anyOfType }] } = formlyJsonschema.toFieldConfig(schema);
+        expect(oneOfType).toEqual('multischema');
+        expect(anyOfType).toEqual('multischema');
+      });
+
+      it('should render the valid oneOf field on first render', fakeAsync(() => {
+        const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+
+        builder.buildForm(new FormGroup({}), [f], {}, {});
+        const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+        enumField.hooks.onInit(enumField);
+        tick();
+
+        expect(fooField.hide).toBeTruthy();
+        expect(barField.hide).toBeFalsy();
+
+        enumField.formControl.setValue(0);
+
+        expect(fooField.hide).toBeFalsy();
+        expect(barField.hide).toBeTruthy();
+      }));
+    });
+
     // TODO: discuss support of writeOnly. Note: this may not be needed.
     // TODO: discuss support of examples. By spec, default can be used in its place.
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.10

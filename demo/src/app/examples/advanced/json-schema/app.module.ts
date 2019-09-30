@@ -8,6 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AppComponent } from './app.component';
 import { ArrayTypeComponent } from './array.type';
 import { ObjectTypeComponent } from './object.type';
+import { MultiSchemaTypeComponent } from './multischema.type';
 import { NullTypeComponent } from './null.type';
 
 export function minItemsValidationMessage(err, field: FormlyFieldConfig) {
@@ -93,6 +94,7 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
         { name: 'null', component: NullTypeComponent, wrappers: ['form-field'] },
         { name: 'array', component: ArrayTypeComponent },
         { name: 'object', component: ObjectTypeComponent },
+        { name: 'multischema', component: MultiSchemaTypeComponent },
       ],
     }),
   ],
@@ -100,6 +102,7 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
     AppComponent,
     ArrayTypeComponent,
     ObjectTypeComponent,
+    MultiSchemaTypeComponent,
     NullTypeComponent,
   ],
 })
