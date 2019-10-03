@@ -299,6 +299,28 @@ describe('FormlyForm Component', () => {
     expect(app.model.investments.length).toEqual(0);
   });
 
+  it('should keep the value in sync when using multiple fields with same key', () => {
+    app = {
+      fields: [
+        { key: 'name', type: 'text' },
+        { key: 'name', type: 'text' },
+      ],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    const inputs = fixture.debugElement.queryAll(By.css('input')) as DebugElement[];
+    inputs[0].nativeElement.value = 'First';
+    inputs[0].nativeElement.dispatchEvent(newEvent('input', false));
+
+    fixture.detectChanges();
+    expect(app.form.get('name').value).toEqual('First');
+    expect(inputs[1].nativeElement.value).toEqual('First');
+  });
+
   it('should update the form controls when changing the model', () => {
     app = {
       fields: [{
