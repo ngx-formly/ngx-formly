@@ -19,6 +19,10 @@ script:
 - npm run test
 - npm run bundlesize
 
+# e2e ssr
+- npm run build:ssr 
+- npm run e2e:ssr
+
 after_success:
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run deploy; fi
   - if [ -n "$TRAVIS_TAG" ]; then npm run github-release; fi
