@@ -102,10 +102,13 @@ export function clone(value: any): any {
     !isObject(value)
     || value instanceof RegExp
     || value instanceof Observable
-    || value instanceof FileList
-    || value instanceof File
-    || value instanceof Blob
-    || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity) {
+    || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity
+    || (typeof window !== 'undefined' && (
+      value instanceof FileList
+      || value instanceof File
+      || value instanceof Blob
+    ))
+  ) {
     return value;
   }
 
