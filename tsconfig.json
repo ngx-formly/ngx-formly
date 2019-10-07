@@ -28,6 +28,7 @@
   "exclude": [
     "demo/src/assets/stackblitz/**/*.ts",
     "src/schematics/src/*/files/**/*",
+    "index.ts",
     // "dist/schematics/src/*/files/**/*",
     // Skip all dist files
     "dist/**/*",

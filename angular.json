@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "@ngx-formly-demo": {
+    "app": {
       "root": "",
       "sourceRoot": "demo/src",
       "projectType": "application",
@@ -48,18 +48,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@ngx-formly-demo:build"
+            "browserTarget": "app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@ngx-formly-demo:build:production"
+              "browserTarget": "app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@ngx-formly-demo:build"
+            "browserTarget": "app:build"
           }
         },
         "test": {
@@ -93,27 +93,97 @@
         }
       }
     },
-    "@ngx-formly-demo-e2e": {
-      "root": "",
-      "sourceRoot": "",
+    "ssr": {
+      "root": "projects/ssr/",
+      "sourceRoot": "projects/ssr/src",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "@ngx-formly-demo:serve"
+            "outputPath": "projects/ssr/dist/browser",
+            "index": "projects/ssr/src/index.html",
+            "main": "projects/ssr/src/main.ts",
+            "polyfills": "projects/ssr/src/polyfills.ts",
+            "tsConfig": "projects/ssr/tsconfig.app.json",
+            "assets": [
+              "projects/ssr/src/favicon.ico",
+              "projects/ssr/src/assets"
+            ],
+            "styles": [
+              "projects/ssr/src/styles.css"
+            ],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/ssr/src/environments/environment.ts",
+                  "with": "projects/ssr/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ssr:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ssr:build:production"
+            }
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "e2e/tsconfig.e2e.json"
+              "projects/ssr/tsconfig.app.json",
+              "projects/ssr/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "projects/ssr/dist/server",
+            "main": "projects/ssr/src/main.server.ts",
+            "tsConfig": "projects/ssr/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/ssr/src/environments/environment.ts",
+                  "with": "projects/ssr/src/environments/environment.prod.ts"
+                }
+              ]
+            }
           }
         }
       }
@@ -399,9 +469,9 @@
       }
     }
   },
-  "defaultProject": "@ngx-formly-demo",
+  "defaultProject": "app",
   "cli": {
-    "packageManager": "yarn"
+    "packageManager": "npm"
   },
   "schematics": {
     "@schematics/angular:component": {
