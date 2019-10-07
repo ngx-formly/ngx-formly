@@ -62,11 +62,6 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     private focusMonitor: FocusMonitor,
   ) {
     super();
-
-    focusMonitor.monitor(elementRef, true).subscribe(origin => {
-      this.field.focus = !!origin;
-      this.stateChanges.next();
-    });
   }
 
   ngOnInit() {
@@ -82,6 +77,11 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     if (this.formlyField.hide && this.formlyField.templateOptions!.appearance === 'outline') {
       this.initialGapCalculated = true;
     }
+
+    this.focusMonitor.monitor(this.elementRef, true).subscribe(origin => {
+      this.field.focus = !!origin;
+      this.stateChanges.next();
+    });
   }
 
   ngAfterContentChecked() {
