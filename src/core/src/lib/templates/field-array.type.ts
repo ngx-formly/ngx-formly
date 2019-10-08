@@ -62,6 +62,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
 
     (<any> this.options)._buildForm(true);
+    this.formControl.markAsDirty();
   }
 
   remove(i: number) {
@@ -71,5 +72,6 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     this.field.fieldGroup.forEach((f, key) => f.key = `${key}`);
 
     (<any> this.options)._buildForm(true);
+    this.formControl.markAsDirty();
   }
 }

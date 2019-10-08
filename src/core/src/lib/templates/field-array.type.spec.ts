@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test-utils';
 import { Component, ViewChild } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyModule, FormlyForm } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormlyModule, FormlyForm, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
 import { FormlyFieldText } from '../components/formly.field.spec';
 
@@ -10,7 +10,13 @@ function createFormlyTestComponent() {
   return createGenericTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>', TestComponent);
 }
 
-let app: any;
+let app: Partial<{
+  form: FormGroup;
+  fields: FormlyFieldConfig[];
+  options: FormlyFormOptions;
+  model: any;
+}>;
+
 describe('Array Field Type', () => {
   beforeEach(() => {
     app = {
@@ -35,6 +41,26 @@ describe('Array Field Type', () => {
         }),
       ],
     });
+  });
+
+  it('should mark the form dirty on Add/Remove', () => {
+    app.model = { array: null };
+    app.fields = [{
+      key: 'array',
+      type: 'array',
+    }];
+
+    const fixture = createFormlyTestComponent();
+    expect(app.form.dirty).toBeFalsy();
+
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeTruthy();
+
+    app.form.markAsPristine();
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeTruthy();
   });
 
   it('should work with nullable model', () => {
@@ -64,7 +90,7 @@ describe('Array Field Type', () => {
     }];
 
     const fixture = createFormlyTestComponent();
-    const formArray = app.fields[0].formControl;
+    const formArray = app.fields[0].formControl as FormArray;
 
     const formControl = formArray.at(1);
     fixture.nativeElement.querySelector('#remove-0').click();
@@ -92,7 +118,8 @@ describe('Array Field Type', () => {
     fixture.nativeElement.querySelector('#add').click();
     fixture.detectChanges();
 
-    app.form.get('foo').at(0).get('title').patchValue('***');
+    const formArray = app.form.get('foo') as FormArray;
+    formArray.at(0).get('title').patchValue('***');
 
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy).toHaveBeenCalledWith({ foo: [{}] });
