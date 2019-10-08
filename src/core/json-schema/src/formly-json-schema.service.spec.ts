@@ -514,15 +514,29 @@ describe('Service: FormlyJsonschema', () => {
         });
       });
 
-      // TODO: discuss const support possibly as hidden, already set field
-      // it('should support cosnt', () => {
-      //   const schema: JSONSchema7 = {
-      //     type: 'string',
-      //     const: 'string Const',
-      //   };
+      it('should support const as hidden', () => {
+        const schema: JSONSchema7 = { const: 'const' };
+        const { type, defaultValue, validators } = formlyJsonschema.toFieldConfig(schema);
+        expect(type).toBeUndefined();
+        expect(defaultValue).toEqual('const');
+        expect(validators).toBeDefined();
+      });
 
-      //   const config = formlyJsonschema.toFieldConfig(schema);
-      // });
+      it('should support const as type', () => {
+        const schema: JSONSchema7 = {
+          type: 'string',
+          const: 'const',
+        };
+        const { type, defaultValue, validators: { const: constValidator } } = formlyJsonschema.toFieldConfig(schema);
+
+        expect(type).toEqual('string');
+        expect(defaultValue).toBeUndefined();
+
+        expect(constValidator).toBeDefined();
+        expect(constValidator(new FormControl(null))).toBeFalsy();
+        expect(constValidator(new FormControl(4))).toBeFalsy();
+        expect(constValidator(new FormControl('const'))).toBeTruthy();
+      });
     });
 
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.9

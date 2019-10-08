@@ -203,6 +203,14 @@ export class FormlyJsonschema {
       }
     }
 
+    if (schema.hasOwnProperty('const')) {
+      field.templateOptions.const = schema.const;
+      this.addValidator(field, 'const', ({ value }) => value === schema.const);
+      if (!field.type) {
+        field.defaultValue = schema.const;
+      }
+    }
+
     if (this.isEnum(schema)) {
       field.templateOptions.multiple = field.type === 'array';
       field.type = 'enum';
