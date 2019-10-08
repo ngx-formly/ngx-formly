@@ -47,6 +47,10 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
   return `should be < ${field.templateOptions.step}`;
 }
 
+export function constValidationMessage(err, field: FormlyFieldConfig) {
+  return `should be equal to constant "${field.templateOptions.const}"`;
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -68,6 +72,7 @@ export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig)
         { name: 'minItems', message: minItemsValidationMessage },
         { name: 'maxItems', message: maxItemsValidationMessage },
         { name: 'uniqueItems', message: 'should NOT have duplicate items' },
+        { name: 'const', message: constValidationMessage },
       ],
       types: [
         { name: 'string', extends: 'input' },
