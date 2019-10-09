@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.0"></a>
+# [5.5.0](https://github.com/ngx-formly/ngx-formly/compare/v5.4.3...v5.5.0) (2019-10-09)
+
+
+### Bug Fixes
+
+* **core:** fix various errors during SSR ([921a451](https://github.com/ngx-formly/ngx-formly/commit/921a451)), closes [#1821](https://github.com/ngx-formly/ngx-formly/issues/1821)
+* **core:** sync value changes for fields with same key ([#1820](https://github.com/ngx-formly/ngx-formly/issues/1820)) ([6f7a10a](https://github.com/ngx-formly/ngx-formly/commit/6f7a10a)), closes [#1358](https://github.com/ngx-formly/ngx-formly/issues/1358)
+* **kendo:** add name attr to radio type ([#1807](https://github.com/ngx-formly/ngx-formly/issues/1807)) ([10348bf](https://github.com/ngx-formly/ngx-formly/commit/10348bf)), closes [#1805](https://github.com/ngx-formly/ngx-formly/issues/1805)
+
+
+### Features
+
+* **core:** deprecate passing content inside the 'formly-form' tag ([#1826](https://github.com/ngx-formly/ngx-formly/issues/1826)) ([0f168f7](https://github.com/ngx-formly/ngx-formly/commit/0f168f7))
+* **core:** deprecate passing immutable attr to formly-form component ([#1827](https://github.com/ngx-formly/ngx-formly/issues/1827)) ([61f9391](https://github.com/ngx-formly/ngx-formly/commit/61f9391))
+* **core:** mark the form array dirty on Add/Remove ([#1824](https://github.com/ngx-formly/ngx-formly/issues/1824)) ([92bb6d7](https://github.com/ngx-formly/ngx-formly/commit/92bb6d7)), closes [#1679](https://github.com/ngx-formly/ngx-formly/issues/1679)
+* **ionic:** allow customize <ion-item> lines ([#1809](https://github.com/ngx-formly/ngx-formly/issues/1809)) ([94dd5cc](https://github.com/ngx-formly/ngx-formly/commit/94dd5cc)), closes [#1732](https://github.com/ngx-formly/ngx-formly/issues/1732)
+* **json-schema:** add const validator ([#1825](https://github.com/ngx-formly/ngx-formly/issues/1825)) ([4607b1c](https://github.com/ngx-formly/ngx-formly/commit/4607b1c))
+* **json-schema:** add support for adding custom labels to enum ([#1802](https://github.com/ngx-formly/ngx-formly/issues/1802)) ([a96c8fe](https://github.com/ngx-formly/ngx-formly/commit/a96c8fe))
+* **json-schema:** add support for uniqueItems ([#1812](https://github.com/ngx-formly/ngx-formly/issues/1812)) ([9164c74](https://github.com/ngx-formly/ngx-formly/commit/9164c74))
+* **json-schema:** partial support of anyOf/oneOf keyword ([#1811](https://github.com/ngx-formly/ngx-formly/issues/1811)) ([d60e0f5](https://github.com/ngx-formly/ngx-formly/commit/d60e0f5))
+* **json-schema:** support multiselect type ([#1813](https://github.com/ngx-formly/ngx-formly/issues/1813)) ([371723e](https://github.com/ngx-formly/ngx-formly/commit/371723e))
+
+
+
 <a name="5.4.3"></a>
 ## [5.4.3](https://github.com/ngx-formly/ngx-formly/compare/v5.4.2...v5.4.3) (2019-09-20)
 
