@@ -146,6 +146,24 @@ After:
 <button type="submit">Submit</button>
 ```
 
+* Passing 'immutable' attribute to 'formly-form' component is deprecated since v5.5, enable immutable mode through NgModule declaration instead.
+
+Before:
+```html
+<formly-form immutable></formly-form>
+```
+
+After:
+```ts
+@NgModule({
+  imports: [
+    FormlyModule.forRoot({
+      extras: { immutable: true }
+    }),
+  ],
+})
+```
+
 @ngx-formly/material
 --------------------
 **Note**: this only affect the user's who import sub-modules of `@ngx-formly/material` instead of main module `FormlyMaterialModule`.

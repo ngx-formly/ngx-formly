@@ -68,6 +68,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
   ) {
+    if (immutable !== null) {
+      console.warn(`NgxFormly: passing 'immutable' attribute to 'formly-form' component is deprecated since v5.5, enable immutable mode through NgModule declaration instead.`);
+    }
+
     this.immutable = (immutable !== null) || !!formlyConfig.extras.immutable;
   }
 
