@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -17,7 +17,9 @@ import { debounceTime } from 'rxjs/operators';
       [model]="field.model"
       [field]="field">
     </formly-field>
-    <ng-content></ng-content>
+    <ng-container #content>
+      <ng-content></ng-content>
+    </ng-container>
   `,
   providers: [FormlyFormBuilder],
 })
@@ -37,6 +39,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   get options() { return this._options; }
 
   @Output() modelChange = new EventEmitter<any>();
+  @ViewChild('content') set content(content: ElementRef<HTMLElement>) {
+    if (content.nativeElement.nextSibling) {
+      console.warn(`NgxFormly: content projection for 'formly-form' component is deprecated since v5.5, you should avoid passing content inside the 'formly-form' tag.`);
+    }
+  }
 
   private immutable = false;
   private _model: any;

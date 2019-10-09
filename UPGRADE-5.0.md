@@ -131,6 +131,21 @@ FormlyModule.forRoot({
 })
 ```
 
+* Passing content inside the 'formly-form' tag is deprecated.
+
+Before:
+```html
+<formly-form>
+  <button>Submit</button>
+</formly-form>
+```
+
+After:
+```html
+<formly-form></formly-form>
+<button type="submit">Submit</button>
+```
+
 @ngx-formly/material
 --------------------
 **Note**: this only affect the user's who import sub-modules of `@ngx-formly/material` instead of main module `FormlyMaterialModule`.
