@@ -23,7 +23,7 @@ import { FieldType } from '@ngx-formly/core';
           {{ option.label }}
         </label>
       </div>
-    <div>
+    </div>
   `,
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
