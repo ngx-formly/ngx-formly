@@ -6,19 +6,19 @@ import { FieldType } from '@ngx-formly/core';
   template: `
     <div>
       <div *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
-        [ngClass]="{ 'form-check': to.formCheck !== 'custom', 'form-check-inline': to.formCheck === 'inline', 'custom-control custom-checkbox': to.formCheck === 'custom' }"
+        [ngClass]="{ 'form-check': to.formCheck !== 'custom' && to.formCheck !== 'custom-inline', 'form-check-inline': to.formCheck === 'inline', 'custom-control custom-checkbox': to.formCheck === 'custom' || to.formCheck === 'custom', 'custom-control-inline': to.formCheck === 'custom-inline' }"
       >
         <input type="checkbox"
           [id]="id + '_' + i"
-          [class.form-check-input]="to.formCheck !== 'custom'"
-          [class.custom-control-input]="to.formCheck === 'custom'"
+          [class.form-check-input]="to.formCheck !== 'custom' && to.formCheck !== 'custom-inline'"
+          [class.custom-control-input]="to.formCheck === 'custom' || to.formCheck === 'custom-inline'"
           [value]="option.value"
           [checked]="formControl.value && (this.to.type === 'array' ? formControl.value.includes(option.value) : formControl.value[option.value])"
           [formlyAttributes]="field"
           (change)="onChange(option.value, $event.target.checked)">
         <label
-          [class.form-check-label]="to.formCheck !== 'custom'"
-          [class.custom-control-label]="to.formCheck === 'custom'"
+          [class.form-check-label]="to.formCheck !== 'custom' && to.formCheck !== 'custom-inline'"
+          [class.custom-control-label]="to.formCheck === 'custom' || to.formCheck === 'custom-inline'"
           [for]="id + '_' + i">
           {{ option.label }}
         </label>
@@ -30,7 +30,7 @@ export class FormlyFieldMultiCheckbox extends FieldType {
   defaultOptions = {
     templateOptions: {
       options: [],
-      formCheck: 'custom', // 'custom' | 'stacked' | 'inline'
+      formCheck: 'custom', // 'custom' | 'stacked' | 'inline' | 'custom-inline'
     },
   };
 
