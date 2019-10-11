@@ -4,7 +4,9 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-checkbox',
   template: `
-    <div class="custom-control custom-checkbox">
+    <div class="custom-control custom-checkbox"
+         [ngClass]="{'custom-control-inline': to.formCheck === 'custom-inline'}"
+    >
       <input class="custom-control-input" type="checkbox"
         [class.is-invalid]="showError"
         [indeterminate]="to.indeterminate && formControl.value === null"
@@ -22,6 +24,7 @@ export class FormlyFieldCheckbox extends FieldType {
     templateOptions: {
       indeterminate: true,
       hideLabel: true,
+      formCheck: 'custom', // custom | custom-inline
     },
   };
 }
