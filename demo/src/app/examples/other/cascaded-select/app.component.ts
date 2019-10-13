@@ -1,19 +1,21 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { Subject } from 'rxjs';
-import { takeUntil, startWith, tap } from 'rxjs/operators';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { map, startWith, tap } from 'rxjs/operators';
+
+interface Model {
+  readonly player: string;
+  readonly sport: string;
+  readonly team: string;
+}
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnDestroy {
-  onDestroy$ = new Subject<void>();
+export class AppComponent {
   form = new FormGroup({});
-  model: any = { sport: '1' };
-  options: FormlyFormOptions = {};
-
+  model: Partial<Model> = { sport: '1' };
   fields: FormlyFieldConfig[] = [
     {
       key: 'sport',
@@ -38,23 +40,19 @@ export class AppComponent implements OnDestroy {
         labelProp: 'name',
       },
       hooks: {
-        onInit: (field) => {
+        onInit: field => {
           const teams = [
             { id: '1', name: 'Bayern Munich', sportId: '1' },
             { id: '2', name: 'Real Madrid', sportId: '1' },
             { id: '3', name: 'Cleveland', sportId: '2' },
             { id: '4', name: 'Miami', sportId: '2' },
           ];
-
-          const form = field.parent.formControl;
-          form.get('sport').valueChanges.pipe(
-            takeUntil(this.onDestroy$),
-            startWith(form.get('sport').value),
-            tap(sportId => {
-              field.formControl.setValue(null);
-              field.templateOptions.options = teams.filter(team => team.sportId === sportId);
-            }),
-          ).subscribe();
+          const sportControl = this.form.get('sport');
+          field.templateOptions.options = sportControl.valueChanges.pipe(
+            startWith(sportControl.value),
+            map(sportId => teams.filter(team => team.sportId === sportId)),
+            tap(() => field.formControl.setValue(null)),
+          );
         },
       },
     },
@@ -68,7 +66,7 @@ export class AppComponent implements OnDestroy {
         labelProp: 'name',
       },
       hooks: {
-        onInit: (field) => {
+        onInit: field => {
           const players = [
             { id: '1', name: 'Bayern Munich (Player 1)', teamId: '1' },
             { id: '2', name: 'Bayern Munich (Player 2)', teamId: '1' },
@@ -79,16 +77,12 @@ export class AppComponent implements OnDestroy {
             { id: '7', name: 'Miami (Player 1)', teamId: '4' },
             { id: '8', name: 'Miami (Player 2)', teamId: '4' },
           ];
-
-          const form = field.parent.formControl;
-          form.get('team').valueChanges.pipe(
-            takeUntil(this.onDestroy$),
-            startWith(form.get('team').value),
-            tap(sportId => {
-              field.formControl.setValue(null);
-              field.templateOptions.options = players.filter(team => team.teamId === sportId);
-            }),
-          ).subscribe();
+          const teamControl = this.form.get('team');
+          field.templateOptions.options = teamControl.valueChanges.pipe(
+            startWith(teamControl.value),
+            map(teamId => players.filter(player => player.teamId === teamId)),
+            tap(() => field.formControl.setValue(null)),
+          );
         },
       },
     },
@@ -96,10 +90,5 @@ export class AppComponent implements OnDestroy {
 
   submit() {
     alert(JSON.stringify(this.model));
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 }
