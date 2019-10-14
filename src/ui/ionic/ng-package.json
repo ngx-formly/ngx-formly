@@ -3,19 +3,6 @@
   "dest": "../../../dist/@ngx-formly/ionic",
   "deleteDestPath": false,
   "lib": {
-    "entryFile": "src/public_api.ts",
-    "form-field": [{ "path": "form-field" }],
-    "input": [{ "path": "input" }],
-    "textarea": [{ "path": "textarea" }],
-    "select": [{ "path": "select" }],
-    "checkbox": [{ "path": "checkbox" }],
-    "radio": [{ "path": "radio" }],
-    "toggle": [{ "path": "toggle" }],
-    "slider": [{ "path": "slider" }],
-    "datetime": [{ "path": "datetime" }],
-    "externals": {
-      "@ngx-formly/core": "@ngx-formly/core",
-      "@ionic/angular": "@ionic/angular"
-    }
+    "entryFile": "src/public_api.ts"
   }
 }
