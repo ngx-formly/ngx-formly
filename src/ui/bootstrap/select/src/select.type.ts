@@ -78,7 +78,7 @@ export class FormlyFieldSelect extends FieldType {
   };
 
   // workaround for https://github.com/angular/angular/issues/10010
-  @ViewChild(SelectControlValueAccessor) set selectAccessor(s: any) {
+  @ViewChild(SelectControlValueAccessor, { static: false }) set selectAccessor(s: any) {
     if (!s) return;
 
     const writeValue = s.writeValue.bind(s);

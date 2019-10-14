@@ -17,7 +17,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
   `,
 })
 export class FormlyToggleTypeComponent extends FieldType {
-  @ViewChild(MatSlideToggle) slideToggle!: MatSlideToggle;
+  @ViewChild(MatSlideToggle, { static: true }) slideToggle!: MatSlideToggle;
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,

@@ -303,7 +303,7 @@ describe('Array Field Type', () => {
 
 @Component({ selector: 'formly-form-test', template: '', entryComponents: [] })
 class TestComponent {
-  @ViewChild(FormlyForm) formlyForm: FormlyForm;
+  @ViewChild(FormlyForm, { static: true }) formlyForm: FormlyForm;
 
   fields = app.fields;
   form = app.form;
