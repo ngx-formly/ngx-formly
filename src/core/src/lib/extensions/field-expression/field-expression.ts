@@ -29,7 +29,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     defineHiddenProp(field, '_expressionProperties', {});
 
     if (field.expressionProperties) {
-      for (const key in field.expressionProperties) {
+      for (const key of Object.keys(field.expressionProperties)) {
         const expressionProperty = field.expressionProperties[key];
 
         if (typeof expressionProperty === 'string' || isFunction(expressionProperty)) {
@@ -148,7 +148,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     let markForCheck = false;
     const expressionProperties = field._expressionProperties;
 
-    for (const key in expressionProperties) {
+    for (const key of Object.keys(expressionProperties)) {
       let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState, field]);
       if (key === 'templateOptions.disabled') {
         expressionValue = !!expressionValue;
@@ -222,7 +222,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     if (field.options.fieldChanges) {
-      field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hide });
+      field.options.fieldChanges.next(<FormlyValueChangeEvent> { field, type: 'hidden', value: hide });
     }
   }
 

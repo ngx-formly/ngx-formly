@@ -20,7 +20,7 @@ import { MatSlider } from '@angular/material/slider';
   `,
 })
 export class FormlySliderTypeComponent extends FieldType {
-  @ViewChild(MatSlider) slider!: MatSlider;
+  @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,

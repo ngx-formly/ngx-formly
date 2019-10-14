@@ -32,7 +32,7 @@ export class FormlyConfig {
   };
   extras: ConfigOption['extras'] = {
     checkExpressionOn: 'changeDetectionCheck',
-    showError: function(field: FieldType) {
+    showError(field: FieldType) {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || !!(field.field.validation && field.field.validation.show));
     },
   };
@@ -64,7 +64,7 @@ export class FormlyConfig {
       options.forEach((option) => this.setType(option));
     } else {
       if (!this.types[options.name]) {
-        this.types[options.name] = <TypeOption>{ name: options.name };
+        this.types[options.name] = <TypeOption> { name: options.name };
       }
 
       ['component', 'extends', 'defaultOptions'].forEach(prop => {
@@ -159,7 +159,7 @@ export class FormlyConfig {
 
   setTypeWrapper(type: string, name: string) {
     if (!this.types[type]) {
-      this.types[type] = <TypeOption>{};
+      this.types[type] = <TypeOption> {};
     }
     if (!this.types[type].wrappers) {
       this.types[type].wrappers = [];
@@ -218,9 +218,7 @@ export interface WrapperOption {
   types?: string[];
 }
 
-export interface FieldValidatorFn {
-  (c: AbstractControl, field: FormlyFieldConfig, options?: { [id: string]: any; }): ValidationErrors | null;
-}
+export type FieldValidatorFn = (c: AbstractControl, field: FormlyFieldConfig, options?: { [id: string]: any; }): ValidationErrors | null;
 
 export interface ValidatorOption {
   name: string;
@@ -238,9 +236,7 @@ export interface ValidationMessageOption {
   message: string | ((error: any, field: FormlyFieldConfig) => string | Observable<string>);
 }
 
-export interface ManipulatorWrapper {
-  (f: FormlyFieldConfig): string;
-}
+export type ManipulatorWrapper = (f: FormlyFieldConfig) => string;
 
 export interface TemplateManipulators {
   preWrapper?: ManipulatorWrapper[];
@@ -261,7 +257,7 @@ export interface ConfigOption {
      * Defines the option which formly rely on to check field expression properties.
      * - `modelChange`: perform a check when the value of the form control changes.
      * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.
-    */
+     */
     checkExpressionOn?: 'modelChange' | 'changeDetectionCheck',
   };
 }

@@ -9,7 +9,7 @@ export interface ExampleType {
   component: any;
   deps?: string[];
   debug: boolean;
-  files: { file: string; filecontent: string; content: string }[];
+  files: { file: string; filecontent: { default: string }; content: string }[];
 }
 
 @Component({
@@ -29,8 +29,8 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
   _debugFields: any;
   _prevModel: any;
 
-  @ViewChild('demo', {read: ViewContainerRef}) demoRef: ViewContainerRef;
-  @ViewChild('modelPreview') modelPreviewRef: ElementRef;
+  @ViewChild('demo', { read: ViewContainerRef, static: true }) demoRef: ViewContainerRef;
+  @ViewChild('modelPreview', { static: false }) modelPreviewRef: ElementRef;
   demoComponentRef: ComponentRef<any>;
 
   /** Whether the source for the example is being displayed. */

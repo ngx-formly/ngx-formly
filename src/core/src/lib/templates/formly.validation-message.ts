@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
-import { FormlyConfig, ValidationMessageOption } from '../services/formly.config';
+import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { isObject } from '../utils';
 import { Observable, isObservable, of } from 'rxjs';
@@ -28,9 +28,9 @@ export class FormlyValidationMessage implements OnChanges {
 
   get errorMessage() {
     const fieldForm = this.field.formControl;
-    for (let error in fieldForm.errors) {
+    for (const error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        let message: ValidationMessageOption['message'] = this.formlyConfig.getValidatorMessage(error);
+        let message = this.formlyConfig.getValidatorMessage(error);
 
         if (isObject(fieldForm.errors[error])) {
           if (fieldForm.errors[error].errorPath) {

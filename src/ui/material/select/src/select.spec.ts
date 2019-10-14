@@ -283,7 +283,7 @@ describe('ui-material: Formly Field Select Component', () => {
 
 @Component({ selector: 'formly-form-test', template: '', entryComponents: [] })
 class TestComponent {
-  @ViewChild(FormlyForm) formlyForm: FormlyForm;
+  @ViewChild(FormlyForm, { static: true }) formlyForm: FormlyForm;
 
   fields = testComponentInputs.fields;
   form: FormGroup = testComponentInputs.form;

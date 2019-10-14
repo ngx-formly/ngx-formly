@@ -18,15 +18,15 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getFormlyFieldElement(element: HTMLElement): HTMLInputElement {
-  return <HTMLInputElement>element.querySelector('formly-field');
+  return <HTMLInputElement> element.querySelector('formly-field');
 }
 
 function getInputField(element: HTMLElement, index = 0): HTMLInputElement {
-  return <HTMLInputElement>element.querySelectorAll('input')[index];
+  return <HTMLInputElement> element.querySelectorAll('input')[index];
 }
 
 function getLabelWrapper(element: HTMLElement): HTMLElement {
-  return <HTMLElement>element.querySelector('label');
+  return <HTMLElement> element.querySelector('label');
 }
 
 let testComponentInputs;
