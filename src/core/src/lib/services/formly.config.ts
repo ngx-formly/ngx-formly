@@ -67,12 +67,15 @@ export class FormlyConfig {
       options.forEach((option) => this.setType(option));
     } else {
       if (!this.types[options.name]) {
-        this.types[options.name] = <TypeOption>{};
+        this.types[options.name] = <TypeOption>{ name: options.name };
       }
-      this.types[options.name].component = options.component;
-      this.types[options.name].name = options.name;
-      this.types[options.name].extends = options.extends;
-      this.types[options.name].defaultOptions = options.defaultOptions;
+
+      ['component', 'extends', 'defaultOptions'].forEach(prop => {
+        if (options.hasOwnProperty(prop)) {
+          this.types[options.name][prop] = options[prop];
+        }
+      });
+
       if (options.wrappers) {
         options.wrappers.forEach((wrapper) => this.setTypeWrapper(options.name, wrapper));
       }
