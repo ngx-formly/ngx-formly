@@ -9,6 +9,9 @@ module.exports = {
     // This is our Express server for Dynamic universal
     server: './projects/ssr/server.ts'
   },
+  externals: {
+    './dist/server/main': 'require("./server/main")'
+  },
   target: 'node',
   resolve: { extensions: ['.ts', '.js'] },
   optimization: {

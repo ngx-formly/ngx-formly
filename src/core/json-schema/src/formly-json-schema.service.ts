@@ -413,7 +413,7 @@ export class FormlyJsonschema {
     const toEnum = (s: JSONSchema7) => {
       const value = s.hasOwnProperty('const') ? s.const : s.enum[0];
 
-      return { value: value, label: s.title || value };
+      return { value, label: s.title || value };
     };
 
     if (schema.anyOf) {

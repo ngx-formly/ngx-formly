@@ -27,7 +27,7 @@ import { TableColumn } from '@swimlane/ngx-datatable';
 })
 
 export class DatatableTypeComponent extends FieldArrayType implements OnInit {
-  @ViewChild('defaultColumn') public defaultColumn: TemplateRef<any>;
+  @ViewChild('defaultColumn', { static: true }) public defaultColumn: TemplateRef<any>;
 
   ngOnInit() {
     this.to.columns.forEach(column => column.cellTemplate = this.defaultColumn);

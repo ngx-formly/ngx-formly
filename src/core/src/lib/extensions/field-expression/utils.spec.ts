@@ -1,8 +1,8 @@
 import { evalExpression } from './utils';
 
 describe('evalExpression', () => {
-  it('should evaluate the value correctly', () => {
-    let expression = () => { return this.model.val; };
+  it('should evaluate the value correctly', function() {
+    const expression = () => this.model.val;
     this.model = {
       val: 2,
     };
