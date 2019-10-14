@@ -19,10 +19,9 @@ import { FieldType } from '../templates/field.type';
 })
 export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input() field: FormlyFieldConfig;
-  @Input('class') className: string = '';
+  @Input('class') className = '';
 
-  // TODO: remove `any`, once dropping angular `V7` support.
-  @ViewChild('container', <any> {read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
+  @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
 
   refsUnsubscribe = () => {};
 

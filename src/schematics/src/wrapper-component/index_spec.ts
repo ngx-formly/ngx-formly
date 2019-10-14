@@ -32,12 +32,14 @@ xdescribe('Component Schematic', () => {
 
   let appTree: UnitTestTree;
 
-  beforeEach(() => {
-    appTree = createWorkspace(schematicRunner, appTree);
+  beforeEach(async () => {
+    appTree = await createWorkspace(schematicRunner, appTree);
   });
 
-  it('should create a component', () => {
-    const tree = schematicRunner.runSchematic('wrapper', { ...defaultOptions }, appTree);
+  it('should create a component', async () => {
+    const tree = await schematicRunner
+      .runSchematicAsync('wrapper', { ...defaultOptions }, appTree)
+      .toPromise();
 
     const files = tree.files;
     expect(files.indexOf(`${projectPath}/src/app/foo/foo.component.css`)).toBeGreaterThanOrEqual(0);
@@ -51,8 +53,11 @@ xdescribe('Component Schematic', () => {
     expect(moduleContent).toMatch(/declarations:\s*\[[^\]]+?,\r?\n\s+FooComponent\r?\n/m);
   });
 
-  xit('should add wrapper to FormlyModule config', () => {
-    const tree = schematicRunner.runSchematic('wrapper', { ...defaultOptions }, appTree);
+  xit('should add wrapper to FormlyModule config', async () => {
+    const tree = await schematicRunner
+      .runSchematicAsync('wrapper', { ...defaultOptions }, appTree)
+      .toPromise();
+
     const moduleContent = getFileContent(tree, `${projectPath}/src/app/app.module.ts`);
 
     expect(moduleContent).toContain(`wrappers: [

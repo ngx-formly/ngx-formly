@@ -14,9 +14,9 @@ export class FormlyValidationMessage {
 
   get errorMessage(): string {
     const fieldForm = this.field.formControl;
-    for (let error in fieldForm.errors) {
+    for (const error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        let message: string | Function = this.formlyConfig.getValidatorMessage(error);
+        let message = this.formlyConfig.getValidatorMessage(error);
 
         if (isObject(fieldForm.errors[error])) {
           if (fieldForm.errors[error].errorPath) {

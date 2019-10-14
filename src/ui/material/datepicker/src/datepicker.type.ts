@@ -30,9 +30,9 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
   `,
 })
 export class FormlyDatepickerTypeComponent extends FieldType implements AfterViewInit {
-  @ViewChild(MatInput, <any> { static: true }) formFieldControl!: MatInput;
-  @ViewChild(MatDatepickerInput) datepickerInput!: MatDatepickerInput<any>;
-  @ViewChild('datepickerToggle') datepickerToggle!: TemplateRef<any>;
+  @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;
+  @ViewChild(MatDatepickerInput, { static: true }) datepickerInput!: MatDatepickerInput<any>;
+  @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   defaultOptions = {
     templateOptions: {

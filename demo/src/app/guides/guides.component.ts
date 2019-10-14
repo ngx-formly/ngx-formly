@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'formly-demo-examples',
   template: `
     <div class="markdown github">
-      <div *ngIf="route.params | async as params" [innerHtml]="contents[params.id]"></div>
+      <div *ngIf="route.params | async as params" [innerHtml]="contents[params.id].default"></div>
     </div>
   `,
 })
