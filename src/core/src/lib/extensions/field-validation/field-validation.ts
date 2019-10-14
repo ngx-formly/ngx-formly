@@ -31,7 +31,7 @@ export class FieldValidationExtension implements FormlyExtension {
 
     const validators: ValidatorFn[] = type === 'validators' ? [this.getPredefinedFieldValidation(field)] : [];
     if (field[type]) {
-      for (const validatorName in field[type]) {
+      for (const validatorName of Object.keys(field[type])) {
         validatorName === 'validation'
           ? validators.push(...field[type].validation.map(v => this.wrapNgValidatorFn(field, v)))
           : validators.push(this.wrapNgValidatorFn(field, field[type][validatorName], validatorName))
