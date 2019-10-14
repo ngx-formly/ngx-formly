@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FieldArrayType } from '@ngx-formly/core';
 import { GridOptions } from 'ag-grid-community';
 import { GridFormlyCellComponent } from './grid-formly-cell.component';
@@ -8,7 +8,6 @@ import { GridFormlyCellComponent } from './grid-formly-cell.component';
   template: `
     <div [ngStyle]="style">
       <ag-grid-angular
-        #agGrid
         style="width: 100%; height: 100%"
         class="className"
         [gridOptions]="gridOptions"
@@ -20,8 +19,6 @@ import { GridFormlyCellComponent } from './grid-formly-cell.component';
 })
 
 export class GridTypeComponent extends FieldArrayType implements OnInit {
-  @ViewChild('agGrid') agGrid: TemplateRef<any>;
-
   gridOptions: GridOptions;
   style: any = {};
 
