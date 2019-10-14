@@ -4,9 +4,9 @@ import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './components/formly.field.config';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
-  if (field.id) return field.id;
+  if (field.id) { return field.id; }
   let type = field.type;
-  if (!type && field.template) type = 'template';
+  if (!type && field.template) { type = 'template'; }
   return [formId, type, field.key, index].join('_');
 }
 
@@ -104,7 +104,7 @@ export function getFieldValue(field: FormlyFieldConfig): any {
 
 export function reverseDeepMerge(dest: any, ...args: any[]) {
   args.forEach(src => {
-    for (let srcArg in src) {
+    for (const srcArg in src) {
       if (isNullOrUndefined(dest[srcArg]) || isBlankString(dest[srcArg])) {
         dest[srcArg] = clone(src[srcArg]);
       } else if (objAndSameType(dest[srcArg], src[srcArg])) {

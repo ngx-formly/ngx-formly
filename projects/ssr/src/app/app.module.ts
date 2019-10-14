@@ -14,10 +14,10 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
 
     RouterModule.forRoot([
-      { path: 'material', loadChildren: './ui/material.module#UIMaterialModule' },
-      { path: 'bootstrap', loadChildren: './ui/bootstrap.module#UIBootstrapModule' },
-      { path: 'kendo', loadChildren: './ui/kendo.module#UIKendoModule' },
-      { path: 'primeng', loadChildren: './ui/primeng.module#UIPrimengModule' },
+      { path: 'material', loadChildren: () => import('./ui/material.module').then(m => m.UIMaterialModule) },
+      { path: 'bootstrap', loadChildren: () => import('./ui/bootstrap.module').then(m => m.UIBootstrapModule) },
+      { path: 'kendo', loadChildren: () => import('./ui/kendo.module').then(m => m.UIKendoModule) },
+      { path: 'primeng', loadChildren: () => import('./ui/primeng.module').then(m => m.UIPrimengModule) },
     ]),
   ],
   providers: [],

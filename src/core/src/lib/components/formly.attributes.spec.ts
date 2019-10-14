@@ -12,7 +12,7 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getFormlyAttributesElement(element: HTMLElement): HTMLInputElement {
-  return <HTMLInputElement>element.querySelector('input');
+  return <HTMLInputElement> element.querySelector('input');
 }
 
 describe('FormlyAttributes Component', () => {

@@ -31,7 +31,7 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
   ],
 })
 export class FormlyFieldTextArea extends FieldType implements OnInit {
-  @ViewChild(MatInput, <any> { static: true }) formFieldControl!: MatInput;
+  @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;
   defaultOptions = {
     templateOptions: {
       cols: 1,

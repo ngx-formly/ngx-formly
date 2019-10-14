@@ -218,9 +218,7 @@ export interface FormlyTemplateOptions {
   [additionalProperties: string]: any;
 }
 
-export interface FormlyHookFn {
-  (field?: FormlyFieldConfig): void;
-}
+export type FormlyHookFn = (field?: FormlyFieldConfig) => void;
 
 export interface FormlyHookConfig {
   onInit?: FormlyHookFn;

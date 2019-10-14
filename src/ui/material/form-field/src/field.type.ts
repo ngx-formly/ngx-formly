@@ -5,8 +5,8 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 import { ErrorStateMatcher } from '@angular/material/core';
 
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> extends CoreFieldType<F> implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
-  @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
-  @ViewChild('matSuffix') matSuffix!: TemplateRef<any>;
+  @ViewChild('matPrefix', { static: false }) matPrefix!: TemplateRef<any>;
+  @ViewChild('matSuffix', { static: false }) matSuffix!: TemplateRef<any>;
 
   get formFieldControl() { return this._control || this; }
   set formFieldControl(control: MatFormFieldControl<any>) {
@@ -80,5 +80,5 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   get ngControl() { return this.formControl as any; }
   get empty() { return this.value === undefined || this.value === null || this.value === ''; }
   get shouldLabelFloat() { return this.focused || !this.empty; }
-  get formField(): MatFormField { return this.field ? (<any>this.field)['__formField__'] : null; }
+  get formField(): MatFormField { return this.field ? (<any> this.field)['__formField__'] : null; }
 }

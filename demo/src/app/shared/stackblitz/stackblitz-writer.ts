@@ -153,7 +153,7 @@ export class StackblitzWriter {
     this._appendFormInput(form, 'private', 'true');
     this._appendFormInput(form, 'description', exampleData.title);
 
-    const appModuleContent = exampleData.files.find(f => f.file === 'app.module.ts').filecontent;
+    const appModuleContent = exampleData.files.find(f => f.file === 'app.module.ts').filecontent.default;
     exampleData.deps = exampleData.deps || [];
 
     const options: any = { type };
@@ -179,7 +179,7 @@ export class StackblitzWriter {
     if (
       ['material', 'kendo', 'material'].indexOf(options.type) !== -1 ||
       options.includeMaterial ||
-      exampleData.files.map(f => f.filecontent).some(content => content.indexOf('@angular/animations') !== -1)) {
+      exampleData.files.map(f => f.filecontent.default).some(content => content.indexOf('@angular/animations') !== -1)) {
       options.useAnimation = true;
     }
 
@@ -234,7 +234,7 @@ export class StackblitzWriter {
       .forEach(data => {
         this._addFileToForm(
           form,
-          this._replaceExamplePlaceholderNames(data.file, data.filecontent, options),
+          this._replaceExamplePlaceholderNames(data.file, data.filecontent.default, options),
           data.file,
           false,
         );
@@ -243,7 +243,7 @@ export class StackblitzWriter {
     exampleData.files.forEach(data => {
       this._addFileToForm(
         form,
-        this._replaceExamplePlaceholderNames(data.file, data.filecontent, options),
+        this._replaceExamplePlaceholderNames(data.file, data.filecontent.default, options),
         data.file,
         data.file.indexOf('assets') !== 0,
       );
@@ -280,9 +280,9 @@ export class StackblitzWriter {
    * @param prependApp whether to prepend the 'app' prefix to the path
    */
   _addFileToForm(form: HTMLFormElement,
-    content: string,
-    filename: string,
-    prependApp = true) {
+                 content: string,
+                 filename: string,
+                 prependApp = true) {
     if (prependApp) {
       filename = 'app/' + filename;
     }
