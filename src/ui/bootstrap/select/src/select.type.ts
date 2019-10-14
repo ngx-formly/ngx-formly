@@ -41,7 +41,7 @@ import { FieldType } from '@ngx-formly/core';
   `,
 })
 export class FormlyFieldSelect extends FieldType implements AfterViewChecked {
-  @ViewChild('select') select!: ElementRef<HTMLSelectElement>;
+  @ViewChild('select', { static: false }) select!: ElementRef<HTMLSelectElement>;
   defaultOptions = {
     templateOptions: { options: [] },
   };

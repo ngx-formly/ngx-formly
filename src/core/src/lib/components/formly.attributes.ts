@@ -106,7 +106,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
     const isFocused = !!this.document.activeElement
       && this.fieldAttrElements
-        .some(element => this.document.activeElement === element || element.contains(this.document.activeElement));
+        .some(elm => this.document.activeElement === elm || elm.contains(this.document.activeElement));
 
     if (value && !isFocused) {
       element.focus();
