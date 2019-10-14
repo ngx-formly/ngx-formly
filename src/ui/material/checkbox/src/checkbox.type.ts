@@ -20,7 +20,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   `,
 })
 export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, AfterViewChecked, OnDestroy {
-  @ViewChild(MatCheckbox) checkbox!: MatCheckbox;
+  @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
