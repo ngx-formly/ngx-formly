@@ -1,3 +1,1 @@
-import { Schema as ComponentSchema } from '@schematics/angular/component/schema';
-
-export interface Schema extends ComponentSchema {}
+export { Schema } from '@schematics/angular/component/schema';

@@ -3,15 +3,6 @@
   "dest": "../../../dist/@ngx-formly/nativescript",
   "deleteDestPath": false,
   "lib": {
-    "entryFile": "src/public_api.ts",
-    "form-field": [{ "path": "form-field" }],
-    "text-field": [{ "path": "text-field" }],
-    "textarea": [{ "path": "textarea" }],
-    "checkbox": [{ "path": "checkbox" }],
-    "select": [{ "path": "select" }],
-    "radio": [{ "path": "radio" }],
-    "externals": {
-      "@ngx-formly/core": "@ngx-formly/core"
-    }
+    "entryFile": "src/public_api.ts"
   }
 }

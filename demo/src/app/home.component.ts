@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'formly-demo-home',
   template: `
     <div class="container markdown github">
-      <div [innerHtml]="contnent"></div>
+      <div [innerHtml]="contnent.default"></div>
     </div>
   `,
 })

@@ -47,11 +47,8 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
-  // TODO: remove `any`, once dropping angular `V7` support.
-  @ViewChild('fieldComponent', <any>{ read: ViewContainerRef, static: true }) fieldComponent!: ViewContainerRef;
-
-  // TODO: remove `any`, once dropping angular `V7` support.
-  @ViewChild(MatFormField, <any> { static: true }) formField!: MatFormField;
+  @ViewChild('fieldComponent', { read: ViewContainerRef, static: true }) fieldComponent!: ViewContainerRef;
+  @ViewChild(MatFormField, { static: true }) formField!: MatFormField;
   field!: MatFormlyFieldConfig;
 
   private initialGapCalculated = false;

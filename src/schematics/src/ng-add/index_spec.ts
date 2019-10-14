@@ -11,20 +11,25 @@ describe('ng-add-schematic', () => {
 
   let appTree: UnitTestTree;
 
-  beforeEach(() => {
-    appTree = createWorkspace(schematicRunner, appTree);
+  beforeEach(async () => {
+    appTree = await createWorkspace(schematicRunner, appTree);
   });
 
-  it('should update package.json', () => {
-    const tree = schematicRunner.runSchematic('ng-add', {}, appTree);
+  it('should update package.json', async () => {
+    const tree = await schematicRunner
+      .runSchematicAsync('ng-add', {}, appTree)
+      .toPromise();
+
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
 
     expect(packageJson.dependencies['@angular/forms']).toBeDefined();
     expect(packageJson.dependencies['@ngx-formly/core']).toBeDefined();
   });
 
-  it('should not add a theme by default to package.json', () => {
-    const tree = schematicRunner.runSchematic('ng-add', {}, appTree);
+  it('should not add a theme by default to package.json', async () => {
+    const tree = await schematicRunner
+      .runSchematicAsync('ng-add', {}, appTree)
+      .toPromise();
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
 
     // @TODO: list of themes should probably be retrieved from some config file
@@ -33,16 +38,21 @@ describe('ng-add-schematic', () => {
     });
   });
 
-  it('should skip package.json update', () => {
+  it('should skip package.json update', async () => {
     const options = { skipPackageJson: true } as Schema;
-    const tree = schematicRunner.runSchematic('ng-add', options, appTree);
+    const tree = await schematicRunner
+      .runSchematicAsync('ng-add', options, appTree)
+      .toPromise();
+
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
 
     expect(packageJson.dependencies['@ngx-formly/core']).toBeUndefined();
   });
 
-  it('should add to root app module', () => {
-    const tree = schematicRunner.runSchematic('ng-add', {}, appTree);
+  it('should add to root app module', async () => {
+    const tree = await schematicRunner
+      .runSchematicAsync('ng-add', {}, appTree)
+      .toPromise();
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
@@ -63,20 +73,20 @@ describe('ng-add-schematic', () => {
     );
   });
 
-  it('should add UI theme to package.json', () => {
-    const tree = schematicRunner.runSchematic('ng-add', {
-      uiTheme: 'bootstrap',
-    }, appTree);
+  it('should add UI theme to package.json', async () => {
+    const tree = await schematicRunner
+      .runSchematicAsync('ng-add', { uiTheme: 'bootstrap' }, appTree)
+      .toPromise();
 
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
 
     expect(packageJson.dependencies['@ngx-formly/bootstrap']).toBeDefined();
   });
 
-  it('should add UI theme to root app module', () => {
-    const tree = schematicRunner.runSchematic('ng-add', {
-      uiTheme: 'bootstrap',
-    }, appTree);
+  it('should add UI theme to root app module', async () => {
+    const tree = await schematicRunner
+      .runSchematicAsync('ng-add', { uiTheme: 'bootstrap' }, appTree)
+      .toPromise();
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
@@ -89,7 +99,7 @@ describe('ng-add-schematic', () => {
     );
   });
 
-  it('should add to any module', () => {
+  it('should add to any module', async () => {
     const fooModule = `${projectPath}/src/app/foo.module.ts`;
 
     appTree.create(fooModule, `
@@ -103,9 +113,9 @@ describe('ng-add-schematic', () => {
       export class FooModule { }
     `);
 
-    const tree = schematicRunner.runSchematic('ng-add', {
-      module: 'app/foo.module.ts',
-    }, appTree);
+    const tree = await schematicRunner
+      .runSchematicAsync('ng-add', { module: 'app/foo.module.ts' }, appTree)
+      .toPromise();
 
     const content = tree.readContent(fooModule);
 
