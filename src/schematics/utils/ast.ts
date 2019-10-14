@@ -6,8 +6,7 @@ import { InsertChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { findModuleFromOptions as internalFindModule } from '@schematics/angular/utility/find-module';
-import { WorkspaceProject } from '@angular-devkit/core/src/workspace';
-
+import { WorkspaceProject } from '@schematics/angular/utility/workspace-models';
 
 /** Reads file given path and returns TypeScript source file. */
 export function getSourceFile(host: Tree, path: string): ts.SourceFile {
@@ -68,7 +67,7 @@ export function getStylesPath(host: Tree, project: WorkspaceProject): string {
   const buildTarget = project.architect['build'];
 
   if (buildTarget.options && buildTarget.options.styles && buildTarget.options.styles.length) {
-    const styles = buildTarget.options.styles.map(s => typeof s === 'string' ? s : s.input);
+    const styles = buildTarget.options.styles.map(s => typeof s === 'string' ? s : (s as any).input);
 
     // First, see if any of the assets is called "styles.(le|sc|c)ss", which is the default
     // "main" style sheet.

@@ -21,7 +21,7 @@ import { FormlyDatetimeModule } from '@ngx-formly/ionic/datetime';
     FormlySliderModule,
     FormlyDatetimeModule,
   ],
-  exports: [IonFormlyAttributes],
+  exports: [FormlyFormFieldModule],
 })
 export class FormlyIonicModule { }
 

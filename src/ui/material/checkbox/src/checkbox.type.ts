@@ -20,7 +20,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
   `,
 })
 export class FormlyFieldCheckbox extends FieldType {
-  @ViewChild(MatCheckbox) checkbox!: MatCheckbox;
+  @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,

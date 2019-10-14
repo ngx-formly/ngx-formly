@@ -33,23 +33,27 @@ export function getTestProjectPath(
   return `/${workspaceOptions.newProjectRoot}/${appOptions.name}`;
 }
 
-export function createWorkspace(
+export async function createWorkspace(
   schematicRunner: SchematicTestRunner,
   appTree: UnitTestTree,
   workspaceOptions = defaultWorkspaceOptions,
   appOptions = defaultAppOptions,
 ) {
-  appTree = schematicRunner.runExternalSchematic(
-    '@schematics/angular',
-    'workspace',
-    workspaceOptions,
-  );
-  appTree = schematicRunner.runExternalSchematic(
-    '@schematics/angular',
-    'application',
-    appOptions,
-    appTree,
-  );
+  appTree = await schematicRunner
+    .runExternalSchematicAsync(
+      '@schematics/angular',
+      'workspace',
+      workspaceOptions,
+    )
+    .toPromise();
+  appTree = await schematicRunner
+    .runExternalSchematicAsync(
+      '@schematics/angular',
+      'application',
+      appOptions,
+      appTree,
+    )
+    .toPromise();
 
   return appTree;
 }

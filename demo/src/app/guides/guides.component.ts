@@ -30,7 +30,7 @@ export class GuidesComponent implements OnInit {
       this.renderer.setProperty(
         this.elementRef.nativeElement,
         'innerHTML',
-        this.contents[id],
+        this.contents[id].default,
       );
     });
   }
