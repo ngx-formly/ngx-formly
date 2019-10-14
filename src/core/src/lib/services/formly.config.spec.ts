@@ -78,6 +78,20 @@ describe('FormlyConfig service', () => {
       expect(() => config.getType('custom_input')).toThrowError('[Formly Error] There is no type by the name of "custom_input"');
     });
 
+    it('should merge existing options when replacing a field type', () => {
+      const config = new FormlyConfig();
+      config.setType([
+        { name: 'input1', component: TestComponent },
+        { name: 'input1', wrappers: ['label'] },
+      ]);
+
+      expect(config.getType('input1')).toEqual({
+        name: 'input1',
+        component: TestComponent,
+        wrappers: ['label'],
+      });
+    });
+
     it('should extends component + wrappers when not defined', () => {
       const config = new FormlyConfig();
       config.setType([
@@ -90,7 +104,6 @@ describe('FormlyConfig service', () => {
         component: TestComponent,
         wrappers: ['label'],
         extends: 'custom_input1',
-        defaultOptions: undefined,
       });
     });
   });
