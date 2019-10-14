@@ -16,7 +16,7 @@ export class UIComponent {
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = Object.keys(this.config.types).map(type => ({
     key: type,
-    type: type,
+    type,
     templateOptions: {
       label: `${type} label`,
       placeholder: `${type} placeholder`,

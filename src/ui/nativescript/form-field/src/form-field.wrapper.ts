@@ -19,5 +19,5 @@ import { FieldWrapper } from '@ngx-formly/core';
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper {
-  @ViewChild('validationMessage') validationMessage;
+  @ViewChild('validationMessage', { static: false }) validationMessage;
 }

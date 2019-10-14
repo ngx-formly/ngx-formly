@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, EventEmitter } from '@angular/core';
 
-export function createGenericTestComponent<T>(html: string, type: {new (...args: any[]): T}): ComponentFixture<T> {
+export function createGenericTestComponent<T>(html: string, type: new (...args: any[]) => T): ComponentFixture<T> {
   TestBed.overrideComponent(type, {set: {template: html}});
   const fixture = TestBed.createComponent(type);
   fixture.detectChanges();
@@ -34,7 +34,7 @@ export function MockComponent(options: Component): Component {
  * Although officially deprecated, some browsers (phantom) don't accept the preferred "new Event(eventName)"
  */
 export function newEvent(eventName: string, bubbles = false, cancelable = false) {
-  let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+  const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
   evt.initCustomEvent(eventName, bubbles, cancelable, null);
   return evt;
 }

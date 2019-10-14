@@ -1201,14 +1201,12 @@ describe('FormlyForm Component', () => {
   selector: 'formly-form-comp',
   template: `
     <form [formGroup]="form" (ngSubmit)="submit()">
-      <formly-form #ff [model]="model" [fields]="fields" [options]="options" [form]="form">
+      <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
         <button type="submit">Submit</button>
       </formly-form>
     </form>`,
 })
 class TestFormComponent {
-  @ViewChild(FormlyForm) ff: FormlyForm;
-
   fields = app.fields;
   form = app.form;
   model = app.model || {};
@@ -1223,7 +1221,7 @@ class TestFormComponent {
   entryComponents: [],
 })
 class TestComponent {
-  @ViewChild(FormlyForm) formlyForm: FormlyForm;
+  @ViewChild(FormlyForm, { static: true }) formlyForm: FormlyForm;
 
   fields = app.fields;
   form = app.form;

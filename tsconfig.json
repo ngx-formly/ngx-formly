@@ -5,15 +5,16 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2017",
+      "es2018",
       "dom"
     ],
     "paths": {
@@ -28,10 +29,9 @@
   },
   "exclude": [
     "demo/src/assets/stackblitz/**/*.ts",
+    "demo/src/assets/stackblitz/**/*.ts",
     "src/schematics/src/*/files/**/*",
     "index.ts",
-    // "dist/schematics/src/*/files/**/*",
-    // Skip all dist files
     "dist/**/*",
     "cypress/**/*",
     "node_modules/**/*"
