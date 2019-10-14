@@ -3,16 +3,6 @@
   "dest": "../../../dist/@ngx-formly/kendo",
   "deleteDestPath": false,
   "lib": {
-    "entryFile": "src/public_api.ts",
-    "form-field": [{ "path": "form-field" }],
-    "input": [{ "path": "input" }],
-    "textarea": [{ "path": "textarea" }],
-    "select": [{ "path": "select" }],
-    "checkbox": [{ "path": "checkbox" }],
-    "radio": [{ "path": "radio" }],
-    "externals": {
-      "@ngx-formly/core": "@ngx-formly/core",
-      "@progress/kendo-angular-dropdowns": "@progress/kendo-angular-dropdowns"
-    }
+    "entryFile": "src/public_api.ts"
   }
 }

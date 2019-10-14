@@ -22,8 +22,8 @@ import { startWith, switchMap } from 'rxjs/operators';
   `,
 })
 export class AutocompleteTypeComponent extends FieldType implements OnInit, AfterViewInit {
-  @ViewChild(MatInput) formFieldControl: MatInput;
-  @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
+  @ViewChild(MatInput, { static: true }) formFieldControl: MatInput;
+  @ViewChild(MatAutocompleteTrigger, { static: true }) autocomplete: MatAutocompleteTrigger;
 
   filter: Observable<any>;
 

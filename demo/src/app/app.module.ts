@@ -22,9 +22,9 @@ import { filter, tap } from 'rxjs/operators';
     MatMenuModule,
     RouterModule.forRoot([
       { path: '', pathMatch: 'full', redirectTo: 'guide' },
-      { path: 'guide', loadChildren: './guides/guides.module#GuidesModule' },
-      { path: 'ui', loadChildren: './ui/ui.module#UIModule' },
-      { path: 'examples', loadChildren: './examples/examples.module#ExamplesModule' },
+      { path: 'guide', loadChildren: () => import('./guides/guides.module').then(m => m.GuidesModule) },
+      { path: 'ui', loadChildren: () => import('./ui/ui.module').then(m => m.UIModule) },
+      { path: 'examples', loadChildren: () => import('./examples/examples.module').then(m => m.ExamplesModule) },
     ]),
   ],
   bootstrap: [AppComponent],

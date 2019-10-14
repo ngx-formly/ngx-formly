@@ -3,7 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'formly-app',
+  selector: 'formly-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
