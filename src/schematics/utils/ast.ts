@@ -5,7 +5,7 @@ import { addImportToModule } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { findModuleFromOptions as internalFindModule } from '@schematics/angular/utility/find-module';
-import { WorkspaceProject, WorkspaceSchema } from '@angular-devkit/core/src/workspace';
+import { WorkspaceProject, WorkspaceSchema } from '@schematics/angular/utility/workspace-models';
 
 export function getWorkspacePath(host: Tree): string {
   const possibleFiles = ['/angular.json', '/.angular.json'];
@@ -84,7 +84,7 @@ export function getStylesPath(host: Tree, project: WorkspaceProject): string {
   const buildTarget = project.architect['build'];
 
   if (buildTarget.options && buildTarget.options.styles && buildTarget.options.styles.length) {
-    const styles = buildTarget.options.styles.map(s => typeof s === 'string' ? s : s.input);
+    const styles = buildTarget.options.styles.map(s => typeof s === 'string' ? s : (s as any).input);
 
     // First, see if any of the assets is called "styles.(le|sc|c)ss", which is the default
     // "main" style sheet.

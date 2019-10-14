@@ -5,8 +5,8 @@ import { of } from 'rxjs';
 describe('FormlyUtils service', () => {
   describe('reverseDeepMerge', () => {
     it('should properly reverse deep merge', () => {
-      let foo = {foo: 'bar', obj: {}, arr: [] };
-      let bar = { foo: 'foo', foobar: 'foobar', fun: () => console.log('demo'), obj: {}, date: new Date(), arr: ['bar']};
+      const foo = {foo: 'bar', obj: {}, arr: [] };
+      const bar = { foo: 'foo', foobar: 'foobar', fun: () => console.log('demo'), obj: {}, date: new Date(), arr: ['bar']};
       reverseDeepMerge(foo, bar);
 
       expect(foo['foo']).toEqual('bar');
@@ -55,7 +55,7 @@ describe('FormlyUtils service', () => {
 
   describe('getFieldValue', () => {
     it('should properly get value', () => {
-      let model = {
+      const model = {
         value: 2,
         'looks.nested': 'foo',
         nested: {
@@ -72,14 +72,14 @@ describe('FormlyUtils service', () => {
 
   describe('getFieldId', () => {
     it('should properly get the field id if id is set in options', () => {
-      let options: FormlyFieldConfig = {id: '1'};
-      let id = getFieldId('formly_1', options, 2);
+      const options: FormlyFieldConfig = {id: '1'};
+      const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('1');
     });
 
     it('should properly get the field id if id is not set in options', () => {
-      let options: FormlyFieldConfig = {type: 'input', key: 'email'};
-      let id = getFieldId('formly_1', options, 2);
+      const options: FormlyFieldConfig = {type: 'input', key: 'email'};
+      const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_input_email_2');
     });
   });
@@ -95,27 +95,27 @@ describe('FormlyUtils service', () => {
     });
 
     it('should get the correct key path of length 1 for a simple string', () => {
-      let keyPath = getKeyPath({key: 'property'});
+      const keyPath = getKeyPath({key: 'property'});
       expect(keyPath).toEqual(['property']);
     });
 
     it('should get the correct key path of length 2 for a simple string with an index', () => {
-      let keyPath = getKeyPath({key: 'property[2]'});
+      const keyPath = getKeyPath({key: 'property[2]'});
       expect(keyPath).toEqual(['property', '2']);
     });
 
     it('should get the correct key path of length 3 for a simple nested property', () => {
-      let keyPath = getKeyPath({key: 'property1.property2.property3'});
+      const keyPath = getKeyPath({key: 'property1.property2.property3'});
       expect(keyPath).toEqual(['property1', 'property2', 'property3']);
     });
 
     it('should get the correct key path of length 4 with one index for a nested property containing 1 index property',  () => {
-      let keyPath = getKeyPath({key: 'property1.property2[4].property3'});
+      const keyPath = getKeyPath({key: 'property1.property2[4].property3'});
       expect(keyPath).toEqual(['property1', 'property2', '4', 'property3']);
     });
 
     it('should attach the key path to the field config', () => {
-      let fieldConfig = {key: 'property1.property2[4].property3'};
+      const fieldConfig = {key: 'property1.property2[4].property3'};
       getKeyPath(fieldConfig);
       expect(fieldConfig['_keyPath'].path).toEqual(['property1', 'property2', '4', 'property3']);
     });

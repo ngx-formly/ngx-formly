@@ -40,7 +40,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   get options() { return this._options; }
 
   @Output() modelChange = new EventEmitter<any>();
-  @ViewChild('content') set content(content: ElementRef<HTMLElement>) {
+  @ViewChild('content', { static: true }) set content(content: ElementRef<HTMLElement>) {
     if (content) {
       let hasContent = false;
       let node = content.nativeElement.nextSibling;

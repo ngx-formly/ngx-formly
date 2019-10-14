@@ -10,7 +10,7 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getFormlyValidationMessageElement(element: HTMLElement): HTMLDivElement {
-  return <HTMLDivElement>element.querySelector('formly-validation-message');
+  return <HTMLDivElement> element.querySelector('formly-validation-message');
 }
 
 describe('FormlyValidationMessage Component', () => {

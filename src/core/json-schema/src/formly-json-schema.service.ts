@@ -522,7 +522,7 @@ export class FormlyJsonschema {
 
     const toEnum = (s: JSONSchema7) => {
       const value = s.hasOwnProperty('const') ? s.const : s.enum[0];
-      const option: any = { value: value, label: s.title || value };
+      const option: any = { value, label: s.title || value };
       if (s.readOnly) {
         option.disabled = true;
       }
