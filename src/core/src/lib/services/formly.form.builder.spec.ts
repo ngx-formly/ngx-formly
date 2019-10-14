@@ -354,7 +354,7 @@ describe('FormlyFormBuilder service', () => {
 
   describe('field defaultValue', () => {
     it('should not set the defaultValue if the model value is defined', () => {
-      let model = { title: 'title' };
+      const model = { title: 'title' };
       field = {
         key: 'title',
         type: 'input',
@@ -366,7 +366,7 @@ describe('FormlyFormBuilder service', () => {
     });
 
     it('should set the defaultValue if the model value is not defined', () => {
-      let model = {};
+      const model = {};
       field = {
         key: 'title',
         type: 'input',
@@ -378,7 +378,7 @@ describe('FormlyFormBuilder service', () => {
     });
 
     it('should set the defaultValue for nested key', () => {
-      let model = {};
+      const model = {};
       field = {
         key: 'address.city',
         type: 'input',
@@ -390,7 +390,7 @@ describe('FormlyFormBuilder service', () => {
     });
 
     it('should set the defaultValue for nested form', () => {
-      let model = {};
+      const model = {};
       field = {
         key: 'address',
         fieldGroup: [
@@ -407,7 +407,7 @@ describe('FormlyFormBuilder service', () => {
     });
 
     it('should set the defaultValue when fieldGroup is set', () => {
-      let model = {};
+      const model = {};
       field = {
         key: 'address',
         defaultValue: { foo: 'foo' },
@@ -419,7 +419,7 @@ describe('FormlyFormBuilder service', () => {
     });
 
     it('set empty object as defaultValue when fieldGroup is set', () => {
-      let model = {};
+      const model = {};
       field = {
         key: 'address',
         fieldGroup: [],
@@ -430,7 +430,7 @@ describe('FormlyFormBuilder service', () => {
     });
 
     it('set empty array as defaultValue when fieldArray is set', () => {
-      let model = {};
+      const model = {};
       field = {
         key: 'address',
         type: 'array',
@@ -516,13 +516,13 @@ describe('FormlyFormBuilder service', () => {
 
     it('should generate id if it is not defined', () => {
     field = { key: 'title' };
-      builder.buildForm(form, [field], {}, {});
+    builder.buildForm(form, [field], {}, {});
 
-      expect(field.id).toEqual('formly_1__title_0');
+    expect(field.id).toEqual('formly_1__title_0');
     });
 
     it('should generate an unique id for each form', () => {
-      let field1 = { key: 'title' },
+      const field1 = { key: 'title' },
        field2 = { key: 'title' };
 
       builder.buildForm(form, [field1], {}, {});
@@ -544,7 +544,7 @@ describe('FormlyFormBuilder service', () => {
       };
 
       builder.buildForm(form, [field], {}, {});
-      let control: FormControl = <FormControl> form.get('title');
+      const control: FormControl = <FormControl> form.get('title');
 
       expect(field.hide).toBeFalsy();
       expect(field.formControl).not.toBeNull();
@@ -562,7 +562,7 @@ describe('FormlyFormBuilder service', () => {
       };
 
       builder.buildForm(form, [field], {}, {});
-      let control: FormControl = <FormControl> form.get('title');
+      const control: FormControl = <FormControl> form.get('title');
 
       expect(field.hide).toBeTruthy();
       expect(field.formControl).not.toBeNull();

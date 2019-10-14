@@ -8,11 +8,11 @@ import { SharedModule } from '../shared';
     RouterModule.forChild([
       { path: '', children: [
         { path: '', pathMatch: 'full', redirectTo: 'bootstrap' },
-        { path: 'bootstrap', loadChildren: './ui-bootstrap/config.module#ConfigModule' },
-        { path: 'material', loadChildren: './ui-material/config.module#ConfigModule' },
-        { path: 'ionic', loadChildren: './ui-ionic/config.module#ConfigModule' },
-        { path: 'primeng', loadChildren: './ui-primeng/config.module#ConfigModule' },
-        { path: 'kendo', loadChildren: './ui-kendo/config.module#ConfigModule' },
+        { path: 'bootstrap', loadChildren: () => import('./ui-bootstrap/config.module').then(m => m.ConfigModule) },
+        { path: 'material', loadChildren: () => import('./ui-material/config.module').then(m => m.ConfigModule) },
+        { path: 'ionic', loadChildren: () => import('./ui-ionic/config.module').then(m => m.ConfigModule) },
+        { path: 'primeng', loadChildren: () => import('./ui-primeng/config.module').then(m => m.ConfigModule) },
+        { path: 'kendo', loadChildren: () => import('./ui-kendo/config.module').then(m => m.ConfigModule) },
       ] },
     ]),
   ],

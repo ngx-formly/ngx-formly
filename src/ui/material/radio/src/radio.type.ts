@@ -20,7 +20,7 @@ import { MatRadioGroup } from '@angular/material/radio';
   `,
 })
 export class FormlyFieldRadio extends FieldType {
-  @ViewChild(MatRadioGroup) radioGroup!: MatRadioGroup;
+  @ViewChild(MatRadioGroup, { static: true }) radioGroup!: MatRadioGroup;
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
