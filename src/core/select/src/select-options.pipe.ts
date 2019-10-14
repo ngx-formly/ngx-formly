@@ -52,6 +52,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     }
 
     if (this.shouldUseLegacyOption(item, to)) {
+      console.warn(`NgxFormly: legacy select option '{key, value}' is deprecated since v5.5, use '{value, label}' instead.`);
       return item.value;
     }
 
