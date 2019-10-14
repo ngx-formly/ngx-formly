@@ -179,8 +179,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
         this.modelChangeSubs.push(valueChanges.subscribe(value => {
           // workaround for https://github.com/angular/angular/issues/13792
-          if ((control as any)._onChange.length > 0) {
-            control.setValue(value, {emitEvent: false});
+          if ((control as any)._onChange.length > 1) {
+            control.patchValue(value, { emitEvent: false });
           }
 
           if (field.parsers && field.parsers.length > 0) {

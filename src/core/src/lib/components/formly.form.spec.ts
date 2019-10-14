@@ -137,6 +137,24 @@ describe('FormlyForm Component', () => {
       subscription.unsubscribe();
     });
 
+    it('should emit `modelChange` twice when key is duplicated', () => {
+      app.fields = [
+        { key: 'title', type: 'text' },
+        { key: 'title', type: 'text' },
+      ];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      app.form.get('title').patchValue('***');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith({ title: '***' });
+      subscription.unsubscribe();
+    });
+
     it('should parse model value', () => {
       app.fields = [{
         key: 'city',
