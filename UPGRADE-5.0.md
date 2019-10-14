@@ -164,6 +164,20 @@ After:
 })
 ```
 
+* Passing legacy select option `{key, value}` is deprecated since v5.5, use `{value, label}` instead.
+
+```patch
+{
+  type: 'select',
+  templateOptions: {
+    options: [
+--      { key: '1', value: 'label 1' },
+++      { value: '2', label: 'label 2' },
+    ],
+  }
+}
+```
+
 @ngx-formly/material
 --------------------
 **Note**: this only affect the user's who import sub-modules of `@ngx-formly/material` instead of main module `FormlyMaterialModule`.
