@@ -20,6 +20,17 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     });
   });
 
+  it('should add a flag for flat options', () => {
+    const field: any = { templateOptions: {} };
+    pipe.transform([{ label: '1', value: '1' }], field).subscribe((options) => {
+      expect(field.templateOptions._flatOptions).toEqual(true);
+    });
+
+    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe((options) => {
+      expect(field.templateOptions._flatOptions).toEqual(false);
+    });
+  });
+
   describe('label & value & disabled props', () => {
     let options;
     beforeEach(() => {
