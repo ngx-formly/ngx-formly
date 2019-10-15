@@ -99,14 +99,11 @@ export class FieldExpressionExtension implements FormlyExtension {
 
   private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
     let markForCheck = false;
-    field.fieldGroup.forEach(f => {
-      this.checkFieldExpressionChange(f, ignoreCache) && (markForCheck = true);
-      this.checkFieldVisibilityChange(f, ignoreCache) && (markForCheck = true);
-
-      if (f.fieldGroup && f.fieldGroup.length > 0) {
-        this._checkField(f, ignoreCache);
-      }
-    });
+    this.checkFieldExpressionChange(field, ignoreCache) && (markForCheck = true);
+    this.checkFieldVisibilityChange(field, ignoreCache) && (markForCheck = true);
+    if (field.fieldGroup) {
+      field.fieldGroup.forEach(f => this._checkField(f, ignoreCache));
+    }
 
     if (markForCheck && field.options && field.options._markForCheck) {
       field.options._markForCheck(field);
