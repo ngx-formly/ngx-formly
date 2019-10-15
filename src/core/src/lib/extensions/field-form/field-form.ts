@@ -7,9 +7,11 @@ import { of } from 'rxjs';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
-  constructor() { }
-
+  private root: FormlyFieldConfigCache;
   onPopulate(field: FormlyFieldConfigCache) {
+    if (!this.root) {
+      this.root = field;
+    }
     if (field.key) {
       this.addFormControl(field);
     }
@@ -20,10 +22,11 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   postPopulate(field: FormlyFieldConfigCache) {
-    if (field.parent) {
+    if (this.root !== field) {
       return;
     }
 
+    this.root = null;
     const updateValidity = this.setValidators(field);
     updateValidity && (field.formControl as any)._updateTreeValidity();
   }
