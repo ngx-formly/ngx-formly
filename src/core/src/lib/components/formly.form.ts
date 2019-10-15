@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, NgZone } from '@angular/core';
 import { FormGroup, FormArray, FormGroupDirective, FormControl } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -12,9 +12,6 @@ import { clearControl } from '../extensions/field-form/utils';
   selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields" [field]="field"></formly-field>
-    <ng-container #content>
-      <ng-content></ng-content>
-    </ng-container>
   `,
   providers: [FormlyFormBuilder],
 })
@@ -40,28 +37,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   get options() { return this._options; }
 
   @Output() modelChange = new EventEmitter<any>();
-  @ViewChild('content', { static: true }) set content(content: ElementRef<HTMLElement>) {
-    if (content) {
-      let hasContent = false;
-      let node = content.nativeElement.nextSibling;
-      while (node && !hasContent) {
-        if (
-          node.nodeType === Node.ELEMENT_NODE
-          || node.nodeType === Node.TEXT_NODE && node.textContent && node.textContent.trim() !== ''
-        ) {
-          hasContent = true;
-        }
 
-        node = node.nextSibling;
-      }
-
-      if (hasContent) {
-        console.warn(`NgxFormly: content projection for 'formly-form' component is deprecated since v5.5, you should avoid passing content inside the 'formly-form' tag.`);
-      }
-    }
-  }
-
-  private immutable = false;
+  get immutable() { return !!this.config.extras.immutable; }
   private _model: any;
   private _modelChangeValue: any = {};
   private _fields: FormlyFieldConfig[];
@@ -79,21 +56,14 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
-    private formlyConfig: FormlyConfig,
+    private config: FormlyConfig,
     private ngZone: NgZone,
-    // tslint:disable-next-line
-    @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
   ) {
-    if (immutable !== null) {
-      console.warn(`NgxFormly: passing 'immutable' attribute to 'formly-form' component is deprecated since v5.5, enable immutable mode through NgModule declaration instead.`);
-    }
-
-    this.immutable = (immutable !== null) || !!formlyConfig.extras.immutable;
   }
 
   ngDoCheck() {
-    if (this.formlyConfig.extras.checkExpressionOn === 'changeDetectionCheck') {
+    if (this.config.extras.checkExpressionOn === 'changeDetectionCheck') {
       this.checkExpressionChange();
     }
   }

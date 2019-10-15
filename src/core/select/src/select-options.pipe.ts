@@ -53,21 +53,12 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       return to.labelProp(item);
     }
 
-    if (this.shouldUseLegacyOption(item, to)) {
-      console.warn(`NgxFormly: legacy select option '{key, value}' is deprecated since v5.5, use '{value, label}' instead.`);
-      return item.value;
-    }
-
     return item[to.labelProp || 'label'];
   }
 
   private getValueProp(item, to): string {
     if (typeof to.valueProp === 'function') {
       return to.valueProp(item);
-    }
-
-    if (this.shouldUseLegacyOption(item, to)) {
-      return item.key;
     }
 
     return item[to.valueProp || 'value'];
@@ -86,14 +77,5 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     }
 
     return item[to.groupProp || 'group'];
-  }
-
-  private shouldUseLegacyOption(item, to) {
-    return !to.valueProp
-      && !to.labelProp
-      && item != null
-      && typeof item === 'object'
-      && 'key' in item
-      && 'value' in item;
   }
 }
