@@ -6,18 +6,18 @@ module.exports = {
       2,
       'always',
       [
+        'demo',
+        'guides',
         'core',
+        'schematics',
+        'json-schema',
         'material',
         'bootstrap',
         'ionic',
         'primeng',
         'kendo',
         'ng-zorro-antd',
-        'demo',
-        'guides',
-        'schematics',
         'nativescript',
-        'json-schema'
       ]
     ],
     'scope-empty': [1, 'never'],

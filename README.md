@@ -35,6 +35,7 @@ Formly is a dynamic (JSON powered) form library for Angular that bring unmatched
 | [Ionic](https://ionicframework.com)               | [Demo](https://ngx-formly.github.io/ngx-formly/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
 | [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://ngx-formly.github.io/ngx-formly/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://ngx-formly.github.io/ngx-formly/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
+| [ng-zorro-antd](https://ng.ant.design/docs/introduce/en) | [Demo](https://ngx-formly.github.io/ngx-formly/ui/ng-zorro-antd) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ng-zorro-antd) |
 | [NativeScript](https://www.nativescript.org)      | ||
 
 **Which Version to use?**
@@ -68,6 +69,7 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 | [Ionic](https://ionicframework.com)               | `@ngx-formly/ionic`         | `FormlyIonicModule`         |
 | [PrimeNG](http://primefaces.org/primeng/#/)       | `@ngx-formly/primeng`       | `FormlyPrimeNGModule`       |
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | `@ngx-formly/kendo`         | `FormlyKendoModule`         |
+| [ng-zorro-antd](https://ng.ant.design/docs/introduce/en) | `@ngx-formly/ng-zorro-antd` | `FormlyNgZorroAntdModule` |
 | [NativeScript](https://www.nativescript.org)      | `@ngx-formly/nativescript`  | `FormlyNativescriptModule`  |
 
 ```bash
@@ -88,6 +90,7 @@ import {FormlyModule} from '@ngx-formly/core';
  * - PrimeNG:       import {FormlyPrimeNGModule} from '@ngx-formly/primeng';
  * - Kendo:         import {FormlyKendoModule} from '@ngx-formly/kendo';
  * - NativeScript:  import {FormlyNativescriptModule} from '@ngx-formly/nativescript';
+ * - ng-zorro-antd:  import {FormlyNgZorroAntdModule} from '@ngx-formly/ng-zorro-antd';
  */
 import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 
@@ -104,6 +107,7 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
      * - PrimeNG:      FormlyPrimeNGModule
      * - Kendo:        FormlyKendoModule
      * - NativeScript: FormlyNativescriptModule
+     * - ng-zorro-antd: FormlyNgZorroAntdModule
      */
     FormlyBootstrapModule,
   ],
