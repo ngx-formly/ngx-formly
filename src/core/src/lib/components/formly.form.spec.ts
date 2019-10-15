@@ -322,11 +322,11 @@ describe('FormlyForm Component', () => {
     });
   });
 
-  it('should fallback null fields to empty array', () => {
+  it('should not throw an error when fields is null', () => {
     app = { fields: null };
     const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
 
-    expect(fixture.componentInstance.formlyForm.fields).toEqual([]);
+    expect(fixture.componentInstance.formlyForm.fields).toEqual(null);
   });
 
   it('should reset model', () => {
@@ -589,6 +589,8 @@ describe('FormlyForm Component', () => {
       fixture.detectChanges();
       expect(form.get('city')).not.toBeNull();
       expect(form.get('zipCode')).not.toBeNull();
+
+      fixture.destroy();
     }));
   });
 
