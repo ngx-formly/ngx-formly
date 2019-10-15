@@ -1,0 +1,32 @@
+{
+  "schema": {
+    "type": "object",
+    "oneOf": [
+      {
+        "title": "Option 1",
+        "properties": {
+          "lorem": {
+            "title": "lorem",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lorem"
+        ]
+      },
+      {
+        "title": "Option 2",
+        "properties": {
+          "ipsum": {
+            "title": "ipsum",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ipsum"
+        ]
+      }
+    ]
+  },
+  "model": {}
+}
