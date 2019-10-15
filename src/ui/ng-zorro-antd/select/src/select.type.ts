@@ -9,6 +9,7 @@ import { FieldType } from '@ngx-formly/core';
       [nzPlaceHolder]="to.placeholder"
       [formControl]="formControl"
       [formlyAttributes]="field"
+      [nzMode]="to.multiple ? 'multiple' : 'default'"
     >
       <ng-container *ngFor="let item of to.options | formlySelectOptions: field | async">
         <nz-option-group *ngIf="item.group" [nzLabel]="item.label">
