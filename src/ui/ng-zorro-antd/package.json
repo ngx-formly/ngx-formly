@@ -1,0 +1,9 @@
+{
+  "name": "@ngx-formly/ng-zorro-antd",
+  "version": "0.0.0-FORMLY-VERSION",
+  "license": "MIT",
+  "peerDependencies": {
+    "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
+    "ng-zorro-antd": ">=8.0.0"
+  }
+}

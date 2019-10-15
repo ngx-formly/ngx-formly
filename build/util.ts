@@ -2,12 +2,14 @@ import { execSync, ExecSyncOptions } from 'child_process';
 
 export const PACKAGES = [
   'core',
+  'schematics',
+
+  // UI
   'bootstrap',
   'material',
   'ionic',
   'primeng',
   'kendo',
-  'schematics',
   'nativescript',
   'ng-zorro-antd',
 ];
