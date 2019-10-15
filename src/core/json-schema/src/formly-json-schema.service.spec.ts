@@ -1011,7 +1011,7 @@ describe('Service: FormlyJsonschema', () => {
             ],
           });
 
-          builder.buildForm(new FormGroup({}), [f], {}, { _initialModel: { bar: 'bar' } } as any);
+          builder.buildForm(new FormGroup({}), [f], { bar: 'bar' }, {});
           const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
 
           expect(fooField.hide).toBeTruthy();

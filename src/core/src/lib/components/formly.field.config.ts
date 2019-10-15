@@ -242,6 +242,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _checkField?: (field: FormlyFieldConfigCache, ignoreCache?: boolean) => void;
   _markForCheck?: (field: FormlyFieldConfigCache) => void;
   _buildForm?: () => void;
+  _buildField?: (field: FormlyFieldConfig) => void;
   _componentFactoryResolver?: ComponentFactoryResolver;
   _injector?: Injector;
   _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
