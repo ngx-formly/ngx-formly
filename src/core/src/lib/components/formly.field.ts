@@ -8,6 +8,7 @@ import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config
 import { defineHiddenProp, wrapProperty } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-field',
@@ -23,6 +24,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
 
+  valueChangesUnsubscribe = () => {};
   constructor(
     private formlyConfig: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -59,6 +61,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   ngOnDestroy() {
     this.field && defineHiddenProp(this.field, '_componentRefs', []);
+    this.valueChangesUnsubscribe();
     this.triggerHook('onDestroy');
   }
 
@@ -100,6 +103,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
     if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
       this.renderField(this.containerRef, this.field, this.field.wrappers);
+      this.valueChangesUnsubscribe = this.valueChanges(this.field);
     }
   }
 
@@ -107,5 +111,32 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     field._componentRefs.push(ref);
     Object.assign(ref.instance, { field });
     ref.changeDetectorRef.detectChanges();
+  }
+
+  private valueChanges(field: FormlyFieldConfigCache) {
+    this.valueChangesUnsubscribe();
+    if (field.key && field.type && !field.fieldGroup) {
+      const control = field.formControl;
+      const valueChanges = field.modelOptions.debounce && field.modelOptions.debounce.default
+        ? control.valueChanges.pipe(debounceTime(field.modelOptions.debounce.default))
+        : control.valueChanges;
+
+      const sub = valueChanges.subscribe(value => {
+        // workaround for https://github.com/angular/angular/issues/13792
+        if ((control as any)._onChange.length > 1) {
+          control.setValue(value, {emitEvent: false});
+        }
+
+        if (field.parsers && field.parsers.length > 0) {
+          field.parsers.forEach(parserFn => value = parserFn(value));
+        }
+
+        field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
+      });
+
+      return () => sub.unsubscribe();
+    }
+
+    return () => {};
   }
 }
