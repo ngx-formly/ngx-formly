@@ -1,64 +1,46 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, NgZone } from '@angular/core';
-import { FormGroup, FormArray, FormGroupDirective, FormControl } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, EventEmitter, Output, OnDestroy, NgZone } from '@angular/core';
+import { FormGroup, FormArray } from '@angular/forms';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignFieldValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath, isObject } from '../utils';
-import { Subscription, Subject } from 'rxjs';
-import { debounceTime, switchMap, distinctUntilChanged, take } from 'rxjs/operators';
+import { clone } from '../utils';
+import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 
 @Component({
   selector: 'formly-form',
   template: `
-    <formly-field *ngFor="let field of fields" [field]="field"></formly-field>
+    <formly-field *ngFor="let f of fields" [field]="f"></formly-field>
   `,
   providers: [FormlyFormBuilder],
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
-  @Input() form: FormGroup | FormArray;
+  @Input()
+  set form(formControl: FormGroup | FormArray) { this.field.formControl = formControl; }
+  get form() { return this.field.formControl as (FormGroup | FormArray); }
 
   @Input()
-  set model(model: any) { this._model = this.immutable ? clone(model) : model; }
-  get model() {
-    if (!this._model) {
-      this._model = {};
-    }
-
-    return this._model;
-  }
+  set model(model: any) { this.setField({ model }); }
+  get model() { return this.field.model; }
 
   @Input()
-  set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable ? clone(fields) : fields; }
-  get fields() { return this._fields || []; }
+  set fields(fieldGroup: FormlyFieldConfig[]) { this.setField({ fieldGroup }); }
+  get fields() { return this.field.fieldGroup; }
 
   @Input()
-  set options(options: FormlyFormOptions) { this._options = this.immutable ? clone(options) : options; }
-  get options() { return this._options; }
+  set options(options: FormlyFormOptions) { this.setField({ options }); }
+  get options() { return this.field.options; }
 
   @Output() modelChange = new EventEmitter<any>();
 
-  get immutable() { return !!this.config.extras.immutable; }
-  private _model: any;
+  private field: FormlyFieldConfigCache = {};
   private _modelChangeValue: any = {};
-  private _fields: FormlyFieldConfig[];
-  private _options: FormlyFormOptions;
-  private modelChangeSubs: Subscription[] = [];
-  private modelChange$ = new Subject<void>();
-  private modelChangeSub = this.modelChange$.pipe(
-    switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
-  ).subscribe(() => this.ngZone.runGuarded(() => {
-    // runGuarded is used to keep the expression changes in-sync
-    // https://github.com/ngx-formly/ngx-formly/issues/2095
-    this.checkExpressionChange();
-    this.modelChange.emit(this._modelChangeValue = clone(this.model));
-  }));
+  private valueChangesUnsubscribe = () => {};
 
   constructor(
-    private formlyBuilder: FormlyFormBuilder,
+    private builder: FormlyFormBuilder,
     private config: FormlyConfig,
     private ngZone: NgZone,
-    @Optional() private parentFormGroup: FormGroupDirective,
   ) {
   }
 
@@ -69,154 +51,46 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // https://github.com/ngx-formly/ngx-formly/issues/2294
-    if (changes.model && this.field) {
-      this.field.model = this.model;
-    }
-
     if (changes.fields && this.form) {
       clearControl(this.form);
     }
 
     if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {
-      this.form = this.form || (new FormGroup({}));
-      this.setOptions();
-      this.options.updateInitialValue();
-      this.clearModelSubscriptions();
-      this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-      this.trackModelChanges(this.fields);
+      this.builder.buildField(this.field);
+      this.valueChangesUnsubscribe = this.valueChanges();
     }
   }
 
   ngOnDestroy() {
-    this.modelChangeSub.unsubscribe();
-    this.clearModelSubscriptions();
-  }
-
-  changeModel({ key, value, field }: { key: string, value: any, field: FormlyFieldConfig }) {
-    assignFieldValue(field, value);
-    this.modelChange$.next();
-  }
-
-  setOptions() {
-    if (!this.options) {
-      this.options = {};
-    }
-
-    if (!this.options.resetModel) {
-      this.options.resetModel = (model ?: any) => {
-        model = clone(isNullOrUndefined(model) ? (<FormlyFormOptionsCache> this.options)._initialModel : model);
-        if (this.model) {
-          Object.keys(this.model).forEach(k => delete this.model[k]);
-          Object.assign(this.model, model || {});
-        }
-
-        (<FormlyFormOptionsCache> this.options)._buildForm();
-
-        // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
-        // but only when the current component is a root one.
-        if (this.options.parentForm && this.options.parentForm.control === this.form) {
-          this.options.parentForm.resetForm(this.model);
-        } else {
-          this.form.reset(this.model);
-        }
-      };
-    }
-
-    if (!this.options.parentForm && this.parentFormGroup) {
-      defineHiddenProp(this.options, 'parentForm', this.parentFormGroup);
-      wrapProperty(this.options.parentForm, 'submitted', ({ firstChange }) => {
-        if (!firstChange) {
-          this.checkExpressionChange();
-          (<FormlyFormOptionsCache> this.options)._markForCheck({
-            fieldGroup: this.fields,
-            model: this.model,
-            formControl: this.form,
-            options: this.options,
-          });
-        }
-      });
-    }
-
-    if (!this.options.updateInitialValue) {
-      this.options.updateInitialValue = () => (<FormlyFormOptionsCache> this.options)._initialModel = clone(this.model);
-    }
-
-    if (!(<FormlyFormOptionsCache> this.options)._buildForm) {
-      (<FormlyFormOptionsCache> this.options)._buildForm = (emitModelChange = false) => {
-        this.clearModelSubscriptions();
-        this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
-        this.trackModelChanges(this.fields);
-
-        if (emitModelChange) {
-          this.modelChange.emit(this._modelChangeValue = clone(this.model));
-        }
-      };
-    }
+    this.valueChangesUnsubscribe();
   }
 
   private checkExpressionChange() {
-    if (this.options && (<FormlyFormOptionsCache> this.options)._checkField) {
-      (<FormlyFormOptionsCache> this.options)._checkField({
-        fieldGroup: this.fields,
-        model: this.model,
-        formControl: this.form,
-        options: this.options,
-      });
+    if (this.field.options && this.field.options._checkField) {
+      this.field.options._checkField(this.field);
     }
   }
 
-  private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
-    fields.forEach(field => {
-      if (field.key && !field.fieldGroup && field.formControl) {
-        const control = field.formControl;
-        let valueChanges = control.valueChanges.pipe(
-          distinctUntilChanged((x, y) => {
-            if (x !== y || Array.isArray(x) || isObject(x)) {
-              return false;
-            }
+  private valueChanges() {
+    this.valueChangesUnsubscribe();
 
-            return true;
-          }),
-        );
+    const sub = this.field.options.fieldChanges.pipe(
+      filter(({ type }) => type === 'valueChanges'),
+      switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
+    ).subscribe(() => this.ngZone.runGuarded(() => {
+      // runGuarded is used to keep in sync the expression changes
+      // https://github.com/ngx-formly/ngx-formly/issues/2095
+      this.checkExpressionChange();
+      this.modelChange.emit(this._modelChangeValue = clone(this.model));
+    }));
 
-        const { updateOn, debounce } = field.modelOptions;
-        if ((!updateOn || updateOn === 'change') && debounce && debounce.default > 0) {
-          valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
-        }
-
-        this.modelChangeSubs.push(valueChanges.subscribe((value) => {
-          // workaround for https://github.com/angular/angular/issues/13792
-          if (control instanceof FormControl && control['_fields'] && control['_fields'].length > 1) {
-            control.patchValue(value, { emitEvent: false, onlySelf: true });
-          }
-
-          if (field.parsers && field.parsers.length > 0) {
-            field.parsers.forEach(parserFn => value = parserFn(value));
-          }
-
-          this.changeModel({ key: [...rootKey, ...getKeyPath(field)].join('.'), value, field });
-        }));
-
-        // workaround for v5 (https://github.com/ngx-formly/ngx-formly/issues/2061)
-        const observers = control.valueChanges['observers'];
-        if (observers && observers.length > 1) {
-          observers.unshift(observers.pop());
-        }
-      }
-
-      if (field.fieldGroup && field.fieldGroup.length > 0) {
-        this.trackModelChanges(field.fieldGroup, field.key ? [...rootKey, ...getKeyPath(field)] : rootKey);
-      }
-    });
+    return () => sub.unsubscribe();
   }
 
-  private clearModelSubscriptions() {
-    this.modelChangeSubs.forEach(sub => sub.unsubscribe());
-    this.modelChangeSubs = [];
-  }
-
-  private get field(): any {
-    return this.fields && this.fields[0] && this.fields[0].parent;
+  private setField(field: FormlyFieldConfigCache) {
+    this.field = {
+      ...this.field,
+      ...(this.config.extras.immutable ? clone(field) : field),
+    };
   }
 }

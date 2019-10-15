@@ -85,7 +85,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     && control.value !== value
     && control instanceof FormControl
   ) {
-    control.patchValue(value);
+    control.patchValue(value, { emitEvent: false });
   }
 
   for (let i = 0; i < (paths.length - 1); i++) {

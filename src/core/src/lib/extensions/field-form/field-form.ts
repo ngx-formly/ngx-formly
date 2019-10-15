@@ -7,11 +7,10 @@ import { of } from 'rxjs';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
-  constructor() { }
-
+  private root: FormlyFieldConfigCache;
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent) {
-      return;
+    if (!this.root) {
+      this.root = field;
     }
 
     if (field.fieldGroup && !field.key) {
@@ -22,10 +21,11 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   postPopulate(field: FormlyFieldConfigCache) {
-    if (field.parent) {
+    if (this.root !== field) {
       return;
     }
 
+    this.root = null;
     const fieldsToUpdate = this.setValidators(field);
     if (fieldsToUpdate.length === 0) {
       return;

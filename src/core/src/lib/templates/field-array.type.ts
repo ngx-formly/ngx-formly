@@ -1,6 +1,6 @@
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
-import { clone, isNullOrUndefined, assignFieldValue } from '../utils';
+import { clone, isNullOrUndefined, assignFieldValue, getFieldValue } from '../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
@@ -47,8 +47,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     }
 
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
-
-    (<any> this.options)._buildForm(true);
+    this._buildField();
     markAsDirty && this.formControl.markAsDirty();
   }
 
@@ -57,8 +56,16 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     unregisterControl(this.field.fieldGroup[i], true);
     this.field.fieldGroup.splice(i, 1);
     this.field.fieldGroup.forEach((f, key) => f.key = `${key}`);
-
-    (<any> this.options)._buildForm(true);
+    this._buildField();
     markAsDirty && this.formControl.markAsDirty();
+  }
+
+  private _buildField() {
+    (this.options as any)._buildField(this.field);
+    this.options.fieldChanges.next({
+      field: this.field,
+      value: getFieldValue(this.field),
+      type: 'valueChanges',
+    });
   }
 }

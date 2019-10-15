@@ -149,6 +149,7 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         formControl: new FormControl(),
+        modelOptions: {},
         parent: {
           formControl: new FormGroup({}),
         },
@@ -200,6 +201,7 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         formControl: control,
+        modelOptions: {},
         parent: {
           formControl: new FormGroup({}),
         },
@@ -229,6 +231,7 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         wrappers: ['async_render'],
+        modelOptions: {},
         hooks: {
           onInit: f => f.formControl = new FormControl(),
         },
@@ -255,6 +258,7 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         formControl: new FormControl(),
+        modelOptions: {},
         wrappers: [],
         duplicate: true,
         options: {},
@@ -279,6 +283,7 @@ describe('FormlyField Component', () => {
         type: 'text',
         formControl: new FormControl(),
         options: {},
+        modelOptions: {},
         templateOptions: {
           placeholder: 'Title',
         },
@@ -304,6 +309,7 @@ describe('FormlyField Component', () => {
             type: 'text',
             formControl: new FormControl(),
             options: {},
+            modelOptions: {},
             templateOptions: { placeholder: 'Title1' },
           },
           {
@@ -311,6 +317,7 @@ describe('FormlyField Component', () => {
             type: 'text',
             formControl: new FormControl(),
             options: {},
+            modelOptions: {},
             templateOptions: { placeholder: 'Title2' },
           },
         ],
@@ -331,6 +338,7 @@ describe('FormlyField Component', () => {
           key: 'title',
           type: 'text',
           options: {},
+          modelOptions: {},
           templateOptions: {
             label: 'Title',
             placeholder: 'Title',
@@ -366,6 +374,7 @@ describe('FormlyField Component', () => {
         key: 'title',
         type: 'text',
         formControl: new FormControl(),
+        modelOptions: {},
         optionsTypes: ['other'],
         options: {},
         templateOptions: {
@@ -388,6 +397,8 @@ describe('FormlyField Component', () => {
       key: 'push',
       type: 'on-push',
       options: {},
+      formControl: new FormControl(),
+      modelOptions: {},
       templateOptions: {
         options: [
           { value: 1, label: 'Option 1' },
