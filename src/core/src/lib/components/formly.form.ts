@@ -11,9 +11,6 @@ import { debounceTime } from 'rxjs/operators';
   selector: 'formly-form',
   template: `
     <formly-field *ngFor="let field of fields" [field]="field"></formly-field>
-    <ng-container #content>
-      <ng-content></ng-content>
-    </ng-container>
   `,
   providers: [FormlyFormBuilder],
 })
@@ -33,13 +30,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   get options() { return this._options; }
 
   @Output() modelChange = new EventEmitter<any>();
-  @ViewChild('content', { static: true }) set content(content: ElementRef<HTMLElement>) {
-    if (content.nativeElement.nextSibling) {
-      console.warn(`NgxFormly: content projection for 'formly-form' component is deprecated since v5.5, you should avoid passing content inside the 'formly-form' tag.`);
-    }
-  }
 
-  private immutable = false;
+  get immutable() { return !!this.config.extras.immutable; }
   private _model: any;
   private _fields: FormlyFieldConfig[];
   private _options: FormlyFormOptions;
@@ -57,20 +49,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
-    private formlyConfig: FormlyConfig,
-    // tslint:disable-next-line
-    @Attribute('immutable') immutable,
+    private config: FormlyConfig,
     @Optional() private parentFormGroup: FormGroupDirective,
   ) {
-    if (immutable !== null) {
-      console.warn(`NgxFormly: passing 'immutable' attribute to 'formly-form' component is deprecated since v5.5, enable immutable mode through NgModule declaration instead.`);
-    }
-
-    this.immutable = (immutable !== null) || !!formlyConfig.extras.immutable;
   }
 
   ngDoCheck() {
-    if (this.formlyConfig.extras.checkExpressionOn === 'changeDetectionCheck') {
+    if (this.config.extras.checkExpressionOn === 'changeDetectionCheck') {
       this.checkExpressionChange();
     }
   }
