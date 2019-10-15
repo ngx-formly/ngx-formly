@@ -65,8 +65,16 @@ describe('FormlyForm Component', () => {
       ]});
   });
 
-  describe('immutable attr', () => {
+  describe('immutable', () => {
     beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          FormlyModule.forRoot({
+            extras: { immutable: true },
+          })
+        ]
+      });
+
       app = {
         form: new FormGroup({}),
         options: {},
@@ -76,7 +84,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not change the component inputs', () => {
-      const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       fixture.detectChanges();
 
       expect(app.options).toEqual({});
@@ -85,7 +93,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not change the fields when a model change', () => {
-      const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       fixture.detectChanges();
 
       const fields = fixture.componentInstance.formlyForm.fields;
@@ -96,7 +104,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not change the input model when a new value is emitted', () => {
-      const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       const spy = jasmine.createSpy('model change spy');
       const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
       const inputDe = fixture.debugElement.query(By.css('input')) as DebugElement;
