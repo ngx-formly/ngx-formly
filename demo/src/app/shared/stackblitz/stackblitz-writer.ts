@@ -54,9 +54,11 @@ const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
   'ng-zorro-antd': [
     {
       file: 'styles.scss',
-      filecontent: `
-      @import '~ng-zorro-antd/ng-zorro-antd.min.css';
-    `,
+      filecontent: {
+        default: `
+        @import '~ng-zorro-antd/ng-zorro-antd.min.css';
+      `,
+      },
     },
   ],
 };
@@ -128,7 +130,7 @@ const dependencies = {
   },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
-    'ng-zorro-antd': '^7.0.0',
+    'ng-zorro-antd': '^8.0.0',
   },
 };
 
