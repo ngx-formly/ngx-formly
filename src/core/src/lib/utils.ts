@@ -91,6 +91,10 @@ export function getFieldInitialValue(field: FormlyFieldConfig) {
 }
 
 export function getFieldValue(field: FormlyFieldConfig): any {
+  if (!field.parent) {
+    return undefined;
+  }
+
   let model = field.parent.model;
   for (const path of getKeyPath(field)) {
     if (!model) {

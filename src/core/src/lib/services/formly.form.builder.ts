@@ -1,49 +1,66 @@
-import { Injectable, ComponentFactoryResolver, Injector, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { Injectable, ComponentFactoryResolver, Injector, Optional, ChangeDetectorRef } from '@angular/core';
+import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyFormOptionsCache } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../components/formly.field.config';
 import { Subject } from 'rxjs';
-import { defineHiddenProp, reduceFormUpdateValidityCalls } from '../utils';
+import { defineHiddenProp, reduceFormUpdateValidityCalls, clone, isNullOrUndefined, wrapProperty } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
   constructor(
-    private formlyConfig: FormlyConfig,
+    private config: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
+    @Optional() private parentForm: FormGroupDirective,
   ) {}
 
   buildForm(formControl: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
-    if (!this.formlyConfig.extensions.core) {
+    this.buildField({ fieldGroup, model, formControl, options });
+  }
+
+  buildField(field: FormlyFieldConfig) {
+    if (!this.config.extensions.core) {
       throw new Error('NgxFormly: missing `forRoot()` call. use `forRoot()` when registering the `FormlyModule`.');
     }
 
-    const field = { fieldGroup, model, formControl, options: this._setOptions(options) };
-    reduceFormUpdateValidityCalls(formControl, () => this._buildForm(field));
-    field.options._checkField(field, true);
+    if (!field.parent) {
+      this._setOptions(field);
+      field.options.updateInitialValue();
+      reduceFormUpdateValidityCalls(field.formControl, () => this._buildField(field));
+      const options = (field as FormlyFieldConfigCache).options;
+      options && options._checkField(field, true);
+    } else {
+      this._buildField(field);
+    }
   }
 
-  private _buildForm(field: FormlyFieldConfigCache) {
+  private _buildField(field: FormlyFieldConfigCache) {
     this.getExtensions().forEach(extension => extension.prePopulate && extension.prePopulate(field));
     this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
 
     if (field.fieldGroup) {
-      field.fieldGroup.forEach((f) => this._buildForm(f));
+      field.fieldGroup.forEach((f) => this._buildField(f));
     }
 
     this.getExtensions().forEach(extension => extension.postPopulate && extension.postPopulate(field));
   }
 
   private getExtensions() {
-    return Object.keys(this.formlyConfig.extensions).map(name => this.formlyConfig.extensions[name]);
+    return Object.keys(this.config.extensions).map(name => this.config.extensions[name]);
   }
 
-  private _setOptions(options: FormlyFormOptionsCache) {
-    options = options || {};
-    options.formState = options.formState || {};
+  private _setOptions(field: FormlyFieldConfigCache) {
+    field.options = field.options || {};
+    field.options.formState = field.options.formState || {};
+    field.formControl = field.formControl || new FormGroup({});
 
+    const options = field.options;
     if (!options.showError) {
-      options.showError = this.formlyConfig.extras.showError;
+      options.showError = this.config.extras.showError;
+    }
+
+    if (!options.updateInitialValue) {
+      options.updateInitialValue = () => options._initialModel = clone(field.model);
     }
 
     if (!options.fieldChanges) {
@@ -78,13 +95,49 @@ export class FormlyFormBuilder {
       };
     }
 
+    if (!options.resetModel) {
+      options.resetModel = (model ?: any) => {
+        model = clone(isNullOrUndefined(model) ? options._initialModel : model);
+        if (field.model) {
+          Object.keys(field.model).forEach(k => delete field.model[k]);
+          Object.assign(field.model, model || {});
+        }
+
+        options._buildField(field);
+
+        // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
+        // but only when the current component is a root one.
+        if (options.parentForm && options.parentForm.control === field.formControl) {
+          options.parentForm.resetForm(model);
+        } else {
+          field.formControl.reset(model);
+        }
+      };
+    }
+
     if (!options._buildField) {
-      options._buildField = (field: FormlyFieldConfig) => {
-        this.buildForm(field.form, field.fieldGroup, field.model, field.options);
+      options._buildForm = () => console.warn(`Formly: use 'options._buildField' instead of 'options._buildForm'.`);
+      options._buildField = (f) => {
+        this.buildField(f);
         return field;
       };
     }
 
-    return options;
+    if (!(<any> options).buildForm) {
+      (<any> options).buildForm = () => {
+        console.warn(`Formly: 'buildForm' is deprecated since v5.0, use 'buildField' instead.`);
+        this.buildField(field);
+      };
+    }
+
+    if (!options.parentForm && this.parentForm) {
+      defineHiddenProp(options, 'parentForm', this.parentForm);
+      wrapProperty(options.parentForm, 'submitted', ({ firstChange }) => {
+        if (!firstChange) {
+          options._checkField(field);
+          options._markForCheck(field);
+        }
+      });
+    }
   }
 }
