@@ -81,7 +81,7 @@
     "core-js": "^3.4.1",
     "express": "^4.15.2",
     "nativescript-angular": "^8.20.3",
-    "ng-zorro-antd": "^8.4.0",
+    "ng-zorro-antd": "^8.5.0",
     "primeng": "^8.1.1",
     "rxjs": "^6.5.3",
     "tns-core-modules": "^6.2.1",

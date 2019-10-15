@@ -91,6 +91,7 @@ function mapUIName(uiTheme: string): string {
     ionic: 'Ionic',
     primeng: 'PrimeNG',
     kendo: 'Kendo',
+    'ng-zorro-antd': 'NgZorroAntd',
   };
 
   return uiMap[uiTheme];
