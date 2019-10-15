@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.1"></a>
+## [5.5.1](https://github.com/ngx-formly/ngx-formly/compare/v5.5.0...v5.5.1) (2019-10-15)
+
+
+### Bug Fixes
+
+* **core:** add warn when using legacy select option ([#1840](https://github.com/ngx-formly/ngx-formly/issues/1840)) ([bf2448d](https://github.com/ngx-formly/ngx-formly/commit/bf2448d))
+* **core:** apply sync value only when key is duplicated ([#1837](https://github.com/ngx-formly/ngx-formly/issues/1837)) ([4a34464](https://github.com/ngx-formly/ngx-formly/commit/4a34464))
+* **core:** merge existing options when replacing a field type ([#1838](https://github.com/ngx-formly/ngx-formly/issues/1838)) ([177c4f4](https://github.com/ngx-formly/ngx-formly/commit/177c4f4)), closes [#1836](https://github.com/ngx-formly/ngx-formly/issues/1836)
+
+
+
 <a name="5.5.0"></a>
 # [5.5.0](https://github.com/ngx-formly/ngx-formly/compare/v5.4.3...v5.5.0) (2019-10-09)
 
