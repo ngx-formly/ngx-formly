@@ -216,7 +216,7 @@ export interface WrapperOption {
   types?: string[];
 }
 
-export type FieldValidatorFn = (c: AbstractControl, field: FormlyFieldConfig, options?: { [id: string]: any; }): ValidationErrors | null;
+export type FieldValidatorFn = (c: AbstractControl, field: FormlyFieldConfig, options?: { [id: string]: any; }) => ValidationErrors | null;
 
 export interface ValidatorOption {
   name: string;
