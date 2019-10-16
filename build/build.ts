@@ -29,5 +29,9 @@ PACKAGES.map(name => {
     bugs: mainPkg.bugs,
   };
 
+  if (pkgJson.peerDependencies && pkgJson.peerDependencies['@ngx-formly/core']) {
+    pkgJson.peerDependencies['@ngx-formly/core'] = mainPkg.version;
+  }
+
   fs.writeFileSync(pkgPath, JSON.stringify(pkgJson, null, 2));
 });
