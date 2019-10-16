@@ -123,6 +123,7 @@
     "karma-coverage-istanbul-reporter": "^2.1.0",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
+    "lint-staged": "^9.4.2",
     "markdown-loader": "^5.1.0",
     "ng-packagr": "^5.6.1",
     "protractor": "^5.4.2",
@@ -140,6 +141,17 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "tslint --fix",
+      "git add"
+    ]
   },
   "bundlesize": [
     {
