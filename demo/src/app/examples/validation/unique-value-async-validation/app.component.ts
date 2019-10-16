@@ -12,11 +12,7 @@ export class AppComponent {
   model: any = {};
   options: FormlyFormOptions = {};
 
-  existingUsers = [
-    'user1',
-    'user2',
-    'user3',
-  ];
+  existingUsers = ['user1', 'user2', 'user3'];
 
   fields: FormlyFieldConfig[] = [
     {

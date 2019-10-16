@@ -7,14 +7,14 @@ import { FieldType } from '@ngx-formly/material/form-field';
   template: `
     <ng-template #selectAll let-selectOptions="selectOptions">
       <mat-option (click)="toggleSelectAll(selectOptions)">
-        <mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
-          [state]="getSelectAllState(selectOptions)">
+        <mat-pseudo-checkbox class="mat-option-pseudo-checkbox" [state]="getSelectAllState(selectOptions)">
         </mat-pseudo-checkbox>
         {{ to.selectAllOption }}
       </mat-option>
     </ng-template>
 
-    <mat-select [id]="id"
+    <mat-select
+      [id]="id"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
@@ -25,9 +25,13 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [errorStateMatcher]="errorStateMatcher"
       [aria-labelledby]="_getAriaLabelledby()"
       [disableOptionCentering]="to.disableOptionCentering"
-      >
-      <ng-container *ngIf="to.options | formlySelectOptions:field | async as selectOptions">
-        <ng-container *ngIf="to.multiple && to.selectAllOption" [ngTemplateOutlet]="selectAll" [ngTemplateOutletContext]="{ selectOptions: selectOptions }">
+    >
+      <ng-container *ngIf="to.options | formlySelectOptions: field | async as selectOptions">
+        <ng-container
+          *ngIf="to.multiple && to.selectAllOption"
+          [ngTemplateOutlet]="selectAll"
+          [ngTemplateOutletContext]="{ selectOptions: selectOptions }"
+        >
         </ng-container>
         <ng-container *ngFor="let item of selectOptions">
           <mat-optgroup *ngIf="item.group" [label]="item.label">
@@ -53,17 +57,11 @@ export class FormlyFieldSelect extends FieldType {
       return '';
     }
 
-    return this.value.length !== options.length
-      ? 'indeterminate'
-      : 'checked';
+    return this.value.length !== options.length ? 'indeterminate' : 'checked';
   }
 
   toggleSelectAll(options: any[]) {
-    this.formControl.setValue(
-      !this.value || this.value.length !== options.length
-        ? options.map(x => x.value)
-        : [],
-    );
+    this.formControl.setValue(!this.value || this.value.length !== options.length ? options.map(x => x.value) : []);
   }
 
   change($event: MatSelectChange) {

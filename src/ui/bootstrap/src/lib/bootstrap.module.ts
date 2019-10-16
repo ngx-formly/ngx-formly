@@ -21,4 +21,4 @@ import { FormlyBootstrapAddonsModule } from '@ngx-formly/bootstrap/addons';
     FormlyBootstrapAddonsModule,
   ],
 })
-export class FormlyBootstrapModule { }
+export class FormlyBootstrapModule {}

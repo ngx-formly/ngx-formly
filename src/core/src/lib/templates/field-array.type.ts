@@ -5,7 +5,8 @@ import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.
 import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl } from '../extensions/field-form/utils';
 
-export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
+export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F>
+  implements FormlyExtension {
   formControl: FormArray;
   defaultOptions: any = {
     defaultValue: [],
@@ -33,14 +34,14 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
       return;
     }
 
-    registerControl(field, new FormArray(
-      field.fieldGroup.map(f => f.formControl),
-      {
+    registerControl(
+      field,
+      new FormArray(field.fieldGroup.map(f => f.formControl), {
         validators: field._validators,
         asyncValidators: field._asyncValidators,
         updateOn: field.modelOptions.updateOn,
-      },
-    ));
+      }),
+    );
   }
 
   add(i?: number, initialModel?: any) {
@@ -58,7 +59,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     this.model.splice(i, 1);
     unregisterControl(this.field.fieldGroup[i]);
     this.field.fieldGroup.splice(i, 1);
-    this.field.fieldGroup.forEach((f, key) => f.key = `${key}`);
+    this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
     this._buildField();
     this.formControl.markAsDirty();
   }

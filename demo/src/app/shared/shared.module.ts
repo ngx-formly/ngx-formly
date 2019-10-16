@@ -36,12 +36,7 @@ import { CopierService } from './copier/copier.service';
 
     ExamplesRouterViewerComponent,
   ],
-  declarations: [
-    ExampleViewerComponent,
-    ExamplesRouterViewerComponent,
-  ],
-  providers: [
-    CopierService,
-  ],
+  declarations: [ExampleViewerComponent, ExamplesRouterViewerComponent],
+  providers: [CopierService],
 })
-export class SharedModule { }
+export class SharedModule {}

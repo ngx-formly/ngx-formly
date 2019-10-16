@@ -49,14 +49,13 @@ $margin-promotion-sections-small: 15px;
   }
 }
 
-
 .docs-homepage-row {
   display: flex;
   max-width: 920px;
   margin: $margin-promotion-sections 0;
 }
 
-.docs-homepage-row .docs-svg-image{
+.docs-homepage-row .docs-svg-image {
   max-width: 90%;
 }
 
@@ -85,7 +84,6 @@ $margin-promotion-sections-small: 15px;
   flex-direction: column;
   justify-content: center;
 }
-
 
 /**
   * Rules for when the device is detected to be a small screen.

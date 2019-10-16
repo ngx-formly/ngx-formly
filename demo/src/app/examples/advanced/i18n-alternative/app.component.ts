@@ -19,11 +19,8 @@ export class AppComponent {
         required: true,
         translate: true,
         label: 'HOME.SELECT',
-        change: (field) => this.translate.use(field.formControl.value),
-        options: [
-          { label: 'fr', value: 'fr' },
-          { label: 'en', value: 'en' },
-        ],
+        change: field => this.translate.use(field.formControl.value),
+        options: [{ label: 'fr', value: 'fr' }, { label: 'en', value: 'en' }],
       },
     },
   ];

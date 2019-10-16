@@ -20,19 +20,14 @@ import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
             component: ExamplesRouterViewerComponent,
             data: {
               debugFields,
-              examples: [
-                ...CommonExampleConfigs,
-              ],
+              examples: [...CommonExampleConfigs],
             },
           },
         ],
       },
     ]),
   ],
-  declarations: [ AppComponent ],
-  entryComponents: [
-    AppComponent,
-    ...CommonExampleComponents,
-  ],
+  declarations: [AppComponent],
+  entryComponents: [AppComponent, ...CommonExampleComponents],
 })
-export class ConfigModule { }
+export class ConfigModule {}

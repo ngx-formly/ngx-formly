@@ -8,7 +8,7 @@ import { registerControl } from './utils';
 export class FieldFormExtension implements FormlyExtension {
   prePopulate(field: FormlyFieldConfigCache) {
     Object.defineProperty(field, 'form', {
-      get: () => field.parent ? field.parent.formControl : field.formControl,
+      get: () => (field.parent ? field.parent.formControl : field.formControl),
       configurable: true,
     });
   }

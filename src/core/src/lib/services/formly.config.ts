@@ -18,10 +18,10 @@ export interface FormlyExtension {
  */
 @Injectable({ providedIn: 'root' })
 export class FormlyConfig {
-  types: {[name: string]: TypeOption} = {};
+  types: { [name: string]: TypeOption } = {};
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
-  messages: { [name: string]: string | ((error: any, field: FormlyFieldConfig) => string); } = {};
+  messages: { [name: string]: string | ((error: any, field: FormlyFieldConfig) => string) } = {};
   templateManipulators: {
     preWrapper: ManipulatorWrapper[];
     postWrapper: ManipulatorWrapper[];
@@ -32,7 +32,13 @@ export class FormlyConfig {
   extras: ConfigOption['extras'] = {
     checkExpressionOn: 'changeDetectionCheck',
     showError(field: FieldType) {
-      return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
+      return (
+        field.formControl &&
+        field.formControl.invalid &&
+        (field.formControl.touched ||
+          (field.options.parentForm && field.options.parentForm.submitted) ||
+          (field.field.validation && field.field.validation.show))
+      );
     },
   };
   extensions: { [name: string]: FormlyExtension } = {};
@@ -51,7 +57,7 @@ export class FormlyConfig {
       config.validationMessages.forEach(validation => this.addValidatorMessage(validation.name, validation.message));
     }
     if (config.extensions) {
-      config.extensions.forEach(c => this.extensions[c.name] = c.extension);
+      config.extensions.forEach(c => (this.extensions[c.name] = c.extension));
     }
     if (config.extras) {
       this.extras = { ...this.extras, ...config.extras };
@@ -60,10 +66,10 @@ export class FormlyConfig {
 
   setType(options: TypeOption | TypeOption[]) {
     if (Array.isArray(options)) {
-      options.forEach((option) => this.setType(option));
+      options.forEach(option => this.setType(option));
     } else {
       if (!this.types[options.name]) {
-        this.types[options.name] = <TypeOption> { name: options.name };
+        this.types[options.name] = <TypeOption>{ name: options.name };
       }
 
       ['component', 'extends', 'defaultOptions'].forEach(prop => {
@@ -73,7 +79,7 @@ export class FormlyConfig {
       });
 
       if (options.wrappers) {
-        options.wrappers.forEach((wrapper) => this.setTypeWrapper(options.name, wrapper));
+        options.wrappers.forEach(wrapper => this.setTypeWrapper(options.name, wrapper));
       }
     }
   }
@@ -129,7 +135,11 @@ export class FormlyConfig {
     }
 
     const cf = field._componentFactory;
-    if (cf && field.type === cf.type && (cf.componentRef && cf.componentRef.hostView && !cf.componentRef.hostView.destroyed)) {
+    if (
+      cf &&
+      field.type === cf.type &&
+      (cf.componentRef && cf.componentRef.hostView && !cf.componentRef.hostView.destroyed)
+    ) {
       return field._componentFactory.componentRef;
     }
 
@@ -144,9 +154,7 @@ export class FormlyConfig {
     defineHiddenProp(field, '_componentFactory', {
       type: field.type,
       component: type.component,
-      componentRef: resolver
-        ? resolver.resolveComponentFactory(type.component).create(injector)
-        : null,
+      componentRef: resolver ? resolver.resolveComponentFactory(type.component).create(injector) : null,
     });
 
     return field._componentFactory.componentRef;
@@ -155,7 +163,7 @@ export class FormlyConfig {
   setWrapper(options: WrapperOption) {
     this.wrappers[options.name] = options;
     if (options.types) {
-      options.types.forEach((type) => {
+      options.types.forEach(type => {
         this.setTypeWrapper(type, options.name);
       });
     }
@@ -171,7 +179,7 @@ export class FormlyConfig {
 
   setTypeWrapper(type: string, name: string) {
     if (!this.types[type]) {
-      this.types[type] = <TypeOption> {};
+      this.types[type] = <TypeOption>{};
     }
     if (!this.types[type].wrappers) {
       this.types[type].wrappers = [];
@@ -270,7 +278,7 @@ export interface ConfigOption {
   extensions?: ExtensionOption[];
   validationMessages?: ValidationMessageOption[];
   extras?: {
-    immutable?: boolean,
+    immutable?: boolean;
     showError?: (field: FieldType) => boolean;
 
     /**
@@ -278,6 +286,6 @@ export interface ConfigOption {
      * - `modelChange`: perform a check when the value of the form control changes.
      * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.
      */
-    checkExpressionOn?: 'modelChange' | 'changeDetectionCheck',
+    checkExpressionOn?: 'modelChange' | 'changeDetectionCheck';
   };
 }

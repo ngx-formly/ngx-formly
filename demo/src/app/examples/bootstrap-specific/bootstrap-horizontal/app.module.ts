@@ -14,14 +14,9 @@ import { FormlyHorizontalWrapper } from './horizontal-wrapper';
     FormlyBootstrapModule,
     FormlyModule.forRoot({
       wrappers: [{ name: 'form-field-horizontal', component: FormlyHorizontalWrapper }],
-      validationMessages: [
-        { name: 'required', message: 'This field is required' },
-      ],
+      validationMessages: [{ name: 'required', message: 'This field is required' }],
     }),
   ],
-  declarations: [
-    AppComponent,
-    FormlyHorizontalWrapper,
-  ],
+  declarations: [AppComponent, FormlyHorizontalWrapper],
 })
-export class AppModule { }
+export class AppModule {}
