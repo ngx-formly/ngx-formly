@@ -72,7 +72,7 @@
       true,
       "single"
     ],
-    "trailing-comma": false,
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
     "no-conflicting-lifecycle": false,
     "no-host-metadata-property": false,
     "no-input-rename": false,
