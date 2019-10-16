@@ -3,6 +3,8 @@ import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { FORMLY_VALIDATORS, defineHiddenProp, isPromise, wrapProperty, clone } from '../../utils';
 import { updateValidity } from '../field-form/utils';
+import { isObservable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -101,20 +103,27 @@ export class FieldValidationExtension implements FormlyExtension {
       let errors: any = validatorOption.validation(control, field, validatorOption.options);
       if (validatorName) {
         if (isPromise(errors)) {
-          return errors.then((result: boolean) => {
-            // workaround for https://github.com/angular/angular/issues/13200
-            if (field.options && field.options._markForCheck) {
-              field.options._markForCheck(field);
-            }
-
-            return this.handleResult(field, !!result, validatorOption);
-          });
+          return errors.then(v => this.handleAsyncResult(field, v, validatorOption));
         }
+
+        if (isObservable(errors)) {
+          return errors.pipe(map(v => this.handleAsyncResult(field, v, validatorOption)));
+        }
+
         errors = !!errors;
       }
 
       return this.handleResult(field, errors, validatorOption);
     };
+  }
+
+  private handleAsyncResult(field: FormlyFieldConfigCache, isValid, options: ValidatorOption) {
+    // workaround for https://github.com/angular/angular/issues/13200
+    if (field.options && field.options._markForCheck) {
+      field.options._markForCheck(field);
+    }
+
+    return this.handleResult(field, !!isValid, options);
   }
 
   private handleResult(field: FormlyFieldConfigCache, errors: any, { name, options }: ValidatorOption) {
