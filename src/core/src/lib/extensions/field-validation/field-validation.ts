@@ -2,6 +2,8 @@ import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined, isPromise } from '../../utils';
+import { isObservable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -83,25 +85,35 @@ export class FieldValidationExtension implements FormlyExtension {
 
       const isValid = validatorFn(control, field);
       if (validatorName) {
-        if (isPromise(isValid)) {
-          return isValid.then((result: boolean) => {
-            // workaround for https://github.com/angular/angular/issues/13200
-            if (field.options && field.options._markForCheck) {
-              field.options._markForCheck(field);
-            }
+        const handleAsyncResult = (v: boolean) => {
+          return this.handleAsyncResult(field, v, { validatorName, validator });
+        };
 
-            return this.handleResult(field, result, { validatorName, validator });
-          });
+        if (isPromise(isValid)) {
+          return isValid.then(handleAsyncResult);
         }
 
-        return this.handleResult(field, isValid, { validatorName, validator });
+        if (isObservable(isValid)) {
+          return isValid.pipe(map(handleAsyncResult));
+        }
+
+        return this.handleResult(field, isValid as any, { validatorName, validator });
       }
 
       return isValid;
     };
   }
 
-  private handleResult(field: FormlyFieldConfigCache, isValid, { validatorName, validator }) {
+  private handleAsyncResult(field: FormlyFieldConfigCache, isValid: boolean, { validatorName, validator }) {
+    // workaround for https://github.com/angular/angular/issues/13200
+    if (field.options && field.options._markForCheck) {
+      field.options._markForCheck(field);
+    }
+
+    return this.handleResult(field, isValid, { validatorName, validator });
+  }
+
+  private handleResult(field: FormlyFieldConfigCache, isValid: boolean, { validatorName, validator }) {
     if (isObject(validator) && field.formControl && validator.errorPath) {
       const control = field.formControl.get(validator.errorPath);
       if (control) {
