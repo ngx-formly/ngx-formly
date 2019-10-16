@@ -208,39 +208,41 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 
-  it('should disable sub-fields when parent is disabled', () => {
-    const field: FormlyFieldConfig = {
-      key: 'address',
-      templateOptions: { disabled: true },
-      fieldGroup: [
-        { key: 'city' },
-        { key: 'street' },
-      ],
-    };
+  describe('templateOptions disabled state', () => {
+    it('should disable sub-fields when parent is disabled', () => {
+      const field: FormlyFieldConfig = {
+        key: 'address',
+        templateOptions: { disabled: true },
+        fieldGroup: [
+          { key: 'city' },
+          { key: 'street' },
+        ],
+      };
 
-    builder.buildForm(form, [field], {}, {});
+      builder.buildForm(form, [field], {}, {});
 
-    const control = field.formControl;
-    expect(control.disabled).toEqual(true);
-    expect(control.get('city').disabled).toEqual(true);
-    expect(control.get('street').disabled).toEqual(true);
-  });
+      const control = field.formControl;
+      expect(control.disabled).toEqual(true);
+      expect(control.get('city').disabled).toEqual(true);
+      expect(control.get('street').disabled).toEqual(true);
+    });
 
-  it('should not affect parent disabled state', () => {
-    const field: FormlyFieldConfig = {
-      key: 'address',
-      fieldGroup: [
-        { key: 'city', templateOptions: { disabled: true } },
-        { key: 'street' },
-      ],
-    };
+    it('should not affect parent disabled state', () => {
+      const field: FormlyFieldConfig = {
+        key: 'address',
+        fieldGroup: [
+          { key: 'city', templateOptions: { disabled: true } },
+          { key: 'street' },
+        ],
+      };
 
-    builder.buildForm(form, [field], {}, {});
+      builder.buildForm(form, [field], {}, {});
 
-    const control = field.formControl;
-    expect(control.disabled).toEqual(false);
-    expect(control.get('city').disabled).toEqual(true);
-    expect(control.get('street').disabled).toEqual(false);
+      const control = field.formControl;
+      expect(control.disabled).toEqual(false);
+      expect(control.get('city').disabled).toEqual(true);
+      expect(control.get('street').disabled).toEqual(false);
+    });
   });
 
   it('should enable previously disabled control', () => {
@@ -628,155 +630,6 @@ describe('FormlyFormBuilder service', () => {
       builder.buildForm(form, [field], {}, {});
 
       expect(field.wrappers).toEqual(['label']);
-    });
-  });
-
-  describe('initialise field validators', () => {
-    const expectValidators = (invalidValue, validValue, errors?) => {
-      const formControl = form.get('title');
-      formControl.patchValue(invalidValue);
-      expect(formControl.valid).toBeFalsy();
-      if (errors) {
-        expect(formControl.errors).toEqual(errors);
-      }
-
-      formControl.patchValue(validValue);
-      expect(formControl.valid).toBeTruthy();
-    };
-
-    const expectAsyncValidators = (value) => {
-      const formControl = form.get('title');
-
-      formControl.patchValue(value);
-      expect(formControl.status).toBe('PENDING');
-    };
-
-    beforeEach(() => {
-      field = { key: 'title', type: 'input' };
-    });
-
-    describe('validators', () => {
-      describe('with validation option', () => {
-        it(`using pre-defined type`, () => {
-          field.validators = { validation: ['required'] };
-          builder.buildForm(form, [field], {}, {});
-
-          expectValidators(null, 'test');
-        });
-
-        it(`pass parameters to pre-defined type`, () => {
-          const spy = jasmine.createSpy('validator_with_options');
-          TestBed.get(FormlyConfig).setValidator({
-            name: 'required_with_options',
-            validation: spy,
-          });
-          const validation = { name: 'required_with_options', options: { foo: 'true' } };
-          field.validators = { validation: [validation] };
-          builder.buildForm(form, [field], {}, {});
-          expect(spy).toHaveBeenCalledWith(field.formControl, field, validation.options);
-        });
-
-        it(`pass parameters to FormlyConfig validator`, () => {
-          const spy = jasmine.createSpy('validator_with_options');
-          TestBed.get(FormlyConfig).setValidator({
-            name: 'required_with_options',
-            validation: spy,
-            options: { foo: 'true' },
-          });
-          field.validators = { validation: [{ name: 'required_with_options' }] };
-          builder.buildForm(form, [field], {}, {});
-          expect(spy).toHaveBeenCalledWith(field.formControl, field, { foo: 'true' });
-        });
-
-        it(`using custom type`, () => {
-          field.validators = { validation: [Validators.required] };
-          builder.buildForm(form, [field], {}, {});
-
-          expectValidators(null, 'test');
-        });
-      });
-
-      describe('without validation option', () => {
-        it(`using function`, () => {
-          field.validators = { required: (form) => form.value };
-          builder.buildForm(form, [field], {}, {});
-
-          expectValidators(null, 'test', {required: true});
-        });
-
-        it(`using expression property`, () => {
-          field.validators = {
-            required: { expression: (form, field) => field.key === 'title' ? form.value : false },
-          };
-          builder.buildForm(form, [field], {}, {});
-
-          expectValidators(null, 'test', {required: true});
-        });
-
-        it(`using expression property with validation option`, () => {
-          field.validators = {
-            validation: ['required'],
-            required: { expression: (form, field) => field.key === 'title' ? form.value : false },
-          };
-          builder.buildForm(form, [field], {}, {});
-
-          expectValidators(null, 'test', {required: true});
-        });
-      });
-    });
-
-    describe('asyncValidators', () => {
-      it(`uses asyncValidator objects`, () => {
-        field.asyncValidators = { custom: (control: FormControl) => new Promise(resolve => resolve( control.value !== 'test'))};
-        builder.buildForm(form, [field], {}, {});
-
-        expectAsyncValidators('test');
-      });
-
-      it(`uses asyncValidator objects`, () => {
-        field.asyncValidators = { validation: [(control: FormControl) =>
-        new Promise(resolve => resolve( control.value !== 'john' ? null : { uniqueUsername: true }))] };
-        builder.buildForm(form, [field], {}, {});
-
-        expectAsyncValidators('test');
-      });
-    });
-
-    describe('using templateOptions', () => {
-      const options = [
-        { name: 'required', value: true, valid: 'test', invalid: null },
-        { name: 'pattern', value: '[0-9]{5}', valid: '75964', invalid: 'ddd' },
-        { name: 'minLength', value: 5, valid: '12345', invalid: '123' },
-        { name: 'maxLength', value: 10, valid: '123', invalid: '12345678910' },
-        { name: 'min', value: 0, valid: 6, invalid: -6 },
-        { name: 'min', value: 5, valid: 6, invalid: 3 },
-        { name: 'min', value: 10, valid: 10, invalid: 2 },
-        { name: 'min', value: 10, valid: null, invalid: 2 },
-        { name: 'min', value: 10, valid: '', invalid: 2 },
-        { name: 'max', value: 10, valid: 8, invalid: 11 },
-        { name: 'max', value: 4, valid: 4, invalid: 5 },
-        { name: 'max', value: 4, valid: null, invalid: 5 },
-        { name: 'max', value: 4, valid: '', invalid: 5 },
-        { name: 'max', value: 0, valid: '', invalid: 5 },
-      ];
-
-      options.forEach(option => {
-        it(`${option.name}`, () => {
-          field.templateOptions = { [option.name]: option.value };
-          builder.buildForm(form, [field], {}, {});
-
-          expectValidators(option.invalid, option.valid);
-        });
-      });
-    });
-
-    it(`should take account of built-in validator changes`, () => {
-      field.templateOptions = {};
-      builder.buildForm(form, [field], {}, {});
-      expect(field.formControl.valid).toBeTruthy();
-
-      field.templateOptions.required = true;
-      expect(field.formControl.valid).toBeFalsy();
     });
   });
 
