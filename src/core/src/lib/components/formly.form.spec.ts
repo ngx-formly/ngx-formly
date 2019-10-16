@@ -195,8 +195,8 @@ describe('FormlyForm Component', () => {
         imports: [
           FormlyModule.forRoot({
             extras: { immutable: true },
-          })
-        ]
+          }),
+        ],
       });
 
       app = {
