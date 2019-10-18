@@ -13,7 +13,6 @@ import { FormlyFieldCustomInput } from './custom-input.component';
     ReactiveFormsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      extras: { immutable: true },
       validationMessages: [
         { name: 'required', message: 'This field is required' },
       ],
