@@ -4,6 +4,7 @@ import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import { ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { pairwise, startWith } from 'rxjs/operators';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -297,13 +298,21 @@ export class FormlyJsonschema {
             onInit(f) {
               const anyOfField = f.parent.fieldGroup[1];
               const value = anyOfField.fieldGroup.findIndex(isFieldValid);
-              const controlValue = value !== -1 ? value : 0;
-              f.formControl = new FormControl(mode === 'anyOf' ? [controlValue] : controlValue);
+              const normalizedValue = value !== -1 ? value : 0;
+              const formattedValue = mode === 'anyOf' ? [normalizedValue] : normalizedValue;
+              f.formControl = new FormControl(formattedValue);
               setTimeout(() => checkField(anyOfField));
 
-              subscription = f.formControl.valueChanges.subscribe(v => {
-                clearFieldModel(anyOfField);
-                checkField(anyOfField);
+              subscription = f.formControl.valueChanges.pipe(
+                startWith(formattedValue),
+                pairwise(),
+              ).subscribe(([p, q]) => {
+                if (!q.length && p.length) {
+                  f.formControl.patchValue(p);
+                } else {
+                  clearFieldModel(anyOfField);
+                  checkField(anyOfField);
+                }
               });
             },
             onDestroy() {
