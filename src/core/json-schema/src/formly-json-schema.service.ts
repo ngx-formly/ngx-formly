@@ -4,6 +4,7 @@ import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import { ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { pairwise, startWith } from 'rxjs/operators';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -18,12 +19,17 @@ function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
 }
 
-function clearFieldModel(field: FormlyFieldConfig) {
+function clearFieldModel(field: FormlyFieldConfig, indexToClear?: number) {
   if (field.key) {
     field.formControl.patchValue(undefined);
+    field.formControl.markAsUntouched();
     delete field.model[field.key];
   } else if (field.fieldGroup) {
-    field.fieldGroup.forEach(f => clearFieldModel(f));
+    if (indexToClear !== undefined) {
+      clearFieldModel(field.fieldGroup[indexToClear]);
+    } else {
+      field.fieldGroup.forEach(f => clearFieldModel(f));
+    }
   }
 }
 
@@ -134,6 +140,7 @@ export class FormlyJsonschema {
 
         if (schema.oneOf) {
           field.fieldGroup.push(this.resolveMultiSchema(
+            'oneOf',
             <JSONSchema7[]> schema.oneOf,
             options,
           ));
@@ -141,6 +148,7 @@ export class FormlyJsonschema {
 
         if (schema.anyOf) {
           field.fieldGroup.push(this.resolveMultiSchema(
+            'anyOf',
             <JSONSchema7[]> schema.anyOf,
             options,
           ));
@@ -274,7 +282,11 @@ export class FormlyJsonschema {
     }, baseSchema);
   }
 
-  private resolveMultiSchema(schemas: JSONSchema7[], options: IOptions): FormlyFieldConfig {
+  private resolveMultiSchema(
+    mode: 'oneOf' | 'anyOf',
+    schemas: JSONSchema7[],
+    options: IOptions,
+  ): FormlyFieldConfig {
     let subscription: Subscription = null;
 
     return {
@@ -283,19 +295,38 @@ export class FormlyJsonschema {
         {
           type: 'enum',
           templateOptions: {
+            multiple: mode === 'anyOf',
             options: schemas
               .map((s, i) => ({ label: s.title, value: i })),
           },
           hooks: {
             onInit(f) {
-              const anyOfField = f.parent.fieldGroup[1];
-              const value = anyOfField.fieldGroup.findIndex(isFieldValid);
-              f.formControl = new FormControl(value !== -1 ? value : 0);
-              setTimeout(() => checkField(anyOfField));
+              const modeField = f.parent.fieldGroup[1];
+              const value = modeField.fieldGroup.findIndex(isFieldValid);
+              const normalizedValue = value !== -1 ? value : 0;
+              const formattedValue = mode === 'anyOf' ? [normalizedValue] : normalizedValue;
+              f.formControl = new FormControl(formattedValue);
+              setTimeout(() => checkField(modeField));
 
-              subscription = f.formControl.valueChanges.subscribe(v => {
-                clearFieldModel(anyOfField);
-                checkField(anyOfField);
+              subscription = f.formControl.valueChanges.pipe(
+                startWith(formattedValue),
+                pairwise(),
+              ).subscribe(([p, q]) => {
+                if (!q.length && p.length) {
+                  f.formControl.patchValue(p);
+                } else {
+                  if (mode === 'anyOf') {
+                    if (p.length > q.length) {
+                      const indexToClear = p.reduce((acc, i) =>
+                        !!q.find(j => j === i) ? acc : i, undefined,
+                      );
+                      clearFieldModel(modeField, indexToClear);
+                    }
+                  } else {
+                    clearFieldModel(modeField);
+                  }
+                  checkField(modeField);
+                }
               });
             },
             onDestroy() {
@@ -308,8 +339,9 @@ export class FormlyJsonschema {
             ...this._toFieldConfig(s, options),
             hideExpression: (m, fs, f) => {
               const control = f.parent.parent.fieldGroup[0].formControl;
-
-              return !control || control.value !== i;
+              return !control || (Array.isArray(control.value)
+                  ? !control.value.includes(i)
+                  : control.value !== i);
             },
           })),
         },
