@@ -19,12 +19,17 @@ function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
 }
 
-function clearFieldModel(field: FormlyFieldConfig) {
+function clearFieldModel(field: FormlyFieldConfig, indexToClear?: number) {
   if (field.key) {
     field.formControl.patchValue(undefined);
+    field.formControl.markAsUntouched();
     delete field.model[field.key];
   } else if (field.fieldGroup) {
-    field.fieldGroup.forEach(f => clearFieldModel(f));
+    if (indexToClear !== undefined) {
+      clearFieldModel(field.fieldGroup[indexToClear]);
+    } else {
+      field.fieldGroup.forEach(f => clearFieldModel(f));
+    }
   }
 }
 
@@ -296,12 +301,12 @@ export class FormlyJsonschema {
           },
           hooks: {
             onInit(f) {
-              const anyOfField = f.parent.fieldGroup[1];
-              const value = anyOfField.fieldGroup.findIndex(isFieldValid);
+              const modeField = f.parent.fieldGroup[1];
+              const value = modeField.fieldGroup.findIndex(isFieldValid);
               const normalizedValue = value !== -1 ? value : 0;
               const formattedValue = mode === 'anyOf' ? [normalizedValue] : normalizedValue;
               f.formControl = new FormControl(formattedValue);
-              setTimeout(() => checkField(anyOfField));
+              setTimeout(() => checkField(modeField));
 
               subscription = f.formControl.valueChanges.pipe(
                 startWith(formattedValue),
@@ -310,8 +315,17 @@ export class FormlyJsonschema {
                 if (!q.length && p.length) {
                   f.formControl.patchValue(p);
                 } else {
-                  clearFieldModel(anyOfField);
-                  checkField(anyOfField);
+                  if (mode === 'anyOf') {
+                    if (p.length > q.length) {
+                      const indexToClear = p.reduce((acc, i) =>
+                        !!q.find(j => j === i) ? acc : i, undefined,
+                      );
+                      clearFieldModel(modeField, indexToClear);
+                    }
+                  } else {
+                    clearFieldModel(modeField);
+                  }
+                  checkField(modeField);
                 }
               });
             },
