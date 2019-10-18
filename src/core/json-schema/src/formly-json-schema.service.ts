@@ -134,6 +134,7 @@ export class FormlyJsonschema {
 
         if (schema.oneOf) {
           field.fieldGroup.push(this.resolveMultiSchema(
+            'oneOf',
             <JSONSchema7[]> schema.oneOf,
             options,
           ));
@@ -141,6 +142,7 @@ export class FormlyJsonschema {
 
         if (schema.anyOf) {
           field.fieldGroup.push(this.resolveMultiSchema(
+            'anyOf',
             <JSONSchema7[]> schema.anyOf,
             options,
           ));
@@ -274,7 +276,11 @@ export class FormlyJsonschema {
     }, baseSchema);
   }
 
-  private resolveMultiSchema(schemas: JSONSchema7[], options: IOptions): FormlyFieldConfig {
+  private resolveMultiSchema(
+    mode: 'oneOf' | 'anyOf',
+    schemas: JSONSchema7[],
+    options: IOptions,
+  ): FormlyFieldConfig {
     let subscription: Subscription = null;
 
     return {
@@ -283,6 +289,7 @@ export class FormlyJsonschema {
         {
           type: 'enum',
           templateOptions: {
+            multiple: mode === 'anyOf',
             options: schemas
               .map((s, i) => ({ label: s.title, value: i })),
           },
@@ -290,7 +297,8 @@ export class FormlyJsonschema {
             onInit(f) {
               const anyOfField = f.parent.fieldGroup[1];
               const value = anyOfField.fieldGroup.findIndex(isFieldValid);
-              f.formControl = new FormControl(value !== -1 ? value : 0);
+              const controlValue = value !== -1 ? value : 0;
+              f.formControl = new FormControl(mode === 'anyOf' ? [controlValue] : controlValue);
               setTimeout(() => checkField(anyOfField));
 
               subscription = f.formControl.valueChanges.subscribe(v => {
@@ -308,8 +316,9 @@ export class FormlyJsonschema {
             ...this._toFieldConfig(s, options),
             hideExpression: (m, fs, f) => {
               const control = f.parent.parent.fieldGroup[0].formControl;
-
-              return !control || control.value !== i;
+              return !control || (Array.isArray(control.value)
+                  ? !control.value.includes(i)
+                  : control.value !== i);
             },
           })),
         },
