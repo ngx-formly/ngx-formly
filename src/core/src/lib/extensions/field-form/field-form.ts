@@ -1,14 +1,21 @@
 import { FormlyExtension } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { AbstractControl, FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
 import { getKeyPath, getFieldValue, defineHiddenProp } from '../../utils';
 import { registerControl } from './utils';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
+  prePopulate(field: FormlyFieldConfigCache) {
+    Object.defineProperty(field, 'form', {
+      get: () => field.parent ? field.parent.formControl : field.formControl,
+      configurable: true,
+    });
+  }
+
   onPopulate(field: FormlyFieldConfigCache) {
     // TODO: add an option to skip extension
-    if (field.fieldArray) {
+    if (!field.parent || field.fieldArray) {
       return;
     }
 
@@ -16,8 +23,8 @@ export class FieldFormExtension implements FormlyExtension {
       this.addFormControl(field);
     }
 
-    if (field.parent && field.fieldGroup && !field.key) {
-      defineHiddenProp(field, 'formControl', field.parent.formControl);
+    if (field.form && field.fieldGroup && !field.key) {
+      defineHiddenProp(field, 'formControl', field.form);
     }
   }
 
@@ -27,23 +34,24 @@ export class FieldFormExtension implements FormlyExtension {
       asyncValidators: field._asyncValidators,
       updateOn: field.modelOptions.updateOn,
     };
-    let control: AbstractControl;
 
-    const form = field.parent.formControl as FormGroup;
+    const form = field.form;
     const value = getFieldValue(field);
     const paths = getKeyPath(field);
-    if (field.formControl instanceof AbstractControl || (form && form.get(paths))) {
-      control = field.formControl || form.get(paths);
-      if (
-        (controlOptions.validators !== control.validator)
-        || (controlOptions.asyncValidators !== control.asyncValidator)
-      ) {
-        if (controlOptions.validators !== control.validator) {
-          control.setValidators(controlOptions.validators);
-        }
-        if (controlOptions.asyncValidators !== control.asyncValidator) {
-          control.setAsyncValidators(controlOptions.asyncValidators);
-        }
+    let control = field.formControl || (form && form.get(paths));
+    if (control) {
+      let shouldUpdateValidity = false;
+      if (controlOptions.validators !== control.validator) {
+        shouldUpdateValidity = true;
+        control.setValidators(controlOptions.validators);
+      }
+
+      if (controlOptions.asyncValidators !== control.asyncValidator) {
+        shouldUpdateValidity = true;
+        control.setAsyncValidators(controlOptions.asyncValidators);
+      }
+
+      if (shouldUpdateValidity && control.parent) {
         control.updateValueAndValidity();
       }
     } else if (field.fieldGroup) {
