@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config';
-import { defineHiddenProp } from '../utils';
+import { defineHiddenProp, assignModelValue } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { debounceTime } from 'rxjs/operators';
@@ -144,6 +144,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
           field.parsers.forEach(parserFn => value = parserFn(value));
         }
 
+        assignModelValue(field.parent.model, [field.key], value);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 

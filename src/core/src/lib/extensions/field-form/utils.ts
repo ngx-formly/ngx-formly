@@ -31,30 +31,31 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
     if (delete field.templateOptions.disabled) {
       Object.defineProperty(field.templateOptions, 'disabled', {
         get: () => !field.formControl.enabled,
-        set: (value: boolean) => value ? field.formControl.disable() : field.formControl.enable(),
+        set: (value: boolean) => value ? field.formControl.disable({ onlySelf: true }) : field.formControl.enable({ onlySelf: true }),
         enumerable: true,
         configurable: true,
       });
     }
   }
 
-  let parent = field.parent.formControl as FormGroup;
-  if (!parent) {
+  if (!field.form || !field.parent) {
     return;
   }
 
+  let form = field.form;
   const paths = getKeyPath(field);
   for (let i = 0; i < (paths.length - 1); i++) {
     const path = paths[i];
-    if (!parent.get([path])) {
+    if (!form.get([path])) {
       registerControl({
         key: path,
         formControl: new FormGroup({}),
-        parent: { formControl: parent },
+        form,
+        parent: {},
       });
     }
 
-    parent = <FormGroup> parent.get([path]);
+    form = <FormGroup> form.get([path]);
   }
 
   const value = getFieldValue(field);
@@ -66,7 +67,7 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
     control.patchValue(value, { emitEvent: false });
   }
   const key = paths[paths.length - 1];
-  if (parent.get([key]) !== control) {
-    parent.setControl(key, control);
+  if (form.get([key]) !== control) {
+    form.setControl(key, control);
   }
 }

@@ -3,7 +3,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignModelValue, clone } from '../utils';
+import { clone } from '../utils';
 import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
@@ -68,10 +68,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     let enableCheckExprDebounce = false;
     const sub = field.options.fieldChanges.pipe(
-      tap(({ field, value, type }) => {
+      tap(({ type }) => {
         if (type === 'valueChanges') {
-          assignModelValue(field.parent.model, [field.key], value);
-          this.modelChange.emit(clone(this.model));
+          this.modelChange.emit(clone(this.field.model));
         }
       }),
       debounceTime(enableCheckExprDebounce ? 100 : 0),

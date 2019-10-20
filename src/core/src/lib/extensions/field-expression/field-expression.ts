@@ -16,7 +16,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent || field._expressionProperties) {
+    if (field._expressionProperties) {
       return;
     }
 
@@ -35,7 +35,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           field._expressionProperties[key] = {
             expression: this._evalExpression(
               expressionProperty,
-              field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
+              field.parent && field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
                 ? () => field.parent.templateOptions.disabled
                 : undefined,
             ),
@@ -140,7 +140,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
         if (key.indexOf('model.') === 0) {
           const path = key.replace(/^model\./, ''),
-            control = field.key && key === path ? field.formControl : field.parent.formControl.get(path);
+            control = field.key && field.key === path ? field.formControl : field.form.get(path);
 
           if (
             control

@@ -1,28 +1,27 @@
-import { FieldValidationExtension } from './field-validation';
-import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { FormlyConfig } from '../../services/formly.config';
-import { FormControl, Validators, ValidationErrors } from '@angular/forms';
+import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { FormControl, Validators, ValidationErrors, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
+import { createBuilder } from '../../test-utils';
 
-function buildField(field: FormlyFieldConfig): FormlyFieldConfigCache {
-  field = {
-    key: 'name',
-    modelOptions: {},
-    templateOptions: {},
-    parent: {},
-    ...field,
-  };
-
-  const config = new FormlyConfig();
-  config.addConfig({
-    validators: [
-      {name: 'required', validation: Validators.required },
-      { name: 'asyncRequired', validation: c => of(Validators.required(c)) },
-    ],
+function buildField({model, options, form: formControl, ...field}: FormlyFieldConfigCache): FormlyFieldConfigCache {
+  const builder = createBuilder({
+    extensions: ['core', 'validation'],
+    onInit: c => c.addConfig({
+      validators: [
+        { name: 'required', validation: Validators.required },
+        { name: 'asyncRequired', validation: ctrl => of(Validators.required(ctrl)) },
+      ],
+    }),
   });
 
-  const extension = new FieldValidationExtension(config);
-  extension.onPopulate(field);
+  field = { key: 'name', ...field };
+
+  builder.buildField({
+    model: model || {},
+    options,
+    formControl,
+    fieldGroup: [field],
+  });
 
   return field;
 }
@@ -124,22 +123,49 @@ describe('FieldValidationExtension: initialise field validators', () => {
     describe('without validation option', () => {
       it(`using function`, () => {
         const field = buildField({
-          validators: { required: (form) => form.value },
+          validators: { custom: (form) => form.value },
         });
 
         validate(field, 'test', null);
-        validate(field, null, { required: true });
+        validate(field, null, { custom: true });
       });
 
       it(`using expression property`, () => {
         const field = buildField({
           validators: {
-            required: { expression: (form, field) => field.key === 'name' ? form.value : false },
+            custom: { expression: (form, field) => field.key === 'name' ? form.value : false },
           },
         });
 
         validate(field, 'test', null);
-        validate(field, null, { required: true });
+        validate(field, null, { custom: true });
+      });
+
+      it(`using expression property with errorPath`, () => {
+        const field = buildField({
+          key: 'address',
+          fieldGroup: [{ key: 'city' }],
+          validators: {
+            custom: {
+              errorPath: 'pwd',
+              expression: () => false,
+              message: 'custom msg',
+            },
+          },
+        });
+
+        field.formControl = new FormGroup(
+          { pwd: new FormControl() },
+          { validators: field._validators },
+        );
+
+        field.formControl.setValue({ pwd: 'oo' });
+        expect(field.formControl.errors).toEqual({ custom: {
+          errorPath: 'pwd',
+        } });
+        expect(field.formControl.get('pwd').errors).toEqual({ custom: {
+          message: 'custom msg',
+        } });
       });
 
       it(`using expression property with validation option`, () => {
@@ -178,5 +204,16 @@ describe('FieldValidationExtension: initialise field validators', () => {
       asyncValidate(field, 'test', null);
       asyncValidate(field, 'custom', { custom: true });
     });
+  });
+
+  // https://github.com/ngx-formly/ngx-formly/issues/1578
+  it('should not override existing validation when re-build form', () => {
+    const field = buildField({
+      _validators: Validators.compose([Validators.required]),
+      formControl: new FormControl(null, { validators: Validators.required }),
+      templateOptions: { required: true },
+    });
+
+    expect(field._validators).toBe(field.formControl.validator);
   });
 });
