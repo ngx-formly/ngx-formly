@@ -8,13 +8,24 @@ import { of } from 'rxjs';
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
   private root: FormlyFieldConfigCache;
-  onPopulate(field: FormlyFieldConfigCache) {
+  prePopulate(field: FormlyFieldConfigCache) {
     if (!this.root) {
       this.root = field;
     }
 
+    Object.defineProperty(field, 'form', {
+      get: () => field.parent ? field.parent.formControl : field.formControl,
+      configurable: true,
+    });
+  }
+
+  onPopulate(field: FormlyFieldConfigCache) {
+    if (!field.parent) {
+      return;
+    }
+
     if (field.fieldGroup && !field.key) {
-      defineHiddenProp(field, 'formControl', field.parent.formControl);
+      defineHiddenProp(field, 'formControl', field.form);
     } else {
       this.addFormControl(field);
     }
@@ -48,7 +59,6 @@ export class FieldFormExtension implements FormlyExtension {
       const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
 
       if (field.fieldGroup) {
-        // TODO: move to postPopulate
         control = new FormGroup({}, controlOptions);
       } else {
         const value = field.key ? getFieldValue(field) : field.defaultValue;

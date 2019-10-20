@@ -64,8 +64,8 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     ['prefix', 'suffix'].forEach(type => wrapProperty(
       this.to,
       type,
-      (value: TemplateRef<any>) => value && Promise.resolve().then(() => {
-        (<any> this.field)[`_mat${type}`] = value;
+      ({ currentValue }) => currentValue && Promise.resolve().then(() => {
+        (<any> this.field)[`_mat${type}`] = currentValue;
         (<any> this.options)._markForCheck(this.field);
       }),
     ));

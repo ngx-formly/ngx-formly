@@ -44,6 +44,7 @@ export function findControl(field: FormlyFieldConfig): AbstractControl {
 
 export function registerControl(field: FormlyFieldConfigCache, control?: any, emitEvent = false) {
   control = control || field.formControl;
+
   if (!control['_fields']) {
     defineHiddenProp(control, '_fields', []);
   }
@@ -73,11 +74,11 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     }
   }
 
-  let parent = field.parent.formControl as FormGroup;
-  if (!parent || !field.key) {
+  if (!field.form || !field.key || !field.parent) {
     return;
   }
 
+  let form = field.form;
   const paths = getKeyPath(field);
   const value = getFieldValue(field);
   if (
@@ -90,23 +91,23 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
 
   for (let i = 0; i < (paths.length - 1); i++) {
     const path = paths[i];
-    if (!parent.get([path])) {
+    if (!form.get([path])) {
       updateControl(
-        parent,
+        form,
         { emitEvent },
-        () => parent.setControl(path, new FormGroup({})),
+        () => form.setControl(path, new FormGroup({})),
       );
     }
 
-    parent = <FormGroup> parent.get([path]);
+    form = <FormGroup> form.get([path]);
   }
 
   const key = paths[paths.length - 1];
-  if (!field._hide && parent.get([key]) !== control) {
+  if (!field._hide && form.get([key]) !== control) {
     updateControl(
-      parent,
+      form,
       { emitEvent },
-      () => parent.setControl(key, control),
+      () => form.setControl(key, control),
     );
   }
 }

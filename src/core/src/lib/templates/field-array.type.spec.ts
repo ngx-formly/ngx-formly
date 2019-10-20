@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test-utils';
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
@@ -298,6 +298,82 @@ describe('Array Field Type', () => {
 
     expect(app.fields[0].fieldGroup.length).toEqual(1);
     expect(app.form.value).toEqual({ array: [null] });
+  });
+
+  it('should update field visibility within field arrays', () => {
+    app.fields = [
+      {
+        key: 'address',
+        type: 'array',
+        hideExpression: model => model.length !== 1,
+        fieldArray: {
+          fieldGroup: [
+            {
+              key: 'city',
+              type: 'input',
+              hideExpression: 'model.addressIsRequired',
+            },
+          ],
+        },
+      },
+      { key: 'addressIsRequired' },
+    ];
+    app.model = {
+      address: [{
+        addressIsRequired: true,
+      }],
+    };
+
+    const fixture = createFormlyTestComponent();
+
+    const cityField = app.fields[0].fieldGroup[0].fieldGroup[0];
+
+    expect(cityField.templateOptions.hidden).toBeTruthy();
+    expect(cityField.hide).toBeTruthy();
+
+    app.model.address[0].addressIsRequired = false;
+    fixture.detectChanges();
+
+    expect(cityField.templateOptions.hidden).toBeFalsy();
+    expect(cityField.hide).toBeFalsy();
+  });
+
+  it('should update field validity within field arrays', () => {
+    app.fields = [
+      {
+        key: 'address',
+        type: 'array',
+        fieldArray: {
+          fieldGroup: [
+            {
+              key: 'city',
+              type: 'input',
+              expressionProperties: {
+                'templateOptions.required': 'model.addressIsRequired',
+              },
+            },
+          ],
+        },
+      },
+      { key: 'addressIsRequired' },
+    ];
+    app.model = {
+      address: [{
+        addressIsRequired: true,
+      }],
+    };
+
+    const fixture = createFormlyTestComponent();
+
+    const cityField = app.fields[0].fieldGroup[0].fieldGroup[0];
+
+    expect(cityField.formControl.status).toEqual('INVALID');
+
+    app.model.address[0].addressIsRequired = false;
+
+    fixture.detectChanges();
+
+    expect(cityField.formControl.status).toEqual('VALID');
   });
 });
 

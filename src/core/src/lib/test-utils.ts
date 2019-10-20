@@ -1,5 +1,40 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, EventEmitter } from '@angular/core';
+import { FormlyConfig, FormlyFormBuilder } from '@ngx-formly/core';
+import { defaultFormlyConfig } from './core.module';
+import { CoreExtension } from './extensions/core/core';
+import { FieldValidationExtension } from './extensions/field-validation/field-validation';
+import { FieldFormExtension } from './extensions/field-form/field-form';
+import { FieldExpressionExtension } from './extensions';
+
+interface IBuilderOption {
+  onInit?: (c: FormlyConfig) => void;
+  extensions?: string[];
+}
+
+export function createBuilder({ extensions, onInit }: IBuilderOption = {}) {
+  const config = new FormlyConfig();
+  config.addConfig({
+    types: [
+      { name: 'formly-group', component: MockComponent({ selector: 'formly-group' }) },
+      { name: 'formly-template', component: MockComponent({ selector: 'formly-template' }) },
+    ],
+    extensions: [
+      { name: 'core', extension: new CoreExtension(config) },
+      { name: 'validation', extension: new FieldValidationExtension(config) },
+      { name: 'form', extension: new FieldFormExtension() },
+      { name: 'expression', extension: new FieldExpressionExtension() },
+    ].filter(({ name }) => !extensions || extensions.includes(name)),
+  });
+  onInit && onInit(config);
+
+  return new FormlyFormBuilder(
+    config,
+    null,
+    null,
+    null,
+  );
+}
 
 export function createGenericTestComponent<T>(html: string, type: new (...args: any[]) => T): ComponentFixture<T> {
   TestBed.overrideComponent(type, {set: {template: html}});
