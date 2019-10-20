@@ -22,9 +22,9 @@ import { FieldType } from '@ngx-formly/core';
       [min]="to.minDate ? to.minDate : to.min"
       [max]="to.maxDate ? to.maxDate : to.max"
       [formControl]="formControl"
-      [ionFormlyAttributes]="field">
+      [ionFormlyAttributes]="field"
+    >
     </ion-datetime>
   `,
 })
-export class FormlyFieldDatetime extends FieldType {
-}
+export class FormlyFieldDatetime extends FieldType {}

@@ -6,9 +6,7 @@ import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 import { Directive } from '@angular/core';
 
-// TODO remove `selector` in V6
-// tslint:disable-next-line
-@Directive({ selector: '[ɵfieldArray]' })
+@Directive()
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
   get formControl() {
     return this.field.formControl as FormArray;
@@ -55,7 +53,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     this.model.splice(i, 1);
     unregisterControl(this.field.fieldGroup[i], true);
     this.field.fieldGroup.splice(i, 1);
-    this.field.fieldGroup.forEach((f, key) => f.key = `${key}`);
+    this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
     this._buildField();
     markAsDirty && this.formControl.markAsDirty();
   }

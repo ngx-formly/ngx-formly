@@ -6,14 +6,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 import { AppComponent } from './app.component';
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormlyBootstrapModule,
-    FormlyModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, FormlyBootstrapModule, FormlyModule.forRoot()],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -8,7 +8,7 @@ import { FieldType } from '@ngx-formly/core';
       [class.k-state-invalid]="showError"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [data]="to.options | formlySelectOptions:field | async"
+      [data]="to.options | formlySelectOptions: field | async"
       [textField]="'label'"
       [valueField]="'value'"
       (valueChange)="to.change && to.change(field, $event)"

@@ -24,9 +24,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       options = observableOf(options);
     }
 
-    return (options as Observable<any>).pipe(
-      map(value => this.transformOptions(value, field)),
-    );
+    return (options as Observable<any>).pipe(map(value => this.transformOptions(value, field)));
   }
 
   private transformOptions(options: any[], field?: FormlyFieldConfig): ISelectOption[] {
@@ -74,9 +72,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
 
   private transformSelectProps(field: FormlyFieldConfig): ITransformOption {
     const to = field && field.templateOptions ? field.templateOptions : {};
-    const selectPropFn = (prop: any) => typeof prop === 'function'
-      ? prop
-      : o => o[prop];
+    const selectPropFn = (prop: any) => (typeof prop === 'function' ? prop : o => o[prop]);
 
     return {
       groupProp: selectPropFn(to.groupProp || 'group'),

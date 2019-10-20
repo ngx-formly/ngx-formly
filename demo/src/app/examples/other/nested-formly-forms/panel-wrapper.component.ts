@@ -12,5 +12,4 @@ import { FieldWrapper } from '@ngx-formly/core';
     </div>
   `,
 })
-export class PanelWrapperComponent extends FieldWrapper {
-}
+export class PanelWrapperComponent extends FieldWrapper {}

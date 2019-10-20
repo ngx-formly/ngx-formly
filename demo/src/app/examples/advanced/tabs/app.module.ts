@@ -28,4 +28,4 @@ import { FormlyFieldTabs } from './tabs.type';
     FormlyFieldTabs,
   ],
 })
-export class AppModule { }
+export class AppModule {}

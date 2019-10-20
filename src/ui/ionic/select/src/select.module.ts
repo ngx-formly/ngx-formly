@@ -18,12 +18,14 @@ import { FormlyFieldSelect } from './select.type';
     FormlyFormFieldModule,
     FormlyCoreSelectModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'select',
-        component: FormlyFieldSelect,
-        wrappers: ['form-field'],
-      }],
+      types: [
+        {
+          name: 'select',
+          component: FormlyFieldSelect,
+          wrappers: ['form-field'],
+        },
+      ],
     }),
   ],
 })
-export class FormlySelectModule { }
+export class FormlySelectModule {}

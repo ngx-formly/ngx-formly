@@ -7,7 +7,7 @@ module.exports = {
   mode: 'none',
   entry: {
     // This is our Express server for Dynamic universal
-    server: './projects/ssr/server.ts'
+    server: './integration/ssr/server.ts'
   },
   externals: {
     './dist/server/main': 'require("./server/main")'

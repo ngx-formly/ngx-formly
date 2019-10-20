@@ -13,14 +13,9 @@ import { RepeatTypeComponent } from './repeat-section.type';
     ReactiveFormsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      types: [
-        { name: 'repeat', component: RepeatTypeComponent },
-      ],
+      types: [{ name: 'repeat', component: RepeatTypeComponent }],
     }),
   ],
-  declarations: [
-    AppComponent,
-    RepeatTypeComponent,
-  ],
+  declarations: [AppComponent, RepeatTypeComponent],
 })
-export class AppModule { }
+export class AppModule {}

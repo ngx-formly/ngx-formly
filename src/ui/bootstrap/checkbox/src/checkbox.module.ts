@@ -24,4 +24,4 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     }),
   ],
 })
-export class FormlyBootstrapCheckboxModule { }
+export class FormlyBootstrapCheckboxModule {}

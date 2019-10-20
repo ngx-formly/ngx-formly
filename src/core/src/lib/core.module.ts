@@ -31,15 +31,7 @@ export function defaultFormlyConfig(formlyConfig: FormlyConfig): ConfigOption {
 }
 
 @NgModule({
-  declarations: [
-    FormlyForm,
-    FormlyField,
-    FormlyAttributes,
-    FormlyGroup,
-    FormlyValidationMessage,
-    FormlyTemplateType,
-    FieldArrayType as any,
-  ],
+  declarations: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage, FormlyTemplateType],
   entryComponents: [FormlyGroup, FormlyTemplateType],
   exports: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage],
   imports: [CommonModule],
@@ -70,10 +62,7 @@ export class FormlyModule {
     };
   }
 
-  constructor(
-    configService: FormlyConfig,
-    @Optional() @Inject(FORMLY_CONFIG) configs: ConfigOption[] = [],
-  ) {
+  constructor(configService: FormlyConfig, @Optional() @Inject(FORMLY_CONFIG) configs: ConfigOption[] = []) {
     if (!configs) {
       return;
     }
