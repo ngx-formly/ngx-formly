@@ -14,13 +14,9 @@ import { AppComponent } from './app.component';
     MatStepperModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      validationMessages: [
-        { name: 'required', message: 'This field is required' },
-      ],
+      validationMessages: [{ name: 'required', message: 'This field is required' }],
     }),
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

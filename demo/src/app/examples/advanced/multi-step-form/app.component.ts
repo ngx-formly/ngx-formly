@@ -68,7 +68,7 @@ export class AppComponent {
   ];
 
   form = new FormArray(this.steps.map(() => new FormGroup({})));
-  options = this.steps.map(() => <FormlyFormOptions> {});
+  options = this.steps.map(() => <FormlyFormOptions>{});
 
   prevStep(step) {
     this.activedStep = step - 1;

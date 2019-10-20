@@ -19,11 +19,13 @@ import { UIComponent } from './ui.component';
     FormlyMatSliderModule,
     FormlyMatDatepickerModule,
     MatNativeDateModule,
-    RouterModule.forChild([{
-      path: '',
-      component: UIComponent,
-    }]),
+    RouterModule.forChild([
+      {
+        path: '',
+        component: UIComponent,
+      },
+    ]),
   ],
   providers: [],
 })
-export class UIMaterialModule { }
+export class UIMaterialModule {}

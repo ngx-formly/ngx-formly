@@ -24,4 +24,4 @@ import { FormlyFieldTextArea } from './textarea.type';
     }),
   ],
 })
-export class FormlyBootstrapTextAreaModule { }
+export class FormlyBootstrapTextAreaModule {}

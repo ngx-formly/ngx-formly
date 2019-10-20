@@ -37,8 +37,6 @@ import { AppComponent } from './app.component';
   providers: [
     { provide: FORMLY_CONFIG, multi: true, useFactory: registerTranslateExtension, deps: [TranslateService] },
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

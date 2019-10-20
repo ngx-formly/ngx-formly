@@ -12,10 +12,5 @@ import { Component } from '@angular/core';
   `,
 })
 export class AppComponent {
-  links = [
-    'material',
-    'bootstrap',
-    'kendo',
-    'primeng',
-  ];
+  links = ['material', 'bootstrap', 'kendo', 'primeng'];
 }

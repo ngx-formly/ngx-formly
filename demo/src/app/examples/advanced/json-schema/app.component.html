@@ -1,8 +1,10 @@
-
 <div style="margin-bottom: 20px;">
-  <button *ngFor="let example of examples"
-  (click)="loadExample(example)"
-  class="btn" [class.btn-primary]="type === example">
+  <button
+    *ngFor="let example of examples"
+    (click)="loadExample(example)"
+    class="btn"
+    [class.btn-primary]="type === example"
+  >
     {{ example }}
   </button>
 </div>

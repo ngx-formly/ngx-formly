@@ -13,8 +13,7 @@ describe('Server side rendering', () => {
       .and('contain', 'toggle label')
       .and('contain', 'native-select label')
       .and('contain', 'slider label')
-      .and('contain', 'datepicker label')
-    ;
+      .and('contain', 'datepicker label');
   });
 
   it('should render bootstrap ui', () => {
@@ -25,8 +24,7 @@ describe('Server side rendering', () => {
       .and('contain', 'radio label')
       .and('contain', 'checkbox label')
       .and('contain', 'multicheckbox label')
-      .and('contain', 'select label')
-    ;
+      .and('contain', 'select label');
   });
 
   it('should render kendo ui', () => {
@@ -36,8 +34,7 @@ describe('Server side rendering', () => {
       .and('contain', 'textarea label')
       .and('contain', 'radio label')
       .and('contain', 'checkbox label')
-      .and('contain', 'select label')
-    ;
+      .and('contain', 'select label');
   });
 
   it('should render primeng ui', () => {
@@ -47,7 +44,6 @@ describe('Server side rendering', () => {
       .and('contain', 'textarea label')
       .and('contain', 'radio label')
       .and('contain', 'checkbox label')
-      .and('contain', 'select label')
-    ;
+      .and('contain', 'select label');
   });
 });

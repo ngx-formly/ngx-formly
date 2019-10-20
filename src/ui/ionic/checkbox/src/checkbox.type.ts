@@ -4,11 +4,7 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-ion-checkbox',
   template: `
-    <ion-checkbox
-      [formControl]="formControl"
-      [ionFormlyAttributes]="field">
-    </ion-checkbox>
+    <ion-checkbox [formControl]="formControl" [ionFormlyAttributes]="field"> </ion-checkbox>
   `,
 })
-export class FormlyFieldCheckbox extends FieldType {
-}
+export class FormlyFieldCheckbox extends FieldType {}

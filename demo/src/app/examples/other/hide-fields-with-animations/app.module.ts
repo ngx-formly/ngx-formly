@@ -21,17 +21,10 @@ export function animationExtension(field: FormlyFieldConfig) {
     ReactiveFormsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      wrappers: [
-        { name: 'animation', component: AnimationWrapperComponent },
-      ],
-      extensions: [
-        { name: 'animation', extension: { onPopulate: animationExtension } },
-      ],
+      wrappers: [{ name: 'animation', component: AnimationWrapperComponent }],
+      extensions: [{ name: 'animation', extension: { onPopulate: animationExtension } }],
     }),
   ],
-  declarations: [
-    AppComponent,
-    AnimationWrapperComponent,
-  ],
+  declarations: [AppComponent, AnimationWrapperComponent],
 })
-export class AppModule { }
+export class AppModule {}

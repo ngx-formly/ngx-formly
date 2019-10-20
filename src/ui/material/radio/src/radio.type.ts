@@ -15,7 +15,8 @@ import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
         [id]="id + '_' + i"
         [color]="to.color"
         [labelPosition]="to.labelPosition"
-        [value]="option.value">
+        [value]="option.value"
+      >
         {{ option.label }}
       </mat-radio-button>
     </mat-radio-group>

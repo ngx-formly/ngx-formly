@@ -1,4 +1,14 @@
-import { Directive, ElementRef, Input, OnChanges, SimpleChanges, Renderer2, DoCheck, Inject, OnDestroy } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  Renderer2,
+  DoCheck,
+  Inject,
+  OnDestroy,
+} from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
 import { wrapProperty, defineHiddenProp, FORMLY_VALIDATORS } from '../utils';
 import { DOCUMENT } from '@angular/common';
@@ -16,14 +26,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   private document: Document;
   private uiAttributesCache: any = {};
-  private uiAttributes = [
-    ...FORMLY_VALIDATORS,
-    'tabindex',
-    'placeholder',
-    'readonly',
-    'disabled',
-    'step',
-  ];
+  private uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'];
 
   /**
    * HostBinding doesn't register listeners conditionally which may produce some perf issues.
@@ -32,24 +35,16 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    */
   private uiEvents = {
     listeners: [],
-    events: [
-      'click',
-      'keyup',
-      'keydown',
-      'keypress',
-      'change',
-    ],
+    events: ['click', 'keyup', 'keydown', 'keypress', 'change'],
   };
 
-  get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
+  get to(): FormlyTemplateOptions {
+    return this.field.templateOptions || {};
+  }
 
   private get fieldAttrElements(): ElementRef[] { return (this.field && this.field['_elementRefs']) || []; }
 
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    @Inject(DOCUMENT) _document: any,
-  ) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
     this.document = _document;
   }
 
@@ -65,11 +60,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
         if (callback) {
           this.uiEvents.listeners.push(
-            this.renderer.listen(
-              this.elementRef.nativeElement,
-              eventName,
-              (e) => callback(this.field, e),
-            ),
+            this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => callback(this.field, e)),
           );
         }
       });
