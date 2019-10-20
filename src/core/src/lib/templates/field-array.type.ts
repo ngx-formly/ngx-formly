@@ -12,6 +12,13 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   };
 
   onPopulate(field: FormlyFieldConfig) {
+    if (!field.formControl) {
+      registerControl(field, new FormArray(
+        [],
+        { updateOn: field.modelOptions.updateOn },
+      ));
+    }
+
     field.fieldGroup = field.fieldGroup || [];
 
     const length = field.model ? field.model.length : 0;
@@ -26,17 +33,6 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
       const f = { ...clone(field.fieldArray), key: `${i}` };
       field.fieldGroup.push(f);
     }
-  }
-
-  postPopulate(field: FormlyFieldConfigCache) {
-    if (field.formControl) {
-      return;
-    }
-
-    registerControl(field, new FormArray(
-      field.fieldGroup.map(f => f.formControl),
-      { updateOn: field.modelOptions.updateOn },
-    ));
   }
 
   add(i?: number, initialModel?: any) {

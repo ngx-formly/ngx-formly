@@ -6,56 +6,69 @@ describe('registerControl', () => {
     const field = {
       key: '0',
       formControl: new FormControl(),
+      form: new FormArray([]) as any,
       parent: {
         model: {},
-        formControl: new FormArray([new FormControl()]),
       },
     };
 
     registerControl(field);
     expect(field.formControl.parent).not.toBeNull();
-    expect(field.parent.formControl.controls.length).toEqual(1);
-    expect(field.parent.formControl.get('0')).toEqual(field.formControl);
+    expect(field.form.controls.length).toEqual(1);
+    expect(field.form.get('0')).toEqual(field.formControl);
   });
 
   it('FormGroup', () => {
     const field = {
       key: '0',
       formControl: new FormControl(),
+      form: new FormGroup({}),
       parent: {
         model: {},
-        formControl: new FormGroup({}),
       },
     };
 
     registerControl(field);
-    expect(field.parent.formControl.get('0')).toEqual(field.formControl);
+    expect(field.form.get('0')).toEqual(field.formControl);
     expect(field.formControl.parent).not.toBeNull();
   });
-
 
   it('FormGroup with nested field key', () => {
     const field = {
       key: 'test.0',
       formControl: new FormControl(),
+      form: new FormGroup({ test: new FormGroup({}) }),
       parent: {
-        formControl: new FormGroup({ test: new FormGroup({}) }),
         model: {},
       },
     };
 
     registerControl(field);
-    expect(field.parent.formControl.get('test.0')).toEqual(field.formControl);
+    expect(field.form.get('test.0')).toEqual(field.formControl);
     expect(field.formControl.parent).not.toBeNull();
   });
 
-  it('should take account of  model changes', () => {
+  it('should replace existing control with the field one', () => {
     const field = {
       key: '0',
       formControl: new FormControl(),
+      form: new FormArray([new FormControl()]) as any,
+      parent: {
+        model: {},
+      },
+    };
+
+    registerControl(field);
+    expect(field.form.get('0')).toEqual(field.formControl);
+  });
+
+  it('should take account of model changes', () => {
+    const field = {
+      key: '0',
+      formControl: new FormControl(),
+      form: new FormGroup({}),
       parent: {
         model: { '0': 'test' },
-        formControl: new FormGroup({}),
       },
     };
 
