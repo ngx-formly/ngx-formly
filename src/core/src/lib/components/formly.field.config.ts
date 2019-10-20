@@ -15,7 +15,6 @@ export interface FormlyFieldConfig {
    */
   readonly parent?: FormlyFieldConfig;
 
-
   readonly options?: FormlyFormOptions;
   readonly form?: FormGroup;
 
@@ -102,7 +101,9 @@ export interface FormlyFieldConfig {
   /**
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
-  expressionProperties?: { [property: string]: string | ((model: any, formState: any, field?: FormlyFieldConfig) => any) | Observable<any> };
+  expressionProperties?: {
+    [property: string]: string | ((model: any, formState: any, field?: FormlyFieldConfig) => any) | Observable<any>;
+  };
 
   /**
    * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.
@@ -202,11 +203,11 @@ export interface FormlyTemplateOptions {
   min?: number;
   minLength?: number;
   maxLength?: number;
-  pattern?: string|RegExp;
+  pattern?: string | RegExp;
   required?: boolean;
   tabindex?: number;
   readonly?: boolean;
-  attributes?: { [key: string]: string|number };
+  attributes?: { [key: string]: string | number };
   step?: number;
   focus?: FormlyAttributeEvent;
   blur?: FormlyAttributeEvent;

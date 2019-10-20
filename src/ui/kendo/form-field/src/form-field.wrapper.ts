@@ -12,12 +12,8 @@ import { FieldWrapper } from '@ngx-formly/core';
       <ng-container #fieldComponent></ng-container>
     </label>
 
-    <formly-validation-message
-      *ngIf="showError"
-      class="k-field-info k-required"
-      [field]="field">
+    <formly-validation-message *ngIf="showError" class="k-field-info k-required" [field]="field">
     </formly-validation-message>
   `,
 })
-export class FormlyWrapperFormField extends FieldWrapper {
-}
+export class FormlyWrapperFormField extends FieldWrapper {}

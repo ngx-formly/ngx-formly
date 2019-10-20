@@ -16,7 +16,16 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
   selector: 'formly-field',
   template: `<ng-template #container></ng-template>`,
 })
-export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
+export class FormlyField
+  implements
+    OnInit,
+    OnChanges,
+    DoCheck,
+    AfterContentInit,
+    AfterContentChecked,
+    AfterViewInit,
+    AfterViewChecked,
+    OnDestroy {
   @Input() field: FormlyFieldConfig;
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
@@ -222,7 +231,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
         }
 
         if (field.parsers && field.parsers.length > 0) {
-          field.parsers.forEach(parserFn => value = parserFn(value));
+          field.parsers.forEach(parserFn => (value = parserFn(value)));
         }
 
         assignFieldValue(field, value);

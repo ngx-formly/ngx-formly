@@ -219,7 +219,7 @@ describe('clone', () => {
 
   it('should use bind of the cloned object', () => {
     const d = {};
-    Object.defineProperty(d, 'a', { get: function() { return this.name; }, enumerable: true });
+    Object.defineProperty(d, 'a', { get() { return this.name; }, enumerable: true });
     const value = clone(d);
     value.name = 'foo';
 

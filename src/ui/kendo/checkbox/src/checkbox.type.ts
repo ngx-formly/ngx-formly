@@ -4,11 +4,13 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-kendo-checkbox',
   template: `
-    <input type="checkbox"
+    <input
+      type="checkbox"
       class="k-checkbox"
       [class.k-state-invalid]="showError"
       [formControl]="formControl"
-      [formlyAttributes]="field"/>
+      [formlyAttributes]="field"
+    />
 
     <label [for]="id" class="k-checkbox-label">
       <span>

@@ -7,14 +7,14 @@ import { FieldType } from '@ngx-formly/material/form-field';
   template: `
     <ng-template #selectAll let-selectOptions="selectOptions">
       <mat-option (click)="toggleSelectAll(selectOptions)">
-        <mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
-          [state]="getSelectAllState(selectOptions)">
+        <mat-pseudo-checkbox class="mat-option-pseudo-checkbox" [state]="getSelectAllState(selectOptions)">
         </mat-pseudo-checkbox>
         {{ to.selectAllOption }}
       </mat-option>
     </ng-template>
 
-    <mat-select [id]="id"
+    <mat-select
+      [id]="id"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
@@ -27,9 +27,13 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [aria-label]="_getAriaLabel()"
       [aria-labelledby]="_getAriaLabelledby()"
       [disableOptionCentering]="to.disableOptionCentering"
-      >
-      <ng-container *ngIf="to.options | formlySelectOptions:field | async as selectOptions">
-        <ng-container *ngIf="to.multiple && to.selectAllOption" [ngTemplateOutlet]="selectAll" [ngTemplateOutletContext]="{ selectOptions: selectOptions }">
+    >
+      <ng-container *ngIf="to.options | formlySelectOptions: field | async as selectOptions">
+        <ng-container
+          *ngIf="to.multiple && to.selectAllOption"
+          [ngTemplateOutlet]="selectAll"
+          [ngTemplateOutletContext]="{ selectOptions: selectOptions }"
+        >
         </ng-container>
         <ng-container *ngFor="let item of selectOptions">
           <mat-optgroup *ngIf="item.group" [label]="item.label">
@@ -55,27 +59,19 @@ export class FormlyFieldSelect extends FieldType {
     },
   };
 
-  private selectAllValue!: { options: any, value: any[] };
+  private selectAllValue!: { options: any; value: any[] };
 
   getSelectAllState(options: any[]) {
     if (this.empty || this.value.length === 0) {
       return '';
     }
 
-
-    return this.value.length !== this.getSelectAllValue(options).length
-      ? 'indeterminate'
-      : 'checked';
+    return this.value.length !== this.getSelectAllValue(options).length ? 'indeterminate' : 'checked';
   }
 
   toggleSelectAll(options: any[]) {
     const selectAllValue = this.getSelectAllValue(options);
-    this.formControl.setValue(
-      !this.value || this.value.length !== selectAllValue.length
-        ? selectAllValue
-        : [],
-    );
-
+    this.formControl.setValue(!this.value || this.value.length !== selectAllValue.length ? selectAllValue : []);
     this.formControl.markAsDirty();
   }
 
@@ -104,17 +100,13 @@ export class FormlyFieldSelect extends FieldType {
   private getSelectAllValue(options: any[]) {
     if (!this.selectAllValue || options !== this.selectAllValue.options) {
       const flatOptions: any[] = [];
-      options.forEach(o => o.group
-        ? flatOptions.push(...o.group)
-        : flatOptions.push(o),
-      );
+      options.forEach(o => (o.group ? flatOptions.push(...o.group) : flatOptions.push(o)));
 
       this.selectAllValue = {
         options,
         value: flatOptions.filter(o => !o.disabled).map(o => o.value),
       };
     }
-
 
     return this.selectAllValue.value;
   }

@@ -2,7 +2,8 @@ import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, Afte
 import {
   ɵdefineHiddenProp as defineHiddenProp,
   ɵwrapProperty as wrapProperty,
-  FormlyFieldConfig, FieldWrapper,
+  FormlyFieldConfig,
+  FieldWrapper,
 } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -44,31 +45,32 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
   styleUrls: ['./form-field.wrapper.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
+export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
+  implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
   @ViewChild('fieldComponent', { read: ViewContainerRef, static: true }) fieldComponent!: ViewContainerRef;
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;
   field!: MatFormlyFieldConfig;
 
   private initialGapCalculated = false;
 
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private focusMonitor: FocusMonitor,
-  ) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private focusMonitor: FocusMonitor) {
     super();
   }
 
   ngOnInit() {
     defineHiddenProp(this.field, '__formField__', this.formField);
-    ['prefix', 'suffix'].forEach(type => wrapProperty(
-      this.to,
-      type,
-      ({ currentValue }) => currentValue && Promise.resolve().then(() => {
-        (<any> this.field)[`_mat${type}`] = currentValue;
-        (<any> this.options)._markForCheck(this.field);
-      }),
-    ));
+    ['prefix', 'suffix'].forEach(type =>
+      wrapProperty<TemplateRef<any>>(
+        this.to,
+        type,
+        ({ currentValue }) =>
+          currentValue &&
+          Promise.resolve().then(() => {
+            (<any>this.field)[`_mat${type}`] = currentValue;
+            (<any>this.options)._markForCheck(this.field);
+          }),
+      ),
+    );
 
     // fix for https://github.com/angular/material2/issues/11437
     if (this.field.hide && this.field.templateOptions!.appearance === 'outline') {

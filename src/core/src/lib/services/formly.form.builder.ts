@@ -13,7 +13,12 @@ export class FormlyFormBuilder {
     @Optional() private parentForm: FormGroupDirective,
   ) {}
 
-  buildForm(formControl: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+  buildForm(
+    formControl: FormGroup | FormArray,
+    fieldGroup: FormlyFieldConfig[] = [],
+    model: any,
+    options: FormlyFormOptions,
+  ) {
     this.buildField({ fieldGroup, model, formControl, options });
   }
 
@@ -37,7 +42,7 @@ export class FormlyFormBuilder {
     this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
 
     if (field.fieldGroup) {
-      field.fieldGroup.forEach((f) => this._buildField(f));
+      field.fieldGroup.forEach(f => this._buildField(f));
     }
 
     this.getExtensions().forEach(extension => extension.postPopulate && extension.postPopulate(field));
