@@ -8,7 +8,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
 
   get model() { return this.field.model; }
 
-  get form() { return <FormGroup> this.field.parent.formControl; }
+  get form() { return this.field.form; }
 
   get options() { return this.field.options; }
 
