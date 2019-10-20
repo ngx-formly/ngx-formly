@@ -13,9 +13,10 @@ import { AppComponent } from './app.component';
         path: '',
         component: ExamplesRouterViewerComponent,
         data: {
-          examples: [{
-            title: 'Tabs Form',
-            description: `
+          examples: [
+            {
+              title: 'Tabs Form',
+              description: `
               This is an example of Tabs form using <a href="https://material.angular.io/components/tabs/overview" target="_blank">Material Tabs</a>
             `,
             component: AppComponent,
@@ -32,4 +33,4 @@ import { AppComponent } from './app.component';
   ],
   entryComponents: [AppComponent],
 })
-export class ConfigModule { }
+export class ConfigModule {}

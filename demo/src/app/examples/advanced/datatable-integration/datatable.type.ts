@@ -18,22 +18,29 @@ import { TableColumn } from '@swimlane/ngx-datatable';
       [scrollbarH]="to.scrollbarH"
       [reorderable]="to.reorderable"
       [externalSorting]="true"
-      [selectionType]="'single'">
-      <ng-template #defaultColumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
+      [selectionType]="'single'"
+    >
+      <ng-template
+        #defaultColumn
+        ngx-datatable-cell-template
+        let-rowIndex="rowIndex"
+        let-value="value"
+        let-row="row"
+        let-column="column"
+      >
         <formly-field [field]="getField(field, column, rowIndex)"></formly-field>
       </ng-template>
     </ngx-datatable>
-`,
+  `,
 })
-
 export class DatatableTypeComponent extends FieldArrayType implements OnInit {
   @ViewChild('defaultColumn', { static: true }) public defaultColumn: TemplateRef<any>;
 
   ngOnInit() {
-    this.to.columns.forEach(column => column.cellTemplate = this.defaultColumn);
+    this.to.columns.forEach(column => (column.cellTemplate = this.defaultColumn));
   }
 
-  getField(field: FormlyFieldConfig, column: TableColumn, rowIndex: number ): FormlyFieldConfig {
+  getField(field: FormlyFieldConfig, column: TableColumn, rowIndex: number): FormlyFieldConfig {
     return field.fieldGroup[rowIndex].fieldGroup.find(f => f.key === column.prop);
   }
 }

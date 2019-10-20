@@ -27,4 +27,4 @@ import { FormlyFieldTextarea } from './textarea.type';
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class FormlyNsTextareaFieldModule { }
+export class FormlyNsTextareaFieldModule {}

@@ -15,12 +15,14 @@ import { FormlySliderTypeComponent } from './slider.type';
     MatSliderModule,
     FormlyMatFormFieldModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'slider',
-        component: FormlySliderTypeComponent,
-        wrappers: ['form-field'],
-      }],
+      types: [
+        {
+          name: 'slider',
+          component: FormlySliderTypeComponent,
+          wrappers: ['form-field'],
+        },
+      ],
     }),
   ],
 })
-export class FormlyMatSliderModule { }
+export class FormlyMatSliderModule {}

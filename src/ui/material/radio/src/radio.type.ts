@@ -16,7 +16,8 @@ import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
         [color]="to.color"
         [labelPosition]="to.labelPosition"
         [disabled]="option.disabled"
-        [value]="option.value">
+        [value]="option.value"
+      >
         {{ option.label }}
       </mat-radio-button>
     </mat-radio-group>

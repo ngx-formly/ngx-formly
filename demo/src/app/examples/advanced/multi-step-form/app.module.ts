@@ -28,4 +28,4 @@ import { FormlyFieldStepper } from './stepper.type';
     FormlyFieldStepper,
   ],
 })
-export class AppModule { }
+export class AppModule {}

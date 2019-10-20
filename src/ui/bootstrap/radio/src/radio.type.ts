@@ -13,7 +13,8 @@ import { FieldType } from '@ngx-formly/core';
           'custom-control-inline': to.formCheck === 'custom-inline'
         }"
       >
-        <input type="radio"
+        <input
+          type="radio"
           [id]="id + '_' + i"
           [class.form-check-input]="to.formCheck.indexOf('custom') === -1"
           [class.custom-control-input]="to.formCheck.indexOf('custom') === 0"
@@ -23,11 +24,13 @@ import { FieldType } from '@ngx-formly/core';
           [value]="option.value"
           [formControl]="formControl"
           [formlyAttributes]="field"
-          [attr.disabled]="option.disabled || formControl.disabled ? true : null">
+          [attr.disabled]="option.disabled || formControl.disabled ? true : null"
+        />
         <label
           [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
           [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
           [for]="id + '_' + i">
+        >
           {{ option.label }}
         </label>
       </div>

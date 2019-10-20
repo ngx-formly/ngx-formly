@@ -21,12 +21,14 @@ import { MatPseudoCheckboxModule } from '@angular/material/core';
     FormlyMatFormFieldModule,
     FormlySelectModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'select',
-        component: FormlyFieldSelect,
-        wrappers: ['form-field'],
-      }],
+      types: [
+        {
+          name: 'select',
+          component: FormlyFieldSelect,
+          wrappers: ['form-field'],
+        },
+      ],
     }),
   ],
 })
-export class FormlyMatSelectModule { }
+export class FormlyMatSelectModule {}

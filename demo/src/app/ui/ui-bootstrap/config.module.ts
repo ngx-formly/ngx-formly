@@ -16,15 +16,11 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
         component: ExamplesRouterViewerComponent,
         data: {
           debugFields,
-          examples: [
-            ...CommonExampleConfigs,
-          ],
+          examples: [...CommonExampleConfigs],
         },
       },
     ]),
   ],
-  entryComponents: [
-    ...CommonExampleComponents,
-  ],
+  entryComponents: [...CommonExampleComponents],
 })
-export class ConfigModule { }
+export class ConfigModule {}

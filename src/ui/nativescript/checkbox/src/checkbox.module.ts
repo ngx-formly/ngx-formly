@@ -27,4 +27,4 @@ import { FormlyFieldCheckbox } from './checkbox.type';
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class FormlyNsCheckboxFieldModule { }
+export class FormlyNsCheckboxFieldModule {}

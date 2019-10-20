@@ -28,9 +28,6 @@ import { FormlyFieldButton } from './button-type.component';
       ],
     }),
   ],
-  declarations: [
-    AppComponent,
-    FormlyFieldButton,
-  ],
+  declarations: [AppComponent, FormlyFieldButton],
 })
-export class AppModule { }
+export class AppModule {}

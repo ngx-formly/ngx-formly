@@ -15,7 +15,6 @@ import { FieldWrapper } from '@ngx-formly/core';
         </ng-container>
       </StackLayout>
     </StackLayout>
-
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper {

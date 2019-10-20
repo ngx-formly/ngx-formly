@@ -6,7 +6,8 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
 @Component({
   selector: 'formly-field-mat-datepicker',
   template: `
-    <input matInput
+    <input
+      matInput
       [id]="id"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
@@ -21,10 +22,12 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       [required]="to.required"
       (dateInput)="to.datepickerOptions.dateInput(field, $event)"
       (dateChange)="to.datepickerOptions.dateChange(field, $event)">
+    />
     <ng-template #datepickerToggle>
       <mat-datepicker-toggle [disabled]="to.disabled" [for]="picker"></mat-datepicker-toggle>
     </ng-template>
-    <mat-datepicker #picker
+    <mat-datepicker
+      #picker
       [color]="to.color"
       [dateClass]="to.datepickerOptions.dateClass"
       [disabled]="to.datepickerOptions.disabled"
@@ -62,6 +65,6 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
     this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
 
     // temporary fix for https://github.com/angular/material2/issues/6728
-    (<any> this.datepickerInput)._formField = this.formField;
+    (<any>this.datepickerInput)._formField = this.formField;
   }
 }

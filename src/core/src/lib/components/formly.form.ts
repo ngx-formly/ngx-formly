@@ -1,4 +1,14 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, EventEmitter, Output, OnDestroy, NgZone } from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  OnChanges,
+  Input,
+  SimpleChanges,
+  EventEmitter,
+  Output,
+  OnDestroy,
+  NgZone,
+} from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -16,20 +26,36 @@ import { clearControl } from '../extensions/field-form/utils';
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input()
-  set form(formControl: FormGroup | FormArray) { this.field.formControl = formControl; }
-  get form() { return this.field.formControl as (FormGroup | FormArray); }
+  set form(formControl: FormGroup | FormArray) {
+    this.field.formControl = formControl;
+  }
+  get form() {
+    return this.field.formControl as (FormGroup | FormArray);
+  }
 
   @Input()
-  set model(model: any) { this.setField({ model }); }
-  get model() { return this.field.model; }
+  set model(model: any) {
+    this.setField({ model });
+  }
+  get model() {
+    return this.field.model;
+  }
 
   @Input()
-  set fields(fieldGroup: FormlyFieldConfig[]) { this.setField({ fieldGroup }); }
-  get fields() { return this.field.fieldGroup; }
+  set fields(fieldGroup: FormlyFieldConfig[]) {
+    this.setField({ fieldGroup });
+  }
+  get fields() {
+    return this.field.fieldGroup;
+  }
 
   @Input()
-  set options(options: FormlyFormOptions) { this.setField({ options }); }
-  get options() { return this.field.options; }
+  set options(options: FormlyFormOptions) {
+    this.setField({ options });
+  }
+  get options() {
+    return this.field.options;
+  }
 
   @Output() modelChange = new EventEmitter<any>();
 
@@ -37,12 +63,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private _modelChangeValue: any = {};
   private valueChangesUnsubscribe = () => {};
 
-  constructor(
-    private builder: FormlyFormBuilder,
-    private config: FormlyConfig,
-    private ngZone: NgZone,
-  ) {
-  }
+  constructor(private builder: FormlyFormBuilder, private config: FormlyConfig, private ngZone: NgZone) {}
 
   ngDoCheck() {
     if (this.config.extras.checkExpressionOn === 'changeDetectionCheck') {

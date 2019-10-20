@@ -25,4 +25,4 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     }),
   ],
 })
-export class FormlyCheckboxModule { }
+export class FormlyCheckboxModule {}
