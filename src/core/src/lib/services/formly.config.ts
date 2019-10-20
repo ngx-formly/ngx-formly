@@ -135,7 +135,7 @@ export class FormlyConfig {
 
     const type = this.getType(field.type);
     if (!resolver) {
-      resolver = field.parent.options._componentFactoryResolver;
+      resolver = field.options._componentFactoryResolver;
     }
     if (!injector) {
       injector = this.getFieldInjector(field);
@@ -218,11 +218,11 @@ export class FormlyConfig {
 
   private getFieldInjector(field: FormlyFieldConfigCache = {}) {
     const parent = field.parent;
-    if (parent._componentFactory && parent._componentFactory.componentRef) {
+    if (parent && parent._componentFactory && parent._componentFactory.componentRef) {
       return parent._componentFactory.componentRef.injector;
     }
 
-    return parent.options._injector;
+    return field.options._injector;
   }
 }
 export interface TypeOption {
