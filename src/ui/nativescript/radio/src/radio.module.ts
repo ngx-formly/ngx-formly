@@ -29,4 +29,4 @@ import { FormlyFieldRadio } from './radio.type';
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class FormlyNsRadioFieldModule { }
+export class FormlyNsRadioFieldModule {}

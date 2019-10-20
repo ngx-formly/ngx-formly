@@ -15,12 +15,14 @@ import { FormlyFieldDatetime } from './datetime.type';
     IonicModule,
     FormlyFormFieldModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'datetime',
-        component: FormlyFieldDatetime,
-        wrappers: ['form-field'],
-      }],
+      types: [
+        {
+          name: 'datetime',
+          component: FormlyFieldDatetime,
+          wrappers: ['form-field'],
+        },
+      ],
     }),
   ],
 })
-export class FormlyDatetimeModule { }
+export class FormlyDatetimeModule {}

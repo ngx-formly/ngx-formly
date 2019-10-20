@@ -6,11 +6,13 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
   // formly-form: disable default hide behavior
-  styles: [`
-    ::ng-deep formly-field {
-      display: block !important;
-    }
-  `],
+  styles: [
+    `
+      ::ng-deep formly-field {
+        display: block !important;
+      }
+    `,
+  ],
 })
 export class AppComponent {
   form = new FormGroup({});
@@ -29,7 +31,7 @@ export class AppComponent {
     {
       key: 'lastname',
       type: 'input',
-      hideExpression: (model) => !this.model.firstName,
+      hideExpression: model => !this.model.firstName,
       templateOptions: {
         label: 'Last name',
       },

@@ -15,7 +15,8 @@ import { MatSlider } from '@angular/material/slider';
       [thumbLabel]="to.thumbLabel"
       [step]="to.step"
       [max]="to.max"
-      [min]="to.min">
+      [min]="to.min"
+    >
     </mat-slider>
   `,
 })

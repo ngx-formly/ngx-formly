@@ -5,4 +5,4 @@ import { FormlySelectOptionsPipe } from './select-options.pipe';
   declarations: [FormlySelectOptionsPipe],
   exports: [FormlySelectOptionsPipe],
 })
-export class FormlySelectModule { }
+export class FormlySelectModule {}

@@ -29,4 +29,4 @@ import { FormlyFieldSelect } from './select.type';
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class FormlyNsSelectFieldModule { }
+export class FormlyNsSelectFieldModule {}

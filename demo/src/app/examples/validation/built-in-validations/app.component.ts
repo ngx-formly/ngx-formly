@@ -55,7 +55,7 @@ export class AppComponent {
       key: 'ip',
       type: 'input',
       templateOptions: {
-        label: 'IP Address (pattern = /(\d{1,3}\.){3}\d{1,3}/)',
+        label: 'IP Address (pattern = /(d{1,3}.){3}d{1,3}/)',
         pattern: /(\d{1,3}\.){3}\d{1,3}/,
         required: true,
       },

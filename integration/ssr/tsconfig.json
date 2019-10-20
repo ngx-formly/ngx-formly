@@ -4,8 +4,5 @@
     "outDir": "../../out-tsc/app",
     "module": "esnext"
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
-  ]
+  "exclude": ["test.ts", "**/*.spec.ts"]
 }

@@ -17,9 +17,9 @@ import { FieldType } from '@ngx-formly/core';
       [hourValues]="to.hourValues"
       [minuteValues]="to.minuteValues"
       [formControl]="formControl"
-      [ionFormlyAttributes]="field">
+      [ionFormlyAttributes]="field"
+    >
     </ion-datetime>
   `,
 })
-export class FormlyFieldDatetime extends FieldType {
-}
+export class FormlyFieldDatetime extends FieldType {}

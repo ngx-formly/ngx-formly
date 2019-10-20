@@ -12,12 +12,14 @@ import { FormlyWrapperFormField } from './form-field.wrapper';
     ReactiveFormsModule,
     NativeScriptFormsModule,
     FormlyModule.forChild({
-      wrappers: [{
-        name: 'form-field',
-        component: FormlyWrapperFormField,
-      }],
+      wrappers: [
+        {
+          name: 'form-field',
+          component: FormlyWrapperFormField,
+        },
+      ],
     }),
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class FormlyNsFormFieldModule { }
+export class FormlyNsFormFieldModule {}
