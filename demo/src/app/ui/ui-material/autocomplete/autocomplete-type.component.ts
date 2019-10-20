@@ -8,12 +8,14 @@ import { startWith, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'formly-autocomplete-type',
   template: `
-    <input matInput
+    <input
+      matInput
       [matAutocomplete]="auto"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
-      [errorStateMatcher]="errorStateMatcher">
+      [errorStateMatcher]="errorStateMatcher"
+    />
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let value of filter | async" [value]="value">
         {{ value }}
@@ -29,16 +31,15 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit, Afte
 
   ngOnInit() {
     super.ngOnInit();
-    this.filter = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        switchMap(term => this.to.filter(term)),
-      );
+    this.filter = this.formControl.valueChanges.pipe(
+      startWith(''),
+      switchMap(term => this.to.filter(term)),
+    );
   }
 
   ngAfterViewInit() {
     super.ngAfterViewInit();
     // temporary fix for https://github.com/angular/material2/issues/6728
-    (<any> this.autocomplete)._formField = this.formField;
+    (<any>this.autocomplete)._formField = this.formField;
   }
 }

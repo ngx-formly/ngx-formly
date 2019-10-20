@@ -4,32 +4,37 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-select',
   template: `
-    <select *ngIf="to.multiple; else singleSelect" class="form-control"
+    <select
+      *ngIf="to.multiple; else singleSelect"
+      class="form-control"
       multiple
       [class.custom-select]="to.customSelect"
       [formControl]="formControl"
       [class.is-invalid]="showError"
-      [formlyAttributes]="field">
-        <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
-         <optgroup *ngIf="item.group" label="{{item.label}}">
-            <option *ngFor="let child of item.group" [ngValue]="child.value" [disabled]="child.disabled">
-              {{ child.label }}
-            </option>
-          </optgroup>
-          <option *ngIf="!item.group" [ngValue]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
-        </ng-container>
+      [formlyAttributes]="field"
+    >
+      <ng-container *ngFor="let item of to.options | formlySelectOptions: field | async">
+        <optgroup *ngIf="item.group" label="{{ item.label }}">
+          <option *ngFor="let child of item.group" [ngValue]="child.value" [disabled]="child.disabled">
+            {{ child.label }}
+          </option>
+        </optgroup>
+        <option *ngIf="!item.group" [ngValue]="item.value" [disabled]="item.disabled">{{ item.label }}</option>
+      </ng-container>
     </select>
 
     <ng-template #singleSelect>
-      <select class="form-control"
+      <select
+        class="form-control"
         #select
         [formControl]="formControl"
         [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
-        [formlyAttributes]="field">
+        [formlyAttributes]="field"
+      >
         <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
-        <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
-          <optgroup *ngIf="item.group" label="{{item.label}}">
+        <ng-container *ngFor="let item of to.options | formlySelectOptions: field | async">
+          <optgroup *ngIf="item.group" label="{{ item.label }}">
             <option *ngFor="let child of item.group" [ngValue]="child.value" [disabled]="child.disabled">
               {{ child.label }}
             </option>
@@ -50,8 +55,9 @@ export class FormlyFieldSelect extends FieldType implements AfterViewChecked {
   ngAfterViewChecked() {
     if (!this.to.multiple && !this.to.placeholder && this.formControl.value === null) {
       const selectEl = this.select.nativeElement;
-      if (selectEl.selectedIndex !== -1
-        && (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value !== null)
+      if (
+        selectEl.selectedIndex !== -1 &&
+        (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value !== null)
       ) {
         this.select.nativeElement.selectedIndex = -1;
       }

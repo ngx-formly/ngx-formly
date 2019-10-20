@@ -19,9 +19,11 @@ export class TranslateExtension {
 
 export function registerTranslateExtension(translate: TranslateService) {
   return {
-    extensions: [{
-      name: 'translate',
-      extension: new TranslateExtension(translate),
-    }],
+    extensions: [
+      {
+        name: 'translate',
+        extension: new TranslateExtension(translate),
+      },
+    ],
   };
 }

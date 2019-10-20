@@ -1,7 +1,20 @@
 import {
-  Component, Input,
-  ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, ComponentFactoryResolver,
-  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Injector,
+  Component,
+  Input,
+  ViewContainerRef,
+  ViewChild,
+  ComponentRef,
+  SimpleChanges,
+  ComponentFactoryResolver,
+  OnInit,
+  OnChanges,
+  OnDestroy,
+  DoCheck,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked,
+  Injector,
 } from '@angular/core';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config';
@@ -12,13 +25,24 @@ import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-field',
-  template: `<ng-template #container></ng-template>`,
+  template: `
+    <ng-template #container></ng-template>
+  `,
   host: {
     '[style.display]': 'field.hide ? "none":""',
     '[class]': 'field.className? field.className : className',
   },
 })
-export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
+export class FormlyField
+  implements
+    OnInit,
+    OnChanges,
+    DoCheck,
+    AfterContentInit,
+    AfterContentChecked,
+    AfterViewInit,
+    AfterViewChecked,
+    OnDestroy {
   @Input() field: FormlyFieldConfig;
   @Input('class') className = '';
 
@@ -74,9 +98,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     if (wrappers && wrappers.length > 0) {
       const [wrapper, ...wps] = wrappers;
       const { component } = this.formlyConfig.getWrapper(wrapper);
-      const cfr = f.options && f.options._componentFactoryResolver
-        ? f.options._componentFactoryResolver
-        : this.componentFactoryResolver;
+      const cfr =
+        f.options && f.options._componentFactoryResolver
+          ? f.options._componentFactoryResolver
+          : this.componentFactoryResolver;
 
       const ref = containerRef.createComponent<FieldWrapper>(cfr.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
@@ -127,11 +152,11 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       const sub = valueChanges.subscribe(value => {
         // workaround for https://github.com/angular/angular/issues/13792
         if ((control as any)._onChange.length > 1) {
-          control.setValue(value, {emitEvent: false});
+          control.setValue(value, { emitEvent: false });
         }
 
         if (field.parsers && field.parsers.length > 0) {
-          field.parsers.forEach(parserFn => value = parserFn(value));
+          field.parsers.forEach(parserFn => (value = parserFn(value)));
         }
 
         assignModelValue(field.parent.model, getKeyPath(field), value);

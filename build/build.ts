@@ -9,11 +9,7 @@ exec(`rm -rf ${distDir}`);
 
 PACKAGES.map(name => {
   // build package
-  exec(
-    name === 'schematics'
-    ? `ts-node build/schematics.ts`
-    : `ng build @ngx-formly/${name}`,
-  );
+  exec(name === 'schematics' ? `ts-node build/schematics.ts` : `ng build @ngx-formly/${name}`);
 
   const pkgDir = `${distDir}/${name}`;
   exec(`cp README.md ${pkgDir}`);

@@ -29,4 +29,4 @@ import { FormlyFieldNativeSelect } from './native-select.type';
     }),
   ],
 })
-export class FormlyMatNativeSelectModule { }
+export class FormlyMatNativeSelectModule {}

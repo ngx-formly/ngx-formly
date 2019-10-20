@@ -1,17 +1,22 @@
 <ngx-loading-bar [color]="'#fafafa'"></ngx-loading-bar>
 
 <mat-toolbar color="primary" class="mat-elevation-z6 app-navbar" [class.navbar-small]="isSmallDevice$ | async">
-  <a mat-button routerLink="" routerLinkActive="" #homeLink="routerLinkActive"
-    [routerLinkActiveOptions]="{ exact: true }">
-    <img src="https://material.angular.io/assets/img/homepage/angular-white-transparent.svg">
+  <a
+    mat-button
+    routerLink=""
+    routerLinkActive=""
+    #homeLink="routerLinkActive"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <img src="https://material.angular.io/assets/img/homepage/angular-white-transparent.svg" />
     FORMLY
   </a>
 
-  <ng-container *ngIf="isSmallDevice$ | async else mainMenu">
+  <ng-container *ngIf="isSmallDevice$ | async; else mainMenu">
     <span class="spacer" [style.flex]="'1 1 auto'"></span>
     <ng-container *ngTemplateOutlet="version"></ng-container>
     <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
+      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
     </a>
     <button mat-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
@@ -23,7 +28,7 @@
 
     <ng-container *ngTemplateOutlet="version"></ng-container>
     <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
+      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
       GitHub
     </a>
   </ng-template>
@@ -34,17 +39,20 @@
     [mode]="(isSmallDevice$ | async) ? 'over' : 'side'"
     [opened]="!homeLink.isActive && !(isSmallDevice$ | async)"
     [style.width.px]="250"
-    #sidenav>
+    #sidenav
+  >
     <ng-container *ngFor="let link of menu">
-      <a mat-button
+      <a
+        mat-button
         class="menu-item"
         [routerLink]="link.path"
         routerLinkActive="active-link"
-        #routerLink="routerLinkActive">
+        #routerLink="routerLinkActive"
+      >
         <span class="d-flex align-items-center">
           {{ link.title }}
           <span class="spacer" [style.flex]="'1 1 auto'"></span>
-          <mat-icon>{{ routerLink.isActive ? 'keyboard_arrow_down': 'keyboard_arrow_right' }}</mat-icon>
+          <mat-icon>{{ routerLink.isActive ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon>
         </span>
       </a>
 
@@ -53,10 +61,14 @@
           <span class="menu-subheader" *ngIf="!l.path">
             {{ l.title }}
           </span>
-          <a class="menu-subitem" *ngIf="l.path" mat-button
+          <a
+            class="menu-subitem"
+            *ngIf="l.path"
+            mat-button
             [routerLink]="l.path"
             [routerLinkActiveOptions]="{ exact: true }"
-            routerLinkActive="active-link">
+            routerLinkActive="active-link"
+          >
             {{ l.title }}
           </a>
         </ng-container>

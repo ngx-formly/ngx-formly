@@ -1,8 +1,19 @@
-import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  OnDestroy,
+  Renderer2,
+  AfterViewInit,
+  AfterContentChecked,
+  TemplateRef,
+  ElementRef,
+} from '@angular/core';
 import {
   ɵdefineHiddenProp as defineHiddenProp,
   ɵwrapProperty as wrapProperty,
-  FormlyFieldConfig, FieldWrapper,
+  FormlyFieldConfig,
+  FieldWrapper,
 } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -11,7 +22,7 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
   _matprefix: TemplateRef<any>;
   _matsuffix: TemplateRef<any>;
   __formField__: FormlyWrapperFormField;
-  _componentFactory: any;
+  componentInstance: any;
 }
 
 @Component({
@@ -23,7 +34,8 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       [floatLabel]="to.floatLabel"
       [appearance]="to.appearance"
       [color]="to.color"
-      [style.width]="'100%'">
+      [style.width]="'100%'"
+    >
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="to.label && to.hideLabel !== true">
         {{ to.label }}
@@ -47,30 +59,32 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
     </mat-form-field>
   `,
 })
-export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
+export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
+  implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;
   field!: MatFormlyFieldConfig;
 
   private initialGapCalculated = false;
 
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private focusMonitor: FocusMonitor,
-  ) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private focusMonitor: FocusMonitor) {
     super();
   }
 
   ngOnInit() {
+    this.formField._control = this.field.componentInstance.formFieldControl;
     defineHiddenProp(this.field, '__formField__', this.formField);
-    ['prefix', 'suffix'].forEach(type => wrapProperty(
-      this.to,
-      type,
-      (value: TemplateRef<any>) => value && Promise.resolve().then(() => {
-        (<any> this.field)[`_mat${type}`] = value;
-        (<any> this.options)._markForCheck(this.field);
-      }),
-    ));
+    ['prefix', 'suffix'].forEach(type =>
+      wrapProperty<TemplateRef<any>>(
+        this.to,
+        type,
+        ({ currentValue }) =>
+          currentValue &&
+          Promise.resolve().then(() => {
+            (<any>this.field)[`_mat${type}`] = currentValue;
+            (<any>this.options)._markForCheck(this.field);
+          }),
+      ),
+    );
 
     // fix for https://github.com/angular/material2/issues/11437
     if (this.field.hide && this.field.templateOptions!.appearance === 'outline') {

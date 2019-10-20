@@ -19,12 +19,14 @@ import { FormlyDatepickerTypeComponent } from './datepicker.type';
 
     FormlyMatFormFieldModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'datepicker',
-        component: FormlyDatepickerTypeComponent,
-        wrappers: ['form-field'],
-      }],
+      types: [
+        {
+          name: 'datepicker',
+          component: FormlyDatepickerTypeComponent,
+          wrappers: ['form-field'],
+        },
+      ],
     }),
   ],
 })
-export class FormlyMatDatepickerModule { }
+export class FormlyMatDatepickerModule {}

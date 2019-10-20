@@ -11,7 +11,8 @@ import { MatSlider } from '@angular/material/slider';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [tabindex]="to.tabindex || 0"
-      [color]="to.color">
+      [color]="to.color"
+    >
     </mat-slider>
   `,
 })

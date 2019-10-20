@@ -1,12 +1,26 @@
 import { FormlyExtension, FormlyConfig, TemplateManipulators } from '../../services/formly.config';
-import { FormlyFieldConfigCache, FormlyFieldConfig, FormlyValueChangeEvent } from '../../components/formly.field.config';
-import { getFieldId, assignModelValue, isUndefined, getFieldValue, reverseDeepMerge, getKeyPath, defineHiddenProp, clone, isNullOrUndefined } from '../../utils';
+import {
+  FormlyFieldConfigCache,
+  FormlyFieldConfig,
+  FormlyValueChangeEvent,
+} from '../../components/formly.field.config';
+import {
+  getFieldId,
+  assignModelValue,
+  isUndefined,
+  getFieldValue,
+  reverseDeepMerge,
+  getKeyPath,
+  defineHiddenProp,
+  clone,
+  isNullOrUndefined,
+} from '../../utils';
 import { Subject } from 'rxjs';
 
 /** @experimental */
 export class CoreExtension implements FormlyExtension {
   private formId = 0;
-  constructor(private config: FormlyConfig) { }
+  constructor(private config: FormlyConfig) {}
 
   prePopulate(field: FormlyFieldConfigCache) {
     const root = field.parent;
@@ -14,7 +28,7 @@ export class CoreExtension implements FormlyExtension {
     if (root) {
       Object.defineProperty(field, 'options', { get: () => root.options, configurable: true });
       Object.defineProperty(field, 'model', {
-        get: () => field.key && field.fieldGroup ? getFieldValue(field) : root.model,
+        get: () => (field.key && field.fieldGroup ? getFieldValue(field) : root.model),
         configurable: true,
       });
     }
@@ -50,7 +64,7 @@ export class CoreExtension implements FormlyExtension {
     }
 
     if (!options.updateInitialValue) {
-      options.updateInitialValue = () => options._initialModel = clone(field.model);
+      options.updateInitialValue = () => (options._initialModel = clone(field.model));
     }
 
     if (!options.fieldChanges) {
@@ -62,7 +76,7 @@ export class CoreExtension implements FormlyExtension {
     }
 
     if (!options._markForCheck) {
-      options._markForCheck = (field) => {
+      options._markForCheck = field => {
         if (field._componentRefs) {
           field._componentRefs.forEach(ref => ref.changeDetectorRef.markForCheck());
         }
@@ -74,7 +88,7 @@ export class CoreExtension implements FormlyExtension {
     }
 
     if (!options.resetModel) {
-      options.resetModel = (model ?: any) => {
+      options.resetModel = (model?: any) => {
         model = clone(isNullOrUndefined(model) ? options._initialModel : model);
         if (field.model) {
           Object.keys(field.model).forEach(k => delete field.model[k]);
@@ -101,11 +115,14 @@ export class CoreExtension implements FormlyExtension {
       id: getFieldId(`formly_${this.formId}`, field, field['index']),
       hooks: {},
       modelOptions: {},
-      templateOptions: !field.type || !field.key ? {} : {
-        label: '',
-        placeholder: '',
-        focus: false,
-      },
+      templateOptions:
+        !field.type || !field.key
+          ? {}
+          : {
+              label: '',
+              placeholder: '',
+              focus: false,
+            },
     });
 
     if (field.template) {
@@ -146,7 +163,7 @@ export class CoreExtension implements FormlyExtension {
 
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
     const componentRef = this.config.createComponent(field);
-    const instance: FormlyExtension = componentRef ? componentRef.instance as any : {};
+    const instance: FormlyExtension = componentRef ? (componentRef.instance as any) : {};
 
     return {
       prePopulate: () => instance.prePopulate && instance.prePopulate(field),

@@ -26,4 +26,4 @@ import { FormlyFieldMultiCheckbox } from './multicheckbox.type';
     }),
   ],
 })
-export class FormlyBootstrapMultiCheckboxModule { }
+export class FormlyBootstrapMultiCheckboxModule {}

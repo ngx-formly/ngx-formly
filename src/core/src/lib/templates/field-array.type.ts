@@ -1,11 +1,12 @@
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, isNullOrUndefined, assignModelValue, getKeyPath, getFieldValue } from '../utils';
-import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
+import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl } from '../extensions/field-form/utils';
 
-export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
+export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F>
+  implements FormlyExtension {
   formControl: FormArray;
   defaultOptions: any = {
     defaultValue: [],
@@ -13,10 +14,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
   onPopulate(field: FormlyFieldConfig) {
     if (!field.formControl) {
-      registerControl(field, new FormArray(
-        [],
-        { updateOn: field.modelOptions.updateOn },
-      ));
+      registerControl(field, new FormArray([], { updateOn: field.modelOptions.updateOn }));
     }
 
     field.fieldGroup = field.fieldGroup || [];
@@ -50,7 +48,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     this.model.splice(i, 1);
     unregisterControl(this.field.fieldGroup[i]);
     this.field.fieldGroup.splice(i, 1);
-    this.field.fieldGroup.forEach((f, key) => f.key = `${key}`);
+    this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
     this._buildField();
     this.formControl.markAsDirty();
   }
