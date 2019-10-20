@@ -14,17 +14,10 @@ import { addonsExtension } from './addons.extension';
     ReactiveFormsModule,
     FormlyMaterialModule,
     FormlyModule.forRoot({
-      wrappers: [
-        { name: 'addons', component: FormlyWrapperAddons },
-      ],
-      extensions: [
-        { name: 'addons', extension: { onPopulate: addonsExtension } },
-      ],
+      wrappers: [{ name: 'addons', component: FormlyWrapperAddons }],
+      extensions: [{ name: 'addons', extension: { onPopulate: addonsExtension } }],
     }),
   ],
-  declarations: [
-    AppComponent,
-    FormlyWrapperAddons,
-  ],
+  declarations: [AppComponent, FormlyWrapperAddons],
 })
-export class AppModule { }
+export class AppModule {}

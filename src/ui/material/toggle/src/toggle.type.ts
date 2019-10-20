@@ -5,11 +5,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 @Component({
   selector: 'formly-field-mat-toggle',
   template: `
-    <mat-slide-toggle
-      [id]="id"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [tabindex]="to.tabindex || 0">
+    <mat-slide-toggle [id]="id" [formControl]="formControl" [formlyAttributes]="field" [tabindex]="to.tabindex || 0">
       {{ to.label }}
     </mat-slide-toggle>
   `,

@@ -6,7 +6,8 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
 @Component({
   selector: 'formly-field-mat-textarea',
   template: `
-    <textarea matInput
+    <textarea
+      matInput
       [id]="id"
       [readonly]="to.readonly"
       [formControl]="formControl"
@@ -19,7 +20,8 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
       [readonly]="to.readonly"
       [cdkTextareaAutosize]="to.autosize"
       [cdkAutosizeMinRows]="to.autosizeMinRows"
-      [cdkAutosizeMaxRows]="to.autosizeMaxRows">
+      [cdkAutosizeMaxRows]="to.autosizeMaxRows"
+    >
     </textarea>
   `,
   providers: [

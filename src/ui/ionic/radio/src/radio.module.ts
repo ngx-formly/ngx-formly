@@ -17,12 +17,14 @@ import { FormlyFieldRadio } from './radio.type';
     FormlyFormFieldModule,
     FormlySelectModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'radio',
-        component: FormlyFieldRadio,
-        wrappers: [],
-      }],
+      types: [
+        {
+          name: 'radio',
+          component: FormlyFieldRadio,
+          wrappers: [],
+        },
+      ],
     }),
   ],
 })
-export class FormlyRadioModule { }
+export class FormlyRadioModule {}

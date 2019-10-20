@@ -10,16 +10,8 @@ import { AppComponent } from './app.component';
 import { UserService } from './user.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    FormlyBootstrapModule,
-    FormlyModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-  ],
+  imports: [CommonModule, HttpClientModule, ReactiveFormsModule, FormlyBootstrapModule, FormlyModule.forRoot()],
+  declarations: [AppComponent],
   providers: [UserService],
 })
-export class AppModule { }
+export class AppModule {}

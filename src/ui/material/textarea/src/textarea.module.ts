@@ -27,4 +27,4 @@ import { FormlyFieldTextArea } from './textarea.type';
     }),
   ],
 })
-export class FormlyMatTextAreaModule { }
+export class FormlyMatTextAreaModule {}

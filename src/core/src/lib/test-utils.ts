@@ -28,16 +28,11 @@ export function createBuilder({ extensions, onInit }: IBuilderOption = {}) {
   });
   onInit && onInit(config);
 
-  return new FormlyFormBuilder(
-    config,
-    null,
-    null,
-    null,
-  );
+  return new FormlyFormBuilder(config, null, null, null);
 }
 
 export function createGenericTestComponent<T>(html: string, type: new (...args: any[]) => T): ComponentFixture<T> {
-  TestBed.overrideComponent(type, {set: {template: html}});
+  TestBed.overrideComponent(type, { set: { template: html } });
   const fixture = TestBed.createComponent(type);
   fixture.detectChanges();
   return fixture as ComponentFixture<T>;
@@ -69,7 +64,7 @@ export function MockComponent(options: Component): Component {
  * Although officially deprecated, some browsers (phantom) don't accept the preferred "new Event(eventName)"
  */
 export function newEvent(eventName: string, bubbles = false, cancelable = false) {
-  const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+  const evt = document.createEvent('CustomEvent'); // MUST be 'CustomEvent'
   evt.initCustomEvent(eventName, bubbles, cancelable, null);
   return evt;
 }

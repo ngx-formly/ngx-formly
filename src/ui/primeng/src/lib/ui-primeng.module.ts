@@ -16,5 +16,4 @@ import { FormlySelectModule } from '@ngx-formly/primeng/select';
     FormlySelectModule,
   ],
 })
-export class FormlyPrimeNGModule { }
-
+export class FormlyPrimeNGModule {}

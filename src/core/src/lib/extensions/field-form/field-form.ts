@@ -8,7 +8,7 @@ import { registerControl } from './utils';
 export class FieldFormExtension implements FormlyExtension {
   prePopulate(field: FormlyFieldConfigCache) {
     Object.defineProperty(field, 'form', {
-      get: () => field.parent ? field.parent.formControl : field.formControl,
+      get: () => (field.parent ? field.parent.formControl : field.formControl),
       configurable: true,
     });
   }
@@ -51,11 +51,7 @@ export class FieldFormExtension implements FormlyExtension {
   private setValidators(field: FormlyFieldConfigCache) {
     let updateValidity = false;
     if (field.key) {
-      const {
-        _validators: validators,
-        _asyncValidators: asyncValidators,
-        formControl: control,
-      } = field;
+      const { _validators: validators, _asyncValidators: asyncValidators, formControl: control } = field;
 
       if (validators !== control.validator) {
         control.setValidators(validators);

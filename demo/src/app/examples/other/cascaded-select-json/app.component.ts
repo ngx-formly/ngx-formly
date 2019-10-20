@@ -38,10 +38,7 @@ export class AppComponent {
       type: 'select',
       templateOptions: {
         label: 'Sport',
-        options: [
-          { id: '1', name: 'Soccer' },
-          { id: '2', name: 'Basketball' },
-        ],
+        options: [{ id: '1', name: 'Soccer' }, { id: '2', name: 'Basketball' }],
         valueProp: 'id',
         labelProp: 'name',
       },

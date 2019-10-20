@@ -29,4 +29,4 @@ import { FormlyFieldMultiCheckbox } from './multicheckbox.type';
     }),
   ],
 })
-export class FormlyMatMultiCheckboxModule { }
+export class FormlyMatMultiCheckboxModule {}

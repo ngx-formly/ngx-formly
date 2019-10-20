@@ -15,12 +15,14 @@ import { FormlyToggleTypeComponent } from './toggle.type';
     MatSlideToggleModule,
     FormlyMatFormFieldModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'toggle',
-        component: FormlyToggleTypeComponent,
-        wrappers: ['form-field'],
-      }],
+      types: [
+        {
+          name: 'toggle',
+          component: FormlyToggleTypeComponent,
+          wrappers: ['form-field'],
+        },
+      ],
     }),
   ],
 })
-export class FormlyMatToggleModule { }
+export class FormlyMatToggleModule {}

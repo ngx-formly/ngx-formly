@@ -28,19 +28,21 @@ export class AppComponent implements OnDestroy {
         required: true,
       },
       hooks: {
-        onInit: (field) => {
-          field.formControl.valueChanges.pipe(
-            takeUntil(this.onDestroy$),
-            startWith(field.formControl.value),
-            filter(v => v > 0),
-            tap(value => {
-              this.model.investments.length = value;
-              this.model = {
-                ...this.model,
-                investmentsCount: value,
-              };
-            }),
-          ).subscribe();
+        onInit: field => {
+          field.formControl.valueChanges
+            .pipe(
+              takeUntil(this.onDestroy$),
+              startWith(field.formControl.value),
+              filter(v => v > 0),
+              tap(value => {
+                this.model.investments.length = value;
+                this.model = {
+                  ...this.model,
+                  investmentsCount: value,
+                };
+              }),
+            )
+            .subscribe();
         },
       },
     },

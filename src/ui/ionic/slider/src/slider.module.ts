@@ -22,4 +22,4 @@ import { FormlyFieldSlider } from './slider.type';
     }),
   ],
 })
-export class FormlySliderModule { }
+export class FormlySliderModule {}

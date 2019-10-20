@@ -20,9 +20,7 @@ import { FormlyKendoModule } from '@ngx-formly/kendo';
             component: ExamplesRouterViewerComponent,
             data: {
               debugFields,
-              examples: [
-                ...CommonExampleConfigs,
-              ],
+              examples: [...CommonExampleConfigs],
             },
           },
         ],
@@ -30,9 +28,6 @@ import { FormlyKendoModule } from '@ngx-formly/kendo';
     ]),
   ],
   declarations: [AppComponent],
-  entryComponents: [
-    AppComponent,
-    ...CommonExampleComponents,
-  ],
+  entryComponents: [AppComponent, ...CommonExampleComponents],
 })
-export class ConfigModule { }
+export class ConfigModule {}

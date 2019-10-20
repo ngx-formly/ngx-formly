@@ -16,19 +16,16 @@ import { AutocompleteTypeComponent } from './autocomplete-type.component';
     MatInputModule,
     MatAutocompleteModule,
     FormlyModule.forRoot({
-      types: [{
-        name: 'autocomplete',
-        component: AutocompleteTypeComponent,
-        wrappers: ['form-field'],
-      }],
-      validationMessages: [
-        { name: 'required', message: 'This field is required' },
+      types: [
+        {
+          name: 'autocomplete',
+          component: AutocompleteTypeComponent,
+          wrappers: ['form-field'],
+        },
       ],
+      validationMessages: [{ name: 'required', message: 'This field is required' }],
     }),
   ],
-  declarations: [
-    AutocompleteTypeComponent,
-    AppComponent,
-  ],
+  declarations: [AutocompleteTypeComponent, AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
