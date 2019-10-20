@@ -12,7 +12,7 @@ export class UserService {
   }
 
   getUser() {
-    return this.http.get<{ firstName: string, lastName: string }>('assets/json-powered/user_json');
+    return this.http.get<{ firstName: string; lastName: string }>('assets/json-powered/user_json');
   }
 
   getFields() {

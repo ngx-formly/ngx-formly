@@ -10,8 +10,9 @@ import { FieldType } from '@ngx-formly/core';
       [multiple]="to.multiple"
       [interface]="to.interface"
       [okText]="to.okText"
-      [cancelText]="to.cancelText">
-      <ion-select-option *ngFor="let option of to.options | formlySelectOptions:field | async" [value]="option.value">
+      [cancelText]="to.cancelText"
+    >
+      <ion-select-option *ngFor="let option of to.options | formlySelectOptions: field | async" [value]="option.value">
         {{ option.label }}
       </ion-select-option>
     </ion-select>

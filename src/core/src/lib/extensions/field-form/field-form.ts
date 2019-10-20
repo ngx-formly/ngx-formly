@@ -14,7 +14,7 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     Object.defineProperty(field, 'form', {
-      get: () => field.parent ? field.parent.formControl : field.formControl,
+      get: () => (field.parent ? field.parent.formControl : field.formControl),
       configurable: true,
     });
   }
@@ -70,18 +70,16 @@ export class FieldFormExtension implements FormlyExtension {
 
       if (null === c.validator || null === c.asyncValidator) {
         c.setValidators(() => {
-          const fields: FormlyFieldConfigCache[] = c['_fields'].length === 1
-            ? c['_fields']
-            : c['_fields'].filter(f => !f._hide);
+          const fields: FormlyFieldConfigCache[] =
+            c['_fields'].length === 1 ? c['_fields'] : c['_fields'].filter(f => !f._hide);
 
           const v = Validators.compose(fields.map(f => f._validators));
 
           return v ? v(c) : null;
         });
         c.setAsyncValidators(() => {
-          const fields: FormlyFieldConfigCache[] = c['_fields'].length === 1
-            ? c['_fields']
-            : c['_fields'].filter(f => !f._hide);
+          const fields: FormlyFieldConfigCache[] =
+            c['_fields'].length === 1 ? c['_fields'] : c['_fields'].filter(f => !f._hide);
 
           const v = Validators.composeAsync(fields.map(f => f._asyncValidators));
 

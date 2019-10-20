@@ -5,7 +5,8 @@ import { FieldType } from '@ngx-formly/material/form-field';
 @Component({
   selector: 'formly-field-mat-input',
   template: `
-    <input *ngIf="type !== 'number'; else numberTmp"
+    <input
+      *ngIf="type !== 'number'; else numberTmp"
       matInput
       [id]="id"
       [readonly]="to.readonly"
@@ -14,17 +15,20 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [tabindex]="to.tabindex || 0"
-      [placeholder]="to.placeholder">
+      [placeholder]="to.placeholder"
+    />
     <ng-template #numberTmp>
-      <input matInput
-             [id]="id"
-             type="number"
-             [readonly]="to.readonly"
-             [errorStateMatcher]="errorStateMatcher"
-             [formControl]="formControl"
-             [formlyAttributes]="field"
-             [tabindex]="to.tabindex || 0"
-             [placeholder]="to.placeholder">
+      <input
+        matInput
+        [id]="id"
+        type="number"
+        [readonly]="to.readonly"
+        [errorStateMatcher]="errorStateMatcher"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [tabindex]="to.tabindex || 0"
+        [placeholder]="to.placeholder"
+      />
     </ng-template>
   `,
 })

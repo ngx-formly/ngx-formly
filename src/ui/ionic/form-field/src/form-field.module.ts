@@ -15,11 +15,13 @@ import { IonFormlyAttributes } from './formly.attributes';
     IonicModule,
 
     FormlyModule.forChild({
-      wrappers: [{
-        name: 'form-field',
-        component: FormlyWrapperFormField,
-      }],
+      wrappers: [
+        {
+          name: 'form-field',
+          component: FormlyWrapperFormField,
+        },
+      ],
     }),
   ],
 })
-export class FormlyFormFieldModule { }
+export class FormlyFormFieldModule {}

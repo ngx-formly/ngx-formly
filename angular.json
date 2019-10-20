@@ -23,13 +23,8 @@
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/tsconfig.app.json",
             "aot": false,
-            "assets": [
-              "demo/src/favicon.ico",
-              "demo/src/assets"
-            ],
-            "styles": [
-              "demo/src/styles.scss"
-            ],
+            "assets": ["demo/src/favicon.ico", "demo/src/assets"],
+            "styles": ["demo/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -88,34 +83,23 @@
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/tsconfig.spec.json",
             "karmaConfig": "demo/karma.conf.js",
-            "assets": [
-              "demo/src/favicon.ico",
-              "demo/src/assets"
-            ],
-            "styles": [
-              "demo/src/styles.scss"
-            ],
+            "assets": ["demo/src/favicon.ico", "demo/src/assets"],
+            "styles": ["demo/src/styles.scss"],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "demo/tsconfig.app.json",
-              "demo/tsconfig.spec.json",
-              "demo/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["demo/tsconfig.app.json", "demo/tsconfig.spec.json", "demo/e2e/tsconfig.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
     },
     "ssr": {
-      "root": "projects/ssr/",
-      "sourceRoot": "projects/ssr/src",
+      "root": "integration/ssr/",
+      "sourceRoot": "integration/ssr/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -123,18 +107,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "projects/ssr/dist/browser",
-            "index": "projects/ssr/src/index.html",
-            "main": "projects/ssr/src/main.ts",
-            "polyfills": "projects/ssr/src/polyfills.ts",
-            "tsConfig": "projects/ssr/tsconfig.app.json",
-            "assets": [
-              "projects/ssr/src/favicon.ico",
-              "projects/ssr/src/assets"
-            ],
-            "styles": [
-              "projects/ssr/src/styles.css"
-            ],
+            "outputPath": "integration/ssr/dist/browser",
+            "index": "integration/ssr/src/index.html",
+            "main": "integration/ssr/src/main.ts",
+            "polyfills": "integration/ssr/src/polyfills.ts",
+            "tsConfig": "integration/ssr/tsconfig.app.json",
+            "assets": ["integration/ssr/src/favicon.ico", "integration/ssr/src/assets"],
+            "styles": ["integration/ssr/src/styles.css"],
             "scripts": [],
             "es5BrowserSupport": true
           },
@@ -142,8 +121,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/ssr/src/environments/environment.ts",
-                  "with": "projects/ssr/src/environments/environment.prod.ts"
+                  "replace": "integration/ssr/src/environments/environment.ts",
+                  "with": "integration/ssr/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -179,28 +158,23 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "projects/ssr/tsconfig.app.json",
-              "projects/ssr/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["integration/ssr/tsconfig.app.json", "integration/ssr/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "projects/ssr/dist/server",
-            "main": "projects/ssr/src/main.server.ts",
-            "tsConfig": "projects/ssr/tsconfig.server.json"
+            "outputPath": "integration/ssr/dist/server",
+            "main": "integration/ssr/src/main.server.ts",
+            "tsConfig": "integration/ssr/tsconfig.server.json"
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/ssr/src/environments/environment.ts",
-                  "with": "projects/ssr/src/environments/environment.prod.ts"
+                  "replace": "integration/ssr/src/environments/environment.ts",
+                  "with": "integration/ssr/src/environments/environment.prod.ts"
                 }
               ]
             }
@@ -232,13 +206,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/core/tsconfig.lib.json",
-              "src/core/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/core/tsconfig.lib.json", "src/core/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -267,13 +236,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/ui/bootstrap/tsconfig.lib.json",
-              "src/ui/bootstrap/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/ui/bootstrap/tsconfig.lib.json", "src/ui/bootstrap/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -302,13 +266,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/ui/ionic/tsconfig.lib.json",
-              "src/ui/ionic/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/ui/ionic/tsconfig.lib.json", "src/ui/ionic/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -337,13 +296,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/ui/kendo/tsconfig.lib.json",
-              "src/ui/kendo/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/ui/kendo/tsconfig.lib.json", "src/ui/kendo/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -372,13 +326,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/ui/material/tsconfig.lib.json",
-              "src/ui/material/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/ui/material/tsconfig.lib.json", "src/ui/material/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -407,13 +356,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/ui/primeng/tsconfig.lib.json",
-              "src/ui/primeng/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/ui/primeng/tsconfig.lib.json", "src/ui/primeng/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -442,13 +386,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/ui/nativescript/tsconfig.lib.json",
-              "src/ui/nativescript/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/ui/nativescript/tsconfig.lib.json", "src/ui/nativescript/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

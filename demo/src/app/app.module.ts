@@ -10,9 +10,7 @@ import { AppComponent } from './app.component';
 import { filter, tap } from 'rxjs/operators';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -31,9 +29,11 @@ import { filter, tap } from 'rxjs/operators';
 })
 export class AppModule {
   constructor(router: Router) {
-    router.events.pipe(
-      filter(evt => evt instanceof NavigationEnd),
-      tap(() => document.querySelector('.mat-sidenav-content').scrollTop = 0),
-    ).subscribe();
+    router.events
+      .pipe(
+        filter(evt => evt instanceof NavigationEnd),
+        tap(() => (document.querySelector('.mat-sidenav-content').scrollTop = 0)),
+      )
+      .subscribe();
   }
 }

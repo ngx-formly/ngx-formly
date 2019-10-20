@@ -139,4 +139,3 @@ export class AppComponent {
     alert(JSON.stringify(this.model));
   }
 }
-

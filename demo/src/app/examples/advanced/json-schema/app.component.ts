@@ -31,23 +31,23 @@ export class AppComponent {
     'select_alternatives',
   ];
 
-  constructor(
-    private formlyJsonschema: FormlyJsonschema,
-    private http: HttpClient,
-  ) {
+  constructor(private formlyJsonschema: FormlyJsonschema, private http: HttpClient) {
     this.loadExample(this.examples[0]);
   }
 
   loadExample(type: string) {
-    this.http.get<any>(`assets/json-schema/${type}_json`).pipe(
-      tap(({ schema, model }) => {
-        this.type = type;
-        this.form = new FormGroup({});
-        this.options = {};
-        this.fields = [this.formlyJsonschema.toFieldConfig(schema)];
-        this.model = model;
-      }),
-    ).subscribe();
+    this.http
+      .get<any>(`assets/json-schema/${type}_json`)
+      .pipe(
+        tap(({ schema, model }) => {
+          this.type = type;
+          this.form = new FormGroup({});
+          this.options = {};
+          this.fields = [this.formlyJsonschema.toFieldConfig(schema)];
+          this.model = model;
+        }),
+      )
+      .subscribe();
   }
 
   submit() {

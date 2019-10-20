@@ -16,5 +16,4 @@ import { FormlySelectModule } from '@ngx-formly/kendo/select';
     FormlySelectModule,
   ],
 })
-export class FormlyKendoModule { }
-
+export class FormlyKendoModule {}

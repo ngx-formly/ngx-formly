@@ -3,10 +3,14 @@ import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './components/formly.field.config';
 
-export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
-  if (field.id) { return field.id; }
+export function getFieldId(formId: string, field: FormlyFieldConfig, index: string | number) {
+  if (field.id) {
+    return field.id;
+  }
   let type = field.type;
-  if (!type && field.template) { type = 'template'; }
+  if (!type && field.template) {
+    type = 'template';
+  }
   return [formId, type, field.key, index].join('_');
 }
 
@@ -17,9 +21,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
 
   /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
   if (!field._keyPath || field._keyPath.key !== field.key) {
-    const key = field.key.indexOf('[') === -1
-      ? field.key
-      : field.key.replace(/\[(\w+)\]/g, '.$1');
+    const key = field.key.indexOf('[') === -1 ? field.key : field.key.replace(/\[(\w+)\]/g, '.$1');
 
     field._keyPath = { key: field.key, path: key.indexOf('.') !== -1 ? key.split('.') : [key] };
   }
@@ -30,7 +32,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
 
 export function assignModelValue(model: any, paths: string[], value: any) {
-  for (let i = 0; i < (paths.length - 1); i++) {
+  for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
     if (!model[path] || !isObject(model[path])) {
       model[path] = /^\d+$/.test(paths[i + 1]) ? [] : {};
@@ -102,13 +104,16 @@ export function isBlankString(value: any) {
 }
 
 export function isFunction(value: any) {
-  return typeof(value) === 'function';
+  return typeof value === 'function';
 }
 
 export function objAndSameType(obj1: any, obj2: any) {
-  return isObject(obj1) && isObject(obj2)
-    && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2)
-    && !(Array.isArray(obj1) || Array.isArray(obj2));
+  return (
+    isObject(obj1) &&
+    isObject(obj2) &&
+    Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2) &&
+    !(Array.isArray(obj1) || Array.isArray(obj2))
+  );
 }
 
 export function isObject(x: any) {
@@ -121,10 +126,10 @@ export function isPromise(obj: any): obj is Promise<any> {
 
 export function clone(value: any): any {
   if (
-    !isObject(value)
-    || isObservable(value)
-    || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity
-    || ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor.name) !== -1
+    !isObject(value) ||
+    isObservable(value) ||
+    /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity ||
+    ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor.name) !== -1
   ) {
     return value;
   }
@@ -173,7 +178,7 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
 export function wrapProperty<T = any>(
   field: any,
   prop: string,
-  setFn: (change: {currentValue: T, previousValue?: T, firstChange: boolean}) => void,
+  setFn: (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void,
 ) {
   defineHiddenProp(field, `___$${prop}`, field[prop]);
   setFn({ currentValue: field[prop], firstChange: true });

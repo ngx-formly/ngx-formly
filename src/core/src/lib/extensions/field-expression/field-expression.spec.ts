@@ -113,7 +113,7 @@ describe('FieldExpressionExtension', () => {
           {
             key: 'key1',
             hideExpression: model => !model.type,
-          }
+          },
         ],
       });
       const { options, fieldGroup: fields, formControl: form } = field;

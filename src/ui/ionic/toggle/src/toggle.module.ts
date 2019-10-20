@@ -15,12 +15,14 @@ import { FormlyFieldToggle } from './toggle.type';
     IonicModule,
     FormlyFormFieldModule,
     FormlyModule.forChild({
-      types: [{
-        name: 'toggle',
-        component: FormlyFieldToggle,
-        wrappers: ['form-field'],
-      }],
+      types: [
+        {
+          name: 'toggle',
+          component: FormlyFieldToggle,
+          wrappers: ['form-field'],
+        },
+      ],
     }),
   ],
 })
-export class FormlyToggleModule { }
+export class FormlyToggleModule {}

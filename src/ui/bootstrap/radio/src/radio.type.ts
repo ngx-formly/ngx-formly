@@ -5,10 +5,16 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-radio',
   template: `
     <div>
-      <div *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
-        [ngClass]="{ 'form-check': to.formCheck !== 'custom', 'form-check-inline': to.formCheck === 'inline', 'custom-control custom-radio': to.formCheck === 'custom' }"
+      <div
+        *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
+        [ngClass]="{
+          'form-check': to.formCheck !== 'custom',
+          'form-check-inline': to.formCheck === 'inline',
+          'custom-control custom-radio': to.formCheck === 'custom'
+        }"
       >
-        <input type="radio"
+        <input
+          type="radio"
           [id]="id + '_' + i"
           [class.form-check-input]="to.formCheck !== 'custom'"
           [class.custom-control-input]="to.formCheck === 'custom'"
@@ -17,11 +23,13 @@ import { FieldType } from '@ngx-formly/core';
           [attr.value]="option.value"
           [value]="option.value"
           [formControl]="formControl"
-          [formlyAttributes]="field">
+          [formlyAttributes]="field"
+        />
         <label
           [class.form-check-label]="to.formCheck !== 'custom'"
           [class.custom-control-label]="to.formCheck === 'custom'"
-          [for]="id + '_' + i">
+          [for]="id + '_' + i"
+        >
           {{ option.label }}
         </label>
       </div>

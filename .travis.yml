@@ -14,6 +14,7 @@ install:
   - npm ci
 
 script:
+- npm run format
 - npm run lint
 - if [ ! "$TRAVIS_PULL_REQUEST" = "false" ]; then commitlint-travis; fi
 - npm run test

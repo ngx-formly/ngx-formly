@@ -7,7 +7,7 @@ import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-validation-message',
-  template: `{{ errorMessage$ | async }}`,
+  template: '{{ errorMessage$ | async }}',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyValidationMessage implements OnChanges {
@@ -47,7 +47,11 @@ export class FormlyValidationMessage implements OnChanges {
           message = this.field.validators[error].message;
         }
 
-        if (this.field.asyncValidators && this.field.asyncValidators[error] && this.field.asyncValidators[error].message) {
+        if (
+          this.field.asyncValidators &&
+          this.field.asyncValidators[error] &&
+          this.field.asyncValidators[error].message
+        ) {
           message = this.field.asyncValidators[error].message;
         }
 

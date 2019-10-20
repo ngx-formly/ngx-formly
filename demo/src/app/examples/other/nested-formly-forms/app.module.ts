@@ -13,14 +13,9 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      wrappers: [
-        { name: 'panel', component: PanelWrapperComponent },
-      ],
+      wrappers: [{ name: 'panel', component: PanelWrapperComponent }],
     }),
   ],
-  declarations: [
-    AppComponent,
-    PanelWrapperComponent,
-  ],
+  declarations: [AppComponent, PanelWrapperComponent],
 })
-export class AppModule { }
+export class AppModule {}

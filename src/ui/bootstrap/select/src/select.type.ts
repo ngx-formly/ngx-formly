@@ -4,15 +4,18 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-select',
   template: `
-    <select *ngIf="to.multiple; else singleSelect" class="form-control"
+    <select
+      *ngIf="to.multiple; else singleSelect"
+      class="form-control"
       multiple
       [class.custom-select]="to.customSelect"
       [formControl]="formControl"
       [compareWith]="to.compareWith || compareWith"
       [class.is-invalid]="showError"
-      [formlyAttributes]="field">
-      <ng-container *ngIf="to.options | formlySelectOptions:field | async as opts">
-        <ng-container *ngIf="to._flatOptions else grouplist">
+      [formlyAttributes]="field"
+    >
+      <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
+        <ng-container *ngIf="to._flatOptions; else grouplist">
           <ng-container *ngFor="let opt of opts">
             <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
           </ng-container>
@@ -20,7 +23,9 @@ import { FieldType } from '@ngx-formly/core';
 
         <ng-template #grouplist>
           <ng-container *ngFor="let opt of opts">
-            <option *ngIf="!opt.group else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
+            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{
+              opt.label
+            }}</option>
             <ng-template #optgroup>
               <optgroup [label]="opt.label">
                 <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
@@ -34,16 +39,18 @@ import { FieldType } from '@ngx-formly/core';
     </select>
 
     <ng-template #singleSelect>
-      <select class="form-control"
+      <select
+        class="form-control"
         #select
         [formControl]="formControl"
         [compareWith]="to.compareWith || compareWith"
         [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
-        [formlyAttributes]="field">
+        [formlyAttributes]="field"
+      >
         <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
-        <ng-container *ngIf="to.options | formlySelectOptions:field | async as opts">
-          <ng-container *ngIf="to._flatOptions else grouplist">
+        <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
+          <ng-container *ngIf="to._flatOptions; else grouplist">
             <ng-container *ngFor="let opt of opts">
               <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
             </ng-container>
@@ -51,7 +58,9 @@ import { FieldType } from '@ngx-formly/core';
 
           <ng-template #grouplist>
             <ng-container *ngFor="let opt of opts">
-              <option *ngIf="!opt.group else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
+              <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{
+                opt.label
+              }}</option>
               <ng-template #optgroup>
                 <optgroup [label]="opt.label">
                   <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
@@ -76,8 +85,9 @@ export class FormlyFieldSelect extends FieldType implements AfterViewChecked {
   ngAfterViewChecked() {
     if (!this.to.multiple && !this.to.placeholder && this.formControl.value === null) {
       const selectEl = this.select.nativeElement;
-      if (selectEl.selectedIndex !== -1
-        && (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value !== null)
+      if (
+        selectEl.selectedIndex !== -1 &&
+        (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value !== null)
       ) {
         this.select.nativeElement.selectedIndex = -1;
       }
