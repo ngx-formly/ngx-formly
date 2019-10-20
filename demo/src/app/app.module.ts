@@ -33,9 +33,11 @@ import { HomeComponent } from './home.component';
 })
 export class AppModule {
   constructor(router: Router) {
-    router.events.pipe(
-      filter(evt => evt instanceof NavigationEnd),
-      tap(() => document.querySelector('.mat-sidenav-content').scrollTop = 0),
-    ).subscribe();
+    router.events
+      .pipe(
+        filter(evt => evt instanceof NavigationEnd),
+        tap(() => (document.querySelector('.mat-sidenav-content').scrollTop = 0)),
+      )
+      .subscribe();
   }
 }

@@ -14,7 +14,7 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     Object.defineProperty(field, 'form', {
-      get: () => field.parent ? field.parent.formControl : field.formControl,
+      get: () => (field.parent ? field.parent.formControl : field.formControl),
       configurable: true,
     });
   }

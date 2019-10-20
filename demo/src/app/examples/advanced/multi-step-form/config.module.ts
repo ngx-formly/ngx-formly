@@ -13,9 +13,10 @@ import { AppComponent } from './app.component';
         path: '',
         component: ExamplesRouterViewerComponent,
         data: {
-          examples: [{
-            title: 'Multi-Step Form',
-            description: `
+          examples: [
+            {
+              title: 'Multi-Step Form',
+              description: `
               This is an example of multi-step form using <a href="https://material.angular.io/components/stepper/overview" target="_blank">Material Stepper</a>
             `,
             component: AppComponent,
@@ -30,6 +31,6 @@ import { AppComponent } from './app.component';
       },
     ]),
   ],
-  entryComponents: [ AppComponent ],
+  entryComponents: [AppComponent],
 })
-export class ConfigModule { }
+export class ConfigModule {}

@@ -62,9 +62,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
       }
     });
     if (control.registerOnDisabledChange) {
-      control.registerOnDisabledChange(
-        (value: boolean) => field.templateOptions['___$disabled'] = value,
-      );
+      control.registerOnDisabledChange((value: boolean) => (field.templateOptions['___$disabled'] = value));
     }
   }
 
@@ -83,7 +81,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     control.patchValue(value, { emitEvent: false });
   }
 
-  for (let i = 0; i < (paths.length - 1); i++) {
+  for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
     if (!form.get([path])) {
       updateControl(
@@ -93,16 +91,12 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
       );
     }
 
-    form = <FormGroup> form.get([path]);
+    form = <FormGroup>form.get([path]);
   }
 
   const key = paths[paths.length - 1];
   if (!field._hide && form.get([key]) !== control) {
-    updateControl(
-      form,
-      { emitEvent },
-      () => form.setControl(key, control),
-    );
+    updateControl(form, { emitEvent }, () => form.setControl(key, control));
   }
 }
 
@@ -121,9 +115,7 @@ function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, 
   if (form instanceof FormGroup && !form['__patchForEachChild']) {
     defineHiddenProp(form, '__patchForEachChild', true);
     (form as any)._forEachChild = (cb: Function) => {
-      Object
-        .keys(form.controls)
-        .forEach(k => form.controls[k] && cb(form.controls[k], k));
+      Object.keys(form.controls).forEach(k => form.controls[k] && cb(form.controls[k], k));
     };
   }
 
@@ -132,7 +124,7 @@ function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, 
    */
   const updateValueAndValidity = form.updateValueAndValidity.bind(form);
   if (opts.emitEvent === false) {
-    form.updateValueAndValidity = (opts) => {
+    form.updateValueAndValidity = opts => {
       updateValueAndValidity({ ...(opts || {}), emitEvent: false });
     };
   }

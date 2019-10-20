@@ -46,4 +46,4 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
     AutocompleteAppComponent,
   ],
 })
-export class ConfigModule { }
+export class ConfigModule {}

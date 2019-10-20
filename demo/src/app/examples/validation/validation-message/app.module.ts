@@ -36,8 +36,6 @@ export function maxValidationMessage(err, field) {
       ],
     }),
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

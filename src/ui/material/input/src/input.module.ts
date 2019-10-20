@@ -27,4 +27,4 @@ import { FormlyFieldInput } from './input.type';
     }),
   ],
 })
-export class FormlyMatInputModule { }
+export class FormlyMatInputModule {}

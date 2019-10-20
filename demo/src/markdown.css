@@ -1,14 +1,15 @@
-
 /**
  * standard markdown style
  */
 
- code[class*="language-"], pre[class*="language-"] {
-   color: rgba(0, 0, 0, 0.87) !important;
- }
+code[class*='language-'],
+pre[class*='language-'] {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
 
 .markdown {
-  font-family: "Hiragino Sans GB", "Microsoft YaHei", "STHeiti", "SimSun", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", 'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif;
+  font-family: 'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Lucida Grande', 'Lucida Sans Unicode',
+    'Lucida Sans', 'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif;
   padding: 20px;
 }
 .markdown a {
@@ -99,7 +100,7 @@
   word-wrap: break-word;
   border: 1px solid #cccccc;
   overflow: auto;
-  padding: .5em;
+  padding: 0.5em;
 }
 .markdown pre code {
   border: 0;
@@ -167,7 +168,8 @@
  */
 .github {
   padding: 20px;
-  font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", "STHeiti", "SimSun", "Segoe UI", AppleSDGothicNeo-Medium, 'Malgun Gothic', Arial, freesans, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Segoe UI',
+    AppleSDGothicNeo-Medium, 'Malgun Gothic', Arial, freesans, sans-serif;
   font-size: 15px;
   background: #ffffff;
   line-height: 1.6;
@@ -190,7 +192,7 @@
   border: 1px solid #e6e6e6;
 }
 .github pre > code {
-  font-size: .9em;
+  font-size: 0.9em;
   font-family: Consolas, Inconsolata, Courier, monospace;
 }
 .github p > code,
@@ -204,7 +206,7 @@
 .github h6 > code,
 .github blockquote > code {
   background-color: rgba(0, 0, 0, 0.07);
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 85%;
   padding: 0.2em 0.5em;
   border: 0;

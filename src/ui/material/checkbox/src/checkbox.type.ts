@@ -12,7 +12,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
       [tabIndex]="to.tabindex"
       [indeterminate]="to.indeterminate && formControl.value === null"
       [color]="to.color"
-      [labelPosition]="to.align || to.labelPosition">
+      [labelPosition]="to.align || to.labelPosition"
+    >
       {{ to.label }}
       <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
     </mat-checkbox>

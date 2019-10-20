@@ -7,15 +7,8 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { AppComponent } from './app.component';
 import { DataService } from './data.service';
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormlyBootstrapModule,
-    FormlyModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, FormlyBootstrapModule, FormlyModule.forRoot()],
+  declarations: [AppComponent],
   providers: [DataService],
 })
-export class AppModule { }
+export class AppModule {}

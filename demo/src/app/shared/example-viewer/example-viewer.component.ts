@@ -1,4 +1,14 @@
-import { Component, Input, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef,
+} from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -9,7 +19,7 @@ export interface ExampleType {
   component: any;
   deps?: string[];
   debug: boolean;
-  files: { file: string; filecontent: { default: string }; content: string }[];
+  files: { file: string; filecontent: { default: string }; content?: string }[];
 }
 
 @Component({

@@ -10,6 +10,8 @@
     "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint --fix -p tsconfig.json",
+    "format": "prettier --list-different \"**/*.{ts,json,css,scss,html}\"",
+    "format:fix": "prettier --write \"**/*.{ts,json,css,scss,html}\"",
     "commit": "npm run build && git-cz",
     "bundlesize": "npm run build && bundlesize",
     "build": "ts-node build/build.ts",
@@ -20,9 +22,9 @@
     "test:watch": "ng test @ngx-formly/core --watch",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "github-release": "conventional-github-releaser -p angular -t $GH_TOKEN --draft",
-    "compile:server": "webpack --config projects/ssr/webpack.server.config.js --progress --colors",
-    "e2e:ssr": "node projects/ssr/dist/server & pid=$!; cypress run --config integrationFolder=cypress/ssr; kill -9 $pid",
-    "serve:ssr": "node projects/ssr/dist/server",
+    "compile:server": "webpack --config integration/ssr/webpack.server.config.js --progress --colors",
+    "e2e:ssr": "node integration/ssr/dist/server & pid=$!; cypress run --config integrationFolder=cypress/ssr; kill -9 $pid",
+    "serve:ssr": "node integration/ssr/dist/server",
     "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
     "build:client-and-server-bundles": "ng build ssr --prod && ng run ssr:server:production --bundleDependencies all"
   },
@@ -126,6 +128,7 @@
     "lint-staged": "^9.4.2",
     "markdown-loader": "^5.1.0",
     "ng-packagr": "^5.6.1",
+    "prettier": "^1.18.2",
     "protractor": "^5.4.2",
     "raw-loader": "^3.1.0",
     "remap-istanbul": "^0.13.0",
@@ -134,6 +137,7 @@
     "ts-node": "^8.4.1",
     "tsickle": "^0.37.0",
     "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "~3.5.3",
     "webpack-cli": "^3.1.0"
   },
@@ -148,6 +152,10 @@
     }
   },
   "lint-staged": {
+    "**/*.{ts,json,css,scss,html}": [
+      "prettier --write",
+      "git add"
+    ],
     "**/*.ts": [
       "tslint --fix",
       "git add"
