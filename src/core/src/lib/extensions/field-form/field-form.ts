@@ -1,18 +1,29 @@
 import { FormlyExtension } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { AbstractControl, FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
 import { getKeyPath, getFieldValue, defineHiddenProp } from '../../utils';
 import { registerControl } from './utils';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
+  prePopulate(field: FormlyFieldConfigCache) {
+    Object.defineProperty(field, 'form', {
+      get: () => field.parent ? field.parent.formControl : field.formControl,
+      configurable: true,
+    });
+  }
+
   onPopulate(field: FormlyFieldConfigCache) {
+    if (!field.parent) {
+      return;
+    }
+
     if (field.key) {
       this.addFormControl(field);
     }
 
-    if (field.parent && field.fieldGroup && !field.key) {
-      defineHiddenProp(field, 'formControl', field.parent.formControl);
+    if (field.form && field.fieldGroup && !field.key) {
+      defineHiddenProp(field, 'formControl', field.form);
     }
   }
 
@@ -26,19 +37,12 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {
-    const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
-    let control: AbstractControl;
-
-    const form = field.parent.formControl as FormGroup;
-    const value = getFieldValue(field);
-    const paths = getKeyPath(field);
-    if (field.formControl instanceof AbstractControl || (form && form.get(paths))) {
-      control = field.formControl || form.get(paths);
-    } else if (field.fieldGroup) {
-      // TODO: move to postPopulate
-      control = new FormGroup({}, controlOptions);
-    } else {
-      control = new FormControl(value, controlOptions);
+    let control = field.formControl || field.form.get(getKeyPath(field));
+    if (!control) {
+      const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
+      control = field.fieldGroup
+        ? new FormGroup({}, controlOptions)
+        : new FormControl(getFieldValue(field), controlOptions);
     }
 
     registerControl(field, control);

@@ -13,7 +13,10 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
   onPopulate(field: FormlyFieldConfig) {
     if (!field.formControl) {
-      registerControl(field, new FormArray([], { updateOn: field.modelOptions.updateOn }));
+      registerControl(field, new FormArray(
+        [],
+        { updateOn: field.modelOptions.updateOn },
+      ));
     }
 
     field.fieldGroup = field.fieldGroup || [];
