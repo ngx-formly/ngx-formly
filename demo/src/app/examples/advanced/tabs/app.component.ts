@@ -65,7 +65,7 @@ export class AppComponent {
     },
   ];
   form = new FormArray(this.tabs.map(() => new FormGroup({})));
-  options = this.tabs.map(() => <FormlyFormOptions> {});
+  options = this.tabs.map(() => <FormlyFormOptions>{});
 
   submit() {
     alert(JSON.stringify(this.model));

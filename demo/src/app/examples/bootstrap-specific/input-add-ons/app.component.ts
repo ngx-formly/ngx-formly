@@ -41,7 +41,7 @@ export class AppComponent {
       key: 'right',
       type: 'input',
       templateOptions: {
-        placeholder: 'Nice, isn\'t it??',
+        placeholder: `Nice, isn't it??`,
 
         addonRight: {
           class: 'fa fa-heart',

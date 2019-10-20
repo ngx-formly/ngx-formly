@@ -103,12 +103,6 @@ export function constValidationMessage(err, field: FormlyFieldConfig) {
       ],
     }),
   ],
-  declarations: [
-    AppComponent,
-    ArrayTypeComponent,
-    ObjectTypeComponent,
-    MultiSchemaTypeComponent,
-    NullTypeComponent,
-  ],
+  declarations: [AppComponent, ArrayTypeComponent, ObjectTypeComponent, MultiSchemaTypeComponent, NullTypeComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -6,15 +6,18 @@ import { take } from 'rxjs/operators';
 @Component({
   selector: 'formly-field-select',
   template: `
-    <select *ngIf="to.multiple; else singleSelect" class="form-control"
+    <select
+      *ngIf="to.multiple; else singleSelect"
+      class="form-control"
       multiple
       [class.custom-select]="to.customSelect"
       [formControl]="formControl"
       [compareWith]="to.compareWith"
       [class.is-invalid]="showError"
-      [formlyAttributes]="field">
-      <ng-container *ngIf="to.options | formlySelectOptions:field | async as opts">
-        <ng-container *ngIf="to._flatOptions else grouplist">
+      [formlyAttributes]="field"
+    >
+      <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
+        <ng-container *ngIf="to._flatOptions; else grouplist">
           <ng-container *ngFor="let opt of opts">
             <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
           </ng-container>
@@ -22,7 +25,9 @@ import { take } from 'rxjs/operators';
 
         <ng-template #grouplist>
           <ng-container *ngFor="let opt of opts">
-            <option *ngIf="!opt.group else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
+            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{
+              opt.label
+            }}</option>
             <ng-template #optgroup>
               <optgroup [label]="opt.label">
                 <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
@@ -36,15 +41,17 @@ import { take } from 'rxjs/operators';
     </select>
 
     <ng-template #singleSelect>
-      <select class="form-control"
+      <select
+        class="form-control"
         [formControl]="formControl"
         [compareWith]="to.compareWith"
         [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
-        [formlyAttributes]="field">
+        [formlyAttributes]="field"
+      >
         <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
-        <ng-container *ngIf="to.options | formlySelectOptions:field | async as opts">
-          <ng-container *ngIf="to._flatOptions else grouplist">
+        <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
+          <ng-container *ngIf="to._flatOptions; else grouplist">
             <ng-container *ngFor="let opt of opts">
               <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
             </ng-container>
@@ -52,7 +59,9 @@ import { take } from 'rxjs/operators';
 
           <ng-template #grouplist>
             <ng-container *ngFor="let opt of opts">
-              <option *ngIf="!opt.group else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
+              <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{
+                opt.label
+              }}</option>
               <ng-template #optgroup>
                 <optgroup [label]="opt.label">
                   <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
@@ -79,7 +88,9 @@ export class FormlyFieldSelect extends FieldType {
 
   // workaround for https://github.com/angular/angular/issues/10010
   @ViewChild(SelectControlValueAccessor, { static: false }) set selectAccessor(s: any) {
-    if (!s) return;
+    if (!s) {
+      return;
+    }
 
     const writeValue = s.writeValue.bind(s);
     if (s._getOptionId(s.value) === null) {

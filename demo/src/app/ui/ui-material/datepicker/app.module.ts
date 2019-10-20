@@ -13,16 +13,12 @@ import { AppComponent } from './app.component';
     CommonModule,
     ReactiveFormsModule,
     FormlyModule.forRoot({
-      validationMessages: [
-        { name: 'required', message: 'This field is required' },
-      ],
+      validationMessages: [{ name: 'required', message: 'This field is required' }],
     }),
 
     MatNativeDateModule,
     FormlyMatDatepickerModule,
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

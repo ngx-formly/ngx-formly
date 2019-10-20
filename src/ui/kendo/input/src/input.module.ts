@@ -23,4 +23,4 @@ import { FormlyFieldInput } from './input.type';
     }),
   ],
 })
-export class FormlyInputModule { }
+export class FormlyInputModule {}

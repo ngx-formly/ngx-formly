@@ -6,15 +6,18 @@ import { SharedModule } from '../shared';
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: '', children: [
-        { path: '', pathMatch: 'full', redirectTo: 'bootstrap' },
-        { path: 'bootstrap', loadChildren: () => import('./ui-bootstrap/config.module').then(m => m.ConfigModule) },
-        { path: 'material', loadChildren: () => import('./ui-material/config.module').then(m => m.ConfigModule) },
-        { path: 'ionic', loadChildren: () => import('./ui-ionic/config.module').then(m => m.ConfigModule) },
-        { path: 'primeng', loadChildren: () => import('./ui-primeng/config.module').then(m => m.ConfigModule) },
-        { path: 'kendo', loadChildren: () => import('./ui-kendo/config.module').then(m => m.ConfigModule) },
-      ] },
+      {
+        path: '',
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: 'bootstrap' },
+          { path: 'bootstrap', loadChildren: () => import('./ui-bootstrap/config.module').then(m => m.ConfigModule) },
+          { path: 'material', loadChildren: () => import('./ui-material/config.module').then(m => m.ConfigModule) },
+          { path: 'ionic', loadChildren: () => import('./ui-ionic/config.module').then(m => m.ConfigModule) },
+          { path: 'primeng', loadChildren: () => import('./ui-primeng/config.module').then(m => m.ConfigModule) },
+          { path: 'kendo', loadChildren: () => import('./ui-kendo/config.module').then(m => m.ConfigModule) },
+        ],
+      },
     ]),
   ],
 })
-export class UIModule { }
+export class UIModule {}

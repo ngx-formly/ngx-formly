@@ -13,9 +13,10 @@ import { AppComponent } from './app.component';
         path: '',
         component: ExamplesRouterViewerComponent,
         data: {
-          examples: [{
-            title: 'JSON powered',
-            description: `
+          examples: [
+            {
+              title: 'JSON powered',
+              description: `
               This is an example of powering a form strictly by JSON. The common use case for this
               would be to persist the form configuration in the database and then send the configuration
               up to power the form. Notice that you can still use most features like <code>expressionProperties</code>
@@ -41,4 +42,4 @@ import { AppComponent } from './app.component';
   ],
   entryComponents: [AppComponent],
 })
-export class ConfigModule { }
+export class ConfigModule {}

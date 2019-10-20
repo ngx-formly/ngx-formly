@@ -12,12 +12,12 @@ import { GridFormlyCellComponent } from './grid-formly-cell.component';
         class="className"
         [gridOptions]="gridOptions"
         [rowData]="model"
-        (firstDataRendered)="onFirstDataRendered($event)">
+        (firstDataRendered)="onFirstDataRendered($event)"
+      >
       </ag-grid-angular>
     </div>
-`,
+  `,
 })
-
 export class GridTypeComponent extends FieldArrayType implements OnInit {
   gridOptions: GridOptions;
   style: any = {};
@@ -29,7 +29,7 @@ export class GridTypeComponent extends FieldArrayType implements OnInit {
     };
 
     // map cell Renderer to Formly Component
-    this.to.gridOptions.columnDefs.forEach(column => column.cellRendererFramework = GridFormlyCellComponent);
+    this.to.gridOptions.columnDefs.forEach(column => (column.cellRendererFramework = GridFormlyCellComponent));
 
     // set grid options and context of the parent formly field
     const gridOptions: GridOptions = this.to.gridOptions || {};
@@ -44,4 +44,3 @@ export class GridTypeComponent extends FieldArrayType implements OnInit {
     params.api.sizeColumnsToFit();
   }
 }
-

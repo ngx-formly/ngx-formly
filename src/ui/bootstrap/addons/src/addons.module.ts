@@ -13,13 +13,9 @@ import { addonsExtension } from './addon.extension';
     ReactiveFormsModule,
 
     FormlyModule.forChild({
-      wrappers: [
-        { name: 'addons', component: FormlyWrapperAddons },
-      ],
-      extensions: [
-        { name: 'addons', extension: { postPopulate: addonsExtension } },
-      ],
+      wrappers: [{ name: 'addons', component: FormlyWrapperAddons }],
+      extensions: [{ name: 'addons', extension: { postPopulate: addonsExtension } }],
     }),
   ],
 })
-export class FormlyBootstrapAddonsModule { }
+export class FormlyBootstrapAddonsModule {}

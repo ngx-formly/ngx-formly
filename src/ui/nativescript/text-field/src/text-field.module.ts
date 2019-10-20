@@ -28,4 +28,4 @@ import { FormlyFieldText } from './text-field.type';
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class FormlyNsTextFieldModule { }
+export class FormlyNsTextFieldModule {}
