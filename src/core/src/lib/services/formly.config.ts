@@ -131,6 +131,10 @@ export class FormlyConfig {
     }
 
     const { _resolver, _injector } = field.parent.options;
+    if (!_resolver || !_injector) {
+      return null;
+    }
+
     defineHiddenProp(
       type,
       '_componentRef',
