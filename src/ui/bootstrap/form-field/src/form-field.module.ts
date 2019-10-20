@@ -11,11 +11,13 @@ import { FormlyWrapperFormField } from './form-field.wrapper';
     ReactiveFormsModule,
 
     FormlyModule.forChild({
-      wrappers: [{
-        name: 'form-field',
-        component: FormlyWrapperFormField,
-      }],
+      wrappers: [
+        {
+          name: 'form-field',
+          component: FormlyWrapperFormField,
+        },
+      ],
     }),
   ],
 })
-export class FormlyBootstrapFormFieldModule { }
+export class FormlyBootstrapFormFieldModule {}

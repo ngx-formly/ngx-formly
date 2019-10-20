@@ -25,15 +25,17 @@ export class AppComponent {
       key: 'address',
       wrappers: ['panel'],
       templateOptions: { label: 'Address' },
-      fieldGroup: [{
-        key: 'town',
-        type: 'input',
-        templateOptions: {
-          required: true,
-          type: 'text',
-          label: 'Town',
+      fieldGroup: [
+        {
+          key: 'town',
+          type: 'input',
+          templateOptions: {
+            required: true,
+            type: 'text',
+            label: 'Town',
+          },
         },
-      }],
+      ],
     },
   ];
 

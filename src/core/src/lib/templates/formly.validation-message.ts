@@ -5,7 +5,9 @@ import { isObject } from '../utils';
 
 @Component({
   selector: 'formly-validation-message',
-  template: `{{ errorMessage }}`,
+  template: `
+    {{ errorMessage }}
+  `,
 })
 export class FormlyValidationMessage {
   @Input() field: FormlyFieldConfig;
@@ -36,7 +38,11 @@ export class FormlyValidationMessage {
           message = this.field.validators[error].message;
         }
 
-        if (this.field.asyncValidators && this.field.asyncValidators[error] && this.field.asyncValidators[error].message) {
+        if (
+          this.field.asyncValidators &&
+          this.field.asyncValidators[error] &&
+          this.field.asyncValidators[error].message
+        ) {
           message = this.field.asyncValidators[error].message;
         }
 

@@ -5,15 +5,14 @@ import { MatRadioGroup } from '@angular/material/radio';
 @Component({
   selector: 'formly-field-mat-radio',
   template: `
-    <mat-radio-group
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [tabindex]="to.tabindex || 0">
-      <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
+    <mat-radio-group [formControl]="formControl" [formlyAttributes]="field" [tabindex]="to.tabindex || 0">
+      <mat-radio-button
+        *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
         [id]="id + '_' + i"
         [color]="to.color"
         [labelPosition]="to.labelPosition"
-        [value]="option.value">
+        [value]="option.value"
+      >
         {{ option.label }}
       </mat-radio-button>
     </mat-radio-group>

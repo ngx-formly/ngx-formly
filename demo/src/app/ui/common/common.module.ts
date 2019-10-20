@@ -8,15 +8,7 @@ import { RadioAppModule } from '../common/radio';
 import { SelectAppModule } from '../common/select';
 
 @NgModule({
-  imports: [
-    InputAppModule,
-    TextareaAppModule,
-    CheckboxAppModule,
-    RadioAppModule,
-    SelectAppModule,
-  ],
-  exports: [
-    SharedModule,
-  ],
+  imports: [InputAppModule, TextareaAppModule, CheckboxAppModule, RadioAppModule, SelectAppModule],
+  exports: [SharedModule],
 })
-export class CommonModule { }
+export class CommonModule {}

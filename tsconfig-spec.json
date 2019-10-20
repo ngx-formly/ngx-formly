@@ -3,8 +3,5 @@
   "compilerOptions": {
     "noImplicitAny": false
   },
-  "include": [
-    "src/**/*.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts", "**/*.spec.ts"]
 }

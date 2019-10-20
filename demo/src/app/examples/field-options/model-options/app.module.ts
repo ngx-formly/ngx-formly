@@ -24,8 +24,6 @@ export function RequiredValidatorMessage(err, field: FormlyFieldConfig) {
       ],
     }),
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
