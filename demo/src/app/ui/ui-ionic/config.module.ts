@@ -25,17 +25,12 @@ import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './togg
         component: AppComponent,
         data: {
           debugFields,
-          examples: [
-            ...CommonExampleConfigs,
-            DatetimeExampleConfig,
-            RangeExampleConfig,
-            ToggleExampleConfig,
-          ],
+          examples: [...CommonExampleConfigs, DatetimeExampleConfig, RangeExampleConfig, ToggleExampleConfig],
         },
       },
     ]),
   ],
-  declarations: [ AppComponent ],
+  declarations: [AppComponent],
   entryComponents: [
     AppComponent,
     ...CommonExampleComponents,

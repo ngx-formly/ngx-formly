@@ -21,8 +21,6 @@ import { AppComponent } from './app.component';
       ],
     }),
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

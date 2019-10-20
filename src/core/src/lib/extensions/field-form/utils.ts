@@ -32,9 +32,7 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
       }
     });
     if (control.registerOnDisabledChange) {
-      control.registerOnDisabledChange(
-        (value: boolean) => field.templateOptions['___$disabled'] = value,
-      );
+      control.registerOnDisabledChange((value: boolean) => (field.templateOptions['___$disabled'] = value));
     }
   }
 
@@ -44,7 +42,7 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
 
   let form = field.form;
   const paths = getKeyPath(field);
-  for (let i = 0; i < (paths.length - 1); i++) {
+  for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
     if (!form.get([path])) {
       registerControl({
@@ -55,14 +53,14 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
       });
     }
 
-    form = <FormGroup> form.get([path]);
+    form = <FormGroup>form.get([path]);
   }
 
   const value = getFieldValue(field);
   if (
-    !(isNullOrUndefined(control.value) && isNullOrUndefined(value))
-    && control.value !== value
-    && control instanceof FormControl
+    !(isNullOrUndefined(control.value) && isNullOrUndefined(value)) &&
+    control.value !== value &&
+    control instanceof FormControl
   ) {
     control.patchValue(value, { emitEvent: false });
   }

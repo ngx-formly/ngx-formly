@@ -25,4 +25,4 @@ import { FormlyFieldInput } from './input.type';
     }),
   ],
 })
-export class FormlyBootstrapInputModule { }
+export class FormlyBootstrapInputModule {}

@@ -12,8 +12,6 @@ import { GuidesComponent } from './guides.component';
       { path: ':id', component: GuidesComponent },
     ]),
   ],
-  declarations: [
-    GuidesComponent,
-  ],
+  declarations: [GuidesComponent],
 })
-export class GuidesModule { }
+export class GuidesModule {}
