@@ -43,7 +43,7 @@ export function defaultFormlyConfig(formlyConfig: FormlyConfig): ConfigOption {
   imports: [CommonModule],
 })
 export class FormlyModule {
-  static forRoot(config: ConfigOption = {}): ModuleWithProviders {
+  static forRoot(config: ConfigOption = {}): ModuleWithProviders<FormlyModule> {
     return {
       ngModule: FormlyModule,
       providers: [
@@ -56,7 +56,7 @@ export class FormlyModule {
     };
   }
 
-  static forChild(config: ConfigOption = {}): ModuleWithProviders {
+  static forChild(config: ConfigOption = {}): ModuleWithProviders<FormlyModule> {
     return {
       ngModule: FormlyModule,
       providers: [
