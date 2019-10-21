@@ -95,9 +95,9 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
 
   ngAfterViewInit() {
     // temporary fix for https://github.com/angular/material2/issues/7891
-    if (this.formField.underlineRef && this.to.hideFieldUnderline === true) {
-      this.renderer.removeClass(this.formField.underlineRef.nativeElement, 'mat-form-field-underline');
-      this.renderer.removeClass(this.formField.underlineRef.nativeElement.firstChild, 'mat-form-field-ripple');
+    if (this.formField.appearance !== 'outline' && this.to.hideFieldUnderline === true) {
+      const underlineElement = this.formField._elementRef.nativeElement.querySelector('.mat-form-field-underline');
+      underlineElement && this.renderer.removeChild(underlineElement.parentNode, underlineElement);
     }
   }
 
