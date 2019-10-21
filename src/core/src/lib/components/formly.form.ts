@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp } from '../utils';
+import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -187,7 +187,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
             field.parsers.forEach(parserFn => value = parserFn(value));
           }
 
-          this.changeModel({ key: [...rootKey, field.key].join('.'), value });
+          this.changeModel({ key: [...rootKey, ...getKeyPath(field)].join('.'), value });
         }));
       }
 
