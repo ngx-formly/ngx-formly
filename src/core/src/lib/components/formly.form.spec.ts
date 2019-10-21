@@ -267,6 +267,25 @@ describe('FormlyForm Component', () => {
       expect(spy).toHaveBeenCalledWith({ city: '***' });
       subscription.unsubscribe();
     });
+
+    // https://github.com/ngx-formly/ngx-formly/issues/1857
+    it('should emit a valid model value when using square bracket notation for key', () => {
+      app.fields = [{
+        key: 'o[0].0.name',
+        type: 'text',
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      app.form.get('o.0.0.name').patchValue('***');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ o: [[{ name: '***' }]] });
+      subscription.unsubscribe();
+    });
   });
 
   it('should fallback null fields to empty array', () => {
