@@ -45,11 +45,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
     registerControl(field, new FormArray(
       field.fieldGroup.map(f => f.formControl),
-      {
-        validators: field._validators,
-        asyncValidators: field._asyncValidators,
-        updateOn: field.modelOptions.updateOn,
-      },
+      { updateOn: field.modelOptions.updateOn },
     ));
   }
 

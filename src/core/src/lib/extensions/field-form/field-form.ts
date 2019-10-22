@@ -21,12 +21,17 @@ export class FieldFormExtension implements FormlyExtension {
     }
   }
 
+  postPopulate(field: FormlyFieldConfigCache) {
+    if (field.parent) {
+      return;
+    }
+
+    const updateValidity = this.setValidators(field);
+    updateValidity && (field.formControl as any)._updateTreeValidity();
+  }
+
   private addFormControl(field: FormlyFieldConfigCache) {
-    const controlOptions: AbstractControlOptions = {
-      validators: field._validators,
-      asyncValidators: field._asyncValidators,
-      updateOn: field.modelOptions.updateOn,
-    };
+    const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
     let control: AbstractControl;
 
     const form = field.parent.formControl as FormGroup;
@@ -34,18 +39,6 @@ export class FieldFormExtension implements FormlyExtension {
     const paths = getKeyPath(field);
     if (field.formControl instanceof AbstractControl || (form && form.get(paths))) {
       control = field.formControl || form.get(paths);
-      if (
-        (controlOptions.validators !== control.validator)
-        || (controlOptions.asyncValidators !== control.asyncValidator)
-      ) {
-        if (controlOptions.validators !== control.validator) {
-          control.setValidators(controlOptions.validators);
-        }
-        if (controlOptions.asyncValidators !== control.asyncValidator) {
-          control.setAsyncValidators(controlOptions.asyncValidators);
-        }
-        control.updateValueAndValidity();
-      }
     } else if (field._componentFactory && field._componentFactory.component && field._componentFactory.component.createControl) {
       const component = field._componentFactory.component;
       console.warn(`NgxFormly: '${component.name}::createControl' is deprecated since v5.0, use 'prePopulate' hook instead.`);
@@ -58,5 +51,29 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     registerControl(field, control);
+  }
+
+  private setValidators(field: FormlyFieldConfigCache) {
+    let updateValidity = false;
+    if (field.key) {
+      const {
+        _validators: validators,
+        _asyncValidators: asyncValidators,
+        formControl: control,
+      } = field;
+
+      if (validators !== control.validator) {
+        control.setValidators(validators);
+        updateValidity = true;
+      }
+      if (asyncValidators !== control.asyncValidator) {
+        control.setAsyncValidators(asyncValidators);
+        updateValidity = true;
+      }
+    }
+
+    (field.fieldGroup || []).forEach(f => this.setValidators(f) && (updateValidity = true));
+
+    return updateValidity;
   }
 }
