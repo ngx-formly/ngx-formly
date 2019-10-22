@@ -1118,6 +1118,40 @@ describe('FormlyForm Component', () => {
     });
   });
 
+  it('should call the validation only once during build', () => {
+    const fooValidator = { expression: () => false };
+    const spy = spyOn(fooValidator, 'expression');
+
+    app = {
+      form: new FormGroup({}),
+      fields: [
+        { key: 'f1', validators: { fooValidator } },
+        { key: 'f2' },
+        { key: 'f3', fieldGroup: [{ key: 'f4' }] },
+      ],
+    };
+
+    const fixture = createTestComponent(`
+      <form [formGroup]="form">
+        <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
+      </form>
+    `);
+
+    fixture.detectChanges();
+    expect(fooValidator.expression).toHaveBeenCalledTimes(1);
+
+    // re-build model change
+    spy.calls.reset();
+    fixture.componentInstance.model = { f1: 'foo' };
+    fixture.detectChanges();
+    expect(fooValidator.expression).toHaveBeenCalledTimes(1);
+
+    // re-build option change
+    spy.calls.reset();
+    fixture.componentInstance.options = {};
+    fixture.detectChanges();
+    expect(fooValidator.expression).not.toHaveBeenCalled();
+  });
 });
 
 @Component({
