@@ -48,20 +48,24 @@ export class FormlyFieldSelect extends FieldType {
     templateOptions: { options: [] },
   };
 
+  private selectAllValue!: { options: any, value: any[] };
+
   getSelectAllState(options: any[]) {
     if (this.empty || this.value.length === 0) {
       return '';
     }
 
-    return this.value.length !== options.length
+
+    return this.value.length !== this.getSelectAllValue(options).length
       ? 'indeterminate'
       : 'checked';
   }
 
   toggleSelectAll(options: any[]) {
+    const selectAllValue = this.getSelectAllValue(options);
     this.formControl.setValue(
-      !this.value || this.value.length !== options.length
-        ? options.map(x => x.value)
+      !this.value || this.value.length !== selectAllValue.length
+        ? selectAllValue
         : [],
     );
   }
@@ -86,5 +90,23 @@ export class FormlyFieldSelect extends FieldType {
     }
 
     return null;
+  }
+
+  private getSelectAllValue(options: any[]) {
+    if (!this.selectAllValue || options !== this.selectAllValue.options) {
+      const flatOptions: any[] = [];
+      options.forEach(o => o.group
+        ? flatOptions.push(...o.group)
+        : flatOptions.push(o),
+      );
+
+      this.selectAllValue = {
+        options,
+        value: flatOptions.map(o => o.value),
+      };
+    }
+
+
+    return this.selectAllValue.value;
   }
 }
