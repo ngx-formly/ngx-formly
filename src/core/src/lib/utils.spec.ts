@@ -129,34 +129,35 @@ describe('clone', () => {
 
   it('Observable', () => {
     const v = of(['clone']);
-    expect(clone(v)).toEqual(v);
+    expect(clone(v)).toBe(v);
   });
 
   it('FileList', () => {
     const blob = new Blob();
     const file = new File([], 'test');
 
-    expect(clone(blob)).toEqual(blob);
-    expect(clone(file)).toEqual(file);
+    expect(clone(blob)).toBe(blob);
+    expect(clone(file)).toBe(file);
   });
 
   it('Date', () => {
     const d = new Date();
     expect(clone(d)).toEqual(d);
-    expect(clone(d) === d).toBeFalsy();
+    expect(clone(d)).not.toBe(d);
   });
 
   it('Array', () => {
     const d = [1, 2, 3];
     expect(clone(d)).toEqual(d);
-    expect(clone(d) === d).toBeFalsy();
+    expect(clone(d)).not.toBe(d);
   });
 
   it('Object', () => {
     const d = { a: 'test' };
     expect(clone(d)).toEqual(d);
-    expect(clone(d) === d).toBeFalsy();
+    expect(clone(d)).not.toBe(d);
   });
+
   it('Object with methods', () => {
     class Foo {
       constructor(public foo = '') {}
@@ -165,7 +166,7 @@ describe('clone', () => {
     const foo = new Foo('test');
     const clonedFoo = clone(foo);
     expect(clonedFoo).toEqual(foo);
-    expect(clonedFoo === foo).toBeFalsy();
+    expect(clonedFoo).not.toBe(foo);
     // method of the base class have been copied
     expect(clonedFoo.method).toBeTruthy();
     expect(clonedFoo.method()).toEqual(foo.method());

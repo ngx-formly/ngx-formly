@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from './core';
-import { Observable } from 'rxjs';
+import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './components/formly.field.config';
 
@@ -100,14 +100,9 @@ export function isPromise(obj: any): obj is Promise<any> {
 export function clone(value: any): any {
   if (
     !isObject(value)
-    || value instanceof RegExp
-    || value instanceof Observable
+    || isObservable(value)
     || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity
-    || (typeof window !== 'undefined' && (
-      value instanceof FileList
-      || value instanceof File
-      || value instanceof Blob
-    ))
+    || ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor.name) !== -1
   ) {
     return value;
   }
