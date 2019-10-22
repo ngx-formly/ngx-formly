@@ -383,7 +383,7 @@ export class FormlyJsonschema {
         return type[0];
       }
 
-      if (type.length === 2 && type.includes('null')) {
+      if (type.length === 2 && type.indexOf('null') !== -1) {
         return type[type[0] === 'null' ? 1 : 0];
       }
     }
