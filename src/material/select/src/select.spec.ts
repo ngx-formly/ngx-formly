@@ -1,6 +1,6 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
-import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { createGenericTestComponent } from '../../../core/src/lib/test-utils';
 import { By } from '@angular/platform-browser';
 
@@ -73,7 +73,7 @@ describe('ui-material: Formly Field Select Component', () => {
       expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(3);
     });
 
-    it('should correctly bind to an Observable', async(() => {
+    it('should correctly bind to an Observable', fakeAsync(() => {
       const sports$ = observableOf([
         { id: '1', name: 'Soccer' },
         { id: '2', name: 'Basketball' },
@@ -97,6 +97,8 @@ describe('ui-material: Formly Field Select Component', () => {
       fixture.detectChanges();
 
       expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(3);
+      fixture.destroy();
+      tick(1000);
     }));
 
   });
@@ -149,6 +151,43 @@ describe('ui-material: Formly Field Select Component', () => {
       fixture.detectChanges();
 
       expect(testComponentInputs.form.get('sportId').value.length).toEqual(3);
+
+      // clicking again should deselect all
+      selectAllOption.click();
+      fixture.detectChanges();
+
+      expect(testComponentInputs.form.get('sportId').value.length).toEqual(0);
+    });
+
+    it('should select all options (with group) if clicking the "Select All" option', () => {
+      testComponentInputs.fields = [{
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          multiple: true,
+          selectAllOption: 'Click me!!',
+          options: [
+            {label: 'Iron Man', value: 'iron_man', group: 'Male'},
+            {label: 'Captain America', value: 'captain_america', group: 'Male'},
+            {label: 'Black Widow', value: 'black_widow', group: 'Female'},
+            {label: 'Hulk', value: 'hulk', group: 'Male'},
+            {label: 'Captain Marvel', value: 'captain_marvel', group: 'Female'},
+          ],
+          valueProp: 'id',
+          labelProp: 'name',
+        },
+      }];
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+
+      trigger.click();
+      fixture.detectChanges();
+
+      const selectAllOption = fixture.debugElement.queryAll(By.css('mat-option'))[0].nativeElement;
+      selectAllOption.click();
+      fixture.detectChanges();
+
+      expect(testComponentInputs.form.get('sportId').value.length).toEqual(5);
 
       // clicking again should deselect all
       selectAllOption.click();
