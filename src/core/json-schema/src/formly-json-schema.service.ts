@@ -19,17 +19,13 @@ function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
 }
 
-function clearFieldModel(field: FormlyFieldConfig, indexToClear?: number) {
+function clearFieldModel(field: FormlyFieldConfig) {
   if (field.key) {
     field.formControl.patchValue(undefined);
     field.formControl.markAsUntouched();
     delete field.model[field.key];
   } else if (field.fieldGroup) {
-    if (indexToClear !== undefined) {
-      clearFieldModel(field.fieldGroup[indexToClear]);
-    } else {
-      field.fieldGroup.forEach(f => clearFieldModel(f));
-    }
+    field.fieldGroup.forEach(f => clearFieldModel(f));
   }
 }
 
@@ -302,9 +298,13 @@ export class FormlyJsonschema {
           hooks: {
             onInit(f) {
               const modeField = f.parent.fieldGroup[1];
-              const value = modeField.fieldGroup.findIndex(isFieldValid);
-              const normalizedValue = value !== -1 ? value : 0;
-              const formattedValue = mode === 'anyOf' ? [normalizedValue] : normalizedValue;
+              const value = modeField.fieldGroup
+                .map((f, i) => isFieldValid(f) ? i : -1)
+                .filter(v => v !== -1)
+              ;
+
+              const normalizedValue = [value.length === 0 ? 0 : value[0]];
+              const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
               f.formControl = new FormControl(formattedValue);
               setTimeout(() => checkField(modeField));
 
@@ -312,21 +312,15 @@ export class FormlyJsonschema {
                 startWith(formattedValue),
                 pairwise(),
               ).subscribe(([p, q]) => {
-                if (!q.length && p.length) {
-                  f.formControl.patchValue(p);
-                } else {
-                  if (mode === 'anyOf') {
-                    if (p.length > q.length) {
-                      const indexToClear = p.reduce((acc, i) =>
-                        !!q.find(j => j === i) ? acc : i, undefined,
-                      );
-                      clearFieldModel(modeField, indexToClear);
-                    }
-                  } else {
-                    clearFieldModel(modeField);
+                if (Array.isArray(p)) {
+                  if (p.length >= q.length) {
+                    const indexToClear = p.find(v => !q.includes(v));
+                    clearFieldModel(modeField.fieldGroup[indexToClear]);
                   }
-                  checkField(modeField);
+                } else {
+                  clearFieldModel(modeField);
                 }
+                checkField(modeField);
               });
             },
             onDestroy() {
