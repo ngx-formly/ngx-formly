@@ -336,6 +336,27 @@ describe('FormlyForm Component', () => {
     expect(app.model.investments.length).toEqual(0);
   });
 
+  // https://github.com/ngx-formly/ngx-formly/issues/1872
+  it('should clone initialModel during reset model', () => {
+    app = {
+      fields: [{
+        key: 'array',
+        type: 'repeat',
+        fieldArray: { type: 'text' },
+      }],
+      form: new FormGroup({}),
+      options: {},
+      model: { array: ['FA'] },
+    };
+    createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    app.form.get('array.0').patchValue('TEST');
+    app.options.resetModel();
+    app.form.get('array.0').patchValue('TEST');
+    app.options.resetModel();
+    expect(app.model.array[0]).toEqual('FA');
+  });
+
   it('should keep the value in sync when using multiple fields with same key', () => {
     app = {
       fields: [

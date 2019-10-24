@@ -109,7 +109,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     if (!this.options.resetModel) {
       this.options.resetModel = (model ?: any) => {
-        model = isNullOrUndefined(model) ? this.initialModel : model;
+        model = clone(isNullOrUndefined(model) ? this.initialModel : model);
         if (this.model) {
           Object.keys(this.model).forEach(k => delete this.model[k]);
           Object.assign(this.model, model || {});
