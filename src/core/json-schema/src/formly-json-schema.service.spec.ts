@@ -837,44 +837,107 @@ describe('Service: FormlyJsonschema', () => {
 
       beforeEach(inject([FormlyFormBuilder], (formlyBuilder: FormlyFormBuilder) => {
         builder = formlyBuilder;
-        schema = {
-          type: 'object',
-          oneOf: [
-            {
-              properties: { foo: { type: 'string' } },
-              required: ['foo'],
-            },
-            { properties: { bar: { type: 'string' } } },
-          ],
-          anyOf: [
-            { properties: { foo: { type: 'string' } } },
-            { properties: { bar: { type: 'string' } } },
-          ],
-        };
       }));
 
-      it('should render multischema type when oneOf/anyOf is present', () => {
-        const { fieldGroup: [{ type: oneOfType }, { type: anyOfType }] } = formlyJsonschema.toFieldConfig(schema);
-        expect(oneOfType).toEqual('multischema');
-        expect(anyOfType).toEqual('multischema');
+      describe('oneOf', () => {
+        beforeEach(() => {
+          schema = {
+            type: 'object',
+            oneOf: [
+              {
+                properties: { foo: { type: 'string' } },
+                required: ['foo'],
+              },
+              { properties: { bar: { type: 'string' } } },
+            ],
+          };
+        });
+
+        it('should render multischema type when oneOf is present', () => {
+          const { fieldGroup: [{ type: oneOfType }] } = formlyJsonschema.toFieldConfig(schema);
+          expect(oneOfType).toEqual('multischema');
+        });
+
+        it('should render the valid oneOf field on first render', fakeAsync(() => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+
+          builder.buildForm(new FormGroup({}), [f], {}, {});
+          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          enumField.hooks.onInit(enumField);
+          tick();
+
+          expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+        }));
+
+        it('should render the selected oneOf field', fakeAsync(() => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+          const model: any = { foo: 'test' };
+          builder.buildForm(new FormGroup({}), [f], model, {});
+          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          enumField.hooks.onInit(enumField);
+          tick();
+
+          expect(fooField.hide).toBeFalsy();
+          expect(barField.hide).toBeTruthy();
+
+          enumField.formControl.setValue(1);
+
+          expect(model).toEqual({});
+          expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+        }));
       });
 
-      it('should render the valid oneOf field on first render', fakeAsync(() => {
-        const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+      describe('anyOf', () => {
+        beforeEach(() => {
+          schema = {
+            type: 'object',
+            anyOf: [
+              {
+                properties: { foo: { type: 'string' } },
+                required: ['foo'],
+              },
+              { properties: { bar: { type: 'string' } } },
+            ],
+          };
+        });
 
-        builder.buildForm(new FormGroup({}), [f], {}, {});
-        const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
-        enumField.hooks.onInit(enumField);
-        tick();
+        it('should render multischema type when anyOf is present', () => {
+          const { fieldGroup: [{ type: anyOfType }] } = formlyJsonschema.toFieldConfig(schema);
+          expect(anyOfType).toEqual('multischema');
+        });
 
-        expect(fooField.hide).toBeTruthy();
-        expect(barField.hide).toBeFalsy();
+        it('should render the valid anyOf field on first render', fakeAsync(() => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
 
-        enumField.formControl.setValue(0);
+          builder.buildForm(new FormGroup({}), [f], {}, {});
+          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          enumField.hooks.onInit(enumField);
+          tick();
 
-        expect(fooField.hide).toBeFalsy();
-        expect(barField.hide).toBeTruthy();
-      }));
+          expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+        }));
+
+        it('should render the selected anyOf field', fakeAsync(() => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+          const model: any = { foo: 'test' };
+          builder.buildForm(new FormGroup({}), [f], model, {});
+          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          enumField.hooks.onInit(enumField);
+          tick();
+
+          expect(fooField.hide).toBeFalsy();
+          expect(barField.hide).toBeTruthy();
+
+          enumField.formControl.setValue([1]);
+
+          expect(model).toEqual({});
+          expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+        }));
+      });
     });
 
     // TODO: discuss support of writeOnly. Note: this may not be needed.
