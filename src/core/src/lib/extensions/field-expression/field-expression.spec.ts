@@ -165,6 +165,29 @@ describe('FieldExpressionExtension', () => {
       expect(fields[1].hide).toBeFalsy();
       expect(fields[1].formControl).toEqual(form.get('key1'));
     });
+
+    it('toggle controls of the hidden fields before the visible ones', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'key1',
+          type: 'input',
+          hideExpression: model => model.type,
+        },
+        {
+          key: 'key1',
+          type: 'input',
+          hideExpression: model => !model.type,
+        },
+      ];
+      const model = { type: false };
+      builder.buildForm(form, fields, model, options);
+
+      options._checkField({ formControl: form, fieldGroup: fields, model, options });
+      expect(fields[0].hide).toBeFalsy();
+      expect(fields[0].formControl).toBe(form.get('key1'));
+      expect(fields[1].hide).toBeTruthy();
+      expect(fields[1].formControl).toBe(form.get('key1'));
+    });
   });
 
   describe('expressionProperties', () => {
