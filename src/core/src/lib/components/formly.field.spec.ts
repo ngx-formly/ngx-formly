@@ -29,7 +29,12 @@ let testComponentInputs;
 describe('FormlyField Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, FormlyFieldText, FormlyWrapperLabel],
+      declarations: [
+        TestComponent,
+        FormlyFieldText,
+        FormlyWrapperLabel,
+        AsyncWrapperComponent,
+      ],
       imports: [
         ReactiveFormsModule,
         FormlyModule.forRoot({
@@ -44,10 +49,16 @@ describe('FormlyField Component', () => {
               wrappers: ['label'],
             },
           ],
-          wrappers: [{
-            name: 'label',
-            component: FormlyWrapperLabel,
-          }],
+          wrappers: [
+            {
+              name: 'label',
+              component: FormlyWrapperLabel,
+            },
+            {
+              name: 'async_render',
+              component: AsyncWrapperComponent,
+            },
+          ],
           manipulators: [
             { class: Manipulator, method: 'run' },
           ],
@@ -109,6 +120,30 @@ describe('FormlyField Component', () => {
     expect(hooks.onInit).toHaveBeenCalledWith(testComponentInputs.field);
     expect(hooks.onChanges).toHaveBeenCalledWith(testComponentInputs.field);
     expect(hooks.onDestroy).toHaveBeenCalledWith(testComponentInputs.field);
+  });
+
+  it('should render field type', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        wrappers: ['async_render'],
+        formControl: new FormControl(),
+        lifecycle: {},
+        templateOptions: {
+          placeholder: 'Title',
+          render: true,
+        },
+      },
+      form: new FormGroup({}),
+    };
+
+    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+    expect(getInputField(fixture.nativeElement)).toBeDefined();
+
+    fixture.componentInstance.field.templateOptions.render = false;
+    fixture.detectChanges();
+    expect(getInputField(fixture.nativeElement)).toBeUndefined();
   });
 
   it('should render field type', () => {
@@ -265,3 +300,13 @@ export class Manipulator {
     });
   }
 }
+
+@Component({
+  selector: 'formly-async-wrapper',
+  template: `
+    <div *ngIf="to.render">
+      <ng-container #fieldComponent></ng-container>
+    <div>
+  `,
+})
+export class AsyncWrapperComponent extends FieldWrapper {}
