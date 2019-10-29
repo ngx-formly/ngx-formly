@@ -122,14 +122,15 @@ describe('FormlyField Component', () => {
     expect(hooks.onDestroy).toHaveBeenCalledWith(testComponentInputs.field);
   });
 
-  it('should render field type', () => {
+  it('should support async render field type', () => {
     testComponentInputs = {
       field: {
         key: 'title',
         type: 'text',
         wrappers: ['async_render'],
-        formControl: new FormControl(),
-        lifecycle: {},
+        hooks: {
+          onInit: f => f.formControl = new FormControl(),
+        },
         templateOptions: {
           placeholder: 'Title',
           render: true,

@@ -75,12 +75,6 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.field) {
-      defineHiddenProp(this.field, '_componentRefs', []);
-      this.containerRef.clear();
-      this.renderField(this.containerRef, this.field, this.field.wrappers);
-    }
-
     this.triggerHook('onChanges', changes);
   }
 
@@ -90,6 +84,11 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   private renderField(containerRef: ViewContainerRef, f: FormlyFieldConfigCache, wrappers: string[]) {
+    if (this.containerRef === containerRef) {
+      defineHiddenProp(this.field, '_componentRefs', []);
+      this.containerRef.clear();
+    }
+
     if (wrappers && wrappers.length > 0) {
       const [wrapper, ...wps] = wrappers;
       const { component } = this.formlyConfig.getWrapper(wrapper);
@@ -98,17 +97,17 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
         : this.componentFactoryResolver;
 
       const ref = containerRef.createComponent<FieldWrapper>(cfr.resolveComponentFactory(component));
-      wrapProperty(ref.instance, 'fieldComponent', (value) => {
-        value && this.renderField(value as ViewContainerRef, f, wps);
-      });
-
       this.attachComponentRef(ref, f);
+      wrapProperty(ref.instance, 'fieldComponent', (value) => {
+        if (value) {
+          this.renderField(value as ViewContainerRef, f, wps);
+        }
+      });
     } else {
       const ref = this.formlyConfig.createComponent(f, this.componentFactoryResolver, this.injector);
       if (ref) {
-        containerRef.insert(ref.hostView);
         this.attachComponentRef(ref, f);
-        ref.changeDetectorRef.detectChanges();
+        containerRef.insert(ref.hostView);
       }
     }
   }
@@ -128,10 +127,15 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
         this.field.options,
       );
     }
+
+    if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
+      this.renderField(this.containerRef, this.field, this.field.wrappers);
+    }
   }
 
   private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
     field._componentRefs.push(ref);
     Object.assign(ref.instance, { field });
+    ref.changeDetectorRef.detectChanges();
   }
 }
