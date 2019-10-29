@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.2"></a>
+## [5.5.2](https://github.com/ngx-formly/ngx-formly/compare/v5.5.1...v5.5.2) (2019-10-29)
+
+
+### Bug Fixes
+
+* **core:** change the check File instance for SSR compatibility ([#1865](https://github.com/ngx-formly/ngx-formly/issues/1865)) ([7883f1a](https://github.com/ngx-formly/ngx-formly/commit/7883f1a)), closes [#1864](https://github.com/ngx-formly/ngx-formly/issues/1864)
+* **core:** clone initialModel during reset model ([#1874](https://github.com/ngx-formly/ngx-formly/issues/1874)) ([e706cf8](https://github.com/ngx-formly/ngx-formly/commit/e706cf8)), closes [#1872](https://github.com/ngx-formly/ngx-formly/issues/1872)
+* **core:** ensure array notation for key emit a valid model ([#1859](https://github.com/ngx-formly/ngx-formly/issues/1859)) ([0b3ab37](https://github.com/ngx-formly/ngx-formly/commit/0b3ab37)), closes [#1857](https://github.com/ngx-formly/ngx-formly/issues/1857)
+* **core:** ensure the validation calls occurs only once during build ([#1866](https://github.com/ngx-formly/ngx-formly/issues/1866)) ([770bea9](https://github.com/ngx-formly/ngx-formly/commit/770bea9)), closes [#1754](https://github.com/ngx-formly/ngx-formly/issues/1754)
+* **core:** support resolving non static fieldComponent query ([#1878](https://github.com/ngx-formly/ngx-formly/issues/1878)) ([ac7e9a2](https://github.com/ngx-formly/ngx-formly/commit/ac7e9a2)), closes [#1868](https://github.com/ngx-formly/ngx-formly/issues/1868)
+* **core:** toggle controls of the hidden fields before the visible ones ([#1875](https://github.com/ngx-formly/ngx-formly/issues/1875)) ([d35460e](https://github.com/ngx-formly/ngx-formly/commit/d35460e)), closes [#1700](https://github.com/ngx-formly/ngx-formly/issues/1700)
+* **ionic:** add missing export of ionFormlyAttributes ([#1880](https://github.com/ngx-formly/ngx-formly/issues/1880)) ([679ee10](https://github.com/ngx-formly/ngx-formly/commit/679ee10)), closes [#1879](https://github.com/ngx-formly/ngx-formly/issues/1879)
+* **json-schema:** use multi-select to handle anyOf schema ([eb71a68](https://github.com/ngx-formly/ngx-formly/commit/eb71a68))
+* **material:** avoid using deprecated underlineRef ([#1860](https://github.com/ngx-formly/ngx-formly/issues/1860)) ([807218f](https://github.com/ngx-formly/ngx-formly/commit/807218f))
+* **material:** support selectAll in multiselect with group ([#1867](https://github.com/ngx-formly/ngx-formly/issues/1867)) ([f5625ea](https://github.com/ngx-formly/ngx-formly/commit/f5625ea)), closes [#1852](https://github.com/ngx-formly/ngx-formly/issues/1852)
+* make FormlyModule ModuleWithProviders generic for ng9 support ([#1854](https://github.com/ngx-formly/ngx-formly/issues/1854)) ([dbb860d](https://github.com/ngx-formly/ngx-formly/commit/dbb860d))
+
+
+
 <a name="5.5.1"></a>
 ## [5.5.1](https://github.com/ngx-formly/ngx-formly/compare/v5.5.0...v5.5.1) (2019-10-15)
 
