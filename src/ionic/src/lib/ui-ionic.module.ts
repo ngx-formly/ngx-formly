@@ -16,6 +16,7 @@ import { IonFormlyAttributes } from './formly.attributes';
     FormlySelectModule,
     FormlyModule.forChild(IONIC_FORMLY_CONFIG),
   ],
+  exports: [IonFormlyAttributes],
 })
 export class FormlyIonicModule {
 }
