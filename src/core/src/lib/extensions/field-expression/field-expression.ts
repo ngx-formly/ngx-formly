@@ -123,10 +123,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     if (!field.parent) {
       options._hiddenFieldsForCheck
         .sort(f => f.hide ? -1 : 1)
-        .forEach(f => {
-          console.warn(f.templateOptions.label);
-          this.toggleFormControl(f, f.hide);
-        });
+        .forEach(f => this.toggleFormControl(f, f.hide));
 
       options._hiddenFieldsForCheck = [];
     }
