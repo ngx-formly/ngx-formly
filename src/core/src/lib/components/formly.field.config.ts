@@ -254,6 +254,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _buildForm?: () => void;
   _componentFactoryResolver?: ComponentFactoryResolver;
   _injector?: Injector;
+  _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
 }
 export interface FormlyFormOptions {
   updateInitialValue?: () => void;

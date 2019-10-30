@@ -56,6 +56,10 @@ export class FormlyFormBuilder {
       defineHiddenProp(options, '_injector', this.injector);
     }
 
+    if (!options._hiddenFieldsForCheck) {
+      options._hiddenFieldsForCheck = [];
+    }
+
     if (!options._markForCheck) {
       options._markForCheck = (field) => {
         if (field._componentRefs) {
