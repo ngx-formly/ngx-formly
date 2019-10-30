@@ -1,7 +1,7 @@
 import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
-import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined, isPromise } from '../../utils';
+import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined, isPromise, wrapProperty } from '../../utils';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -29,7 +29,7 @@ export class FieldValidationExtension implements FormlyExtension {
       return;
     }
 
-    const validators: ValidatorFn[] = type === 'validators' ? this.getPredefinedFieldValidation(field) : [];
+    const validators: ValidatorFn[] = type === 'validators' ? [this.getPredefinedFieldValidation(field)] : [];
     if (field[type]) {
       for (const validatorName in field[type]) {
         if (validatorName === 'validation' && !Array.isArray(field[type].validation)) {
@@ -51,14 +51,25 @@ export class FieldValidationExtension implements FormlyExtension {
     );
   }
 
-  private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn[] {
-    return FORMLY_VALIDATORS
-      .filter(opt => (field.templateOptions && field.templateOptions.hasOwnProperty(opt)) || (field.expressionProperties && field.expressionProperties[`templateOptions.${opt}`]))
-      .map((opt) => (control: AbstractControl) => {
+  private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn {
+    let VALIDATORS = [];
+    FORMLY_VALIDATORS.forEach(opt => wrapProperty(field.templateOptions, opt, (value, oldValue) => {
+      VALIDATORS = VALIDATORS.filter(o => o !== opt);
+      if (value != null && value !== false) {
+        VALIDATORS.push(opt);
+      }
+      if (value !== oldValue && field.formControl) {
+        field.formControl.updateValueAndValidity({ emitEvent: false });
+      }
+    }));
+
+    return (control: AbstractControl) => {
+      if (VALIDATORS.length === 0) {
+        return null;
+      }
+
+      return Validators.compose(VALIDATORS.map(opt => () => {
         const value = field.templateOptions[opt];
-        if (value === false) {
-          return null;
-        }
         switch (opt) {
           case 'required':
             return Validators.required(control);
@@ -73,7 +84,8 @@ export class FieldValidationExtension implements FormlyExtension {
           case 'max':
             return Validators.max(value)(control);
         }
-      });
+      }))(control);
+    };
   }
 
   private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: string | FieldValidatorFn, validatorName?: string) {

@@ -1,5 +1,5 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { isObject, isNullOrUndefined, isFunction, FORMLY_VALIDATORS, defineHiddenProp } from '../../utils';
+import { isObject, isNullOrUndefined, isFunction, defineHiddenProp } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
@@ -136,7 +136,6 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     let markForCheck = false;
     const expressionProperties = field._expressionProperties;
-    const validators = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
 
     for (const key in expressionProperties) {
       let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState, field]);
@@ -169,10 +168,6 @@ export class FieldExpressionExtension implements FormlyExtension {
           ) {
             control.patchValue(expressionValue);
           }
-        }
-
-        if (validators.indexOf(key) !== -1 && field.formControl) {
-          field.formControl.updateValueAndValidity({ emitEvent: false });
         }
       }
     }

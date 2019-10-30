@@ -669,6 +669,15 @@ describe('FormlyFormBuilder service', () => {
         });
       });
     });
+
+    it(`should take account of built-in validator changes`, () => {
+      field.templateOptions = {};
+      builder.buildForm(form, [field], {}, {});
+      expect(field.formControl.valid).toBeTruthy();
+
+      field.templateOptions.required = true;
+      expect(field.formControl.valid).toBeFalsy();
+    });
   });
 
   describe('fieldArray', () => {
