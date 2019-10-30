@@ -1,5 +1,5 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { isObject, isNullOrUndefined, isFunction, defineHiddenProp } from '../../utils';
+import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
@@ -75,6 +75,15 @@ export class FieldExpressionExtension implements FormlyExtension {
         field.hideExpression,
         parent && parent.hideExpression ? () => parent.hide : undefined,
       );
+    } else if (field.key) {
+      wrapProperty(field, 'hide', (newValue, oldValue) => {
+        if (
+          (oldValue === undefined && newValue === true)
+          || (oldValue !== undefined && newValue !== oldValue)
+        ) {
+          field.options._hiddenFieldsForCheck.push(field);
+        }
+      });
     }
   }
 
@@ -99,9 +108,6 @@ export class FieldExpressionExtension implements FormlyExtension {
 
   private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
     const options = field.options as { _hiddenFieldsForCheck: FormlyFieldConfigCache[] };
-    if (!field.parent) {
-      options._hiddenFieldsForCheck = [];
-    }
 
     let markForCheck = false;
     field.fieldGroup.forEach(f => {

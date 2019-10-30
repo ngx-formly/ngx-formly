@@ -149,7 +149,7 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
   field[prop] = defaultValue;
 }
 
-export function wrapProperty<T = any>(field, prop, setFn: (newVal: T, oldVal?: T) => void) {
+export function wrapProperty<T = any>(field: any, prop: string, setFn: (newVal: T, oldVal?: T) => void) {
   let value = field[prop];
   setFn(value);
 

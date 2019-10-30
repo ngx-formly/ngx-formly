@@ -88,8 +88,26 @@ describe('FieldExpressionExtension', () => {
       expect(fields[0].hide).toBeFalsy();
       expect(fields[0].fieldGroup[0].hide).toBeTruthy();
 
-      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledTimes(3);
       subscription.unsubscribe();
+    });
+
+    it('should toggle field control when hide changed programmatically', () => {
+      const fields: FormlyFieldConfig[] = [
+        { hide: false, key: 'foo'},
+        { hide: true, key: 'bar'},
+      ];
+      builder.buildForm(form, fields, {}, options);
+
+      expect(form.get('foo')).not.toBeNull();
+      expect(form.get('bar')).toBeNull();
+
+      fields[0].hide = true;
+      fields[1].hide = false;
+      options._checkField({ formControl: form, fieldGroup: fields, options });
+
+      expect(form.get('foo')).toBeNull();
+      expect(form.get('bar')).not.toBeNull();
     });
 
     it('should update field visibility within field arrays', () => {
