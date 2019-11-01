@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.3"></a>
+## [5.5.3](https://github.com/ngx-formly/ngx-formly/compare/v5.5.2...v5.5.3) (2019-11-01)
+
+
+### Bug Fixes
+
+* **core:** ensure the first render is called after onInit ([#1881](https://github.com/ngx-formly/ngx-formly/issues/1881)) ([73f0316](https://github.com/ngx-formly/ngx-formly/commit/73f0316))
+* **core:** set static flag to false for ivy support ([#1893](https://github.com/ngx-formly/ngx-formly/issues/1893)) ([9a63c3e](https://github.com/ngx-formly/ngx-formly/commit/9a63c3e))
+* **core:** toggle control when hide changed programmatically ([#1888](https://github.com/ngx-formly/ngx-formly/issues/1888)) ([fdb1cbe](https://github.com/ngx-formly/ngx-formly/commit/fdb1cbe)), closes [#1817](https://github.com/ngx-formly/ngx-formly/issues/1817) [#1742](https://github.com/ngx-formly/ngx-formly/issues/1742)
+* **core:** update form validity when changing built-in validations ([#1887](https://github.com/ngx-formly/ngx-formly/issues/1887)) ([fb8485d](https://github.com/ngx-formly/ngx-formly/commit/fb8485d)), closes [#1493](https://github.com/ngx-formly/ngx-formly/issues/1493)
+
+
+
 <a name="5.5.2"></a>
 ## [5.5.2](https://github.com/ngx-formly/ngx-formly/compare/v5.5.1...v5.5.2) (2019-10-29)
 
