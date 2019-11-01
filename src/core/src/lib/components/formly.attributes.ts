@@ -48,26 +48,26 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       });
 
       if (this.to && this.to.attributes) {
-        wrapProperty(this.to, 'attributes', (newVal, oldValue) => {
-          if (oldValue) {
-            Object.keys(oldValue).forEach(attr => this.removeAttribute(attr));
+        wrapProperty(this.to, 'attributes', ({ currentValue, previousValue }) => {
+          if (previousValue) {
+            Object.keys(previousValue).forEach(attr => this.removeAttribute(attr));
           }
 
-          if (newVal) {
-            Object.keys(newVal).forEach(attr => this.setAttribute(attr, newVal[attr]));
+          if (currentValue) {
+            Object.keys(currentValue).forEach(attr => this.setAttribute(attr, currentValue[attr]));
           }
         });
       }
 
       this.attachAttrElement();
       if (this.fieldAttrElements.length === 1) {
-        wrapProperty(this.field, 'focus', (value) => {
+        wrapProperty(this.field, 'focus', ({ currentValue }) => {
           const element = this.fieldAttrElements ? this.fieldAttrElements[0] : null;
           if (!element) {
             return;
           }
 
-          this.focusElement(element, value);
+          this.focusElement(element, currentValue);
         });
       }
     }
