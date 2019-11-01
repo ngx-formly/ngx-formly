@@ -129,8 +129,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     if (!this.options.parentForm && this.parentFormGroup) {
       defineHiddenProp(this.options, 'parentForm', this.parentFormGroup);
-      wrapProperty(this.options.parentForm, 'submitted', (newVal, oldVal) => {
-        if (oldVal !== undefined && newVal !== oldVal) {
+      wrapProperty(this.options.parentForm, 'submitted', ({ firstChange }) => {
+        if (!firstChange) {
           (<FormlyFormOptionsCache> this.options)._markForCheck({
             fieldGroup: this.fields,
             model: this.model,

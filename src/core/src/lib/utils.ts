@@ -149,17 +149,22 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
   field[prop] = defaultValue;
 }
 
-export function wrapProperty<T = any>(field: any, prop: string, setFn: (newVal: T, oldVal?: T) => void) {
-  let value = field[prop];
-  setFn(value);
+export function wrapProperty<T = any>(
+  field: any,
+  prop: string,
+  setFn: (change: {currentValue: T, previousValue?: T, firstChange: boolean}) => void,
+) {
+  let currentValue = field[prop];
+  setFn({ currentValue, firstChange: true });
 
   Object.defineProperty(field, prop, {
     configurable: true,
-    get: () => value,
+    get: () => currentValue,
     set: newVal => {
-      if (newVal !== value) {
-        setFn(newVal, value);
-        value = newVal;
+      if (newVal !== currentValue) {
+        const previousValue = currentValue;
+        currentValue = newVal;
+        setFn({ previousValue, currentValue, firstChange: false });
       }
     },
   });

@@ -53,12 +53,12 @@ export class FieldValidationExtension implements FormlyExtension {
 
   private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn {
     let VALIDATORS = [];
-    FORMLY_VALIDATORS.forEach(opt => wrapProperty(field.templateOptions, opt, (value, oldValue) => {
+    FORMLY_VALIDATORS.forEach(opt => wrapProperty(field.templateOptions, opt, ({ currentValue, firstChange }) => {
       VALIDATORS = VALIDATORS.filter(o => o !== opt);
-      if (value != null && value !== false) {
+      if (currentValue != null && currentValue !== false) {
         VALIDATORS.push(opt);
       }
-      if (value !== oldValue && field.formControl) {
+      if (!firstChange && field.formControl) {
         field.formControl.updateValueAndValidity({ emitEvent: false });
       }
     }));
