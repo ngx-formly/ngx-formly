@@ -146,6 +146,10 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
+    if (!field) {
+      return false;
+    }
+
     let fieldChanged = false;
     this.checkFieldExpressionChange(field, ignoreCache) && (fieldChanged = true);
     if (this.checkFieldVisibilityChange(field, ignoreCache)) {

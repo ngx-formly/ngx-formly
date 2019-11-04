@@ -5,8 +5,15 @@ import { of } from 'rxjs';
 describe('FormlyUtils service', () => {
   describe('reverseDeepMerge', () => {
     it('should properly reverse deep merge', () => {
-      const foo = {foo: 'bar', obj: {}, arr: [] };
-      const bar = { foo: 'foo', foobar: 'foobar', fun: () => console.log('demo'), obj: {}, date: new Date(), arr: ['bar']};
+      const foo = { foo: 'bar', obj: {}, arr: [] };
+      const bar = {
+        foo: 'foo',
+        foobar: 'foobar',
+        fun: () => console.log('demo'),
+        obj: {},
+        date: new Date(),
+        arr: ['bar'],
+      };
       reverseDeepMerge(foo, bar);
 
       expect(foo['foo']).toEqual('bar');
@@ -72,13 +79,13 @@ describe('FormlyUtils service', () => {
 
   describe('getFieldId', () => {
     it('should properly get the field id if id is set in options', () => {
-      const options: FormlyFieldConfig = {id: '1'};
+      const options: FormlyFieldConfig = { id: '1' };
       const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('1');
     });
 
     it('should properly get the field id if id is not set in options', () => {
-      const options: FormlyFieldConfig = {type: 'input', key: 'email'};
+      const options: FormlyFieldConfig = { type: 'input', key: 'email' };
       const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_input_email_2');
     });
@@ -88,34 +95,34 @@ describe('FormlyUtils service', () => {
     it('should get an empty key path for an empty key', () => {
       let keyPath = getKeyPath({});
       expect(keyPath).toEqual([]);
-      keyPath = getKeyPath({key: null});
+      keyPath = getKeyPath({ key: null });
       expect(keyPath).toEqual([]);
-      keyPath = getKeyPath({key: ''});
+      keyPath = getKeyPath({ key: '' });
       expect(keyPath).toEqual([]);
     });
 
     it('should get the correct key path of length 1 for a simple string', () => {
-      const keyPath = getKeyPath({key: 'property'});
+      const keyPath = getKeyPath({ key: 'property' });
       expect(keyPath).toEqual(['property']);
     });
 
     it('should get the correct key path of length 2 for a simple string with an index', () => {
-      const keyPath = getKeyPath({key: 'property[2]'});
+      const keyPath = getKeyPath({ key: 'property[2]' });
       expect(keyPath).toEqual(['property', '2']);
     });
 
     it('should get the correct key path of length 3 for a simple nested property', () => {
-      const keyPath = getKeyPath({key: 'property1.property2.property3'});
+      const keyPath = getKeyPath({ key: 'property1.property2.property3' });
       expect(keyPath).toEqual(['property1', 'property2', 'property3']);
     });
 
-    it('should get the correct key path of length 4 with one index for a nested property containing 1 index property',  () => {
-      const keyPath = getKeyPath({key: 'property1.property2[4].property3'});
+    it('should get the correct key path of length 4 with one index for a nested property containing 1 index property', () => {
+      const keyPath = getKeyPath({ key: 'property1.property2[4].property3' });
       expect(keyPath).toEqual(['property1', 'property2', '4', 'property3']);
     });
 
     it('should attach the key path to the field config', () => {
-      const fieldConfig = {key: 'property1.property2[4].property3'};
+      const fieldConfig = { key: 'property1.property2[4].property3' };
       getKeyPath(fieldConfig);
       expect(fieldConfig['_keyPath'].path).toEqual(['property1', 'property2', '4', 'property3']);
     });
@@ -127,7 +134,6 @@ describe('FormlyUtils service', () => {
       fieldConfig.key = 'ddd';
       expect(getKeyPath(fieldConfig)).toEqual(['ddd']);
     });
-
   });
 });
 
@@ -181,7 +187,9 @@ describe('clone', () => {
   it('Object with methods', () => {
     class Foo {
       constructor(public foo = '') {}
-      method() { return this.foo; }
+      method() {
+        return this.foo;
+      }
     }
     const foo = new Foo('test');
     const clonedFoo = clone(foo);
@@ -219,7 +227,12 @@ describe('clone', () => {
 
   it('should use bind of the cloned object', () => {
     const d = {};
-    Object.defineProperty(d, 'a', { get() { return this.name; }, enumerable: true });
+    Object.defineProperty(d, 'a', {
+      get() {
+        return this.name;
+      },
+      enumerable: true,
+    });
     const value = clone(d);
     value.name = 'foo';
 

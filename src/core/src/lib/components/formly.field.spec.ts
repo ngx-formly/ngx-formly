@@ -1,192 +1,160 @@
-import { TestBed, ComponentFixture, TestBedStatic } from '@angular/core/testing';
-import { timer } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
-import { createGenericTestComponent } from '../test-utils';
-
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { FormlyModule, FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
 import {
-  FormlyModule,
-  FieldType,
-  FieldWrapper,
-  FormlyFieldConfig,
-  FormlyFormBuilder,
-} from '../core';
+  createFormlyFieldComponent,
+  FormlyInputModule,
+  createFieldChangesSpy,
+  newEvent,
+} from '@ngx-formly/core/testing';
+import { ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { tap } from 'rxjs/operators';
 
-const createTestComponent = (html: string) =>
-    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const renderComponent = (field: FormlyFieldConfig, options = {}) => {
+  return createFormlyFieldComponent(field, {
+    declarations: [FormlyWrapperFormFieldAsync],
+    imports: [
+      FormlyInputModule,
+      FormlyModule.forChild({
+        wrappers: [
+          {
+            name: 'form-field-async',
+            component: FormlyWrapperFormFieldAsync,
+          },
+        ],
+      }),
+    ],
+    ...options,
+  });
+};
 
-function getFormlyFieldElement(element: HTMLElement): HTMLInputElement {
-  return <HTMLInputElement> element.querySelector('formly-field');
+function getFormlyField(fixture: ComponentFixture<any>): HTMLInputElement {
+  return <HTMLInputElement>fixture.nativeElement.querySelector('formly-field');
 }
 
-function getInputField(element: HTMLElement, index = 0): HTMLInputElement {
-  return <HTMLInputElement> element.querySelectorAll('input')[index];
+function getInputFieldType(fixture: ComponentFixture<any>): HTMLElement {
+  return fixture.nativeElement.querySelector('formly-type-input');
 }
 
-function getLabelWrapper(element: HTMLElement): HTMLElement {
-  return <HTMLElement> element.querySelector('label');
+function getFormFieldWrapper(fixture: ComponentFixture<any>): HTMLElement {
+  return fixture.nativeElement.querySelector('formly-wrapper-form-field');
 }
 
-let testComponentInputs;
-let testingModule: TestBedStatic;
+function getFormFieldWrapperAsync(fixture: ComponentFixture<any>): HTMLElement {
+  return fixture.nativeElement.querySelector('formly-wrapper-form-field-async');
+}
 
 describe('FormlyField Component', () => {
-  beforeEach(() => {
-    testingModule = TestBed.configureTestingModule({
-      declarations: [
-        TestComponent,
-        FormlyFieldText,
-        FormlyWrapperLabel,
-        AsyncWrapperComponent,
-        TestOnPushComponent,
-      ],
-      imports: [
-        ReactiveFormsModule,
-        FormlyModule.forRoot({
-          types: [
-            {
-              name: 'text',
-              component: FormlyFieldText,
-            },
-            {
-              name: 'other',
-              component: FormlyFieldText,
-              wrappers: ['label'],
-            },
-            {
-              name: 'on-push',
-              component: TestOnPushComponent,
-            },
-          ],
-          wrappers: [
-            {
-              name: 'label',
-              component: FormlyWrapperLabel,
-            },
-            {
-              name: 'async_render',
-              component: AsyncWrapperComponent,
-            },
-          ],
-        }),
-      ],
-    });
+  it('should add style display none to hidden field', () => {
+    const fixture = renderComponent({ hide: true });
+
+    expect(getFormlyField(fixture).getAttribute('style')).toEqual('display: none;');
+
+    fixture.componentInstance.field.hide = false;
+    fixture.detectChanges();
+    expect(getFormlyField(fixture).getAttribute('style')).toEqual('');
   });
 
-  xit('should render template option', () => {
-    testComponentInputs = {
-      field: { template: '<div>Nested property keys</div>', hooks: {} },
-    };
+  it('should add field className', () => {
+    const fixture = renderComponent({ className: 'foo-class' });
 
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-
-    expect(fixture.nativeElement.innerText).toEqual('Nested property keys');
+    expect(getFormlyField(fixture).getAttribute('class')).toEqual('foo-class');
   });
 
   describe('host attrs', () => {
-      it('should set style and class attrs on first render', () => {
-        testComponentInputs = {
-          field: {
-            hide: true,
-            className: 'foo',
-            options: {},
-          },
-        };
-
-        const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-        const formlyField = fixture.debugElement.query(By.css('formly-field'));
-
-        expect(formlyField.attributes.class).toEqual('foo');
-        expect(formlyField.styles).toEqual({ display: 'none' });
+    it('should set style and class attrs on first render', () => {
+      const fixture = renderComponent({
+        hide: true,
+        className: 'foo',
       });
+      expect(getFormlyField(fixture).getAttribute('class')).toEqual('foo');
+      expect(getFormlyField(fixture).getAttribute('style')).toEqual('display: none;');
+    });
 
-      it('should update style and class attrs on change', () => {
-        testComponentInputs = {
-          field: { options: {} },
-        };
+    it('should update style and class attrs on change', () => {
+      const fixture = renderComponent({});
+      const { field } = fixture.componentInstance;
 
-        const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-        const formlyField = fixture.debugElement.query(By.css('formly-field'));
+      expect(getFormlyField(fixture).getAttribute('class')).toEqual(null);
+      expect(getFormlyField(fixture).getAttribute('style')).toEqual(null);
 
-        expect(formlyField.attributes.class).toEqual(undefined);
-        expect(formlyField.styles).toEqual({});
+      field.hide = true;
+      field.className = 'foo';
 
-        testComponentInputs.field.hide = true;
-        testComponentInputs.field.className = 'foo';
-
-        expect(formlyField.attributes.class).toEqual('foo');
-        expect(formlyField.styles).toEqual({ display: 'none' });
-      });
-
-      it('should not override existing class', () => {
-        testComponentInputs = {
-          field: { options: {} },
-        };
-
-        const fixture = createTestComponent('<formly-field class="foo" [field]="field"></formly-field>');
-        const formlyField = fixture.debugElement.query(By.css('formly-field'));
-
-        expect(formlyField.attributes.class).toEqual('foo');
-      });
-
-  });
-
-  it('should not throw error when field is null', () => {
-    testComponentInputs = { field: null };
-    const createComponent = () => {
-      const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-      fixture.destroy();
-    };
-
-    expect(createComponent).not.toThrowError();
+      expect(getFormlyField(fixture).getAttribute('class')).toEqual('foo');
+      expect(getFormlyField(fixture).getAttribute('style')).toEqual('display: none;');
+    });
   });
 
   it('should call field hooks if set', () => {
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        formControl: new FormControl(),
-        modelOptions: {},
-        parent: {
-          formControl: new FormGroup({}),
-        },
-        hooks: {
-          afterContentInit: () => {},
-          afterContentChecked: () => {},
-          afterViewInit: () => {},
-          afterViewChecked: () => {},
-          doCheck: () => {},
-          onInit: () => {},
-          onChanges: () => {},
-          onDestroy: () => {},
-        },
+    const field: FormlyFieldConfig = {
+      hooks: {
+        afterContentInit: () => {},
+        afterContentChecked: () => {},
+        afterViewInit: () => {},
+        afterViewChecked: () => {},
+        doCheck: () => {},
+        onInit: () => {},
+        onChanges: () => {},
+        onDestroy: () => {},
       },
     };
 
-    const hooks = testComponentInputs.field.hooks;
-    spyOn(hooks, 'afterContentInit');
-    spyOn(hooks, 'afterContentChecked');
-    spyOn(hooks, 'afterViewInit');
-    spyOn(hooks, 'afterViewChecked');
-    spyOn(hooks, 'doCheck');
-    spyOn(hooks, 'onInit');
-    spyOn(hooks, 'onChanges');
-    spyOn(hooks, 'onDestroy');
+    const hooks = field.hooks;
+    Object.keys(field.hooks).forEach(hook => {
+      spyOn(hooks, hook as any);
+    });
 
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+    const fixture = renderComponent(field);
     fixture.destroy();
 
-    expect(hooks.afterContentInit).toHaveBeenCalledWith(testComponentInputs.field);
-    expect(hooks.afterContentChecked).toHaveBeenCalledWith(testComponentInputs.field);
-    expect(hooks.afterViewInit).toHaveBeenCalledWith(testComponentInputs.field);
-    expect(hooks.afterViewChecked).toHaveBeenCalledWith(testComponentInputs.field);
-    expect(hooks.doCheck).toHaveBeenCalledWith(testComponentInputs.field);
-    expect(hooks.onInit).toHaveBeenCalledWith(testComponentInputs.field);
-    expect(hooks.onChanges).toHaveBeenCalledWith(testComponentInputs.field);
-    expect(hooks.onDestroy).toHaveBeenCalledWith(testComponentInputs.field);
+    Object.keys(field.hooks).forEach(name => {
+      expect(hooks[name]).toHaveBeenCalledWith(fixture.componentInstance.field);
+    });
+  });
+
+  it('should render field type without wrapper', () => {
+    const fixture = renderComponent({
+      key: 'title',
+      type: 'input',
+      wrappers: [],
+    });
+
+    expect(getFormFieldWrapper(fixture)).toEqual(null);
+    expect(getInputFieldType(fixture)).not.toBeNull();
+  });
+
+  it('should render field component with wrapper', () => {
+    const fixture = renderComponent({
+      key: 'title',
+      type: 'input',
+      wrappers: ['form-field'],
+    });
+
+    expect(getFormFieldWrapper(fixture)).not.toBeNull();
+    expect(getInputFieldType(fixture)).not.toBeNull();
+  });
+
+  it('should not throw error when field is null', () => {
+    const render = () => renderComponent(null);
+
+    expect(render).not.toThrowError();
+  });
+
+  it('should render field component with async wrapper', () => {
+    const fixture = renderComponent({
+      key: 'title',
+      type: 'input',
+      wrappers: ['form-field-async'],
+    });
+
+    expect(getFormFieldWrapperAsync(fixture)).not.toBeNull();
+    expect(getInputFieldType(fixture)).toBeNull();
+
+    fixture.componentInstance.field.templateOptions.render = true;
+    fixture.detectChanges();
+    expect(getInputFieldType(fixture)).not.toBeNull();
   });
 
   it('init hooks with observables', () => {
@@ -196,24 +164,21 @@ describe('FormlyField Component', () => {
       return f.formControl.valueChanges.pipe(tap(spy));
     };
 
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        formControl: control,
-        modelOptions: {},
-        parent: {
-          formControl: new FormGroup({}),
-        },
-        hooks: {
-          afterContentInit: initHookFn,
-          afterViewInit: initHookFn,
-          onInit: initHookFn,
-        },
+    const fixture = renderComponent({
+      key: 'title',
+      type: 'input',
+      formControl: control,
+      modelOptions: {},
+      parent: {
+        formControl: new FormGroup({}),
       },
-    };
+      hooks: {
+        afterContentInit: initHookFn,
+        afterViewInit: initHookFn,
+        onInit: initHookFn,
+      },
+    });
 
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
     expect(spy).not.toHaveBeenCalled();
 
     control.patchValue('test');
@@ -225,267 +190,201 @@ describe('FormlyField Component', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('should support async render field type', () => {
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        wrappers: ['async_render'],
-        modelOptions: {},
-        hooks: {
-          onInit: f => f.formControl = new FormControl(),
-        },
-        options: {},
-        templateOptions: {
-          placeholder: 'Title',
-          render: true,
-        },
+  it('should render after onInit', () => {
+    const fixture = renderComponent({
+      type: 'input',
+      hooks: {
+        onInit: f => (f.formControl = new FormControl()),
       },
-      form: new FormGroup({}),
-    };
+    });
 
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-    expect(getInputField(fixture.nativeElement)).toBeDefined();
-
-    fixture.componentInstance.field.templateOptions.render = false;
-    fixture.detectChanges();
-    expect(getInputField(fixture.nativeElement)).toBeUndefined();
+    expect(getInputFieldType(fixture)).not.toBeNull();
   });
 
   it('should render field type for each formly-field instance', () => {
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
+    const fixture = renderComponent(
+      {
+        type: 'input',
         formControl: new FormControl(),
         modelOptions: {},
-        wrappers: [],
-        duplicate: true,
-        options: {},
+        templateOptions: { duplicate: true },
       },
-      form: new FormGroup({}),
-      templateOptions: { render: true },
-    };
-
-    const fixture = createTestComponent(`
-      <formly-field *ngIf="field.duplicate" [field]="field"></formly-field>
-      <formly-field class="target" [field]="field"></formly-field>
-    `);
+      {
+        template: `
+          <formly-field *ngIf="field.templateOptions.duplicate" [field]="field"></formly-field>
+          <formly-field class="target" [field]="field"></formly-field>
+        `,
+      },
+    );
 
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelectorAll('formly-field input').length).toEqual(2);
   });
 
-  it('should render field type', () => {
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        formControl: new FormControl(),
-        options: {},
-        modelOptions: {},
-        templateOptions: {
-          placeholder: 'Title',
-        },
-      },
-      form: new FormGroup({}),
-    };
+  describe('valueChanges', () => {
+    it('should emit valueChanges on control value change', () => {
+      const fixture = renderComponent({
+        key: 'foo',
+        type: 'input',
+      });
 
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+      const { field } = fixture.componentInstance;
+      const [spy, subscription] = createFieldChangesSpy(field);
 
-    expect(getLabelWrapper(fixture.nativeElement)).toEqual(null);
-    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
-    expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');
-  });
-
-  it('should render fieldGroup', () => {
-    testComponentInputs = {
-      field: {
-        type: 'formly-group',
-        options: {},
-        fieldGroup: [
-          {
-            key: 'title1',
-            type: 'text',
-            formControl: new FormControl(),
-            options: {},
-            modelOptions: {},
-            templateOptions: { placeholder: 'Title1' },
-          },
-          {
-            key: 'title2',
-            type: 'text',
-            formControl: new FormControl(),
-            options: {},
-            modelOptions: {},
-            templateOptions: { placeholder: 'Title2' },
-          },
-        ],
-      },
-      form: new FormGroup({}),
-    };
-
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-
-    expect(getInputField(fixture.nativeElement, 0).getAttribute('placeholder')).toEqual('Title1');
-    expect(getInputField(fixture.nativeElement, 1).getAttribute('placeholder')).toEqual('Title2');
-  });
-
-  describe('wrapper', () => {
-    beforeEach(() => {
-      testComponentInputs = {
-        field: {
-          key: 'title',
-          type: 'text',
-          options: {},
-          modelOptions: {},
-          templateOptions: {
-            label: 'Title',
-            placeholder: 'Title',
-          },
-        },
-        form: new FormGroup({ title: new FormControl() }),
-      };
-      testComponentInputs.field.formControl = testComponentInputs.form.get('title');
+      field.formControl.setValue('First value');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ value: 'First value', field, type: 'valueChanges' });
+      expect(field.model).toEqual({ foo: 'First value' });
+      subscription.unsubscribe();
     });
 
-    it('should render field without wrapper or key', () => {
-      delete testComponentInputs.field.key;
+    it('should apply parsers to the emitted valueChanges', () => {
+      const fixture = renderComponent({
+        key: 'foo',
+        type: 'input',
+        parsers: [Number],
+      });
 
-      const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-      const elm = getFormlyFieldElement(fixture.nativeElement);
-      expect(getInputField(elm)).toBeDefined();
+      const { field } = fixture.componentInstance;
+      const [spy, subscription] = createFieldChangesSpy(field);
+
+      field.formControl.setValue('15');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ value: 15, field, type: 'valueChanges' });
+      subscription.unsubscribe();
     });
 
-    it('should render field wrapper', () => {
-      testComponentInputs.field.wrappers = ['label'];
-
-      const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-      const elm = getFormlyFieldElement(fixture.nativeElement);
-
-      expect(getLabelWrapper(elm).innerText).toEqual('Title');
-      expect(getInputField(elm).getAttribute('placeholder')).toEqual('Title');
-    });
-  });
-
-  it('should render options Types', () => {
-    testComponentInputs = {
-      field: {
-        key: 'title',
-        type: 'text',
-        formControl: new FormControl(),
-        modelOptions: {},
-        optionsTypes: ['other'],
-        options: {},
-        templateOptions: {
-          placeholder: 'Title',
+    it('should apply debounce to the emitted valueChanges', fakeAsync(() => {
+      const fixture = renderComponent({
+        key: 'foo',
+        type: 'input',
+        modelOptions: {
+          debounce: { default: 5 },
         },
-      },
-      form: new FormGroup({}),
-    };
+      });
 
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
-    expect(getLabelWrapper(fixture.nativeElement)).toEqual(null);
-    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
-    expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');
-  });
+      const { field } = fixture.componentInstance;
+      const [spy, subscription] = createFieldChangesSpy(field);
 
-  it('should update template options of OnPush FieldType #2191', async () => {
-    const options$ = timer(0).pipe(map(() => [{ value: 5, label: 'Option 5' }]), shareReplay(1));
+      field.formControl.setValue('15');
 
-    const field: FormlyFieldConfig = {
-      key: 'push',
-      type: 'on-push',
-      options: {},
-      formControl: new FormControl(),
-      modelOptions: {},
-      templateOptions: {
-        options: [
-          { value: 1, label: 'Option 1' },
-        ],
-      },
-      expressionProperties: {
-        'templateOptions.options': options$,
-      },
-    };
+      expect(spy).not.toHaveBeenCalled();
+      tick(6);
+      expect(spy).toHaveBeenCalled();
+      subscription.unsubscribe();
+    }));
 
-    const form = new FormGroup({});
+    it('should ignore default debounce when using "blur" or "submit"', () => {
+      const fixture = renderComponent({
+        key: 'foo',
+        type: 'input',
+        modelOptions: {
+          debounce: { default: 5 },
+          updateOn: 'blur',
+        },
+      });
 
-    testComponentInputs = {
-      field,
-      form,
-    };
+      const { field } = fixture.componentInstance;
+      const [spy, subscription] = createFieldChangesSpy(field);
 
-    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+      field.formControl.setValue('15');
+      expect(spy).toHaveBeenCalled();
+      subscription.unsubscribe();
+    });
 
-    const formBuilder: FormlyFormBuilder = testingModule.get(FormlyFormBuilder);
+    // https://github.com/ngx-formly/ngx-formly/issues/1857
+    it('should emit a valid model value when using square bracket notation for key', () => {
+      const fixture = renderComponent({
+        key: 'o[0].0.name',
+        type: 'input',
+      });
 
-    formBuilder.buildForm(form, [field], {}, {});
+      const { field } = fixture.componentInstance;
+      field.formControl.setValue('***');
+      expect(field.parent.model).toEqual({ o: [[{ name: '***' }]] });
+    });
 
-    const onPushInstance = fixture.nativeElement.querySelector('formly-on-push-component');
 
-    expect(onPushInstance.textContent).toEqual(
-      JSON.stringify({ options: [{ value: 1, label: 'Option 1' }] }, null, 2),
-    );
+    it('should emit a valid model value when using square bracket notation for a fieldGroup key', () => {
+      const fixture = renderComponent({
+        key: 'group[0]',
+        fieldGroup: [{ key: 'name', type: 'input' }],
+      });
 
-    await options$.toPromise();
+      const { field } = fixture.componentInstance;
+      field.fieldGroup[0].formControl.setValue('***');
+      expect(field.parent.model).toEqual({ group: [{ name: '***' }] });
+    });
 
-    fixture.detectChanges();
+    it('should emit valueChanges on group control value change', () => {
+      const fixture = renderComponent({
+        key: 'foo',
+        fieldGroup: [{ type: 'input', key: 'bar' }],
+      });
 
-    expect(onPushInstance.textContent).toEqual(
-      JSON.stringify({
-        options: [{ value: 5, label: 'Option 5' }],
-        label: '',
-        placeholder: '',
-        focus: false,
-        disabled: false,
-      }, null, 2),
-    );
+      const { field } = fixture.componentInstance;
+      const [spy, subscription] = createFieldChangesSpy(field);
+
+      field.formControl.setValue({ bar: 'First value' });
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ value: 'First value', field: field.fieldGroup[0], type: 'valueChanges' });
+      expect(field.parent.model).toEqual({ foo: { bar: 'First value' } });
+      subscription.unsubscribe();
+    });
+
+    it('should emit `modelChange` when custom FormGroup change', () => {
+      const fixture = renderComponent({
+        key: 'foo',
+        formControl: new FormGroup({
+          bar: new FormControl(),
+        }),
+      });
+      const { field } = fixture.componentInstance;
+      const [spy, subscription] = createFieldChangesSpy(field);
+
+      field.formControl.get('bar').setValue('foo');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ value: { bar: 'foo' }, field, type: 'valueChanges' });
+      expect(field.parent.model).toEqual({ foo: { bar: 'foo' } });
+      subscription.unsubscribe();
+    });
+
+    it('should emit `modelChange` twice when key is duplicated', () => {
+      const fixture = renderComponent({
+        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+      });
+
+      const { field } = fixture.componentInstance;
+      const [spy, subscription] = createFieldChangesSpy(field);
+
+      field.formControl.get('title').setValue('***');
+      expect(spy).toHaveBeenCalledTimes(2);
+      subscription.unsubscribe();
+    });
+
+    it('should keep the value in sync when using multiple fields with same key', () => {
+      const fixture = renderComponent({
+        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+      });
+
+      const inputs = fixture.debugElement.queryAll(By.css('input'));
+      inputs[0].nativeElement.value = 'First';
+      inputs[0].nativeElement.dispatchEvent(newEvent('input', false));
+
+      fixture.detectChanges();
+      expect(fixture.componentInstance.field.formControl.value).toEqual({ title: 'First' });
+      expect(inputs[0].nativeElement.value).toEqual('First');
+      expect(inputs[1].nativeElement.value).toEqual('First');
+    });
   });
 });
 
 @Component({
-  selector: 'formly-formly-field-test',
-  template: '',
-  entryComponents: [],
-})
-class TestComponent {
-  field = testComponentInputs.field;
-  form = testComponentInputs.form;
-  model = testComponentInputs.model || {};
-
-  changeModel(event) {}
-}
-
-@Component({
-  selector: 'formly-field-text',
-  template: `<input type="text" [formControl]="formControl" [formlyAttributes]="field">`,
-})
-export class FormlyFieldText extends FieldType {}
-
-@Component({
-  selector: 'formly-wrapper-label',
-  template: `
-    <label [attr.for]="id">{{ to.label }}</label>
-    <ng-template #fieldComponent></ng-template>
-  `,
-})
-export class FormlyWrapperLabel extends FieldWrapper {
-}
-
-@Component({
-  selector: 'formly-async-wrapper',
+  selector: 'formly-wrapper-form-field-async',
   template: `
     <div *ngIf="to.render">
       <ng-container #fieldComponent></ng-container>
     </div>
   `,
 })
-export class AsyncWrapperComponent extends FieldWrapper {}
-
-@Component({
-  selector: 'formly-on-push-component',
-  template: '{{ to | json }}',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class TestOnPushComponent extends FieldType {}
+class FormlyWrapperFormFieldAsync extends FieldWrapper { }
