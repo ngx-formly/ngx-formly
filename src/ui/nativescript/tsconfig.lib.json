@@ -12,7 +12,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "types": [],
-    "lib": ["dom", "es2015"],
+    "lib": ["dom", "es2018"],
     "paths": {
       "@ngx-formly/*": ["dist/@ngx-formly/*"]
     }

@@ -7,12 +7,7 @@ function createBuilder(option?: ConfigOption) {
   const config = new FormlyConfig();
   config.addConfig(option || { extensions: [{ name: 'core', extension: {} }] });
 
-  return new FormlyFormBuilder(
-    config,
-    null,
-    null,
-    null,
-  );
+  return new FormlyFormBuilder(config, null, null, null);
 }
 
 describe('FormlyFormBuilder service', () => {
@@ -30,12 +25,14 @@ describe('FormlyFormBuilder service', () => {
     builder.buildField(field);
 
     expect(field.formControl).toEqual(jasmine.any(FormGroup));
-    expect(field.options).toEqual(jasmine.objectContaining({
-      _resolver: null,
-      _injector: null,
-      _buildForm: jasmine.any(Function),
-      _buildField: jasmine.any(Function),
-    }));
+    expect(field.options).toEqual(
+      jasmine.objectContaining({
+        _resolver: null,
+        _injector: null,
+        _buildForm: jasmine.any(Function),
+        _buildField: jasmine.any(Function),
+      }),
+    );
 
     spyOn(builder, 'buildField');
     field.options._buildField(field);
@@ -45,9 +42,9 @@ describe('FormlyFormBuilder service', () => {
 
   it('should call extension during build call', () => {
     const extension = {
-      prePopulate: () => { },
-      onPopulate: () => { },
-      postPopulate: () => { },
+      prePopulate: () => {},
+      onPopulate: () => {},
+      postPopulate: () => {},
     };
     spyOn(extension, 'prePopulate');
     spyOn(extension, 'onPopulate');
@@ -66,7 +63,7 @@ describe('FormlyFormBuilder service', () => {
   });
 
   it('should build nested field', () => {
-    const extension = { onPopulate: () => { } };
+    const extension = { onPopulate: () => {} };
     spyOn(extension, 'onPopulate');
 
     const builder = createBuilder({

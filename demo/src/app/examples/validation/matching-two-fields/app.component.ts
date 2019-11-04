@@ -28,19 +28,19 @@ export class AppComponent {
           required: true,
           minLength: 3,
         },
-        {
-          key: 'passwordConfirm',
-          type: 'input',
-          templateOptions: {
-            type: 'password',
-            label: 'Confirm Password',
-            placeholder: 'Please re-enter your password',
-            required: true,
-          },
+      },
+      {
+        key: 'passwordConfirm',
+        type: 'input',
+        templateOptions: {
+          type: 'password',
+          label: 'Confirm Password',
+          placeholder: 'Please re-enter your password',
+          required: true,
         },
-      ],
-    },
-  ];
+      },
+    ],
+  }];
 
   submit() {
     if (this.form.valid) {

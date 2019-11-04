@@ -1,19 +1,29 @@
-import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { MockComponent, createBuilder } from '../../test-utils';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { MockComponent, createBuilder, createFormlyFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
 import { Subject } from 'rxjs';
+
+function renderComponent(field: FormlyFieldConfig) {
+  const fixture = createFormlyFieldComponent(field, {
+    imports: [FormlyInputModule],
+  });
+
+  return fixture.componentInstance.field;
+}
 
 function buildField({ model, options, ...field }: FormlyFieldConfig): FormlyFieldConfigCache {
   const builder = createBuilder({
     extensions: ['core'],
-    onInit: c => c.addConfig({
-      types: [
-        {
-          name: 'input',
-          wrappers: ['form-field'],
-          component: MockComponent({ selector: 'formly-test-cmp' }),
-        },
-      ],
-    }),
+    onInit: c =>
+      c.addConfig({
+        types: [
+          {
+            name: 'input',
+            wrappers: ['form-field'],
+            component: MockComponent({ selector: 'formly-test-cmp' }),
+          },
+        ],
+      }),
   });
 
   builder.buildField({
@@ -27,11 +37,10 @@ function buildField({ model, options, ...field }: FormlyFieldConfig): FormlyFiel
 
 describe('CoreExtension', () => {
   it('should assign default templateOptions when empty', () => {
-    const { fieldGroup: [withoutType, withType] } = buildField({
-      fieldGroup: [
-        {key: 'title'},
-        {key: 'title', type: 'input'},
-      ],
+    const {
+      fieldGroup: [withoutType, withType],
+    } = buildField({
+      fieldGroup: [{ key: 'title' }, { key: 'title', type: 'input' }],
     });
 
     expect(withoutType.templateOptions).toEqual({});
@@ -44,11 +53,12 @@ describe('CoreExtension', () => {
   });
 
   it('should assign default type (template, fieldGroup) when empty', () => {
-    const { type, fieldGroup: [{ type: templateType }] } = buildField({
+    const {
+      type,
+      fieldGroup: [{ type: templateType }],
+    } = buildField({
       key: 'title',
-      fieldGroup: [
-        { template: 'test' },
-      ],
+      fieldGroup: [{ template: 'test' }],
     });
 
     expect(type).toEqual('formly-group');
@@ -119,27 +129,82 @@ describe('CoreExtension', () => {
     });
   });
 
-  it('should init root options', () => {
-    const field = buildField({
-      options: {},
+  describe('options', () => {
+    it('should init root options', () => {
+      const field = buildField({
+        options: {},
+      });
+
+      expect(field.options).toEqual(
+        jasmine.objectContaining({
+          formState: {},
+          showError: jasmine.any(Function),
+          fieldChanges: jasmine.any(Subject),
+          _markForCheck: jasmine.any(Function),
+          updateInitialValue: jasmine.any(Function),
+          resetModel: jasmine.any(Function),
+        }),
+      );
     });
 
-    expect(field.options).toEqual(jasmine.objectContaining({
-      formState: {},
-      showError: jasmine.any(Function),
-      updateInitialValue: jasmine.any(Function),
-      fieldChanges: jasmine.any(Subject),
-      _markForCheck: jasmine.any(Function),
-      resetModel: jasmine.any(Function),
-    }));
+    it('resetModel', () => {
+      const { model, options, form, formControl } = renderComponent({
+        model: { title: 'test' },
+        key: 'title',
+        type: 'input',
+      });
+
+      formControl.setValue('edit title');
+      expect(model.title).toEqual('edit title');
+
+      options.resetModel();
+      expect(model.title).toEqual('test');
+      expect(form.value).toEqual({ title: 'test' });
+    });
+
+    it('should reset hidden fields', () => {
+      const { model, options, form } = renderComponent({
+        key: 'title',
+        type: 'input',
+        hide: true,
+      });
+
+      options.resetModel({ title: 'test' });
+      expect(model.title).toEqual('test');
+    });
+
+    it('should take account of default value on resetModel', () => {
+      const { model, options, form } = renderComponent({
+        key: 'title',
+        defaultValue: 'defaultValue',
+        model: { title: 'test' },
+      });
+
+      options.resetModel();
+      expect(model.title).toEqual('defaultValue');
+    });
+
+    it('updateInitialValue', () => {
+      const { model, options, formControl } = renderComponent({
+        // initial value
+        model: { title: 'test' },
+        key: 'title',
+        type: 'input',
+      });
+
+      formControl.setValue('edit title');
+      expect(model.title).toEqual('edit title');
+
+      options.updateInitialValue();
+      options.resetModel();
+      expect(model.title).toEqual('edit title');
+    });
   });
 
   it('should assign parent options to children', () => {
     const field = buildField({
       key: 'address',
-      fieldGroup: [{
-        key: 'city',
-      }],
+      fieldGroup: [{ key: 'city' }],
     });
 
     expect(field.fieldGroup[0].model).toEqual(field.model);
@@ -164,9 +229,7 @@ describe('CoreExtension', () => {
         const model = { city: 'foo' };
         const field = buildField({
           model,
-          fieldGroup: [{
-            key: 'city',
-          }],
+          fieldGroup: [{ key: 'city' }],
         });
 
         expect(field.model).toEqual(model);
@@ -180,9 +243,7 @@ describe('CoreExtension', () => {
         const field = buildField({
           model,
           key: 'address',
-          fieldGroup: [{
-            key: 'city',
-          }],
+          fieldGroup: [{ key: 'city' }],
         });
 
         expect(field.model).toEqual(model.address);
@@ -196,9 +257,7 @@ describe('CoreExtension', () => {
         const field = buildField({
           model,
           key: 'location.address',
-          fieldGroup: [{
-            key: 'city',
-          }],
+          fieldGroup: [{ key: 'city' }],
         });
 
         expect(field.model).toEqual(model.location.address);
@@ -253,11 +312,10 @@ describe('CoreExtension', () => {
     });
 
     it('should take account of field index', () => {
-      const { fieldGroup: [f1, f2] } = buildField({
-        fieldGroup: [
-          { key: 'title' },
-          { key: 'title' },
-        ],
+      const {
+        fieldGroup: [f1, f2],
+      } = buildField({
+        fieldGroup: [{ key: 'title' }, { key: 'title' }],
       });
 
       expect(f1.id).toEqual('formly_3__title_0');
