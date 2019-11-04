@@ -86,7 +86,7 @@ export class FieldFormExtension implements FormlyExtension {
       }
     }
 
-    (field.fieldGroup || []).forEach(f => this.setValidators(f) && (updateValidity = true));
+    (field.fieldGroup || []).forEach(f => f && this.setValidators(f) && (updateValidity = true));
 
     return updateValidity;
   }
@@ -104,7 +104,7 @@ export class FieldFormExtension implements FormlyExtension {
 
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter(f => !f.key && f.fieldGroup)
+        .filter(f => f && !f.key && f.fieldGroup)
         .forEach(f => validators.push(...this.mergeValidators(f, type)));
     }
 

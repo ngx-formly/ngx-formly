@@ -38,6 +38,10 @@ export class FormlyFormBuilder {
   }
 
   private _buildField(field: FormlyFieldConfigCache) {
+    if (!field) {
+      return;
+    }
+
     this.getExtensions().forEach(extension => extension.prePopulate && extension.prePopulate(field));
     this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
 
