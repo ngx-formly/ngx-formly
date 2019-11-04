@@ -1,6 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { createBuilder } from '../../test-utils';
+import { createBuilder } from '@ngx-formly/core/testing';
 
 function buildField({ model, options, form: formControl, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
@@ -79,11 +79,10 @@ describe('FieldFormExtension', () => {
     });
 
     it('should use the same formcontrol for fields that use the same key', () => {
-      const { fieldGroup: [f1, f2] } = buildField({
-        fieldGroup: [
-          { key: 'test' },
-          { key: 'test' },
-        ],
+      const {
+        fieldGroup: [f1, f2],
+      } = buildField({
+        fieldGroup: [{ key: 'test' }, { key: 'test' }],
       });
 
       expect(f1.formControl).toEqual(f2.formControl);
@@ -144,10 +143,7 @@ describe('FieldFormExtension', () => {
       const field = buildField({
         key: 'address',
         templateOptions: { disabled: true },
-        fieldGroup: [
-          { key: 'city' },
-          { key: 'street' },
-        ],
+        fieldGroup: [{ key: 'city' }, { key: 'street' }],
       });
 
       const control = field.formControl;
@@ -155,14 +151,11 @@ describe('FieldFormExtension', () => {
       expect(control.get('city').disabled).toEqual(true);
       expect(control.get('street').disabled).toEqual(true);
     });
-  
+
     it('should not affect parent disabled state', () => {
       const field = buildField({
         key: 'address',
-        fieldGroup: [
-          { key: 'city', templateOptions: { disabled: true } },
-          { key: 'street' },
-        ],
+        fieldGroup: [{ key: 'city', templateOptions: { disabled: true } }, { key: 'street' }],
       });
 
       const control = field.formControl;
