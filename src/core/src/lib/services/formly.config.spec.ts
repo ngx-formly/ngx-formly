@@ -10,9 +10,7 @@ describe('FormlyConfig service', () => {
       wrappers: [{ name: 'layout', component: TestComponent }],
       types: [{ name: 'input' }],
       validators: [{ name: 'required', validation: Validators.required }],
-      validationMessages: [
-        { name: 'required', message: 'This field is required.' },
-      ],
+      validationMessages: [{ name: 'required', message: 'This field is required.' }],
     });
   });
 
@@ -62,7 +60,9 @@ describe('FormlyConfig service', () => {
 
     it('should throw when wrapper not found', () => {
       const config = new FormlyConfig();
-      expect(() => config.getWrapper('custom_wrapper')).toThrowError('[Formly Error] The wrapper "custom_wrapper" could not be found. Please make sure that is registered through the FormlyModule declaration.');
+      expect(() => config.getWrapper('custom_wrapper')).toThrowError(
+        '[Formly Error] The wrapper "custom_wrapper" could not be found. Please make sure that is registered through the FormlyModule declaration.',
+      );
     });
   });
 
@@ -83,15 +83,14 @@ describe('FormlyConfig service', () => {
 
     it('should throw when type not found', () => {
       const config = new FormlyConfig();
-      expect(() => config.getType('custom_input')).toThrowError('[Formly Error] The type "custom_input" could not be found. Please make sure that is registered through the FormlyModule declaration.');
+      expect(() => config.getType('custom_input')).toThrowError(
+        '[Formly Error] The type "custom_input" could not be found. Please make sure that is registered through the FormlyModule declaration.',
+      );
     });
 
     it('should merge existing options when replacing a field type', () => {
       const config = new FormlyConfig();
-      config.setType([
-        { name: 'input1', component: TestComponent },
-        { name: 'input1', wrappers: ['label'] },
-      ]);
+      config.setType([{ name: 'input1', component: TestComponent }, { name: 'input1', wrappers: ['label'] }]);
 
       expect(config.getType('input1')).toEqual({
         name: 'input1',
@@ -140,7 +139,9 @@ describe('FormlyConfig service', () => {
 
     it('should throw when validator not found', () => {
       const config = new FormlyConfig();
-      expect(() => config.getValidator('custom_validator')).toThrowError('[Formly Error] The validator "custom_validator" could not be found. Please make sure that is registered through the FormlyModule declaration.');
+      expect(() => config.getValidator('custom_validator')).toThrowError(
+        '[Formly Error] The validator "custom_validator" could not be found. Please make sure that is registered through the FormlyModule declaration.',
+      );
     });
   });
 
@@ -157,6 +158,5 @@ describe('FormlyConfig service', () => {
   });
 });
 
-@Component({selector: 'formly-test-cmp', template: '', entryComponents: []})
-class TestComponent {
-}
+@Component({ selector: 'formly-test-cmp', template: '', entryComponents: [] })
+class TestComponent {}

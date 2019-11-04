@@ -1,22 +1,23 @@
-import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { FormControl, Validators, ValidationErrors, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
-import { createBuilder } from '../../test-utils';
+import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { createBuilder } from '@ngx-formly/core/testing';
 
-function buildField({model, options, form: formControl, ...field}: FormlyFieldConfigCache): FormlyFieldConfigCache {
+function buildField({ model, options, form: formControl, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
     extensions: ['core', 'validation'],
-    onInit: c => c.addConfig({
-      validators: [
-        { name: 'required', validation: Validators.required },
-        { name: 'asyncRequired', validation: ctrl => of(Validators.required(ctrl)) },
-              {
-        name: 'val_with_options',
-        options: { foo: 'test' },
-        validation: (c, f, options) => ({ val_with_options: options }),
-      },
-      ],
-    }),
+    onInit: c =>
+      c.addConfig({
+        validators: [
+          { name: 'required', validation: Validators.required },
+          { name: 'asyncRequired', validation: ctrl => of(Validators.required(ctrl)) },
+          {
+            name: 'val_with_options',
+            options: { foo: 'test' },
+            validation: (c, f, options) => ({ val_with_options: options }),
+          },
+        ],
+      }),
   });
 
   field = { key: 'name', formControl: new FormControl(), ...field };
@@ -135,7 +136,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
     describe('without validation option', () => {
       it(`using function`, () => {
         const field = buildField({
-          validators: { custom: (form) => form.value },
+          validators: { custom: form => form.value },
         });
 
         validate(field, 'test', null);
@@ -145,7 +146,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       it(`using expression property`, () => {
         const field = buildField({
           validators: {
-            custom: { expression: (form, field) => field.key === 'name' ? form.value : false },
+            custom: { expression: (form, field) => (field.key === 'name' ? form.value : false) },
           },
         });
 
@@ -166,10 +167,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
           },
         });
 
-        field.formControl = new FormGroup(
-          { pwd: new FormControl() },
-          { validators: field._validators },
-        );
+        field.formControl = new FormGroup({ pwd: new FormControl() }, { validators: field._validators });
 
         field.formControl.setValue({ pwd: 'oo' });
         expect(field.formControl.errors).toEqual({ custom: {
@@ -185,7 +183,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
         const field = buildField({
           validators: {
             validation: ['required'],
-            required: { expression: (form, field) => field.key === 'name' ? form.value : false },
+            required: { expression: (form, field) => (field.key === 'name' ? form.value : false) },
           },
         });
 

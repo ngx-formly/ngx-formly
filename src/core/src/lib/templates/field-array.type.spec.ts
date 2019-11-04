@@ -1,207 +1,127 @@
-import { TestBed } from '@angular/core/testing';
-import { createGenericTestComponent } from '../test-utils';
-import { Component, ViewChild } from '@angular/core';
-import { FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
-import { FormlyModule, FormlyForm, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { Component } from '@angular/core';
+import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
-import { FormlyFieldText } from '../components/formly.field.spec';
-import { By } from '@angular/platform-browser';
+import { FormlyInputModule, createFormlyFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
+import { FormArray } from '@angular/forms';
+import { ComponentFixture } from '@angular/core/testing';
 
-function createFormlyTestComponent() {
-  return createGenericTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>', TestComponent);
+function getFormlyArrayField(fixture: ComponentFixture<any>): HTMLInputElement {
+  return fixture.nativeElement.querySelector('formly-array');
 }
 
-let app: Partial<{
-  form: FormGroup | FormArray;
-  fields: FormlyFieldConfig[];
-  options: FormlyFormOptions;
-  model: any;
-}>;
+function getFormlyArrayFields(fixture: ComponentFixture<any>): HTMLInputElement[] {
+  return fixture.nativeElement.querySelectorAll('formly-array > formly-field');
+}
+
+const renderComponent = (field: FormlyFieldConfig) => {
+  return createFormlyFieldComponent(field, {
+    declarations: [ArrayTypeComponent],
+    imports: [
+      FormlyInputModule,
+      FormlyModule.forChild({
+        types: [
+          {
+            name: 'array',
+            component: ArrayTypeComponent,
+          },
+        ],
+      }),
+    ],
+  });
+};
 
 describe('Array Field Type', () => {
-  beforeEach(() => {
-    app = {
-      form: new FormGroup({}),
-      model: {},
-    };
-    TestBed.configureTestingModule({
-      declarations: [TestComponent, ArrayTypeComponent, FormlyFieldText],
-      imports: [
-        ReactiveFormsModule,
-        FormlyModule.forRoot({
-          types: [
-            {
-                name: 'input',
-                component: FormlyFieldText,
-            },
-            {
-              name: 'array',
-              component: ArrayTypeComponent,
-            },
-          ],
-        }),
-      ],
+  it('should render fieldGroup', () => {
+    const fixture = renderComponent({
+      key: 'foo',
+      type: 'array',
+      defaultValue: [null, null],
     });
+
+    expect(getFormlyArrayField(fixture)).toBeDefined();
+    expect(getFormlyArrayFields(fixture).length).toEqual(2);
   });
 
-  it('should mark the form dirty on Add/Remove', () => {
-    app.model = { array: null };
-    app.fields = [{
-      key: 'array',
+  it('should add defaultOptions', () => {
+    const fixture = renderComponent({
+      key: 'foo',
       type: 'array',
-    }];
+    });
 
-    const fixture = createFormlyTestComponent();
-    expect(app.form.dirty).toBeFalsy();
-
-    fixture.nativeElement.querySelector('#add').click();
-    fixture.detectChanges();
-    expect(app.form.dirty).toBeTruthy();
-
-    app.form.markAsPristine();
-    fixture.nativeElement.querySelector('#remove-0').click();
-    fixture.detectChanges();
-    expect(app.form.dirty).toBeTruthy();
-  });
-
-  it('should work with nullable model', () => {
-    app.model = { array: null };
-    app.fields = [{
-      key: 'array',
-      type: 'array',
-      defaultValue: null,
-    }];
-
-    const fixture = createFormlyTestComponent();
-    expect(app.form.dirty).toBeFalsy();
-
-    fixture.nativeElement.querySelector('#add').click();
-    fixture.detectChanges();
-    expect(app.form.dirty).toBeTruthy();
-
-    app.form.markAsPristine();
-    fixture.nativeElement.querySelector('#remove-0').click();
-    fixture.detectChanges();
-    expect(app.form.dirty).toBeTruthy();
+    const model = fixture.componentInstance.field.parent.model;
+    expect(model).toEqual({ foo: [] });
   });
 
   it('should support field without key', () => {
-    app.form = new FormArray([]);
-    app.fields = [{ type: 'array' }];
-    app.model = [];
-
-    const fixture = createFormlyTestComponent();
-    expect(app.model).toEqual([]);
+    const fixture = renderComponent({ model: [], type: 'array' });
+    const { field } = fixture.componentInstance;
+    expect(field.model).toEqual([]);
 
     fixture.nativeElement.querySelector('#add').click();
     fixture.detectChanges();
 
-    expect(app.model).toEqual([undefined]);
+    expect(field.model).toEqual([undefined]);
 
     fixture.nativeElement.querySelector('#remove-0').click();
     fixture.detectChanges();
 
-    expect(app.model).toEqual([]);
-  });
-
-  it('should not mark the form dirty on Add/Remove', () => {
-    app.model = { array: null };
-    app.fields = [{
-      key: 'array',
-      type: 'array',
-    }];
-
-    const fixture = createFormlyTestComponent();
-    expect(app.form.dirty).toBeFalsy();
-
-    const arrayType = fixture.debugElement.query(By.css('formly-array-type'))
-      .componentInstance as ArrayTypeComponent;
-
-    arrayType.add(null, null, { markAsDirty: false });
-    fixture.detectChanges();
-    expect(app.form.dirty).toBeFalsy();
-
-    app.form.markAsPristine();
-
-    arrayType.remove(0, { markAsDirty: false });
-    fixture.detectChanges();
-    expect(app.form.dirty).toBeFalsy();
+    expect(field.model).toEqual([]);
   });
 
   it('should work with nullable model', () => {
-    app.model = { array: null };
-    app.fields = [{
+    const fixture = renderComponent({
+      model: { array: null },
       key: 'array',
       type: 'array',
-    }];
+    });
+    const { field } = fixture.componentInstance;
 
-    const fixture = createFormlyTestComponent();
-    expect(app.fields[0].fieldGroup).toEqual([]);
-    expect(app.fields[0].model).toBeNull();
+    expect(field.fieldGroup).toEqual([]);
+    expect(field.model).toBeNull();
 
     fixture.nativeElement.querySelector('#add').click();
     fixture.detectChanges();
 
-    expect(app.fields[0].fieldGroup.length).toEqual(1);
-    expect(app.fields[0].model.length).toBe(1);
+    expect(field.fieldGroup.length).toEqual(1);
+    expect(field.model.length).toBe(1);
   });
 
-  it('should keep formControl instance on remove item for repeat section', () => {
-    app.model = { foo: [1, 2] };
-    app.fields = [{
-      key: 'foo',
+  it('should emit `modelChange` on Add/Remove', () => {
+    const fixture = renderComponent({
+      key: 'array',
       type: 'array',
-      fieldArray: { type: 'input' },
-    }];
+    });
 
-    const fixture = createFormlyTestComponent();
-    const formArray = app.fields[0].formControl as FormArray;
-
-    const formControl = formArray.at(1);
-    fixture.nativeElement.querySelector('#remove-0').click();
-    fixture.detectChanges();
-
-    expect(formArray.controls.length).toEqual(1);
-    expect(formArray.at(0)).toEqual(formControl);
-  });
-
-  it('should emit `modelChange` on model change', () => {
-    app.fields = [{
-      key: 'foo',
-      type: 'array',
-      fieldArray: {
-        fieldGroup: [{
-          key: 'title',
-          type: 'input',
-        }],
-      },
-    }];
-
-    const fixture = createFormlyTestComponent();
-    const spy = jasmine.createSpy('model change spy');
-    const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+    const { field } = fixture.componentInstance;
+    const [spy, subscription] = createFieldChangesSpy(field);
+    const form = field.formControl as FormArray;
 
     // add
     fixture.nativeElement.querySelector('#add').click();
     fixture.detectChanges();
 
-    expect(spy).toHaveBeenCalledWith({ foo: [{}] });
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({ value: [undefined], field, type: 'valueChanges' });
+    expect(field.parent.model).toEqual({ array: [undefined] });
 
     // update
-    const formArray = app.form.get('foo') as FormArray;
-    formArray.at(0).get('title').patchValue('***');
+    spy.calls.reset();
+    form.at(0).patchValue('***');
     fixture.detectChanges();
 
-    expect(spy).toHaveBeenCalledWith({ foo: [{ title: '***' }] });
-    expect(app.model).toEqual({ foo: [{ title: '***' }] });
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({ value: '***', field: field.fieldGroup[0], type: 'valueChanges' });
+    expect(field.parent.model).toEqual({ array: ['***'] });
 
     // remove
+    spy.calls.reset();
     fixture.nativeElement.querySelector('#remove-0').click();
     fixture.detectChanges();
-    expect(spy).toHaveBeenCalledWith({ foo: [] });
-    expect(app.model).toEqual({ foo: [] });
 
-    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({ value: [], field, type: 'valueChanges' });
+    expect(field.parent.model).toEqual({ array: [] });
+
     subscription.unsubscribe();
   });
 
@@ -256,13 +176,12 @@ describe('Array Field Type', () => {
   });
 
   it('should not reuse the remove controls', () => {
-    app.model = { array: null };
-    app.fields = [{
+    const fixture = renderComponent({
       key: 'array',
       type: 'array',
-    }];
-
-    const fixture = createFormlyTestComponent();
+    });
+    const { field } = fixture.componentInstance;
+    const form = field.formControl as FormArray;
 
     fixture.nativeElement.querySelector('#add').click();
     fixture.nativeElement.querySelector('#add').click();
@@ -276,7 +195,6 @@ describe('Array Field Type', () => {
     fixture.nativeElement.querySelector('#add').click();
     fixture.detectChanges();
 
-    const form = app.form.get('array') as FormArray;
     form.at(0).setValue('foo');
 
     expect(form.at(1)).not.toEqual(form.at(0));
@@ -285,115 +203,136 @@ describe('Array Field Type', () => {
 
   // https://github.com/ngx-formly/ngx-formly/issues/2493
   it('should add field when model is null', () => {
-    app.model = null;
-    app.fields = [{
+    const fixture = renderComponent({
+      model: null,
       key: 'array',
       type: 'array',
-    }];
-
-    const fixture = createFormlyTestComponent();
+    });
+    const { field } = fixture.componentInstance;
+    const form = field.formControl as FormArray;
 
     fixture.nativeElement.querySelector('#add').click();
     fixture.detectChanges();
 
-    expect(app.fields[0].fieldGroup.length).toEqual(1);
-    expect(app.form.value).toEqual({ array: [null] });
+    expect(field.fieldGroup.length).toEqual(1);
+    expect(form.value).toEqual({ array: [null] });
   });
 
-  it('should update field visibility within field arrays', () => {
-    app.fields = [
-      {
-        key: 'address',
-        type: 'array',
-        hideExpression: model => model.length !== 1,
-        fieldArray: {
-          fieldGroup: [
-            {
-              key: 'city',
-              type: 'input',
-              hideExpression: 'model.addressIsRequired',
-            },
-          ],
+  it('should mark the form dirty on Add/Remove', () => {
+    const fixture = renderComponent({
+      key: 'array',
+      type: 'array',
+    });
+
+    const {
+      field: { formControl },
+    } = fixture.componentInstance;
+
+    expect(formControl.dirty).toBeFalsy();
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+    expect(formControl.dirty).toBeTruthy();
+
+    formControl.markAsPristine();
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+    expect(formControl.dirty).toBeTruthy();
+  });
+
+  it('should not change the form control instance when chinging the field position', () => {
+    const fixture = renderComponent({
+      model: { foo: [1, 2] },
+      key: 'foo',
+      type: 'array',
+      fieldArray: { type: 'input' },
+    });
+    const { field } = fixture.componentInstance;
+    const formArray = field.formControl as FormArray;
+
+    const formControl = formArray.at(1);
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+
+    expect(formArray.controls.length).toEqual(1);
+    expect(formArray.at(0)).toEqual(formControl);
+  });
+
+  it('should apply expressions within field arrays', () => {
+    const fixture = renderComponent({
+      key: 'address',
+      type: 'array',
+      defaultValue: ['test'],
+      fieldArray: {
+        type: 'input',
+        hideExpression: 'model[0] === "test"',
+        expressionProperties: {
+          className: 'model[0]',
         },
       },
-      { key: 'addressIsRequired' },
-    ];
-    app.model = {
-      address: [{
-        addressIsRequired: true,
-      }],
-    };
+    });
 
-    const fixture = createFormlyTestComponent();
-
-    const cityField = app.fields[0].fieldGroup[0].fieldGroup[0];
-
-    expect(cityField.templateOptions.hidden).toBeTruthy();
+    const {
+      fieldGroup: [cityField],
+      model,
+      options,
+    } = fixture.componentInstance.field;
     expect(cityField.hide).toBeTruthy();
+    expect(cityField.className).toEqual('test');
 
-    app.model.address[0].addressIsRequired = false;
+    model[0] = 'custom';
+    (options as any)._checkField(cityField);
     fixture.detectChanges();
 
-    expect(cityField.templateOptions.hidden).toBeFalsy();
     expect(cityField.hide).toBeFalsy();
+    expect(cityField.className).toEqual('custom');
   });
 
-  it('should update field validity within field arrays', () => {
-    app.fields = [
-      {
-        key: 'address',
-        type: 'array',
-        fieldArray: {
-          fieldGroup: [
-            {
-              key: 'city',
-              type: 'input',
-              expressionProperties: {
-                'templateOptions.required': 'model.addressIsRequired',
-              },
-            },
-          ],
-        },
+  it('should cleanup existing controls on re-build', () => {
+    const fixture = renderComponent({
+      key: 'address',
+      type: 'array',
+      defaultValue: [1, 2, 3, 4],
+    });
+    const { model, options, formControl } = fixture.componentInstance.field;
+    const form = formControl as FormArray;
+
+    expect(form.controls.length).toEqual(4);
+    model.length = 1;
+    (options as any)._buildField(fixture.componentInstance.field);
+
+    expect(form.controls.length).toEqual(1);
+  });
+
+  it('should keep tracking model change on resetModel', () => {
+    const fixture = renderComponent({
+      key: 'address',
+      type: 'array',
+      defaultValue: [{}, {}, {}, {}],
+      fieldArray: {
+        fieldGroup: [{ key: 'name', type: 'input' }],
       },
-      { key: 'addressIsRequired' },
-    ];
-    app.model = {
-      address: [{
-        addressIsRequired: true,
-      }],
-    };
+    });
+    const { options, formControl } = fixture.componentInstance.field;
+    const form = formControl as FormArray;
 
-    const fixture = createFormlyTestComponent();
+    expect(form.controls.length).toEqual(4);
 
-    const cityField = app.fields[0].fieldGroup[0].fieldGroup[0];
+    options.resetModel({ address: [{}] });
+    expect(form.controls.length).toEqual(1);
 
-    expect(cityField.formControl.status).toEqual('INVALID');
-
-    app.model.address[0].addressIsRequired = false;
-
-    fixture.detectChanges();
-
-    expect(cityField.formControl.status).toEqual('VALID');
+    form.get('0.name').patchValue('TEST');
+    const model = fixture.componentInstance.field.model;
+    expect(model[0]).toEqual({ name: 'TEST' });
   });
 });
 
-@Component({ selector: 'formly-form-test', template: '', entryComponents: [] })
-class TestComponent {
-  @ViewChild(FormlyForm, { static: true }) formlyForm: FormlyForm;
-
-  fields = app.fields;
-  form = app.form;
-  model = app.model;
-  options = app.options;
-}
-
 @Component({
-  selector: 'formly-array-type',
+  selector: 'formly-array',
   template: `
-    <div *ngFor="let field of field.fieldGroup; let i = index;">
-      <formly-group [field]="field"></formly-group>
+    <ng-container *ngFor="let field of field.fieldGroup; let i = index">
+      <formly-field [field]="field"></formly-field>
       <button [id]="'remove-' + i" type="button" (click)="remove(i)">Remove</button>
-    </div>
+    </ng-container>
     <button id="add" type="button" (click)="add()">Add</button>
   `,
 })
