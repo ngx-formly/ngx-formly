@@ -1,71 +1,36 @@
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSelectModule } from '@angular/material/select';
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { createGenericTestComponent } from '../../../../core/src/lib/test-utils';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
 import { By } from '@angular/platform-browser';
-
-import { Component, ViewChild } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyModule, FormlyForm } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/core/select';
-import { FormlyFieldSelect } from './select.type';
-import { of as observableOf } from 'rxjs';
-import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { of } from 'rxjs';
 import { timeout } from 'rxjs/operators';
+import { FormlyMatSelectModule } from '@ngx-formly/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-const createTestComponent = (html: string) =>
-  createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
-
-let testComponentInputs;
+const renderComponent = (field: FormlyFieldConfig) => {
+  return createFormlyFieldComponent(field, {
+    imports: [NoopAnimationsModule, FormlyMatSelectModule],
+  });
+};
 
 describe('ui-material: Formly Field Select Component', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent, FormlyFieldSelect],
-      imports: [
-        NoopAnimationsModule,
-        MatSelectModule,
-        MatPseudoCheckboxModule,
-        ReactiveFormsModule,
-        FormlySelectModule,
-        FormlyModule.forRoot({
-          types: [
-            {
-              name: 'select',
-              component: FormlyFieldSelect,
-            },
-          ],
-        }),
-      ],
-    });
-  });
-
-  describe('options', () => {
-    beforeEach(() => {
-      testComponentInputs = {
-        form: new FormGroup({}),
-        options: {},
-        model: {},
-      };
-    });
-
+  describe('render select options', () => {
     it('should correctly bind to a static array of data', () => {
-      testComponentInputs.fields = [{
+      const fixture = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
           options: [
             { id: '1', name: 'Soccer' },
             { id: '2', name: 'Basketball' },
-            { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
+            { id: { test: 'A' }, name: 'Not Soccer or Basketball' },
           ],
           valueProp: 'id',
           labelProp: 'name',
         },
-      }];
+      });
 
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>'),
-        trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
       trigger.click();
       fixture.detectChanges();
@@ -74,24 +39,21 @@ describe('ui-material: Formly Field Select Component', () => {
     });
 
     it('should correctly bind to an Observable', fakeAsync(() => {
-      const sports$ = observableOf([
-        { id: '1', name: 'Soccer' },
-        { id: '2', name: 'Basketball' },
-        { id: {test: 'A'}, name: 'Not Soccer or Basketball' },
-      ]);
-
-      testComponentInputs.fields = [{
+      const fixture = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
-          options: sports$,
+          options: of([
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: { test: 'A' }, name: 'Not Soccer or Basketball' },
+          ]),
           valueProp: 'id',
           labelProp: 'name',
         },
-      }];
+      });
 
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>'),
-        trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
       trigger.click();
       fixture.detectChanges();
@@ -100,37 +62,23 @@ describe('ui-material: Formly Field Select Component', () => {
       fixture.destroy();
       tick(1000);
     }));
-
   });
 
   describe('multi select', () => {
-
-    beforeEach(() => {
-      testComponentInputs = {
-        form: new FormGroup({}),
-        options: {},
-        model: {},
-      };
-
-      testComponentInputs.fields = [{
+    it('should have a "Select All" option if configured', () => {
+      const fixture = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
           multiple: true,
           selectAllOption: 'Select All',
           options: [
-            { id: '1', name: 'Soccer' },
-            { id: '2', name: 'Basketball' },
-            { id: '3', name: 'Martial Arts' },
+            { value: '1', label: 'Soccer' },
+            { value: '2', label: 'Basketball' },
+            { value: '3', label: 'Martial Arts' },
           ],
-          valueProp: 'id',
-          labelProp: 'name',
         },
-      }];
-    });
-
-    it('should have a "Select All" option if configured', () => {
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      });
       const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
       trigger.click();
@@ -140,7 +88,19 @@ describe('ui-material: Formly Field Select Component', () => {
     });
 
     it('should select all options if clicking the "Select All" option', () => {
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const fixture = renderComponent({
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          multiple: true,
+          selectAllOption: 'Select All',
+          options: [
+            { value: '1', label: 'Soccer' },
+            { value: '2', label: 'Basketball' },
+            { value: '3', label: 'Martial Arts' },
+          ],
+        },
+      });
       const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
       trigger.click();
@@ -150,34 +110,35 @@ describe('ui-material: Formly Field Select Component', () => {
       selectAllOption.click();
       fixture.detectChanges();
 
-      expect(testComponentInputs.form.get('sportId').value.length).toEqual(3);
+      const { formControl } = fixture.componentInstance.field;
+      expect(formControl.value.length).toEqual(3);
 
       // clicking again should deselect all
       selectAllOption.click();
       fixture.detectChanges();
 
-      expect(testComponentInputs.form.get('sportId').value.length).toEqual(0);
+      expect(formControl.value.length).toEqual(0);
     });
 
     it('should select all options (with group) if clicking the "Select All" option', () => {
-      testComponentInputs.fields = [{
+      const fixture = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
           multiple: true,
           selectAllOption: 'Click me!!',
           options: [
-            {label: 'Iron Man', value: 'iron_man', group: 'Male'},
-            {label: 'Captain America', value: 'captain_america', group: 'Male'},
-            {label: 'Black Widow', value: 'black_widow', group: 'Female'},
-            {label: 'Hulk', value: 'hulk', group: 'Male'},
-            {label: 'Captain Marvel', value: 'captain_marvel', group: 'Female'},
+            { label: 'Iron Man', value: 'iron_man', group: 'Male' },
+            { label: 'Captain America', value: 'captain_america', group: 'Male' },
+            { label: 'Black Widow', value: 'black_widow', group: 'Female' },
+            { label: 'Hulk', value: 'hulk', group: 'Male' },
+            { label: 'Captain Marvel', value: 'captain_marvel', group: 'Female' },
           ],
           valueProp: 'id',
           labelProp: 'name',
         },
-      }];
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      });
+
       const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
       trigger.click();
@@ -187,33 +148,29 @@ describe('ui-material: Formly Field Select Component', () => {
       selectAllOption.click();
       fixture.detectChanges();
 
-      expect(testComponentInputs.form.get('sportId').value.length).toEqual(5);
+      const { formControl } = fixture.componentInstance.field;
+      expect(formControl.value.length).toEqual(5);
 
       // clicking again should deselect all
       selectAllOption.click();
       fixture.detectChanges();
 
-      expect(testComponentInputs.form.get('sportId').value.length).toEqual(0);
+      expect(formControl.value.length).toEqual(0);
     });
 
-    it('should use the selectAllOption prop as label for the option entry', () => {
-      testComponentInputs.fields = [{
+    it('should use the selectAllOption prop as label for the option entry', () => {
+      const fixture = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
           multiple: true,
           selectAllOption: 'Click me!!',
-          options: [
-            { id: '1', name: 'Soccer' },
-            { id: '2', name: 'Basketball' },
-            { id: '3', name: 'Martial Arts' },
-          ],
+          options: [{ id: '1', name: 'Soccer' }, { id: '2', name: 'Basketball' }, { id: '3', name: 'Martial Arts' }],
           valueProp: 'id',
           labelProp: 'name',
         },
-      }];
+      });
 
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
       trigger.click();
@@ -225,28 +182,22 @@ describe('ui-material: Formly Field Select Component', () => {
 
     it('should correctly bind a multi select to an observable', fakeAsync(() => {
       // bind a value which triggers the error in case
-      testComponentInputs.model = {
-        sportId: [1],
-      };
-      testComponentInputs.fields = [{
+      const fixture = renderComponent({
+        model: { sportId: [1] },
         key: 'sportId',
         type: 'select',
         templateOptions: {
           multiple: true,
           selectAllOption: 'Click me!!',
-          options: observableOf([
-              { id: '1', name: 'Soccer' },
-              { id: '2', name: 'Basketball' },
-              { id: '3', name: 'Martial Arts' },
-            ]).pipe(
-              timeout(50),
-            ),
+          options: of([
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: '3', name: 'Martial Arts' },
+          ]).pipe(timeout(50)),
           valueProp: 'id',
           labelProp: 'name',
         },
-      }];
-
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      });
 
       tick(51);
       fixture.detectChanges();
@@ -261,7 +212,7 @@ describe('ui-material: Formly Field Select Component', () => {
     }));
 
     it('should correctly use custom aria-labelledby', () => {
-      testComponentInputs.fields = [{
+      const fixture = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -270,23 +221,11 @@ describe('ui-material: Formly Field Select Component', () => {
           },
           options: [],
         },
-      }];
+      });
 
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       const selectEl = fixture.debugElement.query(By.css('.mat-select')).nativeElement;
 
       expect(selectEl.getAttribute('aria-labelledby')).toBe('TEST_LABEL');
     });
   });
-
 });
-
-@Component({ selector: 'formly-form-test', template: '', entryComponents: [] })
-class TestComponent {
-  @ViewChild(FormlyForm, { static: true }) formlyForm: FormlyForm;
-
-  fields = testComponentInputs.fields;
-  form: FormGroup = testComponentInputs.form;
-  model = testComponentInputs.model || {};
-  options = testComponentInputs.options;
-}

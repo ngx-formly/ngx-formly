@@ -38,6 +38,7 @@ export interface FormlyFieldConfig {
    */
   templateOptions?: FormlyTemplateOptions;
 
+  /** @deprecated */
   optionsTypes?: string[];
 
   /**
