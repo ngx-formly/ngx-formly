@@ -49,7 +49,6 @@ describe('registerControl', () => {
     expect(field.formControl.parent).not.toBeNull();
   });
 
-
   it('should keep disabled state in sync with "templateOptions.disabled"', () => {
     const field: FormlyFieldConfig = {
       key: 'test',
