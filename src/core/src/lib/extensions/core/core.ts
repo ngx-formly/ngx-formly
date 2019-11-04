@@ -41,8 +41,10 @@ export class CoreExtension implements FormlyExtension {
     this.getFieldComponentInstance(field).onPopulate();
     if (field.fieldGroup) {
       field.fieldGroup.forEach((f, index) => {
-        Object.defineProperty(f, 'parent', { get: () => field, configurable: true });
-        Object.defineProperty(f, 'index', { get: () => index, configurable: true });
+        if (f) {
+          Object.defineProperty(f, 'parent', { get: () => field, configurable: true });
+          Object.defineProperty(f, 'index', { get: () => index, configurable: true });
+        }
         this.formId++;
       });
     }
@@ -100,13 +102,9 @@ export class CoreExtension implements FormlyExtension {
         }
 
         options._buildField(field);
-
-        // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
-        // but only when the current component is a root one.
+        field.form.reset(model);
         if (options.parentForm && options.parentForm.control === field.formControl) {
-          options.parentForm.resetForm(model);
-        } else {
-          field.formControl.reset(model);
+          (options.parentForm as { submitted: boolean }).submitted = false;
         }
       };
     }
