@@ -1,16 +1,4 @@
-import {
-  Component,
-  DoCheck,
-  OnChanges,
-  Input,
-  SimpleChanges,
-  EventEmitter,
-  Output,
-  OnDestroy,
-  Attribute,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';

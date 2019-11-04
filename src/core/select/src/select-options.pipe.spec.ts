@@ -9,13 +9,13 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
   });
 
   it('passing options as an array', () => {
-    pipe.transform([{ label: '1', value: '1' }]).subscribe((options) => {
+    pipe.transform([{ label: '1', value: '1' }]).subscribe(options => {
       expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
   });
 
   it('passing options as an observable', () => {
-    pipe.transform(observableOf([{ label: '1', value: '1' }])).subscribe((options) => {
+    pipe.transform(observableOf([{ label: '1', value: '1' }])).subscribe(options => {
       expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
   });
@@ -35,7 +35,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         },
       };
 
-      pipe.transform(options, field).subscribe((options) => {
+      pipe.transform(options, field).subscribe(options => {
         expect(options).toEqual([{ label: 'foo', value: '1', disabled: true }]);
       });
     });
@@ -49,7 +49,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         },
       };
 
-      pipe.transform(options, field).subscribe((options) => {
+      pipe.transform(options, field).subscribe(options => {
         expect(options).toEqual([{ label: 'foo', value: '1', disabled: true }]);
       });
     });
@@ -70,20 +70,15 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         },
       };
 
-      pipe.transform(options, field).subscribe((options) => {
+      pipe.transform(options, field).subscribe(options => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [
-              { label: '1', value: '1', disabled: true },
-              { label: '2', value: '2', disabled: false },
-            ],
+            group: [{ label: '1', value: '1', disabled: true }, { label: '2', value: '2', disabled: false }],
           },
           {
             label: '2',
-            group: [
-              { label: '3', value: '3', disabled: false },
-            ],
+            group: [{ label: '3', value: '3', disabled: false }],
           },
         ]);
       });
@@ -103,20 +98,15 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     it('as a string', () => {
       const field = { templateOptions: { groupProp: 'parent' } };
 
-      pipe.transform(options, field).subscribe((options) => {
+      pipe.transform(options, field).subscribe(options => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [
-              { label: '1', value: '1', disabled: false },
-              { label: '2', value: '2', disabled: false },
-            ],
+            group: [{ label: '1', value: '1', disabled: false }, { label: '2', value: '2', disabled: false }],
           },
           {
             label: '2',
-            group: [
-              { label: '3', value: '3', disabled: false },
-            ],
+            group: [{ label: '3', value: '3', disabled: false }],
           },
         ]);
       });
@@ -125,20 +115,15 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     it('as a function', () => {
       const field = { templateOptions: { groupProp: item => item.parent } };
 
-      pipe.transform(options, field).subscribe((options) => {
+      pipe.transform(options, field).subscribe(options => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [
-              { label: '1', value: '1', disabled: false },
-              { label: '2', value: '2', disabled: false },
-            ],
+            group: [{ label: '1', value: '1', disabled: false }, { label: '2', value: '2', disabled: false }],
           },
           {
             label: '2',
-            group: [
-              { label: '3', value: '3', disabled: false },
-            ],
+            group: [{ label: '3', value: '3', disabled: false }],
           },
         ]);
       });
