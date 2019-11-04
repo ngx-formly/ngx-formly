@@ -6,5 +6,4 @@
 /integration/**/dist
 /src/schematics/
 **/test.ts
-**/*.spec.ts
 **/*.md

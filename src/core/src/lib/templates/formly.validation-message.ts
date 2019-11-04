@@ -5,9 +5,7 @@ import { isObject } from '../utils';
 
 @Component({
   selector: 'formly-validation-message',
-  template: `
-    {{ errorMessage }}
-  `,
+  template: '{{ errorMessage }}',
 })
 export class FormlyValidationMessage {
   @Input() field: FormlyFieldConfig;
