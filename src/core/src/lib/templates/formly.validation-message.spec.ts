@@ -1,102 +1,78 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { createGenericTestComponent } from '../test-utils';
-
-import { Component } from '@angular/core';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture } from '@angular/core/testing';
+import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyModule, FormlyFieldConfig } from '../core';
 import { of } from 'rxjs';
 
-const createTestComponent = (html: string) =>
-    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
-
-function getFormlyValidationMessageElement(element: HTMLElement): HTMLDivElement {
-  return <HTMLDivElement> element.querySelector('formly-validation-message');
+function getFieldValidationMessage(fixture: ComponentFixture<any>): string {
+  return fixture.nativeElement.querySelector('formly-validation-message').textContent;
 }
 
-describe('FormlyValidationMessage Component', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [
-        ReactiveFormsModule,
-        FormlyModule.forRoot({
-          validationMessages: [
-            { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},
-            { name: 'maxlength', message: 'Maximum Length Exceeded.' },
-            { name: 'minlength', message: () => of('Minimum Length.') },
-          ],
-        }),
-      ],
-    });
+const renderComponent = (field: FormlyFieldConfig) => {
+  return createFormlyFieldComponent(field, {
+    template: '<formly-validation-message [field]="field"></formly-validation-message>',
+    imports: [
+      FormlyModule.forChild({
+        validationMessages: [
+          { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.` },
+          { name: 'maxlength', message: 'Maximum Length Exceeded.' },
+          { name: 'minlength', message: () => of('Minimum Length.') },
+        ],
+      }),
+    ],
   });
+};
 
+describe('FormlyValidationMessage Component', () => {
   it('should not display message error when form is valid', () => {
-    const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
-    const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
-    fixture.componentInstance.field.formControl.setValue('12');
-    fixture.detectChanges();
+    const fixture = renderComponent({ key: 'title' });
 
-    expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
-    expect(formlyMessageElm.textContent).not.toMatch(/Title is required/);
+    expect(getFieldValidationMessage(fixture)).toEqual('');
   });
 
   describe('display message error when form is invalid', () => {
-    it('with a simple validation message', () => {
-      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
-      const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
-      fixture.componentInstance.field.formControl.setValue('test');
-      fixture.detectChanges();
-
-      expect(formlyMessageElm.textContent).toMatch(/Maximum Length Exceeded/);
-      expect(formlyMessageElm.textContent).not.toMatch(/Title is required/);
+    it('with a string validation message', () => {
+      const fixture = renderComponent({
+        key: 'title',
+        defaultValue: '1234567',
+        templateOptions: { maxLength: 3 },
+      });
+      expect(getFieldValidationMessage(fixture)).toEqual('Maximum Length Exceeded.');
     });
 
     it('with a function validation message', () => {
-      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
-      const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
-
-      expect(formlyMessageElm.textContent).toMatch(/Title is required/);
-      expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
+      const fixture = renderComponent({
+        key: 'title',
+        templateOptions: {
+          required: true,
+          label: 'Title',
+        },
+      });
+      fixture.detectChanges();
+      expect(getFieldValidationMessage(fixture)).toEqual('Title is required.');
     });
 
     it('with an observable validation message', () => {
-      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
-      const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
-      fixture.componentInstance.field.formControl.setValue('v');
+      const fixture = renderComponent({
+        key: 'title',
+        defaultValue: '1',
+        templateOptions: { minLength: 5 },
+      });
       fixture.detectChanges();
-      expect(formlyMessageElm.textContent).toMatch(/Minimum Length/);
+      expect(getFieldValidationMessage(fixture)).toEqual('Minimum Length.');
     });
 
     it('with a `validator.message` property', () => {
-      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
-      const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
-      fixture.componentInstance.field = Object.assign({}, fixture.componentInstance.field, {
+      const fixture = renderComponent({
+        key: 'title',
         validators: {
           required: {
-            expression: (control: FormControl) => false,
-            message: `Custom title: Should have at least 3 Characters`,
+            expression: () => false,
+            message: 'Custom error message.',
           },
         },
       });
 
-      fixture.detectChanges();
-
-      expect(formlyMessageElm.textContent).toMatch(/Custom title: Should have at least 3 Characters/);
-      expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
-      expect(formlyMessageElm.textContent).not.toMatch(/Title is required/);
+      expect(getFieldValidationMessage(fixture)).toEqual('Custom error message.');
     });
   });
-
 });
-
-@Component({selector: 'formly-validation-message-test', template: '', entryComponents: []})
-class TestComponent {
-  field: FormlyFieldConfig = {
-    type: 'input',
-    formControl: new FormControl(null, [Validators.required, Validators.maxLength(3), Validators.minLength(2)]),
-    key: 'title',
-    templateOptions: {
-      label: 'Title',
-    },
-  };
-}
