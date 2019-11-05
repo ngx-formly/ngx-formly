@@ -1,4 +1,13 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKeyPath, clone, wrapProperty, assignFieldValue } from './utils';
+import {
+  reverseDeepMerge,
+  assignModelValue,
+  getFieldId,
+  getFieldValue,
+  getKeyPath,
+  clone,
+  wrapProperty,
+  assignFieldValue,
+} from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
 
@@ -231,20 +240,20 @@ describe('clone', () => {
 
 describe('wrapProperty', () => {
   it('should observe property change', () => {
-    const spy = jasmine.createSpy('hide change spy');
+    const spy = jest.fn();
     const field = { hide: null };
     wrapProperty(field, 'hide', spy);
 
     expect(spy).toHaveBeenCalledWith({ currentValue: null, firstChange: true });
 
-    spy.calls.reset();
+    spy.mockReset();
     field.hide = true;
     expect(spy).toHaveBeenCalledWith({ currentValue: true, previousValue: null, firstChange: false });
   });
 
   it('should allow multi subscribes to property change', () => {
-    const spy1 = jasmine.createSpy('hide change spy');
-    const spy2 = jasmine.createSpy('hide change spy');
+    const spy1 = jest.fn();
+    const spy2 = jest.fn();
     const field = { hide: null };
     wrapProperty(field, 'hide', spy1);
     wrapProperty(field, 'hide', spy2);
@@ -252,8 +261,8 @@ describe('wrapProperty', () => {
     expect(spy1).toHaveBeenCalledWith({ currentValue: null, firstChange: true });
     expect(spy2).toHaveBeenCalledWith({ currentValue: null, firstChange: true });
 
-    spy1.calls.reset();
-    spy2.calls.reset();
+    spy1.mockReset();
+    spy2.mockReset();
     field.hide = true;
 
     expect(spy1).toHaveBeenCalledWith({ currentValue: true, previousValue: null, firstChange: false });
@@ -261,7 +270,7 @@ describe('wrapProperty', () => {
   });
 
   it('should ignore multi call of the same subscriber', () => {
-    const spy = jasmine.createSpy('hide change spy');
+    const spy = jest.fn();
     const field = { hide: null };
     wrapProperty(field, 'hide', spy);
     wrapProperty(field, 'hide', spy);
@@ -271,26 +280,26 @@ describe('wrapProperty', () => {
   });
 
   it('should be able to unsubscribe', () => {
-    const spy = jasmine.createSpy('hide change spy');
+    const spy = jest.fn();
     const field = { hide: null };
     const observer = wrapProperty(field, 'hide', spy);
     expect(spy).toHaveBeenCalledTimes(1);
 
     observer();
-    spy.calls.reset();
+    spy.mockReset();
     field.hide = true;
 
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it('should be able to subscribe the same fn after detroy', () => {
-    const spy = jasmine.createSpy('hide change spy');
+    const spy = jest.fn();
     const field = { hide: null };
     const observer = wrapProperty(field, 'hide', spy);
     expect(spy).toHaveBeenCalledTimes(1);
 
     observer();
-    spy.calls.reset();
+    spy.mockReset();
     field.hide = true;
 
     expect(spy).toHaveBeenCalledTimes(0);
