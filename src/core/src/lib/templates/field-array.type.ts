@@ -1,6 +1,6 @@
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
-import { clone, isNullOrUndefined, assignModelValue, getKeyPath, getFieldValue } from '../utils';
+import { clone, isNullOrUndefined, assignFieldValue, getFieldValue } from '../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl } from '../extensions/field-form/utils';
@@ -8,9 +8,6 @@ import { registerControl, unregisterControl } from '../extensions/field-form/uti
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F>
   implements FormlyExtension {
   formControl: FormArray;
-  defaultOptions: any = {
-    defaultValue: [],
-  };
 
   onPopulate(field: FormlyFieldConfig) {
     if (!field.formControl) {
@@ -36,7 +33,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   add(i?: number, initialModel?: any) {
     i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
     if (!this.model) {
-      assignModelValue(this.field.parent.model, getKeyPath(this.field), []);
+      assignFieldValue(this.field, []);
     }
 
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);

@@ -19,7 +19,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config';
-import { defineHiddenProp, assignModelValue, wrapProperty, getKeyPath, getFieldValue } from '../utils';
+import { defineHiddenProp, assignFieldValue, wrapProperty, getFieldValue } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
@@ -167,15 +167,7 @@ export class FormlyField
           field.parsers.forEach(parserFn => (value = parserFn(value)));
         }
 
-        if (value == null && field['autoClear'] && !field.formControl.parent) {
-          const paths = getKeyPath(field);
-          const k = paths.pop();
-          const m = paths.reduce((model, path) => model[path] || {}, field.parent.model);
-          delete m[k];
-        } else {
-          assignModelValue(field.parent.model, getKeyPath(field), value);
-        }
-
+        assignFieldValue(field, value);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 

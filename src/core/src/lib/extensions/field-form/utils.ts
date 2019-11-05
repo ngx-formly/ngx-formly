@@ -6,8 +6,8 @@ import {
   isNullOrUndefined,
   defineHiddenProp,
   wrapProperty,
-  assignModelValue,
   isUndefined,
+  assignFieldValue,
 } from '../../utils';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 
@@ -103,8 +103,13 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     form = <FormGroup>form.get([path]);
   }
 
-  if (field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-    assignModelValue(field.parent.model, getKeyPath(field), field.defaultValue);
+  if (
+    field['autoClear'] &&
+    field.parent &&
+    !isUndefined(field.defaultValue) &&
+    isUndefined(getFieldValue(field))
+  ) {
+    assignFieldValue(field, field.defaultValue);
   }
 
   const value = getFieldValue(field);

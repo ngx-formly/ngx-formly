@@ -6,11 +6,10 @@ import {
 } from '../../components/formly.field.config';
 import {
   getFieldId,
-  assignModelValue,
+  assignFieldValue,
   isUndefined,
   getFieldValue,
   reverseDeepMerge,
-  getKeyPath,
   defineHiddenProp,
   clone,
   isNullOrUndefined,
@@ -134,8 +133,8 @@ export class CoreExtension implements FormlyExtension {
       this.config.getMergedField(field);
     }
 
-    if (!field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-      assignModelValue(field.parent.model, getKeyPath(field), field.defaultValue);
+    if (field.parent && !field['autoClear'] && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+      assignFieldValue(field, field.defaultValue);
     }
 
     this.initFieldWrappers(field);
