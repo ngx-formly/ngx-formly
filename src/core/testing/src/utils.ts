@@ -33,7 +33,8 @@ export function newEvent(eventName: string, bubbles = false, cancelable = false)
   return evt;
 }
 
-export function createFieldChangesSpy(field: FormlyFieldConfig): [jasmine.Spy<jasmine.Func>, Subscription] {
-  const spy = jasmine.createSpy('fieldChanges change spy');
+export function createFieldChangesSpy(field: FormlyFieldConfig): [jest.Mock, Subscription] {
+  const spy = jest.fn();
+
   return [spy, field.options.fieldChanges.subscribe(spy)];
 }

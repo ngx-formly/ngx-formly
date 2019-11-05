@@ -21,7 +21,7 @@ describe('FieldExpressionExtension', () => {
   describe('field visibility (hideExpression)', () => {
     it('should emit fieldChanges on change field visibility', () => {
       const fieldChanges = new Subject<any>();
-      const spy = jasmine.createSpy('fieldChanges spy');
+      const spy = jest.fn();
       const subscription = fieldChanges.subscribe(spy);
 
       const field = buildField({
@@ -33,7 +33,7 @@ describe('FieldExpressionExtension', () => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ field, type: 'hidden', value: true });
 
-      spy.calls.reset();
+      spy.mockReset();
       field.model.visibilityToggle = 'test';
       field.options._checkField(field.parent);
 
@@ -78,15 +78,12 @@ describe('FieldExpressionExtension', () => {
     });
 
     it('should provide model, formState and field args', () => {
-      const spy = jasmine.createSpy('hideExpression spy');
+      const spy = jest.fn();
       const field = buildField({
         hideExpression: spy,
       });
 
-      const args = spy.calls.mostRecent().args;
-      expect(args[0]).toEqual(field.model);
-      expect(args[1]).toEqual(field.options.formState);
-      expect(args[2]).toEqual(field);
+      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field);
     });
 
     describe('attach/detach form control', () => {
@@ -239,17 +236,14 @@ describe('FieldExpressionExtension', () => {
     });
 
     it('should provide model, formState and field args', () => {
-      const spy = jasmine.createSpy('hideExpression spy');
+      const spy = jest.fn();
       const field = buildField({
         expressionProperties: {
           className: spy,
         },
       });
 
-      const args = spy.calls.mostRecent().args;
-      expect(args[0]).toEqual(field.model);
-      expect(args[1]).toEqual(field.options.formState);
-      expect(args[2]).toEqual(field);
+      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field);
     });
 
     it('should resolve a function expression', () => {
