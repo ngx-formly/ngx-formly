@@ -122,7 +122,7 @@ describe('registerControl', () => {
         parent: { model: {} },
       };
 
-      const spy = jasmine.createSpy('valueChanges spy');
+      const spy = jest.fn();
       const subscription = form.valueChanges.subscribe(spy);
 
       registerControl(field);
@@ -140,7 +140,7 @@ describe('registerControl', () => {
         parent: { model: {} },
       };
 
-      const spy = jasmine.createSpy('valueChanges spy');
+      const spy = jest.fn();
       const subscription = form.valueChanges.subscribe(spy);
 
       registerControl(field, null, true);

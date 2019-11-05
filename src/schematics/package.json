@@ -3,8 +3,7 @@
   "version": "0.0.0-FORMLY-VERSION",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine src/**/*_spec.js"
+    "build": "tsc -p tsconfig.lib.json"
   },
   "schematics": "./src/collection.json",
   "ng-add": {
