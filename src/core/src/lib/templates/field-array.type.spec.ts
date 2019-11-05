@@ -42,16 +42,6 @@ describe('Array Field Type', () => {
     expect(getFormlyArrayFields(fixture).length).toEqual(2);
   });
 
-  it('should add defaultOptions', () => {
-    const fixture = renderComponent({
-      key: 'foo',
-      type: 'array',
-    });
-
-    const model = fixture.componentInstance.field.parent.model;
-    expect(model).toEqual({ foo: [] });
-  });
-
   it('should work with nullable model', () => {
     const fixture = renderComponent({
       model: { array: null },
