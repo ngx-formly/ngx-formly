@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config';
-import { defineHiddenProp, assignModelValue, wrapProperty, getKeyPath } from '../utils';
+import { defineHiddenProp, assignFieldValue, wrapProperty } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { debounceTime } from 'rxjs/operators';
@@ -159,7 +159,7 @@ export class FormlyField
           field.parsers.forEach(parserFn => (value = parserFn(value)));
         }
 
-        assignModelValue(field.parent.model, getKeyPath(field), value);
+        assignFieldValue(field, value);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 
