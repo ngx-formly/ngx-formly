@@ -136,13 +136,13 @@ describe('CoreExtension', () => {
       });
 
       expect(field.options).toEqual(
-        jasmine.objectContaining({
+        expect.objectContaining({
           formState: {},
-          showError: jasmine.any(Function),
-          fieldChanges: jasmine.any(Subject),
-          _markForCheck: jasmine.any(Function),
-          updateInitialValue: jasmine.any(Function),
-          resetModel: jasmine.any(Function),
+          showError: expect.any(Function),
+          fieldChanges: expect.any(Subject),
+          _markForCheck: expect.any(Function),
+          updateInitialValue: expect.any(Function),
+          resetModel: expect.any(Function),
         }),
       );
     });

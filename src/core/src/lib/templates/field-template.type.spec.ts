@@ -12,6 +12,6 @@ describe('Template Field Type', () => {
     });
 
     expect(getFormlyTemplateField(fixture)).toBeDefined();
-    expect(getFormlyTemplateField(fixture).innerText).toEqual('Nested property keys');
+    expect(getFormlyTemplateField(fixture).textContent).toEqual('Nested property keys');
   });
 });

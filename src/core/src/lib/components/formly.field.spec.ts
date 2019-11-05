@@ -159,7 +159,7 @@ describe('FormlyField Component', () => {
 
   it('init hooks with observables', () => {
     const control = new FormControl();
-    const spy = jasmine.createSpy('valueChanges spy');
+    const spy = jest.fn();
     const initHookFn = (f: FormlyFieldConfig) => {
       return f.formControl.valueChanges.pipe(tap(spy));
     };
@@ -184,7 +184,7 @@ describe('FormlyField Component', () => {
     control.patchValue('test');
     expect(spy).toHaveBeenCalledTimes(3);
 
-    spy.calls.reset();
+    spy.mockReset();
     fixture.destroy();
     control.patchValue('test');
     expect(spy).not.toHaveBeenCalled();
@@ -304,7 +304,6 @@ describe('FormlyField Component', () => {
       expect(field.parent.model).toEqual({ o: [[{ name: '***' }]] });
     });
 
-
     it('should emit a valid model value when using square bracket notation for a fieldGroup key', () => {
       const fixture = renderComponent({
         key: 'group[0]',
@@ -351,7 +350,10 @@ describe('FormlyField Component', () => {
 
     it('should emit `modelChange` twice when key is duplicated', () => {
       const fixture = renderComponent({
-        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+        fieldGroup: [
+          { key: 'title', type: 'input' },
+          { key: 'title', type: 'input' },
+        ],
       });
 
       const { field } = fixture.componentInstance;
@@ -364,7 +366,10 @@ describe('FormlyField Component', () => {
 
     it('should keep the value in sync when using multiple fields with same key', () => {
       const fixture = renderComponent({
-        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+        fieldGroup: [
+          { key: 'title', type: 'input' },
+          { key: 'title', type: 'input' },
+        ],
       });
 
       const inputs = fixture.debugElement.queryAll(By.css('input'));
@@ -387,4 +392,4 @@ describe('FormlyField Component', () => {
     </div>
   `,
 })
-class FormlyWrapperFormFieldAsync extends FieldWrapper { }
+class FormlyWrapperFormFieldAsync extends FieldWrapper {}
