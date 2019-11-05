@@ -15,7 +15,7 @@ export function evalExpressionValueSetter(expression: string, argNames: string[]
 }
 
 export function evalExpression(expression: string | Function | boolean, thisArg: any, argVal: any[]): any {
-  if (expression instanceof Function) {
+  if (typeof expression === 'function') {
     return expression.apply(thisArg, argVal);
   } else {
     return expression ? true : false;
