@@ -8,9 +8,6 @@ import { registerControl, unregisterControl } from '../extensions/field-form/uti
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F>
   implements FormlyExtension {
   formControl: FormArray;
-  defaultOptions: any = {
-    defaultValue: [],
-  };
 
   onPopulate(field: FormlyFieldConfig) {
     if (!field.formControl && field.key) {
