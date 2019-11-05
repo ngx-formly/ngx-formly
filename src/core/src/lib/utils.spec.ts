@@ -280,7 +280,7 @@ describe('wrapProperty', () => {
     expect(spy2).toHaveBeenCalledWith({ currentValue: true, previousValue: null, firstChange: false });
   });
 
-  it('should ignore multi call of the same subscriber', () => {
+  it('should ignore multi call of the same subscribe', () => {
     const spy = jest.fn();
     const field = { hide: null };
     wrapProperty(field, 'hide', spy);

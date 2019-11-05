@@ -20,16 +20,6 @@ describe('Group Field Type', () => {
     expect(getFormlyGroupFields(fixture).length).toEqual(2);
   });
 
-  it('should add defaultOptions', () => {
-    const fixture = renderComponent({
-      key: 'foo',
-      type: 'formly-group',
-    });
-
-    const model = fixture.componentInstance.field.parent.model;
-    expect(model).toEqual({ foo: {} });
-  });
-
   it('should add fieldGroupClassName', () => {
     const fixture = renderComponent({
       fieldGroupClassName: 'foo-class',
