@@ -98,7 +98,7 @@ describe('Array Field Type', () => {
     expect(field.parent.model).toEqual({ array: ['***'] });
 
     // remove
-    spy.calls.reset();
+    spy.mockReset();
     fixture.nativeElement.querySelector('#remove-0').click();
     fixture.detectChanges();
 
