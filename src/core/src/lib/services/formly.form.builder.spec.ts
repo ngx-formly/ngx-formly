@@ -24,31 +24,31 @@ describe('FormlyFormBuilder service', () => {
     const field: FormlyFieldConfigCache = {};
     builder.buildField(field);
 
-    expect(field.formControl).toEqual(jasmine.any(FormGroup));
+    expect(field.formControl).toEqual(expect.any(FormGroup));
     expect(field.options).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         _resolver: null,
         _injector: null,
-        _buildForm: jasmine.any(Function),
-        _buildField: jasmine.any(Function),
+        _buildForm: expect.any(Function),
+        _buildField: expect.any(Function),
       }),
     );
 
+    global.console = { ...global.console, warn: jest.fn() };
     spyOn(builder, 'buildField');
     field.options._buildField(field);
     field.options._buildForm();
+    expect(console.warn).toBeCalled();
     expect(builder.buildField).toHaveBeenCalledTimes(2);
   });
 
   it('should call extension during build call', () => {
+    const spy = jest.fn();
     const extension = {
-      prePopulate: () => {},
-      onPopulate: () => {},
-      postPopulate: () => {},
+      prePopulate: () => spy('prePopulate'),
+      onPopulate: () => spy('onPopulate'),
+      postPopulate: () => spy('postPopulate'),
     };
-    spyOn(extension, 'prePopulate');
-    spyOn(extension, 'onPopulate');
-    spyOn(extension, 'postPopulate');
 
     const builder = createBuilder({
       extensions: [{ name: 'core', extension }],
@@ -56,10 +56,7 @@ describe('FormlyFormBuilder service', () => {
 
     builder.buildField({});
 
-    expect(extension.prePopulate).toHaveBeenCalledBefore(extension.onPopulate);
-    expect(extension.onPopulate).toHaveBeenCalledBefore(extension.postPopulate);
-    expect(extension.postPopulate).toHaveBeenCalled();
-    expect(extension.onPopulate).toHaveBeenCalledTimes(1);
+    expect(spy.mock.calls).toEqual([['prePopulate'], ['onPopulate'], ['postPopulate']]);
   });
 
   it('should build nested field', () => {

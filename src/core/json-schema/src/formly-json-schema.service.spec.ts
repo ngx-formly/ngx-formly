@@ -189,7 +189,7 @@ describe('Service: FormlyJsonschema', () => {
           templateOptions: { ...emmptyTemplateOptions },
           type: 'number',
           defaultValue: undefined,
-          parsers: [jasmine.any(Function) as any],
+          parsers: [expect.any(Function)],
         };
 
         expect(config.type).toEqual('array');
@@ -222,7 +222,7 @@ describe('Service: FormlyJsonschema', () => {
           templateOptions: { ...emmptyTemplateOptions },
           type: 'number',
           defaultValue: undefined,
-          parsers: [jasmine.any(Function) as any],
+          parsers: [expect.any(Function)],
         };
         const childConfig3: FormlyFieldConfig = {
           templateOptions: { ...emmptyTemplateOptions },
@@ -326,7 +326,7 @@ describe('Service: FormlyJsonschema', () => {
           key: 'notRequired',
           templateOptions: { ...emmptyTemplateOptions },
           defaultValue: undefined,
-          parsers: [jasmine.any(Function) as any],
+          parsers: [expect.any(Function)],
         };
 
         const nestedProp: FormlyFieldConfig = {
@@ -488,12 +488,12 @@ describe('Service: FormlyJsonschema', () => {
           expect(config.templateOptions.options).toEqual(enumOptions(schemaStringEnum.enum));
 
           const config2 = formlyJsonschema.toFieldConfig(schemaNumberEnum);
-          expect(config2.parsers).toEqual([jasmine.any(Function) as any]);
+          expect(config2.parsers).toEqual([expect.any(Function)]);
           expect(config2.type).toBe('enum');
           expect(config2.templateOptions.options).toEqual(enumOptions(schemaNumberEnum.enum));
 
           const config3 = formlyJsonschema.toFieldConfig(schemaIntegerEnum);
-          expect(config3.parsers).toEqual([jasmine.any(Function) as any]);
+          expect(config3.parsers).toEqual([expect.any(Function)]);
           expect(config3.type).toBe('enum');
           expect(config3.templateOptions.options).toEqual(enumOptions(schemaIntegerEnum.enum));
         });
@@ -708,7 +708,7 @@ describe('Service: FormlyJsonschema', () => {
           type: 'array',
           defaultValue: undefined,
           templateOptions: emmptyTemplateOptions,
-          fieldArray: jasmine.any(Object) as any,
+          fieldArray: expect.any(Object) as any,
         };
 
         expect(config.fieldArray).toEqual(expectedConfig);
