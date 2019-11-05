@@ -10,10 +10,6 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     return this.field.formControl as FormArray;
   }
 
-  defaultOptions: any = {
-    defaultValue: [],
-  };
-
   onPopulate(field: FormlyFieldConfig) {
     if (!field.formControl && field.key) {
       const control = findControl(field);
