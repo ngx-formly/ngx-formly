@@ -98,9 +98,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
       const ref = containerRef.createComponent<FieldWrapper>(cfr.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
-      wrapProperty(ref.instance, 'fieldComponent', ({ currentValue }) => {
+      wrapProperty(ref.instance, 'fieldComponent', ({ currentValue, firstChange }) => {
         if (currentValue) {
           this.renderField(currentValue as ViewContainerRef, f, wps);
+          !firstChange && ref.changeDetectorRef.detectChanges();
         }
       });
     } else {
@@ -136,6 +137,5 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
     field._componentRefs.push(ref);
     Object.assign(ref.instance, { field });
-    ref.changeDetectorRef.detectChanges();
   }
 }
