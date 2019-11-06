@@ -75,7 +75,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         field.hideExpression,
         parent && parent.hideExpression ? () => parent.hide : undefined,
       );
-    } else if (field.key) {
+    } else {
       wrapProperty(field, 'hide', ({ currentValue, firstChange }) => {
         if (!firstChange || (firstChange && currentValue === true)) {
           field.options._hiddenFieldsForCheck.push(field);
