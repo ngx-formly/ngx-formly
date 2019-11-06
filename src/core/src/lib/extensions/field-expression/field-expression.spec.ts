@@ -95,7 +95,7 @@ describe('FieldExpressionExtension', () => {
     it('should toggle field control when hide changed programmatically', () => {
       const fields: FormlyFieldConfig[] = [
         { hide: false, key: 'foo'},
-        { hide: true, key: 'bar'},
+        { hide: true, fieldGroup: [{key: 'bar'}]},
       ];
       builder.buildForm(form, fields, {}, options);
 
