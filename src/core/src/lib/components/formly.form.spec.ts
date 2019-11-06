@@ -173,6 +173,28 @@ describe('FormlyForm Component', () => {
       subscription.unsubscribe();
     });
 
+    it('should ignore default debounce when using "blur" or "submit"', () => {
+      app.fields = [{
+        key: 'city',
+        type: 'text',
+        modelOptions: {
+          debounce: { default: 5 },
+          updateOn: 'blur',
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const spy = jasmine.createSpy('model change spy');
+      const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+      app.form.get('city').patchValue('***');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ city: '***' });
+      subscription.unsubscribe();
+    });
+
     it('should emit `modelChange` after debounce time', fakeAsync(() => {
       app.fields = [{
         key: 'city',
