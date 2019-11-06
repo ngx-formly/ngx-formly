@@ -173,9 +173,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     fields.forEach(field => {
       if (field.key && !field.fieldGroup) {
         const control = field.formControl;
-        const valueChanges = field.modelOptions.debounce && field.modelOptions.debounce.default
-          ? control.valueChanges.pipe(debounceTime(field.modelOptions.debounce.default))
-          : control.valueChanges;
+        let valueChanges = control.valueChanges;
+
+        const { updateOn, debounce } = field.modelOptions;
+        if ((!updateOn || updateOn === 'change') && debounce && debounce.default > 0) {
+          valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
+        }
+
 
         this.modelChangeSubs.push(valueChanges.subscribe(value => {
           // workaround for https://github.com/angular/angular/issues/13792
