@@ -292,20 +292,24 @@ describe('FormlyForm Component', () => {
 
     // https://github.com/ngx-formly/ngx-formly/issues/1857
     it('should emit a valid model value when using square bracket notation for key', () => {
-      app.fields = [{
-        key: 'o[0].0.name',
-        type: 'text',
-      }];
+      app.fields = [
+        { key: 'o[0].0.name', type: 'text' },
+        { key: 'group[0]', fieldGroup: [
+          { key: 'name', type: 'text' },
+        ] },
+      ];
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       const spy = jasmine.createSpy('model change spy');
       const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
 
       app.form.get('o.0.0.name').patchValue('***');
+      // field group
+      app.form.get('group.0.name').patchValue('***');
 
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith({ o: [[{ name: '***' }]] });
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith({ o: [[{ name: '***' }]], group: [{ name: '***' }] });
       subscription.unsubscribe();
     });
   });

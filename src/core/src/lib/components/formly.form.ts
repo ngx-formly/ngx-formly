@@ -196,7 +196,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       }
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {
-        this.trackModelChanges(field.fieldGroup, field.key ? [...rootKey, field.key] : rootKey);
+        this.trackModelChanges(field.fieldGroup, field.key ? [...rootKey, ...getKeyPath(field)] : rootKey);
       }
     });
   }
