@@ -1,25 +1,26 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyMatInputModule } from '@ngx-formly/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormlyInputModule } from '@ngx-formly/kendo/input';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
-    imports: [NoopAnimationsModule, FormlyMatInputModule],
+    imports: [FormlyInputModule],
   });
 };
 
-describe('ui-material: Input Type', () => {
+describe('ui-kendo: Input Type', () => {
   it('should render input type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
     });
 
-    expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
+    expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
 
-    const { attributes } = query('input[type="text"]');
+    const { properties, attributes } = query('input[type="text"]');
+    expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
+      class: 'k-textbox',
       id: 'formly_1_input_name_0',
     });
   });
@@ -33,11 +34,13 @@ describe('ui-material: Input Type', () => {
 
     const { attributes } = query('input[type="number"]');
     expect(attributes).toMatchObject({
+      class: 'k-textbox',
       id: 'formly_1_input_name_0',
+      type: 'number',
     });
   });
 
-  it('should add "ng-invalid" class on invalid', () => {
+  it('should add "k-state-invalid" class on invalid', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
@@ -46,7 +49,7 @@ describe('ui-material: Input Type', () => {
     });
 
     const { classes } = query('input[type="text"]');
-    expect(classes['ng-invalid']).toBeTrue();
+    expect(classes['k-state-invalid']).toBeTrue();
   });
 
   it('should bind control value on change', () => {
