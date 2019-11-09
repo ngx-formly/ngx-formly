@@ -14,7 +14,7 @@ export class FormlyValidationMessage implements OnChanges {
   @Input() field: FormlyFieldConfig;
   errorMessage$: Observable<string>;
 
-  constructor(private formlyConfig: FormlyConfig) {}
+  constructor(private config: FormlyConfig) {}
 
   ngOnChanges() {
     this.errorMessage$ = this.field.formControl.statusChanges.pipe(
@@ -30,7 +30,7 @@ export class FormlyValidationMessage implements OnChanges {
     const fieldForm = this.field.formControl;
     for (const error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        let message = this.formlyConfig.getValidatorMessage(error);
+        let message = this.config.getValidatorMessage(error);
 
         if (isObject(fieldForm.errors[error])) {
           if (fieldForm.errors[error].errorPath) {

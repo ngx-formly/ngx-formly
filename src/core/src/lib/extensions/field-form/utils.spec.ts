@@ -15,7 +15,7 @@ describe('registerControl', () => {
 
     registerControl(field);
     expect(field.formControl.parent).not.toBeNull();
-    expect(field.form.controls.length).toEqual(1);
+    expect(field.form.controls).toHaveLength(1);
     expect(field.form.get('0')).toEqual(field.formControl);
   });
 
@@ -72,16 +72,16 @@ describe('registerControl', () => {
 
     registerControl(field, new FormControl());
     field.templateOptions.disabled = true;
-    expect(field.formControl.disabled).toEqual(true);
+    expect(field.formControl.disabled).toBeTrue();
 
     field.templateOptions.disabled = false;
-    expect(field.formControl.disabled).toEqual(false);
+    expect(field.formControl.disabled).toBeFalse();
 
     field.formControl.disable();
-    expect(field.templateOptions.disabled).toEqual(true);
+    expect(field.templateOptions.disabled).toBeTrue();
 
     field.formControl.enable();
-    expect(field.templateOptions.disabled).toEqual(false);
+    expect(field.templateOptions.disabled).toBeFalse();
   });
 
   it('should replace existing control with the field one', () => {
@@ -159,7 +159,7 @@ describe('unregisterControl', () => {
 
     unregisterControl(field);
     expect(field.formControl.parent).toBeNull();
-    expect(parent.controls.length).toBe(1);
+    expect(parent.controls).toHaveLength(1);
     expect(parent.controls[0]).not.toEqual(field.formControl);
   });
 

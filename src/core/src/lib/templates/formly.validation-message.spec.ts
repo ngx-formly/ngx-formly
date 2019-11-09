@@ -1,10 +1,10 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyModule, FormlyFieldConfig } from '../core';
 import { of } from 'rxjs';
+import { DebugElement } from '@angular/core';
 
-function getFieldValidationMessage(fixture: ComponentFixture<any>): string {
-  return fixture.nativeElement.querySelector('formly-validation-message').textContent;
+function validationMessageContent(query: (v: string) => DebugElement): string {
+  return query('formly-validation-message').nativeElement.textContent;
 }
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -24,45 +24,45 @@ const renderComponent = (field: FormlyFieldConfig) => {
 
 describe('FormlyValidationMessage Component', () => {
   it('should not display message error when form is valid', () => {
-    const fixture = renderComponent({ key: 'title' });
+    const { query } = renderComponent({ key: 'title' });
 
-    expect(getFieldValidationMessage(fixture)).toEqual('');
+    expect(validationMessageContent(query)).toEqual('');
   });
 
   describe('display message error when form is invalid', () => {
     it('with a string validation message', () => {
-      const fixture = renderComponent({
+      const { query } = renderComponent({
         key: 'title',
         defaultValue: '1234567',
         templateOptions: { maxLength: 3 },
       });
-      expect(getFieldValidationMessage(fixture)).toEqual('Maximum Length Exceeded.');
+      expect(validationMessageContent(query)).toEqual('Maximum Length Exceeded.');
     });
 
     it('with a function validation message', () => {
-      const fixture = renderComponent({
+      const { query, detectChanges } = renderComponent({
         key: 'title',
         templateOptions: {
           required: true,
           label: 'Title',
         },
       });
-      fixture.detectChanges();
-      expect(getFieldValidationMessage(fixture)).toEqual('Title is required.');
+      detectChanges();
+      expect(validationMessageContent(query)).toEqual('Title is required.');
     });
 
     it('with an observable validation message', () => {
-      const fixture = renderComponent({
+      const { query, detectChanges } = renderComponent({
         key: 'title',
         defaultValue: '1',
         templateOptions: { minLength: 5 },
       });
-      fixture.detectChanges();
-      expect(getFieldValidationMessage(fixture)).toEqual('Minimum Length.');
+      detectChanges();
+      expect(validationMessageContent(query)).toEqual('Minimum Length.');
     });
 
     it('with a `validator.message` property', () => {
-      const fixture = renderComponent({
+      const { query } = renderComponent({
         key: 'title',
         validators: {
           required: {
@@ -72,7 +72,7 @@ describe('FormlyValidationMessage Component', () => {
         },
       });
 
-      expect(getFieldValidationMessage(fixture)).toEqual('Custom error message.');
+      expect(validationMessageContent(query)).toEqual('Custom error message.');
     });
   });
 });
