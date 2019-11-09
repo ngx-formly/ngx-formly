@@ -1,7 +1,5 @@
-import { fakeAsync, tick, ComponentFixture } from '@angular/core/testing';
-import { FormlyInputModule, createComponent, newEvent } from '@ngx-formly/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { FormlyInputModule, createComponent } from '@ngx-formly/core/testing';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 
@@ -44,30 +42,25 @@ const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
   });
 };
 
-function getFormlyFormElement(fixture: ComponentFixture<any>): HTMLElement {
-  return <HTMLInputElement>fixture.nativeElement.querySelector('formly-form');
-}
-
-function getFormlyFormFields(fixture: ComponentFixture<any>): HTMLInputElement[] {
-  return fixture.nativeElement.querySelectorAll('formly-form > formly-field');
-}
+const FORMLY_FORM_SELECTOR = 'formly-form';
+const FORMLY_FIELDS_SELECTOR = 'formly-form > formly-field';
 
 describe('FormlyForm Component', () => {
   describe('fields input', () => {
     it('should render fields', () => {
-      const fixture = renderComponent({
+      const { query, queryAll } = renderComponent({
         fields: [{ key: 'foo' }, { key: 'bar' }],
       });
 
-      expect(getFormlyFormElement(fixture)).toBeDefined();
-      expect(getFormlyFormFields(fixture).length).toEqual(2);
+      expect(query(FORMLY_FORM_SELECTOR)).not.toBeNull();
+      expect(queryAll(FORMLY_FIELDS_SELECTOR)).toHaveLength(2);
     });
 
     it('should not throw an error when fields is null', () => {
-      const fixture = renderComponent({ fields: null });
+      const { query, queryAll } = renderComponent({ fields: null });
 
-      expect(getFormlyFormElement(fixture)).toBeDefined();
-      expect(getFormlyFormFields(fixture).length).toEqual(0);
+      expect(query(FORMLY_FORM_SELECTOR)).not.toBeNull();
+      expect(queryAll(FORMLY_FIELDS_SELECTOR)).toHaveLength(0);
     });
 
     it('should update validation on fields input change', () => {
@@ -237,7 +230,7 @@ describe('FormlyForm Component', () => {
 
   describe('modelChange output', () => {
     it('should emit `modelChange` on valueChanges', () => {
-      const fixture = renderComponent({
+      const { fixture } = renderComponent({
         fields: [{ key: 'title', type: 'input' }],
       });
 
@@ -252,7 +245,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should eval expressions before emitting `modelChange`', () => {
-      const fixture = renderComponent(
+      const { fixture } = renderComponent(
         {
           fields: [
             { key: 'foo' },
@@ -260,7 +253,7 @@ describe('FormlyForm Component', () => {
               key: 'bar',
               hideExpression: '!model.foo',
             },
-          ]
+          ],
         },
         { extras: { checkExpressionOn: 'modelChange' } },
       );
@@ -276,7 +269,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should detect changes before emitting `modelChange`', fakeAsync(() => {
-      const fixture = renderComponent({
+      const { fields } = renderComponent({
         fields: [
           {
             key: 'foo',
@@ -288,16 +281,15 @@ describe('FormlyForm Component', () => {
             },
           },
           { key: 'bar' },
-        ]
+        ],
       });
 
-      const app = fixture.componentInstance;
       tick();
-      expect(app.fields[0].hide).toEqual(true);
+      expect(fields[0].hide).toBeTrue();
     }));
 
     it('should reset field before eval expressions', () => {
-      const fixture = renderComponent(
+      const { form, model, fields } = renderComponent(
         {
           fields: [
             {
@@ -314,10 +306,9 @@ describe('FormlyForm Component', () => {
         { extras: { checkExpressionOn: 'modelChange' } },
       );
 
-      const app = fixture.componentInstance;
-      app.form.reset();
-      expect(app.model.bar).toBeNull();
-      expect(app.fields[1].formControl.value).toBeNull();
+      form.reset();
+      expect(model.bar).toBeNull();
+      expect(fields[1].formControl.value).toBeNull();
     });
 
     it('should hide/display field using a function with nested field key', fakeAsync(() => {
@@ -356,7 +347,7 @@ describe('FormlyForm Component', () => {
   });
 
   it('should check expression on valueChanges', () => {
-    const fixture = renderComponent({
+    const { form, fields, detectChanges } = renderComponent({
       fields: [
         {
           key: 'title',
@@ -368,14 +359,13 @@ describe('FormlyForm Component', () => {
       ],
     });
 
-    const app = fixture.componentInstance;
-    app.form.get('title').patchValue('***');
-    fixture.detectChanges();
-    expect(app.fields[0].className).toEqual('***');
+    form.get('title').patchValue('***');
+    detectChanges();
+    expect(fields[0].className).toEqual('***');
   });
 
   it('should check expression on valueChanges only', () => {
-    const fixture = renderComponent(
+    const { detectChanges, model, fields } = renderComponent(
       {
         fields: [
           {
@@ -392,41 +382,39 @@ describe('FormlyForm Component', () => {
       },
     );
 
-    const app = fixture.componentInstance;
-    app.model.title = '***';
-    fixture.detectChanges();
-    expect(app.fields[0].className).toBeUndefined();
+    model.title = '***';
+    detectChanges();
+    expect(fields[0].className).toBeUndefined();
   });
 
   describe('immutable option', () => {
     it('should render', () => {
-      const fixture = renderComponent(
+      const { query, queryAll } = renderComponent(
         {
           fields: [{ key: 'foo', type: 'input' }],
         },
         { extras: { immutable: true } },
       );
 
-      expect(getFormlyFormElement(fixture)).toBeDefined();
-      expect(getFormlyFormFields(fixture).length).toEqual(1);
+      expect(query(FORMLY_FORM_SELECTOR)).not.toBeNull();
+      expect(queryAll(FORMLY_FIELDS_SELECTOR)).toHaveLength(1);
     });
 
     it('should not change inputs', () => {
-      const fixture = renderComponent(
+      const { options, fields, model } = renderComponent(
         {
           fields: [{ key: 'city', defaultValue: 'test' }],
         },
         { extras: { immutable: true } },
       );
-      const app = fixture.componentInstance;
 
-      expect(app.options).toEqual({});
-      expect(app.fields[0]).toEqual({ key: 'city', defaultValue: 'test' });
-      expect(app.model).toEqual({});
+      expect(options).toEqual({});
+      expect(fields[0]).toEqual({ key: 'city', defaultValue: 'test' });
+      expect(model).toEqual({});
     });
 
     it('should emit `modelChange`', () => {
-      const fixture = renderComponent(
+      const { fixture, detectChanges } = renderComponent(
         {
           fields: [{ key: 'title', type: 'input' }],
         },
@@ -437,7 +425,7 @@ describe('FormlyForm Component', () => {
       spyOn(app, 'modelChange');
 
       app.form.get('title').patchValue('***');
-      fixture.detectChanges();
+      detectChanges();
 
       expect(app.modelChange).toHaveBeenCalledTimes(1);
       expect(app.modelChange).toHaveBeenCalledWith({ title: '***' });
@@ -445,29 +433,29 @@ describe('FormlyForm Component', () => {
     });
 
     it('should take account of inputs changes`', () => {
-      const fixture = renderComponent(
+      const { form, fields, model, setInputs } = renderComponent(
         {
           fields: [{ key: 'title', type: 'input' }],
         },
         { extras: { immutable: true } },
       );
 
-      const app = fixture.componentInstance;
       let titleField;
-      app.model = { title: 'foo' };
-      app.fields = [{ key: 'title', hooks: { onInit: f => (titleField = f) } }];
-      fixture.detectChanges();
+      setInputs({
+        model: { title: 'foo' },
+        fields: [{ key: 'title', hooks: { onInit: f => (titleField = f) } }],
+      });
 
-      expect(app.model).not.toBe(titleField.model);
-      expect(app.fields[0]).not.toBe(titleField);
+      expect(model).not.toBe(titleField.model);
+      expect(fields[0]).not.toBe(titleField);
       expect(titleField.model).toEqual({ title: 'foo' });
-      expect(app.form.value).toEqual({ title: 'foo' });
+      expect(form.value).toEqual({ title: 'foo' });
     });
   });
 
   describe('model input', () => {
     it('should update the form value on model change', () => {
-      const fixture = renderComponent({
+      const { form, setInputs } = renderComponent({
         fields: [
           {
             key: 'title',
@@ -478,16 +466,14 @@ describe('FormlyForm Component', () => {
           },
         ],
       });
-      const app = fixture.componentInstance;
-      expect(app.form.value).toEqual({ title: null });
+      expect(form.value).toEqual({ title: null });
 
-      app.model = { title: '***' };
-      fixture.detectChanges();
-      expect(app.form.value).toEqual({ title: '***' });
+      setInputs({ model: { title: '***' } });
+      expect(form.value).toEqual({ title: '***' });
     });
 
     it('fallback to undefined for an non-existing member', () => {
-      const fixture = renderComponent({
+      const { form, setInputs } = renderComponent({
         model: { aa: { test: 'aaa' } },
         fields: [
           {
@@ -496,51 +482,47 @@ describe('FormlyForm Component', () => {
           },
         ],
       });
-      const app = fixture.componentInstance;
-      expect(app.form.value).toEqual({ aa: { test: 'aaa' } });
 
-      app.model = {};
-      fixture.detectChanges();
-      expect(app.form.value).toEqual({ aa: { test: undefined } });
+      expect(form.value).toEqual({ aa: { test: 'aaa' } });
+
+      setInputs({ model: {} });
+      expect(form.value).toEqual({ aa: { test: undefined } });
     });
 
     it('should emit `modelChange` on model input change', () => {
-      const fixture = renderComponent({
+      const { fixture, setInputs } = renderComponent({
         fields: [{ key: 'title', type: 'input' }],
       });
 
       const app = fixture.componentInstance;
       spyOn(app, 'modelChange');
 
-      app.model = { title: '****' };
-      fixture.detectChanges();
+      setInputs({ model: { title: '****' } });
 
       expect(app.modelChange).not.toHaveBeenCalled();
     });
 
     it('should take account of using the emitted modelChange value as model input', () => {
-      const fixture = renderComponent({
+      const { form, model, detectChanges } = renderComponent({
         model: {},
         form: new FormGroup({}),
         fields: [{ key: 'test', type: 'input' }],
       });
 
-      const app = fixture.componentInstance;
+      form.get('test').setValue('1');
+      detectChanges();
 
-      app.form.get('test').setValue('1');
-      fixture.detectChanges();
+      form.get('test').setValue('12');
+      detectChanges();
 
-      app.form.get('test').setValue('12');
-      fixture.detectChanges();
-
-      expect(app.model.test).toEqual('12');
-      expect(app.form.get('test').value).toEqual('12');
+      expect(model.test).toEqual('12');
+      expect(form.get('test').value).toEqual('12');
     });
   });
 
   describe('form input', () => {
     it('should rebuild field when form is changed', () => {
-      const fixture = renderComponent({
+      const { form, setInputs } = renderComponent({
         model: { test: 'test' },
         form: new FormGroup({}),
         fields: [
@@ -551,16 +533,14 @@ describe('FormlyForm Component', () => {
         ],
       });
 
-      const app = fixture.componentInstance;
-      expect(app.form.get('test').value).toEqual('test');
+      expect(form.get('test').value).toEqual('test');
 
-      fixture.componentInstance.form = new FormGroup({});
-      fixture.detectChanges();
-      expect(app.form.get('test').value).toEqual('test');
+      setInputs({ form: new FormGroup({}) });
+      expect(form.get('test').value).toEqual('test');
     });
 
     it('should allow passing FormArray', () => {
-      const fixture = renderComponent({
+      const { form } = renderComponent({
         model: ['test'],
         form: new FormArray([]),
         options: {},
@@ -572,14 +552,13 @@ describe('FormlyForm Component', () => {
         ],
       });
 
-      const form = fixture.componentInstance.form as FormArray;
-      expect(form.at(0).value).toEqual('test');
+      expect((form as FormArray).at(0).value).toEqual('test');
     });
   });
 
   describe('`updateOn` support', () => {
     it('on blur', () => {
-      const fixture = renderComponent({
+      const { query, detectChanges, form } = renderComponent({
         fields: [
           {
             key: 'name',
@@ -589,25 +568,23 @@ describe('FormlyForm Component', () => {
         ],
       });
 
-      const app = fixture.componentInstance;
-      const input = fixture.debugElement.query(By.css('input'));
+      const inputDebugEl = query('input');
 
-      expect(app.form.get('name').value).toBeNull();
+      expect(form.get('name').value).toBeNull();
 
-      input.nativeElement.value = 'First';
-      input.nativeElement.dispatchEvent(newEvent('input', false));
-      fixture.detectChanges();
+      inputDebugEl.triggerEventHandler('input', { target: { value: 'First' } });
+      detectChanges();
 
-      expect(app.form.get('name').value).toBeNull();
+      expect(form.get('name').value).toBeNull();
 
-      input.triggerEventHandler('blur', {});
-      fixture.detectChanges();
+      inputDebugEl.triggerEventHandler('blur', {});
+      detectChanges();
 
-      expect(app.form.get('name').value).toEqual('First');
+      expect(form.get('name').value).toEqual('First');
     });
 
     it('on submit', () => {
-      const fixture = renderComponent({
+      const { query, detectChanges, form } = renderComponent({
         fields: [
           {
             key: 'name',
@@ -617,28 +594,25 @@ describe('FormlyForm Component', () => {
         ],
       });
 
-      const app = fixture.componentInstance;
-      const input = fixture.debugElement.query(By.css('input'));
+      const inputDebugEl = query('input');
 
-      expect(app.form.get('name').value).toBeNull();
-      input.nativeElement.value = 'First';
-      input.nativeElement.dispatchEvent(newEvent('input', false));
+      expect(form.get('name').value).toBeNull();
+      inputDebugEl.triggerEventHandler('input', { target: { value: 'First' } });
 
-      input.triggerEventHandler('blur', {});
-      fixture.detectChanges();
+      inputDebugEl.triggerEventHandler('blur', {});
+      detectChanges();
 
-      expect(app.form.get('name').value).toBeNull();
+      expect(form.get('name').value).toBeNull();
 
-      const form = fixture.debugElement.query(By.css('form')) as DebugElement;
-      form.triggerEventHandler('submit', {});
-      fixture.detectChanges();
+      query('form').triggerEventHandler('submit', {});
+      detectChanges();
 
-      expect(app.form.get('name').value).toEqual('First');
+      expect(form.get('name').value).toEqual('First');
     });
   });
 
   it('should check expression on submit', () => {
-    const fixture = renderComponent(
+    const { fields, query, detectChanges } = renderComponent(
       {
         fields: [
           {
@@ -651,19 +625,17 @@ describe('FormlyForm Component', () => {
       { extras: { checkExpressionOn: 'modelChange' } },
     );
 
-    const app = fixture.componentInstance;
-    expect(app.fields[0].hide).toEqual(false);
+    expect(fields[0].hide).toEqual(false);
 
-    const form = fixture.debugElement.query(By.css('form')) as DebugElement;
-    form.triggerEventHandler('submit', {});
-    fixture.detectChanges();
+    query('form').triggerEventHandler('submit', {});
+    detectChanges();
 
-    expect(app.fields[0].hide).toEqual(true);
+    expect(fields[0].hide).toEqual(true);
   });
 
 
   it('should keep in sync UI on checkExpressionChange', () => {
-    const fixture = renderComponent(
+    const { form, query, detectChanges } = renderComponent(
       {
         fields: [{
           key: 'city',
@@ -675,15 +647,13 @@ describe('FormlyForm Component', () => {
       },
       { extras: { immutable: true } },
     );
-    const app = fixture.componentInstance;
 
-    const inputDe = fixture.debugElement.query(By.css('input')) as DebugElement;
-    inputDe.nativeElement.value = '***';
-    inputDe.nativeElement.dispatchEvent(newEvent('input', false));
-    fixture.detectChanges();
+    const input = query('input');
+    input.triggerEventHandler('input', { target: { value: '***' } });
+    detectChanges();
 
-    const control = app.form.get('city');
+    const control = form.get('city');
     expect(control.disabled).toEqual(true);
-    expect(inputDe.attributes.disabled).toEqual('disabled');
+    expect(input.attributes.disabled).toEqual('disabled');
   });
 });

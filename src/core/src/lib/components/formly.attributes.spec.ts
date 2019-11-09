@@ -1,7 +1,5 @@
-import { By } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyAttributes } from './formly.attributes';
 import { createComponent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig, { template }: { template?: string } = {}) => {
@@ -11,14 +9,10 @@ const renderComponent = (field: FormlyFieldConfig, { template }: { template?: st
   });
 };
 
-function getFormlyAttributesElement(element: HTMLElement): HTMLInputElement {
-  return <HTMLInputElement>element.querySelector('input');
-}
-
 describe('FormlyAttributes Component', () => {
   describe('templateOptions attributes', () => {
     it('should set built-in attributes if present', () => {
-      const fixture = renderComponent({
+      const { query } = renderComponent({
         name: 'title-name',
         id: 'title-id',
         templateOptions: {
@@ -29,19 +23,21 @@ describe('FormlyAttributes Component', () => {
           step: 2,
         },
       });
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
 
-      expect(elm.getAttribute('name')).toBe('title-name');
-      expect(elm.getAttribute('id')).toBe('title-id');
-      expect(elm.getAttribute('placeholder')).toBe('Title');
-      expect(elm.getAttribute('disabled')).toBe('disabled');
-      expect(elm.getAttribute('required')).toBe('required');
-      expect(elm.getAttribute('tabindex')).toBe('5');
-      expect(elm.getAttribute('step')).toBe('2');
+      expect(query('input').attributes).toMatchObject({
+        name: 'title-name',
+        id: 'title-id',
+        type: 'text',
+        placeholder: 'Title',
+        disabled: 'disabled',
+        required: 'required',
+        tabindex: '5',
+        step: '2',
+      });
     });
 
     it('should handle built-in attributes changes', () => {
-      const fixture = renderComponent({
+      const { query, setInputs } = renderComponent({
         name: 'title-name',
         id: 'title-id',
         templateOptions: {
@@ -52,31 +48,32 @@ describe('FormlyAttributes Component', () => {
           step: 2,
         },
       });
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
-
-      fixture.componentInstance.field = {
-        key: 'title',
-        templateOptions: {
-          placeholder: 'Title Edit',
+      setInputs({
+        field: {
+          key: 'title',
+          templateOptions: {
+            placeholder: 'Title Edit',
+          },
         },
-      };
-      fixture.detectChanges();
+      });
 
-      expect(elm.getAttribute('placeholder')).toBe('Title Edit');
-      expect(elm.getAttribute('tabindex')).toBeNull();
-      expect(elm.getAttribute('step')).toBeNull();
+      expect(query('input').attributes).toMatchObject({
+        placeholder: 'Title Edit',
+        step: null,
+        tabindex: null,
+      });
     });
 
     it('should handle readonly attribute', () => {
-      const fixture = renderComponent({
+      const { detectChanges, query, field } = renderComponent({
         templateOptions: { readonly: true },
       });
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
 
-      expect(elm.getAttribute('readonly')).toBe('readonly');
-      fixture.componentInstance.field.templateOptions.readonly = false;
-      fixture.detectChanges();
-      expect(elm.getAttribute('readonly')).toBe(null);
+      const { attributes } = query('input');
+      expect(attributes.readonly).toBe('readonly');
+      field.templateOptions.readonly = false;
+      detectChanges();
+      expect(attributes.readonly).toBe(null);
     });
 
     it('should allow overriding the default build-in attributes', () => {
@@ -100,112 +97,127 @@ describe('FormlyAttributes Component', () => {
     });
 
     it('should set attributes from templateOptions attributes', () => {
-      const fixture = renderComponent({
+      const { query } = renderComponent({
         templateOptions: { attributes: { min: 5, max: 10 } },
       });
 
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
-      expect(elm.getAttribute('min')).toEqual('5');
-      expect(elm.getAttribute('max')).toEqual('10');
+      expect(query('input').attributes).toMatchObject({
+        min: 5,
+        max: 10,
+      });
     });
 
     it('should handle edit templateOptions attributes', () => {
-      const fixture = renderComponent({
+      const { query, field } = renderComponent({
         templateOptions: { attributes: { min: 5, max: 10 } },
       });
 
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
-      fixture.componentInstance.field.templateOptions.attributes = {
+      field.templateOptions.attributes = {
         style: 'background: green',
       };
 
-      expect(elm.getAttribute('style')).toBe('background: green');
-      expect(elm.getAttribute('min')).toEqual(null);
-      expect(elm.getAttribute('max')).toEqual(null);
+      expect(query('input').attributes).toMatchObject({
+        style: 'background: green',
+        min: null,
+        max: null,
+      });
     });
 
     it('should not fail without templateOptions', () => {
-      const fixture = renderComponent({});
-
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
-      expect(elm.getAttribute('tabindex')).toBeNull();
+      expect(() => renderComponent({})).not.toThrowError();
     });
   });
 
   describe('templateOptions events', () => {
-    it(`should call templateOptions.change on trigger change Event`, () => {
-      const spy = jasmine.createSpy('hide change spy');
+    it(`should trigger templateOptions events`, () => {
+      const { query, field } = renderComponent({
+        templateOptions: {
+          focus: () => { },
+          blur: () => { },
+          change: () => { },
+          keyup: () => { },
+          keydown: () => { },
+          click: () => { },
+          keypress: () => { },
+        },
+      });
 
-      const fixture = renderComponent({ templateOptions: { change: spy });
-      const input = fixture.debugElement.query(By.css('input'));
-      input.triggerEventHandler('change', {});
+      const expectEventCall = (evt: string) => {
+        jest.spyOn(field.templateOptions, evt);
+        query('input').triggerEventHandler(evt, {});
+        expect(field.templateOptions[evt]).toHaveBeenCalledWith(field, expect.any(Object));
+      };
 
-      expect(spy).toHaveBeenCalledWith(fixture.componentInstance.field, event);
+      expectEventCall('focus');
+      expectEventCall('blur');
+      expectEventCall('change');
+      expectEventCall('keyup');
+      expectEventCall('keydown');
+      expectEventCall('click');
+      expectEventCall('keypress');
     });
 
     it(`should mark formControl as dirty on trigger change Event`, () => {
-      const fixture = renderComponent({});
-      const input = fixture.debugElement.query(By.css('input'));
-      input.triggerEventHandler('change', {});
+      const { query, field } = renderComponent({
+        formControl: new FormControl(),
+      });
 
-      const formControl = fixture.componentInstance.field.formControl;
-      expect(formControl.dirty).toBeTruthy();
+      query('input').triggerEventHandler('change', {});
+      expect(field.formControl.dirty).toBeTrue();
     });
   });
 
   describe('focus the element', () => {
     it(`should focus the element when focus is set to "true" and then blurred when it's set to "false"`, () => {
-      const fixture = renderComponent({ focus: true });
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
+      const { detectChanges, query, field } = renderComponent({ focus: true });
+      const inputEl = <HTMLInputElement>query('input').nativeElement;
 
-      expect(document.activeElement === elm).toBeTruthy();
+      expect(document.activeElement === inputEl).toBeTrue();
 
-      fixture.componentInstance.field.focus = false;
-      fixture.detectChanges();
-      expect(document.activeElement === elm).toBeFalsy();
+      field.focus = false;
+      detectChanges();
+      expect(document.activeElement === inputEl).toBeFalse();
     });
 
     it('should change field focus when the element is focused or blurred', () => {
-      const fixture = renderComponent({ focus: false });
-      const directive = fixture.debugElement.query(By.directive(FormlyAttributes));
+      const { query, field } = renderComponent({ focus: false });
 
-      directive.triggerEventHandler('focus', {});
-      expect(fixture.componentInstance.field.focus).toBeTruthy();
+      query('input').triggerEventHandler('focus', {});
+      expect(field.focus).toBeTrue();
 
-      directive.triggerEventHandler('blur', {});
-      expect(fixture.componentInstance.field.focus).toBeFalsy();
+      query('input').triggerEventHandler('blur', {});
+      expect(field.focus).toBeFalse();
     });
 
     it(`should set id to the first element only when mutliple formlyAttributes is present`, () => {
-      const fixture = renderComponent(
+      const { queryAll } = renderComponent(
         { id: 'title-id' },
         {
           template: `
             <input type="text" [formlyAttributes]="field">
             <input type="text" [formlyAttributes]="field">
-          `
-        }
+          `,
+        },
       );
-      const inputs: HTMLInputElement[] = fixture.nativeElement.querySelectorAll('input');
-      expect(inputs[0].id).toEqual('title-id');
-      expect(inputs[1].id).toEqual('');
+      const inputs = queryAll('input');
+      expect(inputs[0].attributes.id).toEqual('title-id');
+      expect(inputs[1].attributes.id).toEqual(undefined);
     });
 
     it(`should not set field id when id input is present`, () => {
-      const fixture = renderComponent(
+      const { query } = renderComponent(
         { id: 'title-id' },
         {
           template: `
             <input [id]="'foo'" type="text" [formlyAttributes]="field">
-          `
-        }
+          `,
+        },
       );
-      const inputs: HTMLInputElement[] = fixture.nativeElement.querySelectorAll('input');
-      expect(inputs[0].id).toEqual('foo');
+      expect(query('input').attributes.id).toEqual('foo');
     });
 
     it(`should focus the first element when mutliple formlyAttributes is present`, () => {
-      const fixture = renderComponent(
+      const { detectChanges, field, query } = renderComponent(
         { focus: true },
         {
           template: `
@@ -215,11 +227,10 @@ describe('FormlyAttributes Component', () => {
           `,
         },
       );
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
 
-      fixture.componentInstance.field.focus = true;
-      fixture.detectChanges();
-      expect(document.activeElement === elm).toBeTruthy();
+      field.focus = true;
+      detectChanges();
+      expect(document.activeElement === query('input').nativeElement).toBeTrue();
     });
   });
 });

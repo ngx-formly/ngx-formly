@@ -27,7 +27,7 @@ describe('FormlyUtils service', () => {
 
       expect(foo['foo']).toEqual('bar');
       expect(foo['foobar']).toEqual('foobar');
-      expect(foo['date'] instanceof Date).toBeTruthy();
+      expect(foo['date'] instanceof Date).toBeTrue();
       expect(foo.arr).toEqual([]);
     });
   });
@@ -57,7 +57,7 @@ describe('FormlyUtils service', () => {
     it('should assign value with nested array path', () => {
       const model = {};
       assignModelValue(model, ['path', '0'], 'test');
-      expect(Array.isArray(model['path'])).toBeTruthy();
+      expect(Array.isArray(model['path'])).toBeTrue();
       expect(model['path'][0]).toBe('test');
     });
 
@@ -205,7 +205,7 @@ describe('clone', () => {
     expect(clonedFoo).toEqual(foo);
     expect(clonedFoo).not.toBe(foo);
     // method of the base class have been copied
-    expect(clonedFoo.method).toBeTruthy();
+    expect(clonedFoo.method).toBeFunction();
     expect(clonedFoo.method()).toEqual(foo.method());
   });
   it('Deep object', () => {
@@ -218,10 +218,10 @@ describe('clone', () => {
     const bar = new Bar('test');
     const clonedBar = clone(bar);
     expect(clonedBar).toEqual(bar);
-    expect(clonedBar === bar).toBeFalsy();
+    expect(clonedBar === bar).toBeFalse();
     // properties of the base class have been deep copied
     expect(clonedBar.foo).toEqual(bar.foo);
-    expect(clonedBar.foo === bar.foo).toBeFalsy();
+    expect(clonedBar.foo === bar.foo).toBeFalse();
   });
 
   it('Enumerable getter', () => {
@@ -231,7 +231,7 @@ describe('clone', () => {
 
     const propDescriptor = Object.getOwnPropertyDescriptor(value, 'a');
     expect(propDescriptor.get).toBeDefined();
-    expect(propDescriptor.enumerable).toBeTruthy();
+    expect(propDescriptor.enumerable).toBeTrue();
   });
 
   it('should use bind of the cloned object', () => {

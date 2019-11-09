@@ -105,10 +105,10 @@ describe('FieldValidationExtension: initialise field validators', () => {
     it(`should take account of programmatic changes`, () => {
       const field = buildField({});
       field.formControl = new FormControl(null, field._validators);
-      expect(field.formControl.valid).toBeTruthy();
+      expect(field.formControl.valid).toBeTrue();
 
       field.templateOptions.required = true;
-      expect(field.formControl.valid).toBeFalsy();
+      expect(field.formControl.valid).toBeFalse();
     });
   });
 

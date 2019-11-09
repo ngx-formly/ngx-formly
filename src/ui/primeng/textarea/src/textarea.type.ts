@@ -5,7 +5,6 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-primeng-textarea',
   template: `
     <textarea
-      [class.ng-dirty]="showError"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [cols]="to.cols"

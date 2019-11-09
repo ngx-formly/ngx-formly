@@ -1,24 +1,24 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyMatInputModule } from '@ngx-formly/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormlyInputModule } from '@ngx-formly/primeng/input';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
-    imports: [NoopAnimationsModule, FormlyMatInputModule],
+    imports: [FormlyInputModule],
   });
 };
 
-describe('ui-material: Input Type', () => {
+describe('ui-primeng: Input Type', () => {
   it('should render input type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
     });
 
-    expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
+    expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    const { attributes } = query('input[type="text"]');
+    const { properties, attributes } = query('input[type="text"]');
+    expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
       id: 'formly_1_input_name_0',
     });
@@ -34,6 +34,7 @@ describe('ui-material: Input Type', () => {
     const { attributes } = query('input[type="number"]');
     expect(attributes).toMatchObject({
       id: 'formly_1_input_name_0',
+      type: 'number',
     });
   });
 

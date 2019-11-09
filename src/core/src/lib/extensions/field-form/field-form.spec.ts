@@ -25,7 +25,7 @@ describe('FieldFormExtension', () => {
         model: { address: { city: 'test' } },
       });
 
-      expect(form.get('address.city')).toBeDefined();
+      expect(form.get('address.city')).not.toBeNull();
       expect(form.get('address.city').value).toEqual('test');
     });
 
@@ -53,7 +53,7 @@ describe('FieldFormExtension', () => {
     it('should assign parent form to field', () => {
       const field = buildField({ key: 'title' });
 
-      expect(field.form instanceof FormGroup).toBeTruthy();
+      expect(field.form instanceof FormGroup).toBeTrue();
       expect(field.form).toBe(field.parent.formControl as FormGroup);
     });
 
@@ -69,7 +69,7 @@ describe('FieldFormExtension', () => {
     it('should create formControl when key exist', () => {
       const field = buildField({ key: 'title' });
 
-      expect(field.formControl instanceof FormControl).toBeTruthy();
+      expect(field.formControl instanceof FormControl).toBeTrue();
     });
 
     it('should not create formControl when key is empty', () => {
@@ -93,7 +93,7 @@ describe('FieldFormExtension', () => {
     it('should create FormGroup control when fieldGroup and key are set', () => {
       const field = buildField({ key: 'test', fieldGroup: [] });
 
-      expect(field.formControl instanceof FormGroup).toBeTruthy();
+      expect(field.formControl instanceof FormGroup).toBeTrue();
     });
 
     it('should assign parent formcontrol when key is empty', () => {
@@ -182,9 +182,9 @@ describe('FieldFormExtension', () => {
       });
 
       const control = field.formControl;
-      expect(control.disabled).toEqual(true);
-      expect(control.get('city').disabled).toEqual(true);
-      expect(control.get('street').disabled).toEqual(true);
+      expect(control.disabled).toBeTrue();
+      expect(control.get('city').disabled).toBeTrue();
+      expect(control.get('street').disabled).toBeTrue();
     });
 
     it('should not affect parent disabled state', () => {
@@ -194,9 +194,9 @@ describe('FieldFormExtension', () => {
       });
 
       const control = field.formControl;
-      expect(control.disabled).toEqual(false);
-      expect(control.get('city').disabled).toEqual(true);
-      expect(control.get('street').disabled).toEqual(false);
+      expect(control.disabled).toBeFalse();
+      expect(control.get('city').disabled).toBeTrue();
+      expect(control.get('street').disabled).toBeFalse();
     });
 
     it('should enable previously disabled control', () => {
