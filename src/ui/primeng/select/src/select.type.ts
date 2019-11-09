@@ -5,7 +5,6 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-primeng-select',
   template: `
     <p-dropdown
-      [class.ng-dirty]="showError"
       [placeholder]="to.placeholder"
       [options]="to.options | formlySelectOptions: field | async"
       [formControl]="formControl"

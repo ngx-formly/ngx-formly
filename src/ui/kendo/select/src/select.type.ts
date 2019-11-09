@@ -11,6 +11,7 @@ import { FieldType } from '@ngx-formly/core';
       [data]="to.options | formlySelectOptions: field | async"
       [textField]="'label'"
       [valueField]="'value'"
+      [valuePrimitive]="true"
       (valueChange)="to.change && to.change(field, $event)"
     >
     </kendo-dropdownlist>

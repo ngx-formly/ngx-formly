@@ -22,7 +22,8 @@ export class AppComponent {
             return (
               value.passwordConfirm === value.password ||
               // avoid displaying the message error when values are empty
-              (!value.passwordConfirm || !value.password)
+              !value.passwordConfirm ||
+              !value.password
             );
           },
           message: 'Password Not Matching',
