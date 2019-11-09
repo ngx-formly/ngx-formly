@@ -1,24 +1,23 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyMatInputModule } from '@ngx-formly/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormlyInputModule } from '@ngx-formly/ionic/input';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
-    imports: [NoopAnimationsModule, FormlyMatInputModule],
+    imports: [FormlyInputModule],
   });
 };
 
-describe('ui-material: Input Type', () => {
+describe('ui-ionic: Input Type', () => {
   it('should render input type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
     });
 
-    expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
+    expect(query('formly-wrapper-ion-form-field')).not.toBeNull();
 
-    const { attributes } = query('input[type="text"]');
+    const { attributes } = query('ion-input');
     expect(attributes).toMatchObject({
       id: 'formly_1_input_name_0',
     });
@@ -31,9 +30,10 @@ describe('ui-material: Input Type', () => {
       templateOptions: { type: 'number' },
     });
 
-    const { attributes } = query('input[type="number"]');
+    const { attributes } = query('ion-input[type="number"]');
     expect(attributes).toMatchObject({
       id: 'formly_1_input_name_0',
+      type: 'number',
     });
   });
 
@@ -45,7 +45,7 @@ describe('ui-material: Input Type', () => {
       templateOptions: { required: true },
     });
 
-    const { classes } = query('input[type="text"]');
+    const { classes } = query('ion-input');
     expect(classes['ng-invalid']).toBeTrue();
   });
 
@@ -55,7 +55,9 @@ describe('ui-material: Input Type', () => {
       type: 'input',
     });
 
-    query('input[type="text"]').triggerEventHandler('input', { target: { value: 'foo' } });
+    const inputEl = query<HTMLInputElement>('ion-input').nativeElement;
+    inputEl.value = 'foo';
+    query('ion-input').triggerEventHandler('ionChange', { target: inputEl });
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
   });
