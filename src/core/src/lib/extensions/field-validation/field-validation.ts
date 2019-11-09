@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
-  constructor(private formlyConfig: FormlyConfig) {}
+  constructor(private config: FormlyConfig) {}
 
   onPopulate(field: FormlyFieldConfigCache) {
     this.initFieldValidation(field, 'validators');
@@ -74,11 +74,11 @@ export class FieldValidationExtension implements FormlyExtension {
   private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: any, validatorName?: string) {
     let validatorOption: ValidatorOption = null;
     if (typeof validator === 'string') {
-      validatorOption = clone(this.formlyConfig.getValidator(validator));
+      validatorOption = clone(this.config.getValidator(validator));
     }
 
     if (typeof validator === 'object' && validator.name) {
-      validatorOption = clone(this.formlyConfig.getValidator(validator.name));
+      validatorOption = clone(this.config.getValidator(validator.name));
       if (validator.options) {
         validatorOption.options = validator.options;
       }

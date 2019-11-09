@@ -1,61 +1,54 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyMatInputModule } from '@ngx-formly/material/input';
+import { FormlyMatTextAreaModule } from '@ngx-formly/material/textarea';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
-    imports: [NoopAnimationsModule, FormlyMatInputModule],
+    imports: [NoopAnimationsModule, FormlyMatTextAreaModule],
   });
 };
 
-describe('ui-material: Input Type', () => {
-  it('should render input type', () => {
+describe('ui-material: Textarea Type', () => {
+  it('should render textarea type', () => {
     const { query } = renderComponent({
       key: 'name',
-      type: 'input',
+      type: 'textarea',
+      templateOptions: {
+        cols: 5,
+        rows: 7,
+      },
     });
 
     expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
-
-    const { attributes } = query('input[type="text"]');
-    expect(attributes).toMatchObject({
-      id: 'formly_1_input_name_0',
+    const { properties, attributes } = query('textarea');
+    expect(properties).toMatchObject({
+      cols: 5,
+      rows: 7,
     });
-  });
-
-  it('should render number type', () => {
-    const { query } = renderComponent({
-      key: 'name',
-      type: 'input',
-      templateOptions: { type: 'number' },
-    });
-
-    const { attributes } = query('input[type="number"]');
     expect(attributes).toMatchObject({
-      id: 'formly_1_input_name_0',
+      id: 'formly_1_textarea_name_0',
     });
   });
 
   it('should add "ng-invalid" class on invalid', () => {
     const { query } = renderComponent({
       key: 'name',
-      type: 'input',
+      type: 'textarea',
       validation: { show: true },
       templateOptions: { required: true },
     });
 
-    const { classes } = query('input[type="text"]');
-    expect(classes['ng-invalid']).toBeTrue();
+    expect(query('textarea').classes['ng-invalid']).toBeTrue();
   });
 
   it('should bind control value on change', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
-      type: 'input',
+      type: 'textarea',
     });
 
-    query('input[type="text"]').triggerEventHandler('input', { target: { value: 'foo' } });
+    query('textarea').triggerEventHandler('input', { target: { value: 'foo' } });
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
   });
