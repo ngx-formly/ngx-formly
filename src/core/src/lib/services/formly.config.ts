@@ -138,7 +138,9 @@ export class FormlyConfig {
     if (
       cf &&
       field.type === cf.type &&
-      (cf.componentRef && cf.componentRef.hostView && !cf.componentRef.hostView.destroyed)
+      cf.componentRef &&
+      cf.componentRef.hostView &&
+      !cf.componentRef.hostView.destroyed
     ) {
       return field._componentFactory.componentRef;
     }

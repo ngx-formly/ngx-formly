@@ -74,7 +74,10 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [{ label: '1', value: '1', disabled: true }, { label: '2', value: '2', disabled: false }],
+            group: [
+              { label: '1', value: '1', disabled: true },
+              { label: '2', value: '2', disabled: false },
+            ],
           },
           {
             label: '2',
@@ -102,7 +105,10 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [{ label: '1', value: '1', disabled: false }, { label: '2', value: '2', disabled: false }],
+            group: [
+              { label: '1', value: '1', disabled: false },
+              { label: '2', value: '2', disabled: false },
+            ],
           },
           {
             label: '2',
@@ -119,7 +125,10 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [{ label: '1', value: '1', disabled: false }, { label: '2', value: '2', disabled: false }],
+            group: [
+              { label: '1', value: '1', disabled: false },
+              { label: '2', value: '2', disabled: false },
+            ],
           },
           {
             label: '2',

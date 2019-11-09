@@ -10,13 +10,13 @@ import { isObject } from '../utils';
 export class FormlyValidationMessage {
   @Input() field: FormlyFieldConfig;
 
-  constructor(private formlyConfig: FormlyConfig) {}
+  constructor(private config: FormlyConfig) {}
 
   get errorMessage(): string {
     const fieldForm = this.field.formControl;
     for (const error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        let message = this.formlyConfig.getValidatorMessage(error);
+        let message = this.config.getValidatorMessage(error);
 
         if (isObject(fieldForm.errors[error])) {
           if (fieldForm.errors[error].errorPath) {

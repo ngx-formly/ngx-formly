@@ -1,85 +1,62 @@
-import { Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { By } from '@angular/platform-browser';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { FormlyMatInputModule } from '@ngx-formly/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormlyFieldConfig, FormlyModule, FormlyFormOptions } from '@ngx-formly/core';
-import { FormlyFieldInput } from './input.type';
 
-@Component({
-  selector: 'formly-test',
-  template: `
-    <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
-  `,
-})
-class FormlyTestComponent {
-  form = new FormGroup({});
-  fields: FormlyFieldConfig[];
-  model: any;
-  options: FormlyFormOptions;
-}
+const renderComponent = (field: FormlyFieldConfig) => {
+  return createFormlyFieldComponent(field, {
+    imports: [NoopAnimationsModule, FormlyMatInputModule],
+  });
+};
 
-describe('ui-material: Formly Input Component', () => {
-  let fixture: ComponentFixture<FormlyTestComponent>;
+describe('ui-material: Input Type', () => {
+  it('should render input type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'input',
+    });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [FormlyTestComponent, FormlyFieldInput],
-      imports: [
-        NoopAnimationsModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        FormlyModule.forRoot({
-          types: [
-            {
-              name: 'input',
-              component: FormlyFieldInput,
-            },
-          ],
-        }),
-      ],
-    }).compileComponents();
+    expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
+
+    const { attributes } = query('input[type="text"]');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_input_name_0',
+    });
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FormlyTestComponent);
+  it('should render number type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'input',
+      templateOptions: { type: 'number' },
+    });
+
+    const { attributes } = query('input[type="number"]');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_input_name_0',
+    });
   });
 
-  it('should properly set the readonly value on text inputs', () => {
-    const componentInstance = fixture.componentInstance;
-    componentInstance.fields = [
-      {
-        key: 'name',
-        type: 'input',
-        templateOptions: {
-          readonly: true,
-        },
-      },
-    ];
-    fixture.detectChanges();
+  it('should add "ng-invalid" class on invalid', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'input',
+      validation: { show: true },
+      templateOptions: { required: true },
+    });
 
-    // assert
-    const inputField = fixture.debugElement.query(By.css('input'));
-    expect(inputField.nativeElement.getAttribute('readonly')).not.toBeNull();
+    const { classes } = query('input[type="text"]');
+    expect(classes['ng-invalid']).toBeTrue();
   });
 
-  it('should properly set the readonly value on number inputs', () => {
-    const componentInstance = fixture.componentInstance;
-    componentInstance.fields = [
-      {
-        key: 'name',
-        type: 'input',
-        templateOptions: {
-          type: 'number',
-          readonly: true,
-        },
-      },
-    ];
-    fixture.detectChanges();
+  it('should bind control value on change', () => {
+    const { query, field, detectChanges } = renderComponent({
+      key: 'name',
+      type: 'input',
+    });
 
-    // assert
-    const inputField = fixture.debugElement.query(By.css('input'));
-    expect(inputField.nativeElement.getAttribute('readonly')).not.toBeNull();
+    query('input[type="text"]').triggerEventHandler('input', { target: { value: 'foo' } });
+    detectChanges();
+    expect(field.formControl.value).toEqual('foo');
   });
 });

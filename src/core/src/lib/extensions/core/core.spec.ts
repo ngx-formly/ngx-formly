@@ -4,11 +4,9 @@ import { MockComponent, createBuilder, createFormlyFieldComponent, FormlyInputMo
 import { Subject } from 'rxjs';
 
 function renderComponent(field: FormlyFieldConfig) {
-  const fixture = createFormlyFieldComponent(field, {
+  return createFormlyFieldComponent(field, {
     imports: [FormlyInputModule],
   });
-
-  return fixture.componentInstance.field;
 }
 
 function buildField({ model, options, ...field }: FormlyFieldConfig): FormlyFieldConfigCache {
@@ -81,7 +79,7 @@ describe('CoreExtension', () => {
         defaultValue: false,
       });
 
-      expect(field.model.title).toBeFalsy();
+      expect(field.model.title).toBeFalse();
     });
 
     it('should set the defaultValue for nested key', () => {
@@ -147,7 +145,9 @@ describe('CoreExtension', () => {
     });
 
     it('resetModel', () => {
-      const { model, options, form, formControl } = renderComponent({
+      const {
+        field: { model, options, form, formControl },
+      } = renderComponent({
         model: { title: 'test' },
         key: 'title',
         type: 'input',
@@ -162,7 +162,9 @@ describe('CoreExtension', () => {
     });
 
     it('should reset hidden fields', () => {
-      const { model, options, form } = renderComponent({
+      const {
+        field: { model, options },
+      } = renderComponent({
         key: 'title',
         type: 'input',
         hide: true,
@@ -173,7 +175,9 @@ describe('CoreExtension', () => {
     });
 
     it('updateInitialValue', () => {
-      const { model, options, formControl } = renderComponent({
+      const {
+        field: { model, options, formControl },
+      } = renderComponent({
         // initial value
         model: { title: 'test' },
         key: 'title',

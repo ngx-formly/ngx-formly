@@ -64,9 +64,9 @@ describe('Service: FormlyJsonschema', () => {
 
         const exclusiveMinimum = config.validators.exclusiveMinimum;
         expect(exclusiveMinimum).toBeDefined();
-        expect(exclusiveMinimum(new FormControl(4))).toBeFalsy();
-        expect(exclusiveMinimum(new FormControl(5))).toBeFalsy();
-        expect(exclusiveMinimum(new FormControl(6))).toBeTruthy();
+        expect(exclusiveMinimum(new FormControl(4))).toBeFalse();
+        expect(exclusiveMinimum(new FormControl(5))).toBeFalse();
+        expect(exclusiveMinimum(new FormControl(6))).toBeTrue();
       });
 
       it('should support exclusiveMaximum', () => {
@@ -78,9 +78,9 @@ describe('Service: FormlyJsonschema', () => {
 
         const exclusiveMaximum = config.validators.exclusiveMaximum;
         expect(exclusiveMaximum).toBeDefined();
-        expect(exclusiveMaximum(new FormControl(10))).toBeFalsy();
-        expect(exclusiveMaximum(new FormControl(11))).toBeFalsy();
-        expect(exclusiveMaximum(new FormControl(6))).toBeTruthy();
+        expect(exclusiveMaximum(new FormControl(10))).toBeFalse();
+        expect(exclusiveMaximum(new FormControl(11))).toBeFalse();
+        expect(exclusiveMaximum(new FormControl(6))).toBeTrue();
       });
 
       it('should support multipleOf', () => {
@@ -93,8 +93,8 @@ describe('Service: FormlyJsonschema', () => {
 
         const multipleOfValidator = config.validators.multipleOf;
         expect(multipleOfValidator).toBeDefined();
-        expect(multipleOfValidator(new FormControl(9))).toBeFalsy();
-        expect(multipleOfValidator(new FormControl(10))).toBeTruthy();
+        expect(multipleOfValidator(new FormControl(9))).toBeFalse();
+        expect(multipleOfValidator(new FormControl(10))).toBeTrue();
       });
     });
 
@@ -106,8 +106,8 @@ describe('Service: FormlyJsonschema', () => {
         const { type, validators } = formlyJsonschema.toFieldConfig(schema);
         expect(type).toEqual('null');
         expect(validators.null).toBeDefined();
-        expect(validators.null(new FormControl(null))).toBeTruthy();
-        expect(validators.null(new FormControl([1, 2, 3]))).toBeFalsy();
+        expect(validators.null(new FormControl(null))).toBeTrue();
+        expect(validators.null(new FormControl([1, 2, 3]))).toBeFalse();
       });
     });
 
@@ -253,10 +253,10 @@ describe('Service: FormlyJsonschema', () => {
 
         const minItemsValidator = config.validators.minItems;
         expect(minItemsValidator).toBeDefined();
-        expect(minItemsValidator(new FormControl([1]))).toBeFalsy();
-        expect(minItemsValidator(new FormControl([]))).toBeFalsy();
-        expect(minItemsValidator(new FormControl([1, 2]))).toBeTruthy();
-        expect(minItemsValidator(new FormControl([1, 2, 3]))).toBeTruthy();
+        expect(minItemsValidator(new FormControl([1]))).toBeFalse();
+        expect(minItemsValidator(new FormControl([]))).toBeFalse();
+        expect(minItemsValidator(new FormControl([1, 2]))).toBeTrue();
+        expect(minItemsValidator(new FormControl([1, 2, 3]))).toBeTrue();
       });
 
       it('should support maxItems', () => {
@@ -269,9 +269,9 @@ describe('Service: FormlyJsonschema', () => {
 
         const maxItemsValidator = config.validators.maxItems;
         expect(maxItemsValidator).toBeDefined();
-        expect(maxItemsValidator(new FormControl([1, 2, 3]))).toBeFalsy();
-        expect(maxItemsValidator(new FormControl([1, 2]))).toBeTruthy();
-        expect(maxItemsValidator(new FormControl([]))).toBeTruthy();
+        expect(maxItemsValidator(new FormControl([1, 2, 3]))).toBeFalse();
+        expect(maxItemsValidator(new FormControl([1, 2]))).toBeTrue();
+        expect(maxItemsValidator(new FormControl([]))).toBeTrue();
       });
 
       it('should support uniqueItems', () => {
@@ -280,16 +280,16 @@ describe('Service: FormlyJsonschema', () => {
           uniqueItems: true,
         };
         const config = formlyJsonschema.toFieldConfig(numSchema);
-        expect(config.templateOptions.uniqueItems).toBeTruthy();
+        expect(config.templateOptions.uniqueItems).toBeTrue();
 
         const uniqueItemsValidator = config.validators.uniqueItems;
         expect(uniqueItemsValidator).toBeDefined();
-        expect(uniqueItemsValidator(new FormControl(null))).toBeTruthy();
-        expect(uniqueItemsValidator(new FormControl([1, 2, 3]))).toBeTruthy();
-        expect(uniqueItemsValidator(new FormControl([1, 2, 2]))).toBeFalsy();
+        expect(uniqueItemsValidator(new FormControl(null))).toBeTrue();
+        expect(uniqueItemsValidator(new FormControl([1, 2, 3]))).toBeTrue();
+        expect(uniqueItemsValidator(new FormControl([1, 2, 2]))).toBeFalse();
 
-        expect(uniqueItemsValidator(new FormControl([{ a: 2 }, { a: 1 }]))).toBeTruthy();
-        expect(uniqueItemsValidator(new FormControl([{ a: 1 }, { a: 1 }]))).toBeFalsy();
+        expect(uniqueItemsValidator(new FormControl([{ a: 2 }, { a: 1 }]))).toBeTrue();
+        expect(uniqueItemsValidator(new FormControl([{ a: 1 }, { a: 1 }]))).toBeFalse();
       });
     });
 
@@ -366,7 +366,7 @@ describe('Service: FormlyJsonschema', () => {
 
             const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
 
-            expect(config[0].templateOptions.required).toBeTruthy();
+            expect(config[0].templateOptions.required).toBeTrue();
             expect(config[0].expressionProperties).toBeUndefined();
           });
 
@@ -384,8 +384,8 @@ describe('Service: FormlyJsonschema', () => {
 
             const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
             const requiredExpr = config[1].expressionProperties['templateOptions.required'] as any;
-            expect(requiredExpr({ credit_card: null })).toBeFalsy();
-            expect(requiredExpr({ credit_card: 121223233 })).toBeTruthy();
+            expect(requiredExpr({ credit_card: null })).toBeFalse();
+            expect(requiredExpr({ credit_card: 121223233 })).toBeTrue();
           });
         });
 
@@ -407,8 +407,8 @@ describe('Service: FormlyJsonschema', () => {
 
           const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
           const hideExpr = config[1].hideExpression as any;
-          expect(hideExpr({ credit_card: null })).toBeTruthy();
-          expect(hideExpr({ credit_card: 121223233 })).toBeFalsy();
+          expect(hideExpr({ credit_card: null })).toBeTrue();
+          expect(hideExpr({ credit_card: 121223233 })).toBeFalse();
         });
       });
     });
@@ -464,7 +464,10 @@ describe('Service: FormlyJsonschema', () => {
           it('should support enum as oneOf/const structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+              oneOf: [
+                { title: '1', const: 1 },
+                { title: '2', const: 2 },
+              ],
             };
 
             const {
@@ -473,13 +476,19 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
 
           it('should support enum as oneOf/enum structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              oneOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const {
@@ -488,13 +497,19 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
 
           it('should support enum as anyOf structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              anyOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              anyOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const {
@@ -503,7 +518,10 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
         });
 
@@ -520,7 +538,7 @@ describe('Service: FormlyJsonschema', () => {
             const { type, validators, templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
 
             expect(type).toEqual('enum');
-            expect(to.multiple).toBeTruthy();
+            expect(to.multiple).toBeTrue();
             expect(validators.uniqueItems).toBeDefined();
           });
 
@@ -529,7 +547,10 @@ describe('Service: FormlyJsonschema', () => {
               definitions: {
                 foo: {
                   type: 'string',
-                  oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+                  oneOf: [
+                    { title: '1', const: 1 },
+                    { title: '2', const: 2 },
+                  ],
                 },
               },
               type: 'array',
@@ -539,7 +560,7 @@ describe('Service: FormlyJsonschema', () => {
 
             const { type, templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
             expect(type).toEqual('enum');
-            expect(to.multiple).toBeTruthy();
+            expect(to.multiple).toBeTrue();
           });
         });
       });
@@ -567,9 +588,9 @@ describe('Service: FormlyJsonschema', () => {
         expect(defaultValue).toBeUndefined();
 
         expect(constValidator).toBeDefined();
-        expect(constValidator(new FormControl(null))).toBeFalsy();
-        expect(constValidator(new FormControl(4))).toBeFalsy();
-        expect(constValidator(new FormControl('const'))).toBeTruthy();
+        expect(constValidator(new FormControl(null))).toBeFalse();
+        expect(constValidator(new FormControl(4))).toBeFalse();
+        expect(constValidator(new FormControl('const'))).toBeTrue();
       });
     });
 
@@ -789,7 +810,10 @@ describe('Service: FormlyJsonschema', () => {
         };
         const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
         const expected = fieldGroup.map(({ key, templateOptions: { required } }) => ({ key, required }));
-        expect(expected).toEqual([{ key: 'firstname', required: true }, { key: 'lastname', required: true }]);
+        expect(expected).toEqual([
+          { key: 'firstname', required: true },
+          { key: 'lastname', required: true },
+        ]);
       });
 
       it('should merge allOf with base schema', () => {
@@ -823,7 +847,7 @@ describe('Service: FormlyJsonschema', () => {
             allOf: [{ uniqueItems: false }, { uniqueItems: true }],
           };
           const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-          expect(to.uniqueItems).toBeTruthy();
+          expect(to.uniqueItems).toBeTrue();
         });
 
         it('minLength', () => {
@@ -907,8 +931,8 @@ describe('Service: FormlyJsonschema', () => {
           enumField.hooks.onInit(enumField);
           tick();
 
-          expect(fooField.hide).toBeTruthy();
-          expect(barField.hide).toBeFalsy();
+          expect(fooField.hide).toBeTrue();
+          expect(barField.hide).toBeFalse();
         }));
 
         it('should render the selected oneOf field', fakeAsync(() => {
@@ -926,14 +950,14 @@ describe('Service: FormlyJsonschema', () => {
           enumField.hooks.onInit(enumField);
           tick();
 
-          expect(fooField.hide).toBeFalsy();
-          expect(barField.hide).toBeTruthy();
+          expect(fooField.hide).toBeFalse();
+          expect(barField.hide).toBeTrue();
 
           enumField.formControl.setValue(1);
 
           expect(model).toEqual({});
-          expect(fooField.hide).toBeTruthy();
-          expect(barField.hide).toBeFalsy();
+          expect(fooField.hide).toBeTrue();
+          expect(barField.hide).toBeFalse();
         }));
       });
 
@@ -973,8 +997,8 @@ describe('Service: FormlyJsonschema', () => {
           enumField.hooks.onInit(enumField);
           tick();
 
-          expect(fooField.hide).toBeTruthy();
-          expect(barField.hide).toBeFalsy();
+          expect(fooField.hide).toBeTrue();
+          expect(barField.hide).toBeFalse();
         }));
 
         it('should render the selected anyOf field', fakeAsync(() => {
@@ -992,14 +1016,14 @@ describe('Service: FormlyJsonschema', () => {
           enumField.hooks.onInit(enumField);
           tick();
 
-          expect(fooField.hide).toBeFalsy();
-          expect(barField.hide).toBeTruthy();
+          expect(fooField.hide).toBeFalse();
+          expect(barField.hide).toBeTrue();
 
           enumField.formControl.setValue([1]);
 
           expect(model).toEqual({});
-          expect(fooField.hide).toBeTruthy();
-          expect(barField.hide).toBeFalsy();
+          expect(fooField.hide).toBeTrue();
+          expect(barField.hide).toBeFalse();
         }));
       });
     });
