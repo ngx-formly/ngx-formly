@@ -29,13 +29,13 @@ function buildField({ model, options, form: formControl, ...field }: FormlyField
 
 function validate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
   const formControl = new FormControl(value, { validators: field._validators });
-  expect(typeof field._validators === 'function').toBeTruthy();
+  expect(typeof field._validators === 'function').toBeTrue();
   expect(formControl.errors).toEqual(errors);
 }
 
 function asyncValidate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
   const formControl = new FormControl(value, { asyncValidators: field._asyncValidators });
-  expect(typeof field._asyncValidators === 'function').toBeTruthy();
+  expect(typeof field._asyncValidators === 'function').toBeTrue();
   formControl.statusChanges.subscribe(() => {
     expect(formControl.errors).toEqual(errors);
   });
@@ -102,10 +102,10 @@ describe('FieldValidationExtension: initialise field validators', () => {
     it(`should take account of programmatic changes`, () => {
       const field = buildField({});
       field.formControl = new FormControl(null, field._validators);
-      expect(field.formControl.valid).toBeTruthy();
+      expect(field.formControl.valid).toBeTrue();
 
       field.templateOptions.required = true;
-      expect(field.formControl.valid).toBeFalsy();
+      expect(field.formControl.valid).toBeFalse();
     });
   });
 

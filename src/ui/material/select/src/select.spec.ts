@@ -1,6 +1,5 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
-import { By } from '@angular/platform-browser';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 import { timeout } from 'rxjs/operators';
@@ -14,9 +13,44 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-material: Formly Field Select Component', () => {
+  it('should render select type', () => {
+    const { query, queryAll, detectChanges } = renderComponent({
+      key: 'name',
+      type: 'select',
+      templateOptions: {
+        options: [{ value: 1, label: 'label 1' }, { value: 2, label: 'label 2' }, { value: 3, label: 'label 3' }],
+      },
+    });
+
+    expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
+
+    query('.mat-select-trigger').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(queryAll('mat-option')).toHaveLength(3);
+  });
+
+  it('should bind control value on change', () => {
+    const { query, queryAll, field, detectChanges } = renderComponent({
+      key: 'name',
+      type: 'select',
+      templateOptions: {
+        options: [{ value: 1, label: 'label 1' }],
+      },
+    });
+
+    query('.mat-select-trigger').triggerEventHandler('click', {});
+    detectChanges();
+
+    const selectAllOption = queryAll('mat-option')[0];
+    selectAllOption.triggerEventHandler('click', {});
+    detectChanges();
+    expect(field.formControl.value).toEqual(1);
+  });
+
   describe('render select options', () => {
     it('should correctly bind to a static array of data', () => {
-      const fixture = renderComponent({
+      const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -30,16 +64,14 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
 
-      trigger.click();
-      fixture.detectChanges();
-
-      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(3);
+      expect(queryAll('mat-option')).toHaveLength(3);
     });
 
     it('should correctly bind to an Observable', fakeAsync(() => {
-      const fixture = renderComponent({
+      const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -53,20 +85,16 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
 
-      trigger.click();
-      fixture.detectChanges();
-
-      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(3);
-      fixture.destroy();
-      tick(1000);
+      expect(queryAll('mat-option')).toHaveLength(3);
     }));
   });
 
   describe('multi select', () => {
     it('should have a "Select All" option if configured', () => {
-      const fixture = renderComponent({
+      const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -79,16 +107,15 @@ describe('ui-material: Formly Field Select Component', () => {
           ],
         },
       });
-      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
-      trigger.click();
-      fixture.detectChanges();
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
 
-      expect(fixture.debugElement.queryAll(By.css('mat-option')).length).toEqual(1 + 3);
+      expect(queryAll('mat-option')).toHaveLength(1 + 3);
     });
 
     it('should select all options if clicking the "Select All" option', () => {
-      const fixture = renderComponent({
+      const { field, query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -101,27 +128,26 @@ describe('ui-material: Formly Field Select Component', () => {
           ],
         },
       });
-      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
 
-      trigger.click();
-      fixture.detectChanges();
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
 
-      const selectAllOption = fixture.debugElement.queryAll(By.css('mat-option'))[0].nativeElement;
-      selectAllOption.click();
-      fixture.detectChanges();
+      const selectAllOption = queryAll('mat-option')[0];
+      selectAllOption.triggerEventHandler('click', {});
+      detectChanges();
 
-      const { formControl } = fixture.componentInstance.field;
-      expect(formControl.value.length).toEqual(3);
+      const { formControl } = field;
+      expect(formControl.value).toHaveLength(3);
 
       // clicking again should deselect all
-      selectAllOption.click();
-      fixture.detectChanges();
+      selectAllOption.triggerEventHandler('click', {});
+      detectChanges();
 
-      expect(formControl.value.length).toEqual(0);
+      expect(formControl.value).toHaveLength(0);
     });
 
     it('should select all options (with group) if clicking the "Select All" option', () => {
-      const fixture = renderComponent({
+      const { field, query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -139,27 +165,25 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
 
-      trigger.click();
-      fixture.detectChanges();
+      const selectAllOption = queryAll('mat-option')[0];
+      selectAllOption.triggerEventHandler('click', {});
+      detectChanges();
 
-      const selectAllOption = fixture.debugElement.queryAll(By.css('mat-option'))[0].nativeElement;
-      selectAllOption.click();
-      fixture.detectChanges();
-
-      const { formControl } = fixture.componentInstance.field;
-      expect(formControl.value.length).toEqual(5);
+      const { formControl } = field;
+      expect(formControl.value).toHaveLength(5);
 
       // clicking again should deselect all
-      selectAllOption.click();
-      fixture.detectChanges();
+      selectAllOption.triggerEventHandler('click', {});
+      detectChanges();
 
-      expect(formControl.value.length).toEqual(0);
+      expect(formControl.value).toHaveLength(0);
     });
 
     it('should use the selectAllOption prop as label for the option entry', () => {
-      const fixture = renderComponent({
+      const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -171,18 +195,16 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
 
-      trigger.click();
-      fixture.detectChanges();
-
-      const selectAllOption = fixture.debugElement.queryAll(By.css('mat-option'))[0].nativeElement;
+      const selectAllOption = queryAll('mat-option')[0].nativeElement;
       expect(selectAllOption.innerHTML).toContain('Click me!!');
     });
 
     it('should correctly bind a multi select to an observable', fakeAsync(() => {
       // bind a value which triggers the error in case
-      const fixture = renderComponent({
+      const { query, queryAll, detectChanges } = renderComponent({
         model: { sportId: [1] },
         key: 'sportId',
         type: 'select',
@@ -200,19 +222,17 @@ describe('ui-material: Formly Field Select Component', () => {
       });
 
       tick(51);
-      fixture.detectChanges();
+      detectChanges();
 
-      const trigger = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
 
-      trigger.click();
-      fixture.detectChanges();
-
-      const selectAllOption = fixture.debugElement.queryAll(By.css('mat-option'))[0].nativeElement;
+      const selectAllOption = queryAll('mat-option')[0].nativeElement;
       expect(selectAllOption.innerHTML).toContain('Click me!!');
     }));
 
     it('should correctly use custom aria-labelledby', () => {
-      const fixture = renderComponent({
+      const { query } = renderComponent({
         key: 'sportId',
         type: 'select',
         templateOptions: {
@@ -223,9 +243,8 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      const selectEl = fixture.debugElement.query(By.css('.mat-select')).nativeElement;
-
-      expect(selectEl.getAttribute('aria-labelledby')).toBe('TEST_LABEL');
+      const { attributes } = query('.mat-select');
+      expect(attributes['aria-labelledby']).toBe('TEST_LABEL');
     });
   });
 });

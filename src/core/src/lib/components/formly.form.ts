@@ -29,7 +29,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     this.field.formControl = formControl;
   }
   get form() {
-    return this.field.formControl as (FormGroup | FormArray);
+    return this.field.formControl as FormGroup | FormArray;
   }
 
   @Input()
