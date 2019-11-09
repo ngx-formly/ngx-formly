@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
-  constructor(private formlyConfig: FormlyConfig) {}
+  constructor(private config: FormlyConfig) {}
 
   onPopulate(field: FormlyFieldConfigCache) {
     if (!field.parent || !field.key) {
@@ -94,7 +94,7 @@ export class FieldValidationExtension implements FormlyExtension {
     return (control: AbstractControl) => {
       let validatorFn = validator as FieldValidatorFn;
       if (typeof validator === 'string') {
-        validatorFn = this.formlyConfig.getValidator(validator).validation;
+        validatorFn = this.config.getValidator(validator).validation;
       }
       if (isObject(validator)) {
         validatorFn = (validator as any).expression;

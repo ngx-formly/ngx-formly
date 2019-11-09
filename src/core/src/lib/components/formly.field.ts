@@ -50,7 +50,7 @@ export class FormlyField
 
   valueChangesUnsubscribe = () => {};
   constructor(
-    private formlyConfig: FormlyConfig,
+    private config: FormlyConfig,
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
   ) {}
@@ -97,7 +97,7 @@ export class FormlyField
 
     if (wrappers && wrappers.length > 0) {
       const [wrapper, ...wps] = wrappers;
-      const { component } = this.formlyConfig.getWrapper(wrapper);
+      const { component } = this.config.getWrapper(wrapper);
       const cfr =
         f.options && f.options._componentFactoryResolver
           ? f.options._componentFactoryResolver
@@ -112,7 +112,7 @@ export class FormlyField
         }
       });
     } else {
-      const ref = this.formlyConfig.createComponent(f, this.componentFactoryResolver, this.injector);
+      const ref = this.config.createComponent(f, this.componentFactoryResolver, this.injector);
       if (ref) {
         this.attachComponentRef(ref, f);
         containerRef.insert(ref.hostView);

@@ -14,7 +14,7 @@ describe('registerControl', () => {
 
     registerControl(field);
     expect(field.formControl.parent).not.toBeNull();
-    expect(field.form.controls.length).toEqual(1);
+    expect(field.form.controls).toHaveLength(1);
     expect(field.form.get('0')).toEqual(field.formControl);
   });
 
@@ -84,7 +84,7 @@ describe('unregisterControl', () => {
 
     unregisterControl(field);
     expect(field.formControl.parent).toBeNull();
-    expect(parent.controls.length).toBe(1);
+    expect(parent.controls).toHaveLength(1);
     expect(parent.controls[0]).not.toEqual(field.formControl);
   });
 

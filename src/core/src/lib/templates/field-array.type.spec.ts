@@ -3,15 +3,6 @@ import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
 import { FormlyInputModule, createFormlyFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { FormArray } from '@angular/forms';
-import { ComponentFixture } from '@angular/core/testing';
-
-function getFormlyArrayField(fixture: ComponentFixture<any>): HTMLInputElement {
-  return fixture.nativeElement.querySelector('formly-array');
-}
-
-function getFormlyArrayFields(fixture: ComponentFixture<any>): HTMLInputElement[] {
-  return fixture.nativeElement.querySelectorAll('formly-array > formly-field');
-}
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
@@ -32,46 +23,43 @@ const renderComponent = (field: FormlyFieldConfig) => {
 
 describe('Array Field Type', () => {
   it('should render fieldGroup', () => {
-    const fixture = renderComponent({
+    const { query, queryAll } = renderComponent({
       key: 'foo',
       type: 'array',
       defaultValue: [null, null],
     });
 
-    expect(getFormlyArrayField(fixture)).toBeDefined();
-    expect(getFormlyArrayFields(fixture).length).toEqual(2);
+    expect(query('formly-array')).not.toBeNull();
+    expect(queryAll('formly-array > formly-field')).toHaveLength(2);
   });
 
   it('should work with nullable model', () => {
-    const fixture = renderComponent({
+    const { field, query } = renderComponent({
       model: { array: null },
       key: 'array',
       type: 'array',
     });
-    const { field } = fixture.componentInstance;
 
     expect(field.fieldGroup).toEqual([]);
     expect(field.model).toBeNull();
 
-    fixture.nativeElement.querySelector('#add').click();
-    fixture.detectChanges();
+    query('#add').triggerEventHandler('click', {});
 
-    expect(field.fieldGroup.length).toEqual(1);
-    expect(field.model.length).toBe(1);
+    expect(field.fieldGroup).toHaveLength(1);
+    expect(field.model).toHaveLength(1);
   });
 
   it('should emit `modelChange` on Add/Remove', () => {
-    const fixture = renderComponent({
+    const { detectChanges, field, query } = renderComponent({
       key: 'array',
       type: 'array',
     });
 
-    const { field } = fixture.componentInstance;
     const [spy, subscription] = createFieldChangesSpy(field);
 
     // add
-    fixture.nativeElement.querySelector('#add').click();
-    fixture.detectChanges();
+    query('#add').triggerEventHandler('click', {});
+    detectChanges();
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({ value: [undefined], field, type: 'valueChanges' });
@@ -79,8 +67,8 @@ describe('Array Field Type', () => {
 
     // remove
     spy.mockReset();
-    fixture.nativeElement.querySelector('#remove-0').click();
-    fixture.detectChanges();
+    query('#remove-0').triggerEventHandler('click', {});
+    detectChanges();
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({ value: [], field, type: 'valueChanges' });
@@ -90,46 +78,42 @@ describe('Array Field Type', () => {
   });
 
   it('should mark the form dirty on Add/Remove', () => {
-    const fixture = renderComponent({
+    const { field, query, detectChanges } = renderComponent({
       key: 'array',
       type: 'array',
     });
 
-    const {
-      field: { formControl },
-    } = fixture.componentInstance;
-
-    expect(formControl.dirty).toBeFalsy();
-    fixture.nativeElement.querySelector('#add').click();
-    fixture.detectChanges();
-    expect(formControl.dirty).toBeTruthy();
+    const { formControl } = field;
+    expect(formControl.dirty).toBeFalse();
+    query('#add').triggerEventHandler('click', {});
+    detectChanges();
+    expect(formControl.dirty).toBeTrue();
 
     formControl.markAsPristine();
-    fixture.nativeElement.querySelector('#remove-0').click();
-    fixture.detectChanges();
-    expect(formControl.dirty).toBeTruthy();
+    query('#remove-0').triggerEventHandler('click', {});
+    detectChanges();
+    expect(formControl.dirty).toBeTrue();
   });
 
   it('should not change the form control instance when chinging the field position', () => {
-    const fixture = renderComponent({
+    const { detectChanges, field, query } = renderComponent({
       model: { foo: [1, 2] },
       key: 'foo',
       type: 'array',
       fieldArray: { type: 'input' },
     });
-    const { field } = fixture.componentInstance;
     const formArray = field.formControl as FormArray;
 
     const formControl = formArray.at(1);
-    fixture.nativeElement.querySelector('#remove-0').click();
-    fixture.detectChanges();
+    query('#remove-0').triggerEventHandler('click', {});
+    detectChanges();
 
-    expect(formArray.controls.length).toEqual(1);
+    expect(formArray.controls).toHaveLength(1);
     expect(formArray.at(0)).toEqual(formControl);
   });
 
   it('should apply expressions within field arrays', () => {
-    const fixture = renderComponent({
+    const { detectChanges, field } = renderComponent({
       key: 'address',
       type: 'array',
       defaultValue: ['test'],
@@ -146,36 +130,36 @@ describe('Array Field Type', () => {
       fieldGroup: [cityField],
       model,
       options,
-    } = fixture.componentInstance.field;
-    expect(cityField.hide).toBeTruthy();
+    } = field;
+    expect(cityField.hide).toBeTrue();
     expect(cityField.className).toEqual('test');
 
     model[0] = 'custom';
     (options as any)._checkField(cityField);
-    fixture.detectChanges();
+    detectChanges();
 
-    expect(cityField.hide).toBeFalsy();
+    expect(cityField.hide).toBeFalse();
     expect(cityField.className).toEqual('custom');
   });
 
   it('should cleanup existing controls on re-build', () => {
-    const fixture = renderComponent({
+    const { field } = renderComponent({
       key: 'address',
       type: 'array',
       defaultValue: [1, 2, 3, 4],
     });
-    const { model, options, formControl } = fixture.componentInstance.field;
+    const { model, options, formControl } = field;
     const form = formControl as FormArray;
 
-    expect(form.controls.length).toEqual(4);
+    expect(form.controls).toHaveLength(4);
     model.length = 1;
-    (options as any)._buildField(fixture.componentInstance.field);
+    (options as any)._buildField(field);
 
-    expect(form.controls.length).toEqual(1);
+    expect(form.controls).toHaveLength(1);
   });
 
   it('should keep tracking model change on resetModel', () => {
-    const fixture = renderComponent({
+    const { field } = renderComponent({
       key: 'address',
       type: 'array',
       defaultValue: [{}, {}, {}, {}],
@@ -183,16 +167,16 @@ describe('Array Field Type', () => {
         fieldGroup: [{ key: 'name', type: 'input' }],
       },
     });
-    const { options, formControl } = fixture.componentInstance.field;
+    const { options, formControl } = field;
     const form = formControl as FormArray;
 
-    expect(form.controls.length).toEqual(4);
+    expect(form.controls).toHaveLength(4);
 
     options.resetModel({ address: [{}] });
-    expect(form.controls.length).toEqual(1);
+    expect(form.controls).toHaveLength(1);
 
     form.get('0.name').patchValue('TEST');
-    const model = fixture.componentInstance.field.model;
+    const { model } = field;
     expect(model[0]).toEqual({ name: 'TEST' });
   });
 });
