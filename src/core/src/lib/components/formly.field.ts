@@ -35,7 +35,7 @@ export class FormlyField
 
   valueChangesUnsubscribe = () => {};
   constructor(
-    private formlyConfig: FormlyConfig,
+    private config: FormlyConfig,
     private renderer: Renderer2,
     private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
@@ -86,7 +86,7 @@ export class FormlyField
 
     if (wrappers && wrappers.length > 0) {
       const [wrapper, ...wps] = wrappers;
-      const { component } = this.formlyConfig.getWrapper(wrapper);
+      const { component } = this.config.getWrapper(wrapper);
 
       const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
@@ -103,7 +103,7 @@ export class FormlyField
         }
       });
     } else if (f && f.type) {
-      const { component } = this.formlyConfig.getType(f.type);
+      const { component } = this.config.getType(f.type);
       const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
     }
