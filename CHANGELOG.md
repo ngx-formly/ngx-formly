@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.4"></a>
+## [5.5.4](https://github.com/ngx-formly/ngx-formly/compare/v5.5.3...v5.5.4) (2019-11-10)
+
+
+### Bug Fixes
+
+* **core:** emit a valid model when using array notation key in group ([#1910](https://github.com/ngx-formly/ngx-formly/issues/1910)) ([e4cd721](https://github.com/ngx-formly/ngx-formly/commit/e4cd721)), closes [#1857](https://github.com/ngx-formly/ngx-formly/issues/1857)
+* **core:** ignore default debounce when using updateOn blur/submit ([#1903](https://github.com/ngx-formly/ngx-formly/issues/1903)) ([2d73fb9](https://github.com/ngx-formly/ngx-formly/commit/2d73fb9)), closes [#1898](https://github.com/ngx-formly/ngx-formly/issues/1898)
+* **core:** include field without key on hide changed programmatically ([#1904](https://github.com/ngx-formly/ngx-formly/issues/1904)) ([39a9051](https://github.com/ngx-formly/ngx-formly/commit/39a9051))
+* **core:** skip detectChanges call on first render ([#1905](https://github.com/ngx-formly/ngx-formly/issues/1905)) ([24396a3](https://github.com/ngx-formly/ngx-formly/commit/24396a3)), closes [#1900](https://github.com/ngx-formly/ngx-formly/issues/1900)
+
+
+
 <a name="5.5.3"></a>
 ## [5.5.3](https://github.com/ngx-formly/ngx-formly/compare/v5.5.2...v5.5.3) (2019-11-01)
 
