@@ -16,7 +16,7 @@ export interface FormlyJsonschemaOptions {
 }
 
 function isEmpty(v: any) {
-  return v === '' || v === undefined || v === null;
+  return v === '' || v == null;
 }
 
 function clearFieldModel(field: FormlyFieldConfig) {

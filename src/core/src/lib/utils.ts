@@ -69,7 +69,7 @@ export function getFieldValue(field: FormlyFieldConfig): any {
 export function reverseDeepMerge(dest: any, ...args: any[]) {
   args.forEach(src => {
     for (const srcArg in src) {
-      if (isNullOrUndefined(dest[srcArg]) || isBlankString(dest[srcArg])) {
+      if (isNil(dest[srcArg]) || isBlankString(dest[srcArg])) {
         dest[srcArg] = clone(src[srcArg]);
       } else if (objAndSameType(dest[srcArg], src[srcArg])) {
         reverseDeepMerge(dest[srcArg], src[srcArg]);
@@ -79,8 +79,9 @@ export function reverseDeepMerge(dest: any, ...args: any[]) {
   return dest;
 }
 
-export function isNullOrUndefined(value: any) {
-  return value === undefined || value === null;
+// check a value is null or undefined
+export function isNil(value: any) {
+  return value == null;
 }
 
 export function isUndefined(value: any) {
