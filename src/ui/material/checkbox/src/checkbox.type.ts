@@ -11,7 +11,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [id]="id"
       [formlyAttributes]="field"
       [tabIndex]="to.tabindex"
-      [indeterminate]="to.indeterminate && formControl.value === null"
+      [indeterminate]="to.indeterminate && formControl.value == null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition"
     >

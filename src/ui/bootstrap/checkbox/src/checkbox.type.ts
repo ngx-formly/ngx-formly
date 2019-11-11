@@ -17,7 +17,7 @@ import { FieldType } from '@ngx-formly/core';
         [class.form-check-input]="to.formCheck.indexOf('custom') === -1"
         [class.position-static]="to.formCheck === 'nolabel'"
         [class.custom-control-input]="to.formCheck.indexOf('custom') === 0"
-        [indeterminate]="to.indeterminate && formControl.value === null"
+        [indeterminate]="to.indeterminate && formControl.value == null"
         [formControl]="formControl"
         [formlyAttributes]="field">
       <label [for]="id"

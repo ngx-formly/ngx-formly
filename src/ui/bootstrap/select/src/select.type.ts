@@ -49,7 +49,7 @@ import { take } from 'rxjs/operators';
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
       >
-        <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
+        <option *ngIf="to.placeholder" [ngValue]="undefined">{{ to.placeholder }}</option>
         <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
           <ng-container *ngIf="to._flatOptions; else grouplist">
             <ng-container *ngFor="let opt of opts">

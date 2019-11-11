@@ -174,7 +174,7 @@ describe('Array Field Type', () => {
     form.at(0).setValue('foo');
 
     expect(form.at(1)).not.toEqual(form.at(0));
-    expect(form.at(1).value).toEqual(null);
+    expect(form.at(1).value).toBeUndefined();
   });
 
   // https://github.com/ngx-formly/ngx-formly/issues/2493

@@ -1,6 +1,6 @@
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
-import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty } from '../../utils';
+import { getKeyPath, getFieldValue, isNil, defineHiddenProp, wrapProperty, assignFieldValue, isUndefined } from '../../utils';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { EventEmitter } from '@angular/core';
 
@@ -75,11 +75,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   let form = field.form;
   const paths = getKeyPath(field);
   const value = getFieldValue(field);
-  if (
-    !(isNullOrUndefined(control.value) && isNullOrUndefined(value))
-    && control.value !== value
-    && control instanceof FormControl
-  ) {
+  if (!(isNil(control.value) && isNil(value)) && control.value !== value && control instanceof FormControl) {
     control.patchValue(value, { emitEvent: false });
   }
 

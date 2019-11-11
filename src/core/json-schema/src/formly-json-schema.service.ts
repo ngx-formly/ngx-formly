@@ -31,7 +31,7 @@ function decimalPlaces(a: number) {
 }
 
 function isEmpty(v: any) {
-  return v === '' || v === undefined || v === null;
+  return v === '' || v == null;
 }
 
 function isObject(v: any) {
