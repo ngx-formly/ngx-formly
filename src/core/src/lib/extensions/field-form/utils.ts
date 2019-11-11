@@ -1,6 +1,6 @@
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
-import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty } from '../../utils';
+import { getKeyPath, getFieldValue, isNil, defineHiddenProp, wrapProperty } from '../../utils';
 
 export function unregisterControl(field: FormlyFieldConfig) {
   const form = field.formControl.parent as FormArray | FormGroup;
@@ -57,11 +57,7 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
   }
 
   const value = getFieldValue(field);
-  if (
-    !(isNullOrUndefined(control.value) && isNullOrUndefined(value)) &&
-    control.value !== value &&
-    control instanceof FormControl
-  ) {
+  if (!(isNil(control.value) && isNil(value)) && control.value !== value && control instanceof FormControl) {
     control.patchValue(value, { emitEvent: false });
   }
   const key = paths[paths.length - 1];

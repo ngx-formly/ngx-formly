@@ -13,7 +13,7 @@ import { MatInput } from '@angular/material/input';
       [formControl]="formControl"
       [formlyAttributes]="field"
     >
-      <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
+      <option *ngIf="to.placeholder" [ngValue]="undefined">{{ to.placeholder }}</option>
       <ng-container *ngFor="let item of to.options | formlySelectOptions: field | async">
         <optgroup *ngIf="item.group" label="{{ item.label }}">
           <option *ngFor="let child of item.group" [ngValue]="child.value" [disabled]="child.disabled">
