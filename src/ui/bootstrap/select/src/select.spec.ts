@@ -38,6 +38,24 @@ describe('ui-bootstrap: Select Type', () => {
     expect(field.formControl.value).toEqual(1);
   });
 
+  it('should select placeholder option when value is undefined', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'select',
+      templateOptions: {
+        placeholder: 'Placeholder option',
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+        ],
+      },
+    });
+
+    const { options, selectedIndex } = query<HTMLSelectElement>('select').nativeElement;
+    expect(options[selectedIndex]).toBeDefined();
+    expect(options[selectedIndex].text).toEqual('Placeholder option');
+  });
+
   describe('render select options', () => {
     it('should correctly bind to a static array of data', () => {
       const { queryAll } = renderComponent({

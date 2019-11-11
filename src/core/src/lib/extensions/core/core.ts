@@ -13,7 +13,7 @@ import {
   reverseDeepMerge,
   defineHiddenProp,
   clone,
-  isNullOrUndefined,
+  isNil,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -95,7 +95,7 @@ export class CoreExtension implements FormlyExtension {
 
     if (!options.resetModel) {
       options.resetModel = (model?: any) => {
-        model = clone(isNullOrUndefined(model) ? options._initialModel : model);
+        model = clone(isNil(model) ? options._initialModel : model);
         if (field.model) {
           Object.keys(field.model).forEach(k => delete field.model[k]);
           Object.assign(field.model, model || {});
