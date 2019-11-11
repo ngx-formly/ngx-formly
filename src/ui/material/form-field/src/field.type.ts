@@ -98,7 +98,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.formControl as any;
   }
   get empty() {
-    return this.value === undefined || this.value === null || this.value === '';
+    return this.value == null || this.value === '';
   }
   get shouldLabelFloat() {
     return this.focused || !this.empty;

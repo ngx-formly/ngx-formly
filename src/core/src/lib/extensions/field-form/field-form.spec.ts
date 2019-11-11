@@ -19,6 +19,16 @@ function buildField({ model, options, form: formControl, ...field }: FormlyField
 
 describe('FieldFormExtension', () => {
   describe('assign model field to form control', () => {
+    it('should match undefined model value', () => {
+      const { form } = buildField({
+        model: { foo: null },
+        fieldGroup: [{ key: 'foo' }, { key: 'bar' }],
+      });
+
+      expect(form.get('bar').value).toBeUndefined();
+      expect(form.get('foo').value).toBeNull();
+    });
+
     it('should assign model for nested field key', () => {
       const { form } = buildField({
         key: 'address.city',

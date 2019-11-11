@@ -48,7 +48,7 @@ import { FieldType } from '@ngx-formly/core';
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
       >
-        <option *ngIf="to.placeholder" [ngValue]="null">{{ to.placeholder }}</option>
+        <option *ngIf="to.placeholder" [ngValue]="undefined">{{ to.placeholder }}</option>
         <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
           <ng-container *ngIf="to._flatOptions; else grouplist">
             <ng-container *ngFor="let opt of opts">
@@ -83,11 +83,11 @@ export class FormlyFieldSelect extends FieldType implements AfterViewChecked {
 
   // workaround for https://github.com/angular/angular/issues/10010
   ngAfterViewChecked() {
-    if (!this.to.multiple && !this.to.placeholder && this.formControl.value === null) {
+    if (!this.to.multiple && !this.to.placeholder && this.formControl.value == null) {
       const selectEl = this.select.nativeElement;
       if (
         selectEl.selectedIndex !== -1 &&
-        (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value !== null)
+        (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value != null)
       ) {
         this.select.nativeElement.selectedIndex = -1;
       }

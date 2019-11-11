@@ -3,7 +3,7 @@ import {
   FormlyValueChangeEvent,
   FormlyFieldConfigCache,
 } from '../../components/formly.field.config';
-import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty } from '../../utils';
+import { isObject, isNil, isFunction, defineHiddenProp, wrapProperty } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
@@ -172,11 +172,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           const path = key.replace(/^model\./, ''),
             control = field.key && field.key === path ? field.formControl : field.form.get(path);
 
-          if (
-            control &&
-            !(isNullOrUndefined(control.value) && isNullOrUndefined(expressionValue)) &&
-            control.value !== expressionValue
-          ) {
+          if (control && !(isNil(control.value) && isNil(expressionValue)) && control.value !== expressionValue) {
             control.patchValue(expressionValue, { emitEvent: false });
           }
         }
@@ -187,7 +183,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private checkFieldVisibilityChange(field: FormlyFieldConfigCache, ignoreCache): boolean {
-    if (!field || isNullOrUndefined(field.hideExpression)) {
+    if (!field || isNil(field.hideExpression)) {
       return false;
     }
 
