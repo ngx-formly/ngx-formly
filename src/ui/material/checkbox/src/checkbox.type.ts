@@ -11,7 +11,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
       [required]="to.required"
       [formlyAttributes]="field"
       [tabindex]="to.tabindex"
-      [indeterminate]="to.indeterminate && formControl.value === null"
+      [indeterminate]="to.indeterminate && formControl.value == null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition"
     >
