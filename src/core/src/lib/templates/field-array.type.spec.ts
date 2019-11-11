@@ -124,7 +124,7 @@ describe('Array Field Type', () => {
     form.at(0).setValue('foo');
 
     expect(form.at(1)).not.toEqual(form.at(0));
-    expect(form.at(1).value).toEqual(null);
+    expect(form.at(1).value).toBeUndefined();
   });
 
   it('should mark the form dirty on Add/Remove', () => {

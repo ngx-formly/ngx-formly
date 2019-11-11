@@ -50,7 +50,7 @@ export class FieldFormExtension implements FormlyExtension {
 
       control = field.fieldGroup
         ? new FormGroup({}, controlOptions)
-        : new FormControl(getFieldValue(field), controlOptions);
+        : new FormControl({ value: getFieldValue(field), disabled: false }, controlOptions);
     }
 
     registerControl(field, control);
