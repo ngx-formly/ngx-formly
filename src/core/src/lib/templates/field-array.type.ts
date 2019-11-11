@@ -1,6 +1,6 @@
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
-import { clone, isNullOrUndefined, assignFieldValue, getFieldValue } from '../utils';
+import { clone, isNil, assignFieldValue, getFieldValue } from '../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
@@ -35,7 +35,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   }
 
   add(i?: number, initialModel?: any, { markAsDirty } = { markAsDirty: true }) {
-    i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
+    i = isNil(i) ? this.field.fieldGroup.length : i;
     if (!this.model) {
       assignFieldValue(this.field, []);
     }
