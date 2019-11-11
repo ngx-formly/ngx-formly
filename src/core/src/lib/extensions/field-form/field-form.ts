@@ -42,7 +42,7 @@ export class FieldFormExtension implements FormlyExtension {
       const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
       control = field.fieldGroup
         ? new FormGroup({}, controlOptions)
-        : new FormControl(getFieldValue(field), controlOptions);
+        : new FormControl({ value: getFieldValue(field) }, controlOptions);
     }
 
     registerControl(field, control);
