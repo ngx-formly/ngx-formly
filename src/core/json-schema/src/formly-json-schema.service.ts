@@ -24,7 +24,7 @@ function isInteger(value: any) {
 }
 
 function isEmpty(v: any) {
-  return v === '' || v === undefined || v === null;
+  return v === '' || v == null;
 }
 
 function isConst(schema: JSONSchema7) {
