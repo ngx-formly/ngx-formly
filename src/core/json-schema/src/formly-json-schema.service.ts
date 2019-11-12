@@ -182,7 +182,6 @@ export class FormlyJsonschema {
 
         // TODO: remove isEnum check once adding an option to skip extension
         if (!this.isEnum(schema)) {
-          field.fieldGroup = [];
           Object.defineProperty(field, 'fieldArray', {
             get: () => {
               if (!Array.isArray(schema.items)) {
@@ -190,8 +189,9 @@ export class FormlyJsonschema {
                 return this._toFieldConfig(<JSONSchema7> schema.items, options);
               }
 
-              const itemSchema = schema.items[field.fieldGroup.length]
-                ? schema.items[field.fieldGroup.length]
+              const length = field.fieldGroup ? field.fieldGroup.length : 0;
+              const itemSchema = schema.items[length]
+                ? schema.items[length]
                 : schema.additionalItems;
 
               return itemSchema
