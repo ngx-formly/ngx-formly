@@ -7,11 +7,6 @@ import { registerControl } from './utils';
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
-    // TODO: add an option to skip extension
-    if (field.fieldArray) {
-      return;
-    }
-
     if (field.key) {
       this.addFormControl(field);
     }

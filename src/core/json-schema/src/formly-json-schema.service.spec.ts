@@ -162,7 +162,6 @@ describe('Service: FormlyJsonschema', () => {
             defaultValue: undefined,
             templateOptions: { ...emmptyTemplateOptions },
             fieldArray: childConfig,
-            fieldGroup: [],
          };
 
          expect(config).toEqual(baseConfig);
@@ -184,10 +183,11 @@ describe('Service: FormlyJsonschema', () => {
 
         expect(config.type).toEqual('array');
         expect(config.fieldArray).toEqual(childConfig);
+        expect(config.fieldGroup).toBeUndefined();
         // TODO: is this the best way to test this?
         // artificially increase the length of the fieldGroup
         // since the getter that is defined is based on that.
-        config.fieldGroup.push(null);
+        config.fieldGroup = [null];
         expect(config.fieldArray).toEqual(childConfig2);
         config.fieldGroup.push(null);
         expect(config.fieldArray).toEqual({});
@@ -213,7 +213,7 @@ describe('Service: FormlyJsonschema', () => {
         // TODO: is this the best way to test this?
         // artificially increase the length of the fieldGroup
         // since the getter that is defined is based on that.
-        config.fieldGroup.push(null);
+        config.fieldGroup = [null];
         expect(config.fieldArray).toEqual(childConfig2);
         config.fieldGroup.push(null);
         // should return the additional items schema when the fieldGroup's length
@@ -635,7 +635,6 @@ describe('Service: FormlyJsonschema', () => {
           type: 'array',
           defaultValue: undefined,
           templateOptions: emmptyTemplateOptions,
-          fieldGroup: [],
           fieldArray: jasmine.any(Object) as any,
         };
 
