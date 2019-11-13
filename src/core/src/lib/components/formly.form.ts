@@ -40,7 +40,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   @Output() modelChange = new EventEmitter<any>();
   @ViewChild('content') set content(content: ElementRef<HTMLElement>) {
-    if (content.nativeElement.nextSibling) {
+    if (content && content.nativeElement.nextSibling) {
       console.warn(`NgxFormly: content projection for 'formly-form' component is deprecated since v5.5, you should avoid passing content inside the 'formly-form' tag.`);
     }
   }
