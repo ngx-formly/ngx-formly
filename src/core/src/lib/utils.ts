@@ -132,10 +132,9 @@ export function clone(value: any): any {
   // need to make a deep copy so we dont use Object.assign
   // also Object.assign wont copy property descriptor exactly
   return Object.keys(value).reduce((newVal, prop) => {
-    const propDescriptor = Object.getOwnPropertyDescriptor(value, prop);
-
-    if (propDescriptor.get) {
-      Object.defineProperty(newVal, prop, { ...propDescriptor, get: () => clone(value[prop]) });
+    const propDesc = Object.getOwnPropertyDescriptor(value, prop);
+    if (propDesc.get) {
+      Object.defineProperty(newVal, prop, propDesc);
     } else {
       newVal[prop] = clone(value[prop]);
     }

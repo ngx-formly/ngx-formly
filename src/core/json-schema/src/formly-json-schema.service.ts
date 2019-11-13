@@ -182,20 +182,21 @@ export class FormlyJsonschema {
 
         // TODO: remove isEnum check once adding an option to skip extension
         if (!this.isEnum(schema)) {
+          const _this = this;
           Object.defineProperty(field, 'fieldArray', {
-            get: () => {
+            get: function() {
               if (!Array.isArray(schema.items)) {
                 // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-                return this._toFieldConfig(<JSONSchema7> schema.items, options);
+                return _this._toFieldConfig(<JSONSchema7> schema.items, options);
               }
 
-              const length = field.fieldGroup ? field.fieldGroup.length : 0;
+              const length = this.fieldGroup ? this.fieldGroup.length : 0;
               const itemSchema = schema.items[length]
                 ? schema.items[length]
                 : schema.additionalItems;
 
               return itemSchema
-                ? this._toFieldConfig(<JSONSchema7> itemSchema, options)
+                ? _this._toFieldConfig(<JSONSchema7> itemSchema, options)
                 : {};
             },
             enumerable: true,
