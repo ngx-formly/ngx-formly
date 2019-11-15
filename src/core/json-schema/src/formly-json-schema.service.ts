@@ -19,6 +19,10 @@ function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
 }
 
+function isConst(schema: JSONSchema7) {
+  return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
+}
+
 function clearFieldModel(field: FormlyFieldConfig) {
   if (field.key) {
     field.formControl.patchValue(undefined);
@@ -127,10 +131,29 @@ export class FormlyJsonschema {
           }
 
           if (schemaDeps[key]) {
-            field.fieldGroup.push({
-              ...this._toFieldConfig(schemaDeps[key], options),
-              hideExpression: m => !m || isEmpty(m[key]),
-            });
+            const getConstValue = (s: JSONSchema7) => {
+              return s.hasOwnProperty('const') ? s.const : s.enum[0];
+            };
+
+            const oneOfSchema = schemaDeps[key].oneOf;
+            if (
+              oneOfSchema
+              && oneOfSchema.every(o => o.properties && o.properties[key] && isConst(o.properties[key]))
+            ) {
+              oneOfSchema.forEach(oneOfSchema => {
+                const { [key]: constSchema, ...properties } = oneOfSchema.properties;
+                field.fieldGroup.push({
+                  ...this._toFieldConfig({ ...oneOfSchema, properties }, options),
+                  hideExpression: m => !m || getConstValue(constSchema) !== m[key],
+                });
+              });
+            } else {
+              field.fieldGroup.push({
+                ...this._toFieldConfig(schemaDeps[key], options),
+                hideExpression: m => !m || isEmpty(m[key]),
+              });
+            }
+
           }
         });
 
@@ -424,8 +447,6 @@ export class FormlyJsonschema {
   }
 
   private isEnum(schema: JSONSchema7) {
-    const isConst = (s: JSONSchema7) => s.hasOwnProperty('const') || (s.enum && s.enum.length === 1);
-
     return schema.enum
       || (schema.anyOf && schema.anyOf.every(isConst))
       || (schema.oneOf && schema.oneOf.every(isConst))
