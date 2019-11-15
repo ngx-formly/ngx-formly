@@ -368,26 +368,65 @@ describe('Service: FormlyJsonschema', () => {
           });
         });
 
-        it('with schema dependencies', () => {
-          const schema: JSONSchema7 = {
-            'type': 'object',
-            'properties': {
-              'credit_card': { 'type': 'number' },
-            },
-            'dependencies': {
-              'credit_card': {
-                'properties': {
-                  'billing_address': { 'type': 'string' },
-                },
-                'required': ['billing_address'],
+        describe('with schema dependencies', () => {
+          it('should display extended schema', () => {
+            const schema: JSONSchema7 = {
+              'type': 'object',
+              'properties': {
+                'credit_card': { 'type': 'number' },
               },
-            },
-          };
+              'dependencies': {
+                'credit_card': {
+                  'properties': {
+                    'billing_address': { 'type': 'string' },
+                  },
+                  'required': ['billing_address'],
+                },
+              },
+            };
 
-          const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
-          const hideExpr = config[1].hideExpression as any;
-          expect(hideExpr({ credit_card: null })).toBeTruthy();
-          expect(hideExpr({ credit_card: 121223233 })).toBeFalsy();
+            const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
+            const hideExpr = config[1].hideExpression as any;
+            expect(hideExpr({ credit_card: null })).toBeTruthy();
+            expect(hideExpr({ credit_card: 121223233 })).toBeFalsy();
+          });
+
+          it('should display extended schema with oneOf', () => {
+            const schema: JSONSchema7 = {
+              'type': 'object',
+              'properties': {
+                'state': { 'type': 'boolean' },
+              },
+              'dependencies': {
+                'state': {
+                  'type': 'object',
+                  'oneOf': [
+                    {
+                      'properties': {
+                        'state': { 'enum': [true] },
+                        'option1': { 'type': 'string' },
+                      },
+                    },
+                    {
+                      'properties': {
+                        'state': { 'const': false },
+                        'option2': { 'type': 'string' },
+                      },
+                    },
+                  ],
+                },
+              },
+            };
+
+            const [, opt1Field, opt2Field] = formlyJsonschema.toFieldConfig(schema).fieldGroup;
+            const opt1HideExpr = opt1Field.hideExpression as any;
+            expect(opt1HideExpr({ state: true })).toBeFalsy();
+            expect(opt1HideExpr({ state: false })).toBeTruthy();
+
+            const opt2HideExpr = opt2Field.hideExpression as any;
+            expect(opt2HideExpr({ state: true })).toBeTruthy();
+            expect(opt2HideExpr({ state: false })).toBeFalsy();
+          });
         });
       });
     });
