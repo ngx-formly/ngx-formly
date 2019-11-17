@@ -116,20 +116,14 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   onFocus($event: any) {
-    if (!this.field.focus) {
-      this.field.focus = true;
-    }
-
+    this.field['___$focus'] = true;
     if (this.to.focus) {
       this.to.focus(this.field, $event);
     }
   }
 
   onBlur($event: any) {
-    if (this.field.focus) {
-      this.field.focus = false;
-    }
-
+    this.field['___$focus'] = false;
     if (this.to.blur) {
       this.to.blur(this.field, $event);
     }

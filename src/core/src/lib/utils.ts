@@ -153,16 +153,16 @@ export function wrapProperty<T = any>(
   prop: string,
   setFn: (change: {currentValue: T, previousValue?: T, firstChange: boolean}) => void,
 ) {
-  let currentValue = field[prop];
-  setFn({ currentValue, firstChange: true });
+  defineHiddenProp(field, `___$${prop}`, field[prop]);
+  setFn({ currentValue: field[prop], firstChange: true });
 
   Object.defineProperty(field, prop, {
     configurable: true,
-    get: () => currentValue,
-    set: newVal => {
-      if (newVal !== currentValue) {
-        const previousValue = currentValue;
-        currentValue = newVal;
+    get: () => field[`___$${prop}`],
+    set: currentValue => {
+      if (currentValue !== field[`___$${prop}`]) {
+        const previousValue = field[`___$${prop}`];
+        field[`___$${prop}`] = currentValue;
         setFn({ previousValue, currentValue, firstChange: false });
       }
     },
