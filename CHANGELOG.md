@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.5"></a>
+## [5.5.5](https://github.com/ngx-formly/ngx-formly/compare/v5.5.4...v5.5.5) (2019-11-18)
+
+
+### Bug Fixes
+
+* **core:** avoid recursive focus/blur calls ([#1936](https://github.com/ngx-formly/ngx-formly/issues/1936)) ([1ea96f9](https://github.com/ngx-formly/ngx-formly/commit/1ea96f9)), closes [#1935](https://github.com/ngx-formly/ngx-formly/issues/1935)
+* **core:** check if content is defined ([#1925](https://github.com/ngx-formly/ngx-formly/issues/1925)) ([a68a719](https://github.com/ngx-formly/ngx-formly/commit/a68a719))
+* **core:** propagate disabled state to hidden fields ([#1939](https://github.com/ngx-formly/ngx-formly/issues/1939)) ([2cc9170](https://github.com/ngx-formly/ngx-formly/commit/2cc9170)), closes [#1932](https://github.com/ngx-formly/ngx-formly/issues/1932)
+* **core:** use bind of the cloned object for enumerable getter ([#1924](https://github.com/ngx-formly/ngx-formly/issues/1924)) ([927151b](https://github.com/ngx-formly/ngx-formly/commit/927151b)), closes [#1923](https://github.com/ngx-formly/ngx-formly/issues/1923)
+* **json-schema:** allow adjusting field Array before build step ([#1919](https://github.com/ngx-formly/ngx-formly/issues/1919)) ([3ae0e8a](https://github.com/ngx-formly/ngx-formly/commit/3ae0e8a))
+* **json-schema:** handle oneOf when resolving schema deps ([#1933](https://github.com/ngx-formly/ngx-formly/issues/1933)) ([9ee889e](https://github.com/ngx-formly/ngx-formly/commit/9ee889e)), closes [#1928](https://github.com/ngx-formly/ngx-formly/issues/1928)
+* **material:** force static query for FormField wrapper ([#1927](https://github.com/ngx-formly/ngx-formly/issues/1927)) ([7e7c4ca](https://github.com/ngx-formly/ngx-formly/commit/7e7c4ca)), closes [#1900](https://github.com/ngx-formly/ngx-formly/issues/1900)
+
+
+
 <a name="5.5.4"></a>
 ## [5.5.4](https://github.com/ngx-formly/ngx-formly/compare/v5.5.3...v5.5.4) (2019-11-10)
 
