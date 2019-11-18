@@ -129,7 +129,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       );
     }
 
-    if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
+    if (name === 'onChanges' && changes.field) {
       this.renderField(this.containerRef, this.field, this.field.wrappers);
     }
   }
