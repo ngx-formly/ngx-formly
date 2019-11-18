@@ -82,7 +82,10 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     }
 
     this.focusMonitor.monitor(this.elementRef, true).subscribe(origin => {
-      this.field.focus = !!origin;
+      if (!origin && this.field.focus) {
+        this.field.focus = false;
+      }
+
       this.stateChanges.next();
     });
   }
