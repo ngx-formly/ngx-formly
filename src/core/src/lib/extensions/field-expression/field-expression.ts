@@ -160,6 +160,10 @@ export class FieldExpressionExtension implements FormlyExtension {
           [expressionValue, field.model, field],
         );
 
+        if (key === 'templateOptions.disabled' && field.key) {
+          this.setDisabledState(field, expressionValue);
+        }
+
         if (key.indexOf('model.') === 0) {
           const path = key.replace(/^model\./, ''),
             control = field.key && key === path ? field.formControl : field.parent.formControl.get(path);
@@ -197,6 +201,18 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     return markForCheck;
+  }
+
+  private setDisabledState(field: FormlyFieldConfig, value: boolean) {
+    if (field.fieldGroup) {
+      field.fieldGroup
+        .filter(f => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('templateOptions.disabled'))
+        .forEach(f => this.setDisabledState(f, value));
+    }
+
+    if (field.key && field.templateOptions.disabled !== value) {
+      field.templateOptions.disabled = value;
+    }
   }
 
   private toggleFormControl(field: FormlyFieldConfig, hide: boolean) {
