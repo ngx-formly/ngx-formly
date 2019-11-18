@@ -403,6 +403,32 @@ describe('FieldExpressionExtension', () => {
         expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeTruthy();
         expect(fields[0].fieldGroup[1].templateOptions.disabled).toBeFalsy();
       });
+
+      it('should update disabled state of hidden fields', () => {
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'group',
+            expressionProperties: {
+              'templateOptions.disabled': 'model.disableToggle',
+            },
+            fieldGroup: [
+              { key: 'child', hide: true },
+            ],
+          },
+        ];
+
+        const model = {};
+        builder.buildForm(form, fields, model, options);
+
+        expect(fields[0].templateOptions.disabled).toEqual(false);
+        expect(fields[0].fieldGroup[0].templateOptions.disabled).toEqual(false);
+
+        model['group']['disableToggle'] = true;
+        options._checkField({ formControl: form, fieldGroup: fields, model, options });
+
+        expect(fields[0].templateOptions.disabled).toEqual(true);
+        expect(fields[0].fieldGroup[0].templateOptions.disabled).toEqual(true);
+      });
     });
 
     describe('expression as observable', () => {
