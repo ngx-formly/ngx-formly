@@ -554,7 +554,10 @@ describe('Service: FormlyJsonschema', () => {
           it('should support enum as oneOf/const structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2, readOnly: true }],
+              oneOf: [
+                { title: '1', const: 1 },
+                { title: '2', const: 2, readOnly: true },
+              ],
             };
 
             const {
@@ -563,13 +566,20 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2, disabled: true }]);
+
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2, disabled: true },
+            ]);
           });
 
           it('should support enum as oneOf/enum structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              oneOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const {
@@ -578,13 +588,19 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
 
           it('should support enum as anyOf structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              anyOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              anyOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const {
@@ -593,7 +609,10 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
         });
 
@@ -619,7 +638,10 @@ describe('Service: FormlyJsonschema', () => {
               definitions: {
                 foo: {
                   type: 'string',
-                  oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+                  oneOf: [
+                    { title: '1', const: 1 },
+                    { title: '2', const: 2 },
+                  ],
                 },
               },
               type: 'array',
@@ -878,7 +900,10 @@ describe('Service: FormlyJsonschema', () => {
         };
         const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
         const expected = fieldGroup.map(({ key, templateOptions: { required } }) => ({ key, required }));
-        expect(expected).toEqual([{ key: 'firstname', required: true }, { key: 'lastname', required: true }]);
+        expect(expected).toEqual([
+          { key: 'firstname', required: true },
+          { key: 'lastname', required: true },
+        ]);
       });
 
       it('should merge allOf with base schema', () => {
