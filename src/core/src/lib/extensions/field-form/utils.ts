@@ -1,6 +1,6 @@
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
-import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp } from '../../utils';
+import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty } from '../../utils';
 
 export function unregisterControl(field: FormlyFieldConfig) {
   const form = field.formControl.parent as FormArray | FormGroup;
@@ -24,17 +24,15 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
   control = control || field.formControl;
   if (!field.formControl && control) {
     defineHiddenProp(field, 'formControl', control);
-    if (field.templateOptions.disabled && control.enabled) {
-      control.disable();
-    }
-
-    if (delete field.templateOptions.disabled) {
-      Object.defineProperty(field.templateOptions, 'disabled', {
-        get: () => !field.formControl.enabled,
-        set: (value: boolean) => value ? field.formControl.disable() : field.formControl.enable(),
-        enumerable: true,
-        configurable: true,
-      });
+    wrapProperty(field.templateOptions, 'disabled', ({ firstChange, currentValue }) => {
+      if (!firstChange) {
+        currentValue ? field.formControl.disable() : field.formControl.enable();
+      }
+    });
+    if (control.registerOnDisabledChange) {
+      control.registerOnDisabledChange(
+        (value: boolean) => field.templateOptions['___$disabled'] = value,
+      );
     }
   }
 

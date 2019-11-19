@@ -191,6 +191,40 @@ describe('FormlyFormBuilder service', () => {
     });
   });
 
+  it('should disable sub-fields when parent is disabled', () => {
+    const field: FormlyFieldConfig = {
+      key: 'address',
+      templateOptions: { disabled: true },
+      fieldGroup: [
+        { key: 'city' },
+        { key: 'street' },
+      ],
+    };
+
+    builder.buildForm(form, [field], {}, {});
+
+    const control = field.formControl;
+    expect(control.disabled).toEqual(true);
+    expect(control.get('city').disabled).toEqual(true);
+    expect(control.get('street').disabled).toEqual(true);
+  });
+
+  it('should not affect parent disabled state', () => {
+    const field: FormlyFieldConfig = {
+      key: 'address',
+      fieldGroup: [
+        { key: 'city', templateOptions: { disabled: true } },
+        { key: 'street' },
+      ],
+    };
+
+    builder.buildForm(form, [field], {}, {});
+
+    const control = field.formControl;
+    expect(control.disabled).toEqual(false);
+    expect(control.get('city').disabled).toEqual(true);
+    expect(control.get('street').disabled).toEqual(false);
+  });
 
   describe('assign model to fields', () => {
     let fields: FormlyFieldConfig[],

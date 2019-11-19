@@ -63,6 +63,7 @@ export class CoreExtension implements FormlyExtension {
         label: '',
         placeholder: '',
         focus: false,
+        disabled: false,
       },
     });
 

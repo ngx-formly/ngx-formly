@@ -55,7 +55,13 @@ export class FieldFormExtension implements FormlyExtension {
         _validators: validators,
         _asyncValidators: asyncValidators,
         formControl: control,
+        templateOptions: { disabled },
       } = field;
+
+      if (disabled && control.enabled) {
+        control.disable({ emitEvent: false, onlySelf: true });
+        updateValidity = true;
+      }
 
       if (validators !== control.validator) {
         control.setValidators(validators);
