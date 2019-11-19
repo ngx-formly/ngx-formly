@@ -67,7 +67,7 @@ describe('Array Field Type', () => {
     expect(field.parent.model).toEqual({ array: [undefined] });
 
     // update
-    spy.mockReset()
+    spy.mockReset();
     form.at(0).patchValue('***');
     detectChanges();
 

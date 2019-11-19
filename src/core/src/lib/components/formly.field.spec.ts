@@ -225,7 +225,7 @@ describe('FormlyField Component', () => {
         }),
       });
       const [spy, subscription] = createFieldChangesSpy(field);
-  
+
       field.formControl.get('bar').setValue('foo');
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ value: { bar: 'foo' }, field, type: 'valueChanges' });
@@ -235,7 +235,10 @@ describe('FormlyField Component', () => {
 
     it('should emit `modelChange` twice when key is duplicated', () => {
       const { field } = renderComponent({
-        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+        fieldGroup: [
+          { key: 'title', type: 'input' },
+          { key: 'title', type: 'input' },
+        ],
       });
 
       const [spy, subscription] = createFieldChangesSpy(field);
@@ -247,7 +250,10 @@ describe('FormlyField Component', () => {
 
     it('should keep the value in sync when using multiple fields with same key', () => {
       const { field, detectChanges, queryAll } = renderComponent({
-        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+        fieldGroup: [
+          { key: 'title', type: 'input' },
+          { key: 'title', type: 'input' },
+        ],
       });
 
       const inputs = queryAll<HTMLInputElement>('input');

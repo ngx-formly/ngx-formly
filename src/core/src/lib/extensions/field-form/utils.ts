@@ -96,12 +96,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     form = <FormGroup>form.get([path]);
   }
 
-  if (
-    field['autoClear'] &&
-    field.parent &&
-    !isUndefined(field.defaultValue) &&
-    isUndefined(getFieldValue(field))
-  ) {
+  if (field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
     assignFieldValue(field, field.defaultValue);
   }
 

@@ -127,7 +127,7 @@ describe('FormlyAttributes Component', () => {
         keydown: () => {},
         click: () => {},
         keypress: () => {},
-      }
+      },
     });
 
     const expectEventCall = (evt: string) => {

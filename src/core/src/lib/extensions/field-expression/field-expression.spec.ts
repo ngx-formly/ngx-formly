@@ -111,7 +111,10 @@ describe('FieldExpressionExtension', () => {
 
       it('should toggle field control when hide changed programmatically', () => {
         const { fieldGroup: fields, formControl: form, options } = buildField({
-          fieldGroup: [{ hide: false, key: 'foo' }, { hide: true, fieldGroup: [{ key: 'bar' }] }],
+          fieldGroup: [
+            { hide: false, key: 'foo' },
+            { hide: true, fieldGroup: [{ key: 'bar' }] },
+          ],
         });
 
         expect(form.get('foo')).not.toBeNull();
@@ -203,18 +206,14 @@ describe('FieldExpressionExtension', () => {
 
     it('should ignore validation of hidden fields (same key)', () => {
       const field = buildField({
-        fieldGroup: [
-          { key: 'name', hide: true, templateOptions: { required: true } },
-          { key: 'name' },
-        ],
+        fieldGroup: [{ key: 'name', hide: true, templateOptions: { required: true } }, { key: 'name' }],
       });
-  
-  
+
       field.fieldGroup[0].hide = false;
 
       field.options._checkField(field);
       expect(field.form.valid).toBeFalse();
-    });  
+    });
   });
 
   describe('expressionProperties', () => {
