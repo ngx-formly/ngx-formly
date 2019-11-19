@@ -590,37 +590,56 @@ describe('Service: FormlyJsonschema', () => {
           it('should support enum as oneOf/const structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2, readOnly: true }],
+              oneOf: [
+                { title: '1', const: 1 },
+                { title: '2', const: 2, readOnly: true },
+              ],
             };
 
             const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2, disabled: true }]);
+
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2, disabled: true },
+            ]);
           });
 
           it('should support enum as oneOf/enum structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              oneOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
 
           it('should support enum as anyOf structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              anyOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              anyOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
         });
 
@@ -643,10 +662,13 @@ describe('Service: FormlyJsonschema', () => {
 
           it('with nested item schema definition', () => {
             const numSchema: JSONSchema7 = {
-              'definitions': {
-                'foo': {
-                  'type': 'string',
-                  oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+              definitions: {
+                foo: {
+                  type: 'string',
+                  oneOf: [
+                    { title: '1', const: 1 },
+                    { title: '2', const: 2 },
+                  ],
                 },
               },
               type: 'array',

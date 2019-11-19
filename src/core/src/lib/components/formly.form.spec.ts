@@ -260,7 +260,7 @@ describe('FormlyForm Component', () => {
 
       const app = fixture.componentInstance;
       let barControl = null;
-      app.modelChange = () => barControl = app.form.get('bar');
+      app.modelChange = () => (barControl = app.form.get('bar'));
 
       app.form.get('foo').patchValue('***');
       fixture.detectChanges();
