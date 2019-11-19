@@ -502,7 +502,10 @@ describe('Service: FormlyJsonschema', () => {
           it('should support enum as oneOf/const structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+              oneOf: [
+                { title: '1', const: 1 },
+                { title: '2', const: 2 },
+              ],
             };
 
             const {
@@ -511,13 +514,19 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
 
           it('should support enum as oneOf/enum structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              oneOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const {
@@ -526,13 +535,19 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
 
           it('should support enum as anyOf structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              anyOf: [{ title: '1', enum: [1] }, { title: '2', enum: [2] }],
+              anyOf: [
+                { title: '1', enum: [1] },
+                { title: '2', enum: [2] },
+              ],
             };
 
             const {
@@ -541,7 +556,10 @@ describe('Service: FormlyJsonschema', () => {
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([
+              { label: '1', value: 1 },
+              { label: '2', value: 2 },
+            ]);
           });
         });
 
@@ -567,7 +585,10 @@ describe('Service: FormlyJsonschema', () => {
               definitions: {
                 foo: {
                   type: 'string',
-                  oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+                  oneOf: [
+                    { title: '1', const: 1 },
+                    { title: '2', const: 2 },
+                  ],
                 },
               },
               type: 'array',
@@ -826,7 +847,10 @@ describe('Service: FormlyJsonschema', () => {
         };
         const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
         const expected = fieldGroup.map(({ key, templateOptions: { required } }) => ({ key, required }));
-        expect(expected).toEqual([{ key: 'firstname', required: true }, { key: 'lastname', required: true }]);
+        expect(expected).toEqual([
+          { key: 'firstname', required: true },
+          { key: 'lastname', required: true },
+        ]);
       });
 
       it('should merge allOf with base schema', () => {
@@ -930,20 +954,34 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should render the valid oneOf field on first render', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig(schema);
 
           builder.buildForm(new FormGroup({}), [f], {}, {});
-          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [
+            ,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = f.fieldGroup;
 
           expect(fooField.hide).toBeTrue();
           expect(barField.hide).toBeFalse();
         });
 
         it('should render the selected oneOf field', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig(schema);
           const model: any = { foo: 'test' };
           builder.buildForm(new FormGroup({}), [f], model, {});
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [
+            enumField,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = f.fieldGroup;
 
           expect(fooField.hide).toBeFalse();
           expect(barField.hide).toBeTrue();
@@ -957,7 +995,9 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should take account of default value', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig({
             type: 'object',
             oneOf: [
               { properties: { foo: { type: 'string', default: 'foo' } } },
@@ -966,7 +1006,12 @@ describe('Service: FormlyJsonschema', () => {
           });
           const model: any = {};
           builder.buildForm(new FormGroup({}), [f], model, {});
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [
+            enumField,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = f.fieldGroup;
 
           expect(fooField.hide).toBeFalse();
           expect(barField.hide).toBeTrue();
@@ -981,7 +1026,9 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should set default value on change', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig({
             type: 'object',
             oneOf: [
               { properties: { foo: { type: 'string', default: 'foo' } } },
@@ -990,7 +1037,12 @@ describe('Service: FormlyJsonschema', () => {
           });
           const model: any = { bar: 'test' };
           builder.buildForm(new FormGroup({}), [f], model, { _initialModel: { bar: 'test' } } as any);
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [
+            enumField,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = f.fieldGroup;
 
           expect(fooField.hide).toBeTruthy();
           expect(barField.hide).toBeFalsy();
@@ -1049,17 +1101,26 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should render the valid anyOf field on first render', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig(schema);
 
           builder.buildForm(new FormGroup({}), [f], {}, {});
-          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [
+            ,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = f.fieldGroup;
 
           expect(fooField.hide).toBeTrue();
           expect(barField.hide).toBeFalse();
         });
 
         it('should render the filled anyOf field on first render', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig({
             type: 'object',
             anyOf: [
               { properties: { foo: { type: 'string', default: 'foo' } } },
@@ -1068,17 +1129,29 @@ describe('Service: FormlyJsonschema', () => {
           });
 
           builder.buildForm(new FormGroup({}), [f], { bar: 'bar' }, {});
-          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [
+            ,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = f.fieldGroup;
 
           expect(fooField.hide).toBeTrue();
           expect(barField.hide).toBeFalse();
         });
 
         it('should render the selected anyOf field', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig(schema);
           const model: any = { foo: 'test' };
           builder.buildForm(new FormGroup({}), [f], model, {});
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [
+            enumField,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = f.fieldGroup;
 
           expect(fooField.hide).toBeFalse();
           expect(barField.hide).toBeTrue();
@@ -1092,7 +1165,9 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should reset the unselected anyOf field using default value', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig({
             type: 'object',
             anyOf: [
               { properties: { foo: { type: 'string', default: 'foo' } } },
@@ -1113,7 +1188,9 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should reset the unselected anyOf field (same key)', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig({
             type: 'object',
             anyOf: [
               { properties: { foo: { type: 'string', default: 'foo' } } },

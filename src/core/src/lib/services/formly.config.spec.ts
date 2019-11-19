@@ -90,7 +90,10 @@ describe('FormlyConfig service', () => {
 
     it('should merge existing options when replacing a field type', () => {
       const config = new FormlyConfig();
-      config.setType([{ name: 'input1', component: TestComponent }, { name: 'input1', wrappers: ['label'] }]);
+      config.setType([
+        { name: 'input1', component: TestComponent },
+        { name: 'input1', wrappers: ['label'] },
+      ]);
 
       expect(config.getType('input1')).toEqual({
         name: 'input1',

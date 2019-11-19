@@ -18,7 +18,11 @@ describe('ui-material: Formly Field Select Component', () => {
       key: 'name',
       type: 'select',
       templateOptions: {
-        options: [{ value: 1, label: 'label 1' }, { value: 2, label: 'label 2' }, { value: 3, label: 'label 3' }],
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+          { value: 3, label: 'label 3' },
+        ],
       },
     });
 
@@ -189,7 +193,11 @@ describe('ui-material: Formly Field Select Component', () => {
         templateOptions: {
           multiple: true,
           selectAllOption: 'Click me!!',
-          options: [{ id: '1', name: 'Soccer' }, { id: '2', name: 'Basketball' }, { id: '3', name: 'Martial Arts' }],
+          options: [
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: '3', name: 'Martial Arts' },
+          ],
           valueProp: 'id',
           labelProp: 'name',
         },

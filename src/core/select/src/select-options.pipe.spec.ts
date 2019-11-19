@@ -22,11 +22,11 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
 
   it('should add a flag for flat options', () => {
     const field: any = { templateOptions: {} };
-    pipe.transform([{ label: '1', value: '1' }], field).subscribe((options) => {
+    pipe.transform([{ label: '1', value: '1' }], field).subscribe(options => {
       expect(field.templateOptions._flatOptions).toEqual(true);
     });
 
-    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe((options) => {
+    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe(options => {
       expect(field.templateOptions._flatOptions).toEqual(false);
     });
   });
@@ -85,7 +85,10 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [{ label: '1', value: '1', disabled: true }, { label: '2', value: '2', disabled: false }],
+            group: [
+              { label: '1', value: '1', disabled: true },
+              { label: '2', value: '2', disabled: false },
+            ],
           },
           {
             label: '2',
@@ -113,7 +116,10 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [{ label: '1', value: '1', disabled: false }, { label: '2', value: '2', disabled: false }],
+            group: [
+              { label: '1', value: '1', disabled: false },
+              { label: '2', value: '2', disabled: false },
+            ],
           },
           {
             label: '2',
@@ -130,7 +136,10 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         expect(options).toEqual([
           {
             label: '1',
-            group: [{ label: '1', value: '1', disabled: false }, { label: '2', value: '2', disabled: false }],
+            group: [
+              { label: '1', value: '1', disabled: false },
+              { label: '2', value: '2', disabled: false },
+            ],
           },
           {
             label: '2',
