@@ -193,12 +193,11 @@ describe('FormlyField Component', () => {
     });
 
     it('should emit a valid model value when using square bracket notation for a fieldGroup key', () => {
-      const fixture = renderComponent({
+      const { field } = renderComponent({
         key: 'group[0]',
         fieldGroup: [{ key: 'name', type: 'input' }],
       });
 
-      const { field } = fixture.componentInstance;
       field.fieldGroup[0].formControl.setValue('***');
       expect(field.parent.model).toEqual({ group: [{ name: '***' }] });
     });
@@ -220,7 +219,10 @@ describe('FormlyField Component', () => {
 
     it('should emit `modelChange` twice when key is duplicated', () => {
       const { field } = renderComponent({
-        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+        fieldGroup: [
+          { key: 'title', type: 'input' },
+          { key: 'title', type: 'input' },
+        ],
       });
 
       const [spy, subscription] = createFieldChangesSpy(field);
@@ -232,7 +234,10 @@ describe('FormlyField Component', () => {
 
     it('should keep the value in sync when using multiple fields with same key', () => {
       const { field, detectChanges, queryAll } = renderComponent({
-        fieldGroup: [{ key: 'title', type: 'input' }, { key: 'title', type: 'input' }],
+        fieldGroup: [
+          { key: 'title', type: 'input' },
+          { key: 'title', type: 'input' },
+        ],
       });
 
       const inputs = queryAll<HTMLInputElement>('input');

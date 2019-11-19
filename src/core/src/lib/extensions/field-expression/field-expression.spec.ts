@@ -111,7 +111,10 @@ describe('FieldExpressionExtension', () => {
 
       it('should toggle field control when hide changed programmatically', () => {
         const { fieldGroup: fields, formControl: form, options } = buildField({
-          fieldGroup: [{ hide: false, key: 'foo' }, { hide: true, fieldGroup: [{ key: 'bar' }] }],
+          fieldGroup: [
+            { hide: false, key: 'foo' },
+            { hide: true, fieldGroup: [{ key: 'bar' }] },
+          ],
         });
 
         expect(form.get('foo')).not.toBeNull();
