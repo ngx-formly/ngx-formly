@@ -1,5 +1,6 @@
 import { unregisterControl, registerControl } from './utils';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 describe('registerControl', () => {
   it('FormArray', () => {
@@ -33,7 +34,6 @@ describe('registerControl', () => {
     expect(field.formControl.parent).not.toBeNull();
   });
 
-
   it('FormGroup with nested field key', () => {
     const field = {
       key: 'test.0',
@@ -49,7 +49,28 @@ describe('registerControl', () => {
     expect(field.formControl.parent).not.toBeNull();
   });
 
-  it('should take account of  model changes', () => {
+  it('should keep disabled state in sync with "templateOptions.disabled"', () => {
+    const field: FormlyFieldConfig = {
+      key: 'test',
+      templateOptions: { disabled: false },
+      parent: {},
+    };
+
+    registerControl(field, new FormControl());
+    field.templateOptions.disabled = true;
+    expect(field.formControl.disabled).toEqual(true);
+
+    field.templateOptions.disabled = false;
+    expect(field.formControl.disabled).toEqual(false);
+
+    field.formControl.disable();
+    expect(field.templateOptions.disabled).toEqual(true);
+
+    field.formControl.enable();
+    expect(field.templateOptions.disabled).toEqual(false);
+  });
+
+  it('should take account of model changes', () => {
     const field = {
       key: '0',
       formControl: new FormControl(),
