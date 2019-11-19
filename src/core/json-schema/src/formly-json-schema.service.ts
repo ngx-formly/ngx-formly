@@ -316,10 +316,7 @@ export class FormlyJsonschema {
               setTimeout(() => checkField(modeField));
 
               subscription = f.formControl.valueChanges
-                .pipe(
-                  startWith(formattedValue),
-                  pairwise(),
-                )
+                .pipe(startWith(formattedValue), pairwise())
                 .subscribe(([p, q]) => {
                   if (Array.isArray(p)) {
                     if (p.length >= q.length) {
