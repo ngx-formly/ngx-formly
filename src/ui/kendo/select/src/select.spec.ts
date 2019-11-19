@@ -23,7 +23,11 @@ describe('ui-kendo: Select Type', () => {
       type: 'select',
       templateOptions: {
         label: 'Select',
-        options: [{ value: 1, label: 'label 1' }, { value: 2, label: 'label 2' }, { value: 3, label: 'label 3' }],
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+          { value: 3, label: 'label 3' },
+        ],
       },
     });
 
