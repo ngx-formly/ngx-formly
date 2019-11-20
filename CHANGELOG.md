@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.6"></a>
+## [5.5.6](https://github.com/ngx-formly/ngx-formly/compare/v5.5.5...v5.5.6) (2019-11-20)
+
+
+### Bug Fixes
+
+* **core:** init disabled state to avoid emit change on re-build ([#1949](https://github.com/ngx-formly/ngx-formly/issues/1949)) ([c2842b9](https://github.com/ngx-formly/ngx-formly/commit/c2842b9))
+* **core:** move field first render call to onChanges ([#1941](https://github.com/ngx-formly/ngx-formly/issues/1941)) ([56f1032](https://github.com/ngx-formly/ngx-formly/commit/56f1032)), closes [#1938](https://github.com/ngx-formly/ngx-formly/issues/1938)
+* **core:** propagate disabled state to subfields ([#1943](https://github.com/ngx-formly/ngx-formly/issues/1943)) ([f0d9695](https://github.com/ngx-formly/ngx-formly/commit/f0d9695)), closes [#1528](https://github.com/ngx-formly/ngx-formly/issues/1528) [#1722](https://github.com/ngx-formly/ngx-formly/issues/1722) [#1743](https://github.com/ngx-formly/ngx-formly/issues/1743)
+* **json-schema:** verify templateOptions exists on field ([#1948](https://github.com/ngx-formly/ngx-formly/issues/1948)) ([29a0b0e](https://github.com/ngx-formly/ngx-formly/commit/29a0b0e))
+* **material:** allow prefix/suffix focus ([#1940](https://github.com/ngx-formly/ngx-formly/issues/1940)) ([5907dc5](https://github.com/ngx-formly/ngx-formly/commit/5907dc5)), closes [#1935](https://github.com/ngx-formly/ngx-formly/issues/1935)
+
+
+
 <a name="5.5.5"></a>
 ## [5.5.5](https://github.com/ngx-formly/ngx-formly/compare/v5.5.4...v5.5.5) (2019-11-18)
 
