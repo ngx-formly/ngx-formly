@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-field-ng-zorro-antd-select',
+  selector: 'formly-field-nz-select',
   template: `
     <nz-select
       [class.ng-dirty]="showError"
