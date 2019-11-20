@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-field-ng-zorro-antd-textarea',
+  selector: 'formly-field-nz-textarea',
   template: `
     <textarea nz-input [formControl]="formControl" [formlyAttributes]="field"></textarea>
   `,
