@@ -24,6 +24,8 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
   control = control || field.formControl;
   if (!field.formControl && control) {
     defineHiddenProp(field, 'formControl', control);
+
+    field.templateOptions.disabled = !!field.templateOptions.disabled;
     wrapProperty(field.templateOptions, 'disabled', ({ firstChange, currentValue }) => {
       if (!firstChange) {
         currentValue ? field.formControl.disable() : field.formControl.enable();
