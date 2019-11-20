@@ -315,14 +315,6 @@
             "project": "src/ui/ng-zorro-antd/ng-package.json"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/ui/ng-zorro-antd/src/test.ts",
-            "tsConfig": "src/ui/ng-zorro-antd/tsconfig.spec.json",
-            "karmaConfig": "src/ui/ng-zorro-antd/karma.conf.js"
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
