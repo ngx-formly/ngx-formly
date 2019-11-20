@@ -1062,5 +1062,39 @@ describe('Service: FormlyJsonschema', () => {
 
       expect(to.label).toBe('my custom label');
     });
+
+    it('should not crash when templateOptions are not defined', () => {
+      const schema: JSONSchema7 = JSON.parse(`{
+        "title": "Oggetto P1",
+        "type": "object",
+        "properties": {
+          "space1": {
+            "type": "string",
+            "title": "space1",
+            "widget": {
+                "formlyConfig": {
+                    "type": "__space__",
+                    "className": "flex-6-3"
+                }
+            }
+          }
+        }
+      }`);
+
+      const field = formlyJsonschema.toFieldConfig(schema, {
+        map: (field: FormlyFieldConfig, mapSource: JSONSchema7) => {
+          if (field.type === '__space__') {
+            // redefine the field
+            field = {
+              template: `<div class="space"></div>`,
+            };
+          }
+
+          return field;
+        },
+      });
+
+      expect(field).toBeDefined();
+    });
   });
 });
