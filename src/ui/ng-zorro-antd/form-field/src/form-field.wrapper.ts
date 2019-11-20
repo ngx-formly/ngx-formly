@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-wrapper-ng-zorro-antd-form-field',
+  selector: 'formly-wrapper-nz-form-field',
   template: `
     <nz-form-item>
       <ng-container *ngIf="to.label && to.hideLabel !== true">
@@ -10,13 +10,17 @@ import { FieldWrapper } from '@ngx-formly/core';
           {{ to.label }}
         </nz-form-label>
       </ng-container>
-      <nz-form-control [class.has-error]="showError">
+      <nz-form-control [nzValidateStatus]="errorState" [nzErrorTip]="errorTpl">
         <ng-container #fieldComponent></ng-container>
-        <nz-form-explain *ngIf="showError">
+        <ng-template #errorTpl let-control>
           <formly-validation-message [field]="field"></formly-validation-message>
-        </nz-form-explain>
+        </ng-template>
       </nz-form-control>
     </nz-form-item>
   `,
 })
-export class FormlyWrapperFormField extends FieldWrapper {}
+export class FormlyWrapperFormField extends FieldWrapper {
+  get errorState() {
+    return this.showError ? 'error' : '';
+  }
+}
