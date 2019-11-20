@@ -124,7 +124,7 @@ export class FormlyJsonschema {
           if (Array.isArray(schema.required) && schema.required.indexOf(key) !== -1) {
             f.templateOptions.required = true;
           }
-          if (!f.templateOptions.required && propDeps[key]) {
+          if (f.templateOptions && !f.templateOptions.required && propDeps[key]) {
             f.expressionProperties = {
               'templateOptions.required': m => m && propDeps[key].some(k => !isEmpty(m[k])),
             };
