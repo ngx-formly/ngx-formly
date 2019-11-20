@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-field-ng-zorro-antd-checkbox',
+  selector: 'formly-field-nz-checkbox',
   template: `
     <label
       nz-checkbox
-      [nzIndeterminate]="to.indeterminate && formControl.value === null"
+      [nzIndeterminate]="to.indeterminate && formControl.value == null"
       [formControl]="formControl"
       [formlyAttributes]="field"
     >
