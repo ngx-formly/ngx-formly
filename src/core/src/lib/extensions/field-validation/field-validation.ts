@@ -1,7 +1,7 @@
 import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
-import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isPromise, wrapProperty } from '../../utils';
+import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isPromise, observe } from '../../utils';
 import { isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -38,7 +38,7 @@ export class FieldValidationExtension implements FormlyExtension {
   private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn {
     let VALIDATORS = [];
     FORMLY_VALIDATORS.forEach(opt =>
-      wrapProperty(field.templateOptions, opt, ({ currentValue, firstChange }) => {
+      observe(field, ['templateOptions', opt], ({ currentValue, firstChange }) => {
         VALIDATORS = VALIDATORS.filter(o => o !== opt);
         if (currentValue != null && currentValue !== false) {
           VALIDATORS.push(opt);

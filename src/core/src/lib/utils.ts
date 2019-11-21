@@ -193,23 +193,52 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
   field[prop] = defaultValue;
 }
 
-export function wrapProperty<T = any>(
-  field: any,
-  prop: string,
-  setFn: (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void,
-) {
-  defineHiddenProp(field, `___$${prop}`, field[prop]);
-  setFn({ currentValue: field[prop], firstChange: true });
+type IObserveFn<T> = (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void;
+interface IObserveTarget<T> {
+  [prop: string]: any;
+  _observers?: {
+    [prop: string]: {
+      value: T;
+      onChange: IObserveFn<T>[];
+    };
+  };
+}
 
-  Object.defineProperty(field, prop, {
-    configurable: true,
-    get: () => field[`___$${prop}`],
-    set: currentValue => {
-      if (currentValue !== field[`___$${prop}`]) {
-        const previousValue = field[`___$${prop}`];
-        field[`___$${prop}`] = currentValue;
-        setFn({ previousValue, currentValue, firstChange: false });
-      }
-    },
-  });
+export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: IObserveFn<T>) {
+  if (!o._observers) {
+    defineHiddenProp(o, '_observers', {});
+  }
+
+  let target = o;
+  for (let i = 0; i < paths.length - 1; i++) {
+    if (!target[paths[i]] || !isObject(target[paths[i]])) {
+      target[paths[i]] = /^\d+$/.test(paths[i + 1]) ? [] : {};
+    }
+    target = target[paths[i]];
+  }
+
+  const key = paths[paths.length - 1];
+  const prop = paths.join('.');
+  if (!o._observers[prop]) {
+    o._observers[prop] = { value: target[key], onChange: [] };
+  }
+
+  const state = o._observers[prop];
+  state.onChange.push(setFn);
+  setFn({ currentValue: state.value, firstChange: true });
+  if (state.onChange.length === 1) {
+    Object.defineProperty(target, key, {
+      configurable: true,
+      get: () => state.value,
+      set: currentValue => {
+        if (currentValue !== state.value) {
+          const previousValue = state.value;
+          state.value = currentValue;
+          state.onChange.forEach(changeFn => changeFn({ previousValue, currentValue, firstChange: false }));
+        }
+      },
+    });
+  }
+
+  return (value: T) => (state.value = value);
 }

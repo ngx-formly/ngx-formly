@@ -19,7 +19,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config';
-import { defineHiddenProp, assignFieldValue, wrapProperty, getFieldValue } from '../utils';
+import { defineHiddenProp, assignFieldValue, observe, getFieldValue } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
@@ -106,7 +106,7 @@ export class FormlyField
 
       const ref = containerRef.createComponent<FieldWrapper>(cfr.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
-      wrapProperty(ref.instance, 'fieldComponent', ({ currentValue, firstChange }) => {
+      observe(ref.instance, ['fieldComponent'], ({ currentValue, firstChange }) => {
         if (currentValue) {
           this.renderField(currentValue as ViewContainerRef, f, wps);
           !firstChange && ref.changeDetectorRef.detectChanges();
