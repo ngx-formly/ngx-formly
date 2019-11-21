@@ -2,7 +2,7 @@ import { Injectable, ComponentFactoryResolver, Injector, Optional } from '@angul
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
-import { defineHiddenProp, reduceFormUpdateValidityCalls, wrapProperty } from '../utils';
+import { defineHiddenProp, reduceFormUpdateValidityCalls, observe } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -82,7 +82,7 @@ export class FormlyFormBuilder {
 
     if (!options.parentForm && this.parentForm) {
       defineHiddenProp(options, 'parentForm', this.parentForm);
-      wrapProperty(options.parentForm, 'submitted', ({ firstChange }) => {
+      observe(options.parentForm, ['submitted'], ({ firstChange }) => {
         if (!firstChange) {
           options._checkField(field);
           options._markForCheck(field);
