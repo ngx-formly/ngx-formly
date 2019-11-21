@@ -12,4 +12,4 @@ export { defineHiddenProp as ɵdefineHiddenProp } from './utils';
 export { reverseDeepMerge as ɵreverseDeepMerge } from './utils';
 export { getFieldInitialValue as ɵgetFieldInitialValue } from './utils';
 export { clone as ɵclone } from './utils';
-export { wrapProperty as ɵwrapProperty } from './utils';
+export { observe as ɵobserve } from './utils';

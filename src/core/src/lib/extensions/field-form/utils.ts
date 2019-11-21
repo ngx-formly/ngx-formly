@@ -1,6 +1,14 @@
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
-import { getKeyPath, getFieldValue, isNil, defineHiddenProp, wrapProperty, assignFieldValue, isUndefined } from '../../utils';
+import {
+  getKeyPath,
+  getFieldValue,
+  isNil,
+  defineHiddenProp,
+  observe,
+  assignFieldValue,
+  isUndefined,
+} from '../../utils';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { EventEmitter } from '@angular/core';
 
@@ -58,13 +66,13 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     control.setAsyncValidators(null);
 
     field.templateOptions.disabled = !!field.templateOptions.disabled;
-    wrapProperty(field.templateOptions, 'disabled', ({ firstChange, currentValue }) => {
+    const { setValue } = observe(field, ['templateOptions', 'disabled'], ({ firstChange, currentValue }) => {
       if (!firstChange) {
         currentValue ? field.formControl.disable() : field.formControl.enable();
       }
     });
     if (control.registerOnDisabledChange) {
-      control.registerOnDisabledChange((value: boolean) => (field.templateOptions['___$disabled'] = value));
+      control.registerOnDisabledChange(setValue);
     }
   }
 
@@ -110,7 +118,7 @@ export function updateValidity(c: AbstractControl) {
   }
 }
 
-function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, action: Function) {
+function updateControl(form: FormGroup | FormArray, opts: { emitEvent: boolean }, action: Function) {
   /**
    *  workaround for https://github.com/angular/angular/issues/27679
    */

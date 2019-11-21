@@ -1,7 +1,7 @@
 import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatRadioGroup } from '@angular/material/radio';
-import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
+import { ɵobserve as observe } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-mat-radio',
@@ -10,8 +10,10 @@ import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [required]="to.required"
-      [tabindex]="to.tabindex">
-      <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
+      [tabindex]="to.tabindex"
+    >
+      <mat-radio-button
+        *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
         [id]="id + '_' + i"
         [color]="to.color"
         [labelPosition]="to.labelPosition"
@@ -34,21 +36,14 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDest
     },
   };
 
-  private focusObserver!: Function;
+  private focusObserver!: ReturnType<typeof observe>;
   ngAfterViewInit() {
-    this.focusObserver = wrapProperty(this.field, 'focus', ({ currentValue }) => {
-      if (
-        this.to.tabindex === -1
-        && currentValue
-        && this.radioGroup._radios.length > 0
-      ) {
+    this.focusObserver = observe(this.field, ['focus'], ({ currentValue }) => {
+      if (this.to.tabindex === -1 && currentValue && this.radioGroup._radios.length > 0) {
         // https://github.com/ngx-formly/ngx-formly/issues/2498
         setTimeout(() => {
-          const radio = this.radioGroup.selected
-            ? this.radioGroup.selected
-            : this.radioGroup._radios.first;
-
-          radio._elementRef.nativeElement.focus({ preventScroll: true });
+          const radio = this.radioGroup.selected ? this.radioGroup.selected : this.radioGroup._radios.first;
+          radio.focus();
         });
       }
     });
@@ -58,6 +53,6 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDest
   onContainerClick() {}
 
   ngOnDestroy() {
-    this.focusObserver && this.focusObserver();
+    this.focusObserver && this.focusObserver.unsubscribe();
   }
 }

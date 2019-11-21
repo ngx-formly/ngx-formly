@@ -216,40 +216,63 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
   field[prop] = defaultValue;
 }
 
-export function wrapProperty<T = any>(
-  o: any,
-  prop: string,
-  setFn: (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void,
-) {
+type IObserveFn<T> = (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void;
+interface IObserveTarget<T> {
+  [prop: string]: any;
+  _observers?: {
+    [prop: string]: {
+      value: T;
+      onChange: IObserveFn<T>[];
+    };
+  };
+}
+
+export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: IObserveFn<T>) {
   if (!o._observers) {
     defineHiddenProp(o, '_observers', {});
   }
 
-  if (!o._observers[prop]) {
-    o._observers[prop] = [];
+  let target = o;
+  for (let i = 0; i < paths.length - 1; i++) {
+    if (!target[paths[i]] || !isObject(target[paths[i]])) {
+      target[paths[i]] = /^\d+$/.test(paths[i + 1]) ? [] : {};
+    }
+    target = target[paths[i]];
   }
 
-  let fns: typeof setFn[] = o._observers[prop];
-  if (fns.indexOf(setFn) === -1) {
-    fns.push(setFn);
-    setFn({ currentValue: o[prop], firstChange: true });
-    if (fns.length === 1) {
-      defineHiddenProp(o, `___$${prop}`, o[prop]);
-      Object.defineProperty(o, prop, {
+  const key = paths[paths.length - 1];
+  const prop = paths.join('.');
+  if (!o._observers[prop]) {
+    o._observers[prop] = { value: target[key], onChange: [] };
+  }
+
+  const state = o._observers[prop];
+  if (state.onChange.indexOf(setFn) === -1) {
+    state.onChange.push(setFn);
+    setFn({ currentValue: state.value, firstChange: true });
+    if (state.onChange.length === 1) {
+      Object.defineProperty(target, key, {
         configurable: true,
-        get: () => o[`___$${prop}`],
+        get: () => state.value,
         set: currentValue => {
-          if (currentValue !== o[`___$${prop}`]) {
-            const previousValue = o[`___$${prop}`];
-            o[`___$${prop}`] = currentValue;
-            fns.forEach(changeFn => changeFn({ previousValue, currentValue, firstChange: false }));
+          if (currentValue !== state.value) {
+            const previousValue = state.value;
+            state.value = currentValue;
+            state.onChange.forEach(changeFn => changeFn({ previousValue, currentValue, firstChange: false }));
           }
         },
       });
     }
   }
 
-  return () => fns.splice(fns.indexOf(setFn), 1);
+  return {
+    setValue(value: T) {
+      state.value = value;
+    },
+    unsubscribe() {
+      state.onChange = state.onChange.filter(changeFn => changeFn !== setFn);
+    },
+  };
 }
 
 export function reduceFormUpdateValidityCalls(form: any, action: Function) {
