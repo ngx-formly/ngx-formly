@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import {
   ɵdefineHiddenProp as defineHiddenProp,
-  ɵwrapProperty as wrapProperty,
+  ɵobserve as observe,
   FormlyFieldConfig,
   FieldWrapper,
 } from '@ngx-formly/core';
@@ -74,9 +74,9 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
   ngOnInit() {
     defineHiddenProp(this.field, '__formField__', this.formField);
     ['prefix', 'suffix'].forEach(type =>
-      wrapProperty<TemplateRef<any>>(
-        this.to,
-        type,
+      observe<TemplateRef<any>>(
+        this.field,
+        ['templateOptions', type],
         ({ currentValue }) =>
           currentValue &&
           Promise.resolve().then(() => {
