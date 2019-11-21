@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
-import { wrapProperty, defineHiddenProp, FORMLY_VALIDATORS } from '../utils';
+import { defineHiddenProp, FORMLY_VALIDATORS, observe } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
@@ -21,6 +21,16 @@ import { DOCUMENT } from '@angular/common';
   },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
+
+  get to(): FormlyTemplateOptions {
+    return this.field.templateOptions || {};
+  }
+
+  private get fieldAttrElements(): ElementRef[] { return (this.field && this.field['_elementRefs']) || []; }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
+    this.document = _document;
+  }
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() id: string;
 
@@ -37,16 +47,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     listeners: [],
     events: ['click', 'keyup', 'keydown', 'keypress', 'change'],
   };
-
-  get to(): FormlyTemplateOptions {
-    return this.field.templateOptions || {};
-  }
-
-  private get fieldAttrElements(): ElementRef[] { return (this.field && this.field['_elementRefs']) || []; }
-
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
-    this.document = _document;
-  }
+  private changeFocusState = (value: boolean) => {};
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
@@ -66,7 +67,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       });
 
       if (this.to && this.to.attributes) {
-        wrapProperty(this.to, 'attributes', ({ currentValue, previousValue }) => {
+        observe(this.field, ['templateOptions', 'attributes'], ({ currentValue, previousValue }) => {
           if (previousValue) {
             Object.keys(previousValue).forEach(attr => this.removeAttribute(attr));
           }
@@ -81,9 +82,10 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.attachElementRef(changes.field.currentValue);
       if (this.fieldAttrElements.length === 1) {
         !this.id && this.field.id && this.setAttribute('id', this.field.id);
-        wrapProperty(this.field, 'focus', ({ currentValue }) => {
+        const { setValue } = observe<boolean>(this.field, ['focus'], ({ currentValue }) => {
           this.toggleFocus(currentValue);
         });
+        this.changeFocusState = setValue;
       }
     }
 
@@ -137,14 +139,14 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   onFocus($event: any) {
-    this.field['___$focus'] = true;
+    this.changeFocusState(true);
     if (this.to.focus) {
       this.to.focus(this.field, $event);
     }
   }
 
   onBlur($event: any) {
-    this.field['___$focus'] = false;
+    this.changeFocusState(false);
     if (this.to.blur) {
       this.to.blur(this.field, $event);
     }
