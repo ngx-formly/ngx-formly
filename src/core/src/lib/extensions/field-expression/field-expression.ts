@@ -3,7 +3,7 @@ import {
   FormlyValueChangeEvent,
   FormlyFieldConfigCache,
 } from '../../components/formly.field.config';
-import { isObject, isNil, isFunction, defineHiddenProp, wrapProperty } from '../../utils';
+import { isObject, isNil, isFunction, defineHiddenProp, observe } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
@@ -80,7 +80,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         parent && parent.hideExpression ? () => parent.hide : undefined,
       );
     } else {
-      wrapProperty(field, 'hide', ({ currentValue, firstChange }) => {
+      observe(field, ['hide'], ({ currentValue, firstChange }) => {
         if (!firstChange || (firstChange && currentValue === true)) {
           field.options._hiddenFieldsForCheck.push(field);
         }

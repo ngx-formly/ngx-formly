@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
-import { wrapProperty, defineHiddenProp, FORMLY_VALIDATORS } from '../utils';
+import { defineHiddenProp, FORMLY_VALIDATORS, observe } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
@@ -31,6 +31,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   private document: Document;
   private uiAttributesCache: any = {};
   private uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'];
+  private changeFocusState = (value: boolean) => {};
 
   get to(): FormlyTemplateOptions {
     return this.field.templateOptions || {};
@@ -51,7 +52,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       });
 
       if (this.to && this.to.attributes) {
-        wrapProperty(this.to, 'attributes', ({ currentValue, previousValue }) => {
+        observe(this.field, ['templateOptions', 'attributes'], ({ currentValue, previousValue }) => {
           if (previousValue) {
             Object.keys(previousValue).forEach(attr => this.removeAttribute(attr));
           }
@@ -64,7 +65,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
       this.attachAttrElement();
       if (this.fieldAttrElements.length === 1) {
-        wrapProperty(this.field, 'focus', ({ currentValue }) => {
+        this.changeFocusState = observe<boolean>(this.field, ['focus'], ({ currentValue }) => {
           const element = this.fieldAttrElements ? this.fieldAttrElements[0] : null;
           if (!element) {
             return;
@@ -121,14 +122,14 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   onFocus($event: any) {
-    this.field['___$focus'] = true;
+    this.changeFocusState(true);
     if (this.to.focus) {
       this.to.focus(this.field, $event);
     }
   }
 
   onBlur($event: any) {
-    this.field['___$focus'] = false;
+    this.changeFocusState(false);
     if (this.to.blur) {
       this.to.blur(this.field, $event);
     }

@@ -6,6 +6,7 @@ import {
   getFieldValue,
   getKeyPath,
   clone,
+  observe,
 } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
@@ -234,5 +235,95 @@ describe('clone', () => {
     value.name = 'foo';
 
     expect(value.a).toEqual('foo');
+  });
+});
+
+describe('observe', () => {
+  it('should emit first change on observe', () => {
+    const spy = jest.fn();
+    observe({ foo: 'test' }, ['foo'], spy);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({
+      currentValue: 'test',
+      firstChange: true,
+    });
+  });
+
+  it('should observe and emit prop changes', () => {
+    const spy = jest.fn();
+    const o = { foo: 'test' };
+    observe(o, ['foo'], spy);
+    spy.mockReset();
+
+    o.foo = 'bar';
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({
+      previousValue: 'test',
+      currentValue: 'bar',
+      firstChange: false,
+    });
+  });
+
+  it('should observe a nested prop', () => {
+    const spy = jest.fn();
+    const o = { group: { foo: 'test' } };
+    observe(o, ['group', 'foo'], spy);
+    spy.mockReset();
+
+    o.group.foo = 'bar';
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({
+      previousValue: 'test',
+      currentValue: 'bar',
+      firstChange: false,
+    });
+  });
+
+  it('should init and observe an undefined nested prop', () => {
+    const spy = jest.fn();
+    const o: any = {};
+    observe(o, ['group', 'foo'], spy);
+    spy.mockReset();
+
+    o.group.foo = 'bar';
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({
+      previousValue: undefined,
+      currentValue: 'bar',
+      firstChange: false,
+    });
+  });
+
+  it('should allow multi observe of the same property', () => {
+    const o = { foo: 'test' };
+
+    const spy1 = jest.fn();
+    observe(o, ['foo'], spy1);
+    spy1.mockReset();
+
+    const spy2 = jest.fn();
+    observe(o, ['foo'], spy2);
+    spy2.mockReset();
+
+    o.foo = 'bar';
+
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledTimes(1);
+  });
+
+  it('should be able to update prop value without emitting a change event', () => {
+    const spy = jest.fn();
+    const o = { foo: 'test' };
+    const changeFn = observe(o, ['foo'], spy);
+    spy.mockReset();
+
+    changeFn('bar');
+
+    expect(o.foo).toEqual('bar');
+    expect(spy).not.toHaveBeenCalled();
   });
 });
