@@ -1,12 +1,26 @@
 import {
-  Component, Input,
-  ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, ComponentFactoryResolver,
-  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Renderer2, ElementRef,
+  Component,
+  Input,
+  ViewContainerRef,
+  ViewChild,
+  ComponentRef,
+  SimpleChanges,
+  ComponentFactoryResolver,
+  OnInit,
+  OnChanges,
+  OnDestroy,
+  DoCheck,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked,
+  Renderer2,
+  ElementRef,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config';
-import { defineHiddenProp, wrapProperty, getFieldValue, assignFieldValue } from '../utils';
+import { defineHiddenProp, observe, getFieldValue, assignFieldValue } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
@@ -14,7 +28,9 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-field',
-  template: `<ng-template #container></ng-template>`,
+  template: `
+    <ng-template #container></ng-template>
+  `,
 })
 export class FormlyField
   implements
@@ -29,7 +45,8 @@ export class FormlyField
   @Input() field: FormlyFieldConfig;
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
-  private hostObservers: Function[] = [];
+
+  private hostObservers: ReturnType<typeof observe>[] = [];
   private componentRefs: any[] = [];
   private hooksObservers: Function[] = [];
 
@@ -71,7 +88,7 @@ export class FormlyField
 
   ngOnDestroy() {
     this.resetRefs(this.field);
-    this.hostObservers.forEach(unsubscribe => unsubscribe());
+    this.hostObservers.forEach(hostObserver => hostObserver.unsubscribe());
     this.hooksObservers.forEach(unsubscribe => unsubscribe());
     this.valueChangesUnsubscribe();
     this.triggerHook('onDestroy');
@@ -90,7 +107,7 @@ export class FormlyField
 
       const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
-      wrapProperty<ViewContainerRef>(ref.instance, 'fieldComponent', ({ firstChange, previousValue, currentValue }) => {
+      observe<ViewContainerRef>(ref.instance, ['fieldComponent'], ({ currentValue, previousValue, firstChange }) => {
         if (currentValue) {
           const viewRef = previousValue ? previousValue.detach() : null;
           if (viewRef && !viewRef.destroyed) {
@@ -141,10 +158,10 @@ export class FormlyField
       return;
     }
 
-    this.hostObservers.forEach(unsubscribe => unsubscribe());
+    this.hostObservers.forEach(hostObserver => hostObserver.unsubscribe());
     this.hostObservers = [
-      wrapProperty(this.field, 'hide', ({ firstChange, currentValue }) => {
-        if (!this.formlyConfig.extras.lazyRender) {
+      observe<boolean>(this.field, ['hide'], ({ firstChange, currentValue }) => {
+        if (!this.config.extras.lazyRender) {
           firstChange && this.renderField(this.containerRef, this.field);
           if (!firstChange || (firstChange && currentValue)) {
             this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
@@ -157,7 +174,7 @@ export class FormlyField
           }
         }
       }),
-      wrapProperty(this.field, 'className', ({ firstChange, currentValue }) => {
+      observe<string>(this.field, ['className'], ({ firstChange, currentValue }) => {
         if (!firstChange || (firstChange && currentValue)) {
           this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
         }
@@ -192,7 +209,7 @@ export class FormlyField
         valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
       }
 
-      const sub = valueChanges.subscribe((value) => {
+      const sub = valueChanges.subscribe(value => {
         // workaround for https://github.com/angular/angular/issues/13792
         if (control instanceof FormControl && control['_fields'] && control['_fields'].length > 1) {
           control.patchValue(value, { emitEvent: false, onlySelf: true });
@@ -209,6 +226,6 @@ export class FormlyField
       return () => sub.unsubscribe();
     }
 
-    return () => { };
+    return () => {};
   }
 }
