@@ -11,52 +11,37 @@ import { unregisterControl, registerControl, updateValidity } from '../field-for
 
 /** @experimental */
 export class FieldExpressionExtension implements FormlyExtension {
-  prePopulate(field: FormlyFieldConfigCache) {
-    if (field.parent || field.options._checkField) {
-      return;
-    }
-
-    field.options._checkField = (f, ignoreCache) => {
-      reduceFormUpdateValidityCalls(f.formControl, () => this.checkField(f, ignoreCache));
-    };
-  }
-
   onPopulate(field: FormlyFieldConfigCache) {
-    if (field._expressionProperties) {
+    if (field._expressions) {
       return;
     }
 
     // cache built expression
-    defineHiddenProp(field, '_expressionProperties', {});
+    defineHiddenProp(field, '_expressions', {});
+    field.expressionProperties = field.expressionProperties || {};
 
-    if (field.expressionProperties) {
-      for (const key of Object.keys(field.expressionProperties)) {
-        const expressionProperty = field.expressionProperties[key];
+    observe(field, ['hide'], ({ currentValue, firstChange }) => {
+      field._hide = currentValue;
+      if (!firstChange || (firstChange && currentValue === true)) {
+        field.templateOptions.hidden = currentValue;
+        field.options._hiddenFieldsForCheck.push(field);
+      }
+    });
 
-        if (typeof expressionProperty === 'string' || isFunction(expressionProperty)) {
-          field._expressionProperties[key] = {
-            expression: this._evalExpression(
-              expressionProperty,
-              key === 'templateOptions.disabled' &&
-                field.parent &&
-                field.parent.expressionProperties &&
-                field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
-                ? () => field.parent.templateOptions.disabled
-                : undefined,
-            ),
-          };
-          if (key === 'templateOptions.disabled') {
-            Object.defineProperty(field._expressionProperties[key], 'expressionValue', {
-              get: () => field.templateOptions.disabled,
-              set: () => {},
-              enumerable: true,
-              configurable: true,
-            });
-          }
-        } else if (expressionProperty instanceof Observable) {
+    if (field.hideExpression) {
+      observe(field, ['hideExpression'], ({ currentValue: expr }) => {
+        field._expressions.hide = this.parseExpressions(field, 'hide', typeof expr === 'boolean' ? () => expr : expr);
+      });
+    }
+
+    for (const key of Object.keys(field.expressionProperties)) {
+      observe(field, ['expressionProperties', key], ({ currentValue: expr }) => {
+        if (typeof expr === 'string' || isFunction(expr)) {
+          field._expressions[key] = this.parseExpressions(field, key, expr);
+        } else if (expr instanceof Observable) {
           const subscribe = () =>
-            (expressionProperty as Observable<any>).subscribe(v => {
-              this.setExprValue(field, key, v);
+            (expr as Observable<any>).subscribe(v => {
+              this.evalExpr(field, key, v);
               if (field.options && field.options._markForCheck) {
                 field.options._markForCheck(field);
               }
@@ -78,66 +63,75 @@ export class FieldExpressionExtension implements FormlyExtension {
             subscription = null;
           };
         }
-      }
-    }
-
-    if (field.hideExpression) {
-      // delete hide value in order to force re-evaluate it in FormlyFormExpression.
-      delete field.hide;
-
-      let parent = field.parent;
-      while (parent && !parent.hideExpression) {
-        parent = parent.parent;
-      }
-
-      field.hideExpression = this._evalExpression(
-        field.hideExpression,
-        parent && parent.hideExpression ? () => parent.hide : undefined,
-      );
-    } else {
-      observe(field, ['hide'], ({ currentValue, firstChange }) => {
-        field._hide = currentValue;
-        if (!firstChange || (firstChange && currentValue === true)) {
-          field.options._hiddenFieldsForCheck.push(field);
-        }
       });
     }
   }
 
-  private _evalExpression(expression, parentExpression?) {
-    expression = expression || (() => false);
-    if (typeof expression === 'string') {
-      expression = evalStringExpression(expression, ['model', 'formState', 'field']);
+  postPopulate(field: FormlyFieldConfigCache) {
+    if (field.parent) {
+      return;
     }
 
-    return parentExpression
-      ? (model: any, formState: any, field: FormlyFieldConfig) =>
-          parentExpression() || expression(model, formState, field)
-      : expression;
+    if (!field.options._checkField) {
+      field.options._checkField = (f, ignoreCache) => {
+        reduceFormUpdateValidityCalls(f.formControl, () => this.checkExpressions(f, ignoreCache));
+
+        const options = field.options;
+        options._hiddenFieldsForCheck.sort(f => (f.hide ? -1 : 1)).forEach(f => this.changeHideState(f, f.hide));
+        options._hiddenFieldsForCheck = [];
+      };
+    }
   }
 
-  private checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
-    this._checkField(field, ignoreCache);
+  private parseExpressions(field: FormlyFieldConfigCache, path: string, expr: any) {
+    let parentExpression: any;
+    if (field.parent && ['hide', 'templateOptions.disabled'].includes(path)) {
+      parentExpression = evalStringExpression(`!!field.parent.${path}`, ['field']);
+    }
 
-    field.options._hiddenFieldsForCheck.sort(f => (f.hide ? -1 : 1)).forEach(f => this.toggleFormControl(f, f.hide));
+    expr = expr || (() => false);
+    if (typeof expr === 'string') {
+      expr = evalStringExpression(expr, ['model', 'formState', 'field']);
+    }
 
-    field.options._hiddenFieldsForCheck = [];
+    let currentValue: any;
+
+    return (ignoreCache?: boolean) => {
+      const exprValue = evalExpression(
+        parentExpression ? (...args) => parentExpression(field) || expr(...args) : expr,
+        { field },
+        [field.model, field.options.formState, field],
+      );
+
+      if (
+        ignoreCache ||
+        (currentValue !== exprValue &&
+          (!isObject(exprValue) || JSON.stringify(exprValue) !== JSON.stringify(currentValue)))
+      ) {
+        currentValue = exprValue;
+        this.evalExpr(field, path, exprValue);
+
+        return true;
+      }
+
+      return false;
+    };
   }
 
-  private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
+  private checkExpressions(field: FormlyFieldConfigCache, ignoreCache = false) {
     if (!field) {
       return;
     }
 
     let markForCheck = false;
-    this.checkFieldExpressionChange(field, ignoreCache) && (markForCheck = true);
-    if (this.checkFieldVisibilityChange(field, ignoreCache)) {
-      field.options._hiddenFieldsForCheck.push(field);
-      markForCheck = true;
+    if (field._expressions) {
+      for (const key of Object.keys(field._expressions)) {
+        field._expressions[key](ignoreCache) && (markForCheck = true);
+      }
     }
 
     if (field.fieldGroup) {
-      field.fieldGroup.forEach(f => this._checkField(f, ignoreCache));
+      field.fieldGroup.forEach(f => this.checkExpressions(f, ignoreCache));
     }
 
     if (markForCheck && field.options && field.options._markForCheck) {
@@ -145,65 +139,11 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private checkFieldExpressionChange(field: FormlyFieldConfigCache, ignoreCache): boolean {
-    if (!field || !field._expressionProperties) {
-      return false;
-    }
-
-    let markForCheck = false;
-    const expressionProperties = field._expressionProperties;
-
-    for (const key of Object.keys(expressionProperties)) {
-      let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [
-        field.model,
-        field.options.formState,
-        field,
-      ]);
-      if (key === 'templateOptions.disabled') {
-        expressionValue = !!expressionValue;
-      }
-
-      if (
-        ignoreCache ||
-        (expressionProperties[key].expressionValue !== expressionValue &&
-          (!isObject(expressionValue) ||
-            JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue)))
-      ) {
-        markForCheck = true;
-        expressionProperties[key].expressionValue = expressionValue;
-        this.setExprValue(field, key, expressionValue);
-      }
-    }
-
-    return markForCheck;
-  }
-
-  private checkFieldVisibilityChange(field: FormlyFieldConfigCache, ignoreCache): boolean {
-    if (!field || isNil(field.hideExpression)) {
-      return false;
-    }
-
-    const hideExpressionResult: boolean = !!evalExpression(field.hideExpression, { field }, [
-      field.model,
-      field.options.formState,
-      field,
-    ]);
-    let markForCheck = false;
-    if (hideExpressionResult !== field.hide || ignoreCache) {
-      markForCheck = true;
-      // toggle hide
-      field.hide = hideExpressionResult;
-      field.templateOptions.hidden = hideExpressionResult;
-    }
-
-    return markForCheck;
-  }
-
-  private setDisabledState(field: FormlyFieldConfig, value: boolean) {
+  private changeDisabledState(field: FormlyFieldConfig, value: boolean) {
     if (field.fieldGroup) {
       field.fieldGroup
         .filter(f => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('templateOptions.disabled'))
-        .forEach(f => this.setDisabledState(f, value));
+        .forEach(f => this.changeDisabledState(f, value));
     }
 
     if (field.key && field.templateOptions.disabled !== value) {
@@ -211,7 +151,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private toggleFormControl(field: FormlyFieldConfigCache, hide: boolean) {
+  private changeHideState(field: FormlyFieldConfig, hide: boolean) {
     if (field.formControl && field.key) {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
@@ -223,7 +163,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     if (field.fieldGroup) {
-      field.fieldGroup.filter(f => !f.hideExpression).forEach(f => this.toggleFormControl(f, hide));
+      field.fieldGroup.filter(f => !f.hideExpression).forEach(f => this.changeHideState(f, hide));
     }
 
     if (field.options.fieldChanges) {
@@ -231,7 +171,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private setExprValue(field: FormlyFieldConfigCache, prop: string, value: any) {
+  private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
     try {
       let target = field;
       const paths = prop.split('.');
@@ -247,12 +187,12 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     if (prop === 'templateOptions.disabled' && field.key) {
-      this.setDisabledState(field, value);
+      this.changeDisabledState(field, value);
     }
 
     if (prop.indexOf('model.') === 0) {
-      const path = prop.replace(/^model\./, ''),
-        control = field.key && field.key === path ? field.formControl : field.form.get(path);
+      const key = prop.replace(/^model\./, ''),
+        control = field.key && field.key === key ? field.formControl : field.form.get(key);
 
       if (control && !(isNil(control.value) && isNil(value)) && control.value !== value) {
         control.patchValue(value, { emitEvent: false });
