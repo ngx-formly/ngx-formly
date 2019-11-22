@@ -123,7 +123,7 @@ describe('FormlyForm Component', () => {
         fields: [
           {
             key: 'foo',
-            hideExpression: 'model.bar',
+            hideExpression: '!!model.bar',
             hooks: {
               // Changing `field.hide` during `afterViewInit` throw the following error:
               // Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'display: '. Current value: 'display: none'.
