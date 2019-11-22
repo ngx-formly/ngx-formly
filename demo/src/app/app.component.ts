@@ -17,7 +17,7 @@ export class AppComponent {
       path: 'guide',
       title: 'Guides',
       links: [
-        { path: '/guide/getting-started', title: 'Getting started' },
+        { path: '/guide/getting-started', title: 'Introduction' },
         { path: '/guide/properties-options', title: 'Properties and Options' },
         { path: '/guide/validation', title: 'Validation' },
         { path: '/guide/expression-properties', title: 'Formly Expressions' },

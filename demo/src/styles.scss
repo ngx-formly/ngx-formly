@@ -25,7 +25,6 @@ legend {
 @import '~@angular/material/theming';
 
 @import './app/shared/example-viewer/example-viewer-theme';
-@import './app/home/home-theme.scss';
 @include mat-core();
 
 // Define a theme.
@@ -37,7 +36,6 @@ $theme: mat-light-theme($primary, $accent);
 // Include all theme styles for the components.
 @include angular-material-theme($theme);
 @include example-viewer-theme($theme);
-@include home-page-theme($theme);
 
 pre {
   display: block;

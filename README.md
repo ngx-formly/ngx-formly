@@ -1,5 +1,7 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png">
+  <a href="https://formly.dev">
+    <img width="200" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true">
+  </a>
   <br />
   JSON powered / Dynamic forms in Angular
   <br /><br />
@@ -30,11 +32,11 @@ Formly is a dynamic (JSON powered) form library for Angular that bring unmatched
 
 | UI                                                |                                                              |                                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------- |
-| [Bootstrap](https://getbootstrap.com)             | [Demo](https://ngx-formly.github.io/ngx-formly/ui/bootstrap) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-bootstrap) |
-| [Material2](https://github.com/angular/material2) | [Demo](https://ngx-formly.github.io/ngx-formly/ui/material)  | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-material)  |
-| [Ionic](https://ionicframework.com)               | [Demo](https://ngx-formly.github.io/ngx-formly/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
-| [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://ngx-formly.github.io/ngx-formly/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
-| [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://ngx-formly.github.io/ngx-formly/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
+| [Bootstrap](https://getbootstrap.com)             | [Demo](https://formly.dev/ui/bootstrap) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-bootstrap) |
+| [Material2](https://github.com/angular/material2) | [Demo](https://formly.dev/ui/material)  | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-material)  |
+| [Ionic](https://ionicframework.com)               | [Demo](https://formly.dev/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
+| [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://formly.dev/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
+| [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://formly.dev/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
 | [NativeScript](https://www.nativescript.org)      | ||
 
 **Which Version to use?**
@@ -48,11 +50,11 @@ Formly is a dynamic (JSON powered) form library for Angular that bring unmatched
 | Angular >= 2    | `ng-formly@1.x`        |
 
 #### Quick links
-* [Documentation, demos, and guides](https://ngx-formly.github.io/ngx-formly)
+* [Documentation, demos, and guides](https://formly.dev)
 
 ## Quick Start
 
-Follow these steps to get started with Ngx Formly. Also check out our [demos](https://ngx-formly.github.io/ngx-formly) for further examples.
+Follow these steps to get started with Ngx Formly. Also check out our [demos](https://formly.dev) for further examples.
 
 #### 1. Install @angular/forms and @ngx-formly/core packages:
 ```bash
