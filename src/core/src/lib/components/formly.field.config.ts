@@ -168,16 +168,11 @@ export interface FormlyFieldConfig {
   parsers?: ((value: any) => any)[];
 }
 
-export interface ExpressionPropertyCache {
-  expression: (model: any, formState: any, field: FormlyFieldConfigCache) => boolean;
-  expressionValue?: any;
-}
-
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
-  _expressionProperties?: { [property: string]: ExpressionPropertyCache };
   resetOnHide?: boolean;
+  _expressions?: { [property: string]: (ingoreCache: boolean) => boolean };
   _hide?: boolean;
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];

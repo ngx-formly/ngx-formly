@@ -35,9 +35,7 @@ const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
     `,
     inputs,
     config,
-    imports: [
-      FormlyInputModule,
-    ],
+    imports: [FormlyInputModule],
     ...config,
   });
 };
@@ -273,7 +271,7 @@ describe('FormlyForm Component', () => {
         fields: [
           {
             key: 'foo',
-            hideExpression: 'model.bar',
+            hideExpression: '!!model.bar',
             hooks: {
               // Changing `field.hide` during `afterViewInit` throw the following error:
               // Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'display: '. Current value: 'display: none'.
@@ -633,17 +631,18 @@ describe('FormlyForm Component', () => {
     expect(fields[0].hide).toEqual(true);
   });
 
-
   it('should keep in sync UI on checkExpressionChange', () => {
     const { form, query, detectChanges } = renderComponent(
       {
-        fields: [{
-          key: 'city',
-          type: 'input',
-          expressionProperties: {
-            'templateOptions.disabled': 'model.city === "***"',
+        fields: [
+          {
+            key: 'city',
+            type: 'input',
+            expressionProperties: {
+              'templateOptions.disabled': 'model.city === "***"',
+            },
           },
-        }],
+        ],
       },
       { extras: { immutable: true } },
     );
