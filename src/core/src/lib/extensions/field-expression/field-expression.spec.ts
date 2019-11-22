@@ -133,10 +133,14 @@ describe('FieldExpressionExtension', () => {
               hide: true,
               fieldGroup: [
                 {
-                  key: 'child',
-                  type: 'input',
-                  hideExpression: () => false,
-                  defaultValue: 'foo',
+                  fieldGroup: [
+                    {
+                      key: 'child',
+                      type: 'input',
+                      hideExpression: () => false,
+                      defaultValue: 'foo',
+                    },
+                  ],
                 },
               ],
             },
