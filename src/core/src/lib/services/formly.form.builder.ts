@@ -82,7 +82,7 @@ export class FormlyFormBuilder {
 
     if (!options.parentForm && this.parentForm) {
       defineHiddenProp(options, 'parentForm', this.parentForm);
-      observe(options.parentForm, ['submitted'], ({ firstChange }) => {
+      observe(options, ['parentForm', 'submitted'], ({ firstChange }) => {
         if (!firstChange) {
           options._checkField(field);
           options._markForCheck(field);

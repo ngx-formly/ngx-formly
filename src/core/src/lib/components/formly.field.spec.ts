@@ -144,6 +144,31 @@ describe('FormlyField Component', () => {
     expect(query('formly-type-input')).not.toBeNull();
   });
 
+  it('should lazy render field components', () => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormlyModule.forRoot({
+          extras: { lazyRender: true },
+        }),
+      ],
+    });
+    app = {
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+      fields: [{
+        key: 'foo',
+        type: 'text',
+        hide: true,
+      }],
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    expect(fixture.debugElement.query(By.css('input'))).toBeNull();
+
+    app.fields[0].hide = false;
+    expect(fixture.debugElement.query(By.css('input'))).not.toBeNull();
+
   it('init hooks with observables', () => {
     const control = new FormControl();
     const spy = jest.fn();

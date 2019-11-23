@@ -15,15 +15,15 @@ import { FieldFormExtension } from './extensions/field-form/field-form';
 import { CoreExtension } from './extensions/core/core';
 import { FieldArrayType } from './templates/field-array.type';
 
-export function defaultFormlyConfig(formlyConfig: FormlyConfig): ConfigOption {
+export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
   return {
     types: [
       { name: 'formly-group', component: FormlyGroup },
       { name: 'formly-template', component: FormlyTemplateType },
     ],
     extensions: [
-      { name: 'core', extension: new CoreExtension(formlyConfig) },
-      { name: 'field-validation', extension: new FieldValidationExtension(formlyConfig) },
+      { name: 'core', extension: new CoreExtension(config) },
+      { name: 'field-validation', extension: new FieldValidationExtension(config) },
       { name: 'field-form', extension: new FieldFormExtension() },
       { name: 'field-expression', extension: new FieldExpressionExtension() },
     ],

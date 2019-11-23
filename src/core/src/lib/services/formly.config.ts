@@ -5,7 +5,7 @@ import { reverseDeepMerge, defineHiddenProp } from './../utils';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
 import { Observable } from 'rxjs';
 
-export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
+export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
 
 /** @experimental */
 export interface FormlyExtension {
@@ -34,7 +34,13 @@ export class FormlyConfig {
     checkExpressionOn: 'changeDetectionCheck',
     lazyRender: false,
     showError(field: FieldType) {
-      return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || !!(field.field.validation && field.field.validation.show));
+      return (
+        field.formControl &&
+        field.formControl.invalid &&
+        (field.formControl.touched ||
+          (field.options.parentForm && field.options.parentForm.submitted) ||
+          !!(field.field.validation && field.field.validation.show))
+      );
     },
   };
   extensions: { [name: string]: FormlyExtension } = {};
@@ -219,7 +225,11 @@ export interface WrapperOption {
   types?: string[];
 }
 
-export type FieldValidatorFn = (c: AbstractControl, field: FormlyFieldConfig, options?: { [id: string]: any; }) => ValidationErrors | null;
+export type FieldValidatorFn = (
+  c: AbstractControl,
+  field: FormlyFieldConfig,
+  options?: { [id: string]: any },
+) => ValidationErrors | null;
 
 export interface ValidatorOption {
   name: string;
