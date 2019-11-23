@@ -4,7 +4,7 @@ import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
 
-export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
+export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
 
 /** @experimental */
 export interface FormlyExtension {
