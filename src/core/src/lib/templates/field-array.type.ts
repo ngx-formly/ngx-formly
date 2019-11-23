@@ -1,6 +1,6 @@
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
-import { clone, isNil, assignFieldValue, getFieldValue } from '../utils';
+import { clone, assignFieldValue, getFieldValue } from '../utils';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl } from '../extensions/field-form/utils';
@@ -31,14 +31,13 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   }
 
   add(i?: number, initialModel?: any) {
-    i = isNil(i) ? this.field.fieldGroup.length : i;
+    i = i == null ? this.field.fieldGroup.length : i;
     if (!this.model) {
       assignFieldValue(this.field, []);
     }
 
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
     this._buildField();
-    this.formControl.markAsDirty();
   }
 
   remove(i: number) {
@@ -47,10 +46,10 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     this.field.fieldGroup.splice(i, 1);
     this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
     this._buildField();
-    this.formControl.markAsDirty();
   }
 
   private _buildField() {
+    this.formControl.markAsDirty();
     (this.options as any)._buildField(this.field);
     this.options.fieldChanges.next({
       field: this.field,

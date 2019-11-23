@@ -78,6 +78,79 @@ describe('FormlyForm Component', () => {
     });
   });
 
+  describe('model input', () => {
+    it('should update the form value on model change', () => {
+      const { form, setInputs } = renderComponent({
+        fields: [
+          {
+            key: 'title',
+            type: 'input',
+            expressionProperties: {
+              className: 'model.title',
+            },
+          },
+        ],
+      });
+      expect(form.value).toEqual({ title: undefined });
+
+      setInputs({ model: { title: '***' } });
+      expect(form.value).toEqual({ title: '***' });
+    });
+
+    it('fallback to undefined for an non-existing member', () => {
+      const { form, setInputs } = renderComponent({
+        model: { aa: { test: 'aaa' } },
+        fields: [
+          {
+            key: 'aa',
+            fieldGroup: [{ key: 'test', type: 'input' }],
+          },
+        ],
+      });
+
+      expect(form.value).toEqual({ aa: { test: 'aaa' } });
+
+      setInputs({ model: {} });
+      expect(form.value).toEqual({ aa: { test: undefined } });
+    });
+  });
+
+  describe('form input', () => {
+    it('should rebuild field when form is changed', () => {
+      const { form, setInputs } = renderComponent({
+        model: { test: 'test' },
+        form: new FormGroup({}),
+        fields: [
+          {
+            key: 'test',
+            type: 'input',
+          },
+        ],
+      });
+
+      expect(form.get('test').value).toEqual('test');
+
+      setInputs({ form: new FormGroup({}) });
+      expect(form.get('test').value).toEqual('test');
+    });
+
+    it('should allow passing FormArray', () => {
+      const { form } = renderComponent({
+        model: ['test'],
+        form: new FormArray([]),
+        options: {},
+        fields: [
+          {
+            key: '0',
+            type: 'input',
+          },
+        ],
+      });
+
+      expect((form as FormArray).at(0).value).toEqual('test');
+    });
+  });
+
   describe('modelChange output', () => {
     it('should emit `modelChange` on valueChanges', () => {
       const { fixture } = renderComponent({
@@ -92,6 +165,27 @@ describe('FormlyForm Component', () => {
 
       expect(app.modelChange).toHaveBeenCalledTimes(1);
       expect(app.modelChange).toHaveBeenCalledWith({ title: '***' });
+    });
+
+    it('should not emit `modelChange` on inputs change', () => {
+      const { fixture, setInputs } = renderComponent({
+        fields: [
+          {
+            key: 'title',
+            type: 'input',
+            expressionProperties: {
+              'templateOptions.disabled': 'model.title === "****"',
+            },
+          },
+        ],
+      });
+
+      const app = fixture.componentInstance;
+      spyOn(app, 'modelChange');
+
+      setInputs({ model: { title: '****' } });
+
+      expect(app.modelChange).not.toHaveBeenCalled();
     });
 
     it('should eval expressions before emitting `modelChange`', () => {
@@ -162,27 +256,9 @@ describe('FormlyForm Component', () => {
     });
   });
 
-  it('should check expression on valueChanges', () => {
-    const { form, fields, detectChanges } = renderComponent({
-      fields: [
-        {
-          key: 'title',
-          type: 'input',
-          expressionProperties: {
-            className: 'model.title',
-          },
-        },
-      ],
-    });
-
-    form.get('title').patchValue('***');
-    detectChanges();
-    expect(fields[0].className).toEqual('***');
-  });
-
-  it('should check expression on valueChanges only', () => {
-    const { detectChanges, model, fields } = renderComponent(
-      {
+  describe('check expression', () => {
+    it('should check expression on valueChanges', () => {
+      const { form, fields, detectChanges } = renderComponent({
         fields: [
           {
             key: 'title',
@@ -192,15 +268,35 @@ describe('FormlyForm Component', () => {
             },
           },
         ],
-      },
-      {
-        extras: { checkExpressionOn: 'modelChange' },
-      },
-    );
+      });
 
-    model.title = '***';
-    detectChanges();
-    expect(fields[0].className).toBeUndefined();
+      form.get('title').patchValue('***');
+      detectChanges();
+      expect(fields[0].className).toEqual('***');
+    });
+
+    it('should check expression on valueChanges only', () => {
+      const { detectChanges, model, fields } = renderComponent(
+        {
+          fields: [
+            {
+              key: 'title',
+              type: 'input',
+              expressionProperties: {
+                className: 'model.title',
+              },
+            },
+          ],
+        },
+        {
+          extras: { checkExpressionOn: 'modelChange' },
+        },
+      );
+
+      model.title = '***';
+      detectChanges();
+      expect(fields[0].className).toBeUndefined();
+    });
   });
 
   describe('immutable option', () => {
@@ -266,92 +362,6 @@ describe('FormlyForm Component', () => {
       expect(fields[0]).not.toBe(titleField);
       expect(titleField.model).toEqual({ title: 'foo' });
       expect(form.value).toEqual({ title: 'foo' });
-    });
-  });
-
-  describe('model input', () => {
-    it('should update the form value on model change', () => {
-      const { form, setInputs } = renderComponent({
-        fields: [
-          {
-            key: 'title',
-            type: 'input',
-            expressionProperties: {
-              className: 'model.title',
-            },
-          },
-        ],
-      });
-      expect(form.value).toEqual({ title: undefined });
-
-      setInputs({ model: { title: '***' } });
-      expect(form.value).toEqual({ title: '***' });
-    });
-
-    it('fallback to undefined for an non-existing member', () => {
-      const { form, setInputs } = renderComponent({
-        model: { aa: { test: 'aaa' } },
-        fields: [
-          {
-            key: 'aa',
-            fieldGroup: [{ key: 'test', type: 'input' }],
-          },
-        ],
-      });
-
-      expect(form.value).toEqual({ aa: { test: 'aaa' } });
-
-      setInputs({ model: {} });
-      expect(form.value).toEqual({ aa: { test: undefined } });
-    });
-
-    it('should emit `modelChange` on model input change', () => {
-      const { fixture, setInputs } = renderComponent({
-        fields: [{ key: 'title', type: 'input' }],
-      });
-
-      const app = fixture.componentInstance;
-      spyOn(app, 'modelChange');
-
-      setInputs({ model: { title: '****' } });
-
-      expect(app.modelChange).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('form input', () => {
-    it('should rebuild field when form is changed', () => {
-      const { form, setInputs } = renderComponent({
-        model: { test: 'test' },
-        form: new FormGroup({}),
-        fields: [
-          {
-            key: 'test',
-            type: 'input',
-          },
-        ],
-      });
-
-      expect(form.get('test').value).toEqual('test');
-
-      setInputs({ form: new FormGroup({}) });
-      expect(form.get('test').value).toEqual('test');
-    });
-
-    it('should allow passing FormArray', () => {
-      const { form } = renderComponent({
-        model: ['test'],
-        form: new FormArray([]),
-        options: {},
-        fields: [
-          {
-            key: '0',
-            type: 'input',
-          },
-        ],
-      });
-
-      expect((form as FormArray).at(0).value).toEqual('test');
     });
   });
 
