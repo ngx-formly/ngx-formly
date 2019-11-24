@@ -1,6 +1,5 @@
 import { FormlyFormBuilder, FormlyConfig } from '../core';
-import { FormlyFieldConfigCache } from '../components/formly.field.config';
-import { ConfigOption } from './formly.config';
+import { ConfigOption, FormlyFieldConfigCache } from '../models';
 import { FormGroup } from '@angular/forms';
 
 function createBuilder(option?: ConfigOption) {

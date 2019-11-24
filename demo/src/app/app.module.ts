@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { filter, tap } from 'rxjs/operators';
 
 @NgModule({
-  declarations: [ AppComponent ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

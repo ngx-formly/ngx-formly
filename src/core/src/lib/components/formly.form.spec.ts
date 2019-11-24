@@ -156,26 +156,28 @@ describe('FormlyForm Component', () => {
       const { detectChanges, fixture } = renderComponent({
         fields: [{ key: 'title', type: 'input' }],
       });
-  
+
       const app = fixture.componentInstance;
       spyOn(app, 'modelChange');
-  
+
       app.form.get('title').patchValue('***');
       detectChanges();
-  
+
       expect(app.modelChange).toHaveBeenCalledTimes(1);
       expect(app.modelChange).toHaveBeenCalledWith({ title: '***' });
     });
 
     it('should not emit `modelChange` on inputs change', () => {
       const { fixture, setInputs } = renderComponent({
-        fields: [{
-          key: 'title',
-          type: 'input',
-          expressionProperties: {
-            'templateOptions.disabled': 'model.title === "****"',
+        fields: [
+          {
+            key: 'title',
+            type: 'input',
+            expressionProperties: {
+              'templateOptions.disabled': 'model.title === "****"',
+            },
           },
-        }],
+        ],
       });
 
       const app = fixture.componentInstance;
@@ -187,7 +189,7 @@ describe('FormlyForm Component', () => {
     });
   });
 
-  describe('check expression', () => {  
+  describe('check expression', () => {
     it('should check expression on valueChanges', fakeAsync(() => {
       const { form, fields } = renderComponent({
         fields: [
@@ -200,12 +202,12 @@ describe('FormlyForm Component', () => {
           },
         ],
       });
-  
+
       form.get('title').patchValue('***');
       tick();
       expect(fields[0].className).toEqual('***');
     }));
-  
+
     it('should check expression on valueChanges only', () => {
       const { detectChanges, model, fields } = renderComponent(
         {
@@ -223,7 +225,7 @@ describe('FormlyForm Component', () => {
           extras: { checkExpressionOn: 'modelChange' },
         },
       );
-  
+
       model.title = '***';
       detectChanges();
       expect(fields[0].className).toBeUndefined();

@@ -1,6 +1,6 @@
 import { FormControl, Validators, ValidationErrors, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
-import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
 function buildField({ model, options, form: formControl, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {

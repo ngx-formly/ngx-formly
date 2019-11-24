@@ -1,5 +1,5 @@
-import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
-import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { FormlyConfig } from '../../services/formly.config';
+import { FormlyExtension, FieldValidatorFn, FormlyFieldConfigCache } from '../../models';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined, isPromise, observe } from '../../utils';
 import { isObservable } from 'rxjs';
