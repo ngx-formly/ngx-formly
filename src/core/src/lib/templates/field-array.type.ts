@@ -1,8 +1,7 @@
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, assignFieldValue, getFieldValue } from '../utils';
-import { FormlyFieldConfig } from '../components/formly.field.config';
-import { FormlyExtension } from '../services/formly.config';
+import { FormlyFieldConfig, FormlyExtension } from '../models';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {

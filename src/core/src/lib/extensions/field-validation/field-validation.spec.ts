@@ -1,6 +1,6 @@
 import { FormControl, Validators, ValidationErrors, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
-import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
 function buildField({ model, options, form: formControl, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
@@ -170,13 +170,17 @@ describe('FieldValidationExtension: initialise field validators', () => {
         field.formControl = new FormGroup({ pwd: new FormControl() }, { validators: field._validators });
 
         field.formControl.setValue({ pwd: 'oo' });
-        expect(field.formControl.errors).toEqual({ custom: {
-          errorPath: 'pwd',
-          message: 'custom msg',
-        } });
-        expect(field.formControl.get('pwd').errors).toEqual({ custom: {
-          message: 'custom msg',
-        } });
+        expect(field.formControl.errors).toEqual({
+          custom: {
+            errorPath: 'pwd',
+            message: 'custom msg',
+          },
+        });
+        expect(field.formControl.get('pwd').errors).toEqual({
+          custom: {
+            message: 'custom msg',
+          },
+        });
       });
 
       it(`using expression property with validation option`, () => {
