@@ -1,7 +1,7 @@
 import { Injectable, ComponentFactoryResolver, Injector, Optional } from '@angular/core';
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../components/formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { defineHiddenProp, reduceFormUpdateValidityCalls, observe } from '../utils';
 
 @Injectable({ providedIn: 'root' })

@@ -1,12 +1,8 @@
-import {
-  FormlyFieldConfig,
-  FormlyValueChangeEvent,
-  FormlyFieldConfigCache,
-} from '../../components/formly.field.config';
+import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../models';
 import { isObject, isNil, isFunction, defineHiddenProp, observe, reduceFormUpdateValidityCalls } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
 import { Observable, Subscription } from 'rxjs';
-import { FormlyExtension } from '../../services/formly.config';
+import { FormlyExtension } from '../../models';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 
 /** @experimental */
