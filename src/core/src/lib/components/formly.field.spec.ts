@@ -1,24 +1,22 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyModule, FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap } from 'rxjs/operators';
 
 const renderComponent = (field: FormlyFieldConfig, options = {}) => {
   return createFormlyFieldComponent(field, {
+    imports: [FormlyInputModule],
     declarations: [FormlyWrapperFormFieldAsync],
-    imports: [
-      FormlyInputModule,
-      FormlyModule.forChild({
-        wrappers: [
-          {
-            name: 'form-field-async',
-            component: FormlyWrapperFormFieldAsync,
-          },
-        ],
-      }),
-    ],
+    config: {
+      wrappers: [
+        {
+          name: 'form-field-async',
+          component: FormlyWrapperFormFieldAsync,
+        },
+      ],
+    },
     ...options,
   });
 };
@@ -65,10 +63,7 @@ describe('FormlyField Component', () => {
     });
 
     it('should not override existing class', () => {
-      const { query } = renderComponent(
-        {},
-        { template: '<formly-field class="foo" [field]="field"></formly-field>'},
-      );
+      const { query } = renderComponent({}, { template: '<formly-field class="foo" [field]="field"></formly-field>' });
 
       expect(query('formly-field').attributes.class).toEqual('foo');
     });

@@ -10,7 +10,7 @@ import {
   NgZone,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { clone } from '../utils';
