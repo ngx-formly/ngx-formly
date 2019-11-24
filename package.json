@@ -20,7 +20,6 @@
     "demo": "npm run start",
     "test": "jest",
     "test:watch": "jest --watch",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "github-release": "conventional-github-releaser -p angular -t $GH_TOKEN --draft",
     "compile:server": "webpack --config integration/ssr/webpack.server.config.js --progress --colors",
     "e2e:ssr": "node integration/ssr/dist/server & pid=$!; cypress run --config integrationFolder=cypress/ssr; kill -9 $pid",
@@ -103,7 +102,7 @@
     "@schematics/angular": "^8.3.19",
     "@types/jest": "^24.0.23",
     "@types/json-schema": "^7.0.3",
-    "@types/node": "^12.12.11",
+    "@types/node": "^12.12.12",
     "bundlesize": "^0.18.0",
     "codecov": "^3.6.1",
     "codelyzer": "^5.2.0",
@@ -142,7 +141,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {

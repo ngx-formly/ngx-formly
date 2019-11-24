@@ -1,5 +1,5 @@
+import { EventEmitter } from '@angular/core';
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { FormlyFieldConfig } from '../../core';
 import {
   getKeyPath,
   getFieldValue,
@@ -9,8 +9,7 @@ import {
   assignFieldValue,
   isUndefined,
 } from '../../utils';
-import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { EventEmitter } from '@angular/core';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   const form = field.formControl.parent as FormArray | FormGroup;

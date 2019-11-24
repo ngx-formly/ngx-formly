@@ -1,8 +1,7 @@
-import { FormGroup, AbstractControl, FormGroupDirective, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { FormGroup, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
-import { TemplateManipulators, ValidationMessageOption } from '../services/formly.config';
-import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
+import { TemplateManipulators, ValidationMessageOption } from '../models';
 
 export interface FormlyFieldConfig {
   /**
@@ -168,21 +167,6 @@ export interface FormlyFieldConfig {
   parsers?: ((value: any) => any)[];
 }
 
-export interface FormlyFieldConfigCache extends FormlyFieldConfig {
-  parent?: FormlyFieldConfigCache;
-  options?: FormlyFormOptionsCache;
-  resetOnHide?: boolean;
-  _expressions?: { [property: string]: (ingoreCache: boolean) => boolean };
-  _hide?: boolean;
-  _validators?: ValidatorFn[];
-  _asyncValidators?: AsyncValidatorFn[];
-  _componentRefs?: ComponentRef<FieldType>[];
-  _keyPath?: {
-    key: FormlyFieldConfig['key'];
-    path: string[];
-  };
-}
-
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
 
 export interface FormlyTemplateOptions {
@@ -235,16 +219,6 @@ export interface FormlyHookConfig {
   afterViewChecked?: FormlyHookFn;
 }
 
-export interface FormlyFormOptionsCache extends FormlyFormOptions {
-  _checkField?: (field: FormlyFieldConfigCache, ignoreCache?: boolean) => void;
-  _markForCheck?: (field: FormlyFieldConfigCache) => void;
-  _buildForm?: () => void;
-  _buildField?: (field: FormlyFieldConfigCache) => FormlyFieldConfigCache;
-  _resolver?: ComponentFactoryResolver;
-  _injector?: Injector;
-  _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
-  _initialModel?: any;
-}
 export interface FormlyFormOptions {
   updateInitialValue?: () => void;
   resetModel?: (model?: any) => void;

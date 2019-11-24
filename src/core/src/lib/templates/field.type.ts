@@ -1,5 +1,5 @@
 import { Input } from '@angular/core';
-import { FormlyFieldConfig } from '../components/formly.field.config';
+import { FormlyFieldConfig } from '../models';
 
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
   @Input() field: F;

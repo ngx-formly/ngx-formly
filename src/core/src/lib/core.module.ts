@@ -2,8 +2,8 @@ import { NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS, Inject, Op
 import { CommonModule } from '@angular/common';
 import { FormlyForm } from './components/formly.form';
 import { FormlyField } from './components/formly.field';
-import { FormlyAttributes } from './components/formly.attributes';
-import { FormlyConfig, ConfigOption, FORMLY_CONFIG } from './services/formly.config';
+import { FormlyAttributes } from './templates/formly.attributes';
+import { FormlyConfig, FORMLY_CONFIG } from './services/formly.config';
 import { FormlyFormBuilder } from './services/formly.form.builder';
 import { FormlyGroup } from './templates/formly.group';
 import { FormlyValidationMessage } from './templates/formly.validation-message';
@@ -13,7 +13,7 @@ import { FieldExpressionExtension } from './extensions/field-expression/field-ex
 import { FieldValidationExtension } from './extensions/field-validation/field-validation';
 import { FieldFormExtension } from './extensions/field-form/field-form';
 import { CoreExtension } from './extensions/core/core';
-import { FieldArrayType } from './templates/field-array.type';
+import { ConfigOption } from './models';
 
 export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
   return {

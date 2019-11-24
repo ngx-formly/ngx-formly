@@ -9,7 +9,7 @@ import {
   Inject,
   OnDestroy,
 } from '@angular/core';
-import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
+import { FormlyFieldConfig, FormlyTemplateOptions } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
@@ -22,12 +22,13 @@ import { DOCUMENT } from '@angular/common';
   },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
-
   get to(): FormlyTemplateOptions {
     return this.field.templateOptions || {};
   }
 
-  private get fieldAttrElements(): ElementRef[] { return (this.field && this.field['_elementRefs']) || []; }
+  private get fieldAttrElements(): ElementRef[] {
+    return (this.field && this.field['_elementRefs']) || [];
+  }
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
     this.document = _document;
@@ -139,9 +140,12 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       return;
     }
 
-    const isFocused = !!this.document.activeElement
-      && this.fieldAttrElements
-        .some(({ nativeElement }) => this.document.activeElement === nativeElement || nativeElement.contains(this.document.activeElement));
+    const isFocused =
+      !!this.document.activeElement &&
+      this.fieldAttrElements.some(
+        ({ nativeElement }) =>
+          this.document.activeElement === nativeElement || nativeElement.contains(this.document.activeElement),
+      );
 
     if (value && !isFocused) {
       element.nativeElement.focus();
