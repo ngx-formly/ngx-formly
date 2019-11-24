@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormlyConfig } from '../services/formly.config';
-import { FormlyFieldConfig } from '../components/formly.field.config';
+import { FormlyFieldConfig } from '../models';
 import { isObject } from '../utils';
 
 @Component({
