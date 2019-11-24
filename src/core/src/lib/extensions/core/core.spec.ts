@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { FormlyFieldConfigCache } from '../../models';
 import { MockComponent, createBuilder, createFormlyFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
 import { Subject } from 'rxjs';
 

@@ -1,10 +1,12 @@
 import { ChangeDetectorRef } from '@angular/core';
-import { FormlyExtension, FormlyConfig, TemplateManipulators } from '../../services/formly.config';
+import { FormlyConfig } from '../../services/formly.config';
 import {
   FormlyFieldConfigCache,
   FormlyFieldConfig,
   FormlyValueChangeEvent,
-} from '../../components/formly.field.config';
+  FormlyExtension,
+  TemplateManipulators,
+} from '../../models';
 import {
   getFieldId,
   assignFieldValue,
@@ -129,11 +131,8 @@ export class CoreExtension implements FormlyExtension {
     });
 
     if (
-      field.type !== 'formly-template'
-      && (
-        field.template
-        || (field.expressionProperties && field.expressionProperties.template)
-      )
+      field.type !== 'formly-template' &&
+      (field.template || (field.expressionProperties && field.expressionProperties.template))
     ) {
       field.type = 'formly-template';
     }
@@ -172,7 +171,7 @@ export class CoreExtension implements FormlyExtension {
 
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
     const componentRef = this.config.resolveFieldTypeRef(field);
-    const instance: FormlyExtension = componentRef ? componentRef.instance as any : {};
+    const instance: FormlyExtension = componentRef ? (componentRef.instance as any) : {};
 
     return {
       prePopulate: () => instance.prePopulate && instance.prePopulate(field),
