@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { FormlyConfig } from '../services/formly.config';
-import { FormlyFieldConfig } from '../components/formly.field.config';
+import { FormlyFieldConfig } from '../models';
 import { isObject } from '../utils';
 import { Observable, isObservable, of } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
@@ -19,10 +19,7 @@ export class FormlyValidationMessage implements OnChanges {
   ngOnChanges() {
     this.errorMessage$ = this.field.formControl.statusChanges.pipe(
       startWith(null),
-      switchMap(() => isObservable(this.errorMessage)
-        ? this.errorMessage
-        : of(this.errorMessage),
-      ),
+      switchMap(() => (isObservable(this.errorMessage) ? this.errorMessage : of(this.errorMessage))),
     );
   }
 
