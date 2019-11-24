@@ -1,18 +1,19 @@
 import { Injectable, InjectionToken, ComponentRef } from '@angular/core';
-import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
-import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
-import { Observable } from 'rxjs';
+import {
+  FormlyFieldConfig,
+  FormlyFieldConfigCache,
+  ConfigOption,
+  TypeOption,
+  ValidatorOption,
+  WrapperOption,
+  ManipulatorWrapper,
+  FormlyExtension,
+  ValidationMessageOption,
+} from '../models';
 
 export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
-
-/** @experimental */
-export interface FormlyExtension {
-  prePopulate?(field: FormlyFieldConfig): void;
-  onPopulate?(field: FormlyFieldConfig): void;
-  postPopulate?(field: FormlyFieldConfig): void;
-}
 
 /**
  * Maintains list of formly field directive types. This can be used to register new field templates.
@@ -210,83 +211,4 @@ export class FormlyConfig {
       this.types[name].wrappers = extendedType.wrappers;
     }
   }
-}
-export interface TypeOption {
-  name: string;
-  component?: any;
-  wrappers?: string[];
-  extends?: string;
-  defaultOptions?: FormlyFieldConfig;
-}
-
-export interface WrapperOption {
-  name: string;
-  component: any;
-  types?: string[];
-}
-
-export type FieldValidatorFn = (
-  c: AbstractControl,
-  field: FormlyFieldConfig,
-  options?: { [id: string]: any },
-) => ValidationErrors | null;
-
-export interface ValidatorOption {
-  name: string;
-  validation: FieldValidatorFn;
-  options?: { [id: string]: any };
-}
-
-export interface ExtensionOption {
-  name: string;
-  extension: FormlyExtension;
-}
-
-export interface ValidationMessageOption {
-  name: string;
-  message: string | ((error: any, field: FormlyFieldConfig) => string | Observable<string>);
-}
-
-export type ManipulatorWrapper = (f: FormlyFieldConfig) => string;
-
-export interface TemplateManipulators {
-  preWrapper?: ManipulatorWrapper[];
-  postWrapper?: ManipulatorWrapper[];
-}
-
-export interface ConfigOption {
-  types?: TypeOption[];
-  wrappers?: WrapperOption[];
-  validators?: ValidatorOption[];
-  extensions?: ExtensionOption[];
-  validationMessages?: ValidationMessageOption[];
-  extras?: {
-    immutable?: boolean;
-    showError?: (field: FieldType) => boolean;
-
-    /**
-     * Defines the option which formly rely on to check field expression properties.
-     * - `modelChange`: perform a check when the value of the form control changes (Will be set by default in the next major version).
-     * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.
-     *
-     * Defaults to `changeDetectionCheck`.
-     */
-    checkExpressionOn?: 'modelChange' | 'changeDetectionCheck';
-
-    /**
-     * Whether to lazily render field components or not when marked as hidden.
-     * - `true`: lazily render field components (Will be set by default in the next major version).
-     * - `false`: render field components and use CSS to control their visibility.
-     *
-     * Defaults to `false`.
-     */
-    lazyRender?: boolean,
-
-    /**
-     * When true, reset the value of hidden fields.
-     *
-     * Defaults to `false`.
-     */
-    resetFieldOnHide?: boolean,
-  };
 }
