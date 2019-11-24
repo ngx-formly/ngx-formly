@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { FormlyConfig } from '../services/formly.config';
-import { FormlyFieldConfig } from '../components/formly.field.config';
+import { FormlyFieldConfig } from '../models';
 import { isObject } from '../utils';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';

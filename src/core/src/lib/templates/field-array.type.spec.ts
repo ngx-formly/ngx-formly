@@ -6,18 +6,16 @@ import { FormArray } from '@angular/forms';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
+    imports: [FormlyInputModule],
     declarations: [ArrayTypeComponent],
-    imports: [
-      FormlyInputModule,
-      FormlyModule.forChild({
-        types: [
-          {
-            name: 'array',
-            component: ArrayTypeComponent,
-          },
-        ],
-      }),
-    ],
+    config: {
+      types: [
+        {
+          name: 'array',
+          component: ArrayTypeComponent,
+        },
+      ],
+    },
   });
 };
 

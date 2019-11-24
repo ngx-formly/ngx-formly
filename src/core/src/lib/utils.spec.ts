@@ -8,7 +8,7 @@ import {
   clone,
   observe,
 } from './utils';
-import { FormlyFieldConfig } from './components/formly.field.config';
+import { FormlyFieldConfig } from './models';
 import { of } from 'rxjs';
 
 describe('FormlyUtils service', () => {

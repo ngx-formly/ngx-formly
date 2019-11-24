@@ -1,9 +1,11 @@
-import { FormlyExtension, FormlyConfig, TemplateManipulators } from '../../services/formly.config';
+import { FormlyConfig } from '../../services/formly.config';
 import {
   FormlyFieldConfigCache,
   FormlyFieldConfig,
   FormlyValueChangeEvent,
-} from '../../components/formly.field.config';
+  FormlyExtension,
+  TemplateManipulators,
+} from '../../models';
 import {
   getFieldId,
   assignFieldValue,

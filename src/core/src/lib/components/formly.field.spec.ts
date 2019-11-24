@@ -1,23 +1,21 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyModule, FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
+    imports: [FormlyInputModule],
     declarations: [FormlyWrapperFormFieldAsync],
-    imports: [
-      FormlyInputModule,
-      FormlyModule.forChild({
-        wrappers: [
-          {
-            name: 'form-field-async',
-            component: FormlyWrapperFormFieldAsync,
-          },
-        ],
-      }),
-    ],
+    config: {
+      wrappers: [
+        {
+          name: 'form-field-async',
+          component: FormlyWrapperFormFieldAsync,
+        },
+      ],
+    },
   });
 };
 

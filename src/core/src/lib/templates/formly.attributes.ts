@@ -9,7 +9,7 @@ import {
   Inject,
   OnDestroy,
 } from '@angular/core';
-import { FormlyFieldConfig, FormlyTemplateOptions } from './formly.field.config';
+import { FormlyFieldConfig, FormlyTemplateOptions } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe } from '../utils';
 import { DOCUMENT } from '@angular/common';
 

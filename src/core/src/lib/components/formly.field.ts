@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
-import { FormlyFieldConfig, FormlyFieldConfigCache } from './formly.field.config';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { defineHiddenProp, assignFieldValue, observe, getFieldValue } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';

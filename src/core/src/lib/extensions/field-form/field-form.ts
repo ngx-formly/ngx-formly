@@ -1,5 +1,4 @@
-import { FormlyExtension } from '../../services/formly.config';
-import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { FormlyExtension, FormlyFieldConfigCache } from '../../models';
 import { FormGroup, FormControl, AbstractControlOptions, Validators } from '@angular/forms';
 import { getFieldValue, defineHiddenProp } from '../../utils';
 import { registerControl, findControl } from './utils';
