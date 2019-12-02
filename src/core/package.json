@@ -2,11 +2,9 @@
   "name": "@ngx-formly/core",
   "version": "0.0.0-FORMLY-VERSION",
   "license": "MIT",
-  "dependencies": {
-    "tslib": "^1.7.1"
-  },
   "peerDependencies": {
     "@angular/forms": ">=7.0.0",
+    "tslib": "^1.7.1",
     "rxjs": ">=6.3.0"
   }
 }
