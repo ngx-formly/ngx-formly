@@ -1,7 +1,6 @@
 import { FormGroup, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
-import { TemplateManipulators } from '../models';
 
 export interface FormlyFieldConfig {
   /**
@@ -196,7 +195,6 @@ export interface FormlyTemplateOptions {
   click?: FormlyAttributeEvent;
   change?: FormlyAttributeEvent;
   keypress?: FormlyAttributeEvent;
-  templateManipulators?: TemplateManipulators;
   [additionalProperties: string]: any;
 }
 

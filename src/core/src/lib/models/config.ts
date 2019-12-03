@@ -40,13 +40,6 @@ export interface ValidationMessageOption {
   message: string | ((error: any, field: FormlyFieldConfig) => string);
 }
 
-export type ManipulatorWrapper = (f: FormlyFieldConfig) => string;
-
-export interface TemplateManipulators {
-  preWrapper?: ManipulatorWrapper[];
-  postWrapper?: ManipulatorWrapper[];
-}
-
 export interface ConfigOption {
   types?: TypeOption[];
   wrappers?: WrapperOption[];
