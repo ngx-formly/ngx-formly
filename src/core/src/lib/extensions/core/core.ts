@@ -1,12 +1,6 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { FormlyConfig } from '../../services/formly.config';
-import {
-  FormlyFieldConfigCache,
-  FormlyFieldConfig,
-  FormlyValueChangeEvent,
-  FormlyExtension,
-  TemplateManipulators,
-} from '../../models';
+import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension } from '../../models';
 import {
   getFieldId,
   assignFieldValue,
@@ -167,24 +161,7 @@ export class CoreExtension implements FormlyExtension {
       }
     }
 
-    this.initFieldWrappers(field);
-  }
-
-  private initFieldWrappers(field: FormlyFieldConfig) {
     field.wrappers = field.wrappers || [];
-    const fieldTemplateManipulators: TemplateManipulators = {
-      preWrapper: [],
-      postWrapper: [],
-      ...(field.templateOptions.templateManipulators || {}),
-    };
-
-    field.wrappers = [
-      ...this.config.templateManipulators.preWrapper.map(m => m(field)),
-      ...fieldTemplateManipulators.preWrapper.map(m => m(field)),
-      ...field.wrappers,
-      ...this.config.templateManipulators.postWrapper.map(m => m(field)),
-      ...fieldTemplateManipulators.postWrapper.map(m => m(field)),
-    ].filter((el, i, a) => el && i === a.indexOf(el));
   }
 
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
