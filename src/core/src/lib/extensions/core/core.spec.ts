@@ -285,21 +285,6 @@ describe('CoreExtension', () => {
       const field = buildField({ type: 'input', wrappers: ['form-field-custom'] });
       expect(field.wrappers).toEqual(['form-field-custom']);
     });
-
-    it('should add preWrapper and postWrapper', () => {
-      const field = buildField({
-        key: 'title',
-        wrappers: ['wrapper'],
-        templateOptions: {
-          templateManipulators: {
-            preWrapper: [() => 'preWrapper'],
-            postWrapper: [() => 'postWrapper'],
-          },
-        },
-      });
-
-      expect(field.wrappers).toEqual(['preWrapper', 'wrapper', 'postWrapper']);
-    });
   });
 
   describe('generate field id', () => {
