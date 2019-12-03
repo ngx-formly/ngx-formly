@@ -8,7 +8,6 @@ import {
   TypeOption,
   ValidatorOption,
   WrapperOption,
-  ManipulatorWrapper,
   FormlyExtension,
   ValidationMessageOption,
 } from '../models';
@@ -24,13 +23,6 @@ export class FormlyConfig {
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
   messages: { [name: string]: ValidationMessageOption['message'] } = {};
-  templateManipulators: {
-    preWrapper: ManipulatorWrapper[];
-    postWrapper: ManipulatorWrapper[];
-  } = {
-    preWrapper: [],
-    postWrapper: [],
-  };
   extras: ConfigOption['extras'] = {
     checkExpressionOn: 'changeDetectionCheck',
     lazyRender: false,
