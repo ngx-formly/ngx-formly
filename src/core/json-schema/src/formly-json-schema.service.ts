@@ -25,9 +25,8 @@ function isConst(schema: JSONSchema7) {
 
 function clearFieldModel(field: FormlyFieldConfig) {
   if (field.key) {
-    field.formControl.patchValue(undefined);
-    field.formControl.markAsUntouched();
-    delete field.model[field.key];
+    field.formControl.reset();
+    delete field.parent.model[field.key];
   } else if (field.fieldGroup) {
     field.fieldGroup.forEach(f => clearFieldModel(f));
   }
@@ -35,6 +34,15 @@ function clearFieldModel(field: FormlyFieldConfig) {
 
 function checkField(field: FormlyFieldConfig) {
   (field.options as any)._checkField(field);
+}
+
+function isDefaultFieldModel(field: FormlyFieldConfig): boolean {
+  if (field.key && !field.fieldGroup) {
+    const value = field.formControl.value;
+    return isEmpty(value) || field.defaultValue === value;
+  }
+
+  return field.fieldGroup.every(f => isDefaultFieldModel(f));
 }
 
 function isFieldValid(field: FormlyFieldConfig): boolean {
@@ -323,8 +331,17 @@ export class FormlyJsonschema {
             onInit(f) {
               const modeField = f.parent.fieldGroup[1];
               const value = modeField.fieldGroup
-                .map((f, i) => isFieldValid(f) ? i : -1)
-                .filter(v => v !== -1)
+                .map((f, i) => [f, i] as [FormlyFieldConfig, number])
+                .filter(([f]) => isFieldValid(f))
+                .sort(([f1], [f2]) => {
+                  const isDefaultModel = isDefaultFieldModel(f1);
+                  if (isDefaultModel === isDefaultFieldModel(f2)) {
+                    return 0;
+                  }
+
+                  return isDefaultModel ? 1 : -1;
+                })
+                .map(([, i]) => i)
               ;
 
               const normalizedValue = [value.length === 0 ? 0 : value[0]];
