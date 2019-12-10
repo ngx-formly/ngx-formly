@@ -958,6 +958,24 @@ describe('Service: FormlyJsonschema', () => {
           expect(barField.hide).toBeFalsy();
         }));
 
+        it('should render the filled anyOf field on first render', fakeAsync(() => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+            type: 'object',
+            anyOf: [
+              { properties: { foo: { type: 'string', default: 'foo' } } },
+              { properties: { bar: { type: 'string' } } },
+            ],
+          });
+
+          builder.buildForm(new FormGroup({}), [f], { bar: 'bar' }, {});
+          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          enumField.hooks.onInit(enumField);
+          tick();
+
+          expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+        }));
+
         it('should render the selected anyOf field', fakeAsync(() => {
           const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
           const model: any = { foo: 'test' };
