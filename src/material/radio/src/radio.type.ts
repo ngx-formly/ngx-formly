@@ -30,7 +30,11 @@ export class FormlyFieldRadio extends FieldType {
   };
 
   onContainerClick(event: MouseEvent): void {
-    if (this.radioGroup._radios.length && !this.radioGroup.selected) {
+    const isRadioClick = this.radioGroup._radios
+      .map(radioButton => radioButton._elementRef.nativeElement as HTMLElement)
+      .some(el => el.contains(event.target as Element));
+
+    if (!isRadioClick && this.radioGroup._radios.length && !this.radioGroup.selected) {
       this.radioGroup._radios.first.focus();
     }
     super.onContainerClick(event);
