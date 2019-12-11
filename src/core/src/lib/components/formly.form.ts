@@ -5,7 +5,7 @@ import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith, pairwise, map } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-form',
@@ -180,13 +180,20 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
         }
 
+        // workaround for https://github.com/angular/angular/issues/13792
+        valueChanges = valueChanges.pipe(
+          startWith(control.value),
+          pairwise(),
+          map(([prevVal, value]) => {
+            if ((control as any)._onChange.length > 1 && prevVal !== value) {
+              control.patchValue(value, { emitEvent: false });
+            }
 
-        this.modelChangeSubs.push(valueChanges.subscribe(value => {
-          // workaround for https://github.com/angular/angular/issues/13792
-          if ((control as any)._onChange.length > 1) {
-            control.patchValue(value, { emitEvent: false });
-          }
+            return value;
+          }),
+        );
 
+        this.modelChangeSubs.push(valueChanges.subscribe((value) => {
           if (field.parsers && field.parsers.length > 0) {
             field.parsers.forEach(parserFn => value = parserFn(value));
           }
