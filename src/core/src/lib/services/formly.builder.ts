@@ -8,18 +8,13 @@ import { defineHiddenProp, observe } from '../utils';
 export class FormlyFormBuilder {
   constructor(
     private config: FormlyConfig,
-    private componentFactoryResolver: ComponentFactoryResolver,
+    private resolver: ComponentFactoryResolver,
     private injector: Injector,
     @Optional() private parentForm: FormGroupDirective,
   ) {}
 
-  buildForm(
-    formControl: FormGroup | FormArray,
-    fieldGroup: FormlyFieldConfig[] = [],
-    model: any,
-    options: FormlyFormOptions,
-  ) {
-    this.buildField({ fieldGroup, model, formControl, options });
+  buildForm(form: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+    this.buildField({ fieldGroup, model, form, options });
   }
 
   buildField(field: FormlyFieldConfig) {
@@ -50,12 +45,13 @@ export class FormlyFormBuilder {
   }
 
   private _setOptions(field: FormlyFieldConfigCache) {
-    field.formControl = field.formControl || new FormGroup({});
+    field.form = field.form || new FormGroup({});
+    field.model = field.model || {};
     field.options = field.options || {};
     const options = field.options;
 
     if (!options._componentFactoryResolver) {
-      defineHiddenProp(options, '_componentFactoryResolver', this.componentFactoryResolver);
+      defineHiddenProp(options, '_componentFactoryResolver', this.resolver);
     }
 
     if (!options._injector) {

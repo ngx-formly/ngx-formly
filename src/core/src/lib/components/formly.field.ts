@@ -50,11 +50,7 @@ export class FormlyField
   @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
 
   valueChangesUnsubscribe = () => {};
-  constructor(
-    private config: FormlyConfig,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
-  ) {}
+  constructor(private config: FormlyConfig, private resolver: ComponentFactoryResolver, private injector: Injector) {}
 
   ngAfterContentInit() {
     this.triggerHook('afterContentInit');
@@ -99,13 +95,11 @@ export class FormlyField
     if (wrappers && wrappers.length > 0) {
       const [wrapper, ...wps] = wrappers;
       const { component } = this.config.getWrapper(wrapper);
-      const cfr =
-        f.options && f.options._componentFactoryResolver
-          ? f.options._componentFactoryResolver
-          : this.componentFactoryResolver;
+      const resolver =
+        f.options && f.options._componentFactoryResolver ? f.options._componentFactoryResolver : this.resolver;
 
-      const ref = containerRef.createComponent<FieldWrapper>(cfr.resolveComponentFactory(component));
-      this.attachComponentRef(ref, f);
+      const ref = resolver.resolveComponentFactory<FieldWrapper>(component).create(containerRef.injector);
+      this.attachComponentRef(containerRef, ref, f);
       observe(ref.instance, ['fieldComponent'], ({ currentValue, firstChange }) => {
         if (currentValue) {
           this.renderField(currentValue as ViewContainerRef, f, wps);
@@ -113,10 +107,9 @@ export class FormlyField
         }
       });
     } else {
-      const ref = this.config.createComponent(f, this.componentFactoryResolver, this.injector);
+      const ref = this.config.createComponent(f, this.resolver, this.injector);
       if (ref) {
-        this.attachComponentRef(ref, f);
-        containerRef.insert(ref.hostView);
+        this.attachComponentRef(containerRef, ref, f);
       }
     }
   }
@@ -137,9 +130,14 @@ export class FormlyField
     }
   }
 
-  private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
+  private attachComponentRef<T extends FieldType>(
+    containerRef: ViewContainerRef,
+    ref: ComponentRef<T>,
+    field: FormlyFieldConfigCache,
+  ) {
     field._componentRefs.push(ref);
     Object.assign(ref.instance, { field });
+    containerRef.insert(ref.hostView);
   }
 
   private valueChanges(field: FormlyFieldConfigCache) {
@@ -167,7 +165,7 @@ export class FormlyField
           field.parsers.forEach(parserFn => (value = parserFn(value)));
         }
 
-        assignFieldValue(field, value);
+        assignFieldValue(field, value, true);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 

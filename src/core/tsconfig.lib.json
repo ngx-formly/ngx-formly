@@ -12,13 +12,9 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "types": [],
-    "lib": ["dom", "es2018"],
-    "paths": {
-      "@ngx-formly/core": ["dist/@ngx-formly/core"]
-    }
+    "lib": ["dom", "es2018"]
   },
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "fullTemplateTypeCheck": true,

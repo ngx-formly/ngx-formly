@@ -12,17 +12,15 @@ export class FieldFormExtension implements FormlyExtension {
       this.root = field;
     }
 
-    Object.defineProperty(field, 'form', {
-      get: () => (field.parent ? field.parent.formControl : field.formControl),
-      configurable: true,
-    });
+    if (field.parent) {
+      Object.defineProperty(field, 'form', {
+        get: () => field.parent.formControl,
+        configurable: true,
+      });
+    }
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent) {
-      return;
-    }
-
     if (field.key) {
       this.addFormControl(field);
     }
@@ -39,7 +37,7 @@ export class FieldFormExtension implements FormlyExtension {
 
     this.root = null;
     const updateValidity = this.setValidators(field);
-    updateValidity && (field.formControl as any)._updateTreeValidity();
+    updateValidity && (field.form as any)._updateTreeValidity();
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {

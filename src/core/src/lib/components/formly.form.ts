@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import { FormlyFormBuilder } from '../services/formly.form.builder';
+import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, clone, getKeyPath } from '../utils';
 import { tap, switchMap, filter, take } from 'rxjs/operators';
@@ -25,11 +25,11 @@ import { tap, switchMap, filter, take } from 'rxjs/operators';
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input()
-  set form(formControl: FormGroup | FormArray) {
-    this.field.formControl = formControl;
+  set form(form: FormGroup | FormArray) {
+    this.field.form = form;
   }
   get form() {
-    return this.field.formControl as FormGroup | FormArray;
+    return this.field.form as FormGroup | FormArray;
   }
 
   @Input()
