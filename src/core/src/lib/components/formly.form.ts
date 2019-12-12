@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import { FormlyFormBuilder } from '../services/formly.form.builder';
+import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { clone } from '../utils';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -15,11 +15,11 @@ import { debounceTime, tap } from 'rxjs/operators';
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input()
-  set form(formControl: FormGroup | FormArray) {
-    this.field.formControl = formControl;
+  set form(form: FormGroup | FormArray) {
+    this.field.form = form;
   }
   get form() {
-    return this.field.formControl as FormGroup | FormArray;
+    return this.field.form as FormGroup | FormArray;
   }
 
   @Input()

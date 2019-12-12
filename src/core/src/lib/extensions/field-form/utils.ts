@@ -35,7 +35,7 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
     }
   }
 
-  if (!field.form || !field.parent) {
+  if (!field.form) {
     return;
   }
 
@@ -61,6 +61,6 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
   }
   const key = paths[paths.length - 1];
   if (form.get([key]) !== control) {
-    form.setControl(key, control);
+    (form as FormGroup).setControl(key, control);
   }
 }

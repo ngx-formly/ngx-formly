@@ -6,17 +6,15 @@ import { registerControl } from './utils';
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
   prePopulate(field: FormlyFieldConfigCache) {
-    Object.defineProperty(field, 'form', {
-      get: () => (field.parent ? field.parent.formControl : field.formControl),
-      configurable: true,
-    });
+    if (field.parent) {
+      Object.defineProperty(field, 'form', {
+        get: () => field.parent.formControl,
+        configurable: true,
+      });
+    }
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent) {
-      return;
-    }
-
     if (field.key) {
       this.addFormControl(field);
     }
@@ -32,7 +30,7 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     const updateValidity = this.setValidators(field);
-    updateValidity && (field.formControl as any)._updateTreeValidity({ emitEvent: false });
+    updateValidity && (field.form as any)._updateTreeValidity({ emitEvent: false });
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {

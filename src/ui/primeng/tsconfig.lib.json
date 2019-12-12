@@ -14,11 +14,11 @@
     "types": [],
     "lib": ["dom", "es2018"],
     "paths": {
-      "@ngx-formly/*": ["dist/@ngx-formly/*"]
+      "@ngx-formly/core": ["dist/@ngx-formly/core"],
+      "@ngx-formly/core/*": ["dist/@ngx-formly/core/*"]
     }
   },
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "fullTemplateTypeCheck": true,
