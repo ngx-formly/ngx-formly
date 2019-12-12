@@ -10,7 +10,7 @@ export class FieldValidationExtension implements FormlyExtension {
   constructor(private config: FormlyConfig) {}
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent || !field.key) {
+    if (!field.key) {
       return;
     }
 

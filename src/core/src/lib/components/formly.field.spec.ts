@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
+import { FormlyFieldConfigCache } from '../models';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
@@ -105,7 +106,7 @@ describe('FormlyField Component', () => {
     const { query } = renderComponent({
       type: 'input',
       hooks: {
-        onInit: f => (f.formControl = new FormControl()),
+        onInit: (f: FormlyFieldConfigCache) => (f.formControl = new FormControl()),
       },
     });
 

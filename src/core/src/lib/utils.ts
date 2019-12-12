@@ -55,7 +55,7 @@ export function assignModelValue(model: any, paths: string[], value: any) {
 }
 
 export function getFieldValue(field: FormlyFieldConfig): any {
-  let model = field.parent.model;
+  let model = field.parent ? field.parent.model : field.model;
   for (const path of getKeyPath(field)) {
     if (!model) {
       return model;

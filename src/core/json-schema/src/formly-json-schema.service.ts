@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
+import { ɵdefineHiddenProp as defineHiddenProp, ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { pairwise, startWith } from 'rxjs/operators';
@@ -312,7 +312,7 @@ export class FormlyJsonschema {
 
               const normalizedValue = [value.length === 0 ? 0 : value[0]];
               const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
-              f.formControl = new FormControl(formattedValue);
+              defineHiddenProp(f, 'formControl', new FormControl(formattedValue));
               setTimeout(() => checkField(modeField));
 
               subscription = f.formControl.valueChanges

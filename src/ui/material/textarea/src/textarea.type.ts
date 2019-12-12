@@ -17,7 +17,6 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex || 0"
-      [readonly]="to.readonly"
       [cdkTextareaAutosize]="to.autosize"
       [cdkAutosizeMinRows]="to.autosizeMinRows"
       [cdkAutosizeMaxRows]="to.autosizeMaxRows"

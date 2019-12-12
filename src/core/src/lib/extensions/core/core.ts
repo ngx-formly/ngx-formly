@@ -121,7 +121,7 @@ export class CoreExtension implements FormlyExtension {
       field.type = 'formly-template';
     }
 
-    if (field.parent && !field.type && field.fieldGroup) {
+    if (!field.type && field.fieldGroup) {
       field.type = 'formly-group';
     }
 
@@ -129,7 +129,7 @@ export class CoreExtension implements FormlyExtension {
       this.config.getMergedField(field);
     }
 
-    if (field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+    if (!isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
       assignFieldValue(field, field.defaultValue);
     }
 
