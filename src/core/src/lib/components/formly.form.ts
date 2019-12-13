@@ -52,15 +52,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private initialModel: any;
   private modelChangeSubs: Subscription[] = [];
 
-  private enableCheckExprDebounce = false;
-  private checkExpressionChange$ = this.modelChange.pipe(
-    debounceTime(this.enableCheckExprDebounce ? 100 : 0),
-  ).subscribe(() => {
-    this.enableCheckExprDebounce = true;
-    this.checkExpressionChange();
-    this.enableCheckExprDebounce = false;
-  });
-
   constructor(
     private formlyBuilder: FormlyFormBuilder,
     private formlyConfig: FormlyConfig,
@@ -94,11 +85,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.clearModelSubscriptions();
-    this.checkExpressionChange$.unsubscribe();
   }
 
   changeModel(event: { key: string, value: any }) {
     assignModelValue(this.model, event.key.split('.'), event.value);
+    this.checkExpressionChange();
     this.modelChange.emit(clone(this.model));
   }
 
