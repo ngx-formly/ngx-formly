@@ -7,6 +7,8 @@ import { FieldType } from '@ngx-formly/core';
     <ion-datetime
       [displayFormat]="to.displayFormat"
       [pickerFormat]="to.pickerFormat"
+      [doneText]="to.doneText"
+      [cancelText]="to.cancelText"
       [min]="to.min"
       [max]="to.max"
       [formControl]="formControl"
