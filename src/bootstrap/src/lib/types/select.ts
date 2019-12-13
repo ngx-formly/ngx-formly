@@ -8,6 +8,7 @@ import { FieldType } from '@ngx-formly/core';
       multiple
       [class.custom-select]="to.customSelect"
       [formControl]="formControl"
+      [compareWith]="to.compareWith || compareWith"
       [class.is-invalid]="showError"
       [formlyAttributes]="field">
         <ng-container *ngFor="let item of to.options | formlySelectOptions:field | async">
@@ -24,6 +25,7 @@ import { FieldType } from '@ngx-formly/core';
       <select class="form-control"
         #select
         [formControl]="formControl"
+        [compareWith]="to.compareWith || compareWith"
         [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
         [formlyAttributes]="field">
@@ -56,5 +58,9 @@ export class FormlyFieldSelect extends FieldType implements AfterViewChecked {
         this.select.nativeElement.selectedIndex = -1;
       }
     }
+  }
+
+  compareWith(o1: any, o2: any) {
+    return o1 === o2;
   }
 }
