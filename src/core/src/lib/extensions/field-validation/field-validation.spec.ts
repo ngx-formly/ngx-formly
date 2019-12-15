@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
-function buildField({ model, options, form, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
+function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
     extensions: ['core', 'validation'],
     onInit: c =>
@@ -15,27 +15,18 @@ function buildField({ model, options, form, ...field }: FormlyFieldConfigCache):
       }),
   });
 
-  field = { key: 'name', ...field };
-
-  builder.buildField({
-    model: model || {},
-    options,
-    form,
-    fieldGroup: [field],
-  });
+  builder.buildField(field);
 
   return field;
 }
 
 function validate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
   const formControl = new FormControl(value, { validators: field._validators });
-  expect(typeof field._validators === 'function').toBeTrue();
   expect(formControl.errors).toEqual(errors);
 }
 
 function asyncValidate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
   const formControl = new FormControl(value, { asyncValidators: field._asyncValidators });
-  expect(typeof field._asyncValidators === 'function').toBeTrue();
   formControl.statusChanges.subscribe(() => {
     expect(formControl.errors).toEqual(errors);
   });
@@ -107,6 +98,14 @@ describe('FieldValidationExtension: initialise field validators', () => {
       field.templateOptions.required = true;
       expect(field.formControl.valid).toBeFalse();
     });
+
+    it(`should ignore fieldGroup with empty key`, () => {
+      const field = buildField({
+        templateOptions: { max: 4 },
+        fieldGroup: [],
+      });
+      expect(field._validators).toHaveLength(0);
+    });
   });
 
   describe('validators', () => {
@@ -143,7 +142,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       it(`using expression property`, () => {
         const field = buildField({
           validators: {
-            custom: { expression: (form, field) => (field.key === 'name' ? form.value : false) },
+            custom: { expression: control => control.value === 'test' },
           },
         });
 
@@ -183,7 +182,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
         const field = buildField({
           validators: {
             validation: ['required'],
-            required: { expression: (form, field) => (field.key === 'name' ? form.value : false) },
+            required: { expression: control => control.value === 'test' },
           },
         });
 

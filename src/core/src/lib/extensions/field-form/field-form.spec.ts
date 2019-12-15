@@ -144,8 +144,23 @@ describe('FieldFormExtension', () => {
       form: new FormGroup({ test: formControl }),
     });
 
-    expect(formControl.setValidators).toHaveBeenCalledWith(field._validators);
+    expect(formControl.setValidators).toHaveBeenCalledTimes(1);
     expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(1);
+  });
+
+  it('should validate fieldGroup with empty key', () => {
+    const { form } = buildField({
+      fieldGroup: [
+        {
+          fieldGroup: [],
+          validators: {
+            custom: { expression: control => control.value === 'test' },
+          },
+        },
+      ],
+    });
+
+    expect(form.errors).toEqual({ custom: true });
   });
 
   describe('templateOptions disabled state', () => {

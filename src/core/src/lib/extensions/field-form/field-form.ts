@@ -19,7 +19,7 @@ export class FieldFormExtension implements FormlyExtension {
       this.addFormControl(field);
     }
 
-    if (field.form && field.fieldGroup && !field.key) {
+    if (field.form && field.hasOwnProperty('fieldGroup') && !field.key) {
       defineHiddenProp(field, 'formControl', field.form);
     }
   }
@@ -47,10 +47,8 @@ export class FieldFormExtension implements FormlyExtension {
 
   private setValidators(field: FormlyFieldConfigCache) {
     let updateValidity = false;
-    if (field.key) {
+    if (field.key || !field.parent) {
       const {
-        _validators: validators,
-        _asyncValidators: asyncValidators,
         formControl: control,
         templateOptions: { disabled },
       } = field;
@@ -60,12 +58,14 @@ export class FieldFormExtension implements FormlyExtension {
         updateValidity = true;
       }
 
-      if (validators !== control.validator) {
-        control.setValidators(validators);
+      if (field._validators !== control.validator) {
+        control.setValidators(this.mergeValidators(field, '_validators'));
+        field._validators = control.validator;
         updateValidity = true;
       }
-      if (asyncValidators !== control.asyncValidator) {
-        control.setAsyncValidators(asyncValidators);
+      if (field._asyncValidators !== control.asyncValidator) {
+        control.setAsyncValidators(this.mergeValidators(field, '_asyncValidators'));
+        field._asyncValidators = control.asyncValidator;
         updateValidity = true;
       }
     }
@@ -73,5 +73,16 @@ export class FieldFormExtension implements FormlyExtension {
     (field.fieldGroup || []).forEach(f => this.setValidators(f) && (updateValidity = true));
 
     return updateValidity;
+  }
+
+  private mergeValidators(field: FormlyFieldConfigCache, type: '_validators' | '_asyncValidators') {
+    const validators: any = field[type];
+    if (field.fieldGroup) {
+      field.fieldGroup
+        .filter(f => !f.key && f.fieldGroup)
+        .forEach(f => validators.push(...this.mergeValidators(f, type)));
+    }
+
+    return validators;
   }
 }
