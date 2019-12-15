@@ -146,7 +146,7 @@ export class FormlyField
       const control = field.formControl;
       let valueChanges = control.valueChanges.pipe(distinctUntilChanged());
 
-      if (control.value != getFieldValue(field)) {
+      if (control.value !== getFieldValue(field)) {
         valueChanges = valueChanges.pipe(startWith(control.value));
       }
 

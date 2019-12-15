@@ -27,7 +27,6 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   private document: Document;
   private uiAttributesCache: any = {};
   private uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'];
-  private changeFocusState = (value: boolean) => {};
 
   /**
    * HostBinding doesn't register listeners conditionally which may produce some perf issues.
@@ -38,6 +37,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     listeners: [],
     events: ['click', 'keyup', 'keydown', 'keypress'],
   };
+  private changeFocusState = (value: boolean) => {};
 
   get to(): FormlyTemplateOptions {
     return this.field.templateOptions || {};

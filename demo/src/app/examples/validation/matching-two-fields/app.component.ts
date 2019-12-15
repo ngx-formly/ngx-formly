@@ -13,7 +13,6 @@ export class AppComponent {
 
   fields: FormlyFieldConfig[] = [
     {
-      key: 'password',
       validators: {
         fieldMatch: {
           expression: control => {

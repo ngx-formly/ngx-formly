@@ -10,16 +10,16 @@ export class FieldValidationExtension implements FormlyExtension {
   constructor(private config: FormlyConfig) {}
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.key) {
-      return;
-    }
-
     this.initFieldValidation(field, 'validators');
     this.initFieldValidation(field, 'asyncValidators');
   }
 
   private initFieldValidation(field: FormlyFieldConfigCache, type: 'validators' | 'asyncValidators') {
-    const validators: ValidatorFn[] = type === 'validators' ? [this.getPredefinedFieldValidation(field)] : [];
+    const validators: ValidatorFn[] = [];
+    if (type === 'validators' && !(field.hasOwnProperty('fieldGroup') && !field.key)) {
+      validators.push(this.getPredefinedFieldValidation(field));
+    }
+
     if (field[type]) {
       for (const validatorName of Object.keys(field[type])) {
         validatorName === 'validation'
@@ -28,11 +28,7 @@ export class FieldValidationExtension implements FormlyExtension {
       }
     }
 
-    defineHiddenProp(
-      field,
-      '_' + type,
-      type === 'validators' ? Validators.compose(validators) : Validators.composeAsync(validators as any),
-    );
+    defineHiddenProp(field, '_' + type, validators);
   }
 
   private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn {

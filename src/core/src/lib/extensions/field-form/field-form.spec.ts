@@ -183,6 +183,21 @@ describe('FieldFormExtension', () => {
     expect(formControl.setAsyncValidators).not.toHaveBeenCalled();
   });
 
+  it('should validate fieldGroup with empty key', () => {
+    const { form } = buildField({
+      fieldGroup: [
+        {
+          fieldGroup: [],
+          validators: {
+            custom: { expression: control => control.value === 'test' },
+          },
+        },
+      ],
+    });
+
+    expect(form.errors).toEqual({ custom: true });
+  });
+
   describe('templateOptions disabled state', () => {
     it('should disable sub-fields when parent is disabled', () => {
       const field = buildField({
