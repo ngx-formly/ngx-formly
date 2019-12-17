@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.7"></a>
+## [5.5.7](https://github.com/ngx-formly/ngx-formly/compare/v5.5.6...v5.5.7) (2019-12-17)
+
+
+### Bug Fixes
+
+* **bootstrap:** add missing compareWith input to the select type ([#1978](https://github.com/ngx-formly/ngx-formly/issues/1978)) ([14f9964](https://github.com/ngx-formly/ngx-formly/commit/14f9964)), closes [#1974](https://github.com/ngx-formly/ngx-formly/issues/1974)
+* **core:** check expressions before emitting modelChange ([#1977](https://github.com/ngx-formly/ngx-formly/issues/1977)) ([510570e](https://github.com/ngx-formly/ngx-formly/commit/510570e))
+* **core:** fix max calls error when dealing with sync valueChanges ([#1973](https://github.com/ngx-formly/ngx-formly/issues/1973)) ([f685d3b](https://github.com/ngx-formly/ngx-formly/commit/f685d3b))
+* **ionic:** add missing dialog text inputs ([#1979](https://github.com/ngx-formly/ngx-formly/issues/1979)) ([95b0815](https://github.com/ngx-formly/ngx-formly/commit/95b0815)), closes [#1963](https://github.com/ngx-formly/ngx-formly/issues/1963)
+* **json-schema:** take account of model value on resolve oneOf schema ([#1968](https://github.com/ngx-formly/ngx-formly/issues/1968)) ([0330789](https://github.com/ngx-formly/ngx-formly/commit/0330789)), closes [#1957](https://github.com/ngx-formly/ngx-formly/issues/1957)
+* **material:** avoid unnecessary focus when Radio Button is selected ([0665700](https://github.com/ngx-formly/ngx-formly/commit/0665700)), closes [#1969](https://github.com/ngx-formly/ngx-formly/issues/1969)
+* **material:** disable tabindex for MatRadioGroup element ([26bea8f](https://github.com/ngx-formly/ngx-formly/commit/26bea8f)), closes [#1969](https://github.com/ngx-formly/ngx-formly/issues/1969)
+
+
+
 <a name="5.5.6"></a>
 ## [5.5.6](https://github.com/ngx-formly/ngx-formly/compare/v5.5.5...v5.5.6) (2019-11-20)
 
