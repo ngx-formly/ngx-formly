@@ -1,8 +1,8 @@
 import { FormlyExtension } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { AbstractControl, FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
-import { getKeyPath, getFieldValue, defineHiddenProp } from '../../utils';
-import { registerControl } from './utils';
+import { FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
+import { getFieldValue, defineHiddenProp } from '../../utils';
+import { registerControl, findControl } from './utils';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
@@ -26,23 +26,20 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {
-    const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
-    let control: AbstractControl;
-
-    const form = field.parent.formControl as FormGroup;
-    const value = getFieldValue(field);
-    const paths = getKeyPath(field);
-    if (field.formControl instanceof AbstractControl || (form && form.get(paths))) {
-      control = field.formControl || form.get(paths);
-    } else if (field._componentFactory && field._componentFactory.component && field._componentFactory.component.createControl) {
-      const component = field._componentFactory.component;
-      console.warn(`NgxFormly: '${component.name}::createControl' is deprecated since v5.0, use 'prePopulate' hook instead.`);
-      control = component.createControl(value, field);
-    } else if (field.fieldGroup) {
-      // TODO: move to postPopulate
-      control = new FormGroup({}, controlOptions);
-    } else {
-      control = new FormControl(value, controlOptions);
+    let control = findControl(field);
+    if (!control) {
+      const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
+      const value = getFieldValue(field);
+      if (field._componentFactory && field._componentFactory.component && field._componentFactory.component.createControl) {
+        const component = field._componentFactory.component;
+        console.warn(`NgxFormly: '${component.name}::createControl' is deprecated since v5.0, use 'prePopulate' hook instead.`);
+        control = component.createControl(value, field);
+      } else if (field.fieldGroup) {
+        // TODO: move to postPopulate
+        control = new FormGroup({}, controlOptions);
+      } else {
+        control = new FormControl(value, controlOptions);
+      }
     }
 
     registerControl(field, control);

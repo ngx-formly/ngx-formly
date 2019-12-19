@@ -83,6 +83,22 @@ describe('registerControl', () => {
     registerControl(field);
     expect(field.formControl.value).toEqual('test');
   });
+
+  it('should not connect a hidden field', () => {
+    const form = new FormGroup({});
+    const field = {
+      key: 'foo',
+      formControl: new FormControl(),
+      hide: true,
+      parent: {
+        model: {},
+        formControl: form,
+      },
+    };
+
+    registerControl(field);
+    expect(form.get('foo')).toBeNull();
+  });
 });
 
 describe('unregisterControl', () => {
