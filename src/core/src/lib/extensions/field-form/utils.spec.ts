@@ -99,6 +99,43 @@ describe('registerControl', () => {
     registerControl(field);
     expect(form.get('foo')).toBeNull();
   });
+
+  describe('emit event', () => {
+    it('should not emit valueChanges on register by default', () => {
+      const form = new FormGroup({});
+      const field = {
+        key: 'foo',
+        formControl: new FormControl(),
+        parent: { model: {}, formControl: form },
+      };
+
+      const spy = jasmine.createSpy('valueChanges spy');
+      const subscription = form.valueChanges.subscribe(spy);
+
+      registerControl(field);
+
+      expect(spy).not.toHaveBeenCalled();
+      subscription.unsubscribe();
+    });
+
+    it('should emit valueChanges on register', () => {
+      const form = new FormGroup({});
+      const field = {
+        key: 'foo',
+        formControl: new FormControl(),
+        parent: { model: {}, formControl: form },
+      };
+
+      const spy = jasmine.createSpy('valueChanges spy');
+      const subscription = form.valueChanges.subscribe(spy);
+
+      registerControl(field, null, true);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ foo: null });
+      subscription.unsubscribe();
+    });
+  });
 });
 
 describe('unregisterControl', () => {

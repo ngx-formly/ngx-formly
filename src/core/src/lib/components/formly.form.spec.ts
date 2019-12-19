@@ -868,8 +868,7 @@ describe('FormlyForm Component', () => {
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
 
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledTimes(2);
-      expect(spy).toHaveBeenCalledWith({ test: 'test' });
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ test: 'test', test2: null });
       subscription.unsubscribe();
     });

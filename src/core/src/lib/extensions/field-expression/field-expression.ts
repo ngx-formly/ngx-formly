@@ -216,16 +216,16 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private toggleFormControl(field: FormlyFieldConfig, hide: boolean) {
+    if (field.formControl && field.key) {
+      hide === true
+        ? unregisterControl(field, true)
+        : registerControl(field, null, true);
+    }
+
     if (field.fieldGroup) {
       field.fieldGroup
         .filter(f => !f.hideExpression)
         .forEach(f => this.toggleFormControl(f, hide));
-    }
-
-    if (field.formControl && field.key) {
-      hide === true
-        ? unregisterControl(field)
-        : registerControl(field);
     }
 
     if (field.options.fieldChanges) {
