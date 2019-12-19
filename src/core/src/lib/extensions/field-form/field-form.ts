@@ -22,7 +22,7 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     const updateValidity = this.setValidators(field);
-    updateValidity && (field.formControl as any)._updateTreeValidity({ emitEvent: false });
+    updateValidity && (field.formControl as any)._updateTreeValidity();
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {

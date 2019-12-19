@@ -2,21 +2,33 @@ import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/for
 import { FormlyFieldConfig } from '../../core';
 import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty } from '../../utils';
 
-export function unregisterControl(field: FormlyFieldConfig) {
+export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   const form = field.formControl.parent as FormArray | FormGroup;
   if (form instanceof FormArray) {
     const key = form.controls.findIndex(c => c === field.formControl);
     if (key !== -1) {
-      form.removeAt(key);
-      field.formControl.setParent(null);
+      updateControl(
+        form,
+        { emitEvent },
+        () => {
+          form.removeAt(key);
+          field.formControl.setParent(null);
+        },
+      );
     }
   } else if (form instanceof FormGroup) {
     const paths = getKeyPath(field);
     const key = paths[paths.length - 1];
     if (form.get([key]) === field.formControl) {
-      form.removeControl(key);
+      updateControl(
+        form,
+        { emitEvent },
+        () => {
+          form.removeControl(key);
+          field.formControl.setParent(null);
+        },
+      );
     }
-    field.formControl.setParent(null);
   }
 }
 
@@ -35,7 +47,7 @@ export function findControl(field: FormlyFieldConfig): AbstractControl {
   return null;
 }
 
-export function registerControl(field: FormlyFieldConfig, control?: any) {
+export function registerControl(field: FormlyFieldConfig, control?: any, emitEvent = false) {
   control = control || field.formControl;
   if (!field.formControl && control) {
     defineHiddenProp(field, 'formControl', control);
@@ -87,6 +99,30 @@ export function registerControl(field: FormlyFieldConfig, control?: any) {
   }
   const key = paths[paths.length - 1];
   if (!field.hide && parent.get([key]) !== control) {
-    parent.setControl(key, control);
+    updateControl(
+      parent,
+      { emitEvent },
+      () => parent.setControl(key, control),
+    );
+  }
+}
+
+/**
+ * workaround for https://github.com/angular/angular/issues/20439
+ */
+function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, action: Function) {
+  if (opts.emitEvent === false) {
+    const updateValueAndValidity = form.updateValueAndValidity.bind(form);
+    defineHiddenProp(form, '__updateValueAndValidity', updateValueAndValidity);
+    form.updateValueAndValidity = (opts) => {
+      updateValueAndValidity({ ...(opts || {}), emitEvent: false });
+    };
+  }
+
+  action();
+
+  if (opts.emitEvent === false) {
+    form.updateValueAndValidity = form['__updateValueAndValidity'];
+    delete form['__updateValueAndValidity'];
   }
 }
