@@ -8,11 +8,7 @@ import { DOCUMENT } from '@angular/common';
   host: {
     '(focus)': 'onFocus($event)',
     '(blur)': 'onBlur($event)',
-    '(keyup)': 'to.keyup && to.keyup(field, $event)',
-    '(keydown)': 'to.keydown && to.keydown(field, $event)',
-    '(click)': 'to.click && to.click(field, $event)',
     '(change)': 'onChange($event)',
-    '(keypress)': 'to.keypress && to.keypress(field, $event)',
   },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
@@ -28,6 +24,21 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     'disabled',
     'step',
   ];
+
+  /**
+   * HostBinding doesn't register listeners conditionally which may produce some perf issues.
+   *
+   * Formly issue: https://github.com/ngx-formly/ngx-formly/issues/1991
+   */
+  private uiEvents = {
+    listeners: [],
+    events: [
+      'click',
+      'keyup',
+      'keydown',
+      'keypress',
+    ],
+  };
 
   get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
 
@@ -45,6 +56,19 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     if (changes.field) {
       ['id', 'name'].forEach(attr => {
         this.field[attr] && this.setAttribute(attr, this.field[attr]);
+      });
+
+      this.uiEvents.listeners.forEach(listener => listener());
+      this.uiEvents.events.forEach(eventName => {
+        if (this.to && this.to[eventName]) {
+          this.uiEvents.listeners.push(
+            this.renderer.listen(
+              this.elementRef.nativeElement,
+              eventName,
+              (e) => this.to[eventName](this.field, e),
+            ),
+          );
+        }
       });
 
       if (this.to && this.to.attributes) {
@@ -79,7 +103,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * is in here has to be super lean or we risk seriously damaging or destroying the performance.
    *
    * Formly issue: https://github.com/ngx-formly/ngx-formly/issues/1317
-   * Material issue: https://github.com/angular/material2/issues/14024
+   * Material issue: https://github.com/angular/components/issues/14024
    */
   ngDoCheck() {
     this.uiAttributes.forEach(attr => {
@@ -96,6 +120,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.uiEvents.listeners.forEach(listener => listener());
     this.detachAttrElement();
   }
 
