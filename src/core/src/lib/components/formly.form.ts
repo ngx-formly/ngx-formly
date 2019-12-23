@@ -4,8 +4,8 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
-import { Subscription } from 'rxjs';
-import { debounceTime, startWith, pairwise, map } from 'rxjs/operators';
+import { Subscription, of } from 'rxjs';
+import { debounceTime, startWith, pairwise, map, first, timeout, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-form',
@@ -87,10 +87,18 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     this.clearModelSubscriptions();
   }
 
-  changeModel(event: { key: string, value: any }) {
-    assignModelValue(this.model, event.key.split('.'), event.value);
-    this.checkExpressionChange();
-    this.modelChange.emit(clone(this.model));
+  changeModel({ key, value }: { key: string, value: any }) {
+    assignModelValue(this.model, key.split('.'), value);
+    this.form.valueChanges
+      .pipe(
+        timeout(0),
+        catchError(() => of(null)),
+        first(),
+      )
+      .subscribe(() => {
+        this.checkExpressionChange();
+        this.modelChange.emit(clone(this.model));
+      });
   }
 
   setOptions() {
@@ -177,7 +185,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           pairwise(),
           map(([prevVal, value]) => {
             if ((control as any)._onChange.length > 1 && prevVal !== value) {
-              control.patchValue(value, { emitEvent: false });
+              control.patchValue(value, { emitEvent: false, onlySelf: true });
             }
 
             return value;

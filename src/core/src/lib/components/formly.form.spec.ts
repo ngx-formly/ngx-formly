@@ -312,6 +312,50 @@ describe('FormlyForm Component', () => {
       expect(spy).toHaveBeenCalledWith({ o: [[{ name: '***' }]], group: [{ name: '***' }] });
       subscription.unsubscribe();
     });
+
+    it('should reset field before eval expressions', () => {
+      app.fields = [
+        {
+          key: 'foo',
+          defaultValue: 'foo',
+        },
+        {
+          key: 'bar',
+          hideExpression: '!model.foo',
+          defaultValue: 'bar',
+        },
+      ];
+
+      createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const config = TestBed.get(FormlyConfig);
+      config.extras.checkExpressionOn = 'modelChange';
+
+      app.form.reset();
+      expect(app.model.bar).toBeNull();
+      expect(app.fields[1].formControl.value).toBeNull();
+    });
+
+    it('should eval expressions before emitting `modelChange`', () => {
+      app.fields = [
+        { key: 'foo' },
+        {
+          key: 'bar',
+          hideExpression: '!model.foo',
+        },
+      ];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const config = TestBed.get(FormlyConfig);
+      config.extras.checkExpressionOn = 'modelChange';
+
+      let barControl = null;
+      const subscription = fixture.componentInstance.formlyForm.modelChange
+        .subscribe(() => barControl = app.form.get('bar'));
+
+      app.form.get('foo').patchValue('***');
+      expect(barControl).not.toBeNull();
+      subscription.unsubscribe();
+    });
   });
 
   it('should fallback null fields to empty array', () => {
