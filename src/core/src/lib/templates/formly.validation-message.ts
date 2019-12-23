@@ -1,16 +1,27 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { isObject } from '../utils';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-validation-message',
-  template: `{{ errorMessage }}`,
+  template: `{{ errorMessage$ | async }}`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyValidationMessage {
+export class FormlyValidationMessage implements OnChanges {
   @Input() field: FormlyFieldConfig;
+  errorMessage$: Observable<string>;
 
   constructor(private formlyConfig: FormlyConfig) {}
+
+  ngOnChanges() {
+    this.errorMessage$ = this.field.formControl.statusChanges.pipe(
+      startWith(null),
+      map(() => this.errorMessage),
+    );
+  }
 
   get errorMessage(): string {
     const fieldForm = this.field.formControl;
