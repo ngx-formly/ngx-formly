@@ -107,13 +107,24 @@ export function registerControl(field: FormlyFieldConfig, control?: any, emitEve
   }
 }
 
-/**
- * workaround for https://github.com/angular/angular/issues/20439
- */
 function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, action: Function) {
+  /**
+   *  workaround for https://github.com/angular/angular/issues/27679
+   */
+  if (form instanceof FormGroup && !form['__patchForEachChild']) {
+    defineHiddenProp(form, '__patchForEachChild', true);
+    (form as any)._forEachChild = (cb: Function) => {
+      Object
+        .keys(form.controls)
+        .forEach(k => form.controls[k] && cb(form.controls[k], k));
+    };
+  }
+
+  /**
+   * workaround for https://github.com/angular/angular/issues/20439
+   */
+  const updateValueAndValidity = form.updateValueAndValidity.bind(form);
   if (opts.emitEvent === false) {
-    const updateValueAndValidity = form.updateValueAndValidity.bind(form);
-    defineHiddenProp(form, '__updateValueAndValidity', updateValueAndValidity);
     form.updateValueAndValidity = (opts) => {
       updateValueAndValidity({ ...(opts || {}), emitEvent: false });
     };
@@ -122,7 +133,6 @@ function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, 
   action();
 
   if (opts.emitEvent === false) {
-    form.updateValueAndValidity = form['__updateValueAndValidity'];
-    delete form['__updateValueAndValidity'];
+    form.updateValueAndValidity = updateValueAndValidity;
   }
 }
