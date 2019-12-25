@@ -137,7 +137,7 @@ describe('FormlyForm Component', () => {
       subscription.unsubscribe();
     });
 
-    it('should emit `modelChange` twice when key is duplicated', () => {
+    it('should emit `modelChange` once when key is duplicated', () => {
       app.fields = [
         { key: 'title', type: 'text' },
         { key: 'title', type: 'text' },
@@ -148,9 +148,11 @@ describe('FormlyForm Component', () => {
       const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
 
       app.form.get('title').patchValue('***');
+      app.form.get('title').patchValue('***');
+      app.form.get('title').patchValue('***');
 
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ title: '***' });
       subscription.unsubscribe();
     });
