@@ -356,6 +356,25 @@ describe('FormlyForm Component', () => {
       expect(barControl).not.toBeNull();
       subscription.unsubscribe();
     });
+
+    it('should detect changes before emitting `modelChange`', () => {
+      app.fields = [
+        {
+          key: 'foo',
+          hideExpression: 'model.bar',
+          hooks: {
+            // Changing `field.hide` during `afterViewInit` throw the following error:
+            // Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'display: '. Current value: 'display: none'.
+            afterViewInit: f => f.form.get('bar').setValue('ops'),
+          },
+        },
+        { key: 'bar' },
+      ];
+
+      const createComponent = () => createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      expect(createComponent).not.toThrowError(/ExpressionChangedAfterItHasBeenCheckedError/i);
+      expect(app.fields[0].hide).toEqual(true);
+    });
   });
 
   it('should fallback null fields to empty array', () => {
