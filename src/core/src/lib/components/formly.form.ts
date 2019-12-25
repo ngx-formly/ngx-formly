@@ -4,8 +4,8 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
-import { Subscription, of } from 'rxjs';
-import { debounceTime, startWith, pairwise, map, first, timeout, catchError } from 'rxjs/operators';
+import { Subscription, of, Subject, timer } from 'rxjs';
+import { debounceTime, first, timeout, catchError, debounce, switchMap, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-form',
@@ -51,6 +51,22 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private _options: FormlyFormOptions;
   private initialModel: any;
   private modelChangeSubs: Subscription[] = [];
+  private useDebounce = false;
+  private modelChange$ = new Subject<void>();
+  private modelChangeSub = this.modelChange$.pipe(
+    debounce(() => this.useDebounce ? timer(100) : of()),
+    switchMap(() => this.form.valueChanges.pipe(
+      timeout(0),
+      catchError(() => of(null)),
+      first(),
+    )),
+  ).subscribe(() => {
+    this.useDebounce = true;
+    this.checkExpressionChange();
+    this.cdRef.detectChanges();
+    this.modelChange.emit(clone(this.model));
+    this.useDebounce = false;
+  });
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
@@ -85,24 +101,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.modelChangeSub.unsubscribe();
     this.clearModelSubscriptions();
   }
 
   changeModel({ key, value }: { key: string, value: any }) {
     assignModelValue(this.model, key.split('.'), value);
-    this.form.valueChanges
-      .pipe(
-        timeout(0),
-        catchError(() => of(null)),
-        first(),
-      )
-      .subscribe(() => {
-        if (this.checkExpressionChange()) {
-          this.cdRef.detectChanges();
-        }
-
-        this.modelChange.emit(clone(this.model));
-      });
+    this.modelChange$.next();
   }
 
   setOptions() {
@@ -163,42 +168,32 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private checkExpressionChange() {
     if (this.options && (<FormlyFormOptionsCache> this.options)._checkField) {
-      return (<FormlyFormOptionsCache> this.options)._checkField({
+      (<FormlyFormOptionsCache> this.options)._checkField({
         fieldGroup: this.fields,
         model: this.model,
         formControl: this.form,
         options: this.options,
       });
     }
-
-    return false;
   }
 
   private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
     fields.forEach(field => {
       if (field.key && !field.fieldGroup) {
         const control = field.formControl;
-        let valueChanges = control.valueChanges;
+        let valueChanges = control.valueChanges.pipe(distinctUntilChanged());
 
         const { updateOn, debounce } = field.modelOptions;
         if ((!updateOn || updateOn === 'change') && debounce && debounce.default > 0) {
           valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
         }
 
-        // workaround for https://github.com/angular/angular/issues/13792
-        valueChanges = valueChanges.pipe(
-          startWith(control.value),
-          pairwise(),
-          map(([prevVal, value]) => {
-            if ((control as any)._onChange.length > 1 && prevVal !== value) {
-              control.patchValue(value, { emitEvent: false, onlySelf: true });
-            }
-
-            return value;
-          }),
-        );
-
         this.modelChangeSubs.push(valueChanges.subscribe((value) => {
+          // workaround for https://github.com/angular/angular/issues/13792
+          if ((control as any)._onChange.length > 1) {
+            control.patchValue(value, { emitEvent: false, onlySelf: true });
+          }
+
           if (field.parsers && field.parsers.length > 0) {
             field.parsers.forEach(parserFn => value = parserFn(value));
           }
