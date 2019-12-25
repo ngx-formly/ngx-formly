@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute, ViewChild, ElementRef } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
@@ -55,6 +55,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   constructor(
     private formlyBuilder: FormlyFormBuilder,
     private formlyConfig: FormlyConfig,
+    private cdRef: ChangeDetectorRef,
     // tslint:disable-next-line
     @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
@@ -96,7 +97,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         first(),
       )
       .subscribe(() => {
-        this.checkExpressionChange();
+        if (this.checkExpressionChange()) {
+          this.cdRef.detectChanges();
+        }
+
         this.modelChange.emit(clone(this.model));
       });
   }
@@ -159,13 +163,15 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private checkExpressionChange() {
     if (this.options && (<FormlyFormOptionsCache> this.options)._checkField) {
-      (<FormlyFormOptionsCache> this.options)._checkField({
+      return (<FormlyFormOptionsCache> this.options)._checkField({
         fieldGroup: this.fields,
         model: this.model,
         formControl: this.form,
         options: this.options,
       });
     }
+
+    return false;
   }
 
   private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {

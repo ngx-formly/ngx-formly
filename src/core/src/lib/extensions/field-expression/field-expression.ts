@@ -128,8 +128,13 @@ export class FieldExpressionExtension implements FormlyExtension {
         .sort(f => f.hide ? -1 : 1)
         .forEach(f => this.toggleFormControl(f, f.hide));
 
-      options._hiddenFieldsForCheck = [];
+      if (options._hiddenFieldsForCheck.length > 0) {
+        options._hiddenFieldsForCheck = [];
+        return true;
+      }
     }
+
+    return false;
   }
 
   private checkFieldExpressionChange(field: FormlyFieldConfigCache, ignoreCache): boolean {
