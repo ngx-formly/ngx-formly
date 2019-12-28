@@ -1,34 +1,35 @@
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
-import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty } from '../../utils';
+import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty, assignModelValue, isUndefined } from '../../utils';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   const form = field.formControl.parent as FormArray | FormGroup;
+  if (!form) {
+    return;
+  }
+
+  const control = field.formControl;
+  const opts = { emitEvent };
   if (form instanceof FormArray) {
-    const key = form.controls.findIndex(c => c === field.formControl);
+    const key = form.controls.findIndex(c => c === control);
     if (key !== -1) {
-      updateControl(
-        form,
-        { emitEvent },
-        () => {
-          form.removeAt(key);
-          field.formControl.setParent(null);
-        },
-      );
+      updateControl(form, opts, () => form.removeAt(key));
     }
   } else if (form instanceof FormGroup) {
     const paths = getKeyPath(field);
     const key = paths[paths.length - 1];
-    if (form.get([key]) === field.formControl) {
-      updateControl(
-        form,
-        { emitEvent },
-        () => {
-          form.removeControl(key);
-          field.formControl.setParent(null);
-        },
-      );
+    if (form.get([key]) === control) {
+      updateControl(form, opts, () => form.removeControl(key));
     }
+  }
+
+  control.setParent(null);
+  if (field['autoClear']) {
+    delete field.parent.model[field.key];
+    control.reset(
+      { value: undefined, disabled: control.disabled },
+      { emitEvent, onlySelf: true },
+    );
   }
 }
 
@@ -87,6 +88,10 @@ export function registerControl(field: FormlyFieldConfig, control?: any, emitEve
     }
 
     parent = <FormGroup> parent.get([path]);
+  }
+
+  if (field['autoClear'] && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+    assignModelValue(field.parent.model, getKeyPath(field), field.defaultValue);
   }
 
   const value = getFieldValue(field);

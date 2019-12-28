@@ -15,6 +15,9 @@ import { AppComponent } from './app.component';
         data: {
           examples: [{
             title: 'Json Schema',
+            description: `
+              Credits: The json-schema implementation is inspired by <a target="_blank" href="https://github.com/rjsf-team/react-jsonschema-form">react-jsonschema-form</a>
+            `,
             component: AppComponent,
             debug: false,
             files: [

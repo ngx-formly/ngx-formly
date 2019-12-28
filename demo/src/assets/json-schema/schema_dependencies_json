@@ -5,22 +5,14 @@
     "type": "object",
     "properties": {
       "simple": {
-        "src": "https://spacetelescope.github.io/understanding-json-schema/reference/object.html#dependencies",
         "title": "Simple",
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
           "credit_card": {
             "type": "number",
             "title": "Credit card"
           }
         },
-        "required": [
-          "name"
-        ],
         "dependencies": {
           "credit_card": {
             "properties": {
@@ -34,12 +26,74 @@
             ]
           }
         }
+      },
+      "person": {
+        "title": "Person",
+        "type": "object",
+        "properties": {
+          "Do you have any pets?": {
+            "type": "string",
+            "title": "Do you have any pets?",
+            "enum": [
+              "No",
+              "Yes: One",
+              "Yes: More than one"
+            ],
+            "default": "No"
+          }
+        },
+        "required": [
+          "Do you have any pets?"
+        ],
+        "dependencies": {
+          "Do you have any pets?": {
+            "oneOf": [
+              {
+                "properties": {
+                  "Do you have any pets?": {
+                    "enum": [
+                      "No"
+                    ]
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "Do you have any pets?": {
+                    "enum": [
+                      "Yes: One"
+                    ]
+                  },
+                  "How old is your pet?": {
+                    "title": "How old is your pet?",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "How old is your pet?"
+                ]
+              },
+              {
+                "properties": {
+                  "Do you have any pets?": {
+                    "enum": [
+                      "Yes: More than one"
+                    ]
+                  },
+                  "Do you want to get rid of any?": {
+                    "title": "Do you want to get rid of any?",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "Do you want to get rid of any?"
+                ]
+              }
+            ]
+          }
+        }
       }
     }
   },
-  "model": {
-    "simple": {
-      "name": "Randy"
-    }
-  }
+  "model": {}
 }

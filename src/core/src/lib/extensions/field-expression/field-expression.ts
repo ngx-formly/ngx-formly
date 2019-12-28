@@ -12,7 +12,15 @@ export class FieldExpressionExtension implements FormlyExtension {
       return;
     }
 
-    field.options._checkField = (f, ignoreCache) => this._checkField(f, ignoreCache);
+    field.options._checkField = (f, ignoreCache) => {
+      this._checkField(f, ignoreCache);
+
+      field.options._hiddenFieldsForCheck
+        .sort(f => f.hide ? -1 : 1)
+        .forEach(f => this.toggleFormControl(f, f.hide));
+
+      field.options._hiddenFieldsForCheck = [];
+    };
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
@@ -104,13 +112,11 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
-    const options = field.options as { _hiddenFieldsForCheck: FormlyFieldConfigCache[] };
-
     let markForCheck = false;
     field.fieldGroup.forEach(f => {
       this.checkFieldExpressionChange(f, ignoreCache) && (markForCheck = true);
       if (this.checkFieldVisibilityChange(f, ignoreCache)) {
-        options._hiddenFieldsForCheck.push(f);
+        field.options._hiddenFieldsForCheck.push(f);
         markForCheck = true;
       }
 
@@ -121,14 +127,6 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     if (markForCheck && field.options && field.options._markForCheck) {
       field.options._markForCheck(field);
-    }
-
-    if (!field.parent) {
-      options._hiddenFieldsForCheck
-        .sort(f => f.hide ? -1 : 1)
-        .forEach(f => this.toggleFormControl(f, f.hide));
-
-      options._hiddenFieldsForCheck = [];
     }
   }
 
