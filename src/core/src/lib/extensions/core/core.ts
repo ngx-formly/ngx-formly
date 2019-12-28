@@ -86,7 +86,7 @@ export class CoreExtension implements FormlyExtension {
       this.formlyConfig.getMergedField(field);
     }
 
-    if (!isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+    if (!field['autoClear'] && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
       assignModelValue(root.model, getKeyPath(field), field.defaultValue);
     }
 

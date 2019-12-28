@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
+import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath, isUndefined } from '../utils';
 import { Subscription, of, Subject, timer } from 'rxjs';
 import { debounceTime, first, timeout, catchError, debounce, switchMap, distinctUntilChanged } from 'rxjs/operators';
 
@@ -105,8 +105,16 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     this.clearModelSubscriptions();
   }
 
-  changeModel({ key, value }: { key: string, value: any }) {
+  changeModel({ key, value, field }: { key: string, value: any, field: FormlyFieldConfig }) {
     assignModelValue(this.model, key.split('.'), value);
+    if (
+      isUndefined(value)
+      && field['autoClear']
+      && !field.formControl.parent
+    ) {
+      delete this.model[key];
+    }
+
     this.modelChange$.next();
   }
 
@@ -198,7 +206,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
             field.parsers.forEach(parserFn => value = parserFn(value));
           }
 
-          this.changeModel({ key: [...rootKey, ...getKeyPath(field)].join('.'), value });
+          this.changeModel({ key: [...rootKey, ...getKeyPath(field)].join('.'), value, field });
         }));
       }
 

@@ -4,7 +4,6 @@ import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import { ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { pairwise, startWith } from 'rxjs/operators';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -21,15 +20,6 @@ function isEmpty(v: any) {
 
 function isConst(schema: JSONSchema7) {
   return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
-}
-
-function clearFieldModel(field: FormlyFieldConfig) {
-  if (field.key) {
-    field.formControl.reset();
-    delete field.parent.model[field.key];
-  } else if (field.fieldGroup) {
-    field.fieldGroup.forEach(f => clearFieldModel(f));
-  }
 }
 
 function checkField(field: FormlyFieldConfig) {
@@ -55,6 +45,7 @@ function isFieldValid(field: FormlyFieldConfig): boolean {
 
 interface IOptions extends FormlyJsonschemaOptions {
   schema: JSONSchema7;
+  autoClear?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -75,6 +66,10 @@ export class FormlyJsonschema {
         description: schema.description,
       },
     };
+
+    if (options.autoClear) {
+      field['autoClear'] = true;
+    }
 
     switch (field.type) {
       case 'null': {
@@ -148,10 +143,10 @@ export class FormlyJsonschema {
               oneOfSchema
               && oneOfSchema.every(o => o.properties && o.properties[key] && isConst(o.properties[key]))
             ) {
-              oneOfSchema.forEach(oneOfSchema => {
-                const { [key]: constSchema, ...properties } = oneOfSchema.properties;
+              oneOfSchema.forEach(oneOfSchemaItem => {
+                const { [key]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
-                  ...this._toFieldConfig({ ...oneOfSchema, properties }, options),
+                  ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, options),
                   hideExpression: m => !m || getConstValue(constSchema) !== m[key],
                 });
               });
@@ -348,21 +343,6 @@ export class FormlyJsonschema {
               const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
               f.formControl = new FormControl(formattedValue);
               setTimeout(() => checkField(modeField));
-
-              subscription = f.formControl.valueChanges.pipe(
-                startWith(formattedValue),
-                pairwise(),
-              ).subscribe(([p, q]) => {
-                if (Array.isArray(p)) {
-                  if (p.length >= q.length) {
-                    const indexToClear = p.find(v => !q.includes(v));
-                    clearFieldModel(modeField.fieldGroup[indexToClear]);
-                  }
-                } else {
-                  clearFieldModel(modeField);
-                }
-                checkField(modeField);
-              });
             },
             onDestroy() {
               subscription && subscription.unsubscribe();
@@ -371,10 +351,10 @@ export class FormlyJsonschema {
         },
         {
           fieldGroup: schemas.map((s, i) => ({
-            ...this._toFieldConfig(s, options),
+            ...this._toFieldConfig(s, { ...options, autoClear: true }),
             hideExpression: (m, fs, f) => {
               const control = f.parent.parent.fieldGroup[0].formControl;
-              return !control || (Array.isArray(control.value)
+              return control && (Array.isArray(control.value)
                   ? !control.value.includes(i)
                   : control.value !== i);
             },
