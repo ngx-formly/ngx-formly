@@ -50,6 +50,13 @@ export function findControl(field: FormlyFieldConfig): AbstractControl {
 
 export function registerControl(field: FormlyFieldConfig, control?: any, emitEvent = false) {
   control = control || field.formControl;
+  if (!control['_fields']) {
+    defineHiddenProp(control, '_fields', []);
+  }
+  if (!control['_fields'].includes(field)) {
+    control['_fields'].push(field);
+  }
+
   if (!field.formControl && control) {
     defineHiddenProp(field, 'formControl', control);
 

@@ -85,6 +85,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       );
     } else {
       wrapProperty(field, 'hide', ({ currentValue, firstChange }) => {
+        field._hide = currentValue;
         if (!firstChange || (firstChange && currentValue === true)) {
           field.options._hiddenFieldsForCheck.push(field);
         }
@@ -213,9 +214,15 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private toggleFormControl(field: FormlyFieldConfig, hide: boolean) {
+  private toggleFormControl(field: FormlyFieldConfigCache, hide: boolean) {
     if (field.formControl && field.key) {
-      hide === true
+      defineHiddenProp(field, '_hide', !!(hide || field.hide));
+      const c = field.formControl;
+      if (c['_fields'].length > 1) {
+        c.updateValueAndValidity({ emitEvent: false });
+      }
+
+      hide === true && c['_fields'].every(f => !!f._hide)
         ? unregisterControl(field, true)
         : registerControl(field, null, true);
     }
