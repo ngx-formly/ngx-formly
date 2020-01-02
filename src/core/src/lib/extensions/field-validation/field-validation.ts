@@ -1,7 +1,7 @@
 import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
-import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isUndefined, isPromise, wrapProperty } from '../../utils';
+import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isPromise, wrapProperty } from '../../utils';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -17,18 +17,6 @@ export class FieldValidationExtension implements FormlyExtension {
   }
 
   private initFieldValidation(field: FormlyFieldConfigCache, type: 'validators' | 'asyncValidators') {
-    if (!isUndefined(field['_' + type])) {
-      // Avoid overriding existing validators defined through directive (https://github.com/ngx-formly/ngx-formly/issues/1578)
-      if (field.formControl) {
-        const validator = type === 'validators' ? field.formControl.validator : field.formControl.asyncValidator;
-        if (field['_' + type] !== validator) {
-          field['_' + type] = validator;
-        }
-      }
-
-      return;
-    }
-
     const validators: ValidatorFn[] = type === 'validators' ? [this.getPredefinedFieldValidation(field)] : [];
     if (field[type]) {
       for (const validatorName in field[type]) {

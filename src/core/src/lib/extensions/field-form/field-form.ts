@@ -1,8 +1,9 @@
 import { FormlyExtension } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { FormGroup, FormControl, AbstractControlOptions } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControlOptions, Validators } from '@angular/forms';
 import { getFieldValue, defineHiddenProp } from '../../utils';
 import { registerControl, findControl } from './utils';
+import { of } from 'rxjs';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
@@ -49,24 +50,35 @@ export class FieldFormExtension implements FormlyExtension {
     let updateValidity = false;
     if (field.key) {
       const {
-        _validators: validators,
-        _asyncValidators: asyncValidators,
-        formControl: control,
+        formControl: c,
         templateOptions: { disabled },
       } = field;
 
-      if (disabled && control.enabled) {
-        control.disable({ emitEvent: false, onlySelf: true });
+      if (disabled && c.enabled) {
+        c.disable({ emitEvent: false, onlySelf: true });
         updateValidity = true;
       }
 
-      if (validators !== control.validator) {
-        control.setValidators(validators);
+      if (null === c.validator || null === c.asyncValidator) {
         updateValidity = true;
-      }
-      if (asyncValidators !== control.asyncValidator) {
-        control.setAsyncValidators(asyncValidators);
-        updateValidity = true;
+        c.setValidators(() => {
+          const fields: FormlyFieldConfigCache[] = c['_fields'].length === 1
+            ? c['_fields']
+            : c['_fields'].filter(f => !f._hide);
+
+          const v = Validators.compose(fields.map(f => f._validators));
+
+          return v ? v(c) : null;
+        });
+        c.setAsyncValidators(() => {
+          const fields: FormlyFieldConfigCache[] = c['_fields'].length === 1
+            ? c['_fields']
+            : c['_fields'].filter(f => !f._hide);
+
+          const v = Validators.composeAsync(fields.map(f => f._asyncValidators));
+
+          return v ? v(c) : of(null);
+        });
       }
     }
 

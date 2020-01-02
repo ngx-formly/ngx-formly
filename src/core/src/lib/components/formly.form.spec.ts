@@ -470,6 +470,27 @@ describe('FormlyForm Component', () => {
     expect(inputs[1].nativeElement.value).toEqual('First');
   });
 
+  it('should ignore validation of hidden fields (same key)', () => {
+    app = {
+      fields: [
+        { key: 'name', hide: true, templateOptions: { required: true } },
+        { key: 'name' },
+      ],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    expect(app.form.valid).toEqual(true);
+
+    app.fields[0].hide = false;
+    fixture.detectChanges();
+    expect(app.form.valid).toEqual(false);
+  });
+
+
   it('should update the form controls when changing the model', () => {
     app = {
       fields: [{
