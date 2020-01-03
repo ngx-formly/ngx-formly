@@ -223,8 +223,8 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
 
       hide === true && c['_fields'].every(f => !!f._hide)
-        ? unregisterControl(field, true)
-        : registerControl(field, null, true);
+        ? unregisterControl(field)
+        : registerControl(field);
     }
 
     if (field.fieldGroup) {
