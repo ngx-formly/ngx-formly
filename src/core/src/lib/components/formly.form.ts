@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath, isUndefined } from '../utils';
+import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
 import { Subscription, of, Subject, timer } from 'rxjs';
 import { debounceTime, first, timeout, catchError, debounce, switchMap, distinctUntilChanged } from 'rxjs/operators';
 
@@ -49,7 +49,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private _model: any;
   private _fields: FormlyFieldConfig[];
   private _options: FormlyFormOptions;
-  private initialModel: any;
   private modelChangeSubs: Subscription[] = [];
   private useDebounce = false;
   private modelChange$ = new Subject<void>();
@@ -93,10 +92,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (changes.fields || changes.form || changes.model) {
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
+      this.options.updateInitialValue();
       this.clearModelSubscriptions();
       this.formlyBuilder.buildForm(this.form, this.fields, this.model, this.options);
       this.trackModelChanges(this.fields);
-      this.options.updateInitialValue();
     }
   }
 
@@ -106,13 +105,17 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   changeModel({ key, value, field }: { key: string, value: any, field: FormlyFieldConfig }) {
-    assignModelValue(this.model, key.split('.'), value);
     if (
-      isUndefined(value)
+      value == null
       && field['autoClear']
       && !field.formControl.parent
     ) {
-      delete this.model[key];
+      const paths = key.split('.');
+      const k = paths.pop();
+      const m = paths.reduce((model, path) => model[path] || {}, this.model);
+      delete m[k];
+    } else {
+      assignModelValue(this.model, key.split('.'), value);
     }
 
     this.modelChange$.next();
@@ -125,7 +128,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     if (!this.options.resetModel) {
       this.options.resetModel = (model ?: any) => {
-        model = clone(isNullOrUndefined(model) ? this.initialModel : model);
+        model = clone(isNullOrUndefined(model) ? (<FormlyFormOptionsCache> this.options)._initialModel : model);
         if (this.model) {
           Object.keys(this.model).forEach(k => delete this.model[k]);
           Object.assign(this.model, model || {});
@@ -158,7 +161,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (!this.options.updateInitialValue) {
-      this.options.updateInitialValue = () => this.initialModel = clone(this.model);
+      this.options.updateInitialValue = () => (<FormlyFormOptionsCache> this.options)._initialModel = clone(this.model);
     }
 
     if (!(<FormlyFormOptionsCache> this.options)._buildForm) {

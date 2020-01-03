@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { ɵreverseDeepMerge as reverseDeepMerge } from '@ngx-formly/core';
+import { ɵreverseDeepMerge as reverseDeepMerge, ɵgetKeyPath as getKeyPath } from '@ngx-formly/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -22,17 +21,30 @@ function isConst(schema: JSONSchema7) {
   return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
 }
 
-function checkField(field: FormlyFieldConfig) {
-  (field.options as any)._checkField(field);
-}
-
-function isDefaultFieldModel(field: FormlyFieldConfig): boolean {
-  if (field.key && !field.fieldGroup) {
-    const value = field.formControl.value;
-    return isEmpty(value) || field.defaultValue === value;
+export function getInitialFieldValue(field: FormlyFieldConfig) {
+  let model = field.options['_initialModel'];
+  let paths = getKeyPath(field);
+  while (field.parent) {
+    field = field.parent;
+    paths = [...getKeyPath(field), ...paths];
   }
 
-  return field.fieldGroup.every(f => isDefaultFieldModel(f));
+  for (const path of paths) {
+    if (!model) {
+      return undefined;
+    }
+    model = model[path];
+  }
+
+  return model;
+}
+
+function isEmptyFieldModel(field: FormlyFieldConfig): boolean {
+  if (field.key && !field.fieldGroup) {
+    return getInitialFieldValue(field) === undefined;
+  }
+
+  return field.fieldGroup.every(f => isEmptyFieldModel(f));
 }
 
 function isFieldValid(field: FormlyFieldConfig): boolean {
@@ -310,8 +322,6 @@ export class FormlyJsonschema {
     schemas: JSONSchema7[],
     options: IOptions,
   ): FormlyFieldConfig {
-    let subscription: Subscription = null;
-
     return {
       type: 'multischema',
       fieldGroup: [
@@ -322,41 +332,37 @@ export class FormlyJsonschema {
             options: schemas
               .map((s, i) => ({ label: s.title, value: i })),
           },
-          hooks: {
-            onInit(f) {
-              const modeField = f.parent.fieldGroup[1];
-              const value = modeField.fieldGroup
-                .map((f, i) => [f, i] as [FormlyFieldConfig, number])
-                .filter(([f]) => isFieldValid(f))
-                .sort(([f1], [f2]) => {
-                  const isDefaultModel = isDefaultFieldModel(f1);
-                  if (isDefaultModel === isDefaultFieldModel(f2)) {
-                    return 0;
-                  }
-
-                  return isDefaultModel ? 1 : -1;
-                })
-                .map(([, i]) => i)
-              ;
-
-              const normalizedValue = [value.length === 0 ? 0 : value[0]];
-              const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
-              f.formControl = new FormControl(formattedValue);
-              setTimeout(() => checkField(modeField));
-            },
-            onDestroy() {
-              subscription && subscription.unsubscribe();
-            },
-          },
         },
         {
           fieldGroup: schemas.map((s, i) => ({
             ...this._toFieldConfig(s, { ...options, autoClear: true }),
             hideExpression: (m, fs, f) => {
-              const control = f.parent.parent.fieldGroup[0].formControl;
-              return control && (Array.isArray(control.value)
-                  ? !control.value.includes(i)
-                  : control.value !== i);
+              const selectField = f.parent.parent.fieldGroup[0];
+              if (!selectField.formControl) {
+                const value = f.parent.fieldGroup
+                  .map((f, i) => [f, i] as [FormlyFieldConfig, number])
+                  .filter(([f]) => isFieldValid(f))
+                  .sort(([f1], [f2]) => {
+                    const isDefaultModel = isEmptyFieldModel(f1);
+                    if (isDefaultModel === isEmptyFieldModel(f2)) {
+                      return 0;
+                    }
+
+                    return isDefaultModel ? 1 : -1;
+                  })
+                  .map(([, i]) => i)
+                ;
+
+                const normalizedValue = [value.length === 0 ? 0 : value[0]];
+                const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
+                selectField.formControl = new FormControl(formattedValue);
+              }
+
+              const control = selectField.formControl;
+
+              return Array.isArray(control.value)
+                ? !control.value.includes(i)
+                : control.value !== i;
             },
           })),
         },

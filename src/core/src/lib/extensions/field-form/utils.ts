@@ -25,10 +25,12 @@ export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
 
   control.setParent(null);
   if (field['autoClear']) {
-    delete field.parent.model[field.key];
+    if (field.parent.model) {
+      delete field.parent.model[field.key];
+    }
     control.reset(
       { value: undefined, disabled: control.disabled },
-      { emitEvent, onlySelf: true },
+      { emitEvent: field.fieldGroup ? false : emitEvent, onlySelf: true },
     );
   }
 }
