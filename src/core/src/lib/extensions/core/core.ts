@@ -71,7 +71,13 @@ export class CoreExtension implements FormlyExtension {
       console.warn(`NgxFormly: 'lifecycle' is deprecated since v5.0, use 'hooks' instead.`);
     }
 
-    if (field.template && field.type !== 'formly-template') {
+    if (
+      field.type !== 'formly-template'
+      && (
+        field.hasOwnProperty('template')
+        || (field.expressionProperties && field.expressionProperties.template)
+      )
+    ) {
       if (field.type) {
         console.warn(`NgxFormly: passing 'type' property is not allowed when 'template' is set.`);
       }
