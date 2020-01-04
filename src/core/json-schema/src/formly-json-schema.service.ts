@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { ɵreverseDeepMerge as reverseDeepMerge, ɵgetKeyPath as getKeyPath } from '@ngx-formly/core';
 import { AbstractControl, FormControl } from '@angular/forms';
+import {
+  ɵreverseDeepMerge as reverseDeepMerge,
+  ɵgetFieldInitialValue as getFieldInitialValue,
+} from '@ngx-formly/core';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -21,27 +24,9 @@ function isConst(schema: JSONSchema7) {
   return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
 }
 
-export function getInitialFieldValue(field: FormlyFieldConfig) {
-  let model = field.options['_initialModel'];
-  let paths = getKeyPath(field);
-  while (field.parent) {
-    field = field.parent;
-    paths = [...getKeyPath(field), ...paths];
-  }
-
-  for (const path of paths) {
-    if (!model) {
-      return undefined;
-    }
-    model = model[path];
-  }
-
-  return model;
-}
-
 function isEmptyFieldModel(field: FormlyFieldConfig): boolean {
   if (field.key && !field.fieldGroup) {
-    return getInitialFieldValue(field) === undefined;
+    return getFieldInitialValue(field) === undefined;
   }
 
   return field.fieldGroup.every(f => isEmptyFieldModel(f));
@@ -158,7 +143,7 @@ export class FormlyJsonschema {
               oneOfSchema.forEach(oneOfSchemaItem => {
                 const { [key]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
-                  ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, options),
+                  ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, autoClear: true }),
                   hideExpression: m => !m || getConstValue(constSchema) !== m[key],
                 });
               });
