@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.8"></a>
+## [5.5.8](https://github.com/ngx-formly/ngx-formly/compare/v5.5.7...v5.5.8) (2020-01-06)
+
+
+### Bug Fixes
+
+* **core:** avoid touching hidden field control on re-build ([#1989](https://github.com/ngx-formly/ngx-formly/issues/1989)) ([f982c32](https://github.com/ngx-formly/ngx-formly/commit/f982c32)), closes [#1987](https://github.com/ngx-formly/ngx-formly/issues/1987)
+* **core:** detect changes before emitting `modelChange` ([#2001](https://github.com/ngx-formly/ngx-formly/issues/2001)) ([73e1651](https://github.com/ngx-formly/ngx-formly/commit/73e1651))
+* **core:** eval expressions after `reset` is fully processed ([#1998](https://github.com/ngx-formly/ngx-formly/issues/1998)) ([2f785e0](https://github.com/ngx-formly/ngx-formly/commit/2f785e0))
+* **core:** ignore removed controls on reset ([#1997](https://github.com/ngx-formly/ngx-formly/issues/1997)) ([0d76f50](https://github.com/ngx-formly/ngx-formly/commit/0d76f50))
+* **core:** improve handling validation of hidden fields ([#2008](https://github.com/ngx-formly/ngx-formly/issues/2008)) ([298a152](https://github.com/ngx-formly/ngx-formly/commit/298a152))
+* **core:** reduce the amount of emitted valueChanges event ([#1990](https://github.com/ngx-formly/ngx-formly/issues/1990)) ([b940a8e](https://github.com/ngx-formly/ngx-formly/commit/b940a8e)), closes [#1970](https://github.com/ngx-formly/ngx-formly/issues/1970)
+* **core:** render template type when used in expressionProperti… ([#2010](https://github.com/ngx-formly/ngx-formly/issues/2010)) ([796547a](https://github.com/ngx-formly/ngx-formly/commit/796547a))
+* **json-schema:** assign default value when the field is shown ([#2006](https://github.com/ngx-formly/ngx-formly/issues/2006)) ([fb65684](https://github.com/ngx-formly/ngx-formly/commit/fb65684)), closes [#1995](https://github.com/ngx-formly/ngx-formly/issues/1995)
+* **json-schema:** enable autclear for extended schema with oneOf ([#2014](https://github.com/ngx-formly/ngx-formly/issues/2014)) ([a92c88f](https://github.com/ngx-formly/ngx-formly/commit/a92c88f))
+* **json-schema:** rely on initialModel to resolve oneOf schema ([#2009](https://github.com/ngx-formly/ngx-formly/issues/2009)) ([8ce506b](https://github.com/ngx-formly/ngx-formly/commit/8ce506b))
+* **material:** take account of min/max and step attr for slider type ([#2015](https://github.com/ngx-formly/ngx-formly/issues/2015)) ([3476948](https://github.com/ngx-formly/ngx-formly/commit/3476948))
+
+
+### Performance Improvements
+
+* **core:** reduce the emitted `modelChange` events ([#1999](https://github.com/ngx-formly/ngx-formly/issues/1999)) ([b7567a1](https://github.com/ngx-formly/ngx-formly/commit/b7567a1))
+* **core:** reduce the registered formlyAttributes event listen… ([#1992](https://github.com/ngx-formly/ngx-formly/issues/1992)) ([e1ef87e](https://github.com/ngx-formly/ngx-formly/commit/e1ef87e)), closes [#1991](https://github.com/ngx-formly/ngx-formly/issues/1991)
+* **core:** use OnPush change detection on FormlyValidationMess… ([#1996](https://github.com/ngx-formly/ngx-formly/issues/1996)) ([70ffd5d](https://github.com/ngx-formly/ngx-formly/commit/70ffd5d))
+
+
+
 <a name="5.5.7"></a>
 ## [5.5.7](https://github.com/ngx-formly/ngx-formly/compare/v5.5.6...v5.5.7) (2019-12-17)
 
