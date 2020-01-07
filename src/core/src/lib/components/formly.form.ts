@@ -1,5 +1,5 @@
 import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormArray, FormGroupDirective, FormControl } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
@@ -201,7 +201,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
         this.modelChangeSubs.push(valueChanges.subscribe((value) => {
           // workaround for https://github.com/angular/angular/issues/13792
-          if ((control as any)._onChange.length > 1) {
+          if (control instanceof FormControl && control['_fields'] && control['_fields'].length > 1) {
             control.patchValue(value, { emitEvent: false, onlySelf: true });
           }
 
