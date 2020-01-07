@@ -4,7 +4,7 @@ import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
 import { Component, Injectable, ViewChild, DebugElement } from '@angular/core';
 import { FormlyModule, FormlyConfig } from '../core';
-import { FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormArray, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
@@ -446,6 +446,30 @@ describe('FormlyForm Component', () => {
     app.form.get('array.0').patchValue('TEST');
     app.options.resetModel();
     expect(app.model.array[0]).toEqual('FA');
+  });
+
+  it('should emit `modelChange` when custom FormGroup change', () => {
+    app = {
+      fields: [{
+        key: 'address',
+        formControl: new FormGroup({
+          city: new FormControl(),
+        }),
+      }],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    const spy = jasmine.createSpy('model change spy');
+    const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+    app.form.get('address.city').setValue('foo');
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith({ address: { city: 'foo' } });
+    subscription.unsubscribe();
   });
 
   it('should keep the value in sync when using multiple fields with same key', () => {
