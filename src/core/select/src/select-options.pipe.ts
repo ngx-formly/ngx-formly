@@ -20,10 +20,12 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       groups: { [key: string]: any[] } = {},
       to = field.templateOptions || {};
 
+    to._flatOptions = true;
     options.map((option: any) => {
       if (!this.getGroupProp(option, to)) {
         gOptions.push(this.toOption(option, to));
       } else {
+        to._flatOptions = false;
         if (!groups[this.getGroupProp(option, to)]) {
           groups[this.getGroupProp(option, to)] = [];
           gOptions.push({
