@@ -946,6 +946,31 @@ describe('Service: FormlyJsonschema', () => {
           expect(barField.hide).toBeFalsy();
           expect(model).toEqual({ bar: 'bar' });
         });
+
+        it('should set default value on change', () => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+            type: 'object',
+            oneOf: [
+              { properties: { foo: { type: 'string', default: 'foo' } } },
+              { properties: { bar: { type: 'string', default: 'bar' } } },
+            ],
+          });
+          const model: any = { bar: 'test' };
+          builder.buildForm(new FormGroup({}), [f], model, { _initialModel: { bar: 'test' } } as any);
+          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+
+          expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+          expect(model).toEqual({ bar: 'test' });
+
+          enumField.formControl.setValue(0);
+          (f.options as any)._checkField(f.parent);
+          expect(model).toEqual({ foo: 'foo' });
+
+          enumField.formControl.setValue(1);
+          (f.options as any)._checkField(f.parent);
+          expect(model).toEqual({ bar: 'bar' });
+        });
       });
 
       describe('anyOf', () => {

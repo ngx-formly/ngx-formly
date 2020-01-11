@@ -1,6 +1,6 @@
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
-import { getKeyPath, getFieldValue, getFieldInitialValue, isNullOrUndefined, defineHiddenProp, wrapProperty, assignModelValue, isUndefined } from '../../utils';
+import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty, assignModelValue, isUndefined } from '../../utils';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
@@ -95,7 +95,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     parent = <FormGroup> parent.get([path]);
   }
 
-  if (field['autoClear'] && !isUndefined(field.defaultValue) && isUndefined(getFieldInitialValue(field))) {
+  if (field['autoClear'] && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
     assignModelValue(field.parent.model, getKeyPath(field), field.defaultValue);
   }
 
