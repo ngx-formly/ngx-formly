@@ -1,6 +1,7 @@
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '../../core';
 import { getKeyPath, getFieldValue, getFieldInitialValue, isNullOrUndefined, defineHiddenProp, wrapProperty, assignModelValue, isUndefined } from '../../utils';
+import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   const form = field.formControl.parent as FormArray | FormGroup;
@@ -41,16 +42,11 @@ export function findControl(field: FormlyFieldConfig): AbstractControl {
   }
 
   const form = field.parent.formControl as FormGroup;
-  if (form) {
-    const paths = getKeyPath(field);
 
-    return form.get(paths) || (form['_formlyControls'] && form['_formlyControls'][paths.join('.')]);
-  }
-
-  return null;
+  return form ? form.get(getKeyPath(field)) : null;
 }
 
-export function registerControl(field: FormlyFieldConfig, control?: any, emitEvent = false) {
+export function registerControl(field: FormlyFieldConfigCache, control?: any, emitEvent = false) {
   control = control || field.formControl;
   if (!control['_fields']) {
     defineHiddenProp(control, '_fields', []);
@@ -112,7 +108,7 @@ export function registerControl(field: FormlyFieldConfig, control?: any, emitEve
     control.patchValue(value);
   }
   const key = paths[paths.length - 1];
-  if (!field.hide && parent.get([key]) !== control) {
+  if (!field._hide && parent.get([key]) !== control) {
     updateControl(
       parent,
       { emitEvent },

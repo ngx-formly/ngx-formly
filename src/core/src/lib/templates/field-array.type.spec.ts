@@ -131,6 +131,34 @@ describe('Array Field Type', () => {
 
     subscription.unsubscribe();
   });
+
+  it('should not reuse the remove controls', () => {
+    app.model = { array: null };
+    app.fields = [{
+      key: 'array',
+      type: 'array',
+    }];
+
+    const fixture = createFormlyTestComponent();
+
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+
+    const form = app.form.get('array') as FormArray;
+    form.at(0).setValue('foo');
+
+    expect(form.at(1)).not.toEqual(form.at(0));
+    expect(form.at(1).value).toEqual(null);
+  });
 });
 
 @Component({ selector: 'formly-form-test', template: '', entryComponents: [] })

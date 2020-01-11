@@ -120,7 +120,7 @@ describe('FormlyFormBuilder service', () => {
 
       const control = fields[0].formControl;
       spyOn(control, 'updateValueAndValidity');
-  
+
       builder.buildForm(form, fields, {}, {});
       expect(form.get('test')).toBeNull();
       expect(control.updateValueAndValidity).toHaveBeenCalled();
