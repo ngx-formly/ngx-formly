@@ -108,6 +108,24 @@ describe('FormlyFormBuilder service', () => {
       expect(form.valid).toBeFalsy();
     });
 
+    it('should updateValueAndValidity of detached field', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'test',
+          hide: true,
+          formControl: new FormControl(),
+          templateOptions: { required: true },
+        },
+      ];
+
+      const control = fields[0].formControl;
+      spyOn(control, 'updateValueAndValidity');
+  
+      builder.buildForm(form, fields, {}, {});
+      expect(form.get('test')).toBeNull();
+      expect(control.updateValueAndValidity).toHaveBeenCalled();
+    });
+
     it('should update the formcontrol validation for a built form', () => {
       form.addControl('test', new FormControl());
       const fields: FormlyFieldConfig[] = [
