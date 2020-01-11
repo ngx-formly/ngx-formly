@@ -60,7 +60,6 @@ export class FieldFormExtension implements FormlyExtension {
       }
 
       if (null === c.validator || null === c.asyncValidator) {
-        updateValidity = true;
         c.setValidators(() => {
           const fields: FormlyFieldConfigCache[] = c['_fields'].length === 1
             ? c['_fields']
@@ -79,6 +78,12 @@ export class FieldFormExtension implements FormlyExtension {
 
           return v ? v(c) : of(null);
         });
+
+        if (!c.parent) {
+          c.updateValueAndValidity({ emitEvent: false });
+        } else {
+          updateValidity = true;
+        }
       }
     }
 
