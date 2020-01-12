@@ -1,11 +1,11 @@
-import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, DoCheck, OnChanges, Input, SimpleChanges, Optional, EventEmitter, Output, OnDestroy, Attribute, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { FormGroup, FormArray, FormGroupDirective, FormControl } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
-import { Subscription, of, Subject, timer } from 'rxjs';
-import { debounceTime, first, timeout, catchError, debounce, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+import { debounceTime, switchMap, distinctUntilChanged, take } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-form',
@@ -50,27 +50,18 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private _fields: FormlyFieldConfig[];
   private _options: FormlyFormOptions;
   private modelChangeSubs: Subscription[] = [];
-  private useDebounce = false;
   private modelChange$ = new Subject<void>();
   private modelChangeSub = this.modelChange$.pipe(
-    debounce(() => this.useDebounce ? timer(100) : of()),
-    switchMap(() => this.form.valueChanges.pipe(
-      timeout(0),
-      catchError(() => of(null)),
-      first(),
-    )),
+    switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
   ).subscribe(() => {
-    this.useDebounce = true;
     this.checkExpressionChange();
-    this.cdRef.detectChanges();
     this.modelChange.emit(clone(this.model));
-    this.useDebounce = false;
   });
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
     private formlyConfig: FormlyConfig,
-    private cdRef: ChangeDetectorRef,
+    private ngZone: NgZone,
     // tslint:disable-next-line
     @Attribute('immutable') immutable,
     @Optional() private parentFormGroup: FormGroupDirective,
