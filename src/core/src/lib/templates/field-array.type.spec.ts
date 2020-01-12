@@ -115,20 +115,28 @@ describe('Array Field Type', () => {
     const fixture = createFormlyTestComponent();
     const spy = jasmine.createSpy('model change spy');
     const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
+
+    // add
     fixture.nativeElement.querySelector('#add').click();
     fixture.detectChanges();
 
+    expect(spy).toHaveBeenCalledWith({ foo: [{}] });
+
+    // update
     const formArray = app.form.get('foo') as FormArray;
     formArray.at(0).get('title').patchValue('***');
+    fixture.detectChanges();
 
-    expect(spy).toHaveBeenCalledTimes(2);
-    expect(spy).toHaveBeenCalledWith({ foo: [{}] });
     expect(spy).toHaveBeenCalledWith({ foo: [{ title: '***' }] });
     expect(app.model).toEqual({ foo: [{ title: '***' }] });
 
+    // remove
     fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalledWith({ foo: [] });
     expect(app.model).toEqual({ foo: [] });
 
+    expect(spy).toHaveBeenCalledTimes(3);
     subscription.unsubscribe();
   });
 

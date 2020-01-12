@@ -211,10 +211,11 @@ describe('FormlyForm Component', () => {
       const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
 
       app.form.get('city').patchValue('***');
-
       fixture.detectChanges();
+
       expect(spy).not.toHaveBeenCalled();
       tick(6);
+      fixture.detectChanges();
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ city: '***' });
       subscription.unsubscribe();
@@ -244,19 +245,22 @@ describe('FormlyForm Component', () => {
     });
 
     it('should emit `modelChange` when nested model is changed through expressionProperties', () => {
-      app.fields = [{
-        key: 'test',
-        type: 'text',
-        expressionProperties: {
-          'model.test': 'model.title',
+      app.fields = [
+        { key: 'title' },
+        {
+          key: 'test',
+          type: 'text',
+          expressionProperties: {
+            'model.test': 'model.title',
+          },
         },
-      }];
+      ];
 
       const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       const spy = jasmine.createSpy('model change spy');
       const subscription = fixture.componentInstance.formlyForm.modelChange.subscribe(spy);
 
-      app.model.title = '***';
+      app.form.get('title').patchValue('***');
 
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledTimes(1);
@@ -310,7 +314,7 @@ describe('FormlyForm Component', () => {
       app.form.get('group.0.name').patchValue('***');
 
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ o: [[{ name: '***' }]], group: [{ name: '***' }] });
       subscription.unsubscribe();
     });
@@ -355,6 +359,8 @@ describe('FormlyForm Component', () => {
         .subscribe(() => barControl = app.form.get('bar'));
 
       app.form.get('foo').patchValue('***');
+      fixture.detectChanges();
+
       expect(barControl).not.toBeNull();
       subscription.unsubscribe();
     });
@@ -820,7 +826,7 @@ describe('FormlyForm Component', () => {
     });
   });
 
-  it('should check expression on modelChange only', fakeAsync(() => {
+  it('should check expression on modelChange only', () => {
     app = {
       fields: [{
         key: 'name',
@@ -840,9 +846,9 @@ describe('FormlyForm Component', () => {
     expect(app.fields[0].hide).toBeFalsy();
 
     app.fields[0].formControl.setValue('test');
-    tick(100);
+    fixture.detectChanges();
     expect(app.fields[0].hide).toBeTruthy();
-  }));
+  });
 
   describe('options', () => {
     let field, model, form: FormGroup, options: FormlyFormOptions;
