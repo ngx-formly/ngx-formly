@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.9"></a>
+## [5.5.9](https://github.com/ngx-formly/ngx-formly/compare/v5.5.8...v5.5.9) (2020-01-13)
+
+
+### Bug Fixes
+
+* **core:** avoid re-use the removed controls of fieldArray ([ce02649](https://github.com/ngx-formly/ngx-formly/commit/ce02649))
+* **core:** rely on ngZone to detect changes instead of changeDe… ([#2027](https://github.com/ngx-formly/ngx-formly/issues/2027)) ([2e838a0](https://github.com/ngx-formly/ngx-formly/commit/2e838a0)), closes [#2018](https://github.com/ngx-formly/ngx-formly/issues/2018)
+* **core:** take account of custom formControl value changes ([#2017](https://github.com/ngx-formly/ngx-formly/issues/2017)) ([c8dacb5](https://github.com/ngx-formly/ngx-formly/commit/c8dacb5)), closes [#2016](https://github.com/ngx-formly/ngx-formly/issues/2016)
+* **core:** update validity of detached field control ([503e793](https://github.com/ngx-formly/ngx-formly/commit/503e793))
+* **json-schema:** ensure default value is applied on switch oneOf schema ([f04cdde](https://github.com/ngx-formly/ngx-formly/commit/f04cdde))
+
+
+### Performance Improvements
+
+* **bootstrap:** improve render time of long list for select ty… ([#2023](https://github.com/ngx-formly/ngx-formly/issues/2023)) ([cd198f3](https://github.com/ngx-formly/ngx-formly/commit/cd198f3)), closes [#2022](https://github.com/ngx-formly/ngx-formly/issues/2022)
+
+
+
 <a name="5.5.8"></a>
 ## [5.5.8](https://github.com/ngx-formly/ngx-formly/compare/v5.5.7...v5.5.8) (2020-01-06)
 
