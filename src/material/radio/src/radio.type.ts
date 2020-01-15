@@ -8,7 +8,7 @@ import { MatRadioGroup } from '@angular/material/radio';
     <mat-radio-group
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [tabindex]="-1">
+      [tabindex]="to.tabindex">
       <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
         [id]="id + '_' + i"
         [color]="to.color"
@@ -26,6 +26,7 @@ export class FormlyFieldRadio extends FieldType {
       hideFieldUnderline: true,
       floatLabel: 'always',
       options: [],
+      tabindex: -1,
     },
   };
 
