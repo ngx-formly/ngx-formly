@@ -167,22 +167,39 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
 }
 
 export function wrapProperty<T = any>(
-  field: any,
+  o: any,
   prop: string,
   setFn: (change: {currentValue: T, previousValue?: T, firstChange: boolean}) => void,
 ) {
-  defineHiddenProp(field, `___$${prop}`, field[prop]);
-  setFn({ currentValue: field[prop], firstChange: true });
+  if (!o._observers) {
+    defineHiddenProp(o, '_observers', {});
+  }
 
-  Object.defineProperty(field, prop, {
-    configurable: true,
-    get: () => field[`___$${prop}`],
-    set: currentValue => {
-      if (currentValue !== field[`___$${prop}`]) {
-        const previousValue = field[`___$${prop}`];
-        field[`___$${prop}`] = currentValue;
-        setFn({ previousValue, currentValue, firstChange: false });
-      }
-    },
-  });
+  if (!o._observers[prop]) {
+    o._observers[prop] = [];
+  }
+
+  let fns = o._observers[prop];
+  if (fns.indexOf(setFn) === -1) {
+    fns.push(setFn);
+    setFn({ currentValue: o[prop], firstChange: true });
+    if (fns.length === 1) {
+      defineHiddenProp(o, `___$${prop}`, o[prop]);
+      Object.defineProperty(o, prop, {
+        configurable: true,
+        get: () => o[`___$${prop}`],
+        set: currentValue => {
+          if (currentValue !== o[`___$${prop}`]) {
+            const previousValue = o[`___$${prop}`];
+            o[`___$${prop}`] = currentValue;
+            fns.forEach(changeFn => changeFn({ previousValue, currentValue, firstChange: false }));
+          }
+        },
+      });
+    }
+  }
+
+  return () => {
+    fns = fns.filter(changeFn => changeFn !== setFn);
+  };
 }

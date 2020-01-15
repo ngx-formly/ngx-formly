@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKeyPath, clone } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKeyPath, clone, wrapProperty } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
 
@@ -204,5 +204,60 @@ describe('clone', () => {
     value.name = 'foo';
 
     expect(value.a).toEqual('foo');
+  });
+});
+
+describe('wrapProperty', () => {
+  it('should observe property change', () => {
+    const spy = jasmine.createSpy('hide change spy');
+    const field = { hide: null };
+    wrapProperty(field, 'hide', spy);
+
+    expect(spy).toHaveBeenCalledWith({ currentValue: null, firstChange: true });
+
+    spy.calls.reset();
+    field.hide = true;
+    expect(spy).toHaveBeenCalledWith({ currentValue: true, previousValue: null, firstChange: false });
+  });
+
+  it('should allow multi subscribes to property change', () => {
+    const spy1 = jasmine.createSpy('hide change spy');
+    const spy2 = jasmine.createSpy('hide change spy');
+    const field = { hide: null };
+    wrapProperty(field, 'hide', spy1);
+    wrapProperty(field, 'hide', spy2);
+
+    expect(spy1).toHaveBeenCalledWith({ currentValue: null, firstChange: true });
+    expect(spy2).toHaveBeenCalledWith({ currentValue: null, firstChange: true });
+
+    spy1.calls.reset();
+    spy2.calls.reset();
+    field.hide = true;
+
+    expect(spy1).toHaveBeenCalledWith({ currentValue: true, previousValue: null, firstChange: false });
+    expect(spy2).toHaveBeenCalledWith({ currentValue: true, previousValue: null, firstChange: false });
+  });
+
+  it('should ignore multi call of the same subscribe', () => {
+    const spy = jasmine.createSpy('hide change spy');
+    const field = { hide: null };
+    wrapProperty(field, 'hide', spy);
+    wrapProperty(field, 'hide', spy);
+    wrapProperty(field, 'hide', spy);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should be able to unsubscribe', () => {
+    const spy = jasmine.createSpy('hide change spy');
+    const field = { hide: null };
+    const observer = wrapProperty(field, 'hide', spy);
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    observer();
+    spy.calls.reset();
+    field.hide = true;
+
+    expect(spy).toHaveBeenCalledTimes(0);
   });
 });

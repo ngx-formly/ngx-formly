@@ -848,6 +848,9 @@ describe('FormlyForm Component', () => {
     app.fields[0].formControl.setValue('test');
     fixture.detectChanges();
     expect(app.fields[0].hide).toBeTruthy();
+
+    const formlyField = fixture.debugElement.query(By.css('formly-field'));
+    expect(formlyField.styles).toEqual({ display: 'none' });
   });
 
   describe('options', () => {

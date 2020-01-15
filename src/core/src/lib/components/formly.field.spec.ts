@@ -8,6 +8,7 @@ import {
   FieldType,
   FieldWrapper,
 } from '../core';
+import { By } from '@angular/platform-browser';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -75,6 +76,53 @@ describe('FormlyField Component', () => {
     const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
 
     expect(fixture.nativeElement.innerText).toEqual('Nested property keys');
+  });
+
+  describe('host attrs', () => {
+      it('should set style and class attrs on first render', () => {
+        testComponentInputs = {
+          field: {
+            hide: true,
+            className: 'foo',
+          },
+        };
+
+        const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+        const formlyField = fixture.debugElement.query(By.css('formly-field'));
+
+        expect(formlyField.attributes.class).toEqual('foo');
+        expect(formlyField.styles).toEqual({ display: 'none' });
+      });
+
+      it('should update style and class attrs on change', () => {
+        testComponentInputs = {
+          field: {},
+        };
+
+        const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+        const formlyField = fixture.debugElement.query(By.css('formly-field'));
+
+        expect(formlyField.attributes.class).toEqual(undefined);
+        expect(formlyField.styles).toEqual({});
+
+        testComponentInputs.field.hide = true;
+        testComponentInputs.field.className = 'foo';
+
+        expect(formlyField.attributes.class).toEqual('foo');
+        expect(formlyField.styles).toEqual({ display: 'none' });
+      });
+
+      it('should not override existing class', () => {
+        testComponentInputs = {
+          field: {},
+        };
+
+        const fixture = createTestComponent('<formly-field class="foo" [field]="field"></formly-field>');
+        const formlyField = fixture.debugElement.query(By.css('formly-field'));
+
+        expect(formlyField.attributes.class).toEqual('foo');
+      });
+
   });
 
   it('should call field hooks if set', () => {

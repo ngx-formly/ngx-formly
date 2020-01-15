@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output,
   ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, Attribute, ComponentFactoryResolver,
-  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Injector,
+  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Injector, Renderer2, ElementRef,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -13,14 +13,9 @@ import { FieldType } from '../templates/field.type';
 @Component({
   selector: 'formly-field',
   template: `<ng-template #container></ng-template>`,
-  host: {
-    '[style.display]': 'field.hide ? "none":""',
-    '[class]': 'field.className? field.className : className',
-  },
 })
 export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input() field: FormlyFieldConfig;
-  @Input('class') className: string = '';
 
   warnDeprecation = false;
 
@@ -39,9 +34,12 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   @Output() modelChange: EventEmitter<any> = new EventEmitter();
   // TODO: remove `any`, once dropping angular `V7` support.
   @ViewChild('container', <any> {read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
+  private hostObservers: Function[] = [];
 
   constructor(
     private formlyConfig: FormlyConfig,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     // tslint:disable-next-line
@@ -80,6 +78,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   ngOnDestroy() {
     this.field && defineHiddenProp(this.field, '_componentRefs', []);
+    this.hostObservers.forEach(unsubscribe => unsubscribe());
     this.triggerHook('onDestroy');
   }
 
@@ -130,6 +129,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     }
 
     if (name === 'onChanges' && changes.field) {
+      this.renderHostBinding();
       this.renderField(this.containerRef, this.field, this.field.wrappers);
     }
   }
@@ -137,5 +137,21 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
     field._componentRefs.push(ref);
     Object.assign(ref.instance, { field });
+  }
+
+  private renderHostBinding() {
+    this.hostObservers.forEach(unsubscribe => unsubscribe());
+    this.hostObservers = [
+      wrapProperty(this.field, 'hide', ({ firstChange, currentValue }) => {
+        if (!firstChange || (firstChange && currentValue)) {
+          this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
+        }
+      }),
+      wrapProperty(this.field, 'className', ({ firstChange, currentValue }) => {
+        if (!firstChange || (firstChange && currentValue)) {
+          this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
+        }
+      }),
+    ];
   }
 }
