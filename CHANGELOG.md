@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.10"></a>
+## [5.5.10](https://github.com/ngx-formly/ngx-formly/compare/v5.5.9...v5.5.10) (2020-01-20)
+
+
+### Bug Fixes
+
+* **core:** improve detect changes of formly-field host binding ([#2033](https://github.com/ngx-formly/ngx-formly/issues/2033)) ([47fe101](https://github.com/ngx-formly/ngx-formly/commit/47fe101)), closes [#2031](https://github.com/ngx-formly/ngx-formly/issues/2031)
+* **material:** allow overriding tabindex on mat-radio-group ([#2034](https://github.com/ngx-formly/ngx-formly/issues/2034)) ([4f397ae](https://github.com/ngx-formly/ngx-formly/commit/4f397ae)), closes [#2032](https://github.com/ngx-formly/ngx-formly/issues/2032)
+
+
+
 <a name="5.5.9"></a>
 ## [5.5.9](https://github.com/ngx-formly/ngx-formly/compare/v5.5.8...v5.5.9) (2020-01-13)
 
