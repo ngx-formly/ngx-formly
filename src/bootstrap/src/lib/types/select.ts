@@ -1,5 +1,7 @@
-import { Component, ViewChild, AfterViewChecked, ElementRef } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
+import { SelectControlValueAccessor } from '@angular/forms';
 import { FieldType } from '@ngx-formly/core';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-field-select',
@@ -35,7 +37,6 @@ import { FieldType } from '@ngx-formly/core';
 
     <ng-template #singleSelect>
       <select class="form-control"
-        #select
         [formControl]="formControl"
         [compareWith]="to.compareWith || compareWith"
         [class.custom-select]="to.customSelect"
@@ -66,22 +67,35 @@ import { FieldType } from '@ngx-formly/core';
     </ng-template>
   `,
 })
-export class FormlyFieldSelect extends FieldType implements AfterViewChecked {
-  @ViewChild('select') select!: ElementRef<HTMLSelectElement>;
+export class FormlyFieldSelect extends FieldType {
   defaultOptions = {
     templateOptions: { options: [] },
   };
 
   // workaround for https://github.com/angular/angular/issues/10010
-  ngAfterViewChecked() {
-    if (!this.to.multiple && !this.to.placeholder && this.formControl.value === null) {
-      const selectEl = this.select.nativeElement;
-      if (selectEl.selectedIndex !== -1
-        && (!selectEl.options[selectEl.selectedIndex] || selectEl.options[selectEl.selectedIndex].value !== null)
-      ) {
-        this.select.nativeElement.selectedIndex = -1;
-      }
+  @ViewChild(SelectControlValueAccessor) set selectAccessor(s: any) {
+    if (!s) return;
+
+    const writeValue = s.writeValue.bind(s);
+    if (s._getOptionId(s.value) === null) {
+      writeValue(s.value);
     }
+
+    s.writeValue = (value: any) => {
+      const id = s._idCounter;
+      writeValue(value);
+      if (value === null) {
+        this.ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
+          if (id !== s._idCounter && s._getOptionId(value) === null && s._elementRef.nativeElement.selectedIndex !== -1) {
+            writeValue(value);
+          }
+        });
+      }
+    };
+  }
+
+  constructor(private ngZone: NgZone) {
+    super();
   }
 
   compareWith(o1: any, o2: any) {
