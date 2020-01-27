@@ -853,6 +853,31 @@ describe('FormlyForm Component', () => {
     expect(formlyField.styles).toEqual({ display: 'none' });
   });
 
+  it('should check expression on submit', () => {
+    app = {
+      fields: [{
+        key: 'name',
+        type: 'text',
+        hideExpression: 'field.options.parentForm.submitted',
+      }],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+    createTestComponent(`
+      <form [formGroup]="form">
+        <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
+      </form>
+    `);
+    const config = TestBed.get(FormlyConfig);
+    config.extras.checkExpressionOn = 'modelChange';
+
+    expect(app.fields[0].hide).toEqual(false);
+
+    app.options.parentForm.submitted = true;
+    expect(app.fields[0].hide).toEqual(true);
+  });
+
   describe('options', () => {
     let field, model, form: FormGroup, options: FormlyFormOptions;
     beforeEach(() => {
