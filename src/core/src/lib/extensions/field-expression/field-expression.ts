@@ -59,7 +59,12 @@ export class FieldExpressionExtension implements FormlyExtension {
           }
         } else if (expressionProperty instanceof Observable) {
           const subscription = (expressionProperty as Observable<any>)
-            .subscribe(v => evalExpression(expressionValueSetter, { field }, [v, field.model, field]));
+            .subscribe(v => {
+              evalExpression(expressionValueSetter, { field }, [v, field.model, field]);
+              if (field.options && field.options._markForCheck) {
+                field.options._markForCheck(field);
+              }
+            });
 
           const onDestroy = field.hooks.onDestroy;
           field.hooks.onDestroy = (field) => {
