@@ -19,7 +19,9 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
       [readonly]="to.readonly"
       [cdkTextareaAutosize]="to.autosize"
       [cdkAutosizeMinRows]="to.autosizeMinRows"
-      [cdkAutosizeMaxRows]="to.autosizeMaxRows">
+      [cdkAutosizeMaxRows]="to.autosizeMaxRows"
+      [class.cdk-textarea-autosize]="to.autosize"
+      >
     </textarea>
   `,
   providers: [
