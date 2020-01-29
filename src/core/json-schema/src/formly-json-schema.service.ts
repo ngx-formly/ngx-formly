@@ -410,8 +410,10 @@ export class FormlyJsonschema {
     return [deps, schemaDeps];
   }
 
-  private guessType(schema: JSONSchema7) {
+  private guessType(schema: JSONSchema7): string {
     const type = schema.type as JSONSchema7TypeName;
+    const format = schema.format;
+
     if (!type && schema.properties) {
       return 'object';
     }
@@ -424,6 +426,10 @@ export class FormlyJsonschema {
       if (type.length === 2 && type.indexOf('null') !== -1) {
         return type[type[0] === 'null' ? 1 : 0];
       }
+    }
+
+    if (type === 'string' && format !== undefined) {
+      return format;
     }
 
     return type;

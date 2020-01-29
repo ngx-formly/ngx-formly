@@ -442,6 +442,30 @@ describe('Service: FormlyJsonschema', () => {
         expect(config.type).toBe(schema.type);
       });
 
+      describe('should support string types with format', () => {
+        it('should support type time', () => {
+          const schema: JSONSchema7 = {
+            type: 'string',
+            format: 'time',
+          };
+
+          const { type } = formlyJsonschema.toFieldConfig(schema);
+
+          expect(type).toEqual('time');
+        });
+
+        it('should support type date', () => {
+          const schema: JSONSchema7 = {
+            type: 'string',
+            format: 'date',
+          };
+
+          const { type } = formlyJsonschema.toFieldConfig(schema);
+
+          expect(type).toEqual('date');
+        });
+      });
+
       describe('should support enum type', () => {
         it('should support enum as strig array values', () => {
           const schemaStringEnum: JSONSchema7 = {
