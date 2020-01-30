@@ -203,6 +203,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
           this.changeModel({ key: [...rootKey, ...getKeyPath(field)].join('.'), value, field });
         }));
+
+        // workaround for v5 (https://github.com/ngx-formly/ngx-formly/issues/2061)
+        const observers = control.valueChanges['observers'];
+        if (observers && observers.length > 1) {
+          observers.unshift(observers.pop());
+        }
       }
 
       if (field.fieldGroup && field.fieldGroup.length > 0) {

@@ -9,6 +9,7 @@ import { FieldArrayType } from '../templates/field-array.type';
 import { FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
 import { By } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -1341,6 +1342,34 @@ describe('FormlyForm Component', () => {
     fixture.componentInstance.options = {};
     fixture.detectChanges();
     expect(fooValidator.expression).not.toHaveBeenCalled();
+  });
+
+  it('should keep formly valueChanges calls consisting on rebuild', () => {
+    app = {
+      form: new FormGroup({}),
+      fields: [{ key: 'foo' }],
+    };
+
+    const fixture = createTestComponent(`<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>`);
+
+    const spy = jasmine.createSpy('model change spy');
+    const control = app.form.get('foo');
+    const subscription = control.valueChanges
+      .pipe(map(() => fixture.componentInstance.model.foo))
+      .subscribe(spy);
+
+    // re-build model change
+    fixture.componentInstance.model = {};
+    fixture.detectChanges();
+
+    control.setValue('foo');
+    expect(control.valueChanges['observers'].length).toEqual(2);
+    expect(spy).toHaveBeenCalledWith('foo');
+
+    fixture.destroy();
+    subscription.unsubscribe();
+
+    expect(control.valueChanges['observers'].length).toEqual(0);
   });
 });
 
