@@ -13,7 +13,7 @@ import { FieldType } from '@ngx-formly/core';
           [class.form-check-input]="to.formCheck !== 'custom'"
           [class.custom-control-input]="to.formCheck === 'custom'"
           [value]="option.value"
-          [checked]="formControl.value && (this.to.type === 'array' ? formControl.value.includes(option.value) : formControl.value[option.value])"
+          [checked]="isChecked(option)"
           [formlyAttributes]="field"
           (change)="onChange(option.value, $event.target.checked)">
         <label
@@ -44,5 +44,15 @@ export class FormlyFieldMultiCheckbox extends FieldType {
       this.formControl.patchValue({ ...this.formControl.value, [value]: checked });
     }
     this.formControl.markAsTouched();
+  }
+
+  isChecked(option: any) {
+    const value = this.formControl.value;
+
+    return value && (
+      this.to.type === 'array'
+        ? (value.indexOf(option.value) !== -1)
+        : value[option.value]
+    );
   }
 }
