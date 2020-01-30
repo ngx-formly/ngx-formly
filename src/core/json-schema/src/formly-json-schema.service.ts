@@ -102,7 +102,7 @@ export class FormlyJsonschema {
       }
       case 'string': {
         const schemaType = schema.type as JSONSchema7TypeName;
-        if (Array.isArray(schemaType) && schemaType.includes('null')) {
+        if (Array.isArray(schemaType) && (schemaType.indexOf('null') !== -1)) {
           field.parsers = [v => isEmpty(v) ? null : v];
         }
 
@@ -346,7 +346,7 @@ export class FormlyJsonschema {
               const control = selectField.formControl;
 
               return Array.isArray(control.value)
-                ? !control.value.includes(i)
+                ? control.value.indexOf(i) === -1
                 : control.value !== i;
             },
           })),

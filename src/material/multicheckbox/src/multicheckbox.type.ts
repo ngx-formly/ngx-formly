@@ -12,7 +12,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
         [tabindex]="to.tabindex || 0"
         [color]="to.color"
         [labelPosition]="to.labelPosition"
-        [checked]="formControl.value && (this.to.type === 'array' ? formControl.value.includes(option.value) : formControl.value[option.value])"
+        [checked]="isChecked(option)"
         (change)="onChange(option.value, $event.checked)">
           {{ option.label }}
       </mat-checkbox>
@@ -47,5 +47,15 @@ export class FormlyFieldMultiCheckbox extends FieldType {
       this.checkboxes.first.focus();
     }
     super.onContainerClick(event);
+  }
+
+  isChecked(option: any) {
+    const value = this.formControl.value;
+
+    return value && (
+      this.to.type === 'array'
+        ? (value.indexOf(option.value) !== -1)
+        : value[option.value]
+    );
   }
 }

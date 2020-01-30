@@ -51,7 +51,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   if (!control['_fields']) {
     defineHiddenProp(control, '_fields', []);
   }
-  if (!control['_fields'].includes(field)) {
+  if (control['_fields'].indexOf(field) === -1) {
     control['_fields'].push(field);
   }
 

@@ -84,6 +84,7 @@
     "ag-grid-angular": "^20.2.0",
     "ag-grid-community": "^20.2.0",
     "bootstrap": "^4.3.1",
+    "classlist.js": "^1.1.20150312",
     "core-js": "^2.6.9",
     "express": "^4.15.2",
     "nativescript-angular": "^7.2.4",
