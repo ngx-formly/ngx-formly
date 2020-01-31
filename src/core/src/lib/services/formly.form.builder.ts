@@ -48,8 +48,8 @@ export class FormlyFormBuilder {
       defineHiddenProp(options, 'fieldChanges', new Subject<FormlyValueChangeEvent>());
     }
 
-    if (!options._componentFactoryResolver) {
-      defineHiddenProp(options, '_componentFactoryResolver', this.componentFactoryResolver);
+    if (!options._resolver) {
+      defineHiddenProp(options, '_resolver', this.componentFactoryResolver);
     }
 
     if (!options._injector) {

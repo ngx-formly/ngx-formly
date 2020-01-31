@@ -1,17 +1,15 @@
 import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef, ElementRef, ViewContainerRef } from '@angular/core';
-import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
-
 import { FieldType } from './field.type';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
   _matprefix: TemplateRef<any>;
   _matsuffix: TemplateRef<any>;
   __formField__: FormlyWrapperFormField;
-  _componentFactory: any;
 }
 
 @Component({
@@ -60,6 +58,7 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
   private initialGapCalculated = false;
 
   constructor(
+    private config: FormlyConfig,
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private focusMonitor: FocusMonitor,
@@ -71,9 +70,9 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> i
     this.formField._control = this;
     defineHiddenProp(this.field, '__formField__', this.formField);
 
-    const fieldComponent = this.formlyField['_componentFactory'];
-    if (fieldComponent && !(fieldComponent.componentRef.instance instanceof FieldType)) {
-      console.warn(`Component '${fieldComponent.component.prototype.constructor.name}' must extend 'FieldType' from '@ngx-formly/material'.`);
+    const ref = this.config.resolveFieldTypeRef(this.formlyField);
+    if (ref && !(ref.instance instanceof FieldType)) {
+      console.warn(`Component '${ref.componentType.name}' must extend 'FieldType' from '@ngx-formly/material/form-field'.`);
     }
 
     // fix for https://github.com/angular/material2/issues/11437
