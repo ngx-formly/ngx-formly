@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testin
 import { createGenericTestComponent, newEvent } from '../test-utils';
 import { FormlyWrapperLabel, FormlyFieldText } from './formly.field.spec';
 
-import { Component, Injectable, ViewChild, DebugElement } from '@angular/core';
+import { Component, Injectable, ViewChild, DebugElement, Optional } from '@angular/core';
 import { FormlyModule, FormlyConfig } from '../core';
 import { FormGroup, FormArray, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { FieldArrayType } from '../templates/field-array.type';
@@ -1290,22 +1290,37 @@ describe('FormlyForm Component', () => {
       };
 
       // should inject `ParentService` in `ChildComponent` without raising an error
-      createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const childInstance: ChildComponent = fixture.debugElement
+        .query(By.css('formly-child'))
+        .componentInstance;
+
+      expect(childInstance.parent).not.toBeNull();
+      expect(childInstance.wrapper).toBeNull();
     });
 
-    it('should throw an error if child has no parent', () => {
+    it('should inject parent wrapper to child type', () => {
       app = {
         form: new FormGroup({}),
-        options: { },
-        model: { },
+        options: {},
+        model: {},
         fields: [{
-          type: 'child',
-          fieldGroup: [{ key: 'email', type: 'text' }],
+          wrappers: ['label'],
+          fieldGroup: [{
+            type: 'child',
+            fieldGroup: [{ key: 'email', type: 'text' }],
+          }],
         }],
       };
 
-      const createComponent = () => createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
-      expect(createComponent).toThrowError(/No provider for ParentService!/i);
+      // should inject `FormlyWrapperLabel` in `ChildComponent` without raising an error
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const childInstance: ChildComponent = fixture.debugElement
+        .query(By.css('formly-child'))
+        .componentInstance;
+
+      expect(childInstance.wrapper).not.toBeNull();
+      expect(childInstance.parent).toBeNull();
     });
   });
 
@@ -1425,7 +1440,7 @@ export class ParentService {}
 
 @Component({
   selector: 'formly-parent',
-  template: `<ng-content></ng-content>`,
+  template: `<formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>`,
   providers: [ParentService],
 })
 export class ParentComponent {
@@ -1437,5 +1452,8 @@ export class ParentComponent {
   template: `<ng-content></ng-content>`,
 })
 export class ChildComponent {
-  constructor(public parent: ParentService) {}
+  constructor(
+    @Optional() public parent: ParentService,
+    @Optional() public wrapper: FormlyWrapperLabel,
+  ) {}
 }
