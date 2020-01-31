@@ -185,11 +185,6 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _validators?: ValidatorFn;
   _asyncValidators?: AsyncValidatorFn;
   _componentRefs?: ComponentRef<FieldType>[];
-  _componentFactory?: {
-    type: string;
-    component: any;
-    componentRef?: ComponentRef<FieldType>;
-  };
   _keyPath?: {
     key: string;
     path: string[];
@@ -253,7 +248,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _checkField?: (field: FormlyFieldConfigCache, ignoreCache?: boolean) => void;
   _markForCheck?: (field: FormlyFieldConfigCache) => void;
   _buildForm?: () => void;
-  _componentFactoryResolver?: ComponentFactoryResolver;
+  _resolver?: ComponentFactoryResolver;
   _injector?: Injector;
   _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
   _initialModel?: any;

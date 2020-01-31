@@ -10,6 +10,7 @@ import { FormlyFormOptions } from './formly.field.config';
 import { FormlyForm } from './formly.form';
 import { By } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
+import { FieldType } from '../templates/field.type';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -1443,8 +1444,10 @@ export class ParentService {}
   template: `<formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>`,
   providers: [ParentService],
 })
-export class ParentComponent {
-  constructor(public parent: ParentService) {}
+export class ParentComponent extends FieldType {
+  constructor(public parent: ParentService) {
+    super();
+  }
 }
 
 @Component({

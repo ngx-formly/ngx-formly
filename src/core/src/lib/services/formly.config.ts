@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, ComponentRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Injectable, InjectionToken, ComponentRef } from '@angular/core';
 import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
@@ -112,7 +112,7 @@ export class FormlyConfig {
       });
     }
 
-    const componentRef = this.createComponent(field);
+    const componentRef = this.resolveFieldTypeRef(field);
     if (componentRef && componentRef.instance && componentRef.instance.defaultOptions) {
       reverseDeepMerge(field, componentRef.instance.defaultOptions);
     }
@@ -123,37 +123,24 @@ export class FormlyConfig {
   }
 
   /** @internal */
-  createComponent(
-    field: FormlyFieldConfigCache = {},
-    resolver?: ComponentFactoryResolver,
-    injector?: Injector,
-  ): ComponentRef<FieldType> {
+  resolveFieldTypeRef(field: FormlyFieldConfigCache = {}): ComponentRef<FieldType> {
     if (!field.type) {
-      return;
-    }
-
-    const cf = field._componentFactory;
-    if (cf && field.type === cf.type && (cf.componentRef && cf.componentRef.hostView && !cf.componentRef.hostView.destroyed)) {
-      return field._componentFactory.componentRef;
+      return null;
     }
 
     const type = this.getType(field.type);
-    if (!resolver) {
-      resolver = field.parent.options._componentFactoryResolver;
-    }
-    if (!injector) {
-      injector = this.getFieldInjector(field);
+    if (!type.component || type['_componentRef']) {
+      return type['_componentRef'];
     }
 
-    defineHiddenProp(field, '_componentFactory', {
-      type: field.type,
-      component: type.component,
-      componentRef: resolver
-        ? resolver.resolveComponentFactory(type.component).create(injector)
-        : null,
-    });
+    const { _resolver, _injector } = field.parent.options;
+    defineHiddenProp(
+      type,
+      '_componentRef',
+      _resolver.resolveComponentFactory<FieldType>(type.component).create(_injector),
+    );
 
-    return field._componentFactory.componentRef;
+    return type['_componentRef'];
   }
 
   setWrapper(options: WrapperOption) {
@@ -222,15 +209,6 @@ export class FormlyConfig {
     if (!this.types[name].wrappers) {
       this.types[name].wrappers = extendedType.wrappers;
     }
-  }
-
-  private getFieldInjector(field: FormlyFieldConfigCache = {}) {
-    const parent = field.parent;
-    if (parent._componentFactory && parent._componentFactory.componentRef) {
-      return parent._componentFactory.componentRef.injector;
-    }
-
-    return parent.options._injector;
   }
 }
 export interface TypeOption {

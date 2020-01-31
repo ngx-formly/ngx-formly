@@ -23,7 +23,7 @@ export function defaultFormlyConfig(formlyConfig: FormlyConfig): ConfigOption {
     extensions: [
       { name: 'core', extension: new CoreExtension(formlyConfig) },
       { name: 'field-validation', extension: new FieldValidationExtension(formlyConfig) },
-      { name: 'field-form', extension: new FieldFormExtension() },
+      { name: 'field-form', extension: new FieldFormExtension(formlyConfig) },
       { name: 'field-expression', extension: new FieldExpressionExtension() },
     ],
   };

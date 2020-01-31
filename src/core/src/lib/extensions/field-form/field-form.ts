@@ -1,4 +1,4 @@
-import { FormlyExtension } from '../../services/formly.config';
+import { FormlyExtension, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { FormGroup, FormControl, AbstractControlOptions, Validators } from '@angular/forms';
 import { getFieldValue, defineHiddenProp } from '../../utils';
@@ -7,6 +7,8 @@ import { of } from 'rxjs';
 
 /** @experimental */
 export class FieldFormExtension implements FormlyExtension {
+  constructor(private config: FormlyConfig) { }
+
   onPopulate(field: FormlyFieldConfigCache) {
     if (field.key) {
       this.addFormControl(field);
@@ -31,10 +33,12 @@ export class FieldFormExtension implements FormlyExtension {
     if (!control) {
       const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
       const value = getFieldValue(field);
-      if (field._componentFactory && field._componentFactory.component && field._componentFactory.component.createControl) {
-        const component = field._componentFactory.component;
+
+      const ref = this.config ? this.config.resolveFieldTypeRef(field) : null;
+      if (ref && ref.componentType && ref.componentType['createControl']) {
+        const component = ref.componentType;
         console.warn(`NgxFormly: '${component.name}::createControl' is deprecated since v5.0, use 'prePopulate' hook instead.`);
-        control = component.createControl(value, field);
+        control = component['createControl'](value, field);
       } else if (field.fieldGroup) {
         // TODO: move to postPopulate
         control = new FormGroup({}, controlOptions);
