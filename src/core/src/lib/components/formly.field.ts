@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output,
   ViewContainerRef, ViewChild, ComponentRef, SimpleChanges, Attribute, ComponentFactoryResolver,
-  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Injector, Renderer2, ElementRef,
+  OnInit, OnChanges, OnDestroy, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, Renderer2, ElementRef,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -35,13 +35,13 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   // TODO: remove `any`, once dropping angular `V7` support.
   @ViewChild('container', <any> {read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
   private hostObservers: Function[] = [];
+  private componentRefs: any[] = [];
 
   constructor(
     private formlyConfig: FormlyConfig,
     private renderer: Renderer2,
+    private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
     // tslint:disable-next-line
     @Attribute('hide-deprecation') hideDeprecation,
   ) {
@@ -77,25 +77,22 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   ngOnDestroy() {
-    this.field && defineHiddenProp(this.field, '_componentRefs', []);
+    this.field && this.resetRefs(this.field);
     this.hostObservers.forEach(unsubscribe => unsubscribe());
     this.triggerHook('onDestroy');
   }
 
   private renderField(containerRef: ViewContainerRef, f: FormlyFieldConfigCache, wrappers: string[]) {
     if (this.containerRef === containerRef) {
-      defineHiddenProp(this.field, '_componentRefs', []);
+      this.resetRefs(this.field);
       this.containerRef.clear();
     }
 
     if (wrappers && wrappers.length > 0) {
       const [wrapper, ...wps] = wrappers;
       const { component } = this.formlyConfig.getWrapper(wrapper);
-      const cfr = f.options && f.options._componentFactoryResolver
-        ? f.options._componentFactoryResolver
-        : this.componentFactoryResolver;
 
-      const ref = containerRef.createComponent<FieldWrapper>(cfr.resolveComponentFactory(component));
+      const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
       wrapProperty(ref.instance, 'fieldComponent', ({ currentValue, firstChange }) => {
         if (currentValue) {
@@ -103,12 +100,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
           !firstChange && ref.changeDetectorRef.detectChanges();
         }
       });
-    } else {
-      const ref = this.formlyConfig.createComponent(f, this.componentFactoryResolver, this.injector);
-      if (ref) {
-        this.attachComponentRef(ref, f);
-        containerRef.insert(ref.hostView);
-      }
+    } else if (f.type) {
+      const { component } = this.formlyConfig.getType(f.type);
+      const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
+      this.attachComponentRef(ref, f);
     }
   }
 
@@ -130,12 +125,13 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
     if (name === 'onChanges' && changes.field) {
       this.renderHostBinding();
+      changes.field.previousValue && this.resetRefs(changes.field.previousValue);
       this.renderField(this.containerRef, this.field, this.field.wrappers);
     }
   }
 
   private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
-    field._componentRefs.push(ref);
+    this.componentRefs.push(ref);
     Object.assign(ref.instance, { field });
   }
 
@@ -153,5 +149,17 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
         }
       }),
     ];
+  }
+
+  private resetRefs(field: FormlyFieldConfigCache) {
+    if (field) {
+      if (field._componentRefs) {
+        field._componentRefs = field._componentRefs.filter(ref => this.componentRefs.indexOf(ref) === -1);
+      } else {
+        defineHiddenProp(this.field, '_componentRefs', []);
+      }
+    }
+
+    this.componentRefs = [];
   }
 }

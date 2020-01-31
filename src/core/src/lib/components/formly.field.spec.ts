@@ -195,6 +195,28 @@ describe('FormlyField Component', () => {
     expect(getInputField(fixture.nativeElement)).toBeUndefined();
   });
 
+  it('should render field type for each formly-field instance', () => {
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        formControl: new FormControl(),
+        wrappers: [],
+        duplicate: true,
+      },
+      form: new FormGroup({}),
+      templateOptions: { render: true },
+    };
+
+    const fixture = createTestComponent(`
+      <formly-field *ngIf="field.duplicate" [field]="field"></formly-field>
+      <formly-field class="target" [field]="field"></formly-field>
+    `);
+
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelectorAll('formly-field input').length).toEqual(2);
+  });
+
   it('should render field type', () => {
     testComponentInputs = {
       field: {
