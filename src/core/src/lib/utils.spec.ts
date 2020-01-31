@@ -238,7 +238,7 @@ describe('wrapProperty', () => {
     expect(spy2).toHaveBeenCalledWith({ currentValue: true, previousValue: null, firstChange: false });
   });
 
-  it('should ignore multi call of the same subscribe', () => {
+  it('should ignore multi call of the same subscriber', () => {
     const spy = jasmine.createSpy('hide change spy');
     const field = { hide: null };
     wrapProperty(field, 'hide', spy);
@@ -259,5 +259,21 @@ describe('wrapProperty', () => {
     field.hide = true;
 
     expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should be able to subscribe the same fn after detroy', () => {
+    const spy = jasmine.createSpy('hide change spy');
+    const field = { hide: null };
+    const observer = wrapProperty(field, 'hide', spy);
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    observer();
+    spy.calls.reset();
+    field.hide = true;
+
+    expect(spy).toHaveBeenCalledTimes(0);
+
+    wrapProperty(field, 'hide', spy);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

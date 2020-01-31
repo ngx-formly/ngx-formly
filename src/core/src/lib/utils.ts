@@ -179,7 +179,7 @@ export function wrapProperty<T = any>(
     o._observers[prop] = [];
   }
 
-  let fns = o._observers[prop];
+  let fns: typeof setFn[] = o._observers[prop];
   if (fns.indexOf(setFn) === -1) {
     fns.push(setFn);
     setFn({ currentValue: o[prop], firstChange: true });
@@ -199,7 +199,5 @@ export function wrapProperty<T = any>(
     }
   }
 
-  return () => {
-    fns = fns.filter(changeFn => changeFn !== setFn);
-  };
+  return () => fns.splice(fns.indexOf(setFn), 1);
 }
