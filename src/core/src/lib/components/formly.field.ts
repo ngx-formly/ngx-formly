@@ -94,9 +94,15 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
       const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
-      wrapProperty(ref.instance, 'fieldComponent', ({ currentValue, firstChange }) => {
+      wrapProperty<ViewContainerRef>(ref.instance, 'fieldComponent', ({ firstChange, previousValue, currentValue }) => {
         if (currentValue) {
-          this.renderField(currentValue as ViewContainerRef, f, wps);
+          const viewRef = previousValue ? previousValue.detach() : null;
+          if (viewRef && !viewRef.destroyed) {
+            currentValue.insert(viewRef);
+          } else {
+            this.renderField(currentValue, f, wps);
+          }
+
           !firstChange && ref.changeDetectorRef.detectChanges();
         }
       });
