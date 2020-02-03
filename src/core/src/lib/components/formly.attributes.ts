@@ -13,6 +13,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   @Input('formlyAttributes') field: FormlyFieldConfig;
+  @Input() id: string;
 
   private document: Document;
   private uiAttributesCache: any = {};
@@ -83,11 +84,15 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.detachElementRef(changes.field.previousValue);
       this.attachElementRef(changes.field.currentValue);
       if (this.fieldAttrElements.length === 1) {
-        this.field.id && this.setAttribute('id', this.field.id);
+        !this.id && this.field.id && this.setAttribute('id', this.field.id);
         wrapProperty(this.field, 'focus', ({ currentValue }) => {
           this.toggleFocus(currentValue);
         });
       }
+    }
+
+    if (changes.id) {
+      this.setAttribute('id', this.id);
     }
   }
 
