@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.11"></a>
+## [5.5.11](https://github.com/ngx-formly/ngx-formly/compare/v5.5.10...v5.5.11) (2020-02-03)
+
+
+### Bug Fixes
+
+* **bootstrap:** rely on accessor to select empty option ([#2047](https://github.com/ngx-formly/ngx-formly/issues/2047)) ([890c5aa](https://github.com/ngx-formly/ngx-formly/commit/890c5aa)), closes [#2043](https://github.com/ngx-formly/ngx-formly/issues/2043)
+* **core:** avoid using includes for IE compatibility ([#2062](https://github.com/ngx-formly/ngx-formly/issues/2062)) ([1f9b0ae](https://github.com/ngx-formly/ngx-formly/commit/1f9b0ae)), closes [#2058](https://github.com/ngx-formly/ngx-formly/issues/2058)
+* **core:** create field type instance for each formly-field com… ([#2068](https://github.com/ngx-formly/ngx-formly/issues/2068)) ([ecc632d](https://github.com/ngx-formly/ngx-formly/commit/ecc632d)), closes [#2060](https://github.com/ngx-formly/ngx-formly/issues/2060) [#2065](https://github.com/ngx-formly/ngx-formly/issues/2065) [#2045](https://github.com/ngx-formly/ngx-formly/issues/2045)
+* **core:** detach the rendered field from the destroyed wrapper… ([#2073](https://github.com/ngx-formly/ngx-formly/issues/2073)) ([cca863e](https://github.com/ngx-formly/ngx-formly/commit/cca863e))
+* **core:** detect expression changes on submit ([#2046](https://github.com/ngx-formly/ngx-formly/issues/2046)) ([9947906](https://github.com/ngx-formly/ngx-formly/commit/9947906)), closes [#1845](https://github.com/ngx-formly/ngx-formly/issues/1845)
+* **core:** detect observable expression changes when using OnPush CD ([#2051](https://github.com/ngx-formly/ngx-formly/issues/2051)) ([960ee42](https://github.com/ngx-formly/ngx-formly/commit/960ee42)), closes [#2050](https://github.com/ngx-formly/ngx-formly/issues/2050)
+* **core:** ensure wrapProperty fn is removed after unsubscribe ([#2067](https://github.com/ngx-formly/ngx-formly/issues/2067)) ([ef77b49](https://github.com/ngx-formly/ngx-formly/commit/ef77b49)), closes [#2066](https://github.com/ngx-formly/ngx-formly/issues/2066)
+* **core:** keep order of value subscriptions consistent on rebu… ([#2063](https://github.com/ngx-formly/ngx-formly/issues/2063)) ([d667122](https://github.com/ngx-formly/ngx-formly/commit/d667122)), closes [#2061](https://github.com/ngx-formly/ngx-formly/issues/2061)
+* **core:** set id attr to the first formlyAttributes elements only ([ed3ea3c](https://github.com/ngx-formly/ngx-formly/commit/ed3ea3c))
+* **core:** use id @Input when is set instead of field id ([dfda03b](https://github.com/ngx-formly/ngx-formly/commit/dfda03b)), closes [#2071](https://github.com/ngx-formly/ngx-formly/issues/2071)
+* **material:** remove textarea autosize attributes when disabled ([#2052](https://github.com/ngx-formly/ngx-formly/issues/2052)) ([80e7c14](https://github.com/ngx-formly/ngx-formly/commit/80e7c14)), closes [#2042](https://github.com/ngx-formly/ngx-formly/issues/2042)
+
+
+### Performance Improvements
+
+* **core:** reduce number of created components during the buil… ([#2069](https://github.com/ngx-formly/ngx-formly/issues/2069)) ([f371aad](https://github.com/ngx-formly/ngx-formly/commit/f371aad))
+
+
+
 <a name="5.5.10"></a>
 ## [5.5.10](https://github.com/ngx-formly/ngx-formly/compare/v5.5.9...v5.5.10) (2020-01-20)
 
