@@ -150,6 +150,14 @@ describe('FormlyAttributes Component', () => {
       expect(inputs[1].id).toEqual('');
     });
 
+    it(`should not set field id when id input is present`, () => {
+      const fixture = createTestComponent(`
+        <input [id]="'foo'" type="text" [formlyAttributes]="field">
+      `);
+      const inputs: HTMLInputElement[] = fixture.nativeElement.querySelectorAll('input');
+      expect(inputs[0].id).toEqual('foo');
+    });
+
     it(`should focus the first element when mutliple formlyAttributes is present`, () => {
       const fixture = createTestComponent(`
         <input type="text" [formlyAttributes]="field">
