@@ -1,5 +1,5 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty } from '../../utils';
+import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty, reduceFormUpdateValidityCalls } from '../../utils';
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
@@ -13,13 +13,10 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     field.options._checkField = (f, ignoreCache) => {
-      this._checkField(f, ignoreCache);
-
-      field.options._hiddenFieldsForCheck
-        .sort(f => f.hide ? -1 : 1)
-        .forEach(f => this.toggleFormControl(f, f.hide));
-
-      field.options._hiddenFieldsForCheck = [];
+      reduceFormUpdateValidityCalls(
+        f.formControl,
+        () => this.checkField(f, ignoreCache),
+      );
     };
   }
 
@@ -98,14 +95,6 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  postPopulate(field: FormlyFieldConfigCache) {
-    if (field.parent) {
-      return;
-    }
-
-    field.options._checkField(field, true);
-  }
-
   private _evalExpression(expression, parentExpression?) {
     expression = expression || (() => false);
     if (typeof expression === 'string') {
@@ -115,6 +104,16 @@ export class FieldExpressionExtension implements FormlyExtension {
     return parentExpression
       ? (model: any, formState: any, field: FormlyFieldConfig) => parentExpression() || expression(model, formState, field)
       : expression;
+  }
+
+  private checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
+    this._checkField(field, ignoreCache);
+
+    field.options._hiddenFieldsForCheck
+      .sort(f => f.hide ? -1 : 1)
+      .forEach(f => this.toggleFormControl(f, f.hide));
+
+    field.options._hiddenFieldsForCheck = [];
   }
 
   private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {

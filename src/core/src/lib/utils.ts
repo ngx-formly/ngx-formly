@@ -201,3 +201,14 @@ export function wrapProperty<T = any>(
 
   return () => fns.splice(fns.indexOf(setFn), 1);
 }
+
+export function reduceFormUpdateValidityCalls(form: any, action: Function) {
+  const updateValidity = form._updateTreeValidity.bind(form);
+
+  let updateValidityArgs = null;
+  form._updateTreeValidity = (...args) => updateValidityArgs = args;
+  action();
+
+  updateValidityArgs && updateValidity(updateValidityArgs);
+  form._updateTreeValidity = updateValidity;
+}

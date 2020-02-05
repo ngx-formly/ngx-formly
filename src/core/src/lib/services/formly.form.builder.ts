@@ -3,7 +3,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyFormOptionsCache } from '../components/formly.field.config';
 import { Subject } from 'rxjs';
-import { defineHiddenProp } from '../utils';
+import { defineHiddenProp, reduceFormUpdateValidityCalls } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -18,7 +18,9 @@ export class FormlyFormBuilder {
       throw new Error('NgxFormly: missing `forRoot()` call. use `forRoot()` when registering the `FormlyModule`.');
     }
 
-    this._buildForm({ fieldGroup, model, formControl, options: this._setOptions(options) });
+    const field = { fieldGroup, model, formControl, options: this._setOptions(options) };
+    reduceFormUpdateValidityCalls(formControl, () => this._buildForm(field));
+    field.options._checkField(field, true);
   }
 
   private _buildForm(field: FormlyFieldConfigCache) {
