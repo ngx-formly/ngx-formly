@@ -42,7 +42,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     }
   }
 
-  add(i?: number, initialModel?: any) {
+  add(i?: number, initialModel?: any, { markAsDirty } = { markAsDirty: true }) {
     i = isNullOrUndefined(i) ? this.field.fieldGroup.length : i;
     if (!this.model) {
       assignModelValue(this.field.parent.model, getKeyPath(this.field), []);
@@ -51,16 +51,16 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
 
     (<any> this.options)._buildForm(true);
-    this.formControl.markAsDirty();
+    markAsDirty && this.formControl.markAsDirty();
   }
 
-  remove(i: number) {
+  remove(i: number, { markAsDirty } = { markAsDirty: true }) {
     this.model.splice(i, 1);
     unregisterControl(this.field.fieldGroup[i], true);
     this.field.fieldGroup.splice(i, 1);
     this.field.fieldGroup.forEach((f, key) => f.key = `${key}`);
 
     (<any> this.options)._buildForm(true);
-    this.formControl.markAsDirty();
+    markAsDirty && this.formControl.markAsDirty();
   }
 }

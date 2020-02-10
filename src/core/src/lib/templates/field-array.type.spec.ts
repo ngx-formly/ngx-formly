@@ -5,6 +5,7 @@ import { FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { FormlyModule, FormlyForm, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
 import { FormlyFieldText } from '../components/formly.field.spec';
+import { By } from '@angular/platform-browser';
 
 function createFormlyTestComponent() {
   return createGenericTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>', TestComponent);
@@ -80,6 +81,30 @@ describe('Array Field Type', () => {
     fixture.detectChanges();
 
     expect(app.model).toEqual([]);
+  });
+
+  it('should not mark the form dirty on Add/Remove', () => {
+    app.model = { array: null };
+    app.fields = [{
+      key: 'array',
+      type: 'array',
+    }];
+
+    const fixture = createFormlyTestComponent();
+    expect(app.form.dirty).toBeFalsy();
+
+    const arrayType = fixture.debugElement.query(By.css('formly-array-type'))
+      .componentInstance as ArrayTypeComponent;
+
+    arrayType.add(null, null, { markAsDirty: false });
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeFalsy();
+
+    app.form.markAsPristine();
+
+    arrayType.remove(0, { markAsDirty: false });
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeFalsy();
   });
 
   it('should work with nullable model', () => {
