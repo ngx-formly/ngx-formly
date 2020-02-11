@@ -41,6 +41,30 @@ export class AppComponent {
       },
     },
     {
+      key: 'marvel2',
+      type: 'select',
+      templateOptions: {
+        label: 'Grouped Select (as nested options)',
+        options: [
+          {
+            label: 'Male',
+            group: [
+              { label: 'Iron Man', value: 'iron_man' },
+              { label: 'Captain America', value: 'captain_america' },
+              { label: 'Hulk', value: 'hulk' },
+            ],
+          },
+          {
+            label: 'Female',
+            group: [
+              { label: 'Black Widow', value: 'black_widow' },
+              { label: 'Captain Marvel', value: 'captain_marvel' },
+            ],
+          },
+        ],
+      },
+    },
+    {
       key: 'marvel3',
       type: 'select',
       templateOptions: {
