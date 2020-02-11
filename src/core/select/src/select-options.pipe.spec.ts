@@ -31,6 +31,39 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     });
   });
 
+  it('already grouped structure, so nothing to process', () => {
+    const field = {};
+    const options = [
+      {
+        label: 'g1',
+        group: [
+          { label: '1', value: '1' },
+          { label: '2', value: '2' },
+        ],
+      },
+      {
+        label: 'g2',
+        group: [{ label: '3', value: '3' }],
+      },
+    ];
+
+    pipe.transform(options, field).subscribe(options => {
+      expect(options).toEqual([
+        {
+          label: 'g1',
+          group: [
+            { label: '1', value: '1', disabled: false },
+            { label: '2', value: '2', disabled: false },
+          ],
+        },
+        {
+          label: 'g2',
+          group: [{ label: '3', value: '3', disabled: false }],
+        },
+      ]);
+    });
+  });
+
   describe('label & value & disabled props', () => {
     let options;
     beforeEach(() => {

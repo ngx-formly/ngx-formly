@@ -56,6 +56,12 @@ export class FormlySelectOptionsPipe implements PipeTransform {
 
   private transformOption(option: any, to: ITransformOption): ISelectOption {
     const group = to.groupProp(option);
+    if (Array.isArray(group)) {
+      return {
+        label: to.labelProp(option),
+        group: group.map(opt => this.transformOption(opt, to)),
+      };
+    }
 
     option = {
       label: to.labelProp(option),
