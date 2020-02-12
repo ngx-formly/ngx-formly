@@ -57,7 +57,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         } else if (expressionProperty instanceof Observable) {
           const subscription = (expressionProperty as Observable<any>)
             .subscribe(v => {
-              evalExpression(expressionValueSetter, { field }, [v, field.model, field]);
+              this.setExprValue(field, key, expressionValueSetter, v);
               if (field.options && field.options._markForCheck) {
                 field.options._markForCheck(field);
               }
@@ -157,28 +157,8 @@ export class FieldExpressionExtension implements FormlyExtension {
       ) {
         markForCheck = true;
         expressionProperties[key].expressionValue = expressionValue;
-        evalExpression(
-          expressionProperties[key].expressionValueSetter,
-          { field },
-          [expressionValue, field.model, field],
-        );
-
-        if (key === 'templateOptions.disabled' && field.key) {
-          this.setDisabledState(field, expressionValue);
-        }
-
-        if (key.indexOf('model.') === 0) {
-          const path = key.replace(/^model\./, ''),
-            control = field.key && key === path ? field.formControl : field.parent.formControl.get(path);
-
-          if (
-            control
-            && !(isNullOrUndefined(control.value) && isNullOrUndefined(expressionValue))
-            && control.value !== expressionValue
-          ) {
-            control.patchValue(expressionValue, { emitEvent: false });
-          }
-        }
+        const setter = expressionProperties[key].expressionValueSetter;
+        this.setExprValue(field, key, setter, expressionValue);
       }
     }
 
@@ -239,6 +219,27 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     if (field.options.fieldChanges) {
       field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hide });
+    }
+  }
+
+  private setExprValue(field: FormlyFieldConfigCache, prop: string, setter: Function, value: any) {
+    evalExpression(setter, { field }, [value, field.model, field]);
+
+    if (prop === 'templateOptions.disabled' && field.key) {
+      this.setDisabledState(field, value);
+    }
+
+    if (prop.indexOf('model.') === 0) {
+      const path = prop.replace(/^model\./, ''),
+        control = field.key && prop === path ? field.formControl : field.parent.formControl.get(path);
+
+      if (
+        control
+        && !(isNullOrUndefined(control.value) && isNullOrUndefined(value))
+        && control.value !== value
+      ) {
+        control.patchValue(value, { emitEvent: false });
+      }
     }
   }
 }

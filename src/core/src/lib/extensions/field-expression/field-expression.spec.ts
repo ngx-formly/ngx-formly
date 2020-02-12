@@ -448,6 +448,23 @@ describe('FieldExpressionExtension', () => {
         builder.buildForm(form, fields, model, options);
         expect(fields[0].templateOptions.label).toEqual('test');
       });
+
+      it('should change model through observable', () => {
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'text',
+            type: 'input',
+            expressionProperties: {
+              'model.text': of('test'),
+            },
+          },
+        ];
+        const model = {};
+        const options = {};
+
+        builder.buildForm(form, fields, model, options);
+        expect(fields[0].formControl.value).toEqual('test');
+      });
     });
   });
 
