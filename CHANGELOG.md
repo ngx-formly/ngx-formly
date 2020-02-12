@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.12"></a>
+## [5.5.12](https://github.com/ngx-formly/ngx-formly/compare/v5.5.11...v5.5.12) (2020-02-12)
+
+
+### Bug Fixes
+
+* **core:** ensure UI is in sync when using custom checkExpressi… ([#2097](https://github.com/ngx-formly/ngx-formly/issues/2097)) ([80c2f7b](https://github.com/ngx-formly/ngx-formly/commit/80c2f7b)), closes [#2095](https://github.com/ngx-formly/ngx-formly/issues/2095)
+* **core:** take account of passing observable to model expr ([#2096](https://github.com/ngx-formly/ngx-formly/issues/2096)) ([4bf1445](https://github.com/ngx-formly/ngx-formly/commit/4bf1445)), closes [#2094](https://github.com/ngx-formly/ngx-formly/issues/2094)
+* **core:** take account of the emitted modelChange value as mod… ([#2098](https://github.com/ngx-formly/ngx-formly/issues/2098)) ([ad99519](https://github.com/ngx-formly/ngx-formly/commit/ad99519)), closes [#2093](https://github.com/ngx-formly/ngx-formly/issues/2093)
+
+
+### Performance Improvements
+
+* **core:** reduce form _updateTreeValidity calls ([#2078](https://github.com/ngx-formly/ngx-formly/issues/2078)) ([dad2ef6](https://github.com/ngx-formly/ngx-formly/commit/dad2ef6))
+
+
+
 <a name="5.5.11"></a>
 ## [5.5.11](https://github.com/ngx-formly/ngx-formly/compare/v5.5.10...v5.5.11) (2020-02-03)
 
