@@ -47,6 +47,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private immutable = false;
   private _model: any;
+  private _modelChangeValue: any = {};
   private _fields: FormlyFieldConfig[];
   private _options: FormlyFormOptions;
   private modelChangeSubs: Subscription[] = [];
@@ -57,7 +58,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     // runGuarded is used to keep in sync the expression changes
     // https://github.com/ngx-formly/ngx-formly/issues/2095
     this.checkExpressionChange();
-    this.modelChange.emit(clone(this.model));
+    this.modelChange.emit(this._modelChangeValue = clone(this.model));
   }));
 
   constructor(
@@ -82,7 +83,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.fields || changes.form || changes.model) {
+    if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
       this.options.updateInitialValue();
@@ -165,7 +166,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         this.trackModelChanges(this.fields);
 
         if (emitModelChange) {
-          this.modelChange.emit(clone(this.model));
+          this.modelChange.emit(this._modelChangeValue = clone(this.model));
         }
       };
     }

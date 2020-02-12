@@ -1009,6 +1009,24 @@ describe('FormlyForm Component', () => {
       expect(spy).not.toHaveBeenCalled();
       subscription.unsubscribe();
     });
+
+    it('should take account of using the emitted modelChange value as model input', () => {
+      app = {
+        model: {},
+        form: new FormGroup({}),
+        fields: [{ key: 'test', type: 'text' }],
+      };
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" (modelChange)="model = $event"></formly-form>');
+      app.form.get('test').setValue('1');
+      fixture.detectChanges();
+
+      app.form.get('test').setValue('12');
+      fixture.detectChanges();
+
+      expect(app.model.test).toEqual('12');
+      expect(app.form.get('test').value).toEqual('12');
+    });
   });
 
   describe('form input', () => {
