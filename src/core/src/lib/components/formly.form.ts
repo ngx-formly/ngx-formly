@@ -53,10 +53,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private modelChange$ = new Subject<void>();
   private modelChangeSub = this.modelChange$.pipe(
     switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
-  ).subscribe(() => {
+  ).subscribe(() => this.ngZone.runGuarded(() => {
+    // runGuarded is used to keep in sync the expression changes
+    // https://github.com/ngx-formly/ngx-formly/issues/2095
     this.checkExpressionChange();
     this.modelChange.emit(clone(this.model));
-  });
+  }));
 
   constructor(
     private formlyBuilder: FormlyFormBuilder,
