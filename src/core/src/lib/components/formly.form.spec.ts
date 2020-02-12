@@ -97,6 +97,28 @@ describe('FormlyForm Component', () => {
       expect(fixture.componentInstance.formlyForm.fields).toBe(fields);
     });
 
+    it('should keep in sync UI on checkExpressionChange', () => {
+      app.fields = [{
+        key: 'city',
+        type: 'text',
+        expressionProperties: {
+          'templateOptions.disabled': 'model.city === "***"',
+        },
+      }];
+
+      const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      fixture.detectChanges();
+
+      const inputDe = fixture.debugElement.query(By.css('input')) as DebugElement;
+      inputDe.nativeElement.value = '***';
+      inputDe.nativeElement.dispatchEvent(newEvent('input', false));
+      fixture.detectChanges();
+
+      const control = app.form.get('city');
+      expect(control.disabled).toEqual(true);
+      expect(inputDe.attributes.disabled).toEqual('disabled');
+    });
+
     it('should not change the input model when a new value is emitted', () => {
       const fixture = createTestComponent('<formly-form immutable [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
       const spy = jasmine.createSpy('model change spy');
