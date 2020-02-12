@@ -138,6 +138,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
     this.componentRefs.push(ref);
+    field._componentRefs.push(ref);
     Object.assign(ref.instance, { field });
   }
 
