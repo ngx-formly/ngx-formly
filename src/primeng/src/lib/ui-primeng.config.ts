@@ -7,6 +7,7 @@ import {
   FormlyFieldSelect,
 } from './types/types';
 import { FormlyWrapperFormField } from './wrappers/wrappers';
+import { FormlyFieldMultiSelect } from './types/multi-select';
 
 export const FIELD_TYPE_COMPONENTS = [
   // types
@@ -15,6 +16,7 @@ export const FIELD_TYPE_COMPONENTS = [
   FormlyFieldCheckbox,
   FormlyFieldRadio,
   FormlyFieldSelect,
+  FormlyFieldMultiSelect,
 
   // wrappers
   FormlyWrapperFormField,
@@ -45,6 +47,11 @@ export const PRIME_NG_FORMLY_CONFIG: ConfigOption = {
     {
       name: 'select',
       component: FormlyFieldSelect,
+      wrappers: ['form-field'],
+    },
+    {
+      name: 'multi-select',
+      component: FormlyFieldMultiSelect,
       wrappers: ['form-field'],
     },
   ],

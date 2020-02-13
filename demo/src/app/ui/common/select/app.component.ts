@@ -25,17 +25,17 @@ export class AppComponent {
           { value: 3, label: 'Option 3'  },
           { value: 4, label: 'Option 4'  },
         ],
+        filterable: true
       },
     },
     {
       key: 'select_multi',
-      type: 'select',
+      type: 'multi-select',
       templateOptions: {
         label: 'Select Multiple',
         placeholder: 'Placeholder',
         description: 'Description',
-        required: true,
-        multiple: true,
+        required: true,        
         selectAllOption: 'Select All',
         options: [
           { value: 1, label: 'Option 1'  },
@@ -43,6 +43,7 @@ export class AppComponent {
           { value: 3, label: 'Option 3'  },
           { value: 4, label: 'Option 4'  },
         ],
+        filterable: true
       },
     },
   ];
