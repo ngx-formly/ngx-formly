@@ -8,10 +8,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 import { filter, tap } from 'rxjs/operators';
+import { HomeComponent } from './home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,7 +23,7 @@ import { filter, tap } from 'rxjs/operators';
     LoadingBarRouterModule,
     MatMenuModule,
     RouterModule.forRoot([
-      { path: '', pathMatch: 'full', redirectTo: 'guide' },
+      { path: '', pathMatch: 'full', component: HomeComponent },
       { path: 'guide', loadChildren: './guides/guides.module#GuidesModule' },
       { path: 'ui', loadChildren: './ui/ui.module#UIModule' },
       { path: 'examples', loadChildren: './examples/examples.module#ExamplesModule' },

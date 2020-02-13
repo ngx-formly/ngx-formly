@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'formly-demo-examples',
-  template: `
-    <div class="markdown github">
-      <div *ngIf="route.params | async as params" [innerHtml]="contents[params.id]"></div>
-    </div>
-  `,
+  template: '',
+  host: {
+    '[class]': '"markdown github"',
+    '[style.display]': '"block"',
+  },
 })
-export class GuidesComponent {
+export class GuidesComponent implements OnInit {
   contents = {
-    'getting-started': require('!!raw-loader!!highlight-loader!markdown-loader!./../../../../README.md'),
+    'getting-started': require('!!raw-loader!!highlight-loader!markdown-loader!./introduction.md'),
     'properties-options': require('!!raw-loader!!highlight-loader!markdown-loader!./properties-options.md'),
     'custom-formly-field': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-field.md'),
     'custom-formly-wrapper': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-wrapper.md'),
@@ -19,5 +19,19 @@ export class GuidesComponent {
     'expression-properties': require('!!raw-loader!!highlight-loader!markdown-loader!./expression-properties.md'),
   };
 
-  constructor(public route: ActivatedRoute) {}
+  constructor(
+    private renderer: Renderer2,
+    private route: ActivatedRoute,
+    private elementRef: ElementRef,
+  ) {}
+
+  ngOnInit() {
+    this.route.params.subscribe(({ id }) => {
+      this.renderer.setProperty(
+        this.elementRef.nativeElement,
+        'innerHTML',
+        this.contents[id],
+      );
+    });
+  }
 }
