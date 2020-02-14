@@ -12,14 +12,14 @@ import { FieldType } from '@ngx-formly/core';
       [formlyAttributes]="field"
       [filter]="to.filterable"
       (onChange)="to.change && to.change(field, $event)">
-    </p-multiSelect>        
+    </p-multiSelect>
   `,
 })
 export class FormlyFieldMultiSelect extends FieldType {
   defaultOptions = {
     templateOptions: { options: [] },
   };
-  constructor(){
+  constructor() {
     super();
   }
 }
