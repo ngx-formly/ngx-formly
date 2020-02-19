@@ -2,7 +2,7 @@ import { FormlyExtension, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { FormGroup, FormControl, AbstractControlOptions, Validators } from '@angular/forms';
 import { getFieldValue, defineHiddenProp } from '../../utils';
-import { registerControl, findControl } from './utils';
+import { registerControl, findControl, updateValidity as updateControlValidity } from './utils';
 import { of } from 'rxjs';
 
 /** @experimental */
@@ -84,7 +84,7 @@ export class FieldFormExtension implements FormlyExtension {
         });
 
         if (!c.parent) {
-          c.updateValueAndValidity({ emitEvent: false });
+          updateControlValidity(c);
         } else {
           updateValidity = true;
         }
