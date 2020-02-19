@@ -2,6 +2,7 @@ import { FormlyExtension, FieldValidatorFn, FormlyConfig } from '../../services/
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { isObject, FORMLY_VALIDATORS, defineHiddenProp, isPromise, wrapProperty } from '../../utils';
+import { updateValidity } from '../field-form/utils';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -47,7 +48,7 @@ export class FieldValidationExtension implements FormlyExtension {
         VALIDATORS.push(opt);
       }
       if (!firstChange && field.formControl) {
-        field.formControl.updateValueAndValidity({ emitEvent: false });
+        updateValidity(field.formControl);
       }
     }));
 

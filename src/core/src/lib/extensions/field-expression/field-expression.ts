@@ -3,7 +3,7 @@ import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty
 import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
-import { unregisterControl, registerControl } from '../field-form/utils';
+import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 
 /** @experimental */
 export class FieldExpressionExtension implements FormlyExtension {
@@ -203,7 +203,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
       if (c['_fields'].length > 1) {
-        c.updateValueAndValidity({ emitEvent: false });
+        updateValidity(c);
       }
 
       hide === true && c['_fields'].every(f => !!f._hide)

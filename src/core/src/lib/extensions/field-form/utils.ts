@@ -2,6 +2,7 @@ import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/for
 import { FormlyFieldConfig } from '../../core';
 import { getKeyPath, getFieldValue, isNullOrUndefined, defineHiddenProp, wrapProperty, assignModelValue, isUndefined } from '../../utils';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
+import { EventEmitter } from '@angular/core';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   const form = field.formControl.parent as FormArray | FormGroup;
@@ -114,6 +115,14 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
       { emitEvent },
       () => parent.setControl(key, control),
     );
+  }
+}
+
+export function updateValidity(c: AbstractControl) {
+  const status = c.status;
+  c.updateValueAndValidity({ emitEvent: false });
+  if (status !== c.status) {
+    (c.statusChanges as EventEmitter<string>).emit(c.status);
   }
 }
 
