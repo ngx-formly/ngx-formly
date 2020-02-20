@@ -27,6 +27,7 @@ export class FormlyFieldMultiCheckbox extends FieldType {
       hideFieldUnderline: true,
       floatLabel: 'always',
       options: [],
+      color: 'accent', // workaround for https://github.com/angular/components/issues/18465
     },
   };
 
