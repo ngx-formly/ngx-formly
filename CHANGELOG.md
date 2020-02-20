@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.13"></a>
+## [5.5.13](https://github.com/ngx-formly/ngx-formly/compare/v5.5.12...v5.5.13) (2020-02-20)
+
+
+### Bug Fixes
+
+* **core:** emit statusChanges on updateValueAndValidity ([#2107](https://github.com/ngx-formly/ngx-formly/issues/2107)) ([7deac1a](https://github.com/ngx-formly/ngx-formly/commit/7deac1a)), closes [#2106](https://github.com/ngx-formly/ngx-formly/issues/2106)
+* **material:** handle undefined color palette for checkbox ([#2109](https://github.com/ngx-formly/ngx-formly/issues/2109)) ([8998b61](https://github.com/ngx-formly/ngx-formly/commit/8998b61)), closes [#2101](https://github.com/ngx-formly/ngx-formly/issues/2101)
+
+
+
 <a name="5.5.12"></a>
 ## [5.5.12](https://github.com/ngx-formly/ngx-formly/compare/v5.5.11...v5.5.12) (2020-02-12)
 
