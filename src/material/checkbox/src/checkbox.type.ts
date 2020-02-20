@@ -27,6 +27,7 @@ export class FormlyFieldCheckbox extends FieldType {
       floatLabel: 'always',
       hideLabel: true,
       align: 'start', // start or end
+      color: 'accent', // workaround for https://github.com/angular/components/issues/18465
     },
   };
 
