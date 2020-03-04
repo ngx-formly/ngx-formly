@@ -74,7 +74,7 @@ export class CoreExtension implements FormlyExtension {
     if (
       field.type !== 'formly-template'
       && (
-        field.hasOwnProperty('template')
+        field.template
         || (field.expressionProperties && field.expressionProperties.template)
       )
     ) {

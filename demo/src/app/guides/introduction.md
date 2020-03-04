@@ -39,7 +39,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 })
 export class AppModule { }
 ```
-The forRoot() call is required at the application's root level. The forRoot() method accept a config argumment where you can pass extra config, register a custom field type, wrapper and validation.
+The forRoot() call is required at the application's root level. The forRoot() method accept a config argument where you can pass extra config, register a custom field type, wrapper and validation.
 
 2. add `<formly-form>` inside the `form` tag to your `AppComponent` template:
 
@@ -50,7 +50,7 @@ The forRoot() call is required at the application's root level. The forRoot() me
 </form>
 ```
 
-The `<form-form>` component is the main container of the form, which will render our form, it accept the following inputs:
+The `<formly-form>` component is the main container of the form, which will build and render form fields, it accept the following inputs:
 
 - `fields`: The field configurations for building the form.
 - `form`: The form instance which allow to track model value and validation status.
@@ -102,7 +102,8 @@ that is marked required and filled with 'email@gmail.com' value.
   <iframe width="560" height="315" src="https://stackblitz.com/edit/formly-starter-example?ctl=1&embed=1&file=src/app/app.component.html&hideExplorer=1&hideNavigation=1&view=preview"></iframe>
 </div>
 
-
-
-
 From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
+
+<hr>
+
+To lean more check out [Formly @eggheadio course 🔥](https://egghead.io/playlists/configuration-based-reactive-angular-forms-with-ngx-formly-465f) by Juri Strumpflohner ([Twitter](https://twitter.com/juristr) - [Blog](https://juristr.com/blog)).
