@@ -18,7 +18,9 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex || 0"
-      [readonly]="to.readonly">
+      [readonly]="to.readonly"
+      (dateInput)="to.datepickerOptions.dateInput(field, $event)"
+      (dateChange)="to.datepickerOptions.dateChange(field, $event)">
     <ng-template #datepickerToggle>
       <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
     </ng-template>
@@ -40,6 +42,8 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
       datepickerOptions: {
         startView: 'month',
         datepickerTogglePosition: 'suffix',
+        dateInput: () => {},
+        dateChange: () => {},
       },
     },
   };
