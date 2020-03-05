@@ -40,7 +40,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           field._expressionProperties[key] = {
             expression: this._evalExpression(
               expressionProperty,
-              field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
+              key === 'templateOptions.disabled' && field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
                 ? () => field.parent.templateOptions.disabled
                 : undefined,
             ),
