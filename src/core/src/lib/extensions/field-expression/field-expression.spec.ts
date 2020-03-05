@@ -377,6 +377,7 @@ describe('FieldExpressionExtension', () => {
             {
               key: 'street',
               type: 'input',
+              expressionProperties: { 'templateOptions.label': () => 'Street' },
             },
           ],
         }];
@@ -388,6 +389,7 @@ describe('FieldExpressionExtension', () => {
         expect(fields[0].templateOptions.disabled).toBeTruthy();
         expect(fields[0].fieldGroup[0].templateOptions.disabled).toBeTruthy();
         expect(fields[0].fieldGroup[1].templateOptions.disabled).toBeTruthy();
+        expect(fields[0].fieldGroup[1].templateOptions.label).toEqual('Street');
 
         disabled.address = false;
         options._checkField({ formControl: form, fieldGroup: fields, model, options });
