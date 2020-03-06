@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.14"></a>
+## [5.5.14](https://github.com/ngx-formly/ngx-formly/compare/v5.5.13...v5.5.14) (2020-03-06)
+
+
+### Bug Fixes
+
+* **core:** allow passing a custom type when template is null ([#2126](https://github.com/ngx-formly/ngx-formly/issues/2126)) ([2129892](https://github.com/ngx-formly/ngx-formly/commit/2129892)), closes [#2121](https://github.com/ngx-formly/ngx-formly/issues/2121)
+* **core:** disabled expression should not overwrites child expr… ([#2130](https://github.com/ngx-formly/ngx-formly/issues/2130)) ([f779edb](https://github.com/ngx-formly/ngx-formly/commit/f779edb)), closes [#2129](https://github.com/ngx-formly/ngx-formly/issues/2129) [#2128](https://github.com/ngx-formly/ngx-formly/issues/2128)
+
+
+
 <a name="5.5.13"></a>
 ## [5.5.13](https://github.com/ngx-formly/ngx-formly/compare/v5.5.12...v5.5.13) (2020-02-20)
 
