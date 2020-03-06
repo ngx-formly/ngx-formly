@@ -6,12 +6,17 @@ import { FieldType } from '@ngx-formly/core';
   template: `
     <div>
       <div *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
-        [ngClass]="{ 'form-check': to.formCheck !== 'custom', 'form-check-inline': to.formCheck === 'inline', 'custom-control custom-radio': to.formCheck === 'custom' }"
+        [ngClass]="{
+          'form-check': to.formCheck.indexOf('custom') === -1,
+          'form-check-inline': to.formCheck === 'inline',
+          'custom-control custom-radio': to.formCheck.indexOf('custom') === 0,
+          'custom-control-inline': to.formCheck === 'custom-inline'
+        }"
       >
         <input type="radio"
           [id]="id + '_' + i"
-          [class.form-check-input]="to.formCheck !== 'custom'"
-          [class.custom-control-input]="to.formCheck === 'custom'"
+          [class.form-check-input]="to.formCheck.indexOf('custom') === -1"
+          [class.custom-control-input]="to.formCheck.indexOf('custom') === 0"
           [name]="field.name || id"
           [class.is-invalid]="showError"
           [attr.value]="option.value"
@@ -19,8 +24,8 @@ import { FieldType } from '@ngx-formly/core';
           [formControl]="formControl"
           [formlyAttributes]="field">
         <label
-          [class.form-check-label]="to.formCheck !== 'custom'"
-          [class.custom-control-label]="to.formCheck === 'custom'"
+          [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
+          [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
           [for]="id + '_' + i">
           {{ option.label }}
         </label>
@@ -32,7 +37,7 @@ export class FormlyFieldRadio extends FieldType {
   defaultOptions = {
     templateOptions: {
       options: [],
-      formCheck: 'custom', // 'custom' | 'stacked' | 'inline'
+      formCheck: 'custom', // 'custom' | 'custom-inline' | 'stacked' | 'inline'
     },
   };
 }
