@@ -11,6 +11,11 @@ import { FieldType } from '@ngx-formly/core';
       [cancelText]="to.cancelText"
       [min]="to.min"
       [max]="to.max"
+      [yearValues]="to.yearValues"
+      [monthValues]="to.monthValues"
+      [dayValues]="to.dayValues"
+      [hourValues]="to.hourValues"
+      [minuteValues]="to.minuteValues"
       [formControl]="formControl"
       [ionFormlyAttributes]="field">
     </ion-datetime>
