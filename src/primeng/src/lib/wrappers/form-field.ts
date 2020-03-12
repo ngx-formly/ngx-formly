@@ -12,16 +12,10 @@ import { FieldWrapper } from '@ngx-formly/core';
     </div>
     <ng-container #fieldComponent></ng-container>
 
-    <div class="ui-message ui-messages-error" *ngIf="showError">
-        <formly-validation-message [field]="field"></formly-validation-message>
+    <div class="ui-message ui-widget ui-corner-all ui-message-error ui-messages-error" *ngIf="showError">
+        <formly-validation-message class="ui-message-text" [field]="field"></formly-validation-message>
     </div>
   `,
-  styles: [`
-    .ui-messages-error {
-      margin: 0;
-      margin-top: 4px;
-    }
-  `],
 })
 export class FormlyWrapperFormField extends FieldWrapper {
 }
