@@ -22,7 +22,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   }
 
   onPopulate(field: FormlyFieldConfig) {
-    if (!field.formControl) {
+    if (!field.formControl && field.key) {
       registerControl(field, new FormArray([], { updateOn: field.modelOptions.updateOn }));
     }
 

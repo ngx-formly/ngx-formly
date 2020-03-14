@@ -11,7 +11,7 @@ function createFormlyTestComponent() {
 }
 
 let app: Partial<{
-  form: FormGroup;
+  form: FormGroup | FormArray;
   fields: FormlyFieldConfig[];
   options: FormlyFormOptions;
   model: any;
@@ -61,6 +61,25 @@ describe('Array Field Type', () => {
     fixture.nativeElement.querySelector('#remove-0').click();
     fixture.detectChanges();
     expect(app.form.dirty).toBeTruthy();
+  });
+
+  it('should support field without key', () => {
+    app.form = new FormArray([]);
+    app.fields = [{ type: 'array' }];
+    app.model = [];
+
+    const fixture = createFormlyTestComponent();
+    expect(app.model).toEqual([]);
+
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+
+    expect(app.model).toEqual([undefined]);
+
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+
+    expect(app.model).toEqual([]);
   });
 
   it('should work with nullable model', () => {
@@ -174,7 +193,7 @@ class TestComponent {
   @ViewChild(FormlyForm) formlyForm: FormlyForm;
 
   fields = app.fields;
-  form: FormGroup = app.form;
+  form = app.form;
   model = app.model;
   options = app.options;
 }
