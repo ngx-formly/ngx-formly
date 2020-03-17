@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.5.15"></a>
+## [5.5.15](https://github.com/ngx-formly/ngx-formly/compare/v5.5.14...v5.5.15) (2020-03-17)
+
+
+### Bug Fixes
+
+* **core:** allow using FieldArray without a key ([#2142](https://github.com/ngx-formly/ngx-formly/issues/2142)) ([32a3a9d](https://github.com/ngx-formly/ngx-formly/commit/32a3a9d))
+* **core:** ensure showError option return a boolean value ([#2146](https://github.com/ngx-formly/ngx-formly/issues/2146)) ([0ed6f9a](https://github.com/ngx-formly/ngx-formly/commit/0ed6f9a)), closes [#2144](https://github.com/ngx-formly/ngx-formly/issues/2144)
+* **primeng:** change class ui-messages-error to ui-message-error ([#2136](https://github.com/ngx-formly/ngx-formly/issues/2136)) ([1b41aaa](https://github.com/ngx-formly/ngx-formly/commit/1b41aaa)), closes [#2135](https://github.com/ngx-formly/ngx-formly/issues/2135)
+
+
+
 <a name="5.5.14"></a>
 ## [5.5.14](https://github.com/ngx-formly/ngx-formly/compare/v5.5.13...v5.5.14) (2020-03-06)
 
