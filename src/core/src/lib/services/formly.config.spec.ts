@@ -17,6 +17,14 @@ describe('FormlyConfig service', () => {
   });
 
   describe('extra option: showError', () => {
+    it('should return false when fied is untouched', () => {
+      const field = {},
+        formControl = new FormControl(null, Validators.required),
+        options = { parentForm: { submitted: false } };
+
+      expect(config.extras.showError({ options, formControl, field } as any)).toBe(false);
+    });
+
     it('should showError when form is submitted and form is invalid', () => {
       const field = {},
         formControl = new FormControl(null, Validators.required),

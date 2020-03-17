@@ -32,7 +32,7 @@ export class FormlyConfig {
   extras: ConfigOption['extras'] = {
     checkExpressionOn: 'changeDetectionCheck',
     showError: function(field: FieldType) {
-      return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || (field.field.validation && field.field.validation.show));
+      return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || !!(field.field.validation && field.field.validation.show));
     },
   };
   extensions: { [name: string]: FormlyExtension } = {};
