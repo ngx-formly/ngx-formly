@@ -37,6 +37,7 @@ Formly is a dynamic (JSON powered) form library for Angular that bring unmatched
 ## Resources
 
 - [Build Fast, JSON-Powered Forms on Angular With Ngx Formly](https://medium.com/better-programming/build-fast-json-powered-forms-on-angular-with-ngx-formly-b7a00733e66e?source=friends_link&sk=34fc6bdc71dd15fd255af18fb3280763)
+- [How to Build Fast, Advanced JSON-Powered Forms on Angular With ngx-formly](https://medium.com/better-programming/how-to-build-fast-advanced-json-powered-forms-on-angular-with-ngx-formly-77aeed406f73?source=friends_link&sk=8d4f332458a46557778a3438e8f63581)
 
 **Supported UI libs**
 
