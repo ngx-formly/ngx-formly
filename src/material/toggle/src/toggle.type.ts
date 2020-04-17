@@ -9,6 +9,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
       [id]="id"
       [formControl]="formControl"
       [formlyAttributes]="field"
+      [color]="to.color"
       [tabindex]="to.tabindex || 0">
       {{ to.label }}
     </mat-slide-toggle>
