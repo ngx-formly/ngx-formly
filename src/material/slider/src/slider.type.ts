@@ -12,6 +12,7 @@ import { MatSlider } from '@angular/material/slider';
       [formlyAttributes]="field"
       [tabindex]="to.tabindex || 0"
       [color]="to.color"
+      [thumbLabel]="to.thumbLabel"
       [step]="to.step"
       [max]="to.max"
       [min]="to.min">
@@ -24,6 +25,7 @@ export class FormlySliderTypeComponent extends FieldType {
     templateOptions: {
       hideFieldUnderline: true,
       floatLabel: 'always',
+      thumbLabel: false,
     },
   };
 
