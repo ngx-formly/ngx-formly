@@ -17,6 +17,7 @@ export class AppComponent {
       templateOptions: {
         label: 'Slider label',
         // placeholder: 'Slider Placeholder',
+        // thumbLabel: true,
         description: 'Slider Description',
         required: true,
       },
