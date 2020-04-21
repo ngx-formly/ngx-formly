@@ -1,12 +1,16 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, TestBedStatic } from '@angular/core/testing';
+import { timer } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { createGenericTestComponent } from '../test-utils';
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   FormlyModule,
   FieldType,
   FieldWrapper,
+  FormlyFieldConfig,
+  FormlyFormBuilder,
 } from '../core';
 import { By } from '@angular/platform-browser';
 
@@ -26,15 +30,17 @@ function getLabelWrapper(element: HTMLElement): HTMLElement {
 }
 
 let testComponentInputs;
+let testingModule: TestBedStatic;
 
 describe('FormlyField Component', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({
+    testingModule = TestBed.configureTestingModule({
       declarations: [
         TestComponent,
         FormlyFieldText,
         FormlyWrapperLabel,
         AsyncWrapperComponent,
+        TestOnPushComponent,
       ],
       imports: [
         ReactiveFormsModule,
@@ -48,6 +54,10 @@ describe('FormlyField Component', () => {
               name: 'other',
               component: FormlyFieldText,
               wrappers: ['label'],
+            },
+            {
+              name: 'on-push',
+              component: TestOnPushComponent,
             },
           ],
           wrappers: [
@@ -325,6 +335,56 @@ describe('FormlyField Component', () => {
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(null);
     expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');
   });
+
+  fit('should update template options of OnPush FieldType #2191', async () => {
+    const options$ = timer(0).pipe(map(() => [{ value: 5, label: 'Option 5' }]), shareReplay(1));
+
+    const field: FormlyFieldConfig = {
+      key: 'push',
+      type: 'on-push',
+      templateOptions: {
+        options: [
+          { value: 1, label: 'Option 1' },
+        ],
+      },
+      expressionProperties: {
+        'templateOptions.options': options$,
+      },
+    };
+
+    const form = new FormGroup({});
+
+    testComponentInputs = {
+      field,
+      form,
+    };
+
+    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+
+    const formBuilder: FormlyFormBuilder = testingModule.get(FormlyFormBuilder);
+
+    formBuilder.buildForm(form, [field], {}, {});
+
+    const onPushInstance = fixture.nativeElement.querySelector('formly-on-push-component');
+
+    expect(onPushInstance.textContent).toEqual(
+      JSON.stringify({ options: [{ value: 1, label: 'Option 1' }] }, null, 2),
+    );
+
+    await options$.toPromise();
+
+    fixture.detectChanges();
+
+    expect(onPushInstance.textContent).toEqual(
+      JSON.stringify({
+        options: [{ value: 5, label: 'Option 5' }],
+        label: '',
+        placeholder: '',
+        focus: false,
+        disabled: false,
+      }, null, 2),
+    );
+  });
 });
 
 @Component({
@@ -377,7 +437,14 @@ export class Manipulator {
   template: `
     <div *ngIf="to.render">
       <ng-container #fieldComponent></ng-container>
-    <div>
+    </div>
   `,
 })
 export class AsyncWrapperComponent extends FieldWrapper {}
+
+@Component({
+  selector: 'formly-on-push-component',
+  template: '{{ to | json }}',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class TestOnPushComponent extends FieldType {}

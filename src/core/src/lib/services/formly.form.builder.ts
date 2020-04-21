@@ -1,4 +1,4 @@
-import { Injectable, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Injectable, ComponentFactoryResolver, Injector, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyFormOptionsCache } from '../components/formly.field.config';
@@ -65,7 +65,11 @@ export class FormlyFormBuilder {
     if (!options._markForCheck) {
       options._markForCheck = (field) => {
         if (field._componentRefs) {
-          field._componentRefs.forEach(ref => ref.changeDetectorRef.markForCheck());
+          field._componentRefs.forEach(ref => {
+            // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
+            const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
+            changeDetectorRef.markForCheck();
+          });
         }
 
         if (field.fieldGroup) {
