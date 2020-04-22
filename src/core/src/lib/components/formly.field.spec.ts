@@ -135,6 +135,16 @@ describe('FormlyField Component', () => {
 
   });
 
+  it('should not throw error when field is null', () => {
+    testComponentInputs = { field: null };
+    const createComponent = () => {
+      const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+      fixture.destroy();
+    };
+
+    expect(createComponent).not.toThrowError();
+  });
+
   it('should call field hooks if set', () => {
     testComponentInputs = {
       field: {

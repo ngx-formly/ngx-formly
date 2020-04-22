@@ -77,7 +77,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   ngOnDestroy() {
-    this.field && this.resetRefs(this.field);
+    this.resetRefs(this.field);
     this.hostObservers.forEach(unsubscribe => unsubscribe());
     this.triggerHook('onDestroy');
   }
@@ -106,7 +106,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
           !firstChange && ref.changeDetectorRef.detectChanges();
         }
       });
-    } else if (f.type) {
+    } else if (f && f.type) {
       const { component } = this.formlyConfig.getType(f.type);
       const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
@@ -114,13 +114,13 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   private triggerHook(name: string, changes?: SimpleChanges) {
-    if (this.field.hooks && this.field.hooks[name]) {
+    if (this.field && this.field.hooks && this.field.hooks[name]) {
       if (!changes || changes.field) {
         this.field.hooks[name](this.field);
       }
     }
 
-    if (this.field.lifecycle && this.field.lifecycle[name]) {
+    if (this.field && this.field.lifecycle && this.field.lifecycle[name]) {
       this.field.lifecycle[name](
         this.field.form,
         this.field,
@@ -131,8 +131,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
     if (name === 'onChanges' && changes.field) {
       this.renderHostBinding();
-      changes.field.previousValue && this.resetRefs(changes.field.previousValue);
-      this.renderField(this.containerRef, this.field, this.field.wrappers);
+      this.resetRefs(changes.field.previousValue);
+      this.renderField(this.containerRef, this.field, this.field ? this.field.wrappers : []);
     }
   }
 
@@ -143,6 +143,10 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   }
 
   private renderHostBinding() {
+    if (!this.field) {
+      return;
+    }
+
     this.hostObservers.forEach(unsubscribe => unsubscribe());
     this.hostObservers = [
       wrapProperty(this.field, 'hide', ({ firstChange, currentValue }) => {
