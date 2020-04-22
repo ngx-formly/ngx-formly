@@ -336,7 +336,7 @@ describe('FormlyField Component', () => {
     expect(getInputField(fixture.nativeElement).getAttribute('placeholder')).toEqual('Title');
   });
 
-  fit('should update template options of OnPush FieldType #2191', async () => {
+  it('should update template options of OnPush FieldType #2191', async () => {
     const options$ = timer(0).pipe(map(() => [{ value: 5, label: 'Option 5' }]), shareReplay(1));
 
     const field: FormlyFieldConfig = {

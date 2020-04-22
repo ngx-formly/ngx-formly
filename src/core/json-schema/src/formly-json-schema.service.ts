@@ -24,12 +24,12 @@ function isConst(schema: JSONSchema7) {
   return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
 }
 
-function isEmptyFieldModel(field: FormlyFieldConfig): boolean {
+function totalMatchedFields(field: FormlyFieldConfig): number {
   if (field.key && !field.fieldGroup) {
-    return getFieldInitialValue(field) === undefined;
+    return getFieldInitialValue(field) !== undefined ? 1 : 0;
   }
 
-  return field.fieldGroup.every(f => isEmptyFieldModel(f));
+  return field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
 }
 
 function isFieldValid(field: FormlyFieldConfig): boolean {
@@ -328,12 +328,13 @@ export class FormlyJsonschema {
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
                   .filter(([f]) => isFieldValid(f))
                   .sort(([f1], [f2]) => {
-                    const isDefaultModel = isEmptyFieldModel(f1);
-                    if (isDefaultModel === isEmptyFieldModel(f2)) {
+                    const matchedFields1 = totalMatchedFields(f1);
+                    const matchedFields2 = totalMatchedFields(f2);
+                    if (matchedFields1 === matchedFields2) {
                       return 0;
                     }
 
-                    return isDefaultModel ? 1 : -1;
+                    return matchedFields2 > matchedFields1 ? 1 : -1;
                   })
                   .map(([, i]) => i)
                 ;
