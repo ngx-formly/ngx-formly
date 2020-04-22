@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.6.0"></a>
+# [5.6.0](https://github.com/ngx-formly/ngx-formly/compare/v5.5.15...v5.6.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* **core:** ensure field is not empty when calling hooks ([#2198](https://github.com/ngx-formly/ngx-formly/issues/2198)) ([7019161](https://github.com/ngx-formly/ngx-formly/commit/7019161)), closes [#1864](https://github.com/ngx-formly/ngx-formly/issues/1864)
+* **core:** fix OnPush FieldTypes not being change detected ([#2192](https://github.com/ngx-formly/ngx-formly/issues/2192)) ([3234118](https://github.com/ngx-formly/ngx-formly/commit/3234118))
+* **core:** support Content-Security-Policy header script-src 's… ([#2199](https://github.com/ngx-formly/ngx-formly/issues/2199)) ([23edc3e](https://github.com/ngx-formly/ngx-formly/commit/23edc3e)), closes [#2157](https://github.com/ngx-formly/ngx-formly/issues/2157)
+* **json-schema:** take acocunt of total matched oneOf props ([#2196](https://github.com/ngx-formly/ngx-formly/issues/2196)) ([9367216](https://github.com/ngx-formly/ngx-formly/commit/9367216)), closes [#2195](https://github.com/ngx-formly/ngx-formly/issues/2195)
+* **schematics:** remove comments in collection.json ([#2178](https://github.com/ngx-formly/ngx-formly/issues/2178)) ([5514f59](https://github.com/ngx-formly/ngx-formly/commit/5514f59))
+
+
+### Features
+
+* **bootstrap:** support custom-inline for radio/checkbox ([#2133](https://github.com/ngx-formly/ngx-formly/issues/2133)) ([8b46f95](https://github.com/ngx-formly/ngx-formly/commit/8b46f95)), closes [#2103](https://github.com/ngx-formly/ngx-formly/issues/2103)
+* **core:** add safeHtml opt to bypass sanitizing template HTML… ([#2090](https://github.com/ngx-formly/ngx-formly/issues/2090)) ([bbd7009](https://github.com/ngx-formly/ngx-formly/commit/bbd7009)), closes [#2039](https://github.com/ngx-formly/ngx-formly/issues/2039)
+* **core:** all Add/Remove field array without triggering form… ([#2087](https://github.com/ngx-formly/ngx-formly/issues/2087)) ([a96cae6](https://github.com/ngx-formly/ngx-formly/commit/a96cae6)), closes [#2044](https://github.com/ngx-formly/ngx-formly/issues/2044)
+* **ionic:** add missing properties to datetime type ([#2141](https://github.com/ngx-formly/ngx-formly/issues/2141)) ([56705dc](https://github.com/ngx-formly/ngx-formly/commit/56705dc))
+* **material:** add dateInput and dateChange options to datepic… ([#2132](https://github.com/ngx-formly/ngx-formly/issues/2132)) ([666e960](https://github.com/ngx-formly/ngx-formly/commit/666e960)), closes [#2127](https://github.com/ngx-formly/ngx-formly/issues/2127)
+* **material:** mat-slide-toggle color support ([#2186](https://github.com/ngx-formly/ngx-formly/issues/2186)) ([3e3b121](https://github.com/ngx-formly/ngx-formly/commit/3e3b121))
+* **material:** mat-slider thumbLabel support ([#2190](https://github.com/ngx-formly/ngx-formly/issues/2190)) ([6266881](https://github.com/ngx-formly/ngx-formly/commit/6266881))
+
+
+
 <a name="5.5.15"></a>
 ## [5.5.15](https://github.com/ngx-formly/ngx-formly/compare/v5.5.14...v5.5.15) (2020-03-17)
 
