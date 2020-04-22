@@ -462,11 +462,9 @@ describe('FormlyFormBuilder service', () => {
       builder.buildForm(form, [field], {}, {});
       const disabledExpression = (field as FormlyFieldConfigCache)._expressionProperties['templateOptions.disabled'];
       expect(typeof disabledExpression.expression).toBe('function');
-      expect(typeof disabledExpression.expressionValueSetter).toBe('function');
 
       const labelExpression = (field as FormlyFieldConfigCache)._expressionProperties['templateOptions.label'];
       expect(typeof labelExpression.expression).toBe('function');
-      expect(typeof labelExpression.expressionValueSetter).toBe('function');
 
       expect(typeof field.hideExpression).toBe('function');
     });

@@ -468,6 +468,22 @@ describe('FieldExpressionExtension', () => {
         expect(fields[0].formControl.value).toEqual('test');
       });
     });
+
+    it('should throw error when assign to an undefined prop', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'visibilityToggle',
+          type: 'input',
+          expressionProperties: {
+            'nested.prop': '"ddd"',
+          },
+        },
+      ];
+      const model = {};
+
+      const buildForm = () => builder.buildForm(form, fields, model, options);
+      expect(buildForm).toThrowError(/\[Formly Error\] \[Expression "nested.prop"\] Cannot set property 'prop' of undefined/i);
+    });
   });
 
   describe('field changes', () => {
