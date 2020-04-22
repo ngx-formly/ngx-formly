@@ -1,6 +1,6 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty, reduceFormUpdateValidityCalls } from '../../utils';
-import { evalExpression, evalStringExpression, evalExpressionValueSetter } from './utils';
+import { evalExpression, evalStringExpression } from './utils';
 import { Observable } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
@@ -30,11 +30,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     if (field.expressionProperties) {
       for (const key in field.expressionProperties) {
-        const expressionProperty = field.expressionProperties[key],
-          expressionValueSetter = evalExpressionValueSetter(
-            `field.${key}`,
-            ['expressionValue', 'model', 'field'],
-          );
+        const expressionProperty = field.expressionProperties[key];
 
         if (typeof expressionProperty === 'string' || isFunction(expressionProperty)) {
           field._expressionProperties[key] = {
@@ -44,7 +40,6 @@ export class FieldExpressionExtension implements FormlyExtension {
                 ? () => field.parent.templateOptions.disabled
                 : undefined,
             ),
-            expressionValueSetter,
           };
           if (key === 'templateOptions.disabled') {
             Object.defineProperty(field._expressionProperties[key], 'expressionValue', {
@@ -57,7 +52,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         } else if (expressionProperty instanceof Observable) {
           const subscription = (expressionProperty as Observable<any>)
             .subscribe(v => {
-              this.setExprValue(field, key, expressionValueSetter, v);
+              this.setExprValue(field, key, v);
               if (field.options && field.options._markForCheck) {
                 field.options._markForCheck(field);
               }
@@ -157,8 +152,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       ) {
         markForCheck = true;
         expressionProperties[key].expressionValue = expressionValue;
-        const setter = expressionProperties[key].expressionValueSetter;
-        this.setExprValue(field, key, setter, expressionValue);
+        this.setExprValue(field, key, expressionValue);
       }
     }
 
@@ -222,8 +216,20 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private setExprValue(field: FormlyFieldConfigCache, prop: string, setter: Function, value: any) {
-    evalExpression(setter, { field }, [value, field.model, field]);
+  private setExprValue(field: FormlyFieldConfigCache, prop: string, value: any) {
+    try {
+      let target = field;
+      const paths = prop.split('.');
+      const lastIndex = paths.length - 1;
+      for (let i = 0; i < lastIndex; i++) {
+        target = target[paths[i]];
+      }
+
+      target[paths[lastIndex]] = value;
+    } catch (error) {
+      error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
+      throw error;
+    }
 
     if (prop === 'templateOptions.disabled' && field.key) {
       this.setDisabledState(field, value);

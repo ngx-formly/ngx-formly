@@ -173,7 +173,6 @@ export interface FormlyFieldConfig {
 
 export interface ExpressionPropertyCache {
   expression: (model: any, formState: any, field: FormlyFieldConfigCache) => boolean;
-  expressionValueSetter: (value: any) => void;
   expressionValue?: any;
 }
 
