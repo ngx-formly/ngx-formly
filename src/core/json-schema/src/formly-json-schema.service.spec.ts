@@ -971,6 +971,27 @@ describe('Service: FormlyJsonschema', () => {
           (f.options as any)._checkField(f.parent);
           expect(model).toEqual({ bar: 'bar' });
         });
+
+        it('should render the selected oneOf field (with more matched fields)', () => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+            type: 'object',
+            oneOf: [
+              { properties: { foo1: { type: 'string' } } },
+              {
+                properties: {
+                  foo1: { type: 'string' },
+                  bar: { type: 'string' },
+                },
+              },
+            ],
+          });
+          const model: any = { foo1: 'test', bar: 'test' };
+          builder.buildForm(new FormGroup({}), [f], model, { _initialModel: { foo1: 'test', bar: 'test' } } as any);
+          const [, { fieldGroup: [f1, f2] }] = f.fieldGroup;
+
+          expect(f1.hide).toBeTruthy();
+          expect(f2.hide).toBeFalsy();
+        });
       });
 
       describe('anyOf', () => {
