@@ -8,22 +8,24 @@ import { FieldType } from '@ngx-formly/material/form-field';
     <input *ngIf="type !== 'number'; else numberTmp"
       matInput
       [id]="id"
-      [readonly]="to.readonly"
       [type]="type || 'text'"
+      [readonly]="to.readonly"
+      [required]="to.required"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [tabindex]="to.tabindex || 0"
+      [tabindex]="to.tabindex"
       [placeholder]="to.placeholder">
     <ng-template #numberTmp>
       <input matInput
              [id]="id"
              type="number"
              [readonly]="to.readonly"
+             [required]="to.required"
              [errorStateMatcher]="errorStateMatcher"
              [formControl]="formControl"
              [formlyAttributes]="field"
-             [tabindex]="to.tabindex || 0"
+             [tabindex]="to.tabindex"
              [placeholder]="to.placeholder">
     </ng-template>
   `,

@@ -8,6 +8,7 @@ import { MatInput } from '@angular/material/input';
     <select matNativeControl
       [id]="id"
       [readonly]="to.readonly"
+      [required]="to.required"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field">
