@@ -9,7 +9,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
       <mat-checkbox
         [id]="id + '_' + i"
         [formlyAttributes]="field"
-        [tabindex]="to.tabindex || 0"
+        [tabindex]="to.tabindex"
         [color]="to.color"
         [labelPosition]="to.labelPosition"
         [checked]="isChecked(option)"

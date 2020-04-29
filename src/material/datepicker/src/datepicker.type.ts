@@ -17,8 +17,9 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       [min]="to.datepickerOptions.min"
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
-      [tabindex]="to.tabindex || 0"
+      [tabindex]="to.tabindex"
       [readonly]="to.readonly"
+      [required]="to.required"
       (dateInput)="to.datepickerOptions.dateInput(field, $event)"
       (dateChange)="to.datepickerOptions.dateChange(field, $event)">
     <ng-template #datepickerToggle>

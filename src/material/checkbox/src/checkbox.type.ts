@@ -8,8 +8,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
     <mat-checkbox
       [formControl]="formControl"
       [id]="id"
+      [required]="to.required"
       [formlyAttributes]="field"
-      [tabindex]="to.tabindex || 0"
+      [tabindex]="to.tabindex"
       [indeterminate]="to.indeterminate && formControl.value === null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">

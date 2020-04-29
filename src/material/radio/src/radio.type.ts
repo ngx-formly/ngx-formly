@@ -8,6 +8,7 @@ import { MatRadioGroup } from '@angular/material/radio';
     <mat-radio-group
       [formControl]="formControl"
       [formlyAttributes]="field"
+      [required]="to.required"
       [tabindex]="to.tabindex">
       <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
         [id]="id + '_' + i"
