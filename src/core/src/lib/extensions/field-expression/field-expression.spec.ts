@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
-import { Subject, of } from 'rxjs';
+import { Subject, of, BehaviorSubject } from 'rxjs';
 import { FormlyFieldConfig, FormlyFormBuilder, FieldArrayType, FormlyModule } from '@ngx-formly/core';
 import { MockComponent } from '../../test-utils';
 import { FormlyValueChangeEvent, FormlyFormOptionsCache } from '../../components/formly.field.config';
@@ -449,6 +449,31 @@ describe('FieldExpressionExtension', () => {
 
         builder.buildForm(form, fields, model, options);
         expect(fields[0].templateOptions.label).toEqual('test');
+      });
+
+      it('should update field on re-render', () => {
+        const stream$ = new BehaviorSubject('test');
+        const fields: FormlyFieldConfig[] = [
+          {
+            key: 'text',
+            type: 'input',
+            expressionProperties: {
+              'templateOptions.label': stream$,
+            },
+          },
+        ];
+        const model = {};
+        const options = {};
+
+        builder.buildForm(form, fields, model, options);
+        expect(fields[0].templateOptions.label).toEqual('test');
+
+        fields[0].hooks.onDestroy();
+        stream$.next('test2');
+        expect(fields[0].templateOptions.label).toEqual('test');
+
+        fields[0].hooks.onInit();
+        expect(fields[0].templateOptions.label).toEqual('test2');
       });
 
       it('should change model through observable', () => {
