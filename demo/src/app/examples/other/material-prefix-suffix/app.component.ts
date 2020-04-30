@@ -18,7 +18,7 @@ export class AppComponent {
       templateOptions: {
         label: 'Firstname',
         addonLeft: {
-          class: 'fa fa-dashboard',
+          icon: 'face',
         },
         addonRight: {
           text: '$',

@@ -124,10 +124,7 @@ export class AppComponent {
             type: 'input',
             key: 'stockIdentifier',
             templateOptions: {
-              addonRight: {
-                class: 'fa fa-code',
-                onClick: (to, fieldType, $event) => console.log(to, fieldType, $event),
-              },
+              label: 'Stock Identifier:',
             },
           },
         ],
