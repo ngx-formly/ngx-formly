@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.6.1"></a>
+## [5.6.1](https://github.com/ngx-formly/ngx-formly/compare/v5.6.0...v5.6.1) (2020-04-30)
+
+
+### Bug Fixes
+
+* **core:** resubscribe to expr prop when re-rendering the field ([#2216](https://github.com/ngx-formly/ngx-formly/issues/2216)) ([1269f57](https://github.com/ngx-formly/ngx-formly/commit/1269f57))
+* **ionic:** allow async options for ion-select ([#2202](https://github.com/ngx-formly/ngx-formly/issues/2202)) ([7a3247d](https://github.com/ngx-formly/ngx-formly/commit/7a3247d))
+* **material:** make sure required attribute is present in mat types ([#2213](https://github.com/ngx-formly/ngx-formly/issues/2213)) ([89ea2ac](https://github.com/ngx-formly/ngx-formly/commit/89ea2ac))
+
+
+
 <a name="5.6.0"></a>
 # [5.6.0](https://github.com/ngx-formly/ngx-formly/compare/v5.5.15...v5.6.0) (2020-04-22)
 
