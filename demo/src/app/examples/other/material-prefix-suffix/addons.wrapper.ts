@@ -10,7 +10,7 @@ import { FieldWrapper } from '@ngx-formly/core';
       [ngStyle]="{cursor: to.addonLeft.onClick ? 'pointer' : 'inherit'}"
       (click)="addonLeftClick($event)"
     >
-      <i *ngIf="to.addonLeft.class" [ngClass]="to.addonLeft.class"></i>&nbsp;
+      <mat-icon *ngIf="to.addonLeft.icon">{{ to.addonLeft.icon }}</mat-icon>&nbsp;
       <span *ngIf="to.addonLeft.text">{{ to.addonLeft.text }}</span>&nbsp;
     </span>
   </ng-template>
@@ -23,7 +23,7 @@ import { FieldWrapper } from '@ngx-formly/core';
       [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
       (click)="addonRightClick($event)"
     >
-      &nbsp;<i *ngIf="to.addonRight.class" [ngClass]="to.addonRight.class"></i>
+      &nbsp;<mat-icon *ngIf="to.addonRight.icon">{{ to.addonRight.icon }}</mat-icon>
       &nbsp;<span *ngIf="to.addonRight.text">{{ to.addonRight.text }}</span>
     </span>
   </ng-template>

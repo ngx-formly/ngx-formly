@@ -152,6 +152,7 @@ export class StackblitzWriter {
     this._appendFormInput(form, 'description', exampleData.title);
 
     const appModuleContent = exampleData.files.find(f => f.file === 'app.module.ts').filecontent;
+    exampleData.deps = exampleData.deps || [];
 
     const options: any = { type };
 
@@ -180,6 +181,10 @@ export class StackblitzWriter {
 
     if (appModuleContent.indexOf('ag-grid-angular') !== -1) {
       options.includeAgGrid = true;
+    }
+
+    if (exampleData.deps.indexOf('fontawesome') !== -1) {
+      options.includeFontawesome = true;
     }
 
     if (appModuleContent.indexOf('@swimlane/ngx-datatable') !== -1) {
@@ -318,6 +323,11 @@ export class StackblitzWriter {
         filecontent = `${filecontent}\n@import '~ag-grid-community/dist/styles/ag-theme-balham.css'; `;
       }
     }
+
+    if (fileName === 'index.html' && options.includeFontawesome) {
+      filecontent = `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">\n${filecontent}`;
+    }
+
     filecontent = filecontent.replace(/_json/g, '.json');
 
     return filecontent;

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { MatIconModule } from '@angular/material/icon';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { addonsExtension } from './addons.extension';
     CommonModule,
     ReactiveFormsModule,
     FormlyMaterialModule,
+    MatIconModule,
     FormlyModule.forRoot({
       wrappers: [
         { name: 'addons', component: FormlyWrapperAddons },

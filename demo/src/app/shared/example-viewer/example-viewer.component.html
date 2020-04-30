@@ -22,7 +22,7 @@
         <div class="docs-example-source-wrapper">
           <button mat-icon-button type="button" class="docs-example-source-copy" title="Copy example source" aria-label="Copy example source to clipboard"
             (click)="copySource(textContent)">
-            <span class="fa fa-copy"></span>
+            <mat-icon>file_copy</mat-icon>
           </button>
           <pre class="docs-example-source" [innerHtml]="f.content" #textContent></pre>
         </div>

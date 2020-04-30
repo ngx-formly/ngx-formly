@@ -7,6 +7,7 @@ export interface ExampleType {
   title: string;
   description: string;
   component: any;
+  deps?: string[];
   debug: boolean;
   files: { file: string; filecontent: string; content: string }[];
 }
