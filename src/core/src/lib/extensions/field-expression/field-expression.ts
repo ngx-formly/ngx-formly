@@ -1,7 +1,7 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty, reduceFormUpdateValidityCalls } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 
@@ -50,7 +50,7 @@ export class FieldExpressionExtension implements FormlyExtension {
             });
           }
         } else if (expressionProperty instanceof Observable) {
-          const subscription = (expressionProperty as Observable<any>)
+          const subscribe = () => (expressionProperty as Observable<any>)
             .subscribe(v => {
               this.setExprValue(field, key, v);
               if (field.options && field.options._markForCheck) {
@@ -58,10 +58,20 @@ export class FieldExpressionExtension implements FormlyExtension {
               }
             });
 
+          let subscription: Subscription = subscribe();
+          const onInit = field.hooks.onInit;
+          field.hooks.onInit = () => {
+            onInit && onInit(field);
+            if (subscription === null) {
+              subscription = subscribe();
+            }
+          };
+
           const onDestroy = field.hooks.onDestroy;
-          field.hooks.onDestroy = (field) => {
+          field.hooks.onDestroy = () => {
             onDestroy && onDestroy(field);
             subscription.unsubscribe();
+            subscription = null;
           };
         }
       }
