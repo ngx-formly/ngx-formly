@@ -27,6 +27,23 @@ describe('ui-bootstrap: Select Type', () => {
     expect(queryAll('option')).toHaveLength(3);
   });
 
+  it('should render enum type', () => {
+    const { query, queryAll } = renderComponent({
+      key: 'name',
+      type: 'enum',
+      templateOptions: {
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+          { value: 3, label: 'label 3' },
+        ],
+      },
+    });
+
+    expect(query('formly-wrapper-form-field')).not.toBeNull();
+    expect(queryAll('option')).toHaveLength(3);
+  });
+
   it('should bind control value on change', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',

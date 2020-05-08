@@ -22,6 +22,19 @@ describe('ui-ionic: Checkbox Type', () => {
     });
   });
 
+  it('should render boolean type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'boolean',
+    });
+
+    expect(query('formly-wrapper-ion-form-field')).not.toBeNull();
+    const { attributes } = query('ion-checkbox');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_boolean_name_0',
+    });
+  });
+
   it('should bind control value on change', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',

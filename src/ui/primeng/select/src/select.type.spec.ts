@@ -31,6 +31,26 @@ describe('ui-primeng: Select Type', () => {
     expect(queryAll('p-dropdownItem')).toHaveLength(3);
   });
 
+  it('should render enum type', () => {
+    const { query, queryAll } = renderComponent({
+      key: 'name',
+      type: 'enum',
+      templateOptions: {
+        label: 'Select',
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+          { value: 3, label: 'label 3' },
+        ],
+      },
+    });
+
+    expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
+
+    query('p-dropdown div').triggerEventHandler('click', { target: {} });
+    expect(queryAll('p-dropdownItem')).toHaveLength(3);
+  });
+
   it('should bind control value on change', () => {
     const { query, queryAll, field } = renderComponent({
       key: 'name',
