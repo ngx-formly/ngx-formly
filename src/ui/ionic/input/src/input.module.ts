@@ -21,6 +21,7 @@ import { FormlyFieldInput } from './input.type';
           component: FormlyFieldInput,
           wrappers: ['form-field'],
         },
+        { name: 'string', extends: 'input' },
       ],
     }),
   ],

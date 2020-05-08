@@ -25,6 +25,22 @@ describe('ui-kendo: Input Type', () => {
     });
   });
 
+  it('should render string type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'string',
+    });
+
+    expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
+
+    const { properties, attributes } = query('input[type="text"]');
+    expect(properties).toMatchObject({ type: 'text' });
+    expect(attributes).toMatchObject({
+      class: 'k-textbox',
+      id: 'formly_1_string_name_0',
+    });
+  });
+
   it('should render number type', () => {
     const { query } = renderComponent({
       key: 'name',

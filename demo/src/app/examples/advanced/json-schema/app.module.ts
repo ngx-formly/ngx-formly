@@ -75,7 +75,6 @@ export function constValidationMessage(err, field: FormlyFieldConfig) {
         { name: 'const', message: constValidationMessage },
       ],
       types: [
-        { name: 'string', extends: 'input' },
         {
           name: 'number',
           extends: 'input',

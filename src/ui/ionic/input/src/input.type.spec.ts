@@ -23,6 +23,20 @@ describe('ui-ionic: Input Type', () => {
     });
   });
 
+  it('should render string type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'string',
+    });
+
+    expect(query('formly-wrapper-ion-form-field')).not.toBeNull();
+
+    const { attributes } = query('ion-input');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_string_name_0',
+    });
+  });
+
   it('should render number type', () => {
     const { query } = renderComponent({
       key: 'name',

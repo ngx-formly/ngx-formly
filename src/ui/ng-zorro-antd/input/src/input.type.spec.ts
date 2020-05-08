@@ -25,6 +25,21 @@ describe('ui-ng-zorro-antd: Input Type', () => {
     });
   });
 
+  it('should render string type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'string',
+    });
+
+    expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
+
+    const { properties, attributes } = query('input[type="text"]');
+    expect(properties).toMatchObject({ type: 'text' });
+    expect(attributes).toMatchObject({
+      id: 'formly_1_string_name_0',
+    });
+  });
+
   it('should render number type', () => {
     const { query } = renderComponent({
       key: 'name',

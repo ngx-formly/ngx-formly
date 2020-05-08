@@ -25,6 +25,22 @@ describe('ui-bootstrap: Input Type', () => {
     });
   });
 
+  it('should render string type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'string',
+    });
+
+    expect(query('formly-wrapper-form-field')).not.toBeNull();
+
+    const { properties, attributes } = query('input[type="text"]');
+    expect(properties).toMatchObject({ type: 'text' });
+    expect(attributes).toMatchObject({
+      class: 'form-control',
+      id: 'formly_1_string_name_0',
+    });
+  });
+
   it('should render number type', () => {
     const { query } = renderComponent({
       key: 'name',
