@@ -41,7 +41,7 @@ describe('ui-kendo: Input Type', () => {
     });
   });
 
-  it('should render number type', () => {
+  it('should render input[number] type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
@@ -52,6 +52,34 @@ describe('ui-kendo: Input Type', () => {
     expect(attributes).toMatchObject({
       class: 'k-textbox',
       id: 'formly_1_input_name_0',
+      type: 'number',
+    });
+  });
+
+  it('should render number type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'number',
+    });
+
+    const { attributes } = query('input[type="number"]');
+    expect(attributes).toMatchObject({
+      class: 'k-textbox',
+      id: 'formly_1_number_name_0',
+      type: 'number',
+    });
+  });
+
+  it('should render integer type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'integer',
+    });
+
+    const { attributes } = query('input[type="number"]');
+    expect(attributes).toMatchObject({
+      class: 'k-textbox',
+      id: 'formly_1_integer_name_0',
       type: 'number',
     });
   });

@@ -24,6 +24,24 @@ import { FormlyFieldText } from './text-field.type';
         },
         { name: 'input', extends: 'text-field' },
         { name: 'string', extends: 'input' },
+        {
+          name: 'number',
+          extends: 'input',
+          defaultOptions: {
+            templateOptions: {
+              type: 'number',
+            },
+          },
+        },
+        {
+          name: 'integer',
+          extends: 'input',
+          defaultOptions: {
+            templateOptions: {
+              type: 'number',
+            },
+          },
+        },
       ],
     }),
   ],

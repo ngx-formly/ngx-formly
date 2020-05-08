@@ -22,6 +22,24 @@ import { FormlyFieldInput } from './input.type';
           wrappers: ['form-field'],
         },
         { name: 'string', extends: 'input' },
+        {
+          name: 'number',
+          extends: 'input',
+          defaultOptions: {
+            templateOptions: {
+              type: 'number',
+            },
+          },
+        },
+        {
+          name: 'integer',
+          extends: 'input',
+          defaultOptions: {
+            templateOptions: {
+              type: 'number',
+            },
+          },
+        },
       ],
     }),
   ],

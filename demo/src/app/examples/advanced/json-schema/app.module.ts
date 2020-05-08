@@ -75,24 +75,6 @@ export function constValidationMessage(err, field: FormlyFieldConfig) {
         { name: 'const', message: constValidationMessage },
       ],
       types: [
-        {
-          name: 'number',
-          extends: 'input',
-          defaultOptions: {
-            templateOptions: {
-              type: 'number',
-            },
-          },
-        },
-        {
-          name: 'integer',
-          extends: 'input',
-          defaultOptions: {
-            templateOptions: {
-              type: 'number',
-            },
-          },
-        },
         { name: 'enum', extends: 'select' },
         { name: 'null', component: NullTypeComponent, wrappers: ['form-field'] },
         { name: 'array', component: ArrayTypeComponent },
