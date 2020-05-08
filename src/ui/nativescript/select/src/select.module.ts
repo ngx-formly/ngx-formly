@@ -24,6 +24,7 @@ import { FormlyFieldSelect } from './select.type';
           component: FormlyFieldSelect,
           wrappers: ['form-field'],
         },
+        { name: 'enum', extends: 'select' },
       ],
     }),
   ],

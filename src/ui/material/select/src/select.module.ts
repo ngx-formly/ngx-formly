@@ -27,6 +27,7 @@ import { MatPseudoCheckboxModule } from '@angular/material/core';
           component: FormlyFieldSelect,
           wrappers: ['form-field'],
         },
+        { name: 'enum', extends: 'select' },
       ],
     }),
   ],
