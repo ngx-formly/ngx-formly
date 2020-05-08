@@ -21,6 +21,10 @@ import { FormlyFieldCheckbox } from './checkbox.type';
           component: FormlyFieldCheckbox,
           wrappers: ['form-field'],
         },
+        {
+          name: 'boolean',
+          extends: 'checkbox',
+        },
       ],
     }),
   ],

@@ -26,6 +26,22 @@ describe('ui-ng-zorro-antd: Checkbox Type', () => {
     });
   });
 
+  it('should render boolean type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'boolean',
+    });
+
+    expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
+
+    expect(query('.ant-checkbox-indeterminate')).not.toBeNull();
+    expect(query('input[type="checkbox"]')).not.toBeNull();
+    const { attributes } = query('label[nz-checkbox]');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_boolean_name_0',
+    });
+  });
+
   it('should bind control value on change', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
