@@ -37,6 +37,26 @@ describe('ui-kendo: Select Type', () => {
     expect(document.querySelectorAll('.k-item')).toHaveLength(3);
   });
 
+  it('should render enum type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'enum',
+      templateOptions: {
+        label: 'Select',
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+          { value: 3, label: 'label 3' },
+        ],
+      },
+    });
+
+    expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
+
+    query('kendo-dropdownlist .k-dropdown-wrap').triggerEventHandler('click', {});
+    expect(document.querySelectorAll('.k-item')).toHaveLength(3);
+  });
+
   it('should bind control value on change', () => {
     const { query, field } = renderComponent({
       key: 'name',

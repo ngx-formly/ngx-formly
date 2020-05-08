@@ -24,6 +24,21 @@ describe('ui-primeng: Checkbox Type', () => {
     });
   });
 
+  it('should render boolean type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'boolean',
+    });
+
+    expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
+
+    const { attributes } = query('p-checkbox');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_boolean_name_0',
+      binary: 'true',
+    });
+  });
+
   it('should bind control value on change', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
