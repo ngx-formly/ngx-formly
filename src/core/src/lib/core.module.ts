@@ -8,6 +8,7 @@ import { FormlyFormBuilder } from './services/formly.builder';
 import { FormlyGroup } from './templates/formly.group';
 import { FormlyValidationMessage } from './templates/formly.validation-message';
 import { FormlyTemplateType } from './templates/field-template.type';
+import { NullTypeComponent } from './templates/null.type';
 
 import { FieldExpressionExtension } from './extensions/field-expression/field-expression';
 import { FieldValidationExtension } from './extensions/field-validation/field-validation';
@@ -20,6 +21,7 @@ export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
     types: [
       { name: 'formly-group', component: FormlyGroup },
       { name: 'formly-template', component: FormlyTemplateType },
+      { name: 'null', component: NullTypeComponent },
     ],
     extensions: [
       { name: 'core', extension: new CoreExtension(config) },
@@ -31,8 +33,16 @@ export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
 }
 
 @NgModule({
-  declarations: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage, FormlyTemplateType],
-  entryComponents: [FormlyGroup, FormlyTemplateType],
+  declarations: [
+    FormlyForm,
+    FormlyField,
+    FormlyAttributes,
+    FormlyGroup,
+    FormlyValidationMessage,
+    FormlyTemplateType,
+    NullTypeComponent,
+  ],
+  entryComponents: [FormlyGroup, FormlyTemplateType, NullTypeComponent],
   exports: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage],
   imports: [CommonModule],
 })
