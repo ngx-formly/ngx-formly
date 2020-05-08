@@ -23,7 +23,21 @@ describe('ui-ionic: Input Type', () => {
     });
   });
 
-  it('should render number type', () => {
+  it('should render string type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'string',
+    });
+
+    expect(query('formly-wrapper-ion-form-field')).not.toBeNull();
+
+    const { attributes } = query('ion-input');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_string_name_0',
+    });
+  });
+
+  it('should render input[number] type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
@@ -33,6 +47,32 @@ describe('ui-ionic: Input Type', () => {
     const { attributes } = query('ion-input[type="number"]');
     expect(attributes).toMatchObject({
       id: 'formly_1_input_name_0',
+      type: 'number',
+    });
+  });
+
+  it('should render number type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'number',
+    });
+
+    const { attributes } = query('ion-input[type="number"]');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_number_name_0',
+      type: 'number',
+    });
+  });
+
+  it('should render integer type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'integer',
+    });
+
+    const { attributes } = query('ion-input[type="number"]');
+    expect(attributes).toMatchObject({
+      id: 'formly_1_integer_name_0',
       type: 'number',
     });
   });

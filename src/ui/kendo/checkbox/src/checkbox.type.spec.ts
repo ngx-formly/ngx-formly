@@ -30,6 +30,27 @@ describe('ui-kendo: Checkbox Type', () => {
     });
   });
 
+  it('should render boolean type', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'boolean',
+      templateOptions: {
+        label: 'Name',
+        required: true,
+      },
+    });
+
+    expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
+    expect(query('label').nativeElement.textContent).toEqual(' Name *');
+
+    const { attributes } = query('input[type="checkbox"]');
+    expect(attributes).toMatchObject({
+      class: 'k-checkbox',
+      id: 'formly_1_boolean_name_0',
+      type: 'checkbox',
+    });
+  });
+
   it('should add "k-state-invalid" class on invalid', () => {
     const { query } = renderComponent({
       key: 'name',

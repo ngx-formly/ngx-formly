@@ -31,6 +31,27 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     expect(queryAll('li[nz-option-li]')).toHaveLength(3);
   });
 
+  it('should render enum type', () => {
+    const { query, queryAll, detectChanges } = renderComponent({
+      key: 'name',
+      type: 'enum',
+      templateOptions: {
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+          { value: 3, label: 'label 3' },
+        ],
+      },
+    });
+
+    expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
+
+    query('nz-select').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(queryAll('li[nz-option-li]')).toHaveLength(3);
+  });
+
   it('should bind control value on change', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',

@@ -34,6 +34,27 @@ describe('ui-material: Formly Field Select Component', () => {
     expect(queryAll('mat-option')).toHaveLength(3);
   });
 
+  it('should render enum type', () => {
+    const { query, queryAll, detectChanges } = renderComponent({
+      key: 'name',
+      type: 'enum',
+      templateOptions: {
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+          { value: 3, label: 'label 3' },
+        ],
+      },
+    });
+
+    expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
+
+    query('.mat-select-trigger').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(queryAll('mat-option')).toHaveLength(3);
+  });
+
   it('should bind control value on change', () => {
     const { query, queryAll, field, detectChanges } = renderComponent({
       key: 'name',
