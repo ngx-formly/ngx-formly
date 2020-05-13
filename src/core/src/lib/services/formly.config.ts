@@ -3,6 +3,7 @@ import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../components/formly.field.config';
+import { Observable } from 'rxjs';
 
 export const FORMLY_CONFIG = new InjectionToken<FormlyConfig>('FORMLY_CONFIG');
 
@@ -21,7 +22,7 @@ export class FormlyConfig {
   types: {[name: string]: TypeOption} = {};
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
-  messages: { [name: string]: string | ((error: any, field: FormlyFieldConfig) => string); } = {};
+  messages: { [name: string]: ValidationMessageOption['message'] } = {};
   templateManipulators: {
     preWrapper: ManipulatorWrapper[];
     postWrapper: ManipulatorWrapper[];
@@ -184,7 +185,7 @@ export class FormlyConfig {
     return this.validators[name];
   }
 
-  addValidatorMessage(name: string, message: string | ((error: any, field: FormlyFieldConfig) => string)) {
+  addValidatorMessage(name: string, message: ValidationMessageOption['message']) {
     this.messages[name] = message;
   }
 
@@ -241,7 +242,7 @@ export interface ExtensionOption {
 
 export interface ValidationMessageOption {
   name: string;
-  message: string | ((error: any, field: FormlyFieldConfig) => string);
+  message: string | ((error: any, field: FormlyFieldConfig) => string | Observable<string>);
 }
 
 export interface ManipulatorOption {

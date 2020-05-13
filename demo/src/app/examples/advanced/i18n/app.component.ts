@@ -24,7 +24,15 @@ export class AppComponent {
         ],
       },
       expressionProperties: {
-        'templateOptions.label': this.translate.stream('HOME.SELECT'),
+        'templateOptions.label': this.translate.stream('FORM.LANG'),
+      },
+    },
+    {
+      key: 'name',
+      type: 'input',
+      templateOptions: { required: true },
+      expressionProperties: {
+        'templateOptions.label': this.translate.stream('FORM.NAME'),
       },
     },
   ];
