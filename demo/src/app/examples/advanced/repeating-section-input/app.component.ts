@@ -1,15 +1,13 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { Subject } from 'rxjs';
-import { takeUntil, startWith, tap, filter } from 'rxjs/operators';
+import { startWith, tap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnDestroy {
-  onDestroy$ = new Subject<void>();
+export class AppComponent {
   form = new FormGroup({});
   model = {
     investmentsCount: 3,
@@ -26,11 +24,11 @@ export class AppComponent implements OnDestroy {
         type: 'number',
         label: 'Investments count',
         required: true,
+        min: 1,
       },
       hooks: {
         onInit: (field) => {
-          field.formControl.valueChanges.pipe(
-            takeUntil(this.onDestroy$),
+          return field.formControl.valueChanges.pipe(
             startWith(field.formControl.value),
             filter(v => v > 0),
             tap(value => {
@@ -40,7 +38,7 @@ export class AppComponent implements OnDestroy {
                 investmentsCount: value,
               };
             }),
-          ).subscribe();
+          );
         },
       },
     },
@@ -60,10 +58,5 @@ export class AppComponent implements OnDestroy {
 
   submit() {
     alert(JSON.stringify(this.model));
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 }
