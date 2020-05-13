@@ -61,10 +61,10 @@ export class FieldExpressionExtension implements FormlyExtension {
           let subscription: Subscription = subscribe();
           const onInit = field.hooks.onInit;
           field.hooks.onInit = () => {
-            onInit && onInit(field);
             if (subscription === null) {
               subscription = subscribe();
             }
+            return onInit && onInit(field);
           };
 
           const onDestroy = field.hooks.onDestroy;

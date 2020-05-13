@@ -9,6 +9,7 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from './
 import { defineHiddenProp, wrapProperty } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
+import { isObservable } from 'rxjs';
 
 @Component({
   selector: 'formly-field',
@@ -36,6 +37,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   @ViewChild('container', <any> {read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
   private hostObservers: Function[] = [];
   private componentRefs: any[] = [];
+  private hooksObservers: Function[] = [];
 
   constructor(
     private formlyConfig: FormlyConfig,
@@ -79,6 +81,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   ngOnDestroy() {
     this.resetRefs(this.field);
     this.hostObservers.forEach(unsubscribe => unsubscribe());
+    this.hooksObservers.forEach(unsubscribe => unsubscribe());
     this.triggerHook('onDestroy');
   }
 
@@ -116,7 +119,11 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   private triggerHook(name: string, changes?: SimpleChanges) {
     if (this.field && this.field.hooks && this.field.hooks[name]) {
       if (!changes || changes.field) {
-        this.field.hooks[name](this.field);
+        const r = this.field.hooks[name](this.field);
+        if (isObservable(r) && ['onInit', 'afterContentInit', 'afterViewInit'].indexOf(name) !== -1) {
+          const sub = r.subscribe();
+          this.hooksObservers.push(() => sub.unsubscribe());
+        }
       }
     }
 

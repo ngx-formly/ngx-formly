@@ -1,6 +1,6 @@
 import { TestBed, ComponentFixture, TestBedStatic } from '@angular/core/testing';
 import { timer } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { createGenericTestComponent } from '../test-utils';
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
@@ -188,6 +188,41 @@ describe('FormlyField Component', () => {
     expect(hooks.onInit).toHaveBeenCalledWith(testComponentInputs.field);
     expect(hooks.onChanges).toHaveBeenCalledWith(testComponentInputs.field);
     expect(hooks.onDestroy).toHaveBeenCalledWith(testComponentInputs.field);
+  });
+
+  it('init hooks with observables', () => {
+    const control = new FormControl();
+    const spy = jasmine.createSpy('valueChanges spy');
+    const initHookFn = (f: FormlyFieldConfig) => {
+      return f.formControl.valueChanges.pipe(tap(spy));
+    };
+
+    testComponentInputs = {
+      field: {
+        key: 'title',
+        type: 'text',
+        formControl: control,
+        parent: {
+          formControl: new FormGroup({}),
+        },
+        hooks: {
+          afterContentInit: initHookFn,
+          afterViewInit: initHookFn,
+          onInit: initHookFn,
+        },
+      },
+    };
+
+    const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
+    expect(spy).not.toHaveBeenCalled();
+
+    control.patchValue('test');
+    expect(spy).toHaveBeenCalledTimes(3);
+
+    spy.calls.reset();
+    fixture.destroy();
+    control.patchValue('test');
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('should support async render field type', () => {
