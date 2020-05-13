@@ -4,6 +4,7 @@ import { createGenericTestComponent } from '../test-utils';
 import { Component } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule, FormlyFieldConfig } from '../core';
+import { of } from 'rxjs';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -22,6 +23,7 @@ describe('FormlyValidationMessage Component', () => {
           validationMessages: [
             { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.`},
             { name: 'maxlength', message: 'Maximum Length Exceeded.' },
+            { name: 'minlength', message: () => of('Minimum Length.') },
           ],
         }),
       ],
@@ -57,6 +59,14 @@ describe('FormlyValidationMessage Component', () => {
       expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
     });
 
+    it('with an observable validation message', () => {
+      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
+      const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
+      fixture.componentInstance.field.formControl.setValue('v');
+      fixture.detectChanges();
+      expect(formlyMessageElm.textContent).toMatch(/Minimum Length/);
+    });
+
     it('with a `validator.message` property', () => {
       const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
       const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
@@ -83,7 +93,7 @@ describe('FormlyValidationMessage Component', () => {
 class TestComponent {
   field: FormlyFieldConfig = {
     type: 'input',
-    formControl: new FormControl(null, [Validators.required, Validators.maxLength(3)]),
+    formControl: new FormControl(null, [Validators.required, Validators.maxLength(3), Validators.minLength(2)]),
     key: 'title',
     templateOptions: {
       label: 'Title',

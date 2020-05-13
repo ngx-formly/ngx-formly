@@ -1,16 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyModule, FORMLY_CONFIG } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, 'assets/i18n/', '_json');
+}
+
+export function formlyValidationConfig(translate: TranslateService) {
+  return {
+    validationMessages: [
+      {
+        name: 'required',
+        message() {
+          return translate.stream('FORM.VALIDATION.REQUIRED');
+        },
+      },
+    ],
+  };
 }
 
 import { AppComponent } from './app.component';
@@ -29,6 +42,9 @@ import { AppComponent } from './app.component';
         deps: [HttpClient],
       },
     }),
+  ],
+  providers: [
+    { provide: FORMLY_CONFIG, multi: true, useFactory: formlyValidationConfig, deps: [TranslateService] },
   ],
   declarations: [
     AppComponent,

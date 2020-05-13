@@ -19,6 +19,14 @@ export class TranslateExtension {
 
 export function registerTranslateExtension(translate: TranslateService) {
   return {
+    validationMessages: [
+      {
+        name: 'required',
+        message() {
+          return translate.stream('FORM.VALIDATION.REQUIRED');
+        },
+      },
+    ],
     extensions: [{
       name: 'translate',
       extension: new TranslateExtension(translate),
