@@ -1,6 +1,10 @@
 {
-  "HOME": {
+  "FORM": {
     "TITLE": "Bonjour Angular avec ngx-translate !",
-    "SELECT": "Changer la langue"
+    "LANG": "Changer la langue",
+    "NAME": "Nom",
+    "VALIDATION": {
+      "REQUIRED": "Ce champ est requis"
+    }
   }
 }

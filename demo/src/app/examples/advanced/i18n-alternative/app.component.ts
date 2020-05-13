@@ -18,12 +18,21 @@ export class AppComponent {
       templateOptions: {
         required: true,
         translate: true,
-        label: 'HOME.SELECT',
+        label: 'FORM.LANG',
         change: (field) => this.translate.use(field.formControl.value),
         options: [
           { label: 'fr', value: 'fr' },
           { label: 'en', value: 'en' },
         ],
+      },
+    },
+    {
+      key: 'name',
+      type: 'input',
+      templateOptions: {
+        translate: true,
+        label: 'FORM.NAME',
+        required: true,
       },
     },
   ];

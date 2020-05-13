@@ -1,9 +1,9 @@
 import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
-import { FormlyConfig } from '../services/formly.config';
+import { FormlyConfig, ValidationMessageOption } from '../services/formly.config';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { isObject } from '../utils';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, isObservable, of } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-validation-message',
@@ -19,15 +19,18 @@ export class FormlyValidationMessage implements OnChanges {
   ngOnChanges() {
     this.errorMessage$ = this.field.formControl.statusChanges.pipe(
       startWith(null),
-      map(() => this.errorMessage),
+      switchMap(() => isObservable(this.errorMessage)
+        ? this.errorMessage
+        : of(this.errorMessage),
+      ),
     );
   }
 
-  get errorMessage(): string {
+  get errorMessage() {
     const fieldForm = this.field.formControl;
     for (let error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        let message: string | Function = this.formlyConfig.getValidatorMessage(error);
+        let message: ValidationMessageOption['message'] = this.formlyConfig.getValidatorMessage(error);
 
         if (isObject(fieldForm.errors[error])) {
           if (fieldForm.errors[error].errorPath) {
