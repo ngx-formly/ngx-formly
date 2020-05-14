@@ -111,6 +111,12 @@ export interface FormlyFieldConfig {
   formControl?: AbstractControl;
 
   /**
+   * Emits an event every time the value of the control changes, in
+   * the UI or programmatically.
+   */
+  valueChange?: (event: { field: FormlyFieldConfig, value: any }) => void;
+
+  /**
    * You can specify your own class that will be applied to the `formly-field` component.
    */
   className?: string;

@@ -15,9 +15,9 @@ export class AppComponent {
     {
       key: 'lang',
       type: 'select',
+      valueChange: ({ value }) => this.translate.use(value),
       templateOptions: {
         required: true,
-        change: (field) => this.translate.use(field.formControl.value),
         options: [
           { label: 'fr', value: 'fr' },
           { label: 'en', value: 'en' },

@@ -204,6 +204,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
             field.parsers.forEach(parserFn => value = parserFn(value));
           }
 
+          if (field.valueChange) {
+            field.valueChange({ field, value });
+          }
           this.changeModel({ key: [...rootKey, ...getKeyPath(field)].join('.'), value, field });
         }));
 
