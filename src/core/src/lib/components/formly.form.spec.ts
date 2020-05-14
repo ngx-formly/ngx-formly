@@ -181,6 +181,21 @@ describe('FormlyForm Component', () => {
       subscription.unsubscribe();
     });
 
+    it('should emit valueChange', () => {
+      const spy = jasmine.createSpy('valueChange spy');
+      app.fields = [{
+        key: 'city',
+        type: 'text',
+        valueChange: spy,
+      }];
+
+      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      app.form.get('city').patchValue('55');
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith({ field: app.fields[0], value: '55' });
+    });
+
     it('should parse model value', () => {
       app.fields = [{
         key: 'city',
