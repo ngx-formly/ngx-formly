@@ -234,13 +234,19 @@ export interface FormlyHookFn {
 export interface FormlyLifeCycleOptions<T = FormlyLifeCycleFn> {
   onInit?: T;
   onChanges?: T;
-  doCheck?: T;
   afterContentInit?: T;
-  afterContentChecked?: T;
   afterViewInit?: T;
-  afterViewChecked?: T;
   onDestroy?: T;
   [additionalProperties: string]: any;
+
+  /** @deprecated */
+  doCheck?: T;
+
+  /** @deprecated */
+  afterContentChecked?: T;
+
+  /** @deprecated */
+  afterViewChecked?: T;
 }
 
 export interface FormlyFormOptionsCache extends FormlyFormOptions {
