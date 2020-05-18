@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatRadioGroup } from '@angular/material/radio';
+import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-mat-radio',
@@ -20,7 +21,7 @@ import { MatRadioGroup } from '@angular/material/radio';
     </mat-radio-group>
   `,
 })
-export class FormlyFieldRadio extends FieldType {
+export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDestroy {
   @ViewChild(MatRadioGroup) radioGroup!: MatRadioGroup;
   defaultOptions = {
     templateOptions: {
@@ -31,14 +32,24 @@ export class FormlyFieldRadio extends FieldType {
     },
   };
 
-  onContainerClick(event: MouseEvent): void {
-    const isRadioClick = this.radioGroup._radios
-      .map(radioButton => radioButton._elementRef.nativeElement as HTMLElement)
-      .some(el => el.contains(event.target as Element));
+  private focusObserver!: Function;
+  ngAfterViewInit() {
+    this.focusObserver = wrapProperty(this.field, 'focus', ({ currentValue }) => {
+      if (
+        this.to.tabindex === -1
+        && currentValue
+        && this.radioGroup._radios.length > 0
+      ) {
+        const radio = this.radioGroup.selected
+          ? this.radioGroup.selected
+          : this.radioGroup._radios.first;
 
-    if (!isRadioClick && this.radioGroup._radios.length && !this.radioGroup.selected) {
-      this.radioGroup._radios.first.focus();
-    }
-    super.onContainerClick(event);
+        radio.focus();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.focusObserver && this.focusObserver();
   }
 }
