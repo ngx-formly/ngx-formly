@@ -9,8 +9,10 @@ import { FieldType } from '@ngx-formly/core';
         [ngClass]="{
           'form-check': to.formCheck.indexOf('custom') === -1,
           'form-check-inline': to.formCheck === 'inline',
-          'custom-control custom-checkbox': to.formCheck.indexOf('custom') === 0,
-          'custom-control-inline': to.formCheck === 'custom-inline'
+          'custom-control': to.formCheck.indexOf('custom') === 0,
+          'custom-checkbox': to.formCheck === 'custom' || to.formCheck === 'custom-inline',
+          'custom-control-inline': to.formCheck === 'custom-inline',
+          'custom-switch': to.formCheck === 'custom-switch'
         }"
       >
         <input type="checkbox"
@@ -35,7 +37,7 @@ export class FormlyFieldMultiCheckbox extends FieldType {
   defaultOptions = {
     templateOptions: {
       options: [],
-      formCheck: 'custom', // 'custom' | 'custom-inline' | 'stacked' | 'inline'
+      formCheck: 'custom', // 'custom' | 'custom-inline' | 'custom-switch' | 'stacked' | 'inline'
     },
   };
 

@@ -7,8 +7,10 @@ import { FieldType } from '@ngx-formly/core';
     <div [ngClass]="{
       'form-check': to.formCheck.indexOf('custom') === -1,
       'form-check-inline': to.formCheck === 'inline',
-      'custom-control custom-checkbox': to.formCheck.indexOf('custom') === 0,
-      'custom-control-inline': to.formCheck === 'custom-inline'
+      'custom-control': to.formCheck.indexOf('custom') === 0,
+      'custom-checkbox': to.formCheck === 'custom' || to.formCheck === 'custom-inline',
+      'custom-control-inline': to.formCheck === 'custom-inline',
+      'custom-switch': to.formCheck === 'custom-switch'
     }">
       <input type="checkbox"
         [class.is-invalid]="showError"
@@ -32,7 +34,7 @@ export class FormlyFieldCheckbox extends FieldType {
     templateOptions: {
       indeterminate: true,
       hideLabel: true,
-      formCheck: 'custom', // 'custom' | 'stacked' | 'inline' | 'custom-inline'
+      formCheck: 'custom', // 'custom' | 'custom-inline' | 'custom-switch' | 'stacked' | 'inline'
     },
   };
 }
