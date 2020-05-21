@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.6.2"></a>
+## [5.6.2](https://github.com/ngx-formly/ngx-formly/compare/v5.6.1...v5.6.2) (2020-05-21)
+
+
+### Bug Fixes
+
+* **material:** take account of disabled state for multicheckbox type ([#2225](https://github.com/ngx-formly/ngx-formly/issues/2225)) ([741df7a](https://github.com/ngx-formly/ngx-formly/commit/741df7a))
+* **material:** take account of radio button focus on page load ([#2249](https://github.com/ngx-formly/ngx-formly/issues/2249)) ([35602e5](https://github.com/ngx-formly/ngx-formly/commit/35602e5))
+
+
+
 <a name="5.6.1"></a>
 ## [5.6.1](https://github.com/ngx-formly/ngx-formly/compare/v5.6.0...v5.6.1) (2020-04-30)
 
