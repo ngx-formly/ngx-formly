@@ -227,12 +227,13 @@ export interface WrapperOption {
 }
 
 export interface FieldValidatorFn {
-  (c: AbstractControl, field: FormlyFieldConfig): ValidationErrors | null;
+  (c: AbstractControl, field: FormlyFieldConfig, options?: { [id: string]: any; }): ValidationErrors | null;
 }
 
 export interface ValidatorOption {
   name: string;
   validation: FieldValidatorFn;
+  options?: { [id: string]: any };
 }
 
 export interface ExtensionOption {

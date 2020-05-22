@@ -638,6 +638,30 @@ describe('FormlyFormBuilder service', () => {
           expectValidators(null, 'test');
         });
 
+        it(`pass parameters to pre-defined type`, () => {
+          const spy = jasmine.createSpy('validator_with_options');
+          TestBed.get(FormlyConfig).setValidator({
+            name: 'required_with_options',
+            validation: spy,
+          });
+          const validation = { name: 'required_with_options', options: { foo: 'true' } };
+          field.validators = { validation: [validation] };
+          builder.buildForm(form, [field], {}, {});
+          expect(spy).toHaveBeenCalledWith(field.formControl, field, validation.options);
+        });
+
+        it(`pass parameters to FormlyConfig validator`, () => {
+          const spy = jasmine.createSpy('validator_with_options');
+          TestBed.get(FormlyConfig).setValidator({
+            name: 'required_with_options',
+            validation: spy,
+            options: { foo: 'true' },
+          });
+          field.validators = { validation: [{ name: 'required_with_options' }] };
+          builder.buildForm(form, [field], {}, {});
+          expect(spy).toHaveBeenCalledWith(field.formControl, field, { foo: 'true' });
+        });
+
         it(`using custom type`, () => {
           field.validators = { validation: [Validators.required] };
           builder.buildForm(form, [field], {}, {});

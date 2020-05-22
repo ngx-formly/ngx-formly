@@ -29,6 +29,7 @@ import { SharedModule } from '../shared';
         { path: 'validation', children: [
           { path: 'built-in-validations', loadChildren: './validation/built-in-validations/config.module#ConfigModule' },
           { path: 'custom-validation', loadChildren: './validation/custom-validation/config.module#ConfigModule' },
+          { path: 'custom-validation-parameters', loadChildren: './validation/custom-validation-parameters/config.module#ConfigModule' },
           { path: 'validation-message', loadChildren: './validation/validation-message/config.module#ConfigModule' },
           { path: 'disable-submit-button', loadChildren: './validation/disable-submit-button/config.module#ConfigModule' },
           { path: 'matching-two-fields', loadChildren: './validation/matching-two-fields/config.module#ConfigModule' },
