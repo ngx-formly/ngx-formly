@@ -56,6 +56,7 @@ export class AppComponent {
         { title: 'Validation Options' },
         { path: '/examples/validation/built-in-validations', title: 'Built-in validations' },
         { path: '/examples/validation/custom-validation', title: 'Custom validation' },
+        { path: '/examples/validation/custom-validation-parameters', title: 'Custom Validation parameters' },
         { path: '/examples/validation/validation-message', title: 'Validation message' },
         { path: '/examples/validation/unique-value-async-validation', title: 'Async validation of unique value' },
         { path: '/examples/validation/async-validation-update-on', title: 'Async validation and `updateOn`' },
