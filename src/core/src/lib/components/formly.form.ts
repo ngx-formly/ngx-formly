@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormGroupDirective, FormControl } from '@angular/
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignModelValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
+import { assignFieldValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
 import { Subscription, Subject } from 'rxjs';
 import { debounceTime, switchMap, distinctUntilChanged, take } from 'rxjs/operators';
 
@@ -99,19 +99,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   changeModel({ key, value, field }: { key: string, value: any, field: FormlyFieldConfig }) {
-    if (
-      value == null
-      && field['autoClear']
-      && !field.formControl.parent
-    ) {
-      const paths = key.split('.');
-      const k = paths.pop();
-      const m = paths.reduce((model, path) => model[path] || {}, this.model);
-      delete m[k];
-    } else {
-      assignModelValue(this.model, key.split('.'), value);
-    }
-
+    assignFieldValue(field, value);
     this.modelChange$.next();
   }
 

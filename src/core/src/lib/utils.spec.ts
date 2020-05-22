@@ -1,4 +1,4 @@
-import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKeyPath, clone, wrapProperty } from './utils';
+import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKeyPath, clone, wrapProperty, assignFieldValue } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
 
@@ -13,6 +13,15 @@ describe('FormlyUtils service', () => {
       expect(foo['foobar']).toEqual('foobar');
       expect(foo['date'] instanceof Date).toBeTruthy();
       expect(foo.arr).toEqual([]);
+    });
+  });
+
+  describe('assignFieldValue', () => {
+    it('should assign field value through the parent', () => {
+      const parent: FormlyFieldConfig = { model: {} };
+      assignFieldValue({ key: 'foo', parent }, 'test');
+
+      expect(parent.model).toEqual({ foo: 'test' });
     });
   });
 

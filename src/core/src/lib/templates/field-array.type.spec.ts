@@ -64,6 +64,27 @@ describe('Array Field Type', () => {
     expect(app.form.dirty).toBeTruthy();
   });
 
+  it('should work with nullable model', () => {
+    app.model = { array: null };
+    app.fields = [{
+      key: 'array',
+      type: 'array',
+      defaultValue: null,
+    }];
+
+    const fixture = createFormlyTestComponent();
+    expect(app.form.dirty).toBeFalsy();
+
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeTruthy();
+
+    app.form.markAsPristine();
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeTruthy();
+  });
+
   it('should support field without key', () => {
     app.form = new FormArray([]);
     app.fields = [{ type: 'array' }];
