@@ -605,8 +605,6 @@ describe('FormlyFormBuilder service', () => {
   describe('initialise field validators', () => {
     const expectValidators = (invalidValue, validValue, errors?) => {
       const formControl = form.get('title');
-      expect(typeof field._validators === 'function').toBeTruthy();
-
       formControl.patchValue(invalidValue);
       expect(formControl.valid).toBeFalsy();
       if (errors) {
@@ -619,7 +617,6 @@ describe('FormlyFormBuilder service', () => {
 
     const expectAsyncValidators = (value) => {
       const formControl = form.get('title');
-      expect(typeof field._asyncValidators === 'function').toBeTruthy();
 
       formControl.patchValue(value);
       expect(formControl.status).toBe('PENDING');

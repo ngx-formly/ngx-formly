@@ -9,16 +9,16 @@ export class FieldValidationExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent || !field.key) {
-      return;
-    }
-
     this.initFieldValidation(field, 'validators');
     this.initFieldValidation(field, 'asyncValidators');
   }
 
   private initFieldValidation(field: FormlyFieldConfigCache, type: 'validators' | 'asyncValidators') {
-    const validators: ValidatorFn[] = type === 'validators' ? [this.getPredefinedFieldValidation(field)] : [];
+    const validators: ValidatorFn[] = [];
+    if (type === 'validators' && !(field.hasOwnProperty('fieldGroup') && !field.key)) {
+      validators.push(this.getPredefinedFieldValidation(field));
+    }
+
     if (field[type]) {
       for (const validatorName in field[type]) {
         if (validatorName === 'validation' && !Array.isArray(field[type].validation)) {
@@ -33,11 +33,7 @@ export class FieldValidationExtension implements FormlyExtension {
       }
     }
 
-    defineHiddenProp(
-      field,
-      '_' + type,
-      type === 'validators' ? Validators.compose(validators) : Validators.composeAsync(validators as any),
-    );
+    defineHiddenProp(field, '_' + type, validators);
   }
 
   private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn {
@@ -78,74 +74,73 @@ export class FieldValidationExtension implements FormlyExtension {
   }
 
   private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: any, validatorName?: string) {
+    let validatorOption: ValidatorOption = null;
+    if (typeof validator === 'string') {
+      validatorOption = clone(this.formlyConfig.getValidator(validator));
+    }
+
+    if (typeof validator === 'object' && validator.name) {
+      validatorOption = clone(this.formlyConfig.getValidator(validator.name));
+      if (validator.options) {
+        validatorOption.options = validator.options;
+      }
+    }
+
+    if (typeof validator === 'object' && validator.expression) {
+      const { expression, ...options } = validator;
+      validatorOption = {
+        name: validatorName,
+        validation: expression,
+        options: Object.keys(options).length > 0 ? options : null,
+      };
+    }
+
+    if (typeof validator === 'function') {
+      validatorOption = {
+        name: validatorName,
+        validation: validator,
+      };
+    }
+
     return (control: AbstractControl) => {
-      let validatorOption: ValidatorOption = null;
-      if (typeof validator === 'string') {
-        validatorOption = clone(this.formlyConfig.getValidator(validator));
-      }
-
-      if (typeof validator === 'object' && validator.name) {
-        validatorOption = clone(this.formlyConfig.getValidator(validator.name));
-        if (validator.options) {
-          validatorOption.options = validator.options;
-        }
-      }
-
-      if (typeof validator === 'object' && validator.expression) {
-        validatorOption = {
-          name: validatorName,
-          validation: validator.expression,
-          options: {
-            errorPath: validator.errorPath,
-            message: validator.message,
-          },
-        };
-      }
-
-      if (typeof validator === 'function') {
-        validatorOption = {
-          name: validatorName,
-          validation: validator,
-          options: {},
-        };
-      }
-
-      const isValid = validatorOption.validation(control, field, validatorOption.options);
+      let errors: any = validatorOption.validation(control, field, validatorOption.options);
       if (validatorName) {
-        if (isPromise(isValid)) {
-          return isValid.then((result: boolean) => {
+        if (isPromise(errors)) {
+          return errors.then((result: boolean) => {
             // workaround for https://github.com/angular/angular/issues/13200
             if (field.options && field.options._markForCheck) {
               field.options._markForCheck(field);
             }
 
-            return this.handleResult(field, result, validatorOption);
+            return this.handleResult(field, !!result, validatorOption);
           });
         }
-
-        return this.handleResult(field, isValid, validatorOption);
+        errors = !!errors;
       }
 
-      return isValid;
+      return this.handleResult(field, errors, validatorOption);
     };
   }
 
-  private handleResult(field: FormlyFieldConfigCache, isValid, { name, options }: ValidatorOption) {
+  private handleResult(field: FormlyFieldConfigCache, errors: any, { name, options }: ValidatorOption) {
+    if (typeof errors === 'boolean') {
+      errors = errors ? null : { [name]: options ? options : true };
+    }
+
     if (options && field.formControl && options.errorPath) {
       const control = field.formControl.get(options.errorPath);
       if (control) {
         const controlErrors = (control.errors || {});
-        if (!isValid) {
-          control.setErrors({ ...controlErrors, [name]: { message: options.message } });
-        } else {
+        if (errors && errors[name] && !controlErrors[name]) {
+          const { errorPath, ...opts } = errors[name];
+          control.setErrors({ ...controlErrors, [name]: opts });
+        } else if (errors === null && controlErrors[name]) {
           delete controlErrors[name];
           control.setErrors(Object.keys(controlErrors).length === 0 ? null : controlErrors);
         }
       }
-
-      return isValid ? null : { [name]: { errorPath: options.errorPath } };
     }
 
-    return isValid ? null : { [name]: true };
+    return errors;
   }
 }
