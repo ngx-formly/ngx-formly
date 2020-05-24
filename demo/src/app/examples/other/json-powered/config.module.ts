@@ -20,6 +20,9 @@ import { AppComponent } from './app.component';
               would be to persist the form configuration in the database and then send the configuration
               up to power the form. Notice that you can still use most features like <code>expressionProperties</code>
               and <code>validators</code> even in a string form.
+
+              <br/>
+              For more advanced cases where javascript is needed (For example bind an observable to select options) a map function can be used to adjust the loaded JSON form.
             `,
             component: AppComponent,
             files: [
@@ -28,6 +31,7 @@ import { AppComponent } from './app.component';
               { file: 'user.service.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./user.service.ts'), filecontent: require('!!raw-loader!./user.service.ts') },
               { file: 'assets/json-powered/user.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user_json'), filecontent: require('!!raw-loader!@assets/json-powered/user_json') },
               { file: 'assets/json-powered/user-form.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user-form_json'), filecontent: require('!!raw-loader!@assets/json-powered/user-form_json') },
+              { file: 'assets/json-powered/colors.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user-form_json'), filecontent: require('!!raw-loader!@assets/json-powered/colors_json') },
               { file: 'app.module.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'), filecontent: require('!!raw-loader!./app.module.ts') },
             ],
           }],

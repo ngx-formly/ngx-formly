@@ -18,4 +18,8 @@ export class UserService {
   getFields() {
     return this.http.get<FormlyFieldConfig[]>('assets/json-powered/user-form_json');
   }
+
+  getColors() {
+    return this.http.get<{ label: string; value: string }[]>('assets/json-powered/colors_json');
+  }
 }

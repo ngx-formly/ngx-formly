@@ -23,23 +23,9 @@
   },
   {
     "key": "color",
-    "type": "radio",
+    "type": "input",
     "templateOptions": {
-      "label": "Color Preference (try this out)",
-      "options": [
-        {
-          "label": "No Preference",
-          "value": null
-        },
-        {
-          "label": "Green",
-          "value": "green"
-        },
-        {
-          "label": "Blue",
-          "value": "blue"
-        }
-      ]
+      "label": "Color Preference (try this out)"
     }
   },
   {
