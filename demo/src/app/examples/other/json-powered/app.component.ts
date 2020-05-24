@@ -17,7 +17,7 @@ export class AppComponent {
   constructor(private userService: UserService) {
     this.userService.getUserData().subscribe(([model, fields]) => {
       this.model = model;
-      this.fields = fields;
+      this.fields = this.mapFields(fields);
     });
   }
 
@@ -25,5 +25,20 @@ export class AppComponent {
     if (this.form.valid) {
       alert(JSON.stringify(this.model));
     }
+  }
+
+  /**
+   * Adjust the JSON fields loaded from the server.
+   */
+  mapFields(fields: FormlyFieldConfig[]) {
+    return fields.map(f => {
+      // Bind an observable to `color` field.
+      if (f.key === 'color') {
+        f.type = 'radio';
+        f.templateOptions.options = this.userService.getColors();
+      }
+
+      return f;
+    });
   }
 }
