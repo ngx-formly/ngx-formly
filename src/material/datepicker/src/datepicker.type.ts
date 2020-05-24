@@ -27,9 +27,14 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
     </ng-template>
     <mat-datepicker #picker
       [color]="to.color"
-      [touchUi]="to.datepickerOptions.touchUi"
+      [dateClass]="to.datepickerOptions.dateClass"
+      [disabled]="to.datepickerOptions.disabled"
+      [opened]="to.datepickerOptions.opened"
+      [panelClass]="to.datepickerOptions.panelClass"
+      [startAt]="to.datepickerOptions.startAt"
       [startView]="to.datepickerOptions.startView"
-      [startAt]="to.datepickerOptions.startAt">
+      [touchUi]="to.datepickerOptions.touchUi"
+    >
     </mat-datepicker>
   `,
 })
