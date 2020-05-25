@@ -10,7 +10,7 @@ import { take } from 'rxjs/operators';
       multiple
       [class.custom-select]="to.customSelect"
       [formControl]="formControl"
-      [compareWith]="to.compareWith || compareWith"
+      [compareWith]="to.compareWith"
       [class.is-invalid]="showError"
       [formlyAttributes]="field">
       <ng-container *ngIf="to.options | formlySelectOptions:field | async as opts">
@@ -38,7 +38,7 @@ import { take } from 'rxjs/operators';
     <ng-template #singleSelect>
       <select class="form-control"
         [formControl]="formControl"
-        [compareWith]="to.compareWith || compareWith"
+        [compareWith]="to.compareWith"
         [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
         [formlyAttributes]="field">
@@ -69,7 +69,12 @@ import { take } from 'rxjs/operators';
 })
 export class FormlyFieldSelect extends FieldType {
   defaultOptions = {
-    templateOptions: { options: [] },
+    templateOptions: {
+      options: [],
+      compareWith(o1: any, o2: any) {
+        return o1 === o2;
+      },
+    },
   };
 
   // workaround for https://github.com/angular/angular/issues/10010
@@ -96,9 +101,5 @@ export class FormlyFieldSelect extends FieldType {
 
   constructor(private ngZone: NgZone) {
     super();
-  }
-
-  compareWith(o1: any, o2: any) {
-    return o1 === o2;
   }
 }
