@@ -8,6 +8,7 @@ import { FieldType } from '@ngx-formly/core';
     <ng-container *ngIf="to.options | formlySelectOptions:field | async; let selectOptions">
       <ion-select
         [formControl]="formControl"
+        [compareWith]="to.compareWith"
         [ionFormlyAttributes]="field"
         [multiple]="to.multiple"
         [interface]="to.interface"
@@ -23,6 +24,11 @@ import { FieldType } from '@ngx-formly/core';
 })
 export class FormlyFieldSelect extends FieldType {
   defaultOptions = {
-    templateOptions: { options: [] },
+    templateOptions: {
+      options: [],
+      compareWith(o1: any, o2: any) {
+        return o1 === o2;
+      },
+    },
   };
 }
