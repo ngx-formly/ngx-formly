@@ -20,7 +20,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex"
       [required]="to.required"
-      [compareWith]="to.compareWith || compareWith"
+      [compareWith]="to.compareWith"
       [multiple]="to.multiple"
       (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher"
@@ -46,7 +46,12 @@ export class FormlyFieldSelect extends FieldType {
   @ViewChild(MatSelect, <any> { static: true }) formFieldControl!: MatSelect;
 
   defaultOptions = {
-    templateOptions: { options: [] },
+    templateOptions: {
+      options: [],
+      compareWith(o1: any, o2: any) {
+        return o1 === o2;
+      },
+    },
   };
 
   private selectAllValue!: { options: any, value: any[] };
@@ -75,10 +80,6 @@ export class FormlyFieldSelect extends FieldType {
     if (this.to.change) {
       this.to.change(this.field, $event);
     }
-  }
-
-  compareWith(o1: any, o2: any) {
-    return o1 === o2;
   }
 
   _getAriaLabelledby() {
