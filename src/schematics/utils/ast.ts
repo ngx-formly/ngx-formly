@@ -97,7 +97,7 @@ export function findModuleFromOptions(host: Tree, options: any) {
   const project = workspace.projects[options.project];
 
   if (options.path === undefined) {
-    options.path = `/${project.root}/src/app`;
+    options.path = `/${project.sourceRoot}`;
   }
 
   return internalFindModule(host, options);

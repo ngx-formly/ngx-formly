@@ -17,7 +17,7 @@ xdescribe('Component Schematic', () => {
   const collectionPath = join(__dirname, '../collection.json');
   const defaultOptions: ComponentOptions = {
     name: 'foo',
-    // path: 'src/app',
+    path: 'src/app',
     inlineStyle: false,
     inlineTemplate: false,
     changeDetection: ChangeDetection.Default,

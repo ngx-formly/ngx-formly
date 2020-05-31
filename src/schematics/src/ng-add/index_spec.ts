@@ -104,7 +104,7 @@ describe('ng-add-schematic', () => {
     `);
 
     const tree = schematicRunner.runSchematic('ng-add', {
-      module: 'foo.module.ts',
+      module: 'app/foo.module.ts',
     }, appTree);
 
     const content = tree.readContent(fooModule);
