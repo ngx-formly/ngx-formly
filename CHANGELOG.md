@@ -8,20 +8,20 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **schematics:** rely sourceRoot to get the project path ([#2292](https://github.com/ngx-formly/ngx-formly/issues/2292)) ([46885e9](https://github.com/ngx-formly/ngx-formly/commit/46885e9))
+* **schematics:** rely sourceRoot to get the project path ([#2292](https://github.com/ngx-formly/ngx-formly/issues/2292)) ([46885e9](https://github.com/ngx-formly/ngx-formly/commit/46885e9)), closes [#2291](https://github.com/ngx-formly/ngx-formly/issues/2291)
 
 
 ### Features
 
-* **bootstrap:** support switch style checkboxes ([#2263](https://github.com/ngx-formly/ngx-formly/issues/2263)) ([5b1a771](https://github.com/ngx-formly/ngx-formly/commit/5b1a771))
-* **core:** add an alternative way for passing parameters to validation ([#2269](https://github.com/ngx-formly/ngx-formly/issues/2269)) ([0295bd9](https://github.com/ngx-formly/ngx-formly/commit/0295bd9))
-* **core:** allow nullable value for group type ([#2267](https://github.com/ngx-formly/ngx-formly/issues/2267)) ([a34d384](https://github.com/ngx-formly/ngx-formly/commit/a34d384))
-* **core:** allow onInit/afterView/afterContent to return observables ([#2242](https://github.com/ngx-formly/ngx-formly/issues/2242)) ([f91637e](https://github.com/ngx-formly/ngx-formly/commit/f91637e))
+* **bootstrap:** support switch style checkboxes ([#2263](https://github.com/ngx-formly/ngx-formly/issues/2263)) ([5b1a771](https://github.com/ngx-formly/ngx-formly/commit/5b1a771)), closes [#2257](https://github.com/ngx-formly/ngx-formly/issues/2257)
+* **core:** add an alternative way for passing parameters to validation ([#2269](https://github.com/ngx-formly/ngx-formly/issues/2269)) ([0295bd9](https://github.com/ngx-formly/ngx-formly/commit/0295bd9)), closes [#1828](https://github.com/ngx-formly/ngx-formly/issues/1828)
+* **core:** allow nullable value for group type ([#2267](https://github.com/ngx-formly/ngx-formly/issues/2267)) ([a34d384](https://github.com/ngx-formly/ngx-formly/commit/a34d384)), closes [#2265](https://github.com/ngx-formly/ngx-formly/issues/2265)
+* **core:** allow onInit/afterView/afterContent to return observables ([#2242](https://github.com/ngx-formly/ngx-formly/issues/2242)) ([f91637e](https://github.com/ngx-formly/ngx-formly/commit/f91637e)), closes [#1986](https://github.com/ngx-formly/ngx-formly/issues/1986)
 * **core:** deprecate doCheck, afterContent and afterView Checked hooks ([#2245](https://github.com/ngx-formly/ngx-formly/issues/2245)) ([aea28e1](https://github.com/ngx-formly/ngx-formly/commit/aea28e1))
-* **core:** support passing observable for validation message ([#2241](https://github.com/ngx-formly/ngx-formly/issues/2241)) ([a53a737](https://github.com/ngx-formly/ngx-formly/commit/a53a737))
-* **core:** support validations for fieldGroup with empty key ([#2271](https://github.com/ngx-formly/ngx-formly/issues/2271)) ([ffe7df0](https://github.com/ngx-formly/ngx-formly/commit/ffe7df0))
-* **ionic:** add compareWith input for select type ([#2277](https://github.com/ngx-formly/ngx-formly/issues/2277)) ([7ef2b8e](https://github.com/ngx-formly/ngx-formly/commit/7ef2b8e))
-* **material:** add missing mat-datepicker inputs to datepickerOptions ([#2274](https://github.com/ngx-formly/ngx-formly/issues/2274)) ([4003729](https://github.com/ngx-formly/ngx-formly/commit/4003729))
+* **core:** support passing observable for validation message ([#2241](https://github.com/ngx-formly/ngx-formly/issues/2241)) ([a53a737](https://github.com/ngx-formly/ngx-formly/commit/a53a737)), closes [#2214](https://github.com/ngx-formly/ngx-formly/issues/2214)
+* **core:** support validations for fieldGroup with empty key ([#2271](https://github.com/ngx-formly/ngx-formly/issues/2271)) ([ffe7df0](https://github.com/ngx-formly/ngx-formly/commit/ffe7df0)), closes [#2059](https://github.com/ngx-formly/ngx-formly/issues/2059) [#2255](https://github.com/ngx-formly/ngx-formly/issues/2255)
+* **ionic:** add compareWith input for select type ([#2277](https://github.com/ngx-formly/ngx-formly/issues/2277)) ([7ef2b8e](https://github.com/ngx-formly/ngx-formly/commit/7ef2b8e)), closes [#2275](https://github.com/ngx-formly/ngx-formly/issues/2275)
+* **material:** add missing mat-datepicker inputs to datepickerOptions ([#2274](https://github.com/ngx-formly/ngx-formly/issues/2274)) ([4003729](https://github.com/ngx-formly/ngx-formly/commit/4003729)), closes [#2221](https://github.com/ngx-formly/ngx-formly/issues/2221)
 
 
 
@@ -31,8 +31,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **material:** take account of disabled state for multicheckbox type ([#2225](https://github.com/ngx-formly/ngx-formly/issues/2225)) ([741df7a](https://github.com/ngx-formly/ngx-formly/commit/741df7a))
-* **material:** take account of radio button focus on page load ([#2249](https://github.com/ngx-formly/ngx-formly/issues/2249)) ([35602e5](https://github.com/ngx-formly/ngx-formly/commit/35602e5))
+* **material:** take account of disabled state for multicheckbox type ([#2225](https://github.com/ngx-formly/ngx-formly/issues/2225)) ([741df7a](https://github.com/ngx-formly/ngx-formly/commit/741df7a)), closes [#2224](https://github.com/ngx-formly/ngx-formly/issues/2224)
+* **material:** take account of radio button focus on page load ([#2249](https://github.com/ngx-formly/ngx-formly/issues/2249)) ([35602e5](https://github.com/ngx-formly/ngx-formly/commit/35602e5)), closes [#2248](https://github.com/ngx-formly/ngx-formly/issues/2248)
 
 
 
@@ -42,9 +42,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **core:** resubscribe to expr prop when re-rendering the field ([#2216](https://github.com/ngx-formly/ngx-formly/issues/2216)) ([1269f57](https://github.com/ngx-formly/ngx-formly/commit/1269f57))
+* **core:** resubscribe to expr prop when re-rendering the field ([#2216](https://github.com/ngx-formly/ngx-formly/issues/2216)) ([1269f57](https://github.com/ngx-formly/ngx-formly/commit/1269f57)), closes [#2214](https://github.com/ngx-formly/ngx-formly/issues/2214)
 * **ionic:** allow async options for ion-select ([#2202](https://github.com/ngx-formly/ngx-formly/issues/2202)) ([7a3247d](https://github.com/ngx-formly/ngx-formly/commit/7a3247d))
-* **material:** make sure required attribute is present in mat types ([#2213](https://github.com/ngx-formly/ngx-formly/issues/2213)) ([89ea2ac](https://github.com/ngx-formly/ngx-formly/commit/89ea2ac))
+* **material:** make sure required attribute is present in mat types ([#2213](https://github.com/ngx-formly/ngx-formly/issues/2213)) ([89ea2ac](https://github.com/ngx-formly/ngx-formly/commit/89ea2ac)), closes [#2212](https://github.com/ngx-formly/ngx-formly/issues/2212)
 
 
 
