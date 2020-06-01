@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.7.0"></a>
+# [5.7.0](https://github.com/ngx-formly/ngx-formly/compare/v5.6.2...v5.7.0) (2020-06-01)
+
+
+### Bug Fixes
+
+* **schematics:** rely sourceRoot to get the project path ([#2292](https://github.com/ngx-formly/ngx-formly/issues/2292)) ([46885e9](https://github.com/ngx-formly/ngx-formly/commit/46885e9))
+
+
+### Features
+
+* **bootstrap:** support switch style checkboxes ([#2263](https://github.com/ngx-formly/ngx-formly/issues/2263)) ([5b1a771](https://github.com/ngx-formly/ngx-formly/commit/5b1a771))
+* **core:** add an alternative way for passing parameters to validation ([#2269](https://github.com/ngx-formly/ngx-formly/issues/2269)) ([0295bd9](https://github.com/ngx-formly/ngx-formly/commit/0295bd9))
+* **core:** allow nullable value for group type ([#2267](https://github.com/ngx-formly/ngx-formly/issues/2267)) ([a34d384](https://github.com/ngx-formly/ngx-formly/commit/a34d384))
+* **core:** allow onInit/afterView/afterContent to return observables ([#2242](https://github.com/ngx-formly/ngx-formly/issues/2242)) ([f91637e](https://github.com/ngx-formly/ngx-formly/commit/f91637e))
+* **core:** deprecate doCheck, afterContent and afterView Checked hooks ([#2245](https://github.com/ngx-formly/ngx-formly/issues/2245)) ([aea28e1](https://github.com/ngx-formly/ngx-formly/commit/aea28e1))
+* **core:** support passing observable for validation message ([#2241](https://github.com/ngx-formly/ngx-formly/issues/2241)) ([a53a737](https://github.com/ngx-formly/ngx-formly/commit/a53a737))
+* **core:** support validations for fieldGroup with empty key ([#2271](https://github.com/ngx-formly/ngx-formly/issues/2271)) ([ffe7df0](https://github.com/ngx-formly/ngx-formly/commit/ffe7df0))
+* **ionic:** add compareWith input for select type ([#2277](https://github.com/ngx-formly/ngx-formly/issues/2277)) ([7ef2b8e](https://github.com/ngx-formly/ngx-formly/commit/7ef2b8e))
+* **material:** add missing mat-datepicker inputs to datepickerOptions ([#2274](https://github.com/ngx-formly/ngx-formly/issues/2274)) ([4003729](https://github.com/ngx-formly/ngx-formly/commit/4003729))
+
+
+
 <a name="5.6.2"></a>
 ## [5.6.2](https://github.com/ngx-formly/ngx-formly/compare/v5.6.1...v5.6.2) (2020-05-21)
 
