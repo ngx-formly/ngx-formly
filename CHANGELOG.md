@@ -1,6 +1,13 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [5.7.1](https://github.com/ngx-formly/ngx-formly/compare/v5.7.0...v5.7.1) (2020-06-03)
+
+
+### Bug Fixes
+
+* **core:** keep the model in-sync with the root field ([#2296](https://github.com/ngx-formly/ngx-formly/issues/2296)) ([b645a77](https://github.com/ngx-formly/ngx-formly/commit/b645a7731813af0a3c72d45c63829e68a4ead1fd)), closes [#2294](https://github.com/ngx-formly/ngx-formly/issues/2294)
 
 <a name="5.7.0"></a>
 # [5.7.0](https://github.com/ngx-formly/ngx-formly/compare/v5.6.2...v5.7.0) (2020-06-01)
