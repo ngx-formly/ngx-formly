@@ -55,7 +55,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private modelChangeSub = this.modelChange$.pipe(
     switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
   ).subscribe(() => this.ngZone.runGuarded(() => {
-    // runGuarded is used to keep in sync the expression changes
+    // runGuarded is used to keep the expression changes in-sync
     // https://github.com/ngx-formly/ngx-formly/issues/2095
     this.checkExpressionChange();
     this.modelChange.emit(this._modelChangeValue = clone(this.model));
@@ -83,6 +83,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    // https://github.com/ngx-formly/ngx-formly/issues/2294
+    if (changes.model && this.field) {
+      this.field.model = this.model;
+    }
+
     if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {
       this.form = this.form || (new FormGroup({}));
       this.setOptions();
@@ -211,5 +216,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private clearModelSubscriptions() {
     this.modelChangeSubs.forEach(sub => sub.unsubscribe());
     this.modelChangeSubs = [];
+  }
+
+  private get field(): any {
+    return this.fields && this.fields[0] && this.fields[0].parent;
   }
 }
