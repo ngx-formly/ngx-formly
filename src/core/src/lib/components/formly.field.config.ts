@@ -1,7 +1,7 @@
 import { FormGroup, AbstractControl, FormGroupDirective, FormArray, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
-import { TemplateManipulators } from '../services/formly.config';
+import { TemplateManipulators, ValidationMessageOption } from '../services/formly.config';
 import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
 
 export interface FormlyFieldConfig {
@@ -48,7 +48,7 @@ export interface FormlyFieldConfig {
    */
   validation?: {
     messages?: {
-      [messageProperties: string]: string | ((error: any, field: FormlyFieldConfig) => string);
+      [messageProperties: string]: ValidationMessageOption['message'];
     };
     show?: boolean;
     [additionalProperties: string]: any;
@@ -61,7 +61,7 @@ export interface FormlyFieldConfig {
    *
    * {
    *   validation?: (string | ValidatorFn)[];
-   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => boolean) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean, message: string | ((error, field: FormlyFieldConfig) => string) });
+   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => boolean) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean, message: ValidationMessageOption['message'] });
    * }
    */
   validators?: any;
