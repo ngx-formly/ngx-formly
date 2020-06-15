@@ -70,7 +70,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     if (!field.options._checkField) {
       field.options._checkField = (f, ignoreCache) => {
-        reduceFormUpdateValidityCalls(f.formControl, () => this.checkExpressions(f, ignoreCache));
+        reduceFormUpdateValidityCalls(f.form, () => this.checkExpressions(f, ignoreCache));
 
         const options = field.options;
         options._hiddenFieldsForCheck.sort(f => (f.hide ? -1 : 1)).forEach(f => this.changeHideState(f, f.hide));
