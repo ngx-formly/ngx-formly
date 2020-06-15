@@ -127,6 +127,10 @@ export class FormlyField
   }
 
   private triggerHook(name: string, changes?: SimpleChanges) {
+    if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
+      this.valueChangesUnsubscribe = this.valueChanges(this.field);
+    }
+
     if (this.field && this.field.hooks && this.field.hooks[name]) {
       if (!changes || changes.field) {
         const r = this.field.hooks[name](this.field);
@@ -141,10 +145,6 @@ export class FormlyField
       this.renderHostBinding();
       this.resetRefs(changes.field.previousValue);
       this.renderField(this.containerRef, this.field, this.field ? this.field.wrappers : []);
-    }
-
-    if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
-      this.valueChangesUnsubscribe = this.valueChanges(this.field);
     }
   }
 
