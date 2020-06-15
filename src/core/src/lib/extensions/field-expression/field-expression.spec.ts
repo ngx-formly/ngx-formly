@@ -86,7 +86,7 @@ describe('FieldExpressionExtension', () => {
       });
 
       it('should toggle field control when hide changed programmatically', () => {
-        const { fieldGroup: fields, formControl: form, options } = buildField({
+        const { fieldGroup: fields, form, options } = buildField({
           fieldGroup: [
             { hide: false, key: 'foo' },
             { hide: true, fieldGroup: [{ key: 'bar' }] },
@@ -95,7 +95,7 @@ describe('FieldExpressionExtension', () => {
 
         fields[0].hide = true;
         fields[1].hide = false;
-        options._checkField({ formControl: form, fieldGroup: fields, options });
+        options._checkField({ form, fieldGroup: fields, options });
 
         expect(form.get('foo')).toBeNull();
         expect(form.get('bar')).not.toBeNull();
@@ -115,7 +115,7 @@ describe('FieldExpressionExtension', () => {
             },
           ],
         });
-        const { options, fieldGroup: fields, formControl: form } = field;
+        const { options, fieldGroup: fields, form } = field;
 
         options._checkField(field);
         expect(fields[0].hide).toBeFalse();
@@ -167,7 +167,7 @@ describe('FieldExpressionExtension', () => {
         });
 
         const {
-          formControl: form,
+          form,
           fieldGroup: [f1, f2],
         } = field;
 

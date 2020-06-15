@@ -8,18 +8,13 @@ import { defineHiddenProp, reduceFormUpdateValidityCalls, observe } from '../uti
 export class FormlyFormBuilder {
   constructor(
     private config: FormlyConfig,
-    private componentFactoryResolver: ComponentFactoryResolver,
+    private resolver: ComponentFactoryResolver,
     private injector: Injector,
     @Optional() private parentForm: FormGroupDirective,
   ) {}
 
-  buildForm(
-    formControl: FormGroup | FormArray,
-    fieldGroup: FormlyFieldConfig[] = [],
-    model: any,
-    options: FormlyFormOptions,
-  ) {
-    this.buildField({ fieldGroup, model, formControl, options });
+  buildForm(form: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+    this.buildField({ fieldGroup, model, form, options });
   }
 
   buildField(field: FormlyFieldConfig) {
@@ -29,7 +24,7 @@ export class FormlyFormBuilder {
 
     if (!field.parent) {
       this._setOptions(field);
-      reduceFormUpdateValidityCalls(field.formControl, () => this._buildField(field));
+      reduceFormUpdateValidityCalls(field.form, () => this._buildField(field));
       const options = (field as FormlyFieldConfigCache).options;
       options._checkField && options._checkField(field, true);
     } else {
@@ -57,12 +52,13 @@ export class FormlyFormBuilder {
   }
 
   private _setOptions(field: FormlyFieldConfigCache) {
-    field.formControl = field.formControl || new FormGroup({});
+    field.form = field.form || new FormGroup({});
+    field.model = field.model || {};
     field.options = field.options || {};
     const options = field.options;
 
     if (!options._resolver) {
-      defineHiddenProp(options, '_resolver', this.componentFactoryResolver);
+      defineHiddenProp(options, '_resolver', this.resolver);
     }
 
     if (!options._injector) {

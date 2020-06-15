@@ -22,17 +22,6 @@ import { DOCUMENT } from '@angular/common';
   },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
-  get to(): FormlyTemplateOptions {
-    return this.field.templateOptions || {};
-  }
-
-  private get fieldAttrElements(): ElementRef[] {
-    return (this.field && this.field['_elementRefs']) || [];
-  }
-
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
-    this.document = _document;
-  }
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() id: string;
 
@@ -55,6 +44,18 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     ],
   };
   private changeFocusState = (value: boolean) => {};
+
+  get to(): FormlyTemplateOptions {
+    return this.field.templateOptions || {};
+  }
+
+  private get fieldAttrElements(): ElementRef[] {
+    return (this.field && this.field['_elementRefs']) || [];
+  }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
+    this.document = _document;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {

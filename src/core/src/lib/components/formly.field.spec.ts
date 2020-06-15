@@ -4,6 +4,7 @@ import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap } from 'rxjs/operators';
+import { FormlyFieldConfigCache } from '../models';
 
 const renderComponent = (field: FormlyFieldConfig, options = {}) => {
   return createFormlyFieldComponent(field, {
@@ -201,7 +202,7 @@ describe('FormlyField Component', () => {
     const { query } = renderComponent({
       type: 'input',
       hooks: {
-        onInit: f => (f.formControl = new FormControl()),
+        onInit: (f: FormlyFieldConfigCache) => (f.formControl = new FormControl()),
       },
     });
 

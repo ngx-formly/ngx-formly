@@ -1,9 +1,12 @@
 import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
-import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { AsyncValidatorFn, ValidatorFn, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 import { FormlyFieldConfig, FormlyFormOptions } from './fieldconfig';
 
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
+  form?: FormGroup | FormArray;
+  model?: any;
+  formControl?: AbstractControl;
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
   resetOnHide?: boolean;

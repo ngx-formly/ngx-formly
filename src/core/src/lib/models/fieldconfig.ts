@@ -1,26 +1,23 @@
-import { FormGroup, AbstractControl, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormArray, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { ValidationMessageOption } from '../models';
 
 export interface FormlyFieldConfig {
   /**
-   * The model that stores all the data, where the model[key] is the value of the field
-   */
-  readonly model?: any;
-
-  /**
-   * The parent field.
-   */
-  readonly parent?: FormlyFieldConfig;
-
-  readonly options?: FormlyFormOptions;
-  readonly form?: FormGroup;
-
-  /**
    * The key that relates to the model. This will link the field value to the model
    */
   key?: string | number | string[];
+
+  /**
+   * This should be a formly-field type added either by you or a plugin. More information over at Creating Formly Fields.
+   */
+  type?: string;
+
+  /**
+   * Use `defaultValue` to initialize it the model. If this is provided and the value of the model at compile-time is undefined, then the value of the model will be assigned to `defaultValue`.
+   */
+  defaultValue?: any;
 
   /**
    * This allows you to specify the `id` of your field. Note, the `id` is generated if not set.
@@ -36,9 +33,6 @@ export interface FormlyFieldConfig {
    * This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this.
    */
   templateOptions?: FormlyTemplateOptions;
-
-  /** @deprecated */
-  optionsTypes?: string[];
 
   /**
    * An object with a few useful properties
@@ -106,12 +100,6 @@ export interface FormlyFieldConfig {
   };
 
   /**
-   * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.
-   * It provides you more control like running validators, calculating status, and resetting state.
-   */
-  formControl?: AbstractControl;
-
-  /**
    * You can specify your own class that will be applied to the `formly-field` component.
    */
   className?: string;
@@ -128,11 +116,6 @@ export interface FormlyFieldConfig {
   fieldGroup?: FormlyFieldConfig[];
 
   fieldArray?: FormlyFieldConfig;
-
-  /**
-   * This should be a formly-field type added either by you or a plugin. More information over at Creating Formly Fields.
-   */
-  type?: string;
 
   /**
    * Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressionProperties`
@@ -157,14 +140,38 @@ export interface FormlyFieldConfig {
   hooks?: FormlyHookConfig;
 
   /**
-   * Use `defaultValue` to initialize it the model. If this is provided and the value of the model at compile-time is undefined, then the value of the model will be assigned to `defaultValue`.
-   */
-  defaultValue?: any;
-
-  /**
    * Array of functions to execute, as a pipeline, whenever the model updates, usually via user input.
    */
   parsers?: ((value: any) => any)[];
+
+  /**
+   * The model that stores all the data, where the model[key] is the value of the field
+   */
+  readonly model?: any;
+
+  /**
+   * The parent field.
+   */
+  readonly parent?: FormlyFieldConfig;
+
+  /**
+   * The form options.
+   */
+  readonly options?: FormlyFormOptions;
+
+  /**
+   * The parent form.
+   */
+  readonly form?: FormGroup | FormArray;
+
+  /**
+   * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.
+   * It provides you more control like running validators, calculating status, and resetting state.
+   */
+  readonly formControl?: AbstractControl;
+
+  /** @deprecated */
+  optionsTypes?: string[];
 }
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
