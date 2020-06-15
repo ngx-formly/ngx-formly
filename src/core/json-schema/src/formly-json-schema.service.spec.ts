@@ -479,7 +479,7 @@ describe('Service: FormlyJsonschema', () => {
             enum: [1, 2, 3, 4, 5],
           };
 
-          const enumOptions = schemaEnum => schemaEnum.map(value => ({ value, label: value }));
+          const enumOptions = (schemaEnum) => schemaEnum.map((value) => ({ value, label: value }));
 
           // labelProp and valueProp should be a function that returns what it is given
           const config = formlyJsonschema.toFieldConfig(schemaStringEnum);
@@ -1058,7 +1058,9 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should render the selected oneOf field (with more matched fields)', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+          const {
+            fieldGroup: [f],
+          } = formlyJsonschema.toFieldConfig({
             type: 'object',
             oneOf: [
               { properties: { foo1: { type: 'string' } } },
@@ -1072,7 +1074,12 @@ describe('Service: FormlyJsonschema', () => {
           });
           const model: any = { foo1: 'test', bar: 'test' };
           builder.buildForm(new FormGroup({}), [f], model, { _initialModel: { foo1: 'test', bar: 'test' } } as any);
-          const [, { fieldGroup: [f1, f2] }] = f.fieldGroup;
+          const [
+            ,
+            {
+              fieldGroup: [f1, f2],
+            },
+          ] = f.fieldGroup;
 
           expect(f1.hide).toBeTruthy();
           expect(f2.hide).toBeFalsy();

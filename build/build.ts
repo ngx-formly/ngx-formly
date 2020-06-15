@@ -7,7 +7,7 @@ const distDir = 'dist/@ngx-formly';
 // cleanup
 exec(`rm -rf ${distDir}`);
 
-PACKAGES.map(name => {
+PACKAGES.map((name) => {
   // build package
   exec(name === 'schematics' ? `ts-node build/schematics.ts` : `ng build @ngx-formly/${name}`);
 

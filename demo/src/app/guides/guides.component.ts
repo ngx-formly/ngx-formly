@@ -19,19 +19,11 @@ export class GuidesComponent implements OnInit {
     'expression-properties': require('!!raw-loader!!highlight-loader!markdown-loader!./expression-properties.md'),
   };
 
-  constructor(
-    private renderer: Renderer2,
-    private route: ActivatedRoute,
-    private elementRef: ElementRef,
-  ) {}
+  constructor(private renderer: Renderer2, private route: ActivatedRoute, private elementRef: ElementRef) {}
 
   ngOnInit() {
     this.route.params.subscribe(({ id }) => {
-      this.renderer.setProperty(
-        this.elementRef.nativeElement,
-        'innerHTML',
-        this.contents[id].default,
-      );
+      this.renderer.setProperty(this.elementRef.nativeElement, 'innerHTML', this.contents[id].default);
     });
   }
 }

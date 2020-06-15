@@ -14,7 +14,7 @@ export class UIComponent {
   form = new FormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};
-  fields: FormlyFieldConfig[] = Object.keys(this.config.types).map(type => ({
+  fields: FormlyFieldConfig[] = Object.keys(this.config.types).map((type) => ({
     key: type,
     type,
     templateOptions: {

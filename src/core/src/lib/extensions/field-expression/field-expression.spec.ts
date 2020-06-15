@@ -131,11 +131,11 @@ describe('FieldExpressionExtension', () => {
           fieldGroup: [
             {
               key: 'key1',
-              hideExpression: model => model.type,
+              hideExpression: (model) => model.type,
             },
             {
               key: 'key1',
-              hideExpression: model => !model.type,
+              hideExpression: (model) => !model.type,
             },
           ],
         });
@@ -154,12 +154,12 @@ describe('FieldExpressionExtension', () => {
             {
               key: 'key1',
               formControl: new FormControl(),
-              hideExpression: model => model.type,
+              hideExpression: (model) => model.type,
             },
             {
               key: 'key1',
               formControl: new FormControl(),
-              hideExpression: model => !model.type,
+              hideExpression: (model) => !model.type,
             },
           ],
         });

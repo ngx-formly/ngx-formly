@@ -12,7 +12,7 @@ function renderComponent(field: FormlyFieldConfig) {
 function buildField({ model, options, ...field }: FormlyFieldConfig): FormlyFieldConfigCache {
   const builder = createBuilder({
     extensions: ['core'],
-    onInit: c =>
+    onInit: (c) =>
       c.addConfig({
         types: [
           {

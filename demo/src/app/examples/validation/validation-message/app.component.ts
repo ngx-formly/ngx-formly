@@ -44,7 +44,7 @@ export class AppComponent {
       },
       validators: {
         ip: {
-          expression: c => !c.value || /(\d{1,3}\.){3}\d{1,3}/.test(c.value),
+          expression: (c) => !c.value || /(\d{1,3}\.){3}\d{1,3}/.test(c.value),
           message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
         },
       },

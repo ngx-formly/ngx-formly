@@ -27,9 +27,11 @@ export function registerTranslateExtension(translate: TranslateService) {
         },
       },
     ],
-    extensions: [{
-      name: 'translate',
-      extension: new TranslateExtension(translate),
-    }],
+    extensions: [
+      {
+        name: 'translate',
+        extension: new TranslateExtension(translate),
+      },
+    ],
   };
 }
