@@ -174,7 +174,7 @@ export class StackblitzWriter {
     this._appendFormInput(form, 'private', 'true');
     this._appendFormInput(form, 'description', exampleData.title);
 
-    const appModuleContent = exampleData.files.find(f => f.file === 'app.module.ts').filecontent.default;
+    const appModuleContent = exampleData.files.find((f) => f.file === 'app.module.ts').filecontent.default;
     exampleData.deps = exampleData.deps || [];
 
     const options: any = { type };
@@ -202,7 +202,9 @@ export class StackblitzWriter {
 
     if (
       !options.useAnimation &&
-      exampleData.files.map(f => f.filecontent.default).some(content => content.indexOf('@angular/animations') !== -1)
+      exampleData.files
+        .map((f) => f.filecontent.default)
+        .some((content) => content.indexOf('@angular/animations') !== -1)
     ) {
       options.useAnimation = true;
     }
@@ -251,7 +253,7 @@ export class StackblitzWriter {
 
     this._appendFormInput(form, 'dependencies', JSON.stringify(deps));
 
-    [...TEMPLATE_FILES.core, ...TEMPLATE_FILES[options.type]].forEach(data => {
+    [...TEMPLATE_FILES.core, ...TEMPLATE_FILES[options.type]].forEach((data) => {
       this._addFileToForm(
         form,
         this._replaceExamplePlaceholderNames(data.file, data.filecontent.default, options),
@@ -260,7 +262,7 @@ export class StackblitzWriter {
       );
     });
 
-    exampleData.files.forEach(data => {
+    exampleData.files.forEach((data) => {
       this._addFileToForm(
         form,
         this._replaceExamplePlaceholderNames(data.file, data.filecontent.default, options),

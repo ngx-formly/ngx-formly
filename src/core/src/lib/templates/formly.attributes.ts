@@ -55,11 +55,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
       this.field.name && this.setAttribute('name', this.field.name);
-      this.uiEvents.listeners.forEach(listener => listener());
-      this.uiEvents.events.forEach(eventName => {
+      this.uiEvents.listeners.forEach((listener) => listener());
+      this.uiEvents.events.forEach((eventName) => {
         if (this.to && this.to[eventName]) {
           this.uiEvents.listeners.push(
-            this.renderer.listen(this.elementRef.nativeElement, eventName, e => this.to[eventName](this.field, e)),
+            this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.to[eventName](this.field, e)),
           );
         }
       });
@@ -67,11 +67,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       if (this.to && this.to.attributes) {
         observe(this.field, ['templateOptions', 'attributes'], ({ currentValue, previousValue }) => {
           if (previousValue) {
-            Object.keys(previousValue).forEach(attr => this.removeAttribute(attr));
+            Object.keys(previousValue).forEach((attr) => this.removeAttribute(attr));
           }
 
           if (currentValue) {
-            Object.keys(currentValue).forEach(attr => this.setAttribute(attr, currentValue[attr]));
+            Object.keys(currentValue).forEach((attr) => this.setAttribute(attr, currentValue[attr]));
           }
         });
       }
@@ -101,7 +101,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * Material issue: https://github.com/angular/components/issues/14024
    */
   ngDoCheck() {
-    this.uiAttributes.forEach(attr => {
+    this.uiAttributes.forEach((attr) => {
       const value = this.to[attr];
       if (this.uiAttributesCache[attr] !== value) {
         this.uiAttributesCache[attr] = value;
@@ -115,7 +115,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.uiEvents.listeners.forEach(listener => listener());
+    this.uiEvents.listeners.forEach((listener) => listener());
     this.detachElementRef(this.field);
   }
 

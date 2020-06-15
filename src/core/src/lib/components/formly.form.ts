@@ -18,9 +18,7 @@ import { switchMap, filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-form',
-  template: `
-    <formly-field *ngFor="let f of fields" [field]="f"></formly-field>
-  `,
+  template: ` <formly-field *ngFor="let f of fields" [field]="f"></formly-field> `,
   providers: [FormlyFormBuilder],
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {

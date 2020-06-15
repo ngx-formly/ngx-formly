@@ -9,24 +9,24 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
   });
 
   it('passing options as an array', () => {
-    pipe.transform([{ label: '1', value: '1' }]).subscribe(options => {
+    pipe.transform([{ label: '1', value: '1' }]).subscribe((options) => {
       expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
   });
 
   it('passing options as an observable', () => {
-    pipe.transform(observableOf([{ label: '1', value: '1' }])).subscribe(options => {
+    pipe.transform(observableOf([{ label: '1', value: '1' }])).subscribe((options) => {
       expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
   });
 
   it('should add a flag for flat options', () => {
     const field: any = { templateOptions: {} };
-    pipe.transform([{ label: '1', value: '1' }], field).subscribe(options => {
+    pipe.transform([{ label: '1', value: '1' }], field).subscribe((options) => {
       expect(field.templateOptions._flatOptions).toEqual(true);
     });
 
-    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe(options => {
+    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe((options) => {
       expect(field.templateOptions._flatOptions).toEqual(false);
     });
   });
@@ -47,7 +47,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
       },
     ];
 
-    pipe.transform(options, field).subscribe(options => {
+    pipe.transform(options, field).subscribe((options) => {
       expect(options).toEqual([
         {
           label: 'g1',
@@ -79,7 +79,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
         },
       };
 
-      pipe.transform(options, field).subscribe(options => {
+      pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([{ label: 'foo', value: '1', disabled: true }]);
       });
     });
@@ -87,13 +87,13 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     it('as a function', () => {
       const field = {
         templateOptions: {
-          labelProp: item => item.name,
-          valueProp: item => item.id,
-          disabledProp: item => item.locked,
+          labelProp: (item) => item.name,
+          valueProp: (item) => item.id,
+          disabledProp: (item) => item.locked,
         },
       };
 
-      pipe.transform(options, field).subscribe(options => {
+      pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([{ label: 'foo', value: '1', disabled: true }]);
       });
     });
@@ -107,14 +107,14 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
 
       const field = {
         templateOptions: {
-          labelProp: item => item.name,
-          valueProp: item => item.id,
-          disabledProp: item => item.locked,
-          groupProp: item => item.parent,
+          labelProp: (item) => item.name,
+          valueProp: (item) => item.id,
+          disabledProp: (item) => item.locked,
+          groupProp: (item) => item.parent,
         },
       };
 
-      pipe.transform(options, field).subscribe(options => {
+      pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([
           {
             label: '1',
@@ -145,7 +145,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     it('as a string', () => {
       const field = { templateOptions: { groupProp: 'parent' } };
 
-      pipe.transform(options, field).subscribe(options => {
+      pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([
           {
             label: '1',
@@ -163,9 +163,9 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     });
 
     it('as a function', () => {
-      const field = { templateOptions: { groupProp: item => item.parent } };
+      const field = { templateOptions: { groupProp: (item) => item.parent } };
 
-      pipe.transform(options, field).subscribe(options => {
+      pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([
           {
             label: '1',

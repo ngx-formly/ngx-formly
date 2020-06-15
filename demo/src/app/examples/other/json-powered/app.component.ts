@@ -31,7 +31,7 @@ export class AppComponent {
    * Adjust the JSON fields loaded from the server.
    */
   mapFields(fields: FormlyFieldConfig[]) {
-    return fields.map(f => {
+    return fields.map((f) => {
       // Bind an observable to `color` field.
       if (f.key === 'color') {
         f.type = 'radio';

@@ -6,11 +6,11 @@ import { createBuilder } from '@ngx-formly/core/testing';
 function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
     extensions: ['core', 'validation'],
-    onInit: c =>
+    onInit: (c) =>
       c.addConfig({
         validators: [
           { name: 'required', validation: Validators.required },
-          { name: 'asyncRequired', validation: ctrl => of(Validators.required(ctrl)) },
+          { name: 'asyncRequired', validation: (ctrl) => of(Validators.required(ctrl)) },
           {
             name: 'val_with_options',
             options: { foo: 'test' },
@@ -137,7 +137,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
     describe('without validation option', () => {
       it(`using function`, () => {
         const field = buildField({
-          validators: { custom: form => form.value },
+          validators: { custom: (form) => form.value },
         });
 
         validate(field, 'test', null);
@@ -147,7 +147,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       it(`using expression property`, () => {
         const field = buildField({
           validators: {
-            custom: { expression: control => control.value === 'test' },
+            custom: { expression: (control) => control.value === 'test' },
           },
         });
 
@@ -188,7 +188,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
         const field = buildField({
           validators: {
             validation: ['required'],
-            required: { expression: control => control.value === 'test' },
+            required: { expression: (control) => control.value === 'test' },
           },
         });
 
@@ -202,7 +202,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
     it(`using Promise`, () => {
       const field = buildField({
         asyncValidators: {
-          custom: (control: FormControl) => new Promise(resolve => resolve(control.value !== 'test')),
+          custom: (control: FormControl) => new Promise((resolve) => resolve(control.value !== 'test')),
         },
       });
 

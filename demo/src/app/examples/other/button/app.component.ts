@@ -16,7 +16,7 @@ export class AppComponent {
       type: 'button',
       templateOptions: {
         text: 'With Function',
-        onClick: $event => alert('You clicked me!'),
+        onClick: ($event) => alert('You clicked me!'),
       },
     },
     {
@@ -25,7 +25,7 @@ export class AppComponent {
         label: 'Click this guy',
         text: 'JSON Only',
         btnType: 'info',
-        onClick: $event => {
+        onClick: ($event) => {
           this.form.get('someInput').setValue('clicked!');
         },
         description: 'These can have labels and stuff too if you want....',

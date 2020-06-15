@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  isSmallDevice$ = this.breakpointObserver.observe([Breakpoints.XSmall]).pipe(map(result => result.matches));
+  isSmallDevice$ = this.breakpointObserver.observe([Breakpoints.XSmall]).pipe(map((result) => result.matches));
 
   menu = [
     {
