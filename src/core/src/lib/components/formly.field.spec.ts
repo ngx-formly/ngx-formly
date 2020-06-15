@@ -1,16 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injectable, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
 import { createFormlyFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
-import { tap } from 'rxjs/operators';
+import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyFieldConfigCache } from '../models';
+import { timer } from 'rxjs';
+import { FieldType } from '../templates/field.type';
 
 const renderComponent = (field: FormlyFieldConfig, options = {}) => {
   return createFormlyFieldComponent(field, {
     imports: [FormlyInputModule],
-    declarations: [FormlyWrapperFormFieldAsync],
+    declarations: [FormlyWrapperFormFieldAsync, FormlyTestOnPushComponent, FormlyParentComponent, FormlyChildComponent],
     config: {
+      types: [
+        {
+          name: 'on-push',
+          component: FormlyTestOnPushComponent,
+        },
+        {
+          name: 'parent',
+          component: FormlyParentComponent,
+        },
+        {
+          name: 'child',
+          component: FormlyChildComponent,
+        },
+      ],
       wrappers: [
         {
           name: 'form-field-async',
@@ -228,6 +244,50 @@ describe('FormlyField Component', () => {
     expect(queryAll('formly-type-input').length).toEqual(2);
   });
 
+  it('should update template options of OnPush FieldType #2191', async () => {
+    const options$ = timer(0).pipe(
+      map(() => [{ value: 5, label: 'Option 5' }]),
+      shareReplay(1),
+    );
+    const { field, query, detectChanges } = renderComponent({
+      key: 'push',
+      type: 'on-push',
+      templateOptions: {
+        options: [{ value: 1, label: 'Option 1' }],
+      },
+      expressionProperties: {
+        'templateOptions.options': options$,
+      },
+    });
+
+    const onPushInstance = query('formly-on-push-component').nativeElement;
+    expect(onPushInstance.textContent).toEqual(
+      JSON.stringify(
+        {
+          ...field.templateOptions,
+          options: [{ value: 1, label: 'Option 1' }],
+        },
+        null,
+        2,
+      ),
+    );
+
+    await options$.toPromise();
+
+    detectChanges();
+
+    expect(onPushInstance.textContent).toEqual(
+      JSON.stringify(
+        {
+          ...field.templateOptions,
+          options: [{ value: 5, label: 'Option 5' }],
+        },
+        null,
+        2,
+      ),
+    );
+  });
+
   describe('valueChanges', () => {
     it('should emit valueChanges on control value change', () => {
       const { field } = renderComponent({
@@ -379,6 +439,45 @@ describe('FormlyField Component', () => {
       expect(inputs[1].nativeElement.value).toEqual('First');
     });
   });
+
+  describe('component-level injectors', () => {
+    it('should inject parent service to child type', () => {
+      // should inject `ParentService` in `ChildComponent` without raising an error
+      const { field, query } = renderComponent({
+        type: 'parent',
+        fieldGroup: [
+          {
+            type: 'child',
+            fieldGroup: [{ key: 'email', type: 'input' }],
+          },
+        ],
+      });
+
+      const childInstance: FormlyChildComponent = query('formly-child').componentInstance;
+
+      expect(childInstance.parent).not.toBeNull();
+      expect(childInstance.wrapper).toBeNull();
+    });
+
+    it('should inject parent wrapper to child type', () => {
+      const { field, query } = renderComponent({
+        wrappers: ['form-field-async'],
+        templateOptions: { render: true },
+        fieldGroup: [
+          {
+            type: 'child',
+            fieldGroup: [{ key: 'email', type: 'input' }],
+          },
+        ],
+      });
+
+      // should inject `FormlyWrapperLabel` in `ChildComponent` without raising an error
+      const childInstance: FormlyChildComponent = query('formly-child').componentInstance;
+
+      expect(childInstance.wrapper).not.toBeNull();
+      expect(childInstance.parent).toBeNull();
+    });
+  });
 });
 
 @Component({
@@ -390,3 +489,38 @@ describe('FormlyField Component', () => {
   `,
 })
 class FormlyWrapperFormFieldAsync extends FieldWrapper {}
+
+@Component({
+  selector: 'formly-on-push-component',
+  template: '{{ to | json }}',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FormlyTestOnPushComponent extends FieldType {}
+
+@Injectable()
+export class ParentService {}
+
+@Component({
+  selector: 'formly-parent',
+  template: `
+    <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
+  `,
+  providers: [ParentService],
+})
+export class FormlyParentComponent extends FieldType {
+  constructor(public parent: ParentService) {
+    super();
+  }
+}
+
+@Component({
+  selector: 'formly-child',
+  template: `
+    <ng-content></ng-content>
+  `,
+})
+export class FormlyChildComponent extends FieldType {
+  constructor(@Optional() public parent: ParentService, @Optional() public wrapper: FormlyWrapperFormFieldAsync) {
+    super();
+  }
+}

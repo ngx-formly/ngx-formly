@@ -210,6 +210,27 @@ describe('Array Field Type', () => {
     expect(formControl.dirty).toBeTrue();
   });
 
+  it('should not mark the form dirty on Add/Remove', () => {
+    const { field, query, detectChanges } = renderComponent({
+      key: 'array',
+      type: 'array',
+    });
+
+    expect(field.form.dirty).toBeFalsy();
+
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+
+    arrayType.add(null, null, { markAsDirty: false });
+    detectChanges();
+    expect(field.form.dirty).toBeFalsy();
+
+    field.form.markAsPristine();
+
+    arrayType.remove(0, { markAsDirty: false });
+    detectChanges();
+    expect(field.form.dirty).toBeFalsy();
+  });
+
   it('should not change the form control instance when chinging the field position', () => {
     const { detectChanges, field, query } = renderComponent({
       model: { foo: [1, 2] },
