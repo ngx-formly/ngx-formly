@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
-function buildField({ model, options, form: formControl, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
+function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
     extensions: ['core', 'validation'],
     onInit: c =>
@@ -20,14 +20,8 @@ function buildField({ model, options, form: formControl, ...field }: FormlyField
       }),
   });
 
-  field = { key: 'name', formControl: new FormControl(), ...field };
-
-  builder.buildField({
-    model: model || {},
-    options,
-    formControl,
-    fieldGroup: [field],
-  });
+  field = { formControl: new FormControl(), ...field };
+  builder.buildField(field);
 
   return field;
 }
@@ -110,6 +104,14 @@ describe('FieldValidationExtension: initialise field validators', () => {
       field.templateOptions.required = true;
       expect(field.formControl.valid).toBeFalse();
     });
+
+    it(`should ignore fieldGroup with empty key`, () => {
+      const field = buildField({
+        templateOptions: { max: 4 },
+        fieldGroup: [],
+      });
+      expect(field._validators).toHaveLength(0);
+    });
   });
 
   describe('validators', () => {
@@ -146,7 +148,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       it(`using expression property`, () => {
         const field = buildField({
           validators: {
-            custom: { expression: (form, field) => (field.key === 'name' ? form.value : false) },
+            custom: { expression: control => control.value === 'test' },
           },
         });
 
@@ -187,7 +189,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
         const field = buildField({
           validators: {
             validation: ['required'],
-            required: { expression: (form, field) => (field.key === 'name' ? form.value : false) },
+            required: { expression: control => control.value === 'test' },
           },
         });
 

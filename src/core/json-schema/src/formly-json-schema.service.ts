@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import {
+  ɵdefineHiddenProp as defineHiddenProp,
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldInitialValue as getFieldInitialValue,
   ɵclone as clone,
@@ -131,8 +132,8 @@ export class FormlyJsonschema {
       }
       case 'string': {
         const schemaType = schema.type as JSONSchema7TypeName;
-        if (Array.isArray(schemaType) && (schemaType.indexOf('null') !== -1)) {
-          field.parsers = [v => isEmpty(v) ? null : v];
+        if (Array.isArray(schemaType) && schemaType.indexOf('null') !== -1) {
+          field.parsers = [v => (isEmpty(v) ? null : v)];
         }
 
         ['minLength', 'maxLength', 'pattern'].forEach(prop => {
@@ -360,12 +361,11 @@ export class FormlyJsonschema {
 
                 const normalizedValue = [value.length === 0 ? 0 : value[0]];
                 const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
+
                 control.setValue(formattedValue);
               }
 
-              return Array.isArray(control.value)
-                ? control.value.indexOf(i) === -1
-                : control.value !== i;
+              return Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
             },
           })),
         },

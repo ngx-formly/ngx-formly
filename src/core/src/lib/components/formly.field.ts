@@ -51,6 +51,7 @@ export class FormlyField
   private hooksObservers: Function[] = [];
 
   valueChangesUnsubscribe = () => {};
+
   constructor(
     private config: FormlyConfig,
     private renderer: Renderer2,
@@ -207,7 +208,7 @@ export class FormlyField
           return true;
         }),
 
-      if (control.value != getFieldValue(field)) {
+      if (control.value !== getFieldValue(field)) {
         valueChanges = valueChanges.pipe(startWith(control.value));
       }
 
@@ -226,7 +227,7 @@ export class FormlyField
           field.parsers.forEach(parserFn => (value = parserFn(value)));
         }
 
-        assignFieldValue(field, value);
+        assignFieldValue(field, value, true);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 

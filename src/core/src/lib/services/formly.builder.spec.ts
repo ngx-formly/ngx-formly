@@ -23,7 +23,7 @@ describe('FormlyFormBuilder service', () => {
     const field: FormlyFieldConfigCache = {};
     builder.buildField(field);
 
-    expect(field.formControl).toEqual(expect.any(FormGroup));
+    expect(field.form).toEqual(expect.any(FormGroup));
     expect(field.options).toEqual(
       expect.objectContaining({
         _resolver: null,
