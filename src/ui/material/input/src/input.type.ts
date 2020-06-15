@@ -15,19 +15,22 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [tabindex]="to.tabindex"
-      [placeholder]="to.placeholder">
+      [tabIndex]="to.tabindex"
+      [placeholder]="to.placeholder"
+    />
     <ng-template #numberTmp>
-      <input matInput
-             [id]="id"
-             type="number"
-             [readonly]="to.readonly"
-             [required]="to.required"
-             [errorStateMatcher]="errorStateMatcher"
-             [formControl]="formControl"
-             [formlyAttributes]="field"
-             [tabIndex]="to.tabindex"
-             [placeholder]="to.placeholder">
+      <input
+        matInput
+        [id]="id"
+        type="number"
+        [readonly]="to.readonly"
+        [required]="to.required"
+        [errorStateMatcher]="errorStateMatcher"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [tabIndex]="to.tabindex"
+        [placeholder]="to.placeholder"
+      />
     </ng-template>
   `,
 })

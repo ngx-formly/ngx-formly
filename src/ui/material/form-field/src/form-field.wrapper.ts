@@ -72,7 +72,7 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
 
   ngOnInit() {
     defineHiddenProp(this.field, '__formField__', this.formField);
-    ['prefix', 'suffix'].forEach(type =>
+    ['prefix', 'suffix'].forEach((type) =>
       observe<TemplateRef<any>>(
         this.field,
         ['templateOptions', type],
@@ -90,7 +90,7 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
       this.initialGapCalculated = true;
     }
 
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(origin => {
+    this.focusMonitor.monitor(this.elementRef, true).subscribe((origin) => {
       if (!origin && this.field.focus) {
         this.field.focus = false;
       }

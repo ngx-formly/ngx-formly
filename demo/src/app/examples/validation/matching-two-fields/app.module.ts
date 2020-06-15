@@ -30,9 +30,7 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      validators: [
-        { name: 'fieldMatch', validation: fieldMatchValidator },
-      ],
+      validators: [{ name: 'fieldMatch', validation: fieldMatchValidator }],
       validationMessages: [
         { name: 'required', message: 'This field is required' },
         { name: 'minlength', message: minlengthValidationMessages },

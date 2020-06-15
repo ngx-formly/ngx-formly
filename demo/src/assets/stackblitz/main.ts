@@ -7,7 +7,7 @@ import { AppModule } from './app/app.module';
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
-  .then(ref => {
+  .then((ref) => {
     // Ensure Angular destroys itself on hot reloads.
     if (window['ngRef']) {
       window['ngRef'].destroy();
@@ -16,4 +16,4 @@ platformBrowserDynamic()
 
     // Otherise, log the boot error
   })
-  .catch(err => console.error(err));
+  .catch((err) => console.error(err));

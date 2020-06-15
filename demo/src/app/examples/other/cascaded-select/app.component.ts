@@ -40,7 +40,7 @@ export class AppComponent {
         labelProp: 'name',
       },
       hooks: {
-        onInit: field => {
+        onInit: (field) => {
           const teams = [
             { id: '1', name: 'Bayern Munich', sportId: '1' },
             { id: '2', name: 'Real Madrid', sportId: '1' },
@@ -50,7 +50,7 @@ export class AppComponent {
           const sportControl = this.form.get('sport');
           field.templateOptions.options = sportControl.valueChanges.pipe(
             startWith(sportControl.value),
-            map(sportId => teams.filter(team => team.sportId === sportId)),
+            map((sportId) => teams.filter((team) => team.sportId === sportId)),
             tap(() => field.formControl.setValue(null)),
           );
         },
@@ -66,7 +66,7 @@ export class AppComponent {
         labelProp: 'name',
       },
       hooks: {
-        onInit: field => {
+        onInit: (field) => {
           const players = [
             { id: '1', name: 'Bayern Munich (Player 1)', teamId: '1' },
             { id: '2', name: 'Bayern Munich (Player 2)', teamId: '1' },
@@ -80,7 +80,7 @@ export class AppComponent {
           const teamControl = this.form.get('team');
           field.templateOptions.options = teamControl.valueChanges.pipe(
             startWith(teamControl.value),
-            map(teamId => players.filter(player => player.teamId === teamId)),
+            map((teamId) => players.filter((player) => player.teamId === teamId)),
             tap(() => field.formControl.setValue(null)),
           );
         },

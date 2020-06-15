@@ -101,14 +101,14 @@ describe('FormlyField Component', () => {
     };
 
     const hooks = f.hooks;
-    Object.keys(f.hooks).forEach(hook => {
+    Object.keys(f.hooks).forEach((hook) => {
       spyOn(hooks, hook as any);
     });
 
     const { fixture, field } = renderComponent(f);
     fixture.destroy();
 
-    Object.keys(f.hooks).forEach(name => {
+    Object.keys(f.hooks).forEach((name) => {
       expect(hooks[name]).toHaveBeenCalledWith(field);
     });
   });
@@ -502,9 +502,7 @@ export class ParentService {}
 
 @Component({
   selector: 'formly-parent',
-  template: `
-    <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
-  `,
+  template: ` <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field> `,
   providers: [ParentService],
 })
 export class FormlyParentComponent extends FieldType {
@@ -515,9 +513,7 @@ export class FormlyParentComponent extends FieldType {
 
 @Component({
   selector: 'formly-child',
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
 })
 export class FormlyChildComponent extends FieldType {
   constructor(@Optional() public parent: ParentService, @Optional() public wrapper: FormlyWrapperFormFieldAsync) {

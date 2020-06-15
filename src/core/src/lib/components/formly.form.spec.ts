@@ -18,7 +18,7 @@ const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
     model: {},
     options: {},
     fields: [],
-    modelChange: model => {},
+    modelChange: (model) => {},
     ...inputs,
   };
 
@@ -376,7 +376,7 @@ describe('FormlyForm Component', () => {
             hooks: {
               // Changing `field.hide` during `afterViewInit` throw the following error:
               // Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'display: '. Current value: 'display: none'.
-              afterViewInit: f => f.form.get('bar').setValue('ops'),
+              afterViewInit: (f) => f.form.get('bar').setValue('ops'),
             },
           },
           { key: 'bar' },
@@ -544,7 +544,7 @@ describe('FormlyForm Component', () => {
       let titleField;
       setInputs({
         model: { title: 'foo' },
-        fields: [{ key: 'title', hooks: { onInit: f => (titleField = f) } }],
+        fields: [{ key: 'title', hooks: { onInit: (f) => (titleField = f) } }],
       });
 
       expect(model).not.toBe(titleField.model);

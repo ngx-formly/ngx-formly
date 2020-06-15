@@ -43,11 +43,7 @@ import { AppComponent } from './app.component';
       },
     }),
   ],
-  providers: [
-    { provide: FORMLY_CONFIG, multi: true, useFactory: formlyValidationConfig, deps: [TranslateService] },
-  ],
-  declarations: [
-    AppComponent,
-  ],
+  providers: [{ provide: FORMLY_CONFIG, multi: true, useFactory: formlyValidationConfig, deps: [TranslateService] }],
+  declarations: [AppComponent],
 })
 export class AppModule {}
