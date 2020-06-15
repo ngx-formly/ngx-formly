@@ -14,8 +14,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
         [labelPosition]="to.labelPosition"
         [checked]="isChecked(option)"
         [disabled]="formControl.disabled"
-        (change)="onChange(option.value, $event.checked)">
-          {{ option.label }}
+        (change)="onChange(option.value, $event.checked)"
+      >
+        {{ option.label }}
       </mat-checkbox>
     </ng-container>
   `,
@@ -37,7 +38,7 @@ export class FormlyFieldMultiCheckbox extends FieldType {
       this.formControl.patchValue(
         checked
           ? [...(this.formControl.value || []), value]
-          : [...(this.formControl.value || [])].filter(o => o !== value),
+          : [...(this.formControl.value || [])].filter((o) => o !== value),
       );
     } else {
       this.formControl.patchValue({ ...this.formControl.value, [value]: checked });
@@ -51,10 +52,6 @@ export class FormlyFieldMultiCheckbox extends FieldType {
   isChecked(option: any) {
     const value = this.formControl.value;
 
-    return value && (
-      this.to.type === 'array'
-        ? (value.indexOf(option.value) !== -1)
-        : value[option.value]
-    );
+    return value && (this.to.type === 'array' ? value.indexOf(option.value) !== -1 : value[option.value]);
   }
 }

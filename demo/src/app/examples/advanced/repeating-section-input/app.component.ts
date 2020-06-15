@@ -30,8 +30,8 @@ export class AppComponent {
         onInit: (field) => {
           return field.formControl.valueChanges.pipe(
             startWith(field.formControl.value),
-            filter(v => v > 0),
-            tap(value => {
+            filter((v) => v > 0),
+            tap((value) => {
               this.model.investments.length = value;
               this.model = {
                 ...this.model,

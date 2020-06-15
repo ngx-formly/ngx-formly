@@ -78,7 +78,7 @@ export class AppComponent {
   ];
 
   constructor() {
-    this.fetch(data => (this.model = data));
+    this.fetch((data) => (this.model = data));
   }
 
   submit() {

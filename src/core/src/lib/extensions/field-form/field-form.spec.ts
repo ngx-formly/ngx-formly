@@ -189,7 +189,7 @@ describe('FieldFormExtension', () => {
         {
           fieldGroup: [],
           validators: {
-            custom: { expression: control => control.value === 'test' },
+            custom: { expression: (control) => control.value === 'test' },
           },
         },
       ],

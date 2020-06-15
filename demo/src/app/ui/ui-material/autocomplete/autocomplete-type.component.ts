@@ -33,7 +33,7 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit, Afte
     super.ngOnInit();
     this.filter = this.formControl.valueChanges.pipe(
       startWith(''),
-      switchMap(term => this.to.filter(term)),
+      switchMap((term) => this.to.filter(term)),
     );
   }
 

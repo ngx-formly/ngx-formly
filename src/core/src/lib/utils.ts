@@ -107,7 +107,7 @@ export function getFieldValue(field: FormlyFieldConfig): any {
 }
 
 export function reverseDeepMerge(dest: any, ...args: any[]) {
-  args.forEach(src => {
+  args.forEach((src) => {
     for (const srcArg in src) {
       if (isNil(dest[srcArg]) || isBlankString(dest[srcArg])) {
         dest[srcArg] = clone(src[srcArg]);
@@ -177,7 +177,7 @@ export function clone(value: any): any {
   }
 
   if (Array.isArray(value)) {
-    return value.slice(0).map(v => clone(v));
+    return value.slice(0).map((v) => clone(v));
   }
 
   // best way to clone a js object maybe
@@ -242,11 +242,11 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
       Object.defineProperty(target, key, {
         configurable: true,
         get: () => state.value,
-        set: currentValue => {
+        set: (currentValue) => {
           if (currentValue !== state.value) {
             const previousValue = state.value;
             state.value = currentValue;
-            state.onChange.forEach(changeFn => changeFn({ previousValue, currentValue, firstChange: false }));
+            state.onChange.forEach((changeFn) => changeFn({ previousValue, currentValue, firstChange: false }));
           }
         },
       });
@@ -258,7 +258,7 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
       state.value = value;
     },
     unsubscribe() {
-      state.onChange = state.onChange.filter(changeFn => changeFn !== setFn);
+      state.onChange = state.onChange.filter((changeFn) => changeFn !== setFn);
     },
   };
 }
