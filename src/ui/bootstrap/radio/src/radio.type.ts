@@ -5,7 +5,8 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-radio',
   template: `
     <div>
-      <div *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
+      <div
+        *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
         [ngClass]="{
           'form-check': to.formCheck.indexOf('custom') === -1,
           'form-check-inline': to.formCheck === 'inline',
@@ -29,8 +30,9 @@ import { FieldType } from '@ngx-formly/core';
         <label
           [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
           [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
-          [for]="id + '_' + i">
+          [for]="id + '_' + i"
         >
+          >
           {{ option.label }}
         </label>
       </div>

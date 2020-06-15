@@ -107,7 +107,7 @@ export class FormlyJsonschema {
       }
       case 'number':
       case 'integer': {
-        field.parsers = [v => (isEmpty(v) ? null : Number(v))];
+        field.parsers = [(v) => (isEmpty(v) ? null : Number(v))];
         if (schema.hasOwnProperty('minimum')) {
           field.templateOptions.min = schema.minimum;
         }
@@ -151,10 +151,10 @@ export class FormlyJsonschema {
       case 'string': {
         const schemaType = schema.type as JSONSchema7TypeName;
         if (Array.isArray(schemaType) && schemaType.indexOf('null') !== -1) {
-          field.parsers = [v => (isEmpty(v) ? null : v)];
+          field.parsers = [(v) => (isEmpty(v) ? null : v)];
         }
 
-        ['minLength', 'maxLength', 'pattern'].forEach(prop => {
+        ['minLength', 'maxLength', 'pattern'].forEach((prop) => {
           if (schema.hasOwnProperty(prop)) {
             field.templateOptions[prop] = schema[prop];
           }
@@ -344,14 +344,14 @@ export class FormlyJsonschema {
       }
 
       // resolve to min value
-      ['maxLength', 'maximum', 'exclusiveMaximum', 'maxItems', 'maxProperties'].forEach(prop => {
+      ['maxLength', 'maximum', 'exclusiveMaximum', 'maxItems', 'maxProperties'].forEach((prop) => {
         if (!isEmpty(base[prop]) && !isEmpty(schema[prop])) {
           base[prop] = base[prop] < schema[prop] ? base[prop] : schema[prop];
         }
       });
 
       // resolve to max value
-      ['minLength', 'minimum', 'exclusiveMinimum', 'minItems', 'minProperties'].forEach(prop => {
+      ['minLength', 'minimum', 'exclusiveMinimum', 'minItems', 'minProperties'].forEach((prop) => {
         if (!isEmpty(base[prop]) && !isEmpty(schema[prop])) {
           base[prop] = base[prop] > schema[prop] ? base[prop] : schema[prop];
         }
@@ -456,11 +456,11 @@ export class FormlyJsonschema {
     const deps = {};
     const schemaDeps = {};
 
-    Object.keys(schema.dependencies || {}).forEach(prop => {
+    Object.keys(schema.dependencies || {}).forEach((prop) => {
       const dependency = schema.dependencies[prop] as JSONSchema7;
       if (Array.isArray(dependency)) {
         // Property dependencies
-        dependency.forEach(dep => {
+        dependency.forEach((dep) => {
           if (!deps[dep]) {
             deps[dep] = [prop];
           } else {
@@ -511,7 +511,7 @@ export class FormlyJsonschema {
 
   private toEnumOptions(schema: JSONSchema7) {
     if (schema.enum) {
-      return schema.enum.map(value => ({ value, label: value }));
+      return schema.enum.map((value) => ({ value, label: value }));
     }
 
     const toEnum = (s: JSONSchema7) => {

@@ -20,7 +20,7 @@ export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   const control = field.formControl;
   const opts = { emitEvent };
   if (form instanceof FormArray) {
-    const key = form.controls.findIndex(c => c === control);
+    const key = form.controls.findIndex((c) => c === control);
     if (key !== -1) {
       updateControl(form, opts, () => form.removeAt(key));
     }
@@ -124,7 +124,7 @@ function updateControl(form: FormGroup | FormArray, opts: { emitEvent: boolean }
   if (form instanceof FormGroup && !form['__patchForEachChild']) {
     defineHiddenProp(form, '__patchForEachChild', true);
     (form as any)._forEachChild = (cb: Function) => {
-      Object.keys(form.controls).forEach(k => form.controls[k] && cb(form.controls[k], k));
+      Object.keys(form.controls).forEach((k) => form.controls[k] && cb(form.controls[k], k));
     };
   }
 
@@ -133,7 +133,7 @@ function updateControl(form: FormGroup | FormArray, opts: { emitEvent: boolean }
    */
   const updateValueAndValidity = form.updateValueAndValidity.bind(form);
   if (opts.emitEvent === false) {
-    form.updateValueAndValidity = opts => {
+    form.updateValueAndValidity = (opts) => {
       updateValueAndValidity({ ...(opts || {}), emitEvent: false });
     };
   }

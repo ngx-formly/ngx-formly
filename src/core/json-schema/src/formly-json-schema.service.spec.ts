@@ -567,7 +567,7 @@ describe('Service: FormlyJsonschema', () => {
             enum: [1, 2, 3, 4, 5],
           };
 
-          const enumOptions = schemaEnum => schemaEnum.map(value => ({ value, label: value }));
+          const enumOptions = (schemaEnum) => schemaEnum.map((value) => ({ value, label: value }));
 
           // labelProp and valueProp should be a function that returns what it is given
           const config = formlyJsonschema.toFieldConfig(schemaStringEnum);

@@ -21,7 +21,8 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       [readonly]="to.readonly"
       [required]="to.required"
       (dateInput)="to.datepickerOptions.dateInput(field, $event)"
-      (dateChange)="to.datepickerOptions.dateChange(field, $event)">
+      (dateChange)="to.datepickerOptions.dateChange(field, $event)"
+    />
     />
     <ng-template #datepickerToggle>
       <mat-datepicker-toggle [disabled]="to.disabled" [for]="picker"></mat-datepicker-toggle>

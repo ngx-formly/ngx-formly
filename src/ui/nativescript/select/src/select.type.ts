@@ -12,14 +12,14 @@ import { action } from 'tns-core-modules/ui/dialogs';
 })
 export class FormlyFieldSelect extends FieldType {
   tap(options) {
-    action({ title: this.to.label, actions: options.map(o => o.label) }).then(selectedAction =>
-      this.formControl.patchValue(options.find(o => o.label === selectedAction).value),
+    action({ title: this.to.label, actions: options.map((o) => o.label) }).then((selectedAction) =>
+      this.formControl.patchValue(options.find((o) => o.label === selectedAction).value),
     );
   }
 
   selectedItem(options) {
     if (this.formControl.value) {
-      return options.find(o => o.value === this.formControl.value).label;
+      return options.find((o) => o.value === this.formControl.value).label;
     }
 
     return this.to.placeholder;

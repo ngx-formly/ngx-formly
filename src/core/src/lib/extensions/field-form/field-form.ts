@@ -151,8 +151,8 @@ export class FieldFormExtension implements FormlyExtension {
 
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter(f => f && !f.key && f.fieldGroup)
-        .forEach(f => validators.push(...this.mergeValidators(f, type)));
+        .filter((f) => f && !f.key && f.fieldGroup)
+        .forEach((f) => validators.push(...this.mergeValidators(f, type)));
     }
 
     return validators;

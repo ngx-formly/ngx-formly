@@ -67,6 +67,6 @@ export class FormlyModule {
       return;
     }
 
-    configs.forEach(config => configService.addConfig(config));
+    configs.forEach((config) => configService.addConfig(config));
   }
 }

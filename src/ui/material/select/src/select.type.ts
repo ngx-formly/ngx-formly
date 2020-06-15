@@ -100,11 +100,11 @@ export class FormlyFieldSelect extends FieldType {
   private getSelectAllValue(options: any[]) {
     if (!this.selectAllValue || options !== this.selectAllValue.options) {
       const flatOptions: any[] = [];
-      options.forEach(o => (o.group ? flatOptions.push(...o.group) : flatOptions.push(o)));
+      options.forEach((o) => (o.group ? flatOptions.push(...o.group) : flatOptions.push(o)));
 
       this.selectAllValue = {
         options,
-        value: flatOptions.filter(o => !o.disabled).map(o => o.value),
+        value: flatOptions.filter((o) => !o.disabled).map((o) => o.value),
       };
     }
 

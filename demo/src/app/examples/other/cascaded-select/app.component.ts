@@ -40,7 +40,7 @@ export class AppComponent {
         labelProp: 'name',
       },
       hooks: {
-        onInit: field => {
+        onInit: (field) => {
           const teams = [
             { id: '1', name: 'Bayern Munich', sportId: '1' },
             { id: '2', name: 'Real Madrid', sportId: '1' },
@@ -73,7 +73,7 @@ export class AppComponent {
         labelProp: 'name',
       },
       hooks: {
-        onInit: field => {
+        onInit: (field) => {
           const players = [
             { id: '1', name: 'Bayern Munich (Player 1)', teamId: '1' },
             { id: '2', name: 'Bayern Munich (Player 2)', teamId: '1' },
