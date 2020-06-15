@@ -2,6 +2,7 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { FormlyInputModule, createComponent } from '@ngx-formly/core/testing';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
