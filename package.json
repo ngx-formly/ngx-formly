@@ -122,7 +122,7 @@
     "lint-staged": "^9.5.0",
     "markdown-loader": "^5.1.0",
     "ng-packagr": "^5.7.1",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.5",
     "raw-loader": "^3.1.0",
     "remap-istanbul": "^0.13.0",
     "standard-version": "^7.0.1",

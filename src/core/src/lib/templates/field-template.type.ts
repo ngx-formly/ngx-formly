@@ -8,12 +8,10 @@ import { FieldType } from './field.type';
 })
 export class FormlyTemplateType extends FieldType {
   get template() {
-    if (this.field && (this.field.template !== this.innerHtml.template)) {
+    if (this.field && this.field.template !== this.innerHtml.template) {
       this.innerHtml = {
         template: this.field.template,
-        content: this.to.safeHtml
-          ? this.sanitizer.bypassSecurityTrustHtml(this.field.template)
-          : this.field.template,
+        content: this.to.safeHtml ? this.sanitizer.bypassSecurityTrustHtml(this.field.template) : this.field.template,
       };
     }
 

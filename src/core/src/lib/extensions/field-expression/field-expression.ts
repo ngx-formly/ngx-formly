@@ -37,7 +37,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           field._expressions[key] = this.parseExpressions(field, key, expr);
         } else if (expr instanceof Observable) {
           const subscribe = () =>
-            (expr as Observable<any>).subscribe(v => {
+            (expr as Observable<any>).subscribe((v) => {
               this.evalExpr(field, key, v);
               if (field.options && field.options._markForCheck) {
                 field.options._markForCheck(field);
@@ -139,7 +139,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     if (field.fieldGroup) {
-      field.fieldGroup.forEach(f => this.checkExpressions(f, ignoreCache));
+      field.fieldGroup.forEach((f) => this.checkExpressions(f, ignoreCache));
     }
 
     if (markForCheck && field.options && field.options._markForCheck) {
@@ -150,8 +150,8 @@ export class FieldExpressionExtension implements FormlyExtension {
   private changeDisabledState(field: FormlyFieldConfig, value: boolean) {
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter(f => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('templateOptions.disabled'))
-        .forEach(f => this.changeDisabledState(f, value));
+        .filter((f) => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('templateOptions.disabled'))
+        .forEach((f) => this.changeDisabledState(f, value));
     }
 
     if (field.key && field.templateOptions.disabled !== value) {

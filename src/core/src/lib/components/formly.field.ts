@@ -28,9 +28,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-field',
-  template: `
-    <ng-template #container></ng-template>
-  `,
+  template: ` <ng-template #container></ng-template> `,
 })
 export class FormlyField
   implements
@@ -89,8 +87,8 @@ export class FormlyField
 
   ngOnDestroy() {
     this.resetRefs(this.field);
-    this.hostObservers.forEach(hostObserver => hostObserver.unsubscribe());
-    this.hooksObservers.forEach(unsubscribe => unsubscribe());
+    this.hostObservers.forEach((hostObserver) => hostObserver.unsubscribe());
+    this.hooksObservers.forEach((unsubscribe) => unsubscribe());
     this.valueChangesUnsubscribe();
     this.triggerHook('onDestroy');
   }
@@ -159,7 +157,7 @@ export class FormlyField
       return;
     }
 
-    this.hostObservers.forEach(hostObserver => hostObserver.unsubscribe());
+    this.hostObservers.forEach((hostObserver) => hostObserver.unsubscribe());
     this.hostObservers = [
       observe<boolean>(this.field, ['hide'], ({ firstChange, currentValue }) => {
         if (!this.config.extras.lazyRender) {
@@ -186,7 +184,7 @@ export class FormlyField
   private resetRefs(field: FormlyFieldConfigCache) {
     if (field) {
       if (field._componentRefs) {
-        field._componentRefs = field._componentRefs.filter(ref => this.componentRefs.indexOf(ref) === -1);
+        field._componentRefs = field._componentRefs.filter((ref) => this.componentRefs.indexOf(ref) === -1);
       } else {
         defineHiddenProp(this.field, '_componentRefs', []);
       }
@@ -210,14 +208,14 @@ export class FormlyField
         valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
       }
 
-      const sub = valueChanges.subscribe(value => {
+      const sub = valueChanges.subscribe((value) => {
         // workaround for https://github.com/angular/angular/issues/13792
         if (control instanceof FormControl && control['_fields'] && control['_fields'].length > 1) {
           control.patchValue(value, { emitEvent: false, onlySelf: true });
         }
 
         if (field.parsers && field.parsers.length > 0) {
-          field.parsers.forEach(parserFn => (value = parserFn(value)));
+          field.parsers.forEach((parserFn) => (value = parserFn(value)));
         }
 
         assignFieldValue(field, value, true);

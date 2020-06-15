@@ -37,18 +37,18 @@ export class FormlyFormBuilder {
       return;
     }
 
-    this.getExtensions().forEach(extension => extension.prePopulate && extension.prePopulate(field));
-    this.getExtensions().forEach(extension => extension.onPopulate && extension.onPopulate(field));
+    this.getExtensions().forEach((extension) => extension.prePopulate && extension.prePopulate(field));
+    this.getExtensions().forEach((extension) => extension.onPopulate && extension.onPopulate(field));
 
     if (field.fieldGroup) {
-      field.fieldGroup.forEach(f => this._buildField(f));
+      field.fieldGroup.forEach((f) => this._buildField(f));
     }
 
-    this.getExtensions().forEach(extension => extension.postPopulate && extension.postPopulate(field));
+    this.getExtensions().forEach((extension) => extension.postPopulate && extension.postPopulate(field));
   }
 
   private getExtensions() {
-    return Object.keys(this.config.extensions).map(name => this.config.extensions[name]);
+    return Object.keys(this.config.extensions).map((name) => this.config.extensions[name]);
   }
 
   private _setOptions(field: FormlyFieldConfigCache) {

@@ -19,9 +19,7 @@ import { clearControl } from '../extensions/field-form/utils';
 
 @Component({
   selector: 'formly-form',
-  template: `
-    <formly-field *ngFor="let f of fields" [field]="f"></formly-field>
-  `,
+  template: ` <formly-field *ngFor="let f of fields" [field]="f"></formly-field> `,
   providers: [FormlyFormBuilder],
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
