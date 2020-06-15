@@ -1,5 +1,12 @@
 import { FormlyExtension, FormlyFieldConfigCache } from '../../models';
-import { FormGroup, FormControl, AbstractControlOptions, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  AbstractControlOptions,
+  Validators,
+  ValidatorFn,
+  AsyncValidatorFn,
+} from '@angular/forms';
 import { getFieldValue, defineHiddenProp } from '../../utils';
 import { registerControl, findControl, updateValidity as updateControlValidity } from './utils';
 import { of } from 'rxjs';
@@ -12,22 +19,20 @@ export class FieldFormExtension implements FormlyExtension {
       this.root = field;
     }
 
-    Object.defineProperty(field, 'form', {
-      get: () => (field.parent ? field.parent.formControl : field.formControl),
-      configurable: true,
-    });
+    if (field.parent) {
+      Object.defineProperty(field, 'form', {
+        get: () => field.parent.formControl,
+        configurable: true,
+      });
+    }
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (!field.parent) {
-      return;
-    }
-
     if (field.key) {
       this.addFormControl(field);
     }
 
-    if (field.form && field.fieldGroup && !field.key) {
+    if (field.form && field.hasOwnProperty('fieldGroup') && !field.key) {
       defineHiddenProp(field, 'formControl', field.form);
     }
   }
@@ -39,7 +44,7 @@ export class FieldFormExtension implements FormlyExtension {
 
     this.root = null;
     const updateValidity = this.setValidators(field);
-    updateValidity && (field.formControl as any)._updateTreeValidity();
+    updateValidity && (field.form as any)._updateTreeValidity();
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {
