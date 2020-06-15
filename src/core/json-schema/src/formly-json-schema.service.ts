@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { ɵreverseDeepMerge as reverseDeepMerge, ɵgetFieldInitialValue as getFieldInitialValue } from '@ngx-formly/core';
+import {
+  ɵdefineHiddenProp as defineHiddenProp,
+  ɵreverseDeepMerge as reverseDeepMerge,
+  ɵgetFieldInitialValue as getFieldInitialValue,
+} from '@ngx-formly/core';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -107,8 +111,8 @@ export class FormlyJsonschema {
       }
       case 'string': {
         const schemaType = schema.type as JSONSchema7TypeName;
-        if (Array.isArray(schemaType) && (schemaType.indexOf('null') !== -1)) {
-          field.parsers = [v => isEmpty(v) ? null : v];
+        if (Array.isArray(schemaType) && schemaType.indexOf('null') !== -1) {
+          field.parsers = [v => (isEmpty(v) ? null : v)];
         }
 
         ['minLength', 'maxLength', 'pattern'].forEach(prop => {
@@ -323,14 +327,12 @@ export class FormlyJsonschema {
 
                 const normalizedValue = [value.length === 0 ? 0 : value[0]];
                 const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
-                selectField.formControl = new FormControl(formattedValue);
+                defineHiddenProp(selectField, 'formControl', new FormControl(formattedValue));
               }
 
               const control = selectField.formControl;
 
-              return Array.isArray(control.value)
-                ? control.value.indexOf(i) === -1
-                : control.value !== i;
+              return Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
             },
           })),
         },

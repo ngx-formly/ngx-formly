@@ -31,14 +31,14 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
 
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
 
-export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
+export function assignFieldValue(field: FormlyFieldConfigCache, value: any, autoClear = false) {
   let paths = getKeyPath(field);
   while (field.parent) {
     field = field.parent;
     paths = [...getKeyPath(field), ...paths];
   }
 
-  if (value == null && field['autoClear'] && !field.formControl.parent) {
+  if (autoClear && value === undefined && field['autoClear'] && !field.formControl.parent) {
     const k = paths.pop();
     const m = paths.reduce((model, path) => model[path] || {}, field.parent.model);
     delete m[k];
@@ -80,11 +80,7 @@ export function getFieldInitialValue(field: FormlyFieldConfig) {
 }
 
 export function getFieldValue(field: FormlyFieldConfig): any {
-  if (!field.parent) {
-    return undefined;
-  }
-
-  let model = field.parent.model;
+  let model = field.parent ? field.parent.model : field.model;
   for (const path of getKeyPath(field)) {
     if (!model) {
       return model;
