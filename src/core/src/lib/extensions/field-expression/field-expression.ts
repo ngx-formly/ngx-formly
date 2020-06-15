@@ -72,23 +72,25 @@ export class FieldExpressionExtension implements FormlyExtension {
     if (!field.options._checkField) {
       let checkLocked = false;
       field.options._checkField = (f, ignoreCache) => {
-        if (!checkLocked) {
-          checkLocked = true;
-          reduceFormUpdateValidityCalls(f.formControl, () => {
-            const fieldChanged = this.checkExpressions(f, ignoreCache);
-            const options = field.options;
-            options._hiddenFieldsForCheck.sort(f => (f.hide ? -1 : 1)).forEach(f => this.changeHideState(f, f.hide, !ignoreCache));
-
-            options._hiddenFieldsForCheck = [];
-            if (fieldChanged) {
-              this.checkExpressions(field);
-              if (field.options && field.options._markForCheck) {
-                field.options._markForCheck(field);
-              }
-            }
-          });
-          checkLocked = false;
+        if (checkLocked) {
+          return;
         }
+
+        checkLocked = true;
+        reduceFormUpdateValidityCalls(f.formControl, () => {
+          const fieldChanged = this.checkExpressions(f, ignoreCache);
+          const options = field.options;
+          options._hiddenFieldsForCheck.sort(f => (f.hide ? -1 : 1)).forEach(f => this.changeHideState(f, f.hide, !ignoreCache));
+
+          options._hiddenFieldsForCheck = [];
+          if (fieldChanged) {
+            this.checkExpressions(field);
+            if (field.options && field.options._markForCheck) {
+              field.options._markForCheck(field);
+            }
+          }
+        });
+        checkLocked = false;
       };
     }
   }
@@ -187,7 +189,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           }
         }
       } else if (hide === false) {
-        if (field.resetOnHide && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+        if (field.resetOnHide && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
           assignFieldValue(field, field.defaultValue);
         }
         registerControl(field, undefined, true);

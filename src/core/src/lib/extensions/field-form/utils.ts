@@ -75,7 +75,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     }
   }
 
-  if (!field.form || !field.key || !field.parent) {
+  if (!field.form || !field.key) {
     return;
   }
 
@@ -104,7 +104,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     updateControl(
       form,
       { emitEvent },
-      () => form.setControl(key, control),
+      () => (form as FormGroup).setControl(key, control),
     );
   }
 }

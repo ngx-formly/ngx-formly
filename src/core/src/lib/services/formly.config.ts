@@ -126,7 +126,7 @@ export class FormlyConfig {
       return type['_componentRef'];
     }
 
-    const { _resolver, _injector } = field.parent.options;
+    const { _resolver, _injector } = field.options;
     if (!_resolver || !_injector) {
       return null;
     }

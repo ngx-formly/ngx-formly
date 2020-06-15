@@ -2,7 +2,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
-function buildField({ model, options, form: formControl, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
+function buildField({ model, options, form, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
     extensions: ['core', 'validation', 'form'],
   });
@@ -10,7 +10,7 @@ function buildField({ model, options, form: formControl, ...field }: FormlyField
   builder.buildField({
     model: model || {},
     options,
-    formControl,
+    form,
     fieldGroup: [field],
   });
 
@@ -181,6 +181,21 @@ describe('FieldFormExtension', () => {
 
     expect(formControl.setValidators).not.toHaveBeenCalled();
     expect(formControl.setAsyncValidators).not.toHaveBeenCalled();
+  });
+
+  it('should validate fieldGroup with empty key', () => {
+    const { form } = buildField({
+      fieldGroup: [
+        {
+          fieldGroup: [],
+          validators: {
+            custom: { expression: control => control.value === 'test' },
+          },
+        },
+      ],
+    });
+
+    expect(form.errors).toEqual({ custom: true });
   });
 
   describe('templateOptions disabled state', () => {
