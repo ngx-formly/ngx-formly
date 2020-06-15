@@ -74,9 +74,9 @@ export class CoreExtension implements FormlyExtension {
     }
 
     if (!options._markForCheck) {
-      options._markForCheck = field => {
+      options._markForCheck = (field) => {
         if (field._componentRefs) {
-          field._componentRefs.forEach(ref => {
+          field._componentRefs.forEach((ref) => {
             // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
             const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
             changeDetectorRef.markForCheck();
@@ -84,7 +84,7 @@ export class CoreExtension implements FormlyExtension {
         }
 
         if (field.fieldGroup) {
-          field.fieldGroup.forEach(f => options._markForCheck(f));
+          field.fieldGroup.forEach((f) => options._markForCheck(f));
         }
       };
     }
@@ -93,7 +93,7 @@ export class CoreExtension implements FormlyExtension {
       options.resetModel = (model?: any) => {
         model = clone(isNil(model) ? options._initialModel : model);
         if (field.model) {
-          Object.keys(field.model).forEach(k => delete field.model[k]);
+          Object.keys(field.model).forEach((k) => delete field.model[k]);
           Object.assign(field.model, model || {});
         }
 

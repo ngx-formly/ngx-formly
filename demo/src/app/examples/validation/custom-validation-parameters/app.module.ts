@@ -24,8 +24,6 @@ export function dateFutureValidator(control: FormControl, field: FormlyFieldConf
       ],
     }),
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

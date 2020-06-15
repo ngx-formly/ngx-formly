@@ -101,11 +101,18 @@ export class FormlyFieldSelect extends FieldType {
       const id = s._idCounter;
       writeValue(value);
       if (value === null) {
-        this.ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
-          if (id !== s._idCounter && s._getOptionId(value) === null && s._elementRef.nativeElement.selectedIndex !== -1) {
-            writeValue(value);
-          }
-        });
+        this.ngZone.onStable
+          .asObservable()
+          .pipe(take(1))
+          .subscribe(() => {
+            if (
+              id !== s._idCounter &&
+              s._getOptionId(value) === null &&
+              s._elementRef.nativeElement.selectedIndex !== -1
+            ) {
+              writeValue(value);
+            }
+          });
       }
     };
   }

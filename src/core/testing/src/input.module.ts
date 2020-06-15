@@ -5,9 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'formly-type-input',
-  template: `
-    <input type="text" [formControl]="formControl" [formlyAttributes]="field" />
-  `,
+  template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
 })
 export class FormlyFieldInput extends FieldType {}
 
