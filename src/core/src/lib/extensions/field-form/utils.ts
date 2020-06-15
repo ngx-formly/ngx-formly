@@ -72,7 +72,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     }
   }
 
-  if (!field.form || !field.key || !field.parent) {
+  if (!field.form || !field.key) {
     return;
   }
 
@@ -98,7 +98,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
 
   const key = paths[paths.length - 1];
   if (!field._hide && form.get([key]) !== control) {
-    updateControl(form, { emitEvent }, () => form.setControl(key, control));
+    updateControl(form, { emitEvent }, () => (form as FormGroup).setControl(key, control));
   }
 }
 

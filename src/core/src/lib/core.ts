@@ -3,7 +3,7 @@ export { FormlyFieldConfig, FormlyTemplateOptions, FormlyFormOptions, ConfigOpti
 export { FormlyField } from './components/formly.field';
 export { FormlyAttributes as ɵFormlyAttributes } from './templates/formly.attributes';
 export { FORMLY_CONFIG, FormlyConfig } from './services/formly.config';
-export { FormlyFormBuilder } from './services/formly.form.builder';
+export { FormlyFormBuilder } from './services/formly.builder';
 export { FieldType } from './templates/field.type';
 export { FieldArrayType } from './templates/field-array.type';
 export { FieldWrapper } from './templates/field.wrapper';
