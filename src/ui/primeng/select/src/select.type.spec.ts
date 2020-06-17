@@ -27,7 +27,7 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown div').triggerEventHandler('click', { target: {} });
+    query('p-dropdown div').triggerEventHandler('click', { target: { isSameNode: () => false } });
     expect(queryAll('p-dropdownItem')).toHaveLength(3);
   });
 
@@ -47,7 +47,7 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown div').triggerEventHandler('click', { target: {} });
+    query('p-dropdown div').triggerEventHandler('click', { target: { isSameNode: () => false } });
     expect(queryAll('p-dropdownItem')).toHaveLength(3);
   });
 
@@ -63,7 +63,7 @@ describe('ui-primeng: Select Type', () => {
       },
     });
 
-    query('p-dropdown div').triggerEventHandler('click', { target: {} });
+    query('p-dropdown div').triggerEventHandler('click', { target: { isSameNode: () => false } });
     queryAll('p-dropdownItem>li')[1].triggerEventHandler('click', {});
     expect(field.formControl.value).toEqual(2);
   });
