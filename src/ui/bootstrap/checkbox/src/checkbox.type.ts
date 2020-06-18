@@ -28,7 +28,7 @@ import { FieldType } from '@ngx-formly/core';
         [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
         [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
       >
-        {{ to.label }}
+        <span *ngIf="!to.hideLabel">{{ to.label }}</span>
         <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
       </label>
     </div>
@@ -38,7 +38,7 @@ export class FormlyFieldCheckbox extends FieldType {
   defaultOptions = {
     templateOptions: {
       indeterminate: true,
-      hideLabel: true,
+      hideLabel: false,
       formCheck: 'custom', // 'custom' | 'custom-inline' | 'custom-switch' | 'stacked' | 'inline'
     },
   };
