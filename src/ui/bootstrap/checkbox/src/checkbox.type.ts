@@ -24,6 +24,7 @@ import { FieldType } from '@ngx-formly/core';
         [formlyAttributes]="field"
       />
       <label
+        *ngIf="!to.hideLabel"  
         [for]="id"
         [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
         [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
