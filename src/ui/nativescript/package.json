@@ -4,6 +4,6 @@
   "license": "MIT",
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "nativescript-angular": ">=7.0.0"
+    "@nativescript/angular": ">=9.0.0"
   }
 }

@@ -70,7 +70,7 @@ describe('FormlyField Component', () => {
       const { field, query } = renderComponent({});
 
       expect(query('formly-field').attributes.class).toEqual(undefined);
-      expect(query('formly-field').styles.display).toEqual(undefined);
+      expect(query('formly-field').styles.display).toEqual('');
 
       field.hide = true;
       field.className = 'foo';

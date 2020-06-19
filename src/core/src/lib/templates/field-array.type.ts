@@ -1,3 +1,4 @@
+import { Directive } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, assignFieldValue, getFieldValue } from '../utils';

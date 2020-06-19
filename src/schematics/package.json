@@ -10,8 +10,8 @@
     "save": "devDependencies"
   },
   "dependencies": {
-    "@angular-devkit/core": ">=7.0.0",
-    "@angular-devkit/schematics": ">=7.0.0",
-    "@schematics/angular": ">=7.0.0"
+    "@angular-devkit/core": "^9.1.9",
+    "@angular-devkit/schematics": "^9.1.9",
+    "@schematics/angular": "^9.1.9"
   }
 }

@@ -48,6 +48,12 @@ describe('FormlyAttributes Component', () => {
           step: 2,
         },
       });
+      expect(query('input').attributes).toMatchObject({
+        placeholder: 'Title',
+        tabindex: '5',
+        step: '2',
+      });
+
       setInputs({
         field: {
           key: 'title',
@@ -59,8 +65,6 @@ describe('FormlyAttributes Component', () => {
 
       expect(query('input').attributes).toMatchObject({
         placeholder: 'Title Edit',
-        step: null,
-        tabindex: null,
       });
     });
 
@@ -69,11 +73,11 @@ describe('FormlyAttributes Component', () => {
         templateOptions: { readonly: true },
       });
 
-      const { attributes } = query('input');
-      expect(attributes.readonly).toBe('readonly');
+      const inputElm = query('input');
+      expect(inputElm.attributes.readonly).toBe('readonly');
       field.templateOptions.readonly = false;
       detectChanges();
-      expect(attributes.readonly).toBe(null);
+      expect(inputElm.attributes.readonly).toBe(undefined);
     });
 
     it('should allow overriding the default build-in attributes', () => {
@@ -102,8 +106,8 @@ describe('FormlyAttributes Component', () => {
       });
 
       expect(query('input').attributes).toMatchObject({
-        min: 5,
-        max: 10,
+        min: '5',
+        max: '10',
       });
     });
 
@@ -112,15 +116,16 @@ describe('FormlyAttributes Component', () => {
         templateOptions: { attributes: { min: 5, max: 10 } },
       });
 
+      expect(query('input').attributes).toMatchObject({
+        min: '5',
+        max: '10',
+      });
+
       field.templateOptions.attributes = {
         style: 'background: green',
       };
 
-      expect(query('input').attributes).toMatchObject({
-        style: 'background: green',
-        min: null,
-        max: null,
-      });
+      expect(query('input').attributes).toMatchObject({ style: 'background: green' });
     });
 
     it('should not fail without templateOptions', () => {

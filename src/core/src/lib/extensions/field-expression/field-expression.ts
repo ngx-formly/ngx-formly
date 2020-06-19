@@ -39,9 +39,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           const subscribe = () =>
             (expr as Observable<any>).subscribe((v) => {
               this.evalExpr(field, key, v);
-              if (field.options && field.options._markForCheck) {
-                field.options._markForCheck(field);
-              }
+              field.options._markForCheck(field);
             });
 
           let subscription: Subscription = subscribe();
