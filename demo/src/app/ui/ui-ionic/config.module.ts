@@ -31,13 +31,6 @@ import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './togg
     ]),
   ],
   declarations: [AppComponent],
-  entryComponents: [
-    AppComponent,
-    ...CommonExampleComponents,
-    DatetimeAppComponent,
-    RangeAppComponent,
-    ToggleAppComponent,
-  ],
 })
 export class ConfigModule {
   constructor(@Inject(APP_INITIALIZER) appInitialize) {

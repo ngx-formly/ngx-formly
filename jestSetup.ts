@@ -1,6 +1,9 @@
 import 'jest-preset-angular';
 import 'jest-extended';
 
+// https://github.com/thymikee/jest-preset-angular/issues/347
+import '@angular/localize/init';
+
 Object.defineProperty(window, 'CSS', { value: null });
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => {
@@ -23,3 +26,5 @@ Object.defineProperty(document.body.style, 'transform', {
     };
   },
 });
+
+Element.prototype.scrollTo = () => {};

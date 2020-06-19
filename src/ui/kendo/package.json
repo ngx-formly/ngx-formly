@@ -4,6 +4,6 @@
   "license": "MIT",
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "@progress/kendo-angular-dropdowns": "^3.2.0"
+    "@progress/kendo-angular-dropdowns": "^4.2.0"
   }
 }

@@ -22,7 +22,7 @@
             "main": "demo/src/main.ts",
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": ["demo/src/favicon.ico", "demo/src/assets"],
             "styles": ["demo/src/styles.scss"],
             "scripts": []
@@ -34,7 +34,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -52,8 +51,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "20kb",
+                  "maximumError": "700kb"
                 }
               ]
             }
@@ -95,6 +94,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "integration/ssr/dist/browser",
             "index": "integration/ssr/src/index.html",
             "main": "integration/ssr/src/main.ts",
@@ -127,6 +127,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -154,7 +158,7 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "integration/ssr/dist/server",
-            "main": "integration/ssr/src/main.server.ts",
+            "main": "integration/ssr/server.ts",
             "tsConfig": "integration/ssr/tsconfig.server.json"
           },
           "configurations": {
@@ -164,8 +168,33 @@
                   "replace": "integration/ssr/src/environments/environment.ts",
                   "with": "integration/ssr/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "optimization": true
             }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "ssr:build",
+            "serverTarget": "ssr:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ssr:build:production",
+              "serverTarget": "ssr:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "ssr:build:production",
+            "serverTarget": "ssr:server:production",
+            "routes": ["/"]
+          },
+          "configurations": {
+            "production": {}
           }
         }
       }
@@ -181,6 +210,11 @@
           "options": {
             "tsConfig": "src/core/tsconfig.lib.json",
             "project": "src/core/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/core/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -203,6 +237,11 @@
           "options": {
             "tsConfig": "src/ui/bootstrap/tsconfig.lib.json",
             "project": "src/ui/bootstrap/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/bootstrap/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -225,6 +264,11 @@
           "options": {
             "tsConfig": "src/ui/ionic/tsconfig.lib.json",
             "project": "src/ui/ionic/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/ionic/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -247,6 +291,11 @@
           "options": {
             "tsConfig": "src/ui/kendo/tsconfig.lib.json",
             "project": "src/ui/kendo/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/kendo/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -269,6 +318,11 @@
           "options": {
             "tsConfig": "src/ui/material/tsconfig.lib.json",
             "project": "src/ui/material/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/material/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -291,6 +345,11 @@
           "options": {
             "tsConfig": "src/ui/primeng/tsconfig.lib.json",
             "project": "src/ui/primeng/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/primeng/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -313,6 +372,11 @@
           "options": {
             "tsConfig": "src/ui/ng-zorro-antd/tsconfig.lib.json",
             "project": "src/ui/ng-zorro-antd/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/ng-zorro-antd/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -335,6 +399,11 @@
           "options": {
             "tsConfig": "src/ui/nativescript/tsconfig.lib.json",
             "project": "src/ui/nativescript/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/nativescript/tsconfig.lib.prod.json"
+            }
           }
         },
         "lint": {
@@ -354,7 +423,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "demo",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "demo"

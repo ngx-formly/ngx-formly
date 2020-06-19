@@ -122,9 +122,7 @@ export class FieldValidationExtension implements FormlyExtension {
 
   private handleAsyncResult(field: FormlyFieldConfigCache, isValid, options: ValidatorOption) {
     // workaround for https://github.com/angular/angular/issues/13200
-    if (field.options && field.options._markForCheck) {
-      field.options._markForCheck(field);
-    }
+    field.options._markForCheck(field);
 
     return this.handleResult(field, !!isValid, options);
   }
@@ -134,7 +132,7 @@ export class FieldValidationExtension implements FormlyExtension {
       errors = errors ? null : { [name]: options ? options : true };
     }
 
-    if (options && field.formControl && options.errorPath) {
+    if (field.formControl && options && options.errorPath) {
       const control = field.formControl.get(options.errorPath);
       if (control) {
         const controlErrors = control.errors || {};

@@ -4,6 +4,6 @@
   "license": "MIT",
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "@angular/material": ">=7.0.0"
+    "@angular/material": ">=9.0.0"
   }
 }

@@ -147,5 +147,5 @@ describe('FormlyConfig service', () => {
   });
 });
 
-@Component({ selector: 'formly-test-cmp', template: '', entryComponents: [] })
+@Component({ selector: 'formly-test-cmp', template: '' })
 class TestComponent {}

@@ -24,7 +24,7 @@ describe('ui-kendo: Checkbox Type', () => {
 
     const { attributes } = query('input[type="checkbox"]');
     expect(attributes).toMatchObject({
-      class: 'k-checkbox',
+      class: 'k-checkbox ng-untouched ng-pristine ng-invalid',
       id: 'formly_1_checkbox_name_0',
       type: 'checkbox',
     });
@@ -45,7 +45,7 @@ describe('ui-kendo: Checkbox Type', () => {
 
     const { attributes } = query('input[type="checkbox"]');
     expect(attributes).toMatchObject({
-      class: 'k-checkbox',
+      class: 'k-checkbox ng-untouched ng-pristine ng-invalid',
       id: 'formly_1_boolean_name_0',
       type: 'checkbox',
     });

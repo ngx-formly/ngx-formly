@@ -26,7 +26,7 @@ describe('ui-bootstrap: Textarea Type', () => {
       rows: 7,
     });
     expect(attributes).toMatchObject({
-      class: 'form-control',
+      class: 'form-control ng-untouched ng-pristine ng-valid',
       id: 'formly_1_textarea_name_0',
     });
   });
