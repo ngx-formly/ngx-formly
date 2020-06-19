@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
@@ -15,5 +15,6 @@ import { FieldType } from '@ngx-formly/core';
       <nz-input-number [formControl]="formControl" [formlyAttributes]="field"></nz-input-number>
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldInput extends FieldType {}

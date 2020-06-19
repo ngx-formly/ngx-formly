@@ -1,5 +1,6 @@
 import {
   Component,
+  ChangeDetectionStrategy,
   DoCheck,
   OnChanges,
   Input,
@@ -21,6 +22,7 @@ import { clearControl } from '../extensions/field-form/utils';
   selector: 'formly-form',
   template: ` <formly-field *ngFor="let f of fields" [field]="f"></formly-field> `,
   providers: [FormlyFormBuilder],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   @Input()

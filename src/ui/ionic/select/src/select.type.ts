@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
@@ -22,6 +22,7 @@ import { FieldType } from '@ngx-formly/core';
     </ng-container>
   `,
   styles: [':host { display: inherit; }'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType {
   defaultOptions = {

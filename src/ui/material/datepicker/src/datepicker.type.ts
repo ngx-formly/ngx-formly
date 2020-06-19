@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput } from '@angular/material/datepicker';
@@ -42,6 +42,7 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
     >
     </mat-datepicker>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyDatepickerTypeComponent extends FieldType implements AfterViewInit {
   @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;

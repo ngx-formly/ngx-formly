@@ -1,4 +1,4 @@
-import { Component, ViewChild, Renderer2, AfterViewChecked } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, Renderer2, AfterViewChecked } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 
@@ -18,6 +18,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
       <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
     </mat-checkbox>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldCheckbox extends FieldType implements AfterViewChecked {
   @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;
