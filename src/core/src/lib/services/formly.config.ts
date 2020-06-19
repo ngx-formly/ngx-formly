@@ -80,7 +80,9 @@ export class FormlyConfig {
 
   getType(name: string): TypeOption {
     if (!this.types[name]) {
-      throw new Error(`[Formly Error] The type "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`);
+      throw new Error(
+        `[Formly Error] The type "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`,
+      );
     }
 
     this.mergeExtendedType(name);
@@ -154,7 +156,9 @@ export class FormlyConfig {
 
   getWrapper(name: string): WrapperOption {
     if (!this.wrappers[name]) {
-      throw new Error(`[Formly Error] The wrapper "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`);
+      throw new Error(
+        `[Formly Error] The wrapper "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`,
+      );
     }
 
     return this.wrappers[name];
@@ -178,7 +182,9 @@ export class FormlyConfig {
 
   getValidator(name: string): ValidatorOption {
     if (!this.validators[name]) {
-      throw new Error(`[Formly Error] The validator "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`);
+      throw new Error(
+        `[Formly Error] The validator "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`,
+      );
     }
 
     return this.validators[name];

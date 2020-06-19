@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FieldType } from './field.type';
 
 @Component({
   selector: 'formly-template',
   template: `<div [innerHtml]="template"></div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyTemplateType extends FieldType {
   get template() {

@@ -1,5 +1,6 @@
 import {
   Component,
+  ChangeDetectionStrategy,
   ViewChild,
   OnInit,
   OnDestroy,
@@ -58,6 +59,7 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       <mat-hint *ngIf="to.description" [id]="null">{{ to.description }}</mat-hint>
     </mat-form-field>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
   implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {

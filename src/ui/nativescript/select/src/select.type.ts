@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 import { action } from 'tns-core-modules/ui/dialogs';
 
@@ -9,6 +9,7 @@ import { action } from 'tns-core-modules/ui/dialogs';
       <Button (tap)="tap(options)" [text]="selectedItem(options)"></Button>
     </ng-container>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType {
   tap(options) {
