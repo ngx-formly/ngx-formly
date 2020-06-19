@@ -20,7 +20,7 @@ describe('ui-kendo: Input Type', () => {
     const { properties, attributes } = query('input[type="text"]');
     expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
-      class: 'k-textbox',
+      class: 'k-textbox ng-untouched ng-pristine ng-valid',
       id: 'formly_1_input_name_0',
     });
   });
@@ -36,7 +36,7 @@ describe('ui-kendo: Input Type', () => {
     const { properties, attributes } = query('input[type="text"]');
     expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
-      class: 'k-textbox',
+      class: 'k-textbox ng-untouched ng-pristine ng-valid',
       id: 'formly_1_string_name_0',
     });
   });
@@ -50,7 +50,7 @@ describe('ui-kendo: Input Type', () => {
 
     const { attributes } = query('input[type="number"]');
     expect(attributes).toMatchObject({
-      class: 'k-textbox',
+      class: 'k-textbox ng-untouched ng-pristine ng-valid',
       id: 'formly_1_input_name_0',
       type: 'number',
     });
@@ -64,7 +64,7 @@ describe('ui-kendo: Input Type', () => {
 
     const { attributes } = query('input[type="number"]');
     expect(attributes).toMatchObject({
-      class: 'k-textbox',
+      class: 'k-textbox ng-untouched ng-pristine ng-valid',
       id: 'formly_1_number_name_0',
       type: 'number',
     });
@@ -78,7 +78,7 @@ describe('ui-kendo: Input Type', () => {
 
     const { attributes } = query('input[type="number"]');
     expect(attributes).toMatchObject({
-      class: 'k-textbox',
+      class: 'k-textbox ng-untouched ng-pristine ng-valid',
       id: 'formly_1_integer_name_0',
       type: 'number',
     });

@@ -2,6 +2,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyNzSelectModule } from '@ngx-formly/ng-zorro-antd/select';
 import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
@@ -10,8 +11,8 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-ng-zorro-antd: Select Type', () => {
-  it('should render select type', () => {
-    const { query, queryAll, detectChanges } = renderComponent({
+  it('should render select type', fakeAsync(() => {
+    const { query, queryAll, fixture } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
@@ -25,14 +26,15 @@ describe('ui-ng-zorro-antd: Select Type', () => {
 
     expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
 
-    query('nz-select').triggerEventHandler('click', {});
-    detectChanges();
+    query('nz-select nz-select-top-control').triggerEventHandler('click', {});
+    fixture.autoDetectChanges();
+    tick(500);
 
-    expect(queryAll('li[nz-option-li]')).toHaveLength(3);
-  });
+    expect(queryAll('nz-option-item')).toHaveLength(3);
+  }));
 
-  it('should render enum type', () => {
-    const { query, queryAll, detectChanges } = renderComponent({
+  it('should render enum type', fakeAsync(() => {
+    const { query, queryAll, fixture } = renderComponent({
       key: 'name',
       type: 'enum',
       templateOptions: {
@@ -46,14 +48,15 @@ describe('ui-ng-zorro-antd: Select Type', () => {
 
     expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
 
-    query('nz-select').triggerEventHandler('click', {});
-    detectChanges();
+    query('nz-select nz-select-top-control').triggerEventHandler('click', {});
+    fixture.autoDetectChanges();
+    tick(500);
 
-    expect(queryAll('li[nz-option-li]')).toHaveLength(3);
-  });
+    expect(queryAll('nz-option-item')).toHaveLength(3);
+  }));
 
-  it('should bind control value on change', () => {
-    const { query, field, detectChanges } = renderComponent({
+  it('should bind control value on change', fakeAsync(() => {
+    const { query, field, fixture } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
@@ -61,11 +64,13 @@ describe('ui-ng-zorro-antd: Select Type', () => {
       },
     });
 
-    query('nz-select').triggerEventHandler('click', {});
-    detectChanges();
+    query('nz-select nz-select-top-control').triggerEventHandler('click', {});
+    fixture.autoDetectChanges();
+    tick(500);
 
-    query('li[nz-option-li]').triggerEventHandler('click', {});
-    detectChanges();
+    query('nz-option-item').triggerEventHandler('click', {});
+    fixture.detectChanges();
+    tick(500);
     expect(field.formControl.value).toEqual(1);
-  });
+  }));
 });

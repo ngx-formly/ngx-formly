@@ -1,3 +1,5 @@
 {
-  "extends": "./tsconfig.json"
+  "extends": "./tsconfig.json",
+  "files": ["src/main.ts", "src/polyfills.ts"],
+  "include": ["integration/ssr/src/**/*.d.ts"]
 }

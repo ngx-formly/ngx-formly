@@ -81,9 +81,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private checkExpressionChange() {
-    if (this.field.options && this.field.options._checkField) {
-      this.field.options._checkField(this.field);
-    }
+    this.field.options._checkField(this.field);
   }
 
   private valueChanges() {

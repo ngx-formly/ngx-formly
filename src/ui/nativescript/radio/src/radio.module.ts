@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NativeScriptFormsModule } from 'nativescript-angular/forms';
+import { NativeScriptFormsModule } from '@nativescript/angular/forms';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
 import { FormlyFieldRadio } from './radio.type';

@@ -21,6 +21,5 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
       },
     ]),
   ],
-  entryComponents: [...CommonExampleComponents],
 })
 export class ConfigModule {}

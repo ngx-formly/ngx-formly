@@ -21,8 +21,6 @@ xdescribe('Component Schematic', () => {
     inlineStyle: false,
     inlineTemplate: false,
     changeDetection: ChangeDetection.Default,
-    styleext: 'css',
-    spec: true,
     module: undefined,
     export: false,
     project: 'bar',
