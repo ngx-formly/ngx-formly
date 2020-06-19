@@ -16,11 +16,12 @@ import {
   AfterViewChecked,
   Renderer2,
   ElementRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe, getFieldValue, assignFieldValue, isObject } from '../utils';
+import { defineHiddenProp, observe, observeDeep, getFieldValue, assignFieldValue, isObject } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
@@ -28,7 +29,8 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-field',
-  template: ` <ng-template #container></ng-template> `,
+  template: '<ng-template #container></ng-template>',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyField
   implements
@@ -135,7 +137,7 @@ export class FormlyField
 
   private triggerHook(name: string, changes?: SimpleChanges) {
     if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
-      this.valueChangesUnsubscribe = this.valueChanges(this.field);
+      this.valueChangesUnsubscribe = this.fieldChanges(this.field);
     }
 
     if (this.field && this.field.hooks && this.field.hooks[name]) {
@@ -218,9 +220,29 @@ export class FormlyField
     this.componentRefs = [];
   }
 
-  private valueChanges(field: FormlyFieldConfigCache) {
+  private fieldChanges(field: FormlyFieldConfigCache) {
     this.valueChangesUnsubscribe();
-    if (field && field.key && !field.fieldGroup && field.formControl) {
+    if (!field) {
+      return () => {};
+    }
+
+    const subscribes = [
+      observeDeep({
+        source: field,
+        target: field.templateOptions,
+        paths: ['templateOptions'],
+        setFn: () => field.options._markForCheck(field),
+      }),
+    ];
+
+    const fieldGroupObserver = observe(
+      field,
+      ['fieldGroupClassName'],
+      ({ firstChange }) => !firstChange && field.options._markForCheck(field),
+    );
+    subscribes.push(() => fieldGroupObserver.unsubscribe());
+
+    if (field.key && !field.fieldGroup && field.formControl) {
       const control = field.formControl;
       let valueChanges = control.valueChanges.pipe(
         distinctUntilChanged((x, y) => {
@@ -254,9 +276,9 @@ export class FormlyField
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 
-      return () => sub.unsubscribe();
+      subscribes.push(() => sub.unsubscribe());
     }
 
-    return () => {};
+    return () => subscribes.forEach((subscribe) => subscribe());
   }
 }

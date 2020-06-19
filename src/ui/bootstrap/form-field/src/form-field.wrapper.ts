@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -19,5 +19,6 @@ import { FieldWrapper } from '@ngx-formly/core';
       <small *ngIf="to.description" class="form-text text-muted">{{ to.description }}</small>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyWrapperFormField extends FieldWrapper {}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -15,5 +15,6 @@ import { FieldWrapper } from '@ngx-formly/core';
     <formly-validation-message *ngIf="showError" class="k-field-info k-required" [field]="field">
     </formly-validation-message>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyWrapperFormField extends FieldWrapper {}

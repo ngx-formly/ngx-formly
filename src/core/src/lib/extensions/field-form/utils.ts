@@ -65,13 +65,13 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     control.setAsyncValidators(null);
 
     field.templateOptions.disabled = !!field.templateOptions.disabled;
-    const { setValue } = observe(field, ['templateOptions', 'disabled'], ({ firstChange, currentValue }) => {
+    const disabledObserver = observe(field, ['templateOptions', 'disabled'], ({ firstChange, currentValue }) => {
       if (!firstChange) {
         currentValue ? field.formControl.disable() : field.formControl.enable();
       }
     });
     if (control.registerOnDisabledChange) {
-      control.registerOnDisabledChange(setValue);
+      control.registerOnDisabledChange(disabledObserver.setValue);
     }
   }
 

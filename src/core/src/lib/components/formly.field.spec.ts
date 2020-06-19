@@ -146,6 +146,7 @@ describe('FormlyField Component', () => {
       key: 'title',
       type: 'input',
       wrappers: ['form-field-async'],
+      templateOptions: { render: false },
     });
 
     expect(query('formly-wrapper-form-field-async')).not.toBeNull();

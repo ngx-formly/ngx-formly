@@ -1,4 +1,4 @@
-import { Component, ViewChild, Renderer2, AfterViewChecked, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, Renderer2, AfterViewChecked, OnDestroy, AfterViewInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -19,6 +19,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="mat-form-field-required-marker">*</span>
     </mat-checkbox>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, AfterViewChecked, OnDestroy {
   @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;

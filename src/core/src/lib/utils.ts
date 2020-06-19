@@ -33,7 +33,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
       path = [`${field.key}`];
     }
 
-    field._keyPath = { key: field.key, path };
+    defineHiddenProp(field, '_keyPath', { key: field.key, path });
   }
 
   return field._keyPath.path.slice(0);
@@ -213,6 +213,10 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
 }
 
 type IObserveFn<T> = (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void;
+export interface IObserver<T> {
+  setValue: (value: T) => void;
+  unsubscribe: Function;
+}
 interface IObserveTarget<T> {
   [prop: string]: any;
   _observers?: {
@@ -223,7 +227,38 @@ interface IObserveTarget<T> {
   };
 }
 
-export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: IObserveFn<T>) {
+export function observeDeep({ source, paths, target, setFn }) {
+  const observers = [];
+  if (paths.length === 0) {
+    target = source;
+  }
+
+  Object.keys(target).forEach((path) => {
+    let unsubscribe = () => {};
+    const observer = observe(source, [...paths, path], ({ firstChange, currentValue }) => {
+      !firstChange && setFn();
+
+      unsubscribe();
+      const i = observers.indexOf(unsubscribe);
+      if (i > -1) {
+        observers.splice(i, 1);
+      }
+
+      if (isObject(currentValue) && currentValue.constructor.name === 'Object') {
+        unsubscribe = observeDeep({ source, setFn, paths: [...paths, path], target: currentValue });
+        observers.push(unsubscribe);
+      }
+    });
+
+    observers.push(() => observer.unsubscribe());
+  });
+
+  return () => {
+    observers.forEach((observer) => observer());
+  };
+}
+
+export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: IObserveFn<T>): IObserver<T> {
   if (!o._observers) {
     defineHiddenProp(o, '_observers', {});
   }

@@ -1,4 +1,17 @@
-import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef, ElementRef, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewChild,
+  OnInit,
+  OnDestroy,
+  Renderer2,
+  AfterViewInit,
+  AfterContentChecked,
+  TemplateRef,
+  ElementRef,
+  ViewContainerRef,
+  ViewEncapsulation,
+} from '@angular/core';
 import {
   ɵdefineHiddenProp as defineHiddenProp,
   ɵobserve as observe,
@@ -42,6 +55,7 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       <mat-hint *ngIf="to.description" [id]="null">{{ to.description }}</mat-hint>
     </mat-form-field>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./form-field.wrapper.scss'],
   encapsulation: ViewEncapsulation.None,
 })

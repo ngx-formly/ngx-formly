@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
@@ -30,6 +30,7 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
     // rely on formControl value instead of elementRef which return empty value in Firefox.
     { provide: MAT_INPUT_VALUE_ACCESSOR, useExisting: FormlyFieldTextArea },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldTextArea extends FieldType implements OnInit {
   @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;

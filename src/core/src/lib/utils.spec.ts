@@ -329,10 +329,10 @@ describe('observe', () => {
   it('should be able to update prop value without emitting a change event', () => {
     const spy = jest.fn();
     const o = { foo: 'test' };
-    const { setValue } = observe(o, ['foo'], spy);
+    const observer = observe(o, ['foo'], spy);
     spy.mockReset();
 
-    setValue('bar');
+    observer.setValue('bar');
 
     expect(o.foo).toEqual('bar');
     expect(spy).not.toHaveBeenCalled();

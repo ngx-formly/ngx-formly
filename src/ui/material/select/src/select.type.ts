@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { FieldType } from '@ngx-formly/material/form-field';
 
@@ -46,6 +46,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       </ng-container>
     </mat-select>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType {
   @ViewChild(MatSelect, { static: true }) formFieldControl!: MatSelect;

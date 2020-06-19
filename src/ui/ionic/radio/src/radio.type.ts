@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
@@ -23,6 +23,7 @@ import { FieldType } from '@ngx-formly/core';
       </ion-label>
     </ion-item>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldRadio extends FieldType {
   defaultOptions = {
