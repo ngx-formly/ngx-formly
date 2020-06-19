@@ -50,36 +50,24 @@ describe('ui-bootstrap: Radio Type', () => {
       },
     });
 
-    const { classes } = query('div > div');
+    const formCheckElm = query('div > div');
 
     // 'custom'
-    expect(classes).toEqual({
-      'form-check': false,
+    expect(formCheckElm.classes).toEqual({
       'custom-control': true,
-      'custom-control-inline': false,
       'custom-radio': true,
-      'form-check-inline': false,
     });
 
     // 'stacked'
     field.templateOptions.formCheck = 'stacked';
     detectChanges();
-    expect(classes).toEqual({
-      'custom-control': false,
-      'custom-control-inline': false,
-      'form-check': true,
-      'custom-radio': false,
-      'form-check-inline': false,
-    });
+    expect(formCheckElm.classes).toEqual({ 'form-check': true });
 
     // 'inline'
     field.templateOptions.formCheck = 'inline';
     detectChanges();
-    expect(classes).toEqual({
-      'custom-control': false,
-      'custom-control-inline': false,
+    expect(formCheckElm.classes).toEqual({
       'form-check': true,
-      'custom-radio': false,
       'form-check-inline': true,
     });
   });

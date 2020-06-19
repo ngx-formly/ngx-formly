@@ -28,6 +28,5 @@ import { FormlyKendoModule } from '@ngx-formly/kendo';
     ]),
   ],
   declarations: [AppComponent],
-  entryComponents: [AppComponent, ...CommonExampleComponents],
 })
 export class ConfigModule {}

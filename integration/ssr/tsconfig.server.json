@@ -1,9 +1,12 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
+    "module": "commonjs",
     "outDir": "../../out-tsc/app-server"
   },
   "angularCompilerOptions": {
     "entryModule": "src/app/app.server.module#AppServerModule"
-  }
+  },
+  "files": ["src/main.server.ts", "server.ts"],
+  "include": ["integration/ssr/src/**/*.d.ts"]
 }
