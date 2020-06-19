@@ -28,6 +28,5 @@ import { FormlyNgZorroAntdModule } from '@ngx-formly/ng-zorro-antd';
     ]),
   ],
   declarations: [AppComponent],
-  entryComponents: [AppComponent, ...CommonExampleComponents],
 })
 export class ConfigModule {}
