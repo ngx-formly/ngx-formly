@@ -28,6 +28,5 @@ import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
     ]),
   ],
   declarations: [AppComponent],
-  entryComponents: [AppComponent, ...CommonExampleComponents],
 })
 export class ConfigModule {}

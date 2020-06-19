@@ -32,7 +32,6 @@ import { FieldType } from '@ngx-formly/core';
           [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
           [for]="id + '_' + i"
         >
-          >
           {{ option.label }}
         </label>
       </div>

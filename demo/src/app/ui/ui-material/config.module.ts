@@ -36,14 +36,5 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
       },
     ]),
   ],
-  entryComponents: [
-    ...CommonExampleComponents,
-
-    NativeSelectAppComponent,
-    DatepickerAppComponent,
-    ToggleAppComponent,
-    SliderAppComponent,
-    AutocompleteAppComponent,
-  ],
 })
 export class ConfigModule {}
