@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
@@ -9,6 +9,7 @@ import { FieldType } from '@ngx-formly/core';
       <Switch class="switch input" [formlyAttributes]="field" [formControl]="formControl" col="1"></Switch>
     </GridLayout>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldCheckbox extends FieldType {
   defaultOptions = {

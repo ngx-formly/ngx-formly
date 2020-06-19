@@ -12,11 +12,15 @@ describe('Group Field Type', () => {
   });
 
   it('should add fieldGroupClassName', () => {
-    const { query } = renderComponent({
+    const { field, query, detectChanges } = renderComponent({
       fieldGroupClassName: 'foo-class',
       type: 'formly-group',
     });
 
     expect(query('formly-group').properties.className).toEqual('foo-class');
+
+    field.fieldGroupClassName = 'bar-class';
+    detectChanges();
+    expect(query('formly-group').properties.className).toEqual('bar-class');
   });
 });
