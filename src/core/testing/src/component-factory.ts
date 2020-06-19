@@ -35,7 +35,12 @@ export function createComponent<T>({
     declarations: [TestComponent, ...(declarations || [])],
     imports: [ReactiveFormsModule, FormlyModule.forRoot(config), ...(imports || [])],
     providers: providers || [],
-  }).overrideComponent(TestComponent, { set: { template } });
+  }).overrideComponent(TestComponent, {
+    set: {
+      template,
+      inputs: Object.keys(inputs),
+    },
+  });
 
   const fixture = TestBed.createComponent(TestComponent);
   Object.keys(inputs).forEach((input) => {
@@ -78,6 +83,9 @@ export function createFormlyFieldComponent(
   options: IComponentOptions<{ field: FormlyFieldConfig }> = {},
 ) {
   const model = field && field.model ? field.model : {};
+  if (field && field.model) {
+    delete (field as any).model;
+  }
 
   return createComponent<{ field: FormlyFieldConfig }>({
     template: '<formly-field [field]="field"></formly-field>',
