@@ -21,7 +21,7 @@ script:
 - npm run bundlesize
 
 # e2e ssr
-- npm run build:ssr 
+- npm run build:ssr
 - npm run e2e:ssr
 
 after_success:

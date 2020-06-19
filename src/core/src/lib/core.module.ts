@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS, Inject, Optional } from '@angular/core';
+import { NgModule, ModuleWithProviders, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormlyForm } from './components/formly.form';
 import { FormlyField } from './components/formly.field';
@@ -32,7 +32,6 @@ export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
 
 @NgModule({
   declarations: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage, FormlyTemplateType],
-  entryComponents: [FormlyGroup, FormlyTemplateType],
   exports: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage],
   imports: [CommonModule],
 })
@@ -43,7 +42,6 @@ export class FormlyModule {
       providers: [
         { provide: FORMLY_CONFIG, multi: true, useFactory: defaultFormlyConfig, deps: [FormlyConfig] },
         { provide: FORMLY_CONFIG, useValue: config, multi: true },
-        { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
         FormlyConfig,
         FormlyFormBuilder,
       ],
@@ -56,7 +54,6 @@ export class FormlyModule {
       providers: [
         { provide: FORMLY_CONFIG, multi: true, useFactory: defaultFormlyConfig, deps: [FormlyConfig] },
         { provide: FORMLY_CONFIG, useValue: config, multi: true },
-        { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
         FormlyFormBuilder,
       ],
     };

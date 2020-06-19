@@ -1,6 +1,7 @@
-import { Input } from '@angular/core';
+import { Input, Directive } from '@angular/core';
 import { FormlyFieldConfig } from '../models';
 
+@Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
   @Input() field: F;
   defaultOptions?: F;
