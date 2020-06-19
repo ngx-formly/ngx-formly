@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '../models';
-import { defineHiddenProp, FORMLY_VALIDATORS, observe } from '../utils';
+import { defineHiddenProp, FORMLY_VALIDATORS, observe, IObserver } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
@@ -27,6 +27,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   private document: Document;
   private uiAttributesCache: any = {};
   private uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'];
+  private focusObserver: IObserver<boolean>;
 
   /**
    * HostBinding doesn't register listeners conditionally which may produce some perf issues.
@@ -37,7 +38,6 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     listeners: [],
     events: ['click', 'keyup', 'keydown', 'keypress', 'change'],
   };
-  private changeFocusState = (value: boolean) => {};
 
   get to(): FormlyTemplateOptions {
     return this.field.templateOptions || {};
@@ -85,10 +85,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.attachElementRef(changes.field.currentValue);
       if (this.fieldAttrElements.length === 1) {
         !this.id && this.field.id && this.setAttribute('id', this.field.id);
-        const { setValue } = observe<boolean>(this.field, ['focus'], ({ currentValue }) => {
+        this.focusObserver = observe<boolean>(this.field, ['focus'], ({ currentValue }) => {
           this.toggleFocus(currentValue);
         });
-        this.changeFocusState = setValue;
       }
     }
 
@@ -122,6 +121,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngOnDestroy() {
     this.uiEvents.listeners.forEach((listener) => listener());
     this.detachElementRef(this.field);
+    this.focusObserver && this.focusObserver.unsubscribe();
   }
 
   toggleFocus(value: boolean) {
@@ -145,14 +145,14 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   onFocus($event: any) {
-    this.changeFocusState(true);
+    this.focusObserver && this.focusObserver.setValue(true);
     if (this.to.focus) {
       this.to.focus(this.field, $event);
     }
   }
 
   onBlur($event: any) {
-    this.changeFocusState(false);
+    this.focusObserver && this.focusObserver.setValue(false);
     if (this.to.blur) {
       this.to.blur(this.field, $event);
     }

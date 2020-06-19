@@ -17,7 +17,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     field.expressionProperties = field.expressionProperties || {};
 
     observe(field, ['hide'], ({ currentValue, firstChange }) => {
-      field._hide = currentValue;
+      defineHiddenProp(field, '_hide', !!currentValue);
       if (!firstChange || (firstChange && currentValue === true)) {
         field.templateOptions.hidden = currentValue;
         field.options._hiddenFieldsForCheck.push(field);
@@ -38,7 +38,6 @@ export class FieldExpressionExtension implements FormlyExtension {
           const subscribe = () =>
             (expr as Observable<any>).subscribe((v) => {
               this.evalExpr(field, key, v);
-              field.options._markForCheck(field);
             });
 
           let subscription: Subscription = subscribe();
@@ -117,19 +116,14 @@ export class FieldExpressionExtension implements FormlyExtension {
       return;
     }
 
-    let markForCheck = false;
     if (field._expressions) {
       for (const key of Object.keys(field._expressions)) {
-        field._expressions[key](ignoreCache) && (markForCheck = true);
+        field._expressions[key](ignoreCache);
       }
     }
 
     if (field.fieldGroup) {
       field.fieldGroup.forEach((f) => this.checkExpressions(f, ignoreCache));
-    }
-
-    if (markForCheck) {
-      field.options._markForCheck(field);
     }
   }
 

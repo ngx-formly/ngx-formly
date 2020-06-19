@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -16,5 +16,6 @@ import { FieldWrapper } from '@ngx-formly/core';
       <formly-validation-message class="ui-message-text" [field]="field"></formly-validation-message>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyWrapperFormField extends FieldWrapper {}
