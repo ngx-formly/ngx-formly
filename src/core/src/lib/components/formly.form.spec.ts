@@ -533,7 +533,7 @@ describe('FormlyForm Component', () => {
       expect(app.model).toEqual({});
     });
 
-    it('should take account of inputs changes`', () => {
+    it('should take account of inputs changes', () => {
       const { form, fields, model, setInputs } = renderComponent(
         {
           fields: [{ key: 'title', type: 'input' }],

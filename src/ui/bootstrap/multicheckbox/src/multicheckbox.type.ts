@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
@@ -36,6 +36,7 @@ import { FieldType } from '@ngx-formly/core';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
   defaultOptions = {

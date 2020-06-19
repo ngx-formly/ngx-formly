@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -16,6 +16,7 @@ import { FieldWrapper } from '@ngx-formly/core';
       </StackLayout>
     </StackLayout>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyWrapperFormField extends FieldWrapper {
   @ViewChild('validationMessage') validationMessage;

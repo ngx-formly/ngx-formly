@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 
@@ -7,6 +7,7 @@ export function MockComponent(options: Component): Component {
   const metadata: Component = {
     selector: options.selector,
     template: options.template || '',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     inputs: options.inputs,
     outputs: options.outputs || [],
     exportAs: options.exportAs || '',

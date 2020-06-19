@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FieldType } from '@ngx-formly/material/form-field';
 
@@ -33,6 +33,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       />
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldInput extends FieldType implements OnInit {
   @ViewChild(MatInput) formFieldControl!: MatInput;
