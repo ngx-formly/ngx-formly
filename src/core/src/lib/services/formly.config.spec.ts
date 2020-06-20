@@ -62,7 +62,7 @@ describe('FormlyConfig service', () => {
 
     it('should throw when wrapper not found', () => {
       const config = new FormlyConfig();
-      expect(() => config.getWrapper('custom_wrapper')).toThrowError('[Formly Error] There is no wrapper by the name of "custom_wrapper"');
+      expect(() => config.getWrapper('custom_wrapper')).toThrowError('[Formly Error] The wrapper "custom_wrapper" could not be found. Please make sure that is registered through the FormlyModule declaration.');
     });
   });
 
@@ -83,7 +83,7 @@ describe('FormlyConfig service', () => {
 
     it('should throw when type not found', () => {
       const config = new FormlyConfig();
-      expect(() => config.getType('custom_input')).toThrowError('[Formly Error] There is no type by the name of "custom_input"');
+      expect(() => config.getType('custom_input')).toThrowError('[Formly Error] The type "custom_input" could not be found. Please make sure that is registered through the FormlyModule declaration.');
     });
 
     it('should merge existing options when replacing a field type', () => {
@@ -126,7 +126,7 @@ describe('FormlyConfig service', () => {
 
     it('should throw when validator not found', () => {
       const config = new FormlyConfig();
-      expect(() => config.getValidator('custom_validator')).toThrowError('[Formly Error] There is no validator by the name of "custom_validator"');
+      expect(() => config.getValidator('custom_validator')).toThrowError('[Formly Error] The validator "custom_validator" could not be found. Please make sure that is registered through the FormlyModule declaration.');
     });
   });
 
