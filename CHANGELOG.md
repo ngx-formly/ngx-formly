@@ -1,8 +1,20 @@
-# Changelog
+# Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [5.7.1](https://github.com/ngx-formly/ngx-formly/compare/v5.7.0...v5.7.1) (2020-06-03)
+<a name="5.7.2"></a>
+## [5.7.2](https://github.com/ngx-formly/ngx-formly/compare/v5.7.1...v5.7.2) (2020-06-20)
+
+
+### Bug Fixes
+
+* **core:** allow Observable for `validation.messages` property ([#2297](https://github.com/ngx-formly/ngx-formly/issues/2297)) ([af6ecf8](https://github.com/ngx-formly/ngx-formly/commit/af6ecf8))
+* **core:** provide more details on missing type declaration ([#2320](https://github.com/ngx-formly/ngx-formly/issues/2320)) ([c98b242](https://github.com/ngx-formly/ngx-formly/commit/c98b242)), closes [#2305](https://github.com/ngx-formly/ngx-formly/issues/2305)
+* **material:** use false for input static query ([#2319](https://github.com/ngx-formly/ngx-formly/issues/2319)) ([cd53629](https://github.com/ngx-formly/ngx-formly/commit/cd53629)), closes [#2314](https://github.com/ngx-formly/ngx-formly/issues/2314)
+
+
+
+## [5.7.1](https://github.com/ngx-formly/ngx-formly/compare/v5.7.0...v5.7.1) (2020-06-03)
 
 
 ### Bug Fixes
