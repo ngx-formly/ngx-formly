@@ -7,16 +7,17 @@
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
   "scripts": {
-    "postinstall": "ngcc --properties main",
+    "postinstall": "ngcc --properties es2015 module main --first-only && ngcc --properties main",
     "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint --fix -p tsconfig.json",
     "format": "prettier --list-different \"**/*.{ts,json,css,scss,html}\"",
     "format:fix": "prettier --write \"**/*.{ts,json,css,scss,html}\"",
-    "commit": "npm run build && git-cz",
-    "bundlesize": "npm run build && bundlesize",
+    "commit": "git-cz",
+    "bundlesize": "bundlesize",
     "build": "ts-node --dir build build.ts",
-    "release": "standard-version --prerelease alpha && npm run build && node build/publish.js",
+    "release": "standard-version --prerelease alpha",
+    "publish": "ts-node --dir build publish.ts",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",
     "test": "jest",
@@ -99,7 +100,6 @@
     "@angular/language-service": "^9.1.11",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
-    "@commitlint/travis-cli": "^8.3.5",
     "@nguniversal/builders": "^9.1.1",
     "@schematics/angular": "^9.1.9",
     "@types/express": "^4.17.0",
@@ -139,7 +139,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "cz-conventional-changelog"
     }
   },
   "husky": {
