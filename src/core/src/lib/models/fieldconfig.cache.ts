@@ -22,12 +22,18 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
 }
 
 export interface FormlyFormOptionsCache extends FormlyFormOptions {
-  _checkField?: (field: FormlyFieldConfigCache, ignoreCache?: boolean) => void;
-  _markForCheck?: (field: FormlyFieldConfigCache) => void;
-  _buildForm?: () => void;
-  _buildField?: (field: FormlyFieldConfigCache) => FormlyFieldConfigCache;
+  checkExpressions?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
   _resolver?: ComponentFactoryResolver;
   _injector?: Injector;
   _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
   _initialModel?: any;
+
+  /** @deprecated */
+  _buildForm?: () => void;
+
+  /** @deprecated */
+  _checkField?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
+
+  /** @deprecated */
+  _markForCheck?: (field: FormlyFieldConfig) => void;
 }

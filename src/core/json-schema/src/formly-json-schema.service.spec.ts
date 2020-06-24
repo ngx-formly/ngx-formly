@@ -1145,8 +1145,8 @@ describe('Service: FormlyJsonschema', () => {
           });
           const [enumField, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
-          expect(fooField.hide).toBeTruthy();
-          expect(barField.hide).toBeFalsy();
+          expect(fooField.hide).toBeTrue();
+          expect(barField.hide).toBeFalse();
           expect(model).toEqual({ bar: 'test' });
 
           enumField.formControl.setValue(0);
@@ -1176,8 +1176,8 @@ describe('Service: FormlyJsonschema', () => {
           });
           const [, { fieldGroup: [f1, f2] }] = field.fieldGroup[0].fieldGroup;
 
-          expect(f1.hide).toBeTruthy();
-          expect(f2.hide).toBeFalsy();
+          expect(f1.hide).toBeTrue();
+          expect(f2.hide).toBeFalse();
         });
       });
 

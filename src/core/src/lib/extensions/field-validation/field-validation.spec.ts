@@ -21,7 +21,7 @@ function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
   });
 
   field = { formControl: new FormControl(), ...field };
-  builder.buildField(field);
+  builder.build(field);
 
   return field;
 }

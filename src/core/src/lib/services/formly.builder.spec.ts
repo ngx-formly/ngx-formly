@@ -13,15 +13,15 @@ describe('FormlyFormBuilder service', () => {
   it('should throw error when core extension is not registred', () => {
     const builder = createBuilder({});
 
-    const buildField = () => builder.buildField({});
-    expect(buildField).toThrowError(/missing `forRoot\(\)` call/i);
+    const build = () => builder.build({});
+    expect(build).toThrowError(/missing `forRoot\(\)` call/i);
   });
 
   it('should assign builder props to field options', () => {
     const builder = createBuilder();
 
     const field: FormlyFieldConfigCache = {};
-    builder.buildField(field);
+    builder.build(field);
 
     expect(field.form).toEqual(expect.any(FormGroup));
     expect(field.options).toEqual(
@@ -29,16 +29,16 @@ describe('FormlyFormBuilder service', () => {
         _resolver: null,
         _injector: null,
         _buildForm: expect.any(Function),
-        _buildField: expect.any(Function),
+        build: expect.any(Function),
       }),
     );
 
     global.console = { ...global.console, warn: jest.fn() };
-    spyOn(builder, 'buildField');
-    field.options._buildField(field);
+    spyOn(builder, 'build');
+    field.options.build(field);
     field.options._buildForm();
     expect(console.warn).toBeCalled();
-    expect(builder.buildField).toHaveBeenCalledTimes(2);
+    expect(builder.build).toHaveBeenCalledTimes(2);
   });
 
   it('should call extension during build call', () => {
@@ -53,7 +53,7 @@ describe('FormlyFormBuilder service', () => {
       extensions: [{ name: 'core', extension }],
     });
 
-    builder.buildField({});
+    builder.build({});
 
     expect(spy.mock.calls).toEqual([['prePopulate'], ['onPopulate'], ['postPopulate']]);
   });
@@ -66,7 +66,7 @@ describe('FormlyFormBuilder service', () => {
       extensions: [{ name: 'core', extension }],
     });
 
-    builder.buildField({ fieldGroup: [{ key: 'child' }] });
+    builder.build({ fieldGroup: [{ key: 'child' }] });
     expect(extension.onPopulate).toHaveBeenCalledTimes(2);
   });
 });

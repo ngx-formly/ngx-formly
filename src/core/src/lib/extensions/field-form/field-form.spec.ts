@@ -7,7 +7,7 @@ function buildField({ model, options, form, ...field }: FormlyFieldConfigCache):
     extensions: ['core', 'validation', 'form'],
   });
 
-  builder.buildField({
+  builder.build({
     model: model || {},
     options,
     form,

@@ -216,19 +216,19 @@ describe('Array Field Type', () => {
       type: 'array',
     });
 
-    expect(field.form.dirty).toBeFalsy();
+    expect(field.form.dirty).toBeFalse();
 
     const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
 
     arrayType.add(null, null, { markAsDirty: false });
     detectChanges();
-    expect(field.form.dirty).toBeFalsy();
+    expect(field.form.dirty).toBeFalse();
 
     field.form.markAsPristine();
 
     arrayType.remove(0, { markAsDirty: false });
     detectChanges();
-    expect(field.form.dirty).toBeFalsy();
+    expect(field.form.dirty).toBeFalse();
   });
 
   it('should not change the form control instance when chinging the field position', () => {
@@ -271,7 +271,7 @@ describe('Array Field Type', () => {
     expect(cityField.className).toEqual('test');
 
     model[0] = 'custom';
-    (options as any)._checkField(cityField);
+    options.checkExpressions(cityField);
     detectChanges();
 
     expect(cityField.hide).toBeFalse();
@@ -289,7 +289,7 @@ describe('Array Field Type', () => {
 
     expect(form.controls).toHaveLength(4);
     model.length = 1;
-    (options as any)._buildField(field);
+    options.build(field);
 
     expect(form.controls).toHaveLength(1);
   });
