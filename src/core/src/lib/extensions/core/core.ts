@@ -72,18 +72,23 @@ export class CoreExtension implements FormlyExtension {
       options._hiddenFieldsForCheck = [];
     }
 
-    if (!options._markForCheck) {
-      options._markForCheck = (field) => {
-        if (field._componentRefs) {
-          field._componentRefs.forEach((ref) => {
+    if (!options.detectChanges) {
+      options._markForCheck = (f) => {
+        console.warn(`Formly: 'options._markForCheck' is deprecated since v6.0, use 'options.detectChanges' instead.`);
+        options.detectChanges(f);
+      };
+
+      options.detectChanges = (f: FormlyFieldConfigCache) => {
+        if (f._componentRefs) {
+          f._componentRefs.forEach((ref) => {
             // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
             const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
             changeDetectorRef.markForCheck();
           });
         }
 
-        if (field.fieldGroup) {
-          field.fieldGroup.forEach((f) => options._markForCheck(f));
+        if (f.fieldGroup) {
+          f.fieldGroup.forEach((f) => options.detectChanges(f));
         }
       };
     }
@@ -96,7 +101,7 @@ export class CoreExtension implements FormlyExtension {
           Object.assign(field.model, model || {});
         }
 
-        options._buildField(field);
+        options.build(field);
         field.form.reset(model);
         if (options.parentForm && options.parentForm.control === field.formControl) {
           (options.parentForm as { submitted: boolean }).submitted = false;
