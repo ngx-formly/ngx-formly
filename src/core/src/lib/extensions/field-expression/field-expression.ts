@@ -65,13 +65,17 @@ export class FieldExpressionExtension implements FormlyExtension {
       return;
     }
 
-    if (!field.options._checkField) {
-      field.options._checkField = (f, ignoreCache) => {
+    if (!field.options.checkExpressions) {
+      field.options.checkExpressions = (f, ignoreCache = false) => {
         reduceFormUpdateValidityCalls(f.form, () => this.checkExpressions(f, ignoreCache));
 
         const options = field.options;
         options._hiddenFieldsForCheck.sort((f) => (f.hide ? -1 : 1)).forEach((f) => this.changeHideState(f, f.hide));
         options._hiddenFieldsForCheck = [];
+      };
+      field.options._checkField = (f, ignoreCache) => {
+        console.warn(`Formly: 'options._checkField' is deprecated since v6.0, use 'options.checkExpressions' instead.`);
+        field.options.checkExpressions(f, ignoreCache);
       };
     }
   }

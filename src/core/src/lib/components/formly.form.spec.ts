@@ -454,12 +454,12 @@ describe('FormlyForm Component', () => {
       { extras: { checkExpressionOn: 'modelChange' } },
     );
 
-    expect(fields[0].hide).toEqual(false);
+    expect(fields[0].hide).toBeFalse();
 
     query('form').triggerEventHandler('submit', {});
     detectChanges();
 
-    expect(fields[0].hide).toEqual(true);
+    expect(fields[0].hide).toBeTrue();
   });
 
   it('should keep in sync UI on checkExpressionChange', () => {
@@ -483,7 +483,7 @@ describe('FormlyForm Component', () => {
     detectChanges();
 
     const control = form.get('city');
-    expect(control.disabled).toEqual(true);
+    expect(control.disabled).toBeTrue();
     expect(input.attributes.disabled).toEqual('disabled');
   });
 });

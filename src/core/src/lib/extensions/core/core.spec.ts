@@ -24,7 +24,7 @@ function buildField({ model, options, ...field }: FormlyFieldConfig): FormlyFiel
       }),
   });
 
-  builder.buildField({
+  builder.build({
     model: model || {},
     options,
     fieldGroup: [field],
@@ -138,7 +138,7 @@ describe('CoreExtension', () => {
           formState: {},
           showError: expect.any(Function),
           fieldChanges: expect.any(Subject),
-          _markForCheck: expect.any(Function),
+          detectChanges: expect.any(Function),
           updateInitialValue: expect.any(Function),
           resetModel: expect.any(Function),
         }),
