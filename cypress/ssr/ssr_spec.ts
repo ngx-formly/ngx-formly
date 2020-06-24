@@ -38,7 +38,7 @@ describe('Server side rendering', () => {
   });
 
   it('should render primeng ui', () => {
-    cy.request('/kendo')
+    cy.request('/primeng')
       .its('body')
       .should('contain', 'input label')
       .and('contain', 'textarea label')
