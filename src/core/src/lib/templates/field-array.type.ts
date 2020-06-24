@@ -41,7 +41,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     }
 
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
-    this._buildField();
+    this._build();
     markAsDirty && this.formControl.markAsDirty();
   }
 
@@ -50,12 +50,12 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     unregisterControl(this.field.fieldGroup[i], true);
     this.field.fieldGroup.splice(i, 1);
     this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
-    this._buildField();
+    this._build();
     markAsDirty && this.formControl.markAsDirty();
   }
 
-  private _buildField() {
-    (this.options as any)._buildField(this.field);
+  private _build() {
+    this.options.build(this.field);
     this.options.fieldChanges.next({
       field: this.field,
       value: getFieldValue(this.field),

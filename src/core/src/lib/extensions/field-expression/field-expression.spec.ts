@@ -8,7 +8,7 @@ function buildField({ model, options, ...field }: FormlyFieldConfigCache): Forml
     extensions: ['core', 'validation', 'form', 'expression'],
   });
 
-  builder.buildField({
+  builder.build({
     model: model || {},
     options,
     fieldGroup: [field],
@@ -29,7 +29,7 @@ describe('FieldExpressionExtension', () => {
       expect(field.templateOptions.hidden).toBeTrue();
 
       field.model.visibilityToggle = 'test';
-      field.options._checkField(field);
+      field.options.checkExpressions(field);
 
       expect(field.hide).toBeFalse();
       expect(field.templateOptions.hidden).toBeFalse();
@@ -81,7 +81,7 @@ describe('FieldExpressionExtension', () => {
         expect(field.formControl.get('foo')).toBeNull();
 
         field.hide = false;
-        field.options._checkField(field.parent);
+        field.options.checkExpressions(field.parent);
         expect(field.formControl.get('foo')).not.toBeNull();
       });
 
@@ -95,7 +95,7 @@ describe('FieldExpressionExtension', () => {
 
         fields[0].hide = true;
         fields[1].hide = false;
-        options._checkField({ form, fieldGroup: fields, options });
+        options.checkExpressions({ form, fieldGroup: fields, options });
 
         expect(form.get('foo')).toBeNull();
         expect(form.get('bar')).not.toBeNull();
@@ -117,7 +117,7 @@ describe('FieldExpressionExtension', () => {
         });
         const { options, fieldGroup: fields, form } = field;
 
-        options._checkField(field);
+        options.checkExpressions(field);
         expect(fields[0].hide).toBeFalse();
         expect(fields[0].formControl).toBe(form.get('key1'));
         expect(fields[1].hide).toBeTrue();
@@ -172,7 +172,7 @@ describe('FieldExpressionExtension', () => {
         } = field;
 
         field.model.type = false;
-        field.options._checkField(field.parent);
+        field.options.checkExpressions(field.parent);
 
         expect(f1.hide).toBeFalse();
         expect(f1.formControl).toBe(form.get('key1'));
@@ -180,7 +180,7 @@ describe('FieldExpressionExtension', () => {
         expect(f2.formControl).not.toBe(form.get('key1'));
 
         field.model.type = true;
-        field.options._checkField(field.parent);
+        field.options.checkExpressions(field.parent);
         expect(f1.hide).toBeTrue();
         expect(f1.formControl).not.toBe(form.get('key1'));
         expect(f2.hide).toBeFalse();
@@ -210,8 +210,8 @@ describe('FieldExpressionExtension', () => {
 
       field.fieldGroup[0].hide = false;
 
-      field.options._checkField(field);
-      expect(field.form.valid).toEqual(false);
+      field.options.checkExpressions(field);
+      expect(field.form.valid).toBeFalse();
     });
   });
 
@@ -342,7 +342,7 @@ describe('FieldExpressionExtension', () => {
         expect(field.templateOptions.disabled).toBeFalse();
 
         field.model.disableToggle = 'test';
-        field.options._checkField(field);
+        field.options.checkExpressions(field);
 
         expect(field.templateOptions.disabled).toBeTrue();
       });
@@ -372,14 +372,13 @@ describe('FieldExpressionExtension', () => {
         expect(field.fieldGroup[1].templateOptions.label).toEqual('Street');
 
         disabled.address = false;
-        field.options._checkField(field);
+        field.options.checkExpressions(field);
 
         expect(field.templateOptions.disabled).toBeFalse();
         expect(field.fieldGroup[0].templateOptions.disabled).toBeFalse();
 
         disabled.city = true;
-
-        field.options._checkField(field);
+        field.options.checkExpressions(field);
 
         expect(field.templateOptions.disabled).toBeFalse();
         expect(field.fieldGroup[0].templateOptions.disabled).toBeTrue();
@@ -399,7 +398,7 @@ describe('FieldExpressionExtension', () => {
         expect(field.fieldGroup[0].templateOptions.disabled).toBeFalse();
 
         field.model.disableToggle = true;
-        field.options._checkField(field.parent);
+        field.options.checkExpressions(field.parent);
 
         expect(field.templateOptions.disabled).toBeTrue();
         expect(field.fieldGroup[0].templateOptions.disabled).toBeTrue();
@@ -504,15 +503,15 @@ describe('FieldExpressionExtension', () => {
         options: { fieldChanges },
       });
 
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith({ field, type: 'hidden', value: true });
+      expect(spy).toHaveBeenNthCalledWith(1, { field, type: 'expressionChanges', property: 'hide', value: true });
+      expect(spy).toHaveBeenNthCalledWith(2, { field, type: 'hidden', value: true });
 
       spy.mockReset();
       field.model.visibilityToggle = 'test';
-      field.options._checkField(field.parent);
+      field.options.checkExpressions(field.parent);
 
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith({ field, type: 'hidden', value: false });
+      expect(spy).toHaveBeenNthCalledWith(1, { field, type: 'expressionChanges', property: 'hide', value: false });
+      expect(spy).toHaveBeenNthCalledWith(2, { field, type: 'hidden', value: false });
 
       subscription.unsubscribe();
     });
@@ -536,13 +535,13 @@ describe('FieldExpressionExtension', () => {
           field,
           type: 'expressionChanges',
           property: 'templateOptions.label',
-          value: null,
+          value: undefined,
         },
       );
 
       spy.mockReset();
       field.formControl.patchValue('foo');
-      field.options._checkField(field.parent);
+      field.options.checkExpressions(field.parent);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(

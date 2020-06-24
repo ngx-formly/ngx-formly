@@ -231,14 +231,14 @@ export class FormlyField
         source: field,
         target: field.templateOptions,
         paths: ['templateOptions'],
-        setFn: () => field.options._markForCheck(field),
+        setFn: () => field.options.detectChanges(field),
       }),
     ];
 
     const fieldGroupObserver = observe(
       field,
       ['fieldGroupClassName'],
-      ({ firstChange }) => !firstChange && field.options._markForCheck(field),
+      ({ firstChange }) => !firstChange && field.options.detectChanges(field),
     );
     subscribes.push(() => fieldGroupObserver.unsubscribe());
 

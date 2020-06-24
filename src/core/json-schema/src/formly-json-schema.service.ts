@@ -536,7 +536,7 @@ export class FormlyJsonschema {
   }
 
   private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
-    const { form } = (field.options as any)._buildField({
+    const { form } = field.options.build({
       form: new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null })],
       model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),

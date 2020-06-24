@@ -66,9 +66,9 @@ export class FieldExpressionExtension implements FormlyExtension {
       return;
     }
 
-    if (!field.options._checkField) {
+    if (!field.options.checkExpressions) {
       let checkLocked = false;
-      field.options._checkField = (f, ignoreCache) => {
+      field.options.checkExpressions = (f, ignoreCache) => {
         if (checkLocked) {
           return;
         }
@@ -88,6 +88,10 @@ export class FieldExpressionExtension implements FormlyExtension {
           }
         });
         checkLocked = false;
+      };
+      field.options._checkField = (f, ignoreCache) => {
+        console.warn(`Formly: 'options._checkField' is deprecated since v6.0, use 'options.checkExpressions' instead.`);
+        field.options.checkExpressions(f, ignoreCache);
       };
     }
   }

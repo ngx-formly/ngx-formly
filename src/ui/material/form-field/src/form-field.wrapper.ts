@@ -81,7 +81,7 @@ export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
           currentValue &&
           Promise.resolve().then(() => {
             (<any>this.field)[`_mat${type}`] = currentValue;
-            (<any>this.options)._markForCheck(this.field);
+            this.options.detectChanges!(this.field);
           }),
       ),
     );
