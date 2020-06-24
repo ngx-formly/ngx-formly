@@ -231,6 +231,9 @@ export interface FormlyFormOptions {
   formState?: any;
   fieldChanges?: Subject<FormlyValueChangeEvent>;
   showError?: (field: FieldType) => boolean;
+  build?: (field: FormlyFieldConfig) => void;
+  checkExpressions?: (field: FormlyFieldConfig) => void;
+  detectChanges?: (field: FormlyFieldConfig) => void;
   parentForm?: FormGroupDirective | null;
 }
 

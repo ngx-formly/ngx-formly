@@ -20,7 +20,7 @@ function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
       }),
   });
 
-  builder.buildField(field);
+  builder.build(field);
 
   return field;
 }
