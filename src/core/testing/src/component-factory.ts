@@ -96,7 +96,7 @@ export function createFormlyFieldComponent(
       {
         provide: APP_INITIALIZER,
         useFactory: (builder: FormlyFormBuilder) => () => {
-          builder.buildField({
+          builder.build({
             model: model || {},
             fieldGroup: [field],
           });
