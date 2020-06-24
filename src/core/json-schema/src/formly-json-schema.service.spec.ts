@@ -987,7 +987,7 @@ describe('Service: FormlyJsonschema', () => {
           expect(barField.hide).toBeTrue();
 
           enumField.formControl.setValue(1);
-          (f.options as any)._checkField(f.parent);
+          f.options.checkExpressions(f.parent);
 
           expect(model).toEqual({});
           expect(fooField.hide).toBeTrue();
@@ -1018,7 +1018,7 @@ describe('Service: FormlyJsonschema', () => {
           expect(model).toEqual({ foo: 'foo' });
 
           enumField.formControl.setValue(1);
-          (f.options as any)._checkField(f.parent);
+          f.options.checkExpressions(f.parent);
 
           expect(fooField.hide).toBeTrue();
           expect(barField.hide).toBeFalse();
@@ -1044,16 +1044,16 @@ describe('Service: FormlyJsonschema', () => {
             },
           ] = f.fieldGroup;
 
-          expect(fooField.hide).toBeTruthy();
-          expect(barField.hide).toBeFalsy();
+          expect(fooField.hide).toBeTrue();
+          expect(barField.hide).toBeFalse();
           expect(model).toEqual({ bar: 'test' });
 
           enumField.formControl.setValue(0);
-          (f.options as any)._checkField(f.parent);
+          f.options.checkExpressions(f.parent);
           expect(model).toEqual({ foo: 'foo' });
 
           enumField.formControl.setValue(1);
-          (f.options as any)._checkField(f.parent);
+          f.options.checkExpressions(f.parent);
           expect(model).toEqual({ bar: 'bar' });
         });
 
@@ -1081,8 +1081,8 @@ describe('Service: FormlyJsonschema', () => {
             },
           ] = f.fieldGroup;
 
-          expect(f1.hide).toBeTruthy();
-          expect(f2.hide).toBeFalsy();
+          expect(f1.hide).toBeTrue();
+          expect(f2.hide).toBeFalse();
         });
       });
 
@@ -1164,7 +1164,7 @@ describe('Service: FormlyJsonschema', () => {
           expect(barField.hide).toBeTrue();
 
           enumField.formControl.setValue([1]);
-          (f.options as any)._checkField(f.parent);
+          f.options.checkExpressions(f.parent);
 
           expect(model).toEqual({});
           expect(fooField.hide).toBeTrue();
@@ -1189,7 +1189,7 @@ describe('Service: FormlyJsonschema', () => {
 
           const [enumField] = f.fieldGroup;
           enumField.formControl.setValue([1]);
-          (f.options as any)._checkField(f.parent);
+          f.options.checkExpressions(f.parent);
 
           expect(form.value).toEqual({ bar: 'bar' });
         });
@@ -1212,7 +1212,7 @@ describe('Service: FormlyJsonschema', () => {
 
           const [enumField] = f.fieldGroup;
           enumField.formControl.setValue([1]);
-          (f.options as any)._checkField(f.parent);
+          f.options.checkExpressions(f.parent);
 
           expect(form.value).toEqual({ foo: 'bar' });
         });
