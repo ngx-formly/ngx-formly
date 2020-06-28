@@ -80,24 +80,28 @@ export function createComponent<T>({
 
 export function createFormlyFieldComponent(
   field: FormlyFieldConfig,
-  options: IComponentOptions<{ field: FormlyFieldConfig }> = {},
+  config: IComponentOptions<{ field: FormlyFieldConfig }> = {},
 ) {
   const model = field && field.model ? field.model : {};
   if (field && field.model) {
     delete (field as any).model;
   }
-
+  const options = field && field.options ? field.options : {};
+  if (field && field.options) {
+    delete (field as any).options;
+  }
   return createComponent<{ field: FormlyFieldConfig }>({
     template: '<formly-field [field]="field"></formly-field>',
     inputs: { field },
-    ...options,
+    ...config,
     providers: [
-      ...(options.providers || []),
+      ...(config.providers || []),
       {
         provide: APP_INITIALIZER,
         useFactory: (builder: FormlyFormBuilder) => () => {
           builder.build({
-            model: model || {},
+            model,
+            options,
             fieldGroup: [field],
           });
 

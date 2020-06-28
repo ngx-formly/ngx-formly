@@ -11,12 +11,12 @@ import { FieldType } from '../templates/field.type';
 const renderComponent = (field: FormlyFieldConfig, options = {}) => {
   return createFormlyFieldComponent(field, {
     imports: [FormlyInputModule],
-    declarations: [FormlyWrapperFormFieldAsync, FormlyTestOnPushComponent, FormlyParentComponent, FormlyChildComponent],
+    declarations: [FormlyWrapperFormFieldAsync, FormlyOnPushComponent, FormlyParentComponent, FormlyChildComponent],
     config: {
       types: [
         {
           name: 'on-push',
-          component: FormlyTestOnPushComponent,
+          component: FormlyOnPushComponent,
         },
         {
           name: 'parent',
@@ -236,7 +236,7 @@ describe('FormlyField Component', () => {
       },
     });
 
-    const onPushInstance = query('formly-on-push-component').nativeElement;
+    const onPushInstance = query('.to').nativeElement;
     expect(onPushInstance.textContent).toEqual(
       JSON.stringify(
         {
@@ -262,6 +262,22 @@ describe('FormlyField Component', () => {
         2,
       ),
     );
+  });
+
+  it('should take account of formState update', () => {
+    const { field, query, detectChanges } = renderComponent({
+      key: 'push',
+      type: 'on-push',
+      templateOptions: {},
+      options: { formState: { foo: true } },
+    });
+
+    expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
+
+    field.options.formState.foo = false;
+    detectChanges();
+
+    expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
   });
 
   describe('valueChanges', () => {
@@ -468,10 +484,13 @@ class FormlyWrapperFormFieldAsync extends FieldWrapper {}
 
 @Component({
   selector: 'formly-on-push-component',
-  template: '{{ to | json }}',
+  template: `
+    <div class="to">{{ to | json }}</div>
+    <div class="formState">{{ formState | json }}</div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyTestOnPushComponent extends FieldType {}
+export class FormlyOnPushComponent extends FieldType {}
 
 @Injectable()
 export class ParentService {}
