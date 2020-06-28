@@ -61,7 +61,7 @@ function addUITheme(options: Schema) {
     const uiTheme = options.uiTheme;
 
     if (uiTheme) {
-      addPackageToPackageJson(host, 'dependencies', `@ngx-formly/${uiTheme}`, ngxFormlyVersion);
+      addPackageToPackageJson(host, 'dependencies', `@ngx-formly/${uiTheme}`, uiTheme === 'ng-zorro-antd' ? '^0.0' : ngxFormlyVersion);
 
       // Is this needed if task is added by Formly package call?
       // context.addTask(new NodePackageInstallTask());
@@ -91,6 +91,7 @@ function mapUIName(uiTheme: string): string {
     ionic: 'Ionic',
     primeng: 'PrimeNG',
     kendo: 'Kendo',
+    'ng-zorro-antd': 'NgZorroAntd',
   };
 
   return uiMap[uiTheme];

@@ -6,7 +6,7 @@ export interface Schema {
   /**
    * The UI with pre-defined types/templates
    */
-  uiTheme?: 'material' | 'bootstrap' | 'ionic' | 'primeng' | 'kendo';
+  uiTheme?: 'material' | 'bootstrap' | 'ionic' | 'primeng' | 'kendo' | 'ng-zorro-antd';
 
   /**
    * Name of the module to import to
