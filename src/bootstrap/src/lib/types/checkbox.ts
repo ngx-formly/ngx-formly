@@ -15,11 +15,13 @@ import { FieldType } from '@ngx-formly/core';
       <input type="checkbox"
         [class.is-invalid]="showError"
         [class.form-check-input]="to.formCheck.indexOf('custom') === -1"
+        [class.position-static]="to.formCheck === 'nolabel'"
         [class.custom-control-input]="to.formCheck.indexOf('custom') === 0"
         [indeterminate]="to.indeterminate && formControl.value === null"
         [formControl]="formControl"
         [formlyAttributes]="field">
       <label [for]="id"
+        *ngIf="to.formCheck !== 'nolabel'"
         [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
         [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
       >
@@ -34,7 +36,7 @@ export class FormlyFieldCheckbox extends FieldType {
     templateOptions: {
       indeterminate: true,
       hideLabel: true,
-      formCheck: 'custom', // 'custom' | 'custom-inline' | 'custom-switch' | 'stacked' | 'inline'
+      formCheck: 'custom', // 'custom' | 'custom-inline' | 'custom-switch' | 'stacked' | 'inline' | 'nolabel'
     },
   };
 }
