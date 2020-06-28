@@ -2,11 +2,15 @@ import { createFormlyFieldComponent as renderComponent } from '@ngx-formly/core/
 
 describe('Template Field Type', () => {
   it('should render template', () => {
-    const { query } = renderComponent({
-      template: '<div>Nested property keys</div>',
+    const { field, query, detectChanges } = renderComponent({
+      template: '<div>foo</div>',
     });
 
     expect(query('formly-template')).not.toBeNull();
-    expect(query('formly-template').nativeElement.textContent).toEqual('Nested property keys');
+    expect(query('formly-template').nativeElement.textContent).toEqual('foo');
+
+    field.template = '<div>bar</div>';
+    detectChanges();
+    expect(query('formly-template').nativeElement.textContent).toEqual('bar');
   });
 });
