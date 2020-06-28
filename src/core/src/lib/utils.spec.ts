@@ -7,6 +7,7 @@ import {
   clone,
   observe,
   assignFieldValue,
+  defineHiddenProp,
 } from './utils';
 import { FormlyFieldConfig } from './models';
 import { of } from 'rxjs';
@@ -375,5 +376,15 @@ describe('observe', () => {
 
     observe(field, ['hide'], spy);
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not change the enumerable descriptor', () => {
+    const field = { foo: true };
+    observe(field, ['foo'], () => {});
+    expect(Object.getOwnPropertyDescriptor(field, 'foo').enumerable).toEqual(true);
+
+    defineHiddenProp(field, 'bar', true);
+    observe(field, ['bar'], () => {});
+    expect(Object.getOwnPropertyDescriptor(field, 'bar').enumerable).toEqual(false);
   });
 });

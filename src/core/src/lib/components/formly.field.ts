@@ -233,14 +233,22 @@ export class FormlyField
         paths: ['templateOptions'],
         setFn: () => field.options.detectChanges(field),
       }),
+      observeDeep({
+        source: field,
+        target: field.options.formState,
+        paths: ['options', 'formState'],
+        setFn: () => field.options.detectChanges(field),
+      }),
     ];
 
-    const fieldGroupObserver = observe(
-      field,
-      ['fieldGroupClassName'],
-      ({ firstChange }) => !firstChange && field.options.detectChanges(field),
-    );
-    subscribes.push(() => fieldGroupObserver.unsubscribe());
+    for (const path of [['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
+      const fieldObserver = observe(
+        field,
+        path,
+        ({ firstChange }) => !firstChange && field.options.detectChanges(field),
+      );
+      subscribes.push(() => fieldObserver.unsubscribe());
+    }
 
     if (field.key && !field.fieldGroup && field.formControl) {
       const control = field.formControl;
