@@ -315,6 +315,25 @@ describe('Array Field Type', () => {
     const { model } = field;
     expect(model[0]).toEqual({ name: 'TEST' });
   });
+
+  it('should detect changes on re-build', () => {
+    const { field, queryAll, detectChanges } = renderComponent({
+      key: 'address',
+      type: 'array',
+      defaultValue: [1],
+      hooks: {
+        onInit: (f) => (f.model.length = 4),
+      },
+    });
+
+    expect(queryAll('formly-array > formly-field')).toHaveLength(1);
+
+    field.model.length = 4;
+    field.options.build(field.parent);
+    detectChanges();
+
+    expect(queryAll('formly-array > formly-field')).toHaveLength(4);
+  });
 });
 
 @Component({
