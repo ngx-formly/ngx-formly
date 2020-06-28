@@ -274,7 +274,9 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
     state.onChange.push(setFn);
     setFn({ currentValue: state.value, firstChange: true });
     if (state.onChange.length === 1) {
+      const { enumerable } = Object.getOwnPropertyDescriptor(target, key) || { enumerable: true };
       Object.defineProperty(target, key, {
+        enumerable,
         configurable: true,
         get: () => state.value,
         set: (currentValue) => {
