@@ -27,6 +27,7 @@ export class FormlyFormBuilder {
       reduceFormUpdateValidityCalls(field.form, () => this._build(field));
       const options = (field as FormlyFieldConfigCache).options;
       options.checkExpressions && options.checkExpressions(field, true);
+      options.detectChanges && options.detectChanges(field);
     } else {
       this._build(field);
     }

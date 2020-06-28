@@ -60,10 +60,6 @@ export class CoreExtension implements FormlyExtension {
       options.showError = this.config.extras.showError;
     }
 
-    if (!options.updateInitialValue) {
-      options.updateInitialValue = () => (options._initialModel = clone(field.model));
-    }
-
     if (!options.fieldChanges) {
       defineHiddenProp(options, 'fieldChanges', new Subject<FormlyValueChangeEvent>());
     }
@@ -72,43 +68,40 @@ export class CoreExtension implements FormlyExtension {
       options._hiddenFieldsForCheck = [];
     }
 
-    if (!options.detectChanges) {
-      options._markForCheck = (f) => {
-        console.warn(`Formly: 'options._markForCheck' is deprecated since v6.0, use 'options.detectChanges' instead.`);
-        options.detectChanges(f);
-      };
+    options._markForCheck = (f) => {
+      console.warn(`Formly: 'options._markForCheck' is deprecated since v6.0, use 'options.detectChanges' instead.`);
+      options.detectChanges(f);
+    };
 
-      options.detectChanges = (f: FormlyFieldConfigCache) => {
-        if (f._componentRefs) {
-          f._componentRefs.forEach((ref) => {
-            // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
-            const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
-            changeDetectorRef.markForCheck();
-          });
-        }
+    options.detectChanges = (f: FormlyFieldConfigCache) => {
+      if (f._componentRefs) {
+        f._componentRefs.forEach((ref) => {
+          // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
+          const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
+          changeDetectorRef.markForCheck();
+        });
+      }
 
-        if (f.fieldGroup) {
-          f.fieldGroup.forEach((f) => options.detectChanges(f));
-        }
-      };
-    }
+      if (f.fieldGroup) {
+        f.fieldGroup.forEach((f) => f && options.detectChanges(f));
+      }
+    };
 
-    if (!options.resetModel) {
-      options.resetModel = (model?: any) => {
-        model = clone(model ?? options._initialModel);
-        if (field.model) {
-          Object.keys(field.model).forEach((k) => delete field.model[k]);
-          Object.assign(field.model, model || {});
-        }
+    options.resetModel = (model?: any) => {
+      model = clone(model ?? options._initialModel);
+      if (field.model) {
+        Object.keys(field.model).forEach((k) => delete field.model[k]);
+        Object.assign(field.model, model || {});
+      }
 
-        options.build(field);
-        field.form.reset(model);
-        if (options.parentForm && options.parentForm.control === field.formControl) {
-          (options.parentForm as { submitted: boolean }).submitted = false;
-        }
-      };
-    }
+      options.build(field);
+      field.form.reset(model);
+      if (options.parentForm && options.parentForm.control === field.formControl) {
+        (options.parentForm as { submitted: boolean }).submitted = false;
+      }
+    };
 
+    options.updateInitialValue = () => (options._initialModel = clone(field.model));
     field.options.updateInitialValue();
   }
 
