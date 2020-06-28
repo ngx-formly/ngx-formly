@@ -8,7 +8,6 @@ import { DOCUMENT } from '@angular/common';
   host: {
     '(focus)': 'onFocus($event)',
     '(blur)': 'onBlur($event)',
-    '(change)': 'onChange($event)',
   },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
@@ -38,6 +37,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       'keyup',
       'keydown',
       'keypress',
+      'change',
     ],
   };
 
@@ -58,12 +58,17 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.field.name && this.setAttribute('name', this.field.name);
       this.uiEvents.listeners.forEach(listener => listener());
       this.uiEvents.events.forEach(eventName => {
-        if (this.to && this.to[eventName]) {
+        let callback = this.to && this.to[eventName];
+        if (eventName === 'change') {
+          callback = this.onChange.bind(this);
+        }
+
+        if (callback) {
           this.uiEvents.listeners.push(
             this.renderer.listen(
               this.elementRef.nativeElement,
               eventName,
-              (e) => this.to[eventName](this.field, e),
+              (e) => callback(this.field, e),
             ),
           );
         }
