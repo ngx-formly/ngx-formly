@@ -127,17 +127,24 @@ export class FieldValidationExtension implements FormlyExtension {
       errors = errors ? null : { [name]: options ? options : true };
     }
 
-    if (options && field.formControl && options.errorPath) {
-      const control = field.formControl.get(options.errorPath);
-      if (control) {
-        const controlErrors = (control.errors || {});
-        if (errors && errors[name] && !controlErrors[name]) {
-          const { errorPath, ...opts } = errors[name];
-          control.setErrors({ ...controlErrors, [name]: opts });
-        } else if (errors === null && controlErrors[name]) {
-          delete controlErrors[name];
-          control.setErrors(Object.keys(controlErrors).length === 0 ? null : controlErrors);
-        }
+    const ctrl = field.formControl;
+    ctrl['_childrenErrors'] && ctrl['_childrenErrors'][name] && ctrl['_childrenErrors'][name]();
+
+    if (errors && errors[name]) {
+      const errorPath = errors[name].errorPath
+        ? errors[name].errorPath
+        : (options || {}).errorPath;
+
+      const childCtrl = errorPath ? field.formControl.get(errorPath) : null;
+      if (childCtrl) {
+        const { errorPath, ...opts } = errors[name];
+        childCtrl.setErrors({ ...(childCtrl.errors || {}), [name]: opts });
+
+        !ctrl['_childrenErrors'] && defineHiddenProp(ctrl, '_childrenErrors', {});
+        ctrl['_childrenErrors'][name] = () => {
+          const { [name]: toDelete, ...childErrors } = childCtrl.errors || {};
+          childCtrl.setErrors(Object.keys(childErrors).length === 0 ? null : childErrors);
+        };
       }
     }
 
