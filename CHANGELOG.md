@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.8.0"></a>
+# [5.8.0](https://github.com/ngx-formly/ngx-formly/compare/v5.7.2...v5.8.0) (2020-06-29)
+
+
+### Bug Fixes
+
+* **core:** ensure change event is called after the formControl change ([#2336](https://github.com/ngx-formly/ngx-formly/issues/2336)) ([051480d](https://github.com/ngx-formly/ngx-formly/commit/051480d)), closes [#2324](https://github.com/ngx-formly/ngx-formly/issues/2324)
+* **schematics:** add ng-zorro-antd to ui-theme option ([#2337](https://github.com/ngx-formly/ngx-formly/issues/2337)) ([e2274a7](https://github.com/ngx-formly/ngx-formly/commit/e2274a7)), closes [#2333](https://github.com/ngx-formly/ngx-formly/issues/2333)
+
+
+### Features
+
+* **bootstrap:** support checkbox without label ([#2339](https://github.com/ngx-formly/ngx-formly/issues/2339)) ([989dec0](https://github.com/ngx-formly/ngx-formly/commit/989dec0)), closes [#2313](https://github.com/ngx-formly/ngx-formly/issues/2313)
+* **core:** support attach error to specific field from a validator ([#2342](https://github.com/ngx-formly/ngx-formly/issues/2342)) ([d8b612d](https://github.com/ngx-formly/ngx-formly/commit/d8b612d)), closes [#2332](https://github.com/ngx-formly/ngx-formly/issues/2332)
+* **ionic:** add Names && ShortNames inputs for datetime picker ([#2338](https://github.com/ngx-formly/ngx-formly/issues/2338)) ([2e74cb3](https://github.com/ngx-formly/ngx-formly/commit/2e74cb3)), closes [#2331](https://github.com/ngx-formly/ngx-formly/issues/2331)
+* **material:** add monthSelected && yearSelected outputs for datepicker ([#2340](https://github.com/ngx-formly/ngx-formly/issues/2340)) ([f1f0cc9](https://github.com/ngx-formly/ngx-formly/commit/f1f0cc9)), closes [#2308](https://github.com/ngx-formly/ngx-formly/issues/2308)
+
+
+
 <a name="5.7.2"></a>
 ## [5.7.2](https://github.com/ngx-formly/ngx-formly/compare/v5.7.1...v5.7.2) (2020-06-20)
 
