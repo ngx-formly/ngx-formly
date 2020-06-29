@@ -34,6 +34,8 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       [startAt]="to.datepickerOptions.startAt"
       [startView]="to.datepickerOptions.startView"
       [touchUi]="to.datepickerOptions.touchUi"
+      (monthSelected)="to.datepickerOptions.monthSelected(field, $event, picker)"
+      (yearSelected)="to.datepickerOptions.yearSelected(field, $event, picker)"
     >
     </mat-datepicker>
   `,
@@ -50,6 +52,8 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
         datepickerTogglePosition: 'suffix',
         dateInput: () => {},
         dateChange: () => {},
+        monthSelected: () => {},
+        yearSelected: () => {},
       },
     },
   };
