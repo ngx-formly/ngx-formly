@@ -7,7 +7,6 @@
     "Kent C. Dodds <kent@doddsfamily.us>"
   ],
   "scripts": {
-    "postinstall": "ngcc --properties es2015 module main --first-only && ngcc --properties main",
     "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint --fix -p tsconfig.json",
@@ -20,8 +19,8 @@
     "publish": "ts-node --dir build publish.ts",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "ngcc --properties main && jest",
+    "test:watch": "ngcc --properties main && jest --watch",
     "github-release": "conventional-github-releaser -p angular -t $GH_TOKEN --draft",
     "e2e:ssr": "node integration/ssr/dist/server/main.js & pid=$!; cypress run --config integrationFolder=cypress/ssr; kill -9 $pid",
     "dev:ssr": "ng run ssr:serve-ssr",
