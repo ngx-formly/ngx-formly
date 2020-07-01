@@ -125,18 +125,17 @@ describe('FormlyAttributes Component', () => {
   it(`should trigger templateOptions events`, () => {
     const { query, field } = renderComponent({
       templateOptions: {
-        focus: () => {},
-        blur: () => {},
-        change: () => {},
-        keyup: () => {},
-        keydown: () => {},
-        click: () => {},
-        keypress: () => {},
+        focus: jest.fn(),
+        blur: jest.fn(),
+        change: jest.fn(),
+        keyup: jest.fn(),
+        keydown: jest.fn(),
+        click: jest.fn(),
+        keypress: jest.fn(),
       },
     });
 
     const expectEventCall = (evt: string) => {
-      jest.spyOn(field.templateOptions, evt);
       query('input').triggerEventHandler(evt, {});
       expect(field.templateOptions[evt]).toHaveBeenCalledWith(field, expect.any(Object));
     };

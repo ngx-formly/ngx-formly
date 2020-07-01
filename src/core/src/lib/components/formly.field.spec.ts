@@ -90,10 +90,7 @@ describe('FormlyField Component', () => {
     const f: FormlyFieldConfig = {
       hooks: {
         afterContentInit: () => {},
-        afterContentChecked: () => {},
         afterViewInit: () => {},
-        afterViewChecked: () => {},
-        doCheck: () => {},
         onInit: () => {},
         onChanges: () => {},
         onDestroy: () => {},
