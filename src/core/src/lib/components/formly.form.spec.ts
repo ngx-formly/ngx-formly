@@ -410,35 +410,33 @@ describe('FormlyForm Component', () => {
       expect(fields[1].formControl.value).toBeNull();
     });
 
-    it('should hide/display field using a function with nested field key', fakeAsync(() => {
-      const form = new FormGroup({});
-      app.form = form;
-      app.model = { address: [{ city: '' }] };
-      field.key = 'address[0].city';
-      field.hideExpression = '!(model.address && model.address[0] && model.address[0].city === "agadir")';
+    it('should hide/display field using a function with nested field key', () => {
+      const { form, model, fields, detectChanges } = renderComponent({
+        model: { address: [{ city: '' }] },
+        fields: [{
+          key: 'address[0].city',
+          hideExpression: '!(model.address && model.address[0] && model.address[0].city === "agadir")',
+        }],
+      });
 
-      const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
-      tick(1);
       expect(form.get('address.0.city')).toBeNull();
 
-      app.model.address[0].city = 'agadir';
-      fixture.detectChanges();
-      tick(1);
+      model.address[0].city = 'agadir';
+      detectChanges();
+
       expect(form.get('address.0.city')).not.toBeNull();
       expect(form.get('address.0.city').value).toEqual('agadir');
-    }));
+    });
 
     it('should support passing number or array path to field key', () => {
-      const form = new FormGroup({});
-      app.form = form;
-      app.model = {};
-      app.fields = [
-        { key: 1, defaultValue: 'number' },
-        { key: ['this:is:a:valid:property:for:a:json:object:1.0'], defaultValue: 'array' },
-      ];
+      const { model } = renderComponent({
+        fields: [
+          { key: 1, defaultValue: 'number' },
+          { key: ['this:is:a:valid:property:for:a:json:object:1.0'], defaultValue: 'array' },
+        ],
+      });
 
-      createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
-      expect(app.model).toEqual({
+      expect(model).toEqual({
         1: 'number',
         'this:is:a:valid:property:for:a:json:object:1.0': 'array',
       });
