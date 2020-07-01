@@ -9,11 +9,8 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  DoCheck,
   AfterContentInit,
-  AfterContentChecked,
   AfterViewInit,
-  AfterViewChecked,
   Renderer2,
   ElementRef,
   ChangeDetectionStrategy,
@@ -32,16 +29,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
   template: '<ng-template #container></ng-template>',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyField
-  implements
-    OnInit,
-    OnChanges,
-    DoCheck,
-    AfterContentInit,
-    AfterContentChecked,
-    AfterViewInit,
-    AfterViewChecked,
-    OnDestroy {
+export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   @Input() field: FormlyFieldConfig;
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
@@ -63,20 +51,8 @@ export class FormlyField
     this.triggerHook('afterContentInit');
   }
 
-  ngAfterContentChecked() {
-    this.triggerHook('afterContentChecked');
-  }
-
   ngAfterViewInit() {
     this.triggerHook('afterViewInit');
-  }
-
-  ngAfterViewChecked() {
-    this.triggerHook('afterViewChecked');
-  }
-
-  ngDoCheck() {
-    this.triggerHook('doCheck');
   }
 
   ngOnInit() {
