@@ -101,32 +101,33 @@ describe('Array Field Type', () => {
   });
 
   it('should not triggers valueChanges for all fields on add/remove', () => {
-    app.fields = [
-      {
-        key: 'foo',
-        type: 'array',
-        fieldArray: { key: 'title' },
-      },
-      {
-        key: 'bar',
-        type: 'array',
-        fieldArray: { key: 'title' },
-      },
-    ];
+    const { detectChanges, field, query } = renderComponent({
+      fieldGroup: [
+        {
+          key: 'foo',
+          type: 'array',
+          fieldArray: { key: 'title' },
+        },
+        {
+          key: 'bar',
+          type: 'array',
+          fieldArray: { key: 'title' },
+        },
+      ],
+    });
 
-    const fixture = createFormlyTestComponent();
-    const spy = jasmine.createSpy('model change spy');
-    const subscription = app.form.get('bar').valueChanges.subscribe(spy);
+    const spy = jest.fn();
+    const subscription = field.form.get('bar').valueChanges.subscribe(spy);
 
     // add
-    fixture.nativeElement.querySelector('#add').click();
-    fixture.detectChanges();
+    query('#add').triggerEventHandler('click', {});
+    detectChanges();
 
     expect(spy).not.toHaveBeenCalled();
 
     // remove
-    fixture.nativeElement.querySelector('#remove-0').click();
-    fixture.detectChanges();
+    query('#remove-0').triggerEventHandler('click', {});
+    detectChanges();
 
     expect(spy).not.toHaveBeenCalled();
     subscription.unsubscribe();

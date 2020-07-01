@@ -134,21 +134,29 @@ describe('FormlyAttributes Component', () => {
   });
 
   describe('templateOptions events', () => {
+    it(`should mark formControl as dirty on trigger change Event`, () => {
+      const { query, field } = renderComponent({
+        formControl: new FormControl(),
+      });
+
+      query('input').triggerEventHandler('change', {});
+      expect(field.formControl.dirty).toBeTrue();
+    });
+
     it(`should trigger templateOptions events`, () => {
       const { query, field } = renderComponent({
         templateOptions: {
-          focus: () => { },
-          blur: () => { },
-          change: () => { },
-          keyup: () => { },
-          keydown: () => { },
-          click: () => { },
-          keypress: () => { },
+          focus: jest.fn(),
+          blur: jest.fn(),
+          change: jest.fn(),
+          keyup: jest.fn(),
+          keydown: jest.fn(),
+          click: jest.fn(),
+          keypress: jest.fn(),
         },
       });
 
       const expectEventCall = (evt: string) => {
-        jest.spyOn(field.templateOptions, evt);
         query('input').triggerEventHandler(evt, {});
         expect(field.templateOptions[evt]).toHaveBeenCalledWith(field, expect.any(Object));
       };
@@ -161,21 +169,12 @@ describe('FormlyAttributes Component', () => {
       expectEventCall('click');
       expectEventCall('keypress');
     });
-
-    it(`should mark formControl as dirty on trigger change Event`, () => {
-      const { query, field } = renderComponent({
-        formControl: new FormControl(),
-      });
-
-      query('input').triggerEventHandler('change', {});
-      expect(field.formControl.dirty).toBeTrue();
-    });
   });
 
   describe('focus the element', () => {
     it(`should focus the element when focus is set to "true" and then blurred when it's set to "false"`, () => {
       const { detectChanges, query, field } = renderComponent({ focus: true });
-      const inputEl = <HTMLInputElement>query('input').nativeElement;
+      const inputEl = <HTMLInputElement> query('input').nativeElement;
 
       expect(document.activeElement === inputEl).toBeTrue();
 
