@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'formly-field-mat-checkbox',
@@ -11,6 +11,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
       [required]="to.required"
       [formlyAttributes]="field"
       [tabindex]="to.tabindex"
+      (change)="change($event)"
       [indeterminate]="to.indeterminate && formControl.value === null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">
@@ -35,5 +36,11 @@ export class FormlyFieldCheckbox extends FieldType {
   onContainerClick(event: MouseEvent): void {
     this.checkbox.focus();
     super.onContainerClick(event);
+  }
+
+  change($event: MatCheckboxChange) {
+    if (this.to.change) {
+      this.to.change(this.field, $event);
+    }
   }
 }
