@@ -272,5 +272,6 @@ export interface FormlyValueChangeEvent {
   field: FormlyFieldConfig;
   type: string;
   value: any;
+  [meta: string]: any;
 }
 
