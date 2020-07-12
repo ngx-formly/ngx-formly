@@ -673,6 +673,22 @@ describe('FormlyForm Component', () => {
       expect(form.get('address.city').value).toEqual('test');
     });
 
+    it('should support passing number or array path to field key', () => {
+      const form = new FormGroup({});
+      app.form = form;
+      app.model = {};
+      app.fields = [
+        { key: 1, defaultValue: 'number' },
+        { key: ['this:is:a:valid:property:for:a:json:object:1.0'], defaultValue: 'array' },
+      ];
+
+      createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>');
+      expect(app.model).toEqual({
+        1: 'number',
+        'this:is:a:valid:property:for:a:json:object:1.0': 'array',
+      });
+    });
+
     it('should hide/display field using a function with nested field key', fakeAsync(() => {
       const form = new FormGroup({});
       app.form = form;
