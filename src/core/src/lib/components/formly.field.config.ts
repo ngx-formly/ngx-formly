@@ -22,7 +22,7 @@ export interface FormlyFieldConfig {
   /**
    * The key that relates to the model. This will link the field value to the model
    */
-  key?: string;
+  key?: string | number | string[];
 
   /**
    * This allows you to specify the `id` of your field. Note, the `id` is generated if not set.
@@ -185,7 +185,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _asyncValidators?: AsyncValidatorFn[];
   _componentRefs?: ComponentRef<FieldType>[];
   _keyPath?: {
-    key: string;
+    key: FormlyFieldConfig['key'];
     path: string[];
   };
 }

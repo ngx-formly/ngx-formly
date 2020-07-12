@@ -28,7 +28,7 @@ export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   control.setParent(null);
   if (field['autoClear']) {
     if (field.parent.model) {
-      delete field.parent.model[field.key];
+      delete field.parent.model[Array.isArray(field.key) ? field.key[0] : field.key];
     }
     control.reset(
       { value: undefined, disabled: control.disabled },
