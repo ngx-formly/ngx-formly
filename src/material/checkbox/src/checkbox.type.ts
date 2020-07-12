@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Renderer2, AfterViewChecked } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 
@@ -8,7 +8,6 @@ import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
     <mat-checkbox
       [formControl]="formControl"
       [id]="id"
-      [required]="to.required"
       [formlyAttributes]="field"
       [tabindex]="to.tabindex"
       (change)="change($event)"
@@ -20,7 +19,7 @@ import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
     </mat-checkbox>
   `,
 })
-export class FormlyFieldCheckbox extends FieldType {
+export class FormlyFieldCheckbox extends FieldType implements AfterViewChecked {
   @ViewChild(MatCheckbox) checkbox!: MatCheckbox;
   defaultOptions = {
     templateOptions: {
@@ -33,6 +32,11 @@ export class FormlyFieldCheckbox extends FieldType {
     },
   };
 
+  private _required!: boolean;
+  constructor(private renderer: Renderer2) {
+    super();
+  }
+
   onContainerClick(event: MouseEvent): void {
     this.checkbox.focus();
     super.onContainerClick(event);
@@ -41,6 +45,18 @@ export class FormlyFieldCheckbox extends FieldType {
   change($event: MatCheckboxChange) {
     if (this.to.change) {
       this.to.change(this.field, $event);
+    }
+  }
+
+  ngAfterViewChecked() {
+    if (this.required !== this._required && this.checkbox && this.checkbox._inputElement) {
+      this._required = this.required;
+      const inputElement = this.checkbox._inputElement.nativeElement;
+      if (this.required) {
+        this.renderer.setAttribute(inputElement, 'required', 'required');
+      } else {
+        this.renderer.removeAttribute(inputElement, 'required');
+      }
     }
   }
 }
