@@ -222,7 +222,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     if (field.options.fieldChanges) {
-      field.options.fieldChanges.next(<FormlyValueChangeEvent> { field: field, type: 'hidden', value: hide });
+      field.options.fieldChanges.next(<FormlyValueChangeEvent> { field, type: 'hidden', value: hide });
     }
   }
 
@@ -257,5 +257,20 @@ export class FieldExpressionExtension implements FormlyExtension {
         control.patchValue(value, { emitEvent: false });
       }
     }
+
+    this.emitExpressionChanges(field, prop, value);
+  }
+
+  private emitExpressionChanges(field: FormlyFieldConfigCache, property: string, value: any) {
+    if (!field.options.fieldChanges) {
+      return;
+    }
+
+    field.options.fieldChanges.next({
+      field: field,
+      type: 'expressionChanges',
+      property,
+      value,
+    });
   }
 }

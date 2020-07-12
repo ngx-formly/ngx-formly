@@ -39,6 +39,48 @@ describe('FieldExpressionExtension', () => {
     builder = formlyBuilder;
   }));
 
+  describe('fieldChanges', () => {
+    it('should emit fieldChanges when expression value changes', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'name',
+          expressionProperties: {
+            'templateOptions.label': 'field.formControl.value',
+          },
+        },
+      ];
+      const spy = jasmine.createSpy('fieldChanges spy');
+      const subscription = options.fieldChanges.subscribe(spy);
+
+      builder.buildForm(form, fields, {}, options);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(
+        {
+          field: fields[0],
+          type: 'expressionChanges',
+          property: 'templateOptions.label',
+          value: null,
+        },
+      );
+
+      spy.calls.reset();
+      form.get('name').patchValue('foo');
+      options._checkField({ formControl: form, fieldGroup: fields, options });
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(
+        {
+          field: fields[0],
+          type: 'expressionChanges',
+          property: 'templateOptions.label',
+          value: 'foo',
+        },
+      );
+
+      subscription.unsubscribe();
+    });
+  });
+
   describe('field visibility (hideExpression)', () => {
     it('should update field visibility', () => {
       const fields: FormlyFieldConfig[] = [
