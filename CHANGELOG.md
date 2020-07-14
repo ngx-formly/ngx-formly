@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.9.0"></a>
+# [5.9.0](https://github.com/ngx-formly/ngx-formly/compare/v5.8.0...v5.9.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **core:** avoid unnecessary valueChanges on add/remove field array ([#2361](https://github.com/ngx-formly/ngx-formly/issues/2361)) ([26370ce](https://github.com/ngx-formly/ngx-formly/commit/26370ce)), closes [#2355](https://github.com/ngx-formly/ngx-formly/issues/2355)
+* **material:** rely on checkbox change input instead of formly attr ([#2356](https://github.com/ngx-formly/ngx-formly/issues/2356)) ([eaa66ed](https://github.com/ngx-formly/ngx-formly/commit/eaa66ed)), closes [#2353](https://github.com/ngx-formly/ngx-formly/issues/2353)
+* **material:** revert required behavior for checkbox ([#2358](https://github.com/ngx-formly/ngx-formly/issues/2358)) ([3c08c38](https://github.com/ngx-formly/ngx-formly/commit/3c08c38)), closes [#2349](https://github.com/ngx-formly/ngx-formly/issues/2349)
+* **schematics:** include ng-zorro-antd in uiTheme schema.json ([ffad0db](https://github.com/ngx-formly/ngx-formly/commit/ffad0db)), closes [#2333](https://github.com/ngx-formly/ngx-formly/issues/2333)
+
+
+### Features
+
+* **core:** allow passing number or array to field key ([#2359](https://github.com/ngx-formly/ngx-formly/issues/2359)) ([edf7f27](https://github.com/ngx-formly/ngx-formly/commit/edf7f27)), closes [#2344](https://github.com/ngx-formly/ngx-formly/issues/2344)
+* **core:** emit expressionChanges event through fieldChanges option ([#2357](https://github.com/ngx-formly/ngx-formly/issues/2357)) ([5d19b9f](https://github.com/ngx-formly/ngx-formly/commit/5d19b9f)), closes [#2350](https://github.com/ngx-formly/ngx-formly/issues/2350)
+
+
+
 <a name="5.8.0"></a>
 # [5.8.0](https://github.com/ngx-formly/ngx-formly/compare/v5.7.2...v5.8.0) (2020-06-29)
 
