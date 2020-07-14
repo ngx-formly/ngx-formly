@@ -230,10 +230,10 @@ export function wrapProperty<T = any>(
 export function reduceFormUpdateValidityCalls(form: any, action: Function) {
   const updateValidity = form._updateTreeValidity.bind(form);
 
-  let updateValidityArgs = null;
-  form._updateTreeValidity = (...args) => updateValidityArgs = args;
+  let updateValidityArgs = { called: false, emitEvent: false };
+  form._updateTreeValidity = ({ emitEvent } = { emitEvent: true }) => updateValidityArgs = { called: true, emitEvent: emitEvent || updateValidityArgs.emitEvent };
   action();
 
-  updateValidityArgs && updateValidity(updateValidityArgs);
+  updateValidityArgs.called && updateValidity({ emitEvent: updateValidityArgs.emitEvent });
   form._updateTreeValidity = updateValidity;
 }
