@@ -205,6 +205,38 @@ describe('Array Field Type', () => {
     subscription.unsubscribe();
   });
 
+  it('should not triggers valueChanges for all fields on add/remove', () => {
+    app.fields = [
+      {
+        key: 'foo',
+        type: 'array',
+        fieldArray: { key: 'title' },
+      },
+      {
+        key: 'bar',
+        type: 'array',
+        fieldArray: { key: 'title' },
+      },
+    ];
+
+    const fixture = createFormlyTestComponent();
+    const spy = jasmine.createSpy('model change spy');
+    const subscription = app.form.get('bar').valueChanges.subscribe(spy);
+
+    // add
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+
+    expect(spy).not.toHaveBeenCalled();
+
+    // remove
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+
+    expect(spy).not.toHaveBeenCalled();
+    subscription.unsubscribe();
+  });
+
   it('should not reuse the remove controls', () => {
     app.model = { array: null };
     app.fields = [{

@@ -24,8 +24,16 @@ export class FieldFormExtension implements FormlyExtension {
       return;
     }
 
-    const updateValidity = this.setValidators(field);
-    updateValidity && (field.formControl as any)._updateTreeValidity();
+    const fieldsToUpdate = this.setValidators(field);
+    if (fieldsToUpdate.length === 0) {
+      return;
+    }
+
+    if (fieldsToUpdate.length === 1) {
+      fieldsToUpdate[0].formControl.updateValueAndValidity();
+    } else {
+      (field.formControl as any)._updateTreeValidity();
+    }
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {
@@ -80,9 +88,15 @@ export class FieldFormExtension implements FormlyExtension {
       }
     }
 
-    (field.fieldGroup || []).forEach(f => this.setValidators(f) && (updateValidity = true));
+    const fieldsToUpdate = updateValidity ? [field] : [];
+    (field.fieldGroup || []).forEach(f => {
+      const childrenToUpdate = this.setValidators(f);
+      if (!updateValidity) {
+        fieldsToUpdate.push(...childrenToUpdate);
+      }
+    });
 
-    return updateValidity;
+    return fieldsToUpdate;
   }
 
   private mergeValidators<T>(field: FormlyFieldConfigCache, type: '_validators' | '_asyncValidators'): T[] {
