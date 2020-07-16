@@ -87,7 +87,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     const path = paths[i];
     if (!parent.get([path])) {
       registerControl({
-        key: path,
+        key: [path],
         formControl: new FormGroup({}),
         parent: { formControl: parent },
       });
