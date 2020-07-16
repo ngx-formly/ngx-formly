@@ -49,6 +49,21 @@ describe('registerControl', () => {
     expect(field.formControl.parent).not.toBeNull();
   });
 
+
+  it('FormGroup with field array key', () => {
+    const field = {
+      key: ['test.0', '111'],
+      formControl: new FormControl(),
+      parent: {
+        formControl: new FormGroup({}),
+        model: {},
+      },
+    };
+
+    registerControl(field);
+    expect(field.formControl.parent).not.toBeNull();
+  });
+
   it('should keep disabled state in sync with "templateOptions.disabled"', () => {
     const field: FormlyFieldConfig = {
       key: 'test',
