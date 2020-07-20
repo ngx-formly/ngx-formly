@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.9.1"></a>
+## [5.9.1](https://github.com/ngx-formly/ngx-formly/compare/v5.9.0...v5.9.1) (2020-07-20)
+
+
+### Bug Fixes
+
+* **core:** avoid re-parse nested field key ([#2367](https://github.com/ngx-formly/ngx-formly/issues/2367)) ([7464955](https://github.com/ngx-formly/ngx-formly/commit/7464955)), closes [#2344](https://github.com/ngx-formly/ngx-formly/issues/2344)
+* **core:** take account of async validators errorPath ([#2377](https://github.com/ngx-formly/ngx-formly/issues/2377)) ([62c731c](https://github.com/ngx-formly/ngx-formly/commit/62c731c)), closes [#2373](https://github.com/ngx-formly/ngx-formly/issues/2373)
+* **json-schema:** manage oneOf of duplicated field property ([#2376](https://github.com/ngx-formly/ngx-formly/issues/2376)) ([66f62f8](https://github.com/ngx-formly/ngx-formly/commit/66f62f8)), closes [#2374](https://github.com/ngx-formly/ngx-formly/issues/2374)
+* **material:** add change event for toggle and slider types ([#2366](https://github.com/ngx-formly/ngx-formly/issues/2366)) ([88c12e7](https://github.com/ngx-formly/ngx-formly/commit/88c12e7)), closes [#2353](https://github.com/ngx-formly/ngx-formly/issues/2353)
+
+
+
 <a name="5.9.0"></a>
 # [5.9.0](https://github.com/ngx-formly/ngx-formly/compare/v5.8.0...v5.9.0) (2020-07-14)
 
