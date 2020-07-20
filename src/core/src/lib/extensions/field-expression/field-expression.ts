@@ -12,11 +12,16 @@ export class FieldExpressionExtension implements FormlyExtension {
       return;
     }
 
+    let checkLocked = false;
     field.options._checkField = (f, ignoreCache) => {
-      reduceFormUpdateValidityCalls(
-        f.formControl,
-        () => this.checkField(f, ignoreCache),
-      );
+      if (!checkLocked) {
+        checkLocked = true;
+        reduceFormUpdateValidityCalls(
+          f.formControl,
+          () => this.checkField(f, ignoreCache),
+        );
+        checkLocked = false;
+      }
     };
   }
 

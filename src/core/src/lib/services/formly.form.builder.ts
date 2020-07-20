@@ -78,6 +78,13 @@ export class FormlyFormBuilder {
       };
     }
 
+    if (!options._buildField) {
+      options._buildField = (field: FormlyFieldConfig) => {
+        this.buildForm(field.form, field.fieldGroup, field.model, field.options);
+        return field;
+      };
+    }
+
     return options;
   }
 }

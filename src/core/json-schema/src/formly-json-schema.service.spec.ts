@@ -906,6 +906,22 @@ describe('Service: FormlyJsonschema', () => {
           expect(barField.hide).toBeFalsy();
         });
 
+        it('should render the valid oneOf field when properties have the same name', () => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+            type: 'object',
+            oneOf: [
+              { properties: { foo: { const: 1 } } },
+              { properties: { foo: { const: 2 } } },
+            ],
+          });
+
+          builder.buildForm(new FormGroup({}), [f], { foo: 2 }, {});
+          const [, { fieldGroup: [foo1Field, foo2Field] }] = f.fieldGroup;
+
+          expect(foo1Field.hide).toBeTruthy();
+          expect(foo2Field.hide).toBeFalsy();
+        });
+
         it('should render the selected oneOf field', () => {
           const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
           const model: any = { foo: 'test' };
