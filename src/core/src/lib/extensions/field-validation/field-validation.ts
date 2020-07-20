@@ -3,6 +3,8 @@ import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { FORMLY_VALIDATORS, defineHiddenProp, isPromise, wrapProperty, clone } from '../../utils';
 import { updateValidity } from '../field-form/utils';
+import { isObservable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
@@ -103,23 +105,26 @@ export class FieldValidationExtension implements FormlyExtension {
     }
 
     return (control: AbstractControl) => {
-      let errors: any = validatorOption.validation(control, field, validatorOption.options);
-      if (validatorName) {
-        if (isPromise(errors)) {
-          return errors.then((result: boolean) => {
-            // workaround for https://github.com/angular/angular/issues/13200
-            if (field.options && field.options._markForCheck) {
-              field.options._markForCheck(field);
-            }
-
-            return this.handleResult(field, !!result, validatorOption);
-          });
-        }
-        errors = !!errors;
+      const errors: any = validatorOption.validation(control, field, validatorOption.options);
+      if (isPromise(errors)) {
+        return errors.then(v => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption));
       }
 
-      return this.handleResult(field, errors, validatorOption);
+      if (isObservable(errors) && !validatorName) {
+        return errors.pipe(map(v => this.handleAsyncResult(field, v, validatorOption)));
+      }
+
+      return this.handleResult(field, validatorName ? !!errors : errors, validatorOption);
     };
+  }
+
+  private handleAsyncResult(field: FormlyFieldConfigCache, errors: any, options: ValidatorOption) {
+    // workaround for https://github.com/angular/angular/issues/13200
+    if (field.options && field.options._markForCheck) {
+      field.options._markForCheck(field);
+    }
+
+    return this.handleResult(field, errors, options);
   }
 
   private handleResult(field: FormlyFieldConfigCache, errors: any, { name, options }: ValidatorOption) {
