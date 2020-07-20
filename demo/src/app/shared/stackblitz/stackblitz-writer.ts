@@ -77,7 +77,9 @@ const dependencies = {
   kendo: {
     '@ngx-formly/kendo': formlyVersion,
     '@progress/kendo-theme-default': '^3.2.0',
-    '@progress/kendo-angular-dropdowns': '^3.4.2',
+    '@progress/kendo-angular-dropdowns': '^4.0.0',
+    '@progress/kendo-angular-popup': '^3.0.0',
+    '@progress/kendo-angular-common': '^1.0.0',
     '@progress/kendo-angular-l10n': '^1.0.0',
     'rxjs-compat': '^6.4.0',
   },
@@ -170,12 +172,13 @@ export class StackblitzWriter {
       }
     }
 
-    if (['primeng', 'material'].indexOf(options.type) !== -1 || appModuleContent.indexOf('@angular/material') !== -1) {
+    if ('material' === options.type || appModuleContent.indexOf('@angular/material') !== -1) {
       options.includeMaterial = true;
-      options.useAnimation = true;
     }
 
-    if (!options.useAnimation && exampleData.files.map(f => f.filecontent).some(content => content.indexOf('@angular/animations') !== -1)) {
+    if (
+      ['material', 'kendo', 'material'].indexOf(options.type) !== -1 ||
+      exampleData.files.map(f => f.filecontent).some(content => content.indexOf('@angular/animations') !== -1)) {
       options.useAnimation = true;
     }
 
