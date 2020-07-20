@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldInitialValue as getFieldInitialValue,
@@ -30,14 +30,6 @@ function totalMatchedFields(field: FormlyFieldConfig): number {
   }
 
   return field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
-}
-
-function isFieldValid(field: FormlyFieldConfig): boolean {
-  if (field.key) {
-    return field.formControl.valid;
-  }
-
-  return field.fieldGroup.every(f => isFieldValid(f));
 }
 
 interface IOptions extends FormlyJsonschemaOptions {
@@ -326,7 +318,7 @@ export class FormlyJsonschema {
               if (!selectField.formControl) {
                 const value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
-                  .filter(([f]) => isFieldValid(f))
+                  .filter(([f, i]) => this.isFieldValid(f, schemas[i]))
                   .sort(([f1], [f2]) => {
                     const matchedFields1 = totalMatchedFields(f1);
                     const matchedFields2 = totalMatchedFields(f2);
@@ -462,5 +454,15 @@ export class FormlyJsonschema {
     }
 
     return this.toEnumOptions(<JSONSchema7> schema.items);
+  }
+
+  private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7): boolean {
+    const { form } = (field.options as any)._buildField({
+      form: new FormGroup({}),
+      fieldGroup: [this.toFieldConfig(schema)],
+      model: field.model,
+    });
+
+    return form.valid;
   }
 }
