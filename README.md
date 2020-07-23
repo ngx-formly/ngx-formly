@@ -16,7 +16,7 @@
 
 ---
 
-Formly is a dynamic (JSON powered) form library for Angular that bring unmatched maintainability to your application's forms.
+Formly is a dynamic (JSON powered) form library for Angular that brings unmatched maintainability to your application's forms.
 
 ## Features
 
