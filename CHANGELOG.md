@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.9.2"></a>
+## [5.9.2](https://github.com/ngx-formly/ngx-formly/compare/v5.9.1...v5.9.2) (2020-07-24)
+
+
+### Bug Fixes
+
+* **core:** pass a valid event instance for change fn ([#2391](https://github.com/ngx-formly/ngx-formly/issues/2391)) ([49daa5a](https://github.com/ngx-formly/ngx-formly/commit/49daa5a)), closes [#2390](https://github.com/ngx-formly/ngx-formly/issues/2390)
+
+
+
 <a name="5.9.1"></a>
 ## [5.9.1](https://github.com/ngx-formly/ngx-formly/compare/v5.9.0...v5.9.1) (2020-07-20)
 
