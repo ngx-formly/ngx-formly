@@ -60,7 +60,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.uiEvents.events.forEach(eventName => {
         let callback = this.to && this.to[eventName];
         if (eventName === 'change') {
-          callback = this.onChange.bind(this);
+          callback = (f, e: any) => this.onChange(e);
         }
 
         if (callback) {

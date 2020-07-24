@@ -106,13 +106,34 @@ describe('FormlyAttributes Component', () => {
       });
   });
 
-  it(`should mark formControl as dirty on trigger change Event`, () => {
-    const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
-    const input = fixture.debugElement.query(By.css('input'));
-    input.triggerEventHandler('change', {});
 
-    const formControl = fixture.componentInstance.field.formControl;
-    expect(formControl.dirty).toBeTruthy();
+  describe('templateOptions events', () => {
+    it(`should call templateOptions.change on trigger change Event`, () => {
+      const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
+      const spy = jasmine.createSpy('hide change spy');
+
+      const event = {};
+      const field = {
+        templateOptions: { change: spy },
+      };
+
+      fixture.componentInstance.field = field;
+      fixture.detectChanges();
+
+      const input = fixture.debugElement.query(By.css('input'));
+      input.triggerEventHandler('change', event);
+
+      expect(spy).toHaveBeenCalledWith(fixture.componentInstance.field, event);
+    });
+
+    it(`should mark formControl as dirty on trigger change Event`, () => {
+      const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
+      const input = fixture.debugElement.query(By.css('input'));
+      input.triggerEventHandler('change', {});
+
+      const formControl = fixture.componentInstance.field.formControl;
+      expect(formControl.dirty).toBeTruthy();
+    });
   });
 
   describe('focus the element', () => {
