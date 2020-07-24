@@ -1,7 +1,7 @@
 import { FormlyExtension, FormlyConfig, ValidatorOption } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
-import { FORMLY_VALIDATORS, defineHiddenProp, isPromise, wrapProperty, clone } from '../../utils';
+import { FORMLY_VALIDATORS, defineHiddenProp, isPromise, wrapProperty, clone, isObject } from '../../utils';
 import { updateValidity } from '../field-form/utils';
 import { isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -135,22 +135,24 @@ export class FieldValidationExtension implements FormlyExtension {
     const ctrl = field.formControl;
     ctrl['_childrenErrors'] && ctrl['_childrenErrors'][name] && ctrl['_childrenErrors'][name]();
 
-    if (errors && errors[name]) {
-      const errorPath = errors[name].errorPath
-        ? errors[name].errorPath
-        : (options || {}).errorPath;
+    if (isObject(errors)) {
+      Object.keys(errors).forEach(name => {
+        const errorPath = errors[name].errorPath
+          ? errors[name].errorPath
+          : (options || {}).errorPath;
 
-      const childCtrl = errorPath ? field.formControl.get(errorPath) : null;
-      if (childCtrl) {
-        const { errorPath, ...opts } = errors[name];
-        childCtrl.setErrors({ ...(childCtrl.errors || {}), [name]: opts });
+        const childCtrl = errorPath ? field.formControl.get(errorPath) : null;
+        if (childCtrl) {
+          const { errorPath, ...opts } = errors[name];
+          childCtrl.setErrors({ ...(childCtrl.errors || {}), [name]: opts });
 
-        !ctrl['_childrenErrors'] && defineHiddenProp(ctrl, '_childrenErrors', {});
-        ctrl['_childrenErrors'][name] = () => {
-          const { [name]: toDelete, ...childErrors } = childCtrl.errors || {};
-          childCtrl.setErrors(Object.keys(childErrors).length === 0 ? null : childErrors);
-        };
-      }
+          !ctrl['_childrenErrors'] && defineHiddenProp(ctrl, '_childrenErrors', {});
+          ctrl['_childrenErrors'][name] = () => {
+            const { [name]: toDelete, ...childErrors } = childCtrl.errors || {};
+            childCtrl.setErrors(Object.keys(childErrors).length === 0 ? null : childErrors);
+          };
+        }
+      });
     }
 
     return errors;
