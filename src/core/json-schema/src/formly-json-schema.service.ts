@@ -318,7 +318,7 @@ export class FormlyJsonschema {
               if (!selectField.formControl) {
                 const value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
-                  .filter(([f, i]) => this.isFieldValid(f, schemas[i]))
+                  .filter(([f, i]) => this.isFieldValid(f, schemas[i], options))
                   .sort(([f1], [f2]) => {
                     const matchedFields1 = totalMatchedFields(f1);
                     const matchedFields2 = totalMatchedFields(f2);
@@ -456,10 +456,10 @@ export class FormlyJsonschema {
     return this.toEnumOptions(<JSONSchema7> schema.items);
   }
 
-  private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7): boolean {
+  private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
     const { form } = (field.options as any)._buildField({
       form: new FormGroup({}),
-      fieldGroup: [this.toFieldConfig(schema)],
+      fieldGroup: [this._toFieldConfig(schema, options)],
       model: field.model,
     });
 
