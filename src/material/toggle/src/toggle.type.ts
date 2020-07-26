@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'formly-field-mat-toggle',
@@ -11,9 +11,7 @@ import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-to
       [formlyAttributes]="field"
       [color]="to.color"
       [tabindex]="to.tabindex"
-      [required]="to.required"
-      (change)="change($event)"
-    >
+      [required]="to.required">
       {{ to.label }}
     </mat-slide-toggle>
   `,
@@ -31,11 +29,5 @@ export class FormlyToggleTypeComponent extends FieldType {
   onContainerClick(event: MouseEvent): void {
     this.slideToggle.focus();
     super.onContainerClick(event);
-  }
-
-  change($event: MatSlideToggleChange) {
-    if (this.to.change) {
-      this.to.change(this.field, $event);
-    }
   }
 }

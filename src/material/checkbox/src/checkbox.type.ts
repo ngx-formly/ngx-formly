@@ -1,6 +1,6 @@
 import { Component, ViewChild, Renderer2, AfterViewChecked } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
   selector: 'formly-field-mat-checkbox',
@@ -10,7 +10,6 @@ import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
       [id]="id"
       [formlyAttributes]="field"
       [tabindex]="to.tabindex"
-      (change)="change($event)"
       [indeterminate]="to.indeterminate && formControl.value === null"
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">
@@ -40,12 +39,6 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewChecked {
   onContainerClick(event: MouseEvent): void {
     this.checkbox.focus();
     super.onContainerClick(event);
-  }
-
-  change($event: MatCheckboxChange) {
-    if (this.to.change) {
-      this.to.change(this.field, $event);
-    }
   }
 
   ngAfterViewChecked() {

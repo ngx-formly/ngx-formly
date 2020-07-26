@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatRadioGroup, MatRadioChange } from '@angular/material/radio';
+import { MatRadioGroup } from '@angular/material/radio';
 import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
 
 @Component({
@@ -10,8 +10,7 @@ import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [required]="to.required"
-      [tabindex]="to.tabindex"
-      (change)="change($event)">
+      [tabindex]="to.tabindex">
       <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
         [id]="id + '_' + i"
         [color]="to.color"
@@ -52,11 +51,5 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDest
 
   ngOnDestroy() {
     this.focusObserver && this.focusObserver();
-  }
-
-  change($event: MatRadioChange) {
-    if (this.to.change) {
-      this.to.change(this.field, $event);
-    }
   }
 }
