@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.9.3"></a>
+## [5.9.3](https://github.com/ngx-formly/ngx-formly/compare/v5.9.2...v5.9.3) (2020-07-26)
+
+
+### Bug Fixes
+
+* **core:** revert change event to host ([#2397](https://github.com/ngx-formly/ngx-formly/issues/2397)) ([b4d50d9](https://github.com/ngx-formly/ngx-formly/commit/b4d50d9)), closes [#2390](https://github.com/ngx-formly/ngx-formly/issues/2390)
+* **json-schema:** support oneOf with $ref definition ([#2396](https://github.com/ngx-formly/ngx-formly/issues/2396)) ([d027020](https://github.com/ngx-formly/ngx-formly/commit/d027020)), closes [#2394](https://github.com/ngx-formly/ngx-formly/issues/2394)
+
+
+
 <a name="5.9.2"></a>
 ## [5.9.2](https://github.com/ngx-formly/ngx-formly/compare/v5.9.1...v5.9.2) (2020-07-24)
 
