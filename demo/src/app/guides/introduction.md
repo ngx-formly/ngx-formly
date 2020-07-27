@@ -44,7 +44,7 @@ The forRoot() call is required at the application's root level. The forRoot() me
 2. add `<formly-form>` inside the `form` tag to your `AppComponent` template:
 
 ```html
-<form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
