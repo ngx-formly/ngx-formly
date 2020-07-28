@@ -51,4 +51,13 @@ describe('FieldFormExtension', () => {
     extension.onPopulate(field);
     expect(field.formControl).toEqual(field.parent.formControl);
   });
+
+
+  it('should add formControl for field with empty key', () => {
+    const field = createField({ defaultValue: 5 });
+
+    extension.onPopulate(field);
+    expect(field.formControl).toBeDefined();
+    expect(field.formControl.value).toEqual(5);
+  });
 });
