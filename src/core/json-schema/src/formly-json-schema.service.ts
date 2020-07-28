@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldInitialValue as getFieldInitialValue,
@@ -304,6 +304,7 @@ export class FormlyJsonschema {
       fieldGroup: [
         {
           type: 'enum',
+          defaultValue: -1,
           templateOptions: {
             multiple: mode === 'anyOf',
             options: schemas
@@ -314,8 +315,8 @@ export class FormlyJsonschema {
           fieldGroup: schemas.map((s, i) => ({
             ...this._toFieldConfig(s, { ...options, autoClear: true }),
             hideExpression: (m, fs, f) => {
-              const selectField = f.parent.parent.fieldGroup[0];
-              if (!selectField.formControl) {
+              const control = f.parent.parent.fieldGroup[0].formControl;
+              if (control.value === -1) {
                 const value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
                   .filter(([f, i]) => this.isFieldValid(f, schemas[i], options))
@@ -333,10 +334,8 @@ export class FormlyJsonschema {
 
                 const normalizedValue = [value.length === 0 ? 0 : value[0]];
                 const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
-                selectField.formControl = new FormControl(formattedValue);
+                control.setValue(formattedValue);
               }
-
-              const control = selectField.formControl;
 
               return Array.isArray(control.value)
                 ? control.value.indexOf(i) === -1

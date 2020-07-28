@@ -73,7 +73,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   }
 
   let parent = field.parent.formControl as FormGroup;
-  if (!parent) {
+  if (!parent || !field.key) {
     return;
   }
 

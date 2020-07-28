@@ -10,12 +10,14 @@ export class FieldFormExtension implements FormlyExtension {
   constructor(private config: FormlyConfig) { }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (field.key) {
-      this.addFormControl(field);
+    if (!field.parent) {
+      return;
     }
 
-    if (field.parent && field.fieldGroup && !field.key) {
+    if (field.fieldGroup && !field.key) {
       defineHiddenProp(field, 'formControl', field.parent.formControl);
+    } else {
+      this.addFormControl(field);
     }
   }
 
@@ -40,7 +42,7 @@ export class FieldFormExtension implements FormlyExtension {
     let control = findControl(field);
     if (!control) {
       const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
-      const value = getFieldValue(field);
+      const value = field.key ? getFieldValue(field) : field.defaultValue;
 
       const ref = this.config ? this.config.resolveFieldTypeRef(field) : null;
       if (ref && ref.componentType && ref.componentType['createControl']) {
