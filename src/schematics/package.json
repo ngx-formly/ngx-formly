@@ -30,8 +30,8 @@
   },
   "schematics": "./src/collection.json",
   "dependencies": {
-    "@angular-devkit/core": "^0.6.5",
-    "@angular-devkit/schematics": "^0.6.5",
-    "@schematics/angular": "^0.6.5"
+    "@angular-devkit/core": ">=7.0.0",
+    "@angular-devkit/schematics": ">=7.0.0",
+    "@schematics/angular": ">=7.0.0"
   }
 }
