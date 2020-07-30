@@ -20,6 +20,7 @@ export class AppComponent {
         description: 'Description',
         required: true,
       },
+      defaultValue:new Date()
     },
   ];
 }
