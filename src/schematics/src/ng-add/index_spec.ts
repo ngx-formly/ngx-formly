@@ -51,7 +51,7 @@ describe('ng-add-schematic', () => {
     );
     expect(content).toMatch(
       // tslint:disable-next-line:trailing-comma
-      /FormlyModule.forRoot\(\)/
+      /FormlyModule.forRoot/
     );
     expect(content).toMatch(
       // tslint:disable-next-line:trailing-comma
@@ -115,7 +115,7 @@ describe('ng-add-schematic', () => {
     );
     expect(content).toMatch(
       // tslint:disable-next-line:trailing-comma
-      /FormlyModule.forRoot\(\)/
+      /FormlyModule.forRoot/
     );
     expect(content).toMatch(
       // tslint:disable-next-line:trailing-comma

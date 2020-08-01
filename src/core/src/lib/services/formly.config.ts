@@ -32,6 +32,7 @@ export class FormlyConfig {
   };
   extras: ConfigOption['extras'] = {
     checkExpressionOn: 'changeDetectionCheck',
+    lazyRender: false,
     showError: function(field: FieldType) {
       return field.formControl && field.formControl.invalid && (field.formControl.touched || (field.options.parentForm && field.options.parentForm.submitted) || !!(field.field.validation && field.field.validation.show));
     },
@@ -277,9 +278,20 @@ export interface ConfigOption {
 
     /**
      * Defines the option which formly rely on to check field expression properties.
-     * - `modelChange`: perform a check when the value of the form control changes.
+     * - `modelChange`: perform a check when the value of the form control changes (Will be set by default in the next major version).
      * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.
-    */
+     *
+     * Defaults to `changeDetectionCheck`.
+     */
     checkExpressionOn?: 'modelChange' | 'changeDetectionCheck',
+
+    /**
+     * Whether to lazily render field components or not when marked as hidden.
+     * - `true`: lazily render field components (Will be set by default in the next major version).
+     * - `false`: render field components and use CSS to control their visibility.
+     *
+     * Defaults to `false`.
+     */
+    lazyRender?: boolean,
   };
 }

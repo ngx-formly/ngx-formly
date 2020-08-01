@@ -134,6 +134,32 @@ describe('FormlyForm Component', () => {
     });
   });
 
+  it('lazy render components', () => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormlyModule.forRoot({
+          extras: { lazyRender: true },
+        }),
+      ],
+    });
+    app = {
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+      fields: [{
+        key: 'foo',
+        type: 'text',
+        hide: true,
+      }],
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    expect(fixture.debugElement.query(By.css('input'))).toBeNull();
+
+    app.fields[0].hide = false;
+    expect(fixture.debugElement.query(By.css('input'))).not.toBeNull();
+  });
+
   describe('modelChange output', () => {
     beforeEach(() => {
       app = {
