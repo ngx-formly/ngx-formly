@@ -85,10 +85,11 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.triggerHook('onDestroy');
   }
 
-  private renderField(containerRef: ViewContainerRef, f: FormlyFieldConfigCache, wrappers: string[]) {
+  private renderField(containerRef: ViewContainerRef, f: FormlyFieldConfigCache, wrappers: string[] = []) {
     if (this.containerRef === containerRef) {
       this.resetRefs(this.field);
       this.containerRef.clear();
+      wrappers = this.field ? this.field.wrappers : [];
     }
 
     if (wrappers && wrappers.length > 0) {
@@ -137,9 +138,8 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     }
 
     if (name === 'onChanges' && changes.field) {
-      this.renderHostBinding();
       this.resetRefs(changes.field.previousValue);
-      this.renderField(this.containerRef, this.field, this.field ? this.field.wrappers : []);
+      this.render();
     }
   }
 
@@ -149,7 +149,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     Object.assign(ref.instance, { field });
   }
 
-  private renderHostBinding() {
+  private render() {
     if (!this.field) {
       return;
     }
@@ -157,8 +157,17 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.hostObservers.forEach(unsubscribe => unsubscribe());
     this.hostObservers = [
       wrapProperty(this.field, 'hide', ({ firstChange, currentValue }) => {
-        if (!firstChange || (firstChange && currentValue)) {
-          this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
+        if (!this.formlyConfig.extras.lazyRender) {
+          firstChange && this.renderField(this.containerRef, this.field);
+          if (!firstChange || (firstChange && currentValue)) {
+            this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
+          }
+        } else {
+          if (currentValue) {
+            this.containerRef.clear();
+          } else {
+            this.renderField(this.containerRef, this.field);
+          }
         }
       }),
       wrapProperty(this.field, 'className', ({ firstChange, currentValue }) => {

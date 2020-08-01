@@ -46,7 +46,7 @@ function addFormlyModuleConfig(options: Schema) {
     addModuleImportToModule(
       host,
       modulePath,
-      'FormlyModule.forRoot()',
+      'FormlyModule.forRoot({ extras: { lazyRender: true } })',
       '@ngx-formly/core',
     );
 
