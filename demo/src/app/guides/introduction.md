@@ -44,7 +44,7 @@ The forRoot() call is required at the application's root level. The forRoot() me
 2. add `<formly-form>` inside the `form` tag to your `AppComponent` template:
 
 ```html
-<form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
@@ -68,7 +68,7 @@ import {FormlyFieldConfig} from '@ngx-formly/core';
 @Component({
   selector: 'app',
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -95,7 +95,7 @@ export class AppComponent {
 }
 ```
 
-That's it, the above example will render an email input 
+That's it, the above example will render an email input
 that is marked required and filled with 'email@gmail.com' value.
 
 <div align="center">
