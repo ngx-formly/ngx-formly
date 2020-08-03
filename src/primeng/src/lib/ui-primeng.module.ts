@@ -7,6 +7,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
@@ -22,7 +23,7 @@ import { PRIME_NG_FORMLY_CONFIG, FIELD_TYPE_COMPONENTS } from './ui-primeng.conf
     CheckboxModule,
     RadioButtonModule,
     DropdownModule,
-
+    MultiSelectModule,
     ReactiveFormsModule,
     FormlySelectModule,
     FormlyModule.forChild(PRIME_NG_FORMLY_CONFIG),

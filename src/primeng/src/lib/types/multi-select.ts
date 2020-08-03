@@ -2,22 +2,24 @@ import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
-  selector: 'formly-field-primeng-select',
+  selector: 'formly-field-primeng-multi-select',
   template: `
-    <p-dropdown
+    <p-multiSelect
       [class.ng-dirty]="showError"
-      [placeholder]="to.placeholder"
+      [filterPlaceHolder]="to.placeholder"
       [options]="to.options | formlySelectOptions:field | async"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [showClear]="!to.required"
       [filter]="to.filterable"
       (onChange)="to.change && to.change(field, $event)">
-    </p-dropdown>
+    </p-multiSelect>
   `,
 })
-export class FormlyFieldSelect extends FieldType {
+export class FormlyFieldMultiSelect extends FieldType {
   defaultOptions = {
     templateOptions: { options: [] },
   };
+  constructor() {
+    super();
+  }
 }

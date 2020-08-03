@@ -64,6 +64,30 @@ describe('Array Field Type', () => {
     expect(app.form.dirty).toBeTruthy();
   });
 
+  it('should not mark the form dirty on Add/Remove', () => {
+    app.model = { array: null };
+    app.fields = [{
+      key: 'array',
+      type: 'array',
+    }];
+
+    const fixture = createFormlyTestComponent();
+    expect(app.form.dirty).toBeFalsy();
+
+    const arrayType = fixture.debugElement.query(By.css('formly-array-type'))
+      .componentInstance as ArrayTypeComponent;
+
+    arrayType.add(null, null, { markAsDirty: false });
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeFalsy();
+
+    app.form.markAsPristine();
+
+    arrayType.remove(0, { markAsDirty: false });
+    fixture.detectChanges();
+    expect(app.form.dirty).toBeFalsy();
+  });
+
   it('should work with nullable model', () => {
     app.model = { array: null };
     app.fields = [{
