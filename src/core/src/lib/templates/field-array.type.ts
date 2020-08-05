@@ -5,7 +5,7 @@ import { clone, isNullOrUndefined, assignFieldValue } from '../utils';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
-import { registerControl, unregisterControl } from '../extensions/field-form/utils';
+import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
   formControl: FormArray;
@@ -23,7 +23,8 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
 
   onPopulate(field: FormlyFieldConfig) {
     if (!field.formControl && field.key) {
-      registerControl(field, new FormArray([], { updateOn: field.modelOptions.updateOn }));
+      const control = findControl(field);
+      registerControl(field, control ? control : new FormArray([], { updateOn: field.modelOptions.updateOn }));
     }
 
     field.fieldGroup = field.fieldGroup || [];
