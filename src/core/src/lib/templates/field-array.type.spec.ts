@@ -237,6 +237,25 @@ describe('Array Field Type', () => {
     subscription.unsubscribe();
   });
 
+
+  it('should share formControl when field key is duplicated', () => {
+    app.fields = [
+      {
+        key: 'foo',
+        type: 'array',
+        fieldArray: { key: 'firtname' },
+      },
+      {
+        key: 'foo',
+        type: 'array',
+        fieldArray: { key: 'lastname' },
+      },
+    ];
+
+    createFormlyTestComponent();
+    expect(app.fields[0].formControl).toEqual(app.fields[1].formControl);
+  });
+
   it('should not reuse the remove controls', () => {
     app.model = { array: null };
     app.fields = [{
