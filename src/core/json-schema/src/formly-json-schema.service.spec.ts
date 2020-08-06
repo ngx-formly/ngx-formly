@@ -934,6 +934,7 @@ describe('Service: FormlyJsonschema', () => {
           const [, { fieldGroup: [foo1Field, foo2Field] }] = f.fieldGroup;
 
           expect(foo1Field.fieldGroup[0].formControl).not.toEqual(foo2Field.fieldGroup[0].formControl);
+          expect(f.model).toEqual({ foo: 2 });
         });
 
         it('should render the selected oneOf field', () => {
