@@ -464,7 +464,7 @@ export class FormlyJsonschema {
     const { form } = (field.options as any)._buildField({
       form: new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, options)],
-      model: field.model,
+      model: JSON.parse(JSON.stringify(field.model)),
     });
 
     return form.valid;

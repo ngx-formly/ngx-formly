@@ -1,5 +1,5 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { isObject, isNullOrUndefined, isFunction, defineHiddenProp, wrapProperty, reduceFormUpdateValidityCalls } from '../../utils';
+import { isObject, isNullOrUndefined, isUndefined, isFunction, defineHiddenProp, wrapProperty, reduceFormUpdateValidityCalls, getFieldValue, assignFieldValue } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
 import { Observable, Subscription } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
@@ -121,7 +121,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     field.options._hiddenFieldsForCheck
       .sort(f => f.hide ? -1 : 1)
-      .forEach(f => this.toggleFormControl(f, f.hide));
+      .forEach(f => this.toggleFormControl(f, f.hide, !ignoreCache));
 
     field.options._hiddenFieldsForCheck = [];
   }
@@ -207,7 +207,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private toggleFormControl(field: FormlyFieldConfigCache, hide: boolean) {
+  private toggleFormControl(field: FormlyFieldConfigCache, hide: boolean, resetOnHide: boolean) {
     if (field.formControl && field.key) {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
@@ -215,15 +215,29 @@ export class FieldExpressionExtension implements FormlyExtension {
         updateValidity(c);
       }
 
-      hide === true && c['_fields'].every(f => !!f._hide)
-        ? unregisterControl(field)
-        : registerControl(field);
+      if (hide === true && c['_fields'].every(f => !!f._hide)) {
+        unregisterControl(field);
+        if (resetOnHide && field['autoClear']) {
+          if (field.parent.model) {
+            delete field.parent.model[Array.isArray(field.key) ? field.key[0] : field.key];
+          }
+          field.formControl.reset(
+            { value: undefined, disabled: field.formControl.disabled },
+            { emitEvent: false, onlySelf: true },
+          );
+        }
+      } else if (hide === false) {
+        if (field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+          assignFieldValue(field, field.defaultValue);
+        }
+        registerControl(field);
+      }
     }
 
     if (field.fieldGroup) {
       field.fieldGroup
         .filter(f => !f.hideExpression)
-        .forEach(f => this.toggleFormControl(f, hide));
+        .forEach(f => this.toggleFormControl(f, hide, resetOnHide));
     }
 
     if (field.options.fieldChanges) {
