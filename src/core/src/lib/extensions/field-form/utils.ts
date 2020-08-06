@@ -42,6 +42,10 @@ export function findControl(field: FormlyFieldConfig): AbstractControl {
     return field.formControl;
   }
 
+  if (field['shareFormControl'] === false) {
+    return null;
+  }
+
   const form = field.parent.formControl as FormGroup;
 
   return form ? form.get(getKeyPath(field)) : null;
