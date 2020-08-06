@@ -997,6 +997,23 @@ describe('Service: FormlyJsonschema', () => {
           expect(f.model).toEqual({ foo: 2 });
         });
 
+        it('should not take account of default value for the selected oneOf', () => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+            type: 'object',
+            oneOf: [
+              { properties: { foo: { type: 'string' } }, required: ['foo'] },
+              { properties: { bar: { type: 'string', default: 'bar' } }, required: ['bar'] },
+            ],
+          });
+
+          const model: any = {};
+          builder.buildForm(new FormGroup({}), [f], model, {});
+          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+
+          expect(fooField.hide).toBeFalsy();
+          expect(barField.hide).toBeTruthy();
+        });
+
         it('should take account of default value', () => {
           const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
             type: 'object',
