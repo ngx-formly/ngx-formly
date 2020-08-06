@@ -922,6 +922,20 @@ describe('Service: FormlyJsonschema', () => {
           expect(foo2Field.hide).toBeFalsy();
         });
 
+        it('should not share the same formControl when a prop is duplicated in oneOf', () => {
+          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
+            type: 'object',
+            oneOf: [
+              { properties: { foo: { const: 1 } } },
+              { properties: { foo: { type: 'object' } } },
+            ],
+          });
+          builder.buildForm(new FormGroup({}), [f], { foo: 2 }, {});
+          const [, { fieldGroup: [foo1Field, foo2Field] }] = f.fieldGroup;
+
+          expect(foo1Field.fieldGroup[0].formControl).not.toEqual(foo2Field.fieldGroup[0].formControl);
+        });
+
         it('should render the selected oneOf field', () => {
           const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
           const model: any = { foo: 'test' };

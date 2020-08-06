@@ -35,6 +35,7 @@ function totalMatchedFields(field: FormlyFieldConfig): number {
 interface IOptions extends FormlyJsonschemaOptions {
   schema: JSONSchema7;
   autoClear?: boolean;
+  shareFormControl?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -58,6 +59,10 @@ export class FormlyJsonschema {
 
     if (options.autoClear) {
       field['autoClear'] = true;
+    }
+
+    if (options.shareFormControl === false) {
+      field['shareFormControl'] = false;
     }
 
     switch (field.type) {
@@ -153,7 +158,7 @@ export class FormlyJsonschema {
           field.fieldGroup.push(this.resolveMultiSchema(
             'oneOf',
             <JSONSchema7[]> schema.oneOf,
-            options,
+            { ...options, shareFormControl: false },
           ));
         }
 
