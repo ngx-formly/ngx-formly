@@ -5,6 +5,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldInitialValue as getFieldInitialValue,
+  ɵclone as clone,
 } from '@ngx-formly/core';
 
 export interface FormlyJsonschemaOptions {
@@ -25,8 +26,8 @@ function isConst(schema: JSONSchema7) {
 }
 
 function totalMatchedFields(field: FormlyFieldConfig): number {
-  if (field.key && !field.fieldGroup) {
-    return getFieldInitialValue(field) !== undefined ? 1 : 0;
+  if (!field.fieldGroup) {
+    return field.key && getFieldInitialValue(field) !== undefined ? 1 : 0;
   }
 
   return field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
@@ -464,7 +465,7 @@ export class FormlyJsonschema {
     const { form } = (field.options as any)._buildField({
       form: new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, options)],
-      model: JSON.parse(JSON.stringify(field.model)),
+      model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),
     });
 
     return form.valid;

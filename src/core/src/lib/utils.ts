@@ -39,6 +39,10 @@ export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength
 
 export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
   let paths = getKeyPath(field);
+  if (paths.length === 0) {
+    return;
+  }
+
   while (field.parent) {
     field = field.parent;
     paths = [...getKeyPath(field), ...paths];
