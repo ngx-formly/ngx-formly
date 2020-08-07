@@ -105,7 +105,7 @@ export class FormlyJsonschema {
 
         if (schema.hasOwnProperty('multipleOf')) {
           field.templateOptions.step = schema.multipleOf;
-          this.addValidator(field, 'multipleOf', ({ value }) => isEmpty(value) || value % schema.multipleOf === 0);
+          this.addValidator(field, 'multipleOf', ({ value }) => isEmpty(value) || (Math.floor(value*100) % Math.floor(schema.multipleOf*100)) === 0);
         }
         break;
       }
