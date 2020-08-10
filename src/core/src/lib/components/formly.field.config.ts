@@ -72,7 +72,7 @@ export interface FormlyFieldConfig {
    *
    * {
    *   validation?: (string | AsyncValidatorFn)[];
-   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean>) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean>, message: string });
+   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean> | Observable<boolean>) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean>, message: string });
    * }
    */
   asyncValidators?: any;
