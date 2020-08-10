@@ -17,6 +17,12 @@ export interface FormlyJsonschemaOptions {
   map?: (mappedField: FormlyFieldConfig, mapSource: JSONSchema7) => FormlyFieldConfig;
 }
 
+function isInteger(value: any) {
+  return Number.isInteger
+    ? Number.isInteger(value)
+    : typeof value === 'number' && Math.floor(value) === value;
+}
+
 function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
 }
@@ -94,7 +100,13 @@ export class FormlyJsonschema {
 
         if (schema.hasOwnProperty('multipleOf')) {
           field.templateOptions.step = schema.multipleOf;
-          this.addValidator(field, 'multipleOf', ({ value }) => isEmpty(value) || (value % schema.multipleOf === 0));
+          this.addValidator(field, 'multipleOf', ({ value }) => {
+            if (isEmpty(value) || typeof value !== 'number' || value === 0 || schema.multipleOf <= 0) {
+              return true;
+            }
+
+            return isInteger(value / schema.multipleOf);
+          });
         }
         break;
       }
