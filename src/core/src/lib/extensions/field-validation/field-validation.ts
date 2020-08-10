@@ -110,8 +110,8 @@ export class FieldValidationExtension implements FormlyExtension {
         return errors.then(v => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption));
       }
 
-      if (isObservable(errors) && !validatorName) {
-        return errors.pipe(map(v => this.handleAsyncResult(field, v, validatorOption)));
+      if (isObservable(errors)) {
+        return errors.pipe(map(v => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption)));
       }
 
       return this.handleResult(field, validatorName ? !!errors : errors, validatorOption);
