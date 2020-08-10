@@ -98,6 +98,23 @@ describe('Service: FormlyJsonschema', () => {
         expect(multipleOfValidator(new FormControl(9))).toBeFalsy();
         expect(multipleOfValidator(new FormControl(10))).toBeTruthy();
       });
+
+      it('should support passing float multipleOf', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'number',
+          multipleOf: 0.15,
+        };
+        const config = formlyJsonschema.toFieldConfig(numSchema);
+        expect(config.templateOptions.step).toBe(numSchema.multipleOf);
+
+        const multipleOfValidator = config.validators.multipleOf;
+        expect(multipleOfValidator).toBeDefined();
+        expect(multipleOfValidator(new FormControl(0))).toBeTruthy();
+        expect(multipleOfValidator(new FormControl(1))).toBeFalsy();
+        expect(multipleOfValidator(new FormControl(10))).toBeFalsy();
+        expect(multipleOfValidator(new FormControl(15))).toBeTruthy();
+        expect(multipleOfValidator(new FormControl(150))).toBeTruthy();
+      });
     });
 
     describe('null type', () => {
