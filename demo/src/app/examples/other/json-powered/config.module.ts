@@ -31,7 +31,7 @@ import { AppComponent } from './app.component';
               { file: 'user.service.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./user.service.ts'), filecontent: require('!!raw-loader!./user.service.ts') },
               { file: 'assets/json-powered/user.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user_json'), filecontent: require('!!raw-loader!@assets/json-powered/user_json') },
               { file: 'assets/json-powered/user-form.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user-form_json'), filecontent: require('!!raw-loader!@assets/json-powered/user-form_json') },
-              { file: 'assets/json-powered/colors.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user-form_json'), filecontent: require('!!raw-loader!@assets/json-powered/colors_json') },
+              { file: 'assets/json-powered/colors.json', content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/colors_json'), filecontent: require('!!raw-loader!@assets/json-powered/colors_json') },
               { file: 'app.module.ts', content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'), filecontent: require('!!raw-loader!./app.module.ts') },
             ],
           }],
