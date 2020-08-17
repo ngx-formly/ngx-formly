@@ -67,6 +67,76 @@ describe('FormlyForm Component', () => {
       ]});
   });
 
+  describe('resetFieldOnHide', () => {
+    let fixture: ReturnType<typeof createTestComponent>;
+    beforeEach(() => {
+      app = { form: new FormGroup({}), options: {}, model: {}, fields: [] };
+      fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+      const config = TestBed.get(FormlyConfig) as FormlyConfig;
+      config.extras.resetFieldOnHide = true;
+    });
+
+    it('should set default value when hide is false', () => {
+      fixture.componentInstance.fields = [
+        { key: 'foo', defaultValue: 'test' },
+      ];
+      fixture.detectChanges();
+
+      const { model } = fixture.componentInstance;
+      expect(model).toEqual({ foo: 'test' });
+    });
+
+    it('should not set default value clear on hide', () => {
+      fixture.componentInstance.fields = [
+        { key: 'foo', defaultValue: 'test', hide: true },
+      ];
+      fixture.detectChanges();
+
+      const { model } = fixture.componentInstance;
+      expect(model).toEqual({});
+    });
+
+    it('should toggle default value on hide changes', () => {
+      fixture.componentInstance.fields = [
+        { key: 'foo', defaultValue: 'test' },
+      ];
+      fixture.detectChanges();
+
+      const { model, fields } = fixture.componentInstance;
+
+      fields[0].hide = true;
+      fixture.detectChanges();
+      expect(model).toEqual({});
+
+      fields[0].hide = false;
+      fixture.detectChanges();
+      expect(model).toEqual({ foo: 'test' });
+    });
+
+    it('should toggle default value on hide changes for field array', () => {
+      fixture.componentInstance.fields = [
+        {
+          key: 'foo',
+          type: 'repeat',
+          defaultValue: [null],
+          fieldArray: { type: 'text' },
+        },
+      ];
+
+      const { model, fields } = fixture.componentInstance;
+
+      fields[0].hide = true;
+      fixture.detectChanges();
+      expect(model).toEqual({});
+      expect(fields[0].fieldGroup.length).toEqual(0);
+
+      fields[0].hide = false;
+      fixture.detectChanges();
+      expect(model).toEqual({ foo: [null] });
+      expect(fields[0].fieldGroup.length).toEqual(1);
+    });
+  });
+
   describe('immutable attr', () => {
     beforeEach(() => {
       app = {

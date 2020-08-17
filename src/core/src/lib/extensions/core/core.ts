@@ -67,6 +67,10 @@ export class CoreExtension implements FormlyExtension {
       },
     });
 
+    if (this.formlyConfig.extras.resetFieldOnHide) {
+      field['autoClear'] = true;
+    }
+
     if (field.lifecycle) {
       console.warn(`NgxFormly: 'lifecycle' is deprecated since v5.0, use 'hooks' instead.`);
     }

@@ -294,5 +294,12 @@ export interface ConfigOption {
      * Defaults to `false`.
      */
     lazyRender?: boolean,
+
+    /**
+     * When true, reset the value of hidden fields.
+     *
+     * Defaults to `false`.
+     */
+    resetFieldOnHide?: boolean,
   };
 }

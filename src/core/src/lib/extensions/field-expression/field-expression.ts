@@ -82,14 +82,20 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
     }
 
+    let parent = field.parent;
+    while (parent && !parent.hideExpression) {
+      parent = parent.parent;
+    }
+    if (!field.hide && field.key && (!parent || !parent.hideExpression)) {
+      if (field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+        assignFieldValue(field, field.defaultValue);
+        field.formControl.patchValue(getFieldValue(field), { emitEvent: false });
+      }
+    }
+
     if (field.hideExpression) {
       // delete hide value in order to force re-evaluate it in FormlyFormExpression.
       delete field.hide;
-
-      let parent = field.parent;
-      while (parent && !parent.hideExpression) {
-        parent = parent.parent;
-      }
 
       field.hideExpression = this._evalExpression(
         field.hideExpression,
@@ -121,7 +127,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     field.options._hiddenFieldsForCheck
       .sort(f => f.hide ? -1 : 1)
-      .forEach(f => this.toggleFormControl(f, f.hide, !ignoreCache));
+      .forEach(f => this.toggleFormControl(f, !!f.hide, !ignoreCache));
 
     field.options._hiddenFieldsForCheck = [];
   }
@@ -218,19 +224,16 @@ export class FieldExpressionExtension implements FormlyExtension {
       if (hide === true && c['_fields'].every(f => !!f._hide)) {
         unregisterControl(field);
         if (resetOnHide && field['autoClear']) {
-          if (field.parent.model) {
-            delete field.parent.model[Array.isArray(field.key) ? field.key[0] : field.key];
-          }
-          field.formControl.reset(
-            { value: undefined, disabled: field.formControl.disabled },
-            { emitEvent: false, onlySelf: true },
-          );
+          field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
         }
       } else if (hide === false) {
         if (field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
           assignFieldValue(field, field.defaultValue);
         }
         registerControl(field);
+        if (field.fieldArray && (field.fieldGroup || []).length !== (field.model || []).length) {
+          (<any> field.options)._buildForm(true);
+        }
       }
     }
 
