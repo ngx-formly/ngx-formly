@@ -36,8 +36,7 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
         <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matsuffix"></ng-container>
       </ng-container>
 
-      <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
-      <mat-error [id]="null">
+      <mat-error>
         <formly-validation-message [field]="field"></formly-validation-message>
       </mat-error>
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
