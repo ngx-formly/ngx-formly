@@ -41,6 +41,12 @@ const debugFields: FormlyFieldConfig[] = [
         templateOptions: { label: 'hideLabel' },
       },
       {
+        key: 'disabled',
+        className: 'col-md-6',
+        type: 'checkbox',
+        templateOptions: { label: 'disabled' },
+      },
+      {
         key: 'required',
         className: 'col-md-6',
         type: 'checkbox',
