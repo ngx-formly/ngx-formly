@@ -6,6 +6,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { MatStepperModule } from '@angular/material/stepper';
 
 import { AppComponent } from './app.component';
+import { FormlyFieldStepper } from './stepper.type';
 
 @NgModule({
   imports: [
@@ -17,10 +18,14 @@ import { AppComponent } from './app.component';
       validationMessages: [
         { name: 'required', message: 'This field is required' },
       ],
+      types: [
+        { name: 'stepper', component: FormlyFieldStepper, wrappers: ['form-field'] },
+      ],
     }),
   ],
   declarations: [
     AppComponent,
+    FormlyFieldStepper,
   ],
 })
 export class AppModule { }
