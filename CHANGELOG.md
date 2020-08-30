@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.0"></a>
+# [5.10.0](https://github.com/ngx-formly/ngx-formly/compare/v5.9.3...v5.10.0) (2020-08-30)
+
+
+### Bug Fixes
+
+* **core:** avoid memory leakes for internal componentRefs ([#2474](https://github.com/ngx-formly/ngx-formly/issues/2474)) ([e3d29e5](https://github.com/ngx-formly/ngx-formly/commit/e3d29e5))
+* **core:** share formControl for array field when key is duplicated ([#2422](https://github.com/ngx-formly/ngx-formly/issues/2422)) ([8e461f4](https://github.com/ngx-formly/ngx-formly/commit/8e461f4)), closes [#2420](https://github.com/ngx-formly/ngx-formly/issues/2420)
+* **json-schema:** avoid rely on default value for select oneOf item ([#2431](https://github.com/ngx-formly/ngx-formly/issues/2431)) ([1c182bf](https://github.com/ngx-formly/ngx-formly/commit/1c182bf)), closes [#2429](https://github.com/ngx-formly/ngx-formly/issues/2429)
+* **json-schema:** avoid reset on hide during the build step ([#2426](https://github.com/ngx-formly/ngx-formly/issues/2426)) ([07fb1f6](https://github.com/ngx-formly/ngx-formly/commit/07fb1f6)), closes [#2420](https://github.com/ngx-formly/ngx-formly/issues/2420)
+* **json-schema:** support nested oneOf ([#2428](https://github.com/ngx-formly/ngx-formly/issues/2428)) ([085f32c](https://github.com/ngx-formly/ngx-formly/commit/085f32c)), closes [#2403](https://github.com/ngx-formly/ngx-formly/issues/2403)
+* **json-schema:** take account of passing float to multipleOf validation ([#2441](https://github.com/ngx-formly/ngx-formly/issues/2441)) ([f0ba4be](https://github.com/ngx-formly/ngx-formly/commit/f0ba4be)), closes [#2435](https://github.com/ngx-formly/ngx-formly/issues/2435)
+* **material:** apply a11y for validation messages ([#2464](https://github.com/ngx-formly/ngx-formly/issues/2464)) ([c35a73b](https://github.com/ngx-formly/ngx-formly/commit/c35a73b))
+* **material:** remove empty mat-prefix and mat-suffix ([#2444](https://github.com/ngx-formly/ngx-formly/issues/2444)) ([108fe95](https://github.com/ngx-formly/ngx-formly/commit/108fe95)), closes [#2443](https://github.com/ngx-formly/ngx-formly/issues/2443)
+* **schematics:** update angular-devkit deps ([#2413](https://github.com/ngx-formly/ngx-formly/issues/2413)) ([6e232e1](https://github.com/ngx-formly/ngx-formly/commit/6e232e1))
+
+
+### Features
+
+* **core:** add option to resetFieldOnHide ([#2476](https://github.com/ngx-formly/ngx-formly/issues/2476)) ([fff80de](https://github.com/ngx-formly/ngx-formly/commit/fff80de)), closes [#1847](https://github.com/ngx-formly/ngx-formly/issues/1847) [#2381](https://github.com/ngx-formly/ngx-formly/issues/2381) [#2439](https://github.com/ngx-formly/ngx-formly/issues/2439)
+* **core:** allow passing observable for expression asyncValidators ([#2440](https://github.com/ngx-formly/ngx-formly/issues/2440)) ([dbbca7f](https://github.com/ngx-formly/ngx-formly/commit/dbbca7f))
+* **core:** lazily render component field type ([#2416](https://github.com/ngx-formly/ngx-formly/issues/2416)) ([429b3ec](https://github.com/ngx-formly/ngx-formly/commit/429b3ec)), closes [#1215](https://github.com/ngx-formly/ngx-formly/issues/1215)
+* **core:** support form control for field with empty key ([#2404](https://github.com/ngx-formly/ngx-formly/issues/2404)) ([3b47e0e](https://github.com/ngx-formly/ngx-formly/commit/3b47e0e)), closes [#2403](https://github.com/ngx-formly/ngx-formly/issues/2403)
+* **core:** support multiple errors from a single validator ([#2392](https://github.com/ngx-formly/ngx-formly/issues/2392)) ([d12be59](https://github.com/ngx-formly/ngx-formly/commit/d12be59)), closes [#2378](https://github.com/ngx-formly/ngx-formly/issues/2378)
+* **json-schema:** allow passing mixed type in oneOf ([#2425](https://github.com/ngx-formly/ngx-formly/issues/2425)) ([ce47591](https://github.com/ngx-formly/ngx-formly/commit/ce47591)), closes [#2420](https://github.com/ngx-formly/ngx-formly/issues/2420)
+* **material:** allow disable a single radio button ([391257c](https://github.com/ngx-formly/ngx-formly/commit/391257c))
+
+
+
 <a name="5.9.3"></a>
 ## [5.9.3](https://github.com/ngx-formly/ngx-formly/compare/v5.9.2...v5.9.3) (2020-07-26)
 
