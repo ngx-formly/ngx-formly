@@ -1,11 +1,45 @@
 
 import { FormlyJsonschema } from './formly-json-schema.service';
 import { JSONSchema7 } from 'json-schema';
-import { FormlyFieldConfig, FormlyTemplateOptions, FormlyFormBuilder, FormlyModule, FieldArrayType } from '@ngx-formly/core';
-import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { inject, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'src/core/src/lib/test-utils';
+import { FormlyFieldConfig, FormlyTemplateOptions, FormlyModule, FieldArrayType } from '@ngx-formly/core';
+import { FormControl, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
+
+@Component({
+  selector: 'formly-test-component',
+  template: '<formly-form [fields]="fields" [model]="model"></formly-form>',
+})
+class TestComponent { }
+
+function renderComponent({ schema, model }: { schema: JSONSchema7, model?: any }) {
+  TestBed.configureTestingModule({
+    declarations: [TestComponent, ArrayTypeComponent],
+    imports: [
+      ReactiveFormsModule,
+      FormlyModule.forRoot({
+        types: [
+          { name: 'object', component: TestComponent },
+          { name: 'array', component: ArrayTypeComponent },
+          { name: 'multischema', component: TestComponent },
+          { name: 'enum', component: TestComponent },
+          { name: 'string', component: TestComponent },
+        ],
+      }),
+    ],
+  });
+
+  const fixture = TestBed.createComponent(TestComponent);
+
+  model = model || {};
+  const field = (new FormlyJsonschema()).toFieldConfig(schema);
+  fixture.componentInstance['fields'] = [field];
+  fixture.componentInstance['model'] = model;
+  fixture.componentInstance['form'] = Array.isArray(model) ? new FormArray([]) : new FormGroup({});
+  fixture.detectChanges();
+
+  return { fixture, field, model };
+}
 
 describe('Service: FormlyJsonschema', () => {
   let formlyJsonschema: FormlyJsonschema;
@@ -872,29 +906,6 @@ describe('Service: FormlyJsonschema', () => {
 
     describe('Multi-Schema (oneOf, anyOf) support', () => {
       let schema: JSONSchema7;
-      let builder: FormlyFormBuilder;
-
-      beforeEach(() => {
-        const TestComponent = MockComponent({ selector: 'formly-test-cmp' });
-        TestBed.configureTestingModule({
-          declarations: [TestComponent, ArrayTypeComponent],
-          imports: [
-            FormlyModule.forRoot({
-              types: [
-                { name: 'object', component: TestComponent },
-                { name: 'array', component: ArrayTypeComponent },
-                { name: 'multischema', component: TestComponent },
-                { name: 'enum', component: TestComponent },
-                { name: 'string', component: TestComponent },
-              ],
-            }),
-          ],
-        });
-      });
-
-      beforeEach(inject([FormlyFormBuilder], (formlyBuilder: FormlyFormBuilder) => {
-        builder = formlyBuilder;
-      }));
 
       describe('oneOf', () => {
         beforeEach(() => {
@@ -916,57 +927,61 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should render the valid oneOf field on first render', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
-
-          builder.buildForm(new FormGroup({}), [f], {}, {});
-          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const { field } = renderComponent({ schema });
+          const [, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeTruthy();
           expect(barField.hide).toBeFalsy();
         });
 
         it('should render the valid oneOf field when properties have the same name', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            oneOf: [
-              { properties: { foo: { const: 1 } } },
-              { properties: { foo: { const: 2 } } },
-            ],
+          const { field } = renderComponent({
+            model: { foo: 2 },
+            schema: {
+              type: 'object',
+              oneOf: [
+                { properties: { foo: { const: 1 } }, title: 'foo1' },
+                { properties: { foo: { const: 2 } }, title: 'foo2' },
+              ],
+            },
           });
-
-          builder.buildForm(new FormGroup({}), [f], { foo: 2 }, {});
-          const [, { fieldGroup: [foo1Field, foo2Field] }] = f.fieldGroup;
+          const [, { fieldGroup: [foo1Field, foo2Field] }] = field.fieldGroup[0].fieldGroup;
 
           expect(foo1Field.hide).toBeTruthy();
           expect(foo2Field.hide).toBeFalsy();
         });
 
         it('should not share the same formControl when a prop is duplicated in oneOf', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            oneOf: [
-              { properties: { foo: { const: 1 } } },
-              { properties: { foo: { type: 'object' } } },
-            ],
+          const { field, model } = renderComponent({
+            model: { foo: 2 },
+            schema: {
+              type: 'object',
+              oneOf: [
+                { properties: { foo: { const: 1 } } },
+                { properties: { foo: { type: 'object' } } },
+              ],
+            },
           });
-          builder.buildForm(new FormGroup({}), [f], { foo: 2 }, {});
-          const [, { fieldGroup: [foo1Field, foo2Field] }] = f.fieldGroup;
+
+          const [, { fieldGroup: [foo1Field, foo2Field] }] = field.fieldGroup[0].fieldGroup;
 
           expect(foo1Field.fieldGroup[0].formControl).not.toEqual(foo2Field.fieldGroup[0].formControl);
-          expect(f.model).toEqual({ foo: 2 });
+          expect(model).toEqual({ foo: 2 });
         });
 
         it('should render the selected oneOf field', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
-          const model: any = { foo: 'test' };
-          builder.buildForm(new FormGroup({}), [f], model, {});
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const { field, model, fixture } = renderComponent({
+            model: { foo: 'test' },
+            schema,
+          });
+
+          const [enumField, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeFalsy();
           expect(barField.hide).toBeTruthy();
 
           enumField.formControl.setValue(1);
-          (f.options as any)._checkField(f.parent);
+          fixture.detectChanges();
 
           expect(model).toEqual({});
           expect(fooField.hide).toBeTruthy();
@@ -974,81 +989,86 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should support oneOf within array', () => {
-          const f = formlyJsonschema.toFieldConfig({
-            type: 'array',
-            items: {
-              type: 'object',
-              oneOf: [
-                { properties: { foo: { const: 1 } } },
-                { properties: { foo: { const: 2 } } },
-              ],
-            },
-          });
-          const model: any = [{ foo: 2 }];
-          builder.buildForm(new FormArray([]), [f], model, {});
-          const [, { fieldGroup: [foo1Field, foo2Field] }] = f.fieldGroup[0].fieldGroup[0].fieldGroup;
-
-          expect(foo1Field.hide).toBeTruthy();
-          expect(foo2Field.hide).toBeFalsy();
-        });
-
-        it('should support nested oneOf', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            oneOf: [
-              {
+          const { field } = renderComponent({
+            model: [{ foo: 2 }],
+            schema: {
+              type: 'array',
+              items: {
                 type: 'object',
                 oneOf: [
                   { properties: { foo: { const: 1 } } },
                   { properties: { foo: { const: 2 } } },
                 ],
               },
-              { properties: { foo: { const: 3 } } },
-            ],
+            },
           });
-          builder.buildForm(new FormGroup({}), [f], { foo: 2 }, {});
-          const [, { fieldGroup: [foo1Field, foo2Field] }] = f.fieldGroup;
+
+          const [, { fieldGroup: [foo1Field, foo2Field] }] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          expect(foo1Field.hide).toBeTruthy();
+          expect(foo2Field.hide).toBeFalsy();
+        });
+
+        it('should support nested oneOf', () => {
+          const { field, model } = renderComponent({
+            model: { foo: 2 },
+            schema: {
+              type: 'object',
+              oneOf: [
+                {
+                  type: 'object',
+                  oneOf: [
+                    { properties: { foo: { const: 1 } } },
+                    { properties: { foo: { const: 2 } } },
+                  ],
+                },
+                { properties: { foo: { const: 3 } } },
+              ],
+            },
+          });
+
+          const [, { fieldGroup: [foo1Field, foo2Field] }] = field.fieldGroup[0].fieldGroup;
 
           expect(foo1Field.hide).toBeFalsy();
           expect(foo2Field.hide).toBeTruthy();
-          expect(f.model).toEqual({ foo: 2 });
+          expect(model).toEqual({ foo: 2 });
         });
 
         it('should not take account of default value for the selected oneOf', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            oneOf: [
-              { properties: { foo: { type: 'string' } }, required: ['foo'] },
-              { properties: { bar: { type: 'string', default: 'bar' } }, required: ['bar'] },
-            ],
+          const { field } = renderComponent({
+            schema: {
+              type: 'object',
+              oneOf: [
+                { properties: { foo: { type: 'string' } }, required: ['foo'] },
+                { properties: { bar: { type: 'string', default: 'bar' } }, required: ['bar'] },
+              ],
+            },
           });
 
-          const model: any = {};
-          builder.buildForm(new FormGroup({}), [f], model, {});
-          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeFalsy();
           expect(barField.hide).toBeTruthy();
         });
 
         it('should take account of default value', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            oneOf: [
-              { properties: { foo: { type: 'string', default: 'foo' } } },
-              { properties: { bar: { type: 'string', default: 'bar' } } },
-            ],
+          const { field, model, fixture } = renderComponent({
+            schema: {
+              type: 'object',
+              oneOf: [
+                { properties: { foo: { type: 'string', default: 'foo' } } },
+                { properties: { bar: { type: 'string', default: 'bar' } } },
+              ],
+            },
           });
-          const model: any = {};
-          builder.buildForm(new FormGroup({}), [f], model, {});
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [enumField, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeFalsy();
           expect(barField.hide).toBeTruthy();
           expect(model).toEqual({ foo: 'foo' });
 
           enumField.formControl.setValue(1);
-          (f.options as any)._checkField(f.parent);
+          fixture.detectChanges();
 
           expect(fooField.hide).toBeTruthy();
           expect(barField.hide).toBeFalsy();
@@ -1056,46 +1076,48 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should set default value on change', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            oneOf: [
-              { properties: { foo: { type: 'string', default: 'foo' } } },
-              { properties: { bar: { type: 'string', default: 'bar' } } },
-            ],
+          const { field, model, fixture } = renderComponent({
+            model: { bar: 'test' },
+            schema: {
+              type: 'object',
+              oneOf: [
+                { properties: { foo: { type: 'string', default: 'foo' } } },
+                { properties: { bar: { type: 'string', default: 'bar' } } },
+              ],
+            },
           });
-          const model: any = { bar: 'test' };
-          builder.buildForm(new FormGroup({}), [f], model, { _initialModel: { bar: 'test' } } as any);
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [enumField, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeTruthy();
           expect(barField.hide).toBeFalsy();
           expect(model).toEqual({ bar: 'test' });
 
           enumField.formControl.setValue(0);
-          (f.options as any)._checkField(f.parent);
+          fixture.detectChanges();
           expect(model).toEqual({ foo: 'foo' });
 
           enumField.formControl.setValue(1);
-          (f.options as any)._checkField(f.parent);
+          fixture.detectChanges();
           expect(model).toEqual({ bar: 'bar' });
         });
 
         it('should render the selected oneOf field (with more matched fields)', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            oneOf: [
-              { properties: { foo1: { type: 'string' } } },
-              {
-                properties: {
-                  foo1: { type: 'string' },
-                  bar: { type: 'string' },
+          const { field } = renderComponent({
+            model: { foo1: 'test', bar: 'test' },
+            schema: {
+              type: 'object',
+              oneOf: [
+                { properties: { foo1: { type: 'string' } } },
+                {
+                  properties: {
+                    foo1: { type: 'string' },
+                    bar: { type: 'string' },
+                  },
                 },
-              },
-            ],
+              ],
+            },
           });
-          const model: any = { foo1: 'test', bar: 'test' };
-          builder.buildForm(new FormGroup({}), [f], model, { _initialModel: { foo1: 'test', bar: 'test' } } as any);
-          const [, { fieldGroup: [f1, f2] }] = f.fieldGroup;
+          const [, { fieldGroup: [f1, f2] }] = field.fieldGroup[0].fieldGroup;
 
           expect(f1.hide).toBeTruthy();
           expect(f2.hide).toBeFalsy();
@@ -1122,42 +1144,40 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should render the valid anyOf field on first render', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
-
-          builder.buildForm(new FormGroup({}), [f], {}, {});
-          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const { field } = renderComponent({ schema });
+          const [, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeTruthy();
           expect(barField.hide).toBeFalsy();
         });
 
         it('should render the filled anyOf field on first render', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            anyOf: [
-              { properties: { foo: { type: 'string', default: 'foo' } } },
-              { properties: { bar: { type: 'string' } } },
-            ],
+          const { field } = renderComponent({
+            model: { bar: 'bar' },
+            schema: {
+              type: 'object',
+              anyOf: [
+                { properties: { foo: { type: 'string', default: 'foo' } } },
+                { properties: { bar: { type: 'string' } } },
+              ],
+            },
           });
 
-          builder.buildForm(new FormGroup({}), [f], {}, { _initialModel: { bar: 'bar' } } as any);
-          const [, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const [, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeTruthy();
           expect(barField.hide).toBeFalsy();
         });
 
         it('should render the selected anyOf field', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig(schema);
-          const model: any = { foo: 'test' };
-          builder.buildForm(new FormGroup({}), [f], model, {});
-          const [enumField, { fieldGroup: [fooField, barField] }] = f.fieldGroup;
+          const { field, model, fixture } = renderComponent({ schema, model: { foo: 'test' } });
+          const [enumField, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeFalsy();
           expect(barField.hide).toBeTruthy();
 
           enumField.formControl.setValue([1]);
-          (f.options as any)._checkField(f.parent);
+          fixture.detectChanges();
 
           expect(model).toEqual({});
           expect(fooField.hide).toBeTruthy();
@@ -1165,45 +1185,43 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should reset the unselected anyOf field using default value', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            anyOf: [
-              { properties: { foo: { type: 'string', default: 'foo' } } },
-              { properties: { bar: { type: 'string', default: 'bar' } } },
-            ],
+          const { field, model, fixture } = renderComponent({
+            schema: {
+              type: 'object',
+              anyOf: [
+                { properties: { foo: { type: 'string', default: 'foo' } } },
+                { properties: { bar: { type: 'string', default: 'bar' } } },
+              ],
+            },
           });
 
-          const form = new FormGroup({});
-          builder.buildForm(form, [f], {}, {});
+          expect(model).toEqual({ foo: 'foo' });
 
-          expect(form.value).toEqual({ foo: 'foo' });
-
-          const [enumField] = f.fieldGroup;
+          const [enumField] = field.fieldGroup[0].fieldGroup;
           enumField.formControl.setValue([1]);
-          (f.options as any)._checkField(f.parent);
+          fixture.detectChanges();
 
-          expect(form.value).toEqual({ bar: 'bar' });
+          expect(model).toEqual({ bar: 'bar' });
         });
 
         it('should reset the unselected anyOf field (same key)', () => {
-          const { fieldGroup: [f] } = formlyJsonschema.toFieldConfig({
-            type: 'object',
-            anyOf: [
-              { properties: { foo: { type: 'string', default: 'foo' } } },
-              { properties: { foo: { type: 'string', default: 'bar' } } },
-            ],
+          const { field, model, fixture } = renderComponent({
+            schema: {
+              type: 'object',
+              anyOf: [
+                { properties: { foo: { type: 'string', default: 'foo' } } },
+                { properties: { foo: { type: 'string', default: 'bar' } } },
+              ],
+            },
           });
 
-          const form = new FormGroup({});
-          builder.buildForm(form, [f], {}, {});
+          expect(model).toEqual({ foo: 'foo' });
 
-          expect(form.value).toEqual({ foo: 'foo' });
-
-          const [enumField] = f.fieldGroup;
+          const [enumField] = field.fieldGroup[0].fieldGroup;
           enumField.formControl.setValue([1]);
-          (f.options as any)._checkField(f.parent);
+          fixture.detectChanges();
 
-          expect(form.value).toEqual({ foo: 'bar' });
+          expect(model).toEqual({ foo: 'bar' });
         });
       });
     });

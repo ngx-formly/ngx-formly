@@ -43,16 +43,16 @@ export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
     return;
   }
 
-  while (field.parent) {
-    field = field.parent;
-    paths = [...getKeyPath(field), ...paths];
-  }
-
   if (value == null && field['autoClear'] && !field.formControl.parent) {
     const k = paths.pop();
     const m = paths.reduce((model, path) => model[path] || {}, field.parent.model);
     delete m[k];
     return;
+  }
+
+  while (field.parent) {
+    field = field.parent;
+    paths = [...getKeyPath(field), ...paths];
   }
 
   assignModelValue(field.model, paths, value);

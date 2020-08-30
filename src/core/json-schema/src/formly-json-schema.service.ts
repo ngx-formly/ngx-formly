@@ -43,6 +43,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   schema: JSONSchema7;
   autoClear?: boolean;
   shareFormControl?: boolean;
+  ignoreDefault?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -70,6 +71,10 @@ export class FormlyJsonschema {
 
     if (options.shareFormControl === false) {
       field['shareFormControl'] = false;
+    }
+
+    if (options.ignoreDefault) {
+      delete field.defaultValue;
     }
 
     switch (field.type) {
@@ -476,7 +481,7 @@ export class FormlyJsonschema {
   private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
     const { form } = (field.options as any)._buildField({
       form: new FormGroup({}),
-      fieldGroup: [this._toFieldConfig(schema, { ...options, autoClear: true })],
+      fieldGroup: [this._toFieldConfig(schema, { ...options, autoClear: true, ignoreDefault: true })],
       model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),
     });
 
