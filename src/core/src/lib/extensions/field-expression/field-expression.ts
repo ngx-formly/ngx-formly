@@ -82,20 +82,13 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
     }
 
-    let parent = field.parent;
-    while (parent && !parent.hideExpression) {
-      parent = parent.parent;
-    }
-    if (!field.hide && field.key && (!parent || !parent.hideExpression)) {
-      if (field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-        assignFieldValue(field, field.defaultValue);
-        field.formControl.patchValue(getFieldValue(field), { emitEvent: false });
-      }
-    }
-
     if (field.hideExpression) {
       // delete hide value in order to force re-evaluate it in FormlyFormExpression.
       delete field.hide;
+      let parent = field.parent;
+      while (parent && !parent.hideExpression) {
+        parent = parent.parent;
+      }
 
       field.hideExpression = this._evalExpression(
         field.hideExpression,
