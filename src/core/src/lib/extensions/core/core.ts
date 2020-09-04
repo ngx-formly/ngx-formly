@@ -96,8 +96,22 @@ export class CoreExtension implements FormlyExtension {
       this.formlyConfig.getMergedField(field);
     }
 
-    if (field.parent && !field['autoClear'] && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-      assignFieldValue(field, field.defaultValue);
+    if (field.parent) {
+      let setDefaultValue = !isUndefined(field.key)
+        && !isUndefined(field.defaultValue)
+        && isUndefined(getFieldValue(field))
+        && (!field['autoClear'] || !(field.hide || field.hideExpression));
+      if (setDefaultValue && field['autoClear']) {
+        let parent = field.parent;
+        while (parent && !parent.hideExpression && !parent.hide) {
+          parent = parent.parent;
+        }
+        setDefaultValue = !parent || !(parent.hideExpression || parent.hide);
+      }
+
+      if (setDefaultValue) {
+        assignFieldValue(field, field.defaultValue);
+      }
     }
 
     this.initFieldWrappers(field);

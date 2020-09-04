@@ -113,6 +113,22 @@ describe('FormlyForm Component', () => {
       expect(model).toEqual({ foo: 'test' });
     });
 
+    it('should set default value for field array', () => {
+      fixture.componentInstance.fields = [
+        {
+          key: 'foo',
+          type: 'repeat',
+          defaultValue: [null],
+          fieldArray: { type: 'text' },
+        },
+      ];
+      fixture.detectChanges();
+
+      const { model, fields } = fixture.componentInstance;
+      expect(model).toEqual({ foo: [null] });
+      expect(fields[0].fieldGroup.length).toEqual(1);
+    });
+
     it('should toggle default value on hide changes for field array', () => {
       fixture.componentInstance.fields = [
         {
