@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.1"></a>
+## [5.10.1](https://github.com/ngx-formly/ngx-formly/compare/v5.10.0...v5.10.1) (2020-09-04)
+
+
+### Bug Fixes
+
+* **core:** apply defaultValue for array when resetFieldOnHide enabled ([#2488](https://github.com/ngx-formly/ngx-formly/issues/2488)) ([4049e00](https://github.com/ngx-formly/ngx-formly/commit/4049e00))
+
+
+
 <a name="5.10.0"></a>
 # [5.10.0](https://github.com/ngx-formly/ngx-formly/compare/v5.9.3...v5.10.0) (2020-08-30)
 
