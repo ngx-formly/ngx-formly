@@ -28,7 +28,13 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   @Input()
   set model(model: any) { this._model = this.immutable ? clone(model) : model; }
-  get model() { return this._model || {}; }
+  get model() {
+    if (!this._model) {
+      this._model = {};
+    }
+
+    return this._model;
+  }
 
   @Input()
   set fields(fields: FormlyFieldConfig[]) { this._fields = this.immutable ? clone(fields) : fields; }
