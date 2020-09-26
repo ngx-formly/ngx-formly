@@ -25,7 +25,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     };
   }
 
-  onPopulate(field: FormlyFieldConfigCache) {
+  postPopulate(field: FormlyFieldConfigCache) {
     if (!field.parent || field._expressionProperties) {
       return;
     }
