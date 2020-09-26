@@ -40,6 +40,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         if (typeof expressionProperty === 'string' || isFunction(expressionProperty)) {
           field._expressionProperties[key] = {
             expression: this._evalExpression(
+              key,
               expressionProperty,
               key === 'templateOptions.disabled' && field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
                 ? () => field.parent.templateOptions.disabled
@@ -91,6 +92,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
 
       field.hideExpression = this._evalExpression(
+        'hide',
         field.hideExpression,
         parent && parent.hideExpression ? () => parent.hide : undefined,
       );
@@ -104,15 +106,23 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private _evalExpression(expression, parentExpression?) {
-    expression = expression || (() => false);
-    if (typeof expression === 'string') {
-      expression = evalStringExpression(expression, ['model', 'formState', 'field']);
-    }
+  private _evalExpression(prop: string, expression, parentExpression?) {
+    return (model: any, formState: any, field: FormlyFieldConfig) => {
+      try {
+        if (typeof expression === 'string') {
+          expression = evalStringExpression(expression, ['model', 'formState', 'field']);
+        }
 
-    return parentExpression
-      ? (model: any, formState: any, field: FormlyFieldConfig) => parentExpression() || expression(model, formState, field)
-      : expression;
+        if (typeof expression !== 'function') {
+          expression = () => !!expression;
+        }
+
+        return (parentExpression && parentExpression()) || expression(model, formState, field);
+      } catch (error) {
+        error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
+        throw error;
+      }
+    };
   }
 
   private checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
