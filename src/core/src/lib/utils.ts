@@ -43,7 +43,7 @@ export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
     return;
   }
 
-  if (value == null && field['autoClear'] && !field.formControl.parent) {
+  if (value === undefined && field['autoClear']) {
     const k = paths.pop();
     const m = paths.reduce((model, path) => model[path] || {}, field.parent.model);
     delete m[k];
