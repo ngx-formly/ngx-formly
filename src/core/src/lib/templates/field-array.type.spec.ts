@@ -237,7 +237,6 @@ describe('Array Field Type', () => {
     subscription.unsubscribe();
   });
 
-
   it('should share formControl when field key is duplicated', () => {
     app.fields = [
       {
@@ -282,6 +281,23 @@ describe('Array Field Type', () => {
 
     expect(form.at(1)).not.toEqual(form.at(0));
     expect(form.at(1).value).toEqual(null);
+  });
+
+  // https://github.com/ngx-formly/ngx-formly/issues/2493
+  it('should add field when model is null', () => {
+    app.model = null;
+    app.fields = [{
+      key: 'array',
+      type: 'array',
+    }];
+
+    const fixture = createFormlyTestComponent();
+
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+
+    expect(app.fields[0].fieldGroup.length).toEqual(1);
+    expect(app.form.value).toEqual({ array: [null] });
   });
 });
 
