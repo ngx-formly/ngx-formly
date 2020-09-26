@@ -25,7 +25,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
              [errorStateMatcher]="errorStateMatcher"
              [formControl]="formControl"
              [formlyAttributes]="field"
-             [tabindex]="to.tabindex"
+             [tabIndex]="to.tabindex"
              [placeholder]="to.placeholder">
     </ng-template>
   `,
