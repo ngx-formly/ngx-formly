@@ -41,11 +41,14 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDest
         && currentValue
         && this.radioGroup._radios.length > 0
       ) {
-        const radio = this.radioGroup.selected
-          ? this.radioGroup.selected
-          : this.radioGroup._radios.first;
+        // https://github.com/ngx-formly/ngx-formly/issues/2498
+        setTimeout(() => {
+          const radio = this.radioGroup.selected
+            ? this.radioGroup.selected
+            : this.radioGroup._radios.first;
 
-        radio.focus();
+          radio.focus();
+        });
       }
     });
   }
