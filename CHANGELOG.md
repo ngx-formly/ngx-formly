@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.2"></a>
+## [5.10.2](https://github.com/ngx-formly/ngx-formly/compare/v5.10.1...v5.10.2) (2020-09-26)
+
+
+### Bug Fixes
+
+* **core:** clear value on hide for array type ([#2522](https://github.com/ngx-formly/ngx-formly/issues/2522)) ([49b3775](https://github.com/ngx-formly/ngx-formly/commit/49b3775)), closes [#2480](https://github.com/ngx-formly/ngx-formly/issues/2480)
+* **core:** improve expression error message ([#2521](https://github.com/ngx-formly/ngx-formly/issues/2521)) ([a8fe97d](https://github.com/ngx-formly/ngx-formly/commit/a8fe97d)), closes [#2492](https://github.com/ngx-formly/ngx-formly/issues/2492)
+* **core:** move eval expression to post populate ([#2516](https://github.com/ngx-formly/ngx-formly/issues/2516)) ([e1e7598](https://github.com/ngx-formly/ngx-formly/commit/e1e7598)), closes [#2515](https://github.com/ngx-formly/ngx-formly/issues/2515)
+* **core:** rely on internal model when model input is empty ([#2520](https://github.com/ngx-formly/ngx-formly/issues/2520)) ([efe68f9](https://github.com/ngx-formly/ngx-formly/commit/efe68f9)), closes [#2493](https://github.com/ngx-formly/ngx-formly/issues/2493)
+* **core:** remove parent check on assign nullable value ([#2518](https://github.com/ngx-formly/ngx-formly/issues/2518)) ([ab26e3b](https://github.com/ngx-formly/ngx-formly/commit/ab26e3b)), closes [#2491](https://github.com/ngx-formly/ngx-formly/issues/2491)
+* **material:** delay radio focus on status changes ([#2519](https://github.com/ngx-formly/ngx-formly/issues/2519)) ([a430b3b](https://github.com/ngx-formly/ngx-formly/commit/a430b3b)), closes [#2498](https://github.com/ngx-formly/ngx-formly/issues/2498)
+* **material:** rely on tabIndex input instead of attr ([#2517](https://github.com/ngx-formly/ngx-formly/issues/2517)) ([110efee](https://github.com/ngx-formly/ngx-formly/commit/110efee)), closes [#2501](https://github.com/ngx-formly/ngx-formly/issues/2501)
+
+
+
 <a name="5.10.1"></a>
 ## [5.10.1](https://github.com/ngx-formly/ngx-formly/compare/v5.10.0...v5.10.1) (2020-09-04)
 
