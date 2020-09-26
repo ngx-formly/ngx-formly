@@ -43,19 +43,20 @@ export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
     return;
   }
 
+  let root = field;
+  while (root.parent) {
+    root = root.parent;
+    paths = [...getKeyPath(root), ...paths];
+  }
+
   if (value === undefined && field['autoClear']) {
     const k = paths.pop();
-    const m = paths.reduce((model, path) => model[path] || {}, field.parent.model);
+    const m = paths.reduce((model, path) => model[path] || {}, root.model);
     delete m[k];
     return;
   }
 
-  while (field.parent) {
-    field = field.parent;
-    paths = [...getKeyPath(field), ...paths];
-  }
-
-  assignModelValue(field.model, paths, value);
+  assignModelValue(root.model, paths, value);
 }
 
 export function assignModelValue(model: any, paths: string[], value: any) {
