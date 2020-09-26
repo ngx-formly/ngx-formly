@@ -86,6 +86,17 @@ describe('FormlyForm Component', () => {
       expect(model).toEqual({ foo: 'test' });
     });
 
+    it('should delete prop when default value is undefined', () => {
+      fixture.componentInstance.fields = [
+        { key: 'foo', defaultValue: null },
+        { key: 'bar', defaultValue: undefined },
+      ];
+      fixture.detectChanges();
+
+      const { model } = fixture.componentInstance;
+      expect(model).toEqual({ foo: null });
+    });
+
     it('should not set default value clear on hide', () => {
       fixture.componentInstance.fields = [
         { key: 'foo', defaultValue: 'test', hide: true },
