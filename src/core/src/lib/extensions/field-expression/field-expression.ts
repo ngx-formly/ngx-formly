@@ -4,6 +4,7 @@ import { evalExpression, evalStringExpression } from './utils';
 import { Observable, Subscription } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
+import { FormArray } from '@angular/forms';
 
 /** @experimental */
 export class FieldExpressionExtension implements FormlyExtension {
@@ -228,13 +229,17 @@ export class FieldExpressionExtension implements FormlyExtension {
         unregisterControl(field);
         if (resetOnHide && field['autoClear']) {
           field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
+          if (field.formControl instanceof FormArray) {
+            assignFieldValue(field, undefined);
+            field.fieldGroup.length = 0;
+          }
         }
       } else if (hide === false) {
         if (field['autoClear'] && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
           assignFieldValue(field, field.defaultValue);
         }
         registerControl(field);
-        if (field.fieldArray && (field.fieldGroup || []).length !== (field.model || []).length) {
+        if (field['autoClear'] && field.fieldArray && (field.fieldGroup || []).length !== (field.model || []).length) {
           (<any> field.options)._buildForm(true);
         }
       }

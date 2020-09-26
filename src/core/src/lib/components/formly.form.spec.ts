@@ -151,6 +151,9 @@ describe('FormlyForm Component', () => {
       ];
 
       const { model, fields } = fixture.componentInstance;
+      fixture.detectChanges();
+      expect(model).toEqual({ foo: [null] });
+      expect(fields[0].fieldGroup.length).toEqual(1);
 
       fields[0].hide = true;
       fixture.detectChanges();
