@@ -670,6 +670,23 @@ describe('FormlyForm Component', () => {
     expect(app.form.valid).toEqual(false);
   });
 
+  it('should update validation on fields input change', () => {
+    app = {
+      fields: [{ key: 'name' }],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    expect(app.form.valid).toEqual(true);
+
+    fixture.componentInstance.fields = [{ key: 'name', templateOptions: { required: true } }];
+    fixture.detectChanges();
+
+    expect(app.form.valid).toEqual(false);
+  });
 
   it('should update the form controls when changing the model', () => {
     app = {
