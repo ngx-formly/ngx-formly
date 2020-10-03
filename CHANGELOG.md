@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.3"></a>
+## [5.10.3](https://github.com/ngx-formly/ngx-formly/compare/v5.10.2...v5.10.3) (2020-10-03)
+
+
+### Bug Fixes
+
+* **core:** clear validation cache on fields input change ([#2527](https://github.com/ngx-formly/ngx-formly/issues/2527)) ([5ef8c67](https://github.com/ngx-formly/ngx-formly/commit/5ef8c67)), closes [#2524](https://github.com/ngx-formly/ngx-formly/issues/2524)
+* **core:** supports array notation in expression property ([#2526](https://github.com/ngx-formly/ngx-formly/issues/2526)) ([485bc32](https://github.com/ngx-formly/ngx-formly/commit/485bc32)), closes [#2525](https://github.com/ngx-formly/ngx-formly/issues/2525)
+
+
+
 <a name="5.10.2"></a>
 ## [5.10.2](https://github.com/ngx-formly/ngx-formly/compare/v5.10.1...v5.10.2) (2020-09-26)
 
