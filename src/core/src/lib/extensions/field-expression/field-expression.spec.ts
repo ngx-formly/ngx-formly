@@ -536,6 +536,16 @@ describe('FieldExpressionExtension', () => {
       });
     });
 
+    it('should supports array notation in expression property', () => {
+      const fields: FormlyFieldConfig[] = [
+        { expressionProperties: { 'model[0]': '"ddd"' } },
+      ];
+
+      const model = [];
+      builder.buildForm(form, fields, model, options);
+      expect(model).toEqual(['ddd']);
+    });
+
     it('should throw error when assign to an undefined prop', () => {
       const fields: FormlyFieldConfig[] = [
         {
