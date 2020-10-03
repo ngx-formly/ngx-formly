@@ -259,7 +259,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   private setExprValue(field: FormlyFieldConfigCache, prop: string, value: any) {
     try {
       let target = field;
-      const paths = prop.split('.');
+      const paths = (prop.indexOf('[') === -1 ? prop : prop.replace(/\[(\w+)\]/g, '.$1')).split('.');
       const lastIndex = paths.length - 1;
       for (let i = 0; i < lastIndex; i++) {
         target = target[paths[i]];
