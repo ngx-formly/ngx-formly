@@ -6,6 +6,7 @@ import { FormlyConfig } from '../services/formly.config';
 import { assignFieldValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
 import { Subscription, Subject } from 'rxjs';
 import { debounceTime, switchMap, distinctUntilChanged, take } from 'rxjs/operators';
+import { clearControl } from '../extensions/field-form/utils';
 
 @Component({
   selector: 'formly-form',
@@ -92,6 +93,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     // https://github.com/ngx-formly/ngx-formly/issues/2294
     if (changes.model && this.field) {
       this.field.model = this.model;
+    }
+
+    if (changes.fields && this.form) {
+      clearControl(this.form);
     }
 
     if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {

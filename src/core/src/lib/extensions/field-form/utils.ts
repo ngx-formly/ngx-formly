@@ -146,3 +146,14 @@ function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, 
     form.updateValueAndValidity = updateValueAndValidity;
   }
 }
+
+export function clearControl(form: AbstractControl) {
+  form['_fields'] && delete form['_fields'];
+  form.setValidators(null);
+  form.setAsyncValidators(null);
+
+  if (form instanceof FormGroup || form instanceof FormArray) {
+    Object.keys(form.controls)
+      .forEach((k) => clearControl(form.controls[k]));
+  }
+}
