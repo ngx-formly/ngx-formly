@@ -11,7 +11,9 @@ import { FieldType } from '@ngx-formly/core';
         [name]="field.name || id"
         [value]="option.value"
         [formControl]="formControl"
-        [formlyAttributes]="field" class="k-radio" />
+        [formlyAttributes]="field" class="k-radio"
+        [attr.disabled]="option.disabled || formControl.disabled ? true : null"
+      />
       <label class="k-radio-label" [for]="id + '_' + i">
         {{ option.label }}
       </label>
