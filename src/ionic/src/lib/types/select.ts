@@ -14,7 +14,7 @@ import { FieldType } from '@ngx-formly/core';
         [interface]="to.interface"
         [okText]="to.okText"
         [cancelText]="to.cancelText">
-        <ion-select-option *ngFor="let option of selectOptions" [value]="option.value">
+        <ion-select-option *ngFor="let option of selectOptions" [value]="option.value" [disabled]="option.disabled">
             {{ option.label }}
         </ion-select-option>
       </ion-select>

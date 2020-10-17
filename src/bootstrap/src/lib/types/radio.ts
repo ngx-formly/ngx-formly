@@ -22,7 +22,8 @@ import { FieldType } from '@ngx-formly/core';
           [attr.value]="option.value"
           [value]="option.value"
           [formControl]="formControl"
-          [formlyAttributes]="field">
+          [formlyAttributes]="field"
+          [attr.disabled]="option.disabled || formControl.disabled ? true : null">
         <label
           [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
           [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
