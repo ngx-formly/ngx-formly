@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.4"></a>
+## [5.10.4](https://github.com/ngx-formly/ngx-formly/compare/v5.10.3...v5.10.4) (2020-10-17)
+
+
+### Bug Fixes
+
+* **core:** assign validator for field with empty key ([#2544](https://github.com/ngx-formly/ngx-formly/issues/2544)) ([116e454](https://github.com/ngx-formly/ngx-formly/commit/116e454))
+* support disable a specific select/radio option ([#2543](https://github.com/ngx-formly/ngx-formly/issues/2543)) ([6159cb0](https://github.com/ngx-formly/ngx-formly/commit/6159cb0)), closes [#2532](https://github.com/ngx-formly/ngx-formly/issues/2532)
+
+
+
 <a name="5.10.3"></a>
 ## [5.10.3](https://github.com/ngx-formly/ngx-formly/compare/v5.10.2...v5.10.3) (2020-10-03)
 
