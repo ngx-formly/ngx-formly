@@ -1,14 +1,12 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FieldFormExtension } from './field-form';
 import { FormlyFieldConfig } from '../../components/formly.field.config';
 
 function createField(field: FormlyFieldConfig): FormlyFieldConfig {
-  return {
-    modelOptions: {},
-    templateOptions: {},
-    parent: { formControl: new FormGroup({}) },
-    ...field,
-  };
+  const f = { modelOptions: {}, templateOptions: {}, ...field };
+  f.parent = { formControl: new FormGroup({}), fieldGroup: [f] };
+
+  return f;
 }
 
 describe('FieldFormExtension', () => {
@@ -59,5 +57,10 @@ describe('FieldFormExtension', () => {
     extension.onPopulate(field);
     expect(field.formControl).toBeDefined();
     expect(field.formControl.value).toEqual(5);
+
+    field['_validators'] = [Validators.min(10)];
+    extension.postPopulate(field.parent);
+
+    expect(field.formControl.validator).not.toBeNull();
   });
 });

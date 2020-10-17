@@ -62,12 +62,16 @@ export class FieldFormExtension implements FormlyExtension {
 
   private setValidators(field: FormlyFieldConfigCache) {
     let updateValidity = false;
-    if (field.key || !field.parent) {
+    if (field.key || !field.parent || (!field.key && !field.fieldGroup)) {
       const { formControl: c } = field;
       const disabled = field.templateOptions ? field.templateOptions.disabled : false;
       if (disabled && c.enabled) {
         c.disable({ emitEvent: false, onlySelf: true });
-        updateValidity = true;
+        if (!c.parent) {
+          updateControlValidity(c);
+        } else {
+          updateValidity = true;
+        }
       }
 
       if (null === c.validator || null === c.asyncValidator) {
