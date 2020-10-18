@@ -33,7 +33,7 @@ export class AppComponent {
         description: '',
       },
       expressionProperties: {
-        'templateOptions.focus': 'formState.awesomeIsForced',
+        focus: 'formState.awesomeIsForced',
         'templateOptions.description': (model, formState) => {
           if (formState.awesomeIsForced) {
             return 'And look! This field magically got focus!';
