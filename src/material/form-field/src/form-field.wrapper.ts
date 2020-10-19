@@ -28,19 +28,26 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
         <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
       </mat-label>
 
-      <ng-container matPrefix *ngIf="to.prefix || formlyField._matprefix">
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : formlyField._matprefix"></ng-container>
+      <ng-container matPrefix *ngIf="(to.prefix || formlyField._matprefix) as prefix">
+        <formly-string-or-template [content]="prefix"></formly-string-or-template>
       </ng-container>
 
-      <ng-container matSuffix *ngIf="to.suffix || formlyField._matsuffix">
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matsuffix"></ng-container>
+      <ng-container matSuffix *ngIf="(to.suffix || formlyField._matsuffix) as suffix">
+        <formly-string-or-template [content]="suffix"></formly-string-or-template>
       </ng-container>
 
       <mat-error>
         <formly-validation-message [field]="field"></formly-validation-message>
       </mat-error>
+
       <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
-      <mat-hint *ngIf="to.description" [id]="null">{{ to.description }}</mat-hint>
+      <mat-hint *ngIf="to.description || to.hintStart as hint" [id]="null">
+        <formly-string-or-template [content]="hint"></formly-string-or-template>
+      </mat-hint>
+
+      <mat-hint *ngIf="to.hintEnd as hintEnd" [id]="null" align="end">
+        <formly-string-or-template [content]="hintEnd"></formly-string-or-template>
+      </mat-hint>
     </mat-form-field>
   `,
   providers: [{ provide: MatFormFieldControl, useExisting: FormlyWrapperFormField }],
