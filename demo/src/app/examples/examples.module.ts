@@ -213,6 +213,11 @@ import { SharedModule } from '../shared';
                 loadChildren: () => import('./other/material-prefix-suffix/config.module').then((m) => m.ConfigModule),
               },
               {
+                path: 'material-formfield-hint-align',
+                loadChildren: () =>
+                  import('./other/material-formfield-hint-align/config.module').then((m) => m.ConfigModule),
+              },
+              {
                 path: 'hide-fields-with-animations',
                 loadChildren: () =>
                   import('./other/hide-fields-with-animations/config.module').then((m) => m.ConfigModule),

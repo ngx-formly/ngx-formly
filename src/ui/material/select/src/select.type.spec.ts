@@ -95,7 +95,7 @@ describe('ui-material: Formly Field Select Component', () => {
       expect(queryAll('mat-option')).toHaveLength(3);
     });
 
-    it('should correctly bind to an Observable', fakeAsync(() => {
+    it('should correctly bind to an Observable', () => {
       const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
@@ -114,7 +114,7 @@ describe('ui-material: Formly Field Select Component', () => {
       detectChanges();
 
       expect(queryAll('mat-option')).toHaveLength(3);
-    }));
+    });
   });
 
   describe('multi select', () => {

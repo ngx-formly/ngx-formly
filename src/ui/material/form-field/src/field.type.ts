@@ -15,9 +15,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
   set formFieldControl(control: MatFormFieldControl<any>) {
     this._control = control;
-    if (this.formField && control !== this.formField._control) {
-      this.formField._control = control;
-    }
+    this.attachControl(control);
   }
 
   errorStateMatcher: ErrorStateMatcher = { isErrorState: () => this.field && this.showError };
@@ -26,9 +24,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   private _control!: MatFormFieldControl<any>;
 
   ngOnInit() {
-    if (this.formField) {
-      this.formField._control = this.formFieldControl;
-    }
+    this.attachControl(this.formFieldControl);
   }
 
   ngAfterViewInit() {
@@ -106,5 +102,17 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
   get formField(): MatFormField {
     return this.field ? (<any>this.field)['__formField__'] : null;
+  }
+
+  private attachControl(control: MatFormFieldControl<any>) {
+    if (this.formField && control !== this.formField._control) {
+      this.formField._control = control;
+
+      // https://github.com/angular/components/issues/16209
+      const setDescribedByIds = control.setDescribedByIds.bind(control);
+      control.setDescribedByIds = (ids: string[]) => {
+        setTimeout(() => setDescribedByIds(ids));
+      };
+    }
   }
 }
