@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.5"></a>
+## [5.10.5](https://github.com/ngx-formly/ngx-formly/compare/v5.10.4...v5.10.5) (2020-10-25)
+
+
+### Bug Fixes
+
+* **core:** avoid creation a dummy field for nested key ([#2560](https://github.com/ngx-formly/ngx-formly/issues/2560)) ([0b9caa4](https://github.com/ngx-formly/ngx-formly/commit/0b9caa4)), closes [#2547](https://github.com/ngx-formly/ngx-formly/issues/2547)
+* **core:** avoid overriding accessor by property ([#2559](https://github.com/ngx-formly/ngx-formly/issues/2559)) ([deefd4e](https://github.com/ngx-formly/ngx-formly/commit/deefd4e)), closes [#2552](https://github.com/ngx-formly/ngx-formly/issues/2552)
+* **material:** prevent scroll on focus for radio and checkbox ([#2562](https://github.com/ngx-formly/ngx-formly/issues/2562)) ([fd0ccd2](https://github.com/ngx-formly/ngx-formly/commit/fd0ccd2))
+
+
+
 <a name="5.10.4"></a>
 ## [5.10.4](https://github.com/ngx-formly/ngx-formly/compare/v5.10.3...v5.10.4) (2020-10-17)
 
