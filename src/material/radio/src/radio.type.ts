@@ -47,11 +47,14 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDest
             ? this.radioGroup.selected
             : this.radioGroup._radios.first;
 
-          radio.focus();
+          radio._elementRef.nativeElement.focus({ preventScroll: true });
         });
       }
     });
   }
+
+  // TODO: find a solution to prevent scroll on focus
+  onContainerClick() {}
 
   ngOnDestroy() {
     this.focusObserver && this.focusObserver();
