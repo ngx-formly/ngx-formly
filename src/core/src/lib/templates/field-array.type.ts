@@ -8,7 +8,10 @@ import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
-  formControl: FormArray;
+  get formControl() {
+    return this.field.formControl as FormArray;
+  }
+
   defaultOptions: any = {
     defaultValue: [],
   };
