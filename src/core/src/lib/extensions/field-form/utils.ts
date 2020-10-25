@@ -73,24 +73,6 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   }
 
   const paths = getKeyPath(field);
-  if (!parent['_formlyControls']) {
-    defineHiddenProp(parent, '_formlyControls', {});
-  }
-  parent['_formlyControls'][paths.join('.')] = control;
-
-  for (let i = 0; i < (paths.length - 1); i++) {
-    const path = paths[i];
-    if (!parent.get([path])) {
-      registerControl({
-        key: [path],
-        formControl: new FormGroup({}),
-        parent: { formControl: parent },
-      });
-    }
-
-    parent = <FormGroup> parent.get([path]);
-  }
-
   const value = getFieldValue(field);
   if (
     !(isNullOrUndefined(control.value) && isNullOrUndefined(value))
@@ -99,6 +81,20 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   ) {
     control.patchValue(value);
   }
+
+  for (let i = 0; i < (paths.length - 1); i++) {
+    const path = paths[i];
+    if (!parent.get([path])) {
+      updateControl(
+        parent,
+        { emitEvent },
+        () => parent.setControl(path, new FormGroup({})),
+      );
+    }
+
+    parent = <FormGroup> parent.get([path]);
+  }
+
   const key = paths[paths.length - 1];
   if (!field._hide && parent.get([key]) !== control) {
     updateControl(
