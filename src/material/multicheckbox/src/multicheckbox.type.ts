@@ -44,12 +44,8 @@ export class FormlyFieldMultiCheckbox extends FieldType {
     this.formControl.markAsTouched();
   }
 
-  onContainerClick(event: MouseEvent): void {
-    if (this.checkboxes.length) {
-      this.checkboxes.first.focus();
-    }
-    super.onContainerClick(event);
-  }
+  // TODO: find a solution to prevent scroll on focus
+  onContainerClick() {}
 
   isChecked(option: any) {
     const value = this.formControl.value;
