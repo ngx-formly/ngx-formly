@@ -124,6 +124,28 @@ describe('FormlyForm Component', () => {
       expect(model).toEqual({ foo: 'test' });
     });
 
+    it('should toggle default value on hide changes for nested config', () => {
+      fixture.componentInstance.fields = [
+        {
+          key: 'foo',
+          fieldGroup: [
+            { key: 'bar', defaultValue: 'test' },
+          ],
+        },
+      ];
+      fixture.detectChanges();
+
+      const { model, fields } = fixture.componentInstance;
+
+      fields[0].hide = true;
+      fixture.detectChanges();
+      expect(model).toEqual({});
+
+      fields[0].hide = false;
+      fixture.detectChanges();
+      expect(model).toEqual({ foo: { bar: 'test' } });
+    });
+
     it('should set default value for field array', () => {
       fixture.componentInstance.fields = [
         {

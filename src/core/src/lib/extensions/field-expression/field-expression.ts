@@ -87,15 +87,18 @@ export class FieldExpressionExtension implements FormlyExtension {
     if (field.hideExpression) {
       // delete hide value in order to force re-evaluate it in FormlyFormExpression.
       delete field.hide;
-      let parent = field.parent;
-      while (parent && !parent.hideExpression) {
-        parent = parent.parent;
-      }
 
       field.hideExpression = this._evalExpression(
         'hide',
         field.hideExpression,
-        parent && parent.hideExpression ? () => parent.hide : undefined,
+        () => {
+          let root = field.parent;
+          while (root.parent && !root.hide) {
+            root = root.parent;
+          }
+
+          return root.hide;
+        },
       );
     } else {
       wrapProperty(field, 'hide', ({ currentValue, firstChange }) => {
@@ -229,9 +232,12 @@ export class FieldExpressionExtension implements FormlyExtension {
         unregisterControl(field);
         if (resetOnHide && field['autoClear']) {
           field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
-          if (field.formControl instanceof FormArray) {
+          if (field.fieldGroup) {
             assignFieldValue(field, undefined);
-            field.fieldGroup.length = 0;
+
+            if (field.formControl instanceof FormArray) {
+              field.fieldGroup.length = 0;
+            }
           }
         }
       } else if (hide === false) {
