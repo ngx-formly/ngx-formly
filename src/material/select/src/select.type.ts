@@ -104,7 +104,7 @@ export class FormlyFieldSelect extends FieldType {
 
       this.selectAllValue = {
         options,
-        value: flatOptions.map(o => o.value),
+        value: flatOptions.filter(o => !o.disabled).map(o => o.value),
       };
     }
 
