@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.6"></a>
+## [5.10.6](https://github.com/ngx-formly/ngx-formly/compare/v5.10.5...v5.10.6) (2020-10-31)
+
+
+### Bug Fixes
+
+* **core:** apply default value on hide changes for nested object ([#2578](https://github.com/ngx-formly/ngx-formly/issues/2578)) ([b2d4951](https://github.com/ngx-formly/ngx-formly/commit/b2d4951)), closes [#2569](https://github.com/ngx-formly/ngx-formly/issues/2569)
+* **ionic:** add v5 to peer dependencies ([#2576](https://github.com/ngx-formly/ngx-formly/issues/2576)) ([037f13d](https://github.com/ngx-formly/ngx-formly/commit/037f13d)), closes [#2575](https://github.com/ngx-formly/ngx-formly/issues/2575)
+* **material:** ignore disabled option on selectAll ([#2577](https://github.com/ngx-formly/ngx-formly/issues/2577)) ([8744c11](https://github.com/ngx-formly/ngx-formly/commit/8744c11)), closes [#2568](https://github.com/ngx-formly/ngx-formly/issues/2568)
+
+
+
 <a name="5.10.5"></a>
 ## [5.10.5](https://github.com/ngx-formly/ngx-formly/compare/v5.10.4...v5.10.5) (2020-10-25)
 
