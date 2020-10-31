@@ -248,6 +248,27 @@ describe('FieldExpressionExtension', () => {
       expect(fields[1].hide).toBeTruthy();
       expect(fields[1].formControl).toBe(form.get('key1'));
     });
+
+    it('should take account of parent hide state', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          key: 'parent',
+          type: 'input',
+          hide: true,
+          fieldGroup: [
+            {
+              key: 'child',
+              type: 'input',
+              hideExpression: () => false,
+              defaultValue: 'foo',
+            },
+          ],
+        },
+      ];
+
+      builder.buildForm(form, fields, {}, options);
+      expect(fields[0].fieldGroup[0].hide).toBeTruthy();
+    });
   });
 
   describe('expressionProperties', () => {
