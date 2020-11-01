@@ -8,7 +8,8 @@ import { FormlyFieldConfigCache } from '../models';
 import { timer } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 
-const renderComponent = (field: FormlyFieldConfig, options = {}) => {
+const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
+  const { config, ...options } = opts;
   return createFormlyFieldComponent(field, {
     imports: [FormlyInputModule],
     declarations: [FormlyWrapperFormFieldAsync, FormlyOnPushComponent, FormlyParentComponent, FormlyChildComponent],
@@ -33,6 +34,7 @@ const renderComponent = (field: FormlyFieldConfig, options = {}) => {
           component: FormlyWrapperFormFieldAsync,
         },
       ],
+      ...(config || {}),
     },
     ...options,
   });
@@ -155,29 +157,21 @@ describe('FormlyField Component', () => {
   });
 
   it('should lazy render field components', () => {
-    TestBed.configureTestingModule({
-      imports: [
-        FormlyModule.forRoot({
-          extras: { lazyRender: true },
-        }),
-      ],
-    });
-    app = {
-      form: new FormGroup({}),
-      options: {},
-      model: {},
-      fields: [{
-        key: 'foo',
-        type: 'text',
+    const { field, detectChanges, query, fixture } = renderComponent(
+      {
+        key: 'title',
+        type: 'input',
         hide: true,
-      }],
-    };
+      },
+      { config: { extras: { lazyRender: true } } },
+    );
 
-    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
-    expect(fixture.debugElement.query(By.css('input'))).toBeNull();
+    expect(query('formly-type-input')).toBeNull();
 
-    app.fields[0].hide = false;
-    expect(fixture.debugElement.query(By.css('input'))).not.toBeNull();
+    field.hide = false;
+    detectChanges();
+    expect(query('formly-type-input')).not.toBeNull();
+  });
 
   it('init hooks with observables', () => {
     const control = new FormControl();

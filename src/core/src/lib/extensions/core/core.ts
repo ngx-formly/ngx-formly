@@ -95,7 +95,7 @@ export class CoreExtension implements FormlyExtension {
       }
 
       options.build(field);
-      field.form.reset(model);
+      field.form.reset(field.model);
       if (options.parentForm && options.parentForm.control === field.formControl) {
         (options.parentForm as { submitted: boolean }).submitted = false;
       }
@@ -121,7 +121,7 @@ export class CoreExtension implements FormlyExtension {
             },
     });
 
-    if (this.formlyConfig.extras.resetFieldOnHide && field.resetOnHide !== false) {
+    if (this.config.extras.resetFieldOnHide && field.resetOnHide !== false) {
       field.resetOnHide = true;
     }
 

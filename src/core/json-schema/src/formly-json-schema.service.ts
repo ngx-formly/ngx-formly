@@ -19,9 +19,7 @@ export interface FormlyJsonschemaOptions {
 }
 
 function isInteger(value: any) {
-  return Number.isInteger
-    ? Number.isInteger(value)
-    : typeof value === 'number' && Math.floor(value) === value;
+  return Number.isInteger ? Number.isInteger(value) : typeof value === 'number' && Math.floor(value) === value;
 }
 
 function isEmpty(v: any) {
@@ -181,11 +179,9 @@ export class FormlyJsonschema {
         });
 
         if (schema.oneOf) {
-          field.fieldGroup.push(this.resolveMultiSchema(
-            'oneOf',
-            <JSONSchema7[]> schema.oneOf,
-            { ...options, shareFormControl: false },
-          ));
+          field.fieldGroup.push(
+            this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, shareFormControl: false }),
+          );
         }
 
         if (schema.anyOf) {
@@ -472,7 +468,7 @@ export class FormlyJsonschema {
     const { form } = field.options.build({
       form: new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true })],
-      model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),
+      model: field.model ? clone(field.model) : field.fieldArray ? [] : {},
     });
 
     return form.valid;
