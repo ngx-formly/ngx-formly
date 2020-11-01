@@ -177,6 +177,8 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
             }
           }
         }
+
+        this.field.options.detectChanges(this.field);
       }),
       observe<string>(this.field, ['className'], ({ firstChange, currentValue }) => {
         if (
@@ -241,6 +243,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
           return true;
         }),
+      );
 
       if (control.value !== getFieldValue(field)) {
         valueChanges = valueChanges.pipe(startWith(control.value));
@@ -261,7 +264,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           field.parsers.forEach((parserFn) => (value = parserFn(value)));
         }
 
-        assignFieldValue(field, value, true);
+        assignFieldValue(field, value);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 

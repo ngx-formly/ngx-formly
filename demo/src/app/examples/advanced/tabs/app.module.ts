@@ -15,17 +15,10 @@ import { FormlyFieldTabs } from './tabs.type';
     MatTabsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      validationMessages: [
-        { name: 'required', message: 'This field is required' },
-      ],
-      types: [
-        { name: 'tabs', component: FormlyFieldTabs },
-      ],
+      validationMessages: [{ name: 'required', message: 'This field is required' }],
+      types: [{ name: 'tabs', component: FormlyFieldTabs }],
     }),
   ],
-  declarations: [
-    AppComponent,
-    FormlyFieldTabs,
-  ],
+  declarations: [AppComponent, FormlyFieldTabs],
 })
 export class AppModule {}

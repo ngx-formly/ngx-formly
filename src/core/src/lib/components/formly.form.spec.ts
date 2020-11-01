@@ -63,138 +63,15 @@ describe('FormlyForm Component', () => {
     });
 
     it('should update validation on fields input change', () => {
-      const fixture = renderComponent({ fields: [{ key: 'name' }] });
-      const { form } = fixture.componentInstance;
+      const { form, setInputs } = renderComponent({ fields: [{ key: 'name' }] });
 
       expect(form.valid).toEqual(true);
 
-      fixture.componentInstance.fields = [{ key: 'name', templateOptions: { required: true } }];
-      fixture.detectChanges();
+      setInputs({
+        fields: [{ key: 'name', templateOptions: { required: true } }],
+      });
 
       expect(form.valid).toEqual(false);
-    });
-  });
-
-
-  describe('resetFieldOnHide', () => {
-    let fixture: ReturnType<typeof createTestComponent>;
-    beforeEach(() => {
-      app = { form: new FormGroup({}), options: {}, model: {}, fields: [] };
-      fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
-      const config = TestBed.get(FormlyConfig) as FormlyConfig;
-      config.extras.resetFieldOnHide = true;
-    });
-
-    it('should set default value when hide is false', () => {
-      fixture.componentInstance.fields = [
-        { key: 'foo', defaultValue: 'test' },
-      ];
-      fixture.detectChanges();
-
-      const { model } = fixture.componentInstance;
-      expect(model).toEqual({ foo: 'test' });
-    });
-
-    it('should delete prop when default value is undefined', () => {
-      fixture.componentInstance.fields = [
-        { key: 'foo', defaultValue: null },
-        { key: 'bar', defaultValue: undefined },
-      ];
-      fixture.detectChanges();
-
-      const { model } = fixture.componentInstance;
-      expect(model).toEqual({ foo: null });
-    });
-
-    it('should not set default value clear on hide', () => {
-      fixture.componentInstance.fields = [
-        { key: 'foo', defaultValue: 'test', hide: true },
-      ];
-      fixture.detectChanges();
-
-      const { model } = fixture.componentInstance;
-      expect(model).toEqual({});
-    });
-
-    it('should toggle default value on hide changes', () => {
-      fixture.componentInstance.fields = [
-        { key: 'foo', defaultValue: 'test' },
-      ];
-      fixture.detectChanges();
-
-      const { model, fields } = fixture.componentInstance;
-
-      fields[0].hide = true;
-      fixture.detectChanges();
-      expect(model).toEqual({});
-
-      fields[0].hide = false;
-      fixture.detectChanges();
-      expect(model).toEqual({ foo: 'test' });
-    });
-
-    it('should toggle default value on hide changes for nested config', () => {
-      fixture.componentInstance.fields = [
-        {
-          key: 'foo',
-          fieldGroup: [
-            { key: 'bar', defaultValue: 'test' },
-          ],
-        },
-      ];
-      fixture.detectChanges();
-
-      const { model, fields } = fixture.componentInstance;
-
-      fields[0].hide = true;
-      fixture.detectChanges();
-      expect(model).toEqual({});
-
-      fields[0].hide = false;
-      fixture.detectChanges();
-      expect(model).toEqual({ foo: { bar: 'test' } });
-    });
-
-    it('should set default value for field array', () => {
-      fixture.componentInstance.fields = [
-        {
-          key: 'foo',
-          type: 'repeat',
-          defaultValue: [null],
-          fieldArray: { type: 'text' },
-        },
-      ];
-      fixture.detectChanges();
-
-      const { model, fields } = fixture.componentInstance;
-      expect(model).toEqual({ foo: [null] });
-      expect(fields[0].fieldGroup.length).toEqual(1);
-    });
-
-    it('should toggle default value on hide changes for field array', () => {
-      fixture.componentInstance.fields = [
-        {
-          key: 'foo',
-          type: 'repeat',
-          defaultValue: [null],
-          fieldArray: { type: 'text' },
-        },
-      ];
-
-      const { model, fields } = fixture.componentInstance;
-      fixture.detectChanges();
-      expect(model).toEqual({ foo: [null] });
-      expect(fields[0].fieldGroup.length).toEqual(1);
-
-      fields[0].hide = true;
-      fixture.detectChanges();
-      expect(model).toEqual({});
-      expect(fields[0].fieldGroup.length).toEqual(0);
-
-      fields[0].hide = false;
-      fixture.detectChanges();
-      expect(model).toEqual({ foo: [null] });
-      expect(fields[0].fieldGroup.length).toEqual(1);
     });
   });
 
@@ -413,10 +290,12 @@ describe('FormlyForm Component', () => {
     it('should hide/display field using a function with nested field key', () => {
       const { form, model, fields, detectChanges } = renderComponent({
         model: { address: [{ city: '' }] },
-        fields: [{
-          key: 'address[0].city',
-          hideExpression: '!(model.address && model.address[0] && model.address[0].city === "agadir")',
-        }],
+        fields: [
+          {
+            key: 'address[0].city',
+            hideExpression: '!(model.address && model.address[0] && model.address[0].city === "agadir")',
+          },
+        ],
       });
 
       expect(form.get('address.0.city')).toBeNull();
@@ -549,6 +428,83 @@ describe('FormlyForm Component', () => {
       expect(fields[0]).not.toBe(titleField);
       expect(titleField.model).toEqual({ title: 'foo' });
       expect(form.value).toEqual({ title: 'foo' });
+    });
+  });
+
+  describe('resetFieldOnHide', () => {
+    it('should set default value when hide is false', () => {
+      const { model } = renderComponent(
+        {
+          fields: [{ key: 'foo', defaultValue: 'test' }],
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      expect(model).toEqual({ foo: 'test' });
+    });
+
+    it('should not set default value clear on hide', () => {
+      const { model } = renderComponent(
+        {
+          fields: [{ key: 'foo', defaultValue: 'test', hide: true }],
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      expect(model).toEqual({});
+    });
+
+    it('should toggle default value on hide changes', () => {
+      const { model, fields, detectChanges } = renderComponent(
+        {
+          fields: [{ key: 'foo', defaultValue: 'test' }],
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      fields[0].hide = true;
+      detectChanges();
+      expect(model).toEqual({});
+
+      fields[0].hide = false;
+      detectChanges();
+      expect(model).toEqual({ foo: 'test' });
+    });
+
+    it('should delete prop when default value is undefined', () => {
+      const { model } = renderComponent(
+        {
+          fields: [
+            { key: 'foo', defaultValue: null },
+            { key: 'bar', defaultValue: undefined },
+          ],
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      expect(model).toEqual({ foo: null });
+    });
+
+    it('should toggle default value on hide changes for nested config', () => {
+      const { fields, model, detectChanges } = renderComponent(
+        {
+          fields: [
+            {
+              key: 'foo',
+              fieldGroup: [{ key: 'bar', defaultValue: 'test' }],
+            },
+          ],
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      fields[0].hide = true;
+      detectChanges();
+      expect(model).toEqual({});
+
+      fields[0].hide = false;
+      detectChanges();
+      expect(model).toEqual({ foo: { bar: 'test' } });
     });
   });
 

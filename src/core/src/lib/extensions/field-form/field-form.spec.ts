@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
@@ -82,10 +82,16 @@ describe('FieldFormExtension', () => {
       expect(field.formControl instanceof FormControl).toBeTrue();
     });
 
-    it('should not create formControl when key is empty', () => {
-      const field = buildField({});
+    it('should add formControl for field with empty key', () => {
+      const field = buildField({ defaultValue: 5 });
 
-      expect(field.formControl).toBeUndefined();
+      expect(field.formControl).toBeDefined();
+      expect(field.formControl.value).toEqual(5);
+
+      field['_validators'] = [Validators.min(10)];
+      field.options.build(field.parent);
+
+      expect(field.formControl.validator).not.toBeNull();
     });
 
     it('should use the same formcontrol for fields that use the same key', () => {
@@ -255,19 +261,5 @@ describe('FieldFormExtension', () => {
       expect(form.get('foo').disabled).toEqual(true);
       expect(form.get('bar').disabled).toEqual(false);
     });
-  });
-
-
-  it('should add formControl for field with empty key', () => {
-    const field = createField({ defaultValue: 5 });
-
-    extension.onPopulate(field);
-    expect(field.formControl).toBeDefined();
-    expect(field.formControl.value).toEqual(5);
-
-    field['_validators'] = [Validators.min(10)];
-    extension.postPopulate(field.parent);
-
-    expect(field.formControl.validator).not.toBeNull();
   });
 });

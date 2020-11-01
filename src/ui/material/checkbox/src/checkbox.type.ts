@@ -1,4 +1,12 @@
-import { Component, ViewChild, ChangeDetectionStrategy, Renderer2, AfterViewChecked, OnDestroy, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ChangeDetectionStrategy,
+  Renderer2,
+  AfterViewChecked,
+  OnDestroy,
+  AfterViewInit,
+} from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';

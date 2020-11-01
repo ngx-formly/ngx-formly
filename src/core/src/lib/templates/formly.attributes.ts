@@ -37,12 +37,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    */
   private uiEvents = {
     listeners: [],
-    events: [
-      'click',
-      'keyup',
-      'keydown',
-      'keypress',
-    ],
+    events: ['click', 'keyup', 'keydown', 'keypress'],
   };
 
   get to(): FormlyTemplateOptions {
@@ -60,15 +55,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
       this.field.name && this.setAttribute('name', this.field.name);
-      this.uiEvents.listeners.forEach(listener => listener());
-      this.uiEvents.events.forEach(eventName => {
+      this.uiEvents.listeners.forEach((listener) => listener());
+      this.uiEvents.events.forEach((eventName) => {
         if (this.to && this.to[eventName]) {
           this.uiEvents.listeners.push(
-            this.renderer.listen(
-              this.elementRef.nativeElement,
-              eventName,
-              (e) => this.to[eventName](this.field, e),
-            ),
+            this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.to[eventName](this.field, e)),
           );
         }
       });

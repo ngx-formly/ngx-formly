@@ -23,9 +23,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
   if (!field._keyPath || field._keyPath.key !== field.key) {
     let path: string[] = [];
     if (typeof field.key === 'string') {
-      const key = field.key.indexOf('[') === -1
-        ? field.key
-        : field.key.replace(/\[(\w+)\]/g, '.$1');
+      const key = field.key.indexOf('[') === -1 ? field.key : field.key.replace(/\[(\w+)\]/g, '.$1');
       path = key.indexOf('.') !== -1 ? key.split('.') : [key];
     } else if (Array.isArray(field.key)) {
       path = field.key.slice(0);
@@ -41,7 +39,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
 
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
 
-export function assignFieldValue(field: FormlyFieldConfigCache, value: any, autoClear = false) {
+export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
   let paths = getKeyPath(field);
   if (paths.length === 0) {
     return;
@@ -53,7 +51,7 @@ export function assignFieldValue(field: FormlyFieldConfigCache, value: any, auto
     paths = [...getKeyPath(root), ...paths];
   }
 
-  if (autoClear && value === undefined && field.resetOnHide) {
+  if (value === undefined && field.resetOnHide) {
     const k = paths.pop();
     const m = paths.reduce((model, path) => model[path] || {}, root.model);
     delete m[k];
@@ -312,7 +310,8 @@ export function reduceFormUpdateValidityCalls(form: any, action: Function) {
   const updateValidity = form._updateTreeValidity.bind(form);
 
   let updateValidityArgs = { called: false, emitEvent: false };
-  form._updateTreeValidity = ({ emitEvent } = { emitEvent: true }) => updateValidityArgs = { called: true, emitEvent: emitEvent || updateValidityArgs.emitEvent };
+  form._updateTreeValidity = ({ emitEvent } = { emitEvent: true }) =>
+    (updateValidityArgs = { called: true, emitEvent: emitEvent || updateValidityArgs.emitEvent });
   action();
 
   updateValidityArgs.called && updateValidity({ emitEvent: updateValidityArgs.emitEvent });

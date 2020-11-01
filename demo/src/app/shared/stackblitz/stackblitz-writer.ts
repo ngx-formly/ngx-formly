@@ -204,7 +204,10 @@ export class StackblitzWriter {
     if (
       ['material', 'kendo', 'material'].indexOf(options.type) !== -1 ||
       options.includeMaterial ||
-      exampleData.files.map(f => f.filecontent.default).some(content => content.indexOf('@angular/animations') !== -1)) {
+      exampleData.files
+        .map((f) => f.filecontent.default)
+        .some((content) => content.indexOf('@angular/animations') !== -1)
+    ) {
       options.useAnimation = true;
     }
 

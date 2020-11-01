@@ -28,14 +28,8 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (field.key) {
-      this.addFormControl(field);
-    }
-
     if (field.hasOwnProperty('fieldGroup') && !field.key) {
-      if (field.form) {
-        defineHiddenProp(field, 'formControl', field.form);
-      }
+      defineHiddenProp(field, 'formControl', field.form);
     } else {
       this.addFormControl(field);
     }
@@ -72,7 +66,7 @@ export class FieldFormExtension implements FormlyExtension {
         control = new FormGroup({}, controlOptions);
       } else {
         const value = field.key ? getFieldValue(field) : field.defaultValue;
-        control = new FormControl({ value: getFieldValue(field), disabled: false }, controlOptions);
+        control = new FormControl({ value, disabled: false }, controlOptions);
       }
     }
 
@@ -126,7 +120,7 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     const fieldsToUpdate = updateValidity ? [field] : [];
-    (field.fieldGroup || []).forEach(f => {
+    (field.fieldGroup || []).forEach((f) => {
       if (f) {
         const childrenToUpdate = this.setValidators(f);
         if (!updateValidity) {

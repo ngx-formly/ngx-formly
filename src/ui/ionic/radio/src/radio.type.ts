@@ -7,7 +7,10 @@ import { FieldType } from '@ngx-formly/core';
     <ion-list>
       <ion-radio-group [formControl]="formControl" [ionFormlyAttributes]="field">
         <ion-list-header>{{ to.label }}</ion-list-header>
-        <ion-item *ngFor="let option of to.options | formlySelectOptions: field | async" [disabled]="option.disabled || formControl.disabled">
+        <ion-item
+          *ngFor="let option of to.options | formlySelectOptions: field | async"
+          [disabled]="option.disabled || formControl.disabled"
+        >
           <ion-label>{{ option.label }}</ion-label>
           <ion-radio [value]="option.value"></ion-radio>
         </ion-item>

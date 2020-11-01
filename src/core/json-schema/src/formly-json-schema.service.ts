@@ -222,11 +222,9 @@ export class FormlyJsonschema {
         });
 
         if (schema.oneOf) {
-          field.fieldGroup.push(this.resolveMultiSchema(
-            'oneOf',
-            <JSONSchema7[]> schema.oneOf,
-            { ...options, shareFormControl: false },
-          ));
+          field.fieldGroup.push(
+            this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, shareFormControl: false }),
+          );
         }
 
         if (schema.anyOf) {
@@ -370,8 +368,7 @@ export class FormlyJsonschema {
           defaultValue: -1,
           templateOptions: {
             multiple: mode === 'anyOf',
-            options: schemas
-              .map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
+            options: schemas.map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
           },
           hooks: {
             onInit: f => f.formControl.valueChanges.pipe(
@@ -539,7 +536,7 @@ export class FormlyJsonschema {
     const { form } = field.options.build({
       form: new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null })],
-      model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),
+      model: field.model ? clone(field.model) : field.fieldArray ? [] : {},
     });
 
     return form.valid;

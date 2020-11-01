@@ -174,7 +174,7 @@ describe('FormlyAttributes Component', () => {
   describe('focus the element', () => {
     it(`should focus the element when focus is set to "true" and then blurred when it's set to "false"`, () => {
       const { detectChanges, query, field } = renderComponent({ focus: true });
-      const inputEl = <HTMLInputElement> query('input').nativeElement;
+      const inputEl = <HTMLInputElement>query('input').nativeElement;
 
       expect(document.activeElement === inputEl).toBeTrue();
 

@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { Subject, of, BehaviorSubject } from 'rxjs';
-import { FormlyFieldConfigCache } from '../../models';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
 function buildField({ model, options, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
@@ -125,29 +125,22 @@ describe('FieldExpressionExtension', () => {
       });
 
       it('should take account of parent hide state', () => {
+        const child: FormlyFieldConfig = {
+          key: 'child',
+          hideExpression: () => false,
+          defaultValue: 'foo',
+        };
         const field = buildField({
           fieldGroup: [
             {
               key: 'parent',
-              type: 'input',
               hide: true,
-              fieldGroup: [
-                {
-                  fieldGroup: [
-                    {
-                      key: 'child',
-                      type: 'input',
-                      hideExpression: () => false,
-                      defaultValue: 'foo',
-                    },
-                  ],
-                },
-              ],
+              fieldGroup: [{ fieldGroup: [child] }],
             },
           ],
         });
 
-        expect(field.fieldGroup[0].hide).toBeTruthy();
+        expect(child.hide).toBeTruthy();
       });
 
       it('should support multiple field with the same key', () => {
@@ -265,6 +258,7 @@ describe('FieldExpressionExtension', () => {
         },
       });
 
+      field.hooks.onInit(field);
       expect(field.templateOptions.label).toEqual('test');
     });
 
@@ -412,6 +406,8 @@ describe('FieldExpressionExtension', () => {
             'templateOptions.label': stream$,
           },
         });
+
+        field.hooks.onInit();
         expect(field.templateOptions.label).toEqual('test');
 
         field.hooks.onDestroy();
@@ -430,6 +426,7 @@ describe('FieldExpressionExtension', () => {
           },
         });
 
+        field.hooks.onInit();
         expect(field.formControl.value).toEqual('test');
       });
 
@@ -465,6 +462,7 @@ describe('FieldExpressionExtension', () => {
 
       it('should supports array notation in expression property', () => {
         const field = buildField({
+          model: [],
           expressionProperties: {
             'model[0]': '1',
             'model["1"]': '2',
@@ -530,28 +528,24 @@ describe('FieldExpressionExtension', () => {
       });
 
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(
-        {
-          field,
-          type: 'expressionChanges',
-          property: 'templateOptions.label',
-          value: undefined,
-        },
-      );
+      expect(spy).toHaveBeenCalledWith({
+        field,
+        type: 'expressionChanges',
+        property: 'templateOptions.label',
+        value: undefined,
+      });
 
       spy.mockReset();
       field.formControl.patchValue('foo');
       field.options.checkExpressions(field.parent);
 
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(
-        {
-          field,
-          type: 'expressionChanges',
-          property: 'templateOptions.label',
-          value: 'foo',
-        },
-      );
+      expect(spy).toHaveBeenCalledWith({
+        field,
+        type: 'expressionChanges',
+        property: 'templateOptions.label',
+        value: 'foo',
+      });
 
       subscription.unsubscribe();
     });
