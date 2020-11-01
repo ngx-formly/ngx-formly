@@ -15,17 +15,10 @@ import { FormlyFieldStepper } from './stepper.type';
     MatStepperModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
-      validationMessages: [
-        { name: 'required', message: 'This field is required' },
-      ],
-      types: [
-        { name: 'stepper', component: FormlyFieldStepper, wrappers: [] },
-      ],
+      validationMessages: [{ name: 'required', message: 'This field is required' }],
+      types: [{ name: 'stepper', component: FormlyFieldStepper, wrappers: [] }],
     }),
   ],
-  declarations: [
-    AppComponent,
-    FormlyFieldStepper,
-  ],
+  declarations: [AppComponent, FormlyFieldStepper],
 })
 export class AppModule {}

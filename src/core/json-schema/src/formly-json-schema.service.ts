@@ -19,9 +19,7 @@ export interface FormlyJsonschemaOptions {
 }
 
 function isInteger(value: any) {
-  return Number.isInteger
-    ? Number.isInteger(value)
-    : typeof value === 'number' && Math.floor(value) === value;
+  return Number.isInteger ? Number.isInteger(value) : typeof value === 'number' && Math.floor(value) === value;
 }
 
 function isEmpty(v: any) {
@@ -187,11 +185,9 @@ export class FormlyJsonschema {
         });
 
         if (schema.oneOf) {
-          field.fieldGroup.push(this.resolveMultiSchema(
-            'oneOf',
-            <JSONSchema7[]> schema.oneOf,
-            { ...options, shareFormControl: false },
-          ));
+          field.fieldGroup.push(
+            this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, shareFormControl: false }),
+          );
         }
 
         if (schema.anyOf) {
@@ -328,8 +324,7 @@ export class FormlyJsonschema {
           defaultValue: -1,
           templateOptions: {
             multiple: mode === 'anyOf',
-            options: schemas
-              .map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
+            options: schemas.map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
           },
         },
         {
@@ -341,7 +336,6 @@ export class FormlyJsonschema {
                 const value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
                   .filter(([f, i]) => {
-                    console.warn('---', control.value);
                     return this.isFieldValid(f, schemas[i], options);
                   })
                   .sort(([f1], [f2]) => {
@@ -490,7 +484,7 @@ export class FormlyJsonschema {
     const { form } = field.options.build({
       form: new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null })],
-      model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),
+      model: field.model ? clone(field.model) : field.fieldArray ? [] : {},
     });
 
     return form.valid;

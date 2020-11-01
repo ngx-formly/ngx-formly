@@ -105,11 +105,11 @@ export class FieldValidationExtension implements FormlyExtension {
     return (control: AbstractControl) => {
       const errors: any = validatorOption.validation(control, field, validatorOption.options);
       if (isPromise(errors)) {
-        return errors.then(v => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption));
+        return errors.then((v) => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption));
       }
 
       if (isObservable(errors)) {
-        return errors.pipe(map(v => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption)));
+        return errors.pipe(map((v) => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption)));
       }
 
       return this.handleResult(field, validatorName ? !!errors : errors, validatorOption);
@@ -132,10 +132,8 @@ export class FieldValidationExtension implements FormlyExtension {
     ctrl && ctrl['_childrenErrors'] && ctrl['_childrenErrors'][name] && ctrl['_childrenErrors'][name]();
 
     if (isObject(errors)) {
-      Object.keys(errors).forEach(name => {
-        const errorPath = errors[name].errorPath
-          ? errors[name].errorPath
-          : (options || {}).errorPath;
+      Object.keys(errors).forEach((name) => {
+        const errorPath = errors[name].errorPath ? errors[name].errorPath : (options || {}).errorPath;
 
         const childCtrl = errorPath ? field.formControl.get(errorPath) : null;
         if (childCtrl) {

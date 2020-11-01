@@ -150,6 +150,8 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
             this.renderField(this.containerRef, this.field);
           }
         }
+
+        this.field.options.detectChanges(this.field);
       }),
       observe<string>(this.field, ['className'], ({ firstChange, currentValue }) => {
         if (!firstChange || (firstChange && currentValue)) {
@@ -211,6 +213,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
 
           return true;
         }),
+      );
 
       if (control.value !== getFieldValue(field)) {
         valueChanges = valueChanges.pipe(startWith(control.value));
@@ -231,7 +234,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
           field.parsers.forEach((parserFn) => (value = parserFn(value)));
         }
 
-        assignFieldValue(field, value, true);
+        assignFieldValue(field, value);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 

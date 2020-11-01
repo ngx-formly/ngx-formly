@@ -86,11 +86,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
     if (!form.get([path])) {
-      updateControl(
-        form,
-        { emitEvent },
-        () => form.setControl(path, new FormGroup({})),
-      );
+      updateControl(form, { emitEvent }, () => (form as FormGroup).setControl(path, new FormGroup({})));
     }
 
     form = <FormGroup>form.get([path]);
@@ -98,11 +94,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
 
   const key = paths[paths.length - 1];
   if (!field._hide && form.get([key]) !== control) {
-    updateControl(
-      form,
-      { emitEvent },
-      () => (form as FormGroup).setControl(key, control),
-    );
+    updateControl(form, { emitEvent }, () => (form as FormGroup).setControl(key, control));
   }
 }
 
@@ -148,7 +140,6 @@ export function clearControl(form: AbstractControl) {
   form.setAsyncValidators(null);
 
   if (form instanceof FormGroup || form instanceof FormArray) {
-    Object.keys(form.controls)
-      .forEach((k) => clearControl(form.controls[k]));
+    Object.keys(form.controls).forEach((k) => clearControl(form.controls[k]));
   }
 }

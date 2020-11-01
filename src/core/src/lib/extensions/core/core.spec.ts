@@ -176,10 +176,11 @@ describe('CoreExtension', () => {
     });
 
     it('should take account of default value on resetModel', () => {
-      const { model, options, form } = renderComponent({
+      const {
+        field: { model, options },
+      } = renderComponent({
         key: 'title',
         defaultValue: 'defaultValue',
-        model: { title: 'test' },
       });
 
       options.resetModel();
