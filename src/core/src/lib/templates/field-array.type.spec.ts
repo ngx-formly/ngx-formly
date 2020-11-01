@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
 import { FormlyInputModule, createFormlyFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { FormArray } from '@angular/forms';
 
-const renderComponent = (field: FormlyFieldConfig) => {
+const renderComponent = (field: FormlyFieldConfig, config = {}) => {
   return createFormlyFieldComponent(field, {
     imports: [FormlyInputModule],
     declarations: [ArrayTypeComponent],
@@ -15,6 +15,7 @@ const renderComponent = (field: FormlyFieldConfig) => {
           component: ArrayTypeComponent,
         },
       ],
+      ...config,
     },
   });
 };
@@ -134,21 +135,24 @@ describe('Array Field Type', () => {
   });
 
   it('should share formControl when field key is duplicated', () => {
-    app.fields = [
-      {
-        key: 'foo',
-        type: 'array',
-        fieldArray: { key: 'firtname' },
-      },
-      {
-        key: 'foo',
-        type: 'array',
-        fieldArray: { key: 'lastname' },
-      },
-    ];
+    const {
+      field: { fieldGroup },
+    } = renderComponent({
+      fieldGroup: [
+        {
+          key: 'foo',
+          type: 'array',
+          fieldArray: { key: 'firtname' },
+        },
+        {
+          key: 'foo',
+          type: 'array',
+          fieldArray: { key: 'lastname' },
+        },
+      ],
+    });
 
-    createFormlyTestComponent();
-    expect(app.fields[0].formControl).toEqual(app.fields[1].formControl);
+    expect(fieldGroup[0].formControl).toEqual(fieldGroup[1].formControl);
   });
 
   it('should not reuse the remove controls', () => {
@@ -178,19 +182,17 @@ describe('Array Field Type', () => {
 
   // https://github.com/ngx-formly/ngx-formly/issues/2493
   it('should add field when model is null', () => {
-    const fixture = renderComponent({
+    const { field, query, detectChanges } = renderComponent({
       model: null,
       key: 'array',
       type: 'array',
     });
-    const { field } = fixture.componentInstance;
-    const form = field.formControl as FormArray;
 
-    fixture.nativeElement.querySelector('#add').click();
-    fixture.detectChanges();
+    query('#add').triggerEventHandler('click', {});
+    detectChanges();
 
     expect(field.fieldGroup.length).toEqual(1);
-    expect(form.value).toEqual({ array: [null] });
+    expect(field.formControl.value).toEqual([undefined]);
   });
 
   it('should mark the form dirty on Add/Remove', () => {
@@ -334,6 +336,44 @@ describe('Array Field Type', () => {
     detectChanges();
 
     expect(queryAll('formly-array > formly-field')).toHaveLength(4);
+  });
+
+  describe('resetFieldOnHide', () => {
+    it('should set default value', () => {
+      const { field } = renderComponent(
+        {
+          key: 'foo',
+          type: 'array',
+          defaultValue: [null],
+          fieldArray: { type: 'input' },
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+      expect(field.model).toEqual([null]);
+      expect(field.fieldGroup.length).toEqual(1);
+    });
+
+    it('should toggle default value on hide changes', () => {
+      const { field, detectChanges } = renderComponent(
+        {
+          key: 'foo',
+          type: 'array',
+          defaultValue: [null],
+          fieldArray: { type: 'input' },
+          hide: true,
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      expect(field.model).toEqual(undefined);
+      expect(field.fieldGroup.length).toEqual(0);
+
+      field.hide = false;
+      field.options.checkExpressions(field.parent);
+      detectChanges();
+      expect(field.model).toEqual([null]);
+      expect(field.fieldGroup.length).toEqual(1);
+    });
   });
 });
 

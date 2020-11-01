@@ -121,7 +121,7 @@ export class CoreExtension implements FormlyExtension {
             },
     });
 
-    if (this.formlyConfig.extras.resetFieldOnHide) {
+    if (this.config.extras.resetFieldOnHide) {
       field['autoClear'] = true;
     }
 
