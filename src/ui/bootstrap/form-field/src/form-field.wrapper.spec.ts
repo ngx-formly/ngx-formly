@@ -27,7 +27,7 @@ describe('ui-bootstrap: FormField Wrapper', () => {
     expect(query('small.form-text').nativeElement.textContent).toEqual('Name description');
   });
 
-  it('should show error message', () => {
+  it('should show add custom form group classes', () => {
     const { query } = renderComponent({
       key: 'name',
       wrappers: ['form-field'],
@@ -39,6 +39,20 @@ describe('ui-bootstrap: FormField Wrapper', () => {
     });
 
     expect(query('formly-validation-message')).not.toBeNull();
+  });
+
+  it('should add custom classes', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      wrappers: ['form-field'],
+      validation: { show: true },
+      templateOptions: {
+        label: 'Name',
+        customFormGroupClasses: 'test1 test2',
+      },
+    });
+
+    expect(query('div.form-group').nativeElement.classList).toContainAllValues(['test1', 'test2', 'form-group']);
   });
 
   it('should hide required marker', () => {
