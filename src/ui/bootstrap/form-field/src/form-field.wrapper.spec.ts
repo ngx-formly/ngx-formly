@@ -27,7 +27,7 @@ describe('ui-bootstrap: FormField Wrapper', () => {
     expect(query('small.form-text').nativeElement.textContent).toEqual('Name description');
   });
 
-  it('should show add custom form group classes', () => {
+  it('should show error message', () => {
     const { query } = renderComponent({
       key: 'name',
       wrappers: ['form-field'],
