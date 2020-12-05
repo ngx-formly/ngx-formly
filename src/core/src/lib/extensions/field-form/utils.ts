@@ -62,7 +62,11 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     });
     if (control.registerOnDisabledChange) {
       control.registerOnDisabledChange(
-        (value: boolean) => field.templateOptions['___$disabled'] = value,
+        (value: boolean) => {
+          field.templateOptions['___$disabled'] = value;
+          // TODO remove in V6
+          field.options && field.options._markForCheck(field);
+        },
       );
     }
   }
