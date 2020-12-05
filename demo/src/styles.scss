@@ -13,13 +13,14 @@
 @import '~bootstrap/scss/custom-forms';
 @import '~bootstrap/scss/card';
 
-@import "primeicons/primeicons.css";
-
 legend {
   margin-bottom: 20px;
   font-size: 21px;
   border-bottom: 1px solid #e5e5e5;
 }
+
+// primeicons for primeng
+@import "primeicons/primeicons.css";
 
 // highlight.js
 @import '~highlight.js/styles/github.css';
