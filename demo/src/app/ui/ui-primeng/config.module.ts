@@ -5,6 +5,7 @@ import { CommonModule, CommonExampleConfigs, CommonExampleComponents, debugField
 
 import { AppComponent } from './app.component';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
+import { DatepickerExampleConfig } from './datepicker';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
             component: ExamplesRouterViewerComponent,
             data: {
               debugFields,
-              examples: [...CommonExampleConfigs],
+              examples: [...CommonExampleConfigs, DatepickerExampleConfig],
             },
           },
         ],
