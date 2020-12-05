@@ -88,7 +88,14 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
       updateControl(
         parent,
         { emitEvent },
-        () => parent.setControl(path, new FormGroup({})),
+        () => {
+          const fg = new FormGroup({});
+          if (parent.disabled) {
+            fg.disable();
+          }
+
+          parent.setControl(path, fg);
+        },
       );
     }
 
@@ -100,7 +107,13 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     updateControl(
       parent,
       { emitEvent },
-      () => parent.setControl(key, control),
+      () => {
+        if (parent.disabled && !control.disabled) {
+          control.disable({ onlySelf: true, emitEvent: false });
+        }
+
+        parent.setControl(key, control);
+      },
     );
   }
 }
