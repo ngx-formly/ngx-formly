@@ -21,7 +21,7 @@ export class AppComponent {
         dateFormat: 'yy/mm/dd',
         hourFormat: '24',
         numberOfMonths: 1,
-        selectionMode: "single",
+        selectionMode: 'single',
         required: true,
         readonlyInput: false,
         showTime: false,
