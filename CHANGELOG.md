@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.7"></a>
+## [5.10.7](https://github.com/ngx-formly/ngx-formly/compare/v5.10.6...v5.10.7) (2020-12-08)
+
+
+### Bug Fixes
+
+* **core:** detect disabled state for CD OnPush components ([#2612](https://github.com/ngx-formly/ngx-formly/issues/2612)) ([81038e2](https://github.com/ngx-formly/ngx-formly/commit/81038e2)), closes [#2588](https://github.com/ngx-formly/ngx-formly/issues/2588)
+* **core:** take account of parent disable state on init ([#2610](https://github.com/ngx-formly/ngx-formly/issues/2610)) ([22ff9ca](https://github.com/ngx-formly/ngx-formly/commit/22ff9ca)), closes [#2598](https://github.com/ngx-formly/ngx-formly/issues/2598)
+* **material:** assign disable state to datepicker-toggle ([#2613](https://github.com/ngx-formly/ngx-formly/issues/2613)) ([f0284f3](https://github.com/ngx-formly/ngx-formly/commit/f0284f3)), closes [#2221](https://github.com/ngx-formly/ngx-formly/issues/2221)
+* **material:** trigger focus/blur event for mat-checkbox ([#2611](https://github.com/ngx-formly/ngx-formly/issues/2611)) ([81f523f](https://github.com/ngx-formly/ngx-formly/commit/81f523f)), closes [#2602](https://github.com/ngx-formly/ngx-formly/issues/2602)
+
+
+
 <a name="5.10.6"></a>
 ## [5.10.6](https://github.com/ngx-formly/ngx-formly/compare/v5.10.5...v5.10.6) (2020-10-31)
 
