@@ -41,7 +41,7 @@ function totalMatchedFields(field: FormlyFieldConfig): number {
 
 interface IOptions extends FormlyJsonschemaOptions {
   schema: JSONSchema7;
-  autoClear?: boolean;
+  resetOnHide?: boolean;
   shareFormControl?: boolean;
   ignoreDefault?: boolean;
 }
@@ -65,8 +65,8 @@ export class FormlyJsonschema {
       },
     };
 
-    if (options.autoClear) {
-      field['autoClear'] = true;
+    if (options.resetOnHide) {
+      field['resetOnHide'] = true;
     }
 
     if (options.shareFormControl === false) {
@@ -158,7 +158,7 @@ export class FormlyJsonschema {
               oneOfSchema.forEach(oneOfSchemaItem => {
                 const { [key]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
-                  ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, autoClear: true }),
+                  ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, resetOnHide: true }),
                   hideExpression: m => !m || getConstValue(constSchema) !== m[key],
                 });
               });
@@ -336,7 +336,7 @@ export class FormlyJsonschema {
         },
         {
           fieldGroup: schemas.map((s, i) => ({
-            ...this._toFieldConfig(s, { ...options, autoClear: true }),
+            ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
             hideExpression: (m, fs, f) => {
               const control = f.parent.parent.fieldGroup[0].formControl;
               if (control.value === -1) {
@@ -481,7 +481,7 @@ export class FormlyJsonschema {
   private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
     const { form } = (field.options as any)._buildField({
       form: new FormGroup({}),
-      fieldGroup: [this._toFieldConfig(schema, { ...options, autoClear: true, ignoreDefault: true })],
+      fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true })],
       model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),
     });
 
