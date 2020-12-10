@@ -65,6 +65,8 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, Aft
   }
 
   ngOnDestroy() {
-    this.focusMonitor.stopMonitoring(this.checkbox._inputElement);
+    if (this.checkbox) {
+      this.focusMonitor.stopMonitoring(this.checkbox._inputElement);
+    }
   }
 }
