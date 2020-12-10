@@ -49,7 +49,7 @@ export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
     paths = [...getKeyPath(root), ...paths];
   }
 
-  if (value === undefined && field['autoClear']) {
+  if (value === undefined && field.resetOnHide) {
     const k = paths.pop();
     const m = paths.reduce((model, path) => model[path] || {}, root.model);
     delete m[k];

@@ -67,8 +67,8 @@ export class CoreExtension implements FormlyExtension {
       },
     });
 
-    if (this.formlyConfig.extras.resetFieldOnHide) {
-      field['autoClear'] = true;
+    if (this.formlyConfig.extras.resetFieldOnHide && field.resetOnHide !== false) {
+      field.resetOnHide = true;
     }
 
     if (field.lifecycle) {
@@ -100,8 +100,8 @@ export class CoreExtension implements FormlyExtension {
       let setDefaultValue = !isUndefined(field.key)
         && !isUndefined(field.defaultValue)
         && isUndefined(getFieldValue(field))
-        && (!field['autoClear'] || !(field.hide || field.hideExpression));
-      if (setDefaultValue && field['autoClear']) {
+        && (!field.resetOnHide || !(field.hide || field.hideExpression));
+      if (setDefaultValue && field.resetOnHide) {
         let parent = field.parent;
         while (parent && !parent.hideExpression && !parent.hide) {
           parent = parent.parent;

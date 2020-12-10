@@ -180,6 +180,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
   _expressionProperties?: { [property: string]: ExpressionPropertyCache };
+  resetOnHide?: boolean;
   _hide?: boolean;
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];
