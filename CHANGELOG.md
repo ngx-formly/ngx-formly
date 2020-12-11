@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.8"></a>
+## [5.10.8](https://github.com/ngx-formly/ngx-formly/compare/v5.10.7...v5.10.8) (2020-12-11)
+
+
+### Bug Fixes
+
+* **core:** allow control resetOnHide for a specific field ([#2619](https://github.com/ngx-formly/ngx-formly/issues/2619)) ([f51a9df](https://github.com/ngx-formly/ngx-formly/commit/f51a9df)), closes [#2570](https://github.com/ngx-formly/ngx-formly/issues/2570)
+* **material:** handle checkbox destroy ([#2618](https://github.com/ngx-formly/ngx-formly/issues/2618)) ([ddb26a7](https://github.com/ngx-formly/ngx-formly/commit/ddb26a7)), closes [#2602](https://github.com/ngx-formly/ngx-formly/issues/2602)
+
+
+
 <a name="5.10.7"></a>
 ## [5.10.7](https://github.com/ngx-formly/ngx-formly/compare/v5.10.6...v5.10.7) (2020-12-08)
 
