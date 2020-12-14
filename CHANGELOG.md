@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.9"></a>
+## [5.10.9](https://github.com/ngx-formly/ngx-formly/compare/v5.10.8...v5.10.9) (2020-12-14)
+
+
+### Reverts
+
+* **core:** take account of parent disable state on init ([0e0980a](https://github.com/ngx-formly/ngx-formly/commit/0e0980a)), closes [#2624](https://github.com/ngx-formly/ngx-formly/issues/2624)
+
+
+
 <a name="5.10.8"></a>
 ## [5.10.8](https://github.com/ngx-formly/ngx-formly/compare/v5.10.7...v5.10.8) (2020-12-11)
 
