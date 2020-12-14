@@ -85,20 +85,6 @@ describe('registerControl', () => {
     expect(field.templateOptions.disabled).toEqual(false);
   });
 
-  it('should take account of parent disabled state', () => {
-    const parent = { formControl: new FormGroup({}) };
-    parent.formControl.disable();
-
-    const field: FormlyFieldConfig = {
-      key: 'foo.test',
-      templateOptions: { disabled: false },
-      parent,
-    };
-
-    registerControl(field, new FormControl());
-    expect(field.formControl.disabled).toEqual(true);
-  });
-
   it('should take account of model changes', () => {
     const field = {
       key: '0',
