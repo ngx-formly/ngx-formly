@@ -4,7 +4,7 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-primeng-datepicker',
   template: `
-  <p-calendar
+    <p-calendar
       [defaultDate]="to.defaultDate"
       [dateFormat]="to.dateFormat"
       [hourFormat]="to.hourFormat"
@@ -23,9 +23,10 @@ import { FieldType } from '@ngx-formly/core';
       [yearRange]="to.yearRange"
       [placeholder]="to.placeholder"
       [formControl]="formControl"
-      [formlyAttributes]="field">
-  </p-calendar>
+      [formlyAttributes]="field"
+    >
+    </p-calendar>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyDatePicker extends FieldType { }
+export class FormlyDatePicker extends FieldType {}

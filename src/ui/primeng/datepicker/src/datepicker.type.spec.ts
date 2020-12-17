@@ -6,10 +6,7 @@ import { FormlyDatePickerModule } from '@ngx-formly/primeng/datepicker';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFormlyFieldComponent(field, {
-    imports: [
-      FormlyDatePickerModule,
-      BrowserAnimationsModule,
-    ],
+    imports: [FormlyDatePickerModule, BrowserAnimationsModule],
   });
 };
 
