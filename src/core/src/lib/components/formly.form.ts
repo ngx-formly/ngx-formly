@@ -137,9 +137,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         // we should call `NgForm::resetForm` to ensure changing `submitted` state after resetting form
         // but only when the current component is a root one.
         if (this.options.parentForm && this.options.parentForm.control === this.form) {
-          this.options.parentForm.resetForm(model);
+          this.options.parentForm.resetForm(this.model);
         } else {
-          this.form.reset(model);
+          this.form.reset(this.model);
         }
       };
     }

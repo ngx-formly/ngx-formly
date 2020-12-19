@@ -605,6 +605,19 @@ describe('FormlyForm Component', () => {
     expect(app.model.investments.length).toEqual(0);
   });
 
+  it('should take account of default value on resetModel', () => {
+    app = {
+      fields: [{ key: 'name', defaultValue: 'defaultValue' }],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+    createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    app.options.resetModel();
+    expect(app.model).toEqual({ 'name': 'defaultValue' });
+  });
+
   // https://github.com/ngx-formly/ngx-formly/issues/1872
   it('should clone initialModel during reset model', () => {
     app = {
