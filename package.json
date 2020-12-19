@@ -83,6 +83,7 @@
     "express": "^4.15.2",
     "ng-zorro-antd": "^9.2.1",
     "primeng": "^9.1.0",
+    "primeicons": "^2.0.0",
     "rxjs": "^6.5.5",
     "tns-core-modules": "^6.5.7",
     "tslib": "^2.0.0",
