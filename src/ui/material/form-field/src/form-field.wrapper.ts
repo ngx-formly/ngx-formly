@@ -51,9 +51,24 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       <mat-error>
         <formly-validation-message [field]="field"></formly-validation-message>
       </mat-error>
-      <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
-      <mat-hint *ngIf="to.description" [id]="null">{{ to.description }}</mat-hint>
+
+      <mat-hint *ngIf="to.description || to.hintStart as hint">
+        <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hint }">
+        </ng-container>
+      </mat-hint>
+
+      <mat-hint *ngIf="to.hintEnd as hintEnd" align="end">
+        <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hintEnd }">
+        </ng-container>
+      </mat-hint>
     </mat-form-field>
+
+    <ng-template #stringOrTemplate let-content="content">
+      <ng-container *ngIf="!content.createEmbeddedView; else template">{{ content }}</ng-container>
+      <ng-template #template>
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      </ng-template>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./form-field.wrapper.scss'],
