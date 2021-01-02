@@ -60,6 +60,7 @@ export class FormlyModule {
     return {
       ngModule: FormlyModule,
       providers: [
+        { provide: FORMLY_CONFIG, multi: true, useFactory: defaultFormlyConfig, deps: [FormlyConfig] },
         { provide: FORMLY_CONFIG, useValue: config, multi: true },
         { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: config, multi: true },
         FormlyFormBuilder,
