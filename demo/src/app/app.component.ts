@@ -91,6 +91,7 @@ export class AppComponent {
         { path: '/examples/other/advanced-layout-flex', title: 'Advanced Layout (Flex)' },
         { path: '/examples/other/nested-formly-forms', title: 'Nested Forms (fieldGroup wrapper)' },
         { path: '/examples/other/material-prefix-suffix', title: 'Material Field Prefix/Suffix' },
+        { path: '/examples/other/material-formfield-hint-align', title: 'Material Field Hint Alignment' },
         { path: '/examples/other/hide-fields-with-animations', title: 'Hide Fields with `@angular/animations`' },
         { path: '/examples/other/button', title: 'Button Type' },
         { path: '/examples/other/json-powered', title: 'JSON powered' },
