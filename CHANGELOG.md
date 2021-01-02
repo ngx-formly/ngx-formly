@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.11"></a>
+## [5.10.11](https://github.com/ngx-formly/ngx-formly/compare/v5.10.10...v5.10.11) (2021-01-02)
+
+
+### Bug Fixes
+
+* **core:** always run first core extensions ([#2647](https://github.com/ngx-formly/ngx-formly/issues/2647)) ([4975544](https://github.com/ngx-formly/ngx-formly/commit/4975544)), closes [#2637](https://github.com/ngx-formly/ngx-formly/issues/2637)
+* **ionic:** apply full width for select floating position ([#2645](https://github.com/ngx-formly/ngx-formly/issues/2645)) ([9b58116](https://github.com/ngx-formly/ngx-formly/commit/9b58116)), closes [#2635](https://github.com/ngx-formly/ngx-formly/issues/2635)
+
+
+
 <a name="5.10.10"></a>
 ## [5.10.10](https://github.com/ngx-formly/ngx-formly/compare/v5.10.9...v5.10.10) (2020-12-20)
 
