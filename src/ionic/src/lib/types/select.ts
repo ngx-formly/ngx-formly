@@ -7,6 +7,9 @@ import { FieldType } from '@ngx-formly/core';
     <!-- ng-container used as a workaround for https://github.com/ionic-team/ionic/issues/19324 -->
     <ng-container *ngIf="to.options | formlySelectOptions:field | async; let selectOptions">
       <ion-select
+        [style.align-self]="to.labelPosition === 'floating' ? 'stretch':''"
+        [style.max-width.%]="to.labelPosition === 'floating' ? 100 : ''"
+
         [formControl]="formControl"
         [compareWith]="to.compareWith"
         [ionFormlyAttributes]="field"
