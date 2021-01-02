@@ -19,7 +19,7 @@ import { FormlyFieldStepper } from './stepper.type';
         { name: 'required', message: 'This field is required' },
       ],
       types: [
-        { name: 'stepper', component: FormlyFieldStepper, wrappers: ['form-field'] },
+        { name: 'stepper', component: FormlyFieldStepper, wrappers: [] },
       ],
     }),
   ],
