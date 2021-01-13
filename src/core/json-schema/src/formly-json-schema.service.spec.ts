@@ -534,13 +534,13 @@ describe('Service: FormlyJsonschema', () => {
           it('should support enum as oneOf/const structure', () => {
             const schema: JSONSchema7 = {
               type: 'number',
-              oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2 }],
+              oneOf: [{ title: '1', const: 1 }, { title: '2', const: 2, readOnly: true }],
             };
 
             const { type, templateOptions: { options } } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
-            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2 }]);
+            expect(options).toEqual([{ label: '1', value: 1 }, { label: '2', value: 2, disabled: true }]);
           });
 
           it('should support enum as oneOf/enum structure', () => {
@@ -1243,6 +1243,7 @@ describe('Service: FormlyJsonschema', () => {
         expect(defaultValue).toBe(schema.default);
         expect(to.description).toBe(schema.description);
         expect(to.readonly).toBe(schema.readOnly);
+        expect(to.disabled).toBe(schema.readOnly);
       });
     });
   });

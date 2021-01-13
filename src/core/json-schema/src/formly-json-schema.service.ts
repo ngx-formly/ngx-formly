@@ -65,6 +65,10 @@ export class FormlyJsonschema {
       },
     };
 
+    if (schema.readOnly) {
+      field.templateOptions.disabled = true;
+    }
+
     if (options.resetOnHide) {
       field['resetOnHide'] = true;
     }
@@ -463,8 +467,12 @@ export class FormlyJsonschema {
 
     const toEnum = (s: JSONSchema7) => {
       const value = s.hasOwnProperty('const') ? s.const : s.enum[0];
+      const option: any = { value: value, label: s.title || value };
+      if (s.readOnly) {
+        option.disabled = true;
+      }
 
-      return { value: value, label: s.title || value };
+      return option;
     };
 
     if (schema.anyOf) {
