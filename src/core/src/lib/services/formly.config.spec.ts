@@ -114,6 +114,20 @@ describe('FormlyConfig service', () => {
         extends: 'custom_input1',
       });
     });
+
+    it('should allow override wrappers', () => {
+      const config = new FormlyConfig();
+      config.setType([
+        { name: 'input', component: TestComponent, wrappers: ['label'] },
+        { name: 'input', wrappers: [] },
+      ]);
+
+      expect(config.getType('input')).toEqual({
+        name: 'input',
+        component: TestComponent,
+        wrappers: [],
+      });
+    });
   });
 
   describe('validators', () => {
