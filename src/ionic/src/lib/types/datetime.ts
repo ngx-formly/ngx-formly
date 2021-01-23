@@ -19,8 +19,8 @@ import { FieldType } from '@ngx-formly/core';
       [pickerFormat]="to.pickerFormat"
       [pickerOptions]="to.pickerOptions"
       [yearValues]="to.yearValues"
-      [min]="to.min"
-      [max]="to.max"
+      [min]="to.minDate ? to.minDate : to.min"
+      [max]="to.maxDate ? to.maxDate : to.max"
       [formControl]="formControl"
       [ionFormlyAttributes]="field">
     </ion-datetime>
