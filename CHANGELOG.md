@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.12"></a>
+## [5.10.12](https://github.com/ngx-formly/ngx-formly/compare/v5.10.11...v5.10.12) (2021-01-23)
+
+
+### Bug Fixes
+
+* **core:** skip merge wrappers when explicitly set ([#2673](https://github.com/ngx-formly/ngx-formly/issues/2673)) ([13f7f72](https://github.com/ngx-formly/ngx-formly/commit/13f7f72)), closes [#2665](https://github.com/ngx-formly/ngx-formly/issues/2665)
+* **ionic:** add alternative way to specify min/max date ([#2677](https://github.com/ngx-formly/ngx-formly/issues/2677)) ([de2f359](https://github.com/ngx-formly/ngx-formly/commit/de2f359)), closes [#2666](https://github.com/ngx-formly/ngx-formly/issues/2666)
+* **json-schema:** avoid calling map twice ([#2675](https://github.com/ngx-formly/ngx-formly/issues/2675)) ([7f83787](https://github.com/ngx-formly/ngx-formly/commit/7f83787)), closes [#2667](https://github.com/ngx-formly/ngx-formly/issues/2667)
+* **json-schema:** support readOnly for oneOf/AnyOf schema ([#2676](https://github.com/ngx-formly/ngx-formly/issues/2676)) ([17ccdf1](https://github.com/ngx-formly/ngx-formly/commit/17ccdf1)), closes [#2656](https://github.com/ngx-formly/ngx-formly/issues/2656)
+* **json-schema:** use disabled for readOnly option ([#2660](https://github.com/ngx-formly/ngx-formly/issues/2660)) ([ce1be94](https://github.com/ngx-formly/ngx-formly/commit/ce1be94)), closes [#2652](https://github.com/ngx-formly/ngx-formly/issues/2652)
+
+
+
 <a name="5.10.11"></a>
 ## [5.10.11](https://github.com/ngx-formly/ngx-formly/compare/v5.10.10...v5.10.11) (2021-01-02)
 
