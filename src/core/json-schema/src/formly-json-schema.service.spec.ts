@@ -1122,6 +1122,49 @@ describe('Service: FormlyJsonschema', () => {
           expect(f1.hide).toBeTruthy();
           expect(f2.hide).toBeFalsy();
         });
+
+        it('should not select oneOf readOnly option', () => {
+          const { field } = renderComponent({
+            schema: {
+              type: 'object',
+              anyOf: [
+                {
+                  properties: { foo: { type: 'string' } },
+                  readOnly: true,
+                },
+                { properties: { bar: { type: 'string' } } },
+              ],
+            },
+          });
+
+          const [, { fieldGroup: [f1, f2] }] = field.fieldGroup[0].fieldGroup;
+
+          expect(f1.templateOptions.disabled).toBeTruthy();
+          expect(f1.hide).toBeTruthy();
+          expect(f2.hide).toBeFalsy();
+        });
+
+        it('should select oneOf readOnly option when model is set', () => {
+          const { field } = renderComponent({
+            model: { foo: 'test' },
+            schema: {
+              type: 'object',
+              anyOf: [
+                {
+                  properties: { foo: { type: 'string' } },
+                  readOnly: true,
+                },
+                { properties: { bar: { type: 'string' } } },
+              ],
+            },
+          });
+
+          const [, { fieldGroup: [f1, f2] }] = field.fieldGroup[0].fieldGroup;
+
+          expect(f1.templateOptions.disabled).toBeTruthy();
+          expect(f1.hide).toBeFalsy();
+          expect(f2.hide).toBeTruthy();
+        });
       });
 
       describe('anyOf', () => {

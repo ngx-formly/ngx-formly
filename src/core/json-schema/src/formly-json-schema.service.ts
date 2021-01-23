@@ -44,6 +44,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   resetOnHide?: boolean;
   shareFormControl?: boolean;
   ignoreDefault?: boolean;
+  readOnly?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -65,8 +66,9 @@ export class FormlyJsonschema {
       },
     };
 
-    if (schema.readOnly) {
+    if (!options.ignoreDefault && (schema.readOnly || options.readOnly)) {
       field.templateOptions.disabled = true;
+      options = { ...options, readOnly: true };
     }
 
     if (options.resetOnHide) {
@@ -335,7 +337,7 @@ export class FormlyJsonschema {
           templateOptions: {
             multiple: mode === 'anyOf',
             options: schemas
-              .map((s, i) => ({ label: s.title, value: i })),
+              .map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
           },
         },
         {
@@ -346,12 +348,19 @@ export class FormlyJsonschema {
               if (control.value === -1) {
                 const value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
-                  .filter(([f, i]) => this.isFieldValid(f, schemas[i], options))
+                  .filter(([f, i]) => {
+                    console.warn('---', control.value);
+                    return this.isFieldValid(f, schemas[i], options);
+                  })
                   .sort(([f1], [f2]) => {
                     const matchedFields1 = totalMatchedFields(f1);
                     const matchedFields2 = totalMatchedFields(f2);
                     if (matchedFields1 === matchedFields2) {
-                      return 0;
+                      if (f1.templateOptions.disabled === f2.templateOptions.disabled) {
+                        return 0;
+                      }
+
+                      return f1.templateOptions.disabled ? 1 : -1;
                     }
 
                     return matchedFields2 > matchedFields1 ? 1 : -1;
