@@ -11,11 +11,11 @@ import {
   NgZone,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { clone } from '../utils';
-import { switchMap, filter, take } from 'rxjs/operators';
+import { switchMap, filter, take, mapTo } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 
 @Component({
@@ -59,6 +59,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   @Output() modelChange = new EventEmitter<any>();
 
+  @Output() fieldChanges = new EventEmitter<FormlyValueChangeEvent>();
+
   private field: FormlyFieldConfigCache = {};
   private _modelChangeValue: any = {};
   private valueChangesUnsubscribe = () => {};
@@ -97,13 +99,14 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     const sub = this.field.options.fieldChanges
       .pipe(
         filter(({ type }) => type === 'valueChanges'),
-        switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
+        switchMap((value) => this.ngZone.onStable.asObservable().pipe(take(1), mapTo(value))),
       )
-      .subscribe(() =>
+      .subscribe((value: FormlyValueChangeEvent) =>
         this.ngZone.runGuarded(() => {
           // runGuarded is used to keep in sync the expression changes
           // https://github.com/ngx-formly/ngx-formly/issues/2095
           this.checkExpressionChange();
+          this.fieldChanges.emit(value);
           this.modelChange.emit((this._modelChangeValue = clone(this.model)));
         }),
       );

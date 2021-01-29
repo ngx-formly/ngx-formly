@@ -2,7 +2,7 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { FormlyInputModule, createComponent } from '@ngx-formly/core/testing';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { FormlyValueChangeEvent } from '../models';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -10,6 +10,7 @@ type IFormlyFormInputs = Partial<{
   options: FormlyFormOptions;
   model: any;
   modelChange: (m: any) => void;
+  fieldChanges: (f: FormlyValueChangeEvent) => void;
 }>;
 
 const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
@@ -19,6 +20,7 @@ const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
     options: {},
     fields: [],
     modelChange: (model) => {},
+    fieldChanges: (value) => {},
     ...inputs,
   };
 
@@ -30,7 +32,8 @@ const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
           [fields]="fields"
           [options]="options"
           [form]="form"
-          (modelChange)="modelChange($event)">
+          (modelChange)="modelChange($event)"
+          (fieldChanges)="fieldChanges($event)">
         </formly-form>
       </form>
     `,
@@ -144,6 +147,25 @@ describe('FormlyForm Component', () => {
       setInputs({ model: { title: '****' } });
 
       expect(app.modelChange).not.toHaveBeenCalled();
+    });
+
+    it('should emit `fieldChanges` on form input', () => {
+      const { fixture, fields } = renderComponent({
+        fields: [{ key: 'title', type: 'input' }],
+      });
+
+      const app = fixture.componentInstance;
+      spyOn(app, 'fieldChanges');
+
+      app.form.get('title').patchValue('***');
+      fixture.detectChanges();
+
+      expect(app.fieldChanges).toHaveBeenCalledTimes(1);
+      expect(app.fieldChanges).toHaveBeenCalledWith({
+        value: '***',
+        type: 'valueChanges',
+        field: fields.find((f) => f.key === 'title'),
+      });
     });
   });
 
