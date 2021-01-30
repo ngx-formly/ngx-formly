@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormGroupDirective, FormControl } from '@angular/
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFormOptionsCache } from './formly.field.config';
 import { FormlyFormBuilder } from '../services/formly.form.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { assignFieldValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath } from '../utils';
+import { assignFieldValue, isNullOrUndefined, wrapProperty, clone, defineHiddenProp, getKeyPath, isObject } from '../utils';
 import { Subscription, Subject } from 'rxjs';
 import { debounceTime, switchMap, distinctUntilChanged, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
@@ -191,7 +191,15 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     fields.forEach(field => {
       if (field.key && !field.fieldGroup) {
         const control = field.formControl;
-        let valueChanges = control.valueChanges.pipe(distinctUntilChanged());
+        let valueChanges = control.valueChanges.pipe(
+          distinctUntilChanged((x, y) => {
+            if (x !== y || Array.isArray(x) || isObject(x)) {
+              return false;
+            }
+
+            return true;
+          }),
+        );
 
         const { updateOn, debounce } = field.modelOptions;
         if ((!updateOn || updateOn === 'change') && debounce && debounce.default > 0) {
