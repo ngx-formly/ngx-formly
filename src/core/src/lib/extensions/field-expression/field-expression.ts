@@ -229,7 +229,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
 
       if (hide === true && c['_fields'].every(f => !!f._hide)) {
-        unregisterControl(field);
+        unregisterControl(field, true);
         if (resetOnHide && field.resetOnHide) {
           field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
           if (field.fieldGroup) {
@@ -244,7 +244,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         if (field.resetOnHide && field.parent && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
           assignFieldValue(field, field.defaultValue);
         }
-        registerControl(field);
+        registerControl(field, undefined, true);
         if (field.resetOnHide && field.fieldArray && (field.fieldGroup || []).length !== (field.model || []).length) {
           (<any> field.options)._buildForm(true);
         }
