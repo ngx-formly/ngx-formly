@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.13"></a>
+## [5.10.13](https://github.com/ngx-formly/ngx-formly/compare/v5.10.12...v5.10.13) (2021-01-31)
+
+
+### Bug Fixes
+
+* **core:** detect mutable value changes ([#2686](https://github.com/ngx-formly/ngx-formly/issues/2686)) ([d51cf6c](https://github.com/ngx-formly/ngx-formly/commit/d51cf6c)), closes [#2684](https://github.com/ngx-formly/ngx-formly/issues/2684)
+* **core:** emit statusChange on field hide ([#2687](https://github.com/ngx-formly/ngx-formly/issues/2687)) ([05278ff](https://github.com/ngx-formly/ngx-formly/commit/05278ff)), closes [#2658](https://github.com/ngx-formly/ngx-formly/issues/2658)
+* **core:** make FieldArray compatible with Angular 11 ([#2685](https://github.com/ngx-formly/ngx-formly/issues/2685)) ([1c0f537](https://github.com/ngx-formly/ngx-formly/commit/1c0f537)), closes [#2674](https://github.com/ngx-formly/ngx-formly/issues/2674)
+
+
+
 <a name="5.10.12"></a>
 ## [5.10.12](https://github.com/ngx-formly/ngx-formly/compare/v5.10.11...v5.10.12) (2021-01-23)
 
