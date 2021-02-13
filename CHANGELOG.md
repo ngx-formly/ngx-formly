@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.14"></a>
+## [5.10.14](https://github.com/ngx-formly/ngx-formly/compare/v5.10.13...v5.10.14) (2021-02-13)
+
+
+### Bug Fixes
+
+* **core:** ignore whitespaces for content projection check ([#2703](https://github.com/ngx-formly/ngx-formly/issues/2703)) ([41922fb](https://github.com/ngx-formly/ngx-formly/commit/41922fb)), closes [#2692](https://github.com/ngx-formly/ngx-formly/issues/2692)
+* **schematics:** add support for Angular 11.1 ([#2702](https://github.com/ngx-formly/ngx-formly/issues/2702)) ([517e176](https://github.com/ngx-formly/ngx-formly/commit/517e176)), closes [#2701](https://github.com/ngx-formly/ngx-formly/issues/2701)
+
+
+
 <a name="5.10.13"></a>
 ## [5.10.13](https://github.com/ngx-formly/ngx-formly/compare/v5.10.12...v5.10.13) (2021-01-31)
 
