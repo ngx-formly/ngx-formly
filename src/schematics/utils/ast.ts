@@ -1,13 +1,29 @@
-import { normalize } from '@angular-devkit/core';
+import { JsonParseMode, normalize, parseJson } from '@angular-devkit/core';
 import { SchematicsException, Tree } from '@angular-devkit/schematics';
 import * as ts from 'typescript';
 import { addImportToModule } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { findModuleFromOptions as internalFindModule } from '@schematics/angular/utility/find-module';
-import { WorkspaceProject } from '@angular-devkit/core/src/workspace';
+import { WorkspaceProject, WorkspaceSchema } from '@angular-devkit/core/src/workspace';
 
+export function getWorkspacePath(host: Tree): string {
+  const possibleFiles = ['/angular.json', '/.angular.json'];
+  const path = possibleFiles.filter(path => host.exists(path))[0];
+
+  return path;
+}
+
+export function getWorkspace(host: Tree): WorkspaceSchema {
+  const path = getWorkspacePath(host);
+  const configBuffer = host.read(path);
+  if (configBuffer === null) {
+    throw new SchematicsException(`Could not find (${path})`);
+  }
+  const content = configBuffer.toString();
+
+  return parseJson(content, JsonParseMode.Loose) as {} as WorkspaceSchema;
+}
 
 /** Reads file given path and returns TypeScript source file. */
 export function getSourceFile(host: Tree, path: string): ts.SourceFile {
