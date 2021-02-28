@@ -88,6 +88,11 @@ export interface FormlyFieldConfig {
   hide?: boolean;
 
   /**
+   * Whether to reset the value on hide or not. Defaults to `true`.
+   */
+  resetOnHide?: boolean;
+
+  /**
    * Conditionally hiding Field based on values from other Fields
    */
   hideExpression?: boolean | string | ((model: any, formState: any, field?: FormlyFieldConfig) => boolean);
