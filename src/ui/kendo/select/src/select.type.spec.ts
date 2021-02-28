@@ -1,11 +1,11 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/kendo/select';
-import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { POPUP_CONTAINER } from '@progress/kendo-angular-popup';
 
 const renderComponent = (field: FormlyFieldConfig) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [NoopAnimationsModule, FormlySelectModule],
     providers: [
       {

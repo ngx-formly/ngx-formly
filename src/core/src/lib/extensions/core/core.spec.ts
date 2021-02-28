@@ -1,10 +1,10 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldConfigCache } from '../../models';
-import { MockComponent, createBuilder, createFormlyFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
+import { mockComponent, createBuilder, createFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
 import { Subject } from 'rxjs';
 
 function renderComponent(field: FormlyFieldConfig) {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [FormlyInputModule],
   });
 }
@@ -18,7 +18,7 @@ function buildField({ model, options, ...field }: FormlyFieldConfig): FormlyFiel
           {
             name: 'input',
             wrappers: ['form-field'],
-            component: MockComponent({ selector: 'formly-test-cmp' }),
+            component: mockComponent({ selector: 'formly-test-cmp' }),
           },
         ],
       }),

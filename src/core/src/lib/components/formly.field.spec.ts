@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injectable, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
-import { createFormlyFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
+import { createFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyFieldConfigCache } from '../models';
@@ -10,7 +10,7 @@ import { FieldType } from '../templates/field.type';
 
 const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
   const { config, ...options } = opts;
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [FormlyInputModule],
     declarations: [FormlyWrapperFormFieldAsync, FormlyOnPushComponent, FormlyParentComponent, FormlyChildComponent],
     config: {

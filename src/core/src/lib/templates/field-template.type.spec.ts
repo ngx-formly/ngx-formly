@@ -1,4 +1,4 @@
-import { createFormlyFieldComponent as renderComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent as renderComponent } from '@ngx-formly/core/testing';
 
 describe('Template Field Type', () => {
   it('should render template', () => {
