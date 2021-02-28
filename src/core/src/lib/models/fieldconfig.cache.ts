@@ -9,7 +9,6 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   formControl?: AbstractControl;
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
-  resetOnHide?: boolean;
   _expressions?: { [property: string]: (ingoreCache: boolean) => boolean };
   _hide?: boolean;
   _validators?: ValidatorFn[];

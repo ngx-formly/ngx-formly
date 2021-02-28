@@ -89,7 +89,7 @@ export class FormlyJsonschema {
     }
 
     if (options.resetOnHide) {
-      field['resetOnHide'] = true;
+      field.resetOnHide = true;
     }
 
     if (options.shareFormControl === false) {
