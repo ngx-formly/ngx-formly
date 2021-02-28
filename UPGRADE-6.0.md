@@ -4,8 +4,13 @@ UPGRADE FROM 5.0 to 6.0
 
 @ngx-formly/core
 ----------------
-- BREAKING CHANGE: The defaultValue for fieldGroup and fieldArray has been changed to `undefined` instead of empty object. ([#1901](https://github.com/ngx-formly/ngx-formly/pull/1901))  
-  ```js
+- BREAKING CHANGE: The defaultValue for fieldGroup and fieldArray has been changed to `undefined` instead of empty object. ([#1901](https://github.com/ngx-formly/ngx-formly/pull/1901)
+
+  before: 
+  If no default value is set the `defaultValue` for formlyGroup is `{}` and for fieldArray `[]`
+  
+  after:
+  ```ts
   FormlyModule.forRoot({
     types: [
       {
