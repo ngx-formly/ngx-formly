@@ -138,7 +138,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
     this.hostObservers.forEach((hostObserver) => hostObserver.unsubscribe());
     this.hostObservers = [
       observe<boolean>(this.field, ['hide'], ({ firstChange, currentValue }) => {
-        if (!this.config.extras.lazyRender) {
+        if (this.config.extras.lazyRender === false) {
           firstChange && this.renderField(this.containerRef, this.field);
           if (!firstChange || (firstChange && currentValue)) {
             this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');

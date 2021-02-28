@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
-import { FormlyInputModule, createFormlyFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
+import { FormlyInputModule, createFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { FormArray } from '@angular/forms';
 
 const renderComponent = (field: FormlyFieldConfig, config = {}) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [FormlyInputModule],
     declarations: [ArrayTypeComponent],
     config: {
