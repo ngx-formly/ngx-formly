@@ -1,11 +1,11 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/primeng/select';
-import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [NoopAnimationsModule, FormlySelectModule],
   });
 };

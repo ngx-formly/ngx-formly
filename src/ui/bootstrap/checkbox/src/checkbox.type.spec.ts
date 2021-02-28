@@ -1,9 +1,9 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyBootstrapCheckboxModule } from '@ngx-formly/bootstrap/checkbox';
 
 const renderComponent = (field: FormlyFieldConfig) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [FormlyBootstrapCheckboxModule],
   });
 };

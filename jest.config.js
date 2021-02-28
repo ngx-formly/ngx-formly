@@ -13,6 +13,7 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(
     {
       "@ngx-formly/core": ["src/core/src/public_api"],
+      "@ngx-formly/core/testing": ["src/core/testing/src/private_api"],
       "@ngx-formly/core/*": ["src/core/*/src/public_api"],
       "@ngx-formly/*": ["src/ui/*/src/public_api"],
     },

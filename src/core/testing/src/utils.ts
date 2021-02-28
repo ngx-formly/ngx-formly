@@ -3,7 +3,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 
 // Source copied from https://github.com/cnunciato/ng2-mock-component
-export function MockComponent(options: Component): Component {
+export function mockComponent(options: Component): Component {
   const metadata: Component = {
     selector: options.selector,
     template: options.template || '',

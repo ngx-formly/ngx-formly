@@ -1,10 +1,10 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyNzCheckboxModule } from '@ngx-formly/ng-zorro-antd/checkbox';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [NoopAnimationsModule, FormlyNzCheckboxModule],
   });
 };
