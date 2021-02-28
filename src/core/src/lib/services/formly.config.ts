@@ -26,6 +26,7 @@ export class FormlyConfig {
   extras: ConfigOption['extras'] = {
     checkExpressionOn: 'changeDetectionCheck',
     lazyRender: true,
+    resetFieldOnHide: true,
     showError(field: FieldType) {
       return (
         field.formControl &&
