@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatInput } from '@angular/material/input';
 
@@ -41,11 +41,16 @@ import { MatInput } from '@angular/material/input';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldNativeSelect extends FieldType {
-  @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;
+export class FormlyFieldNativeSelect extends FieldType implements AfterViewInit {
+  @ViewChild(MatInput, { static: true }) matInput!: MatInput;
   defaultOptions = {
     templateOptions: {
       options: [],
     },
   };
+
+  ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+    this.formFieldControl = this.matInput;
+  }
 }

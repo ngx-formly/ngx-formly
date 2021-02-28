@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
@@ -32,12 +32,17 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldTextArea extends FieldType implements OnInit {
-  @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;
+export class FormlyFieldTextArea extends FieldType implements OnInit, AfterViewInit {
+  @ViewChild(MatInput, { static: true }) matInput!: MatInput;
   defaultOptions = {
     templateOptions: {
       cols: 1,
       rows: 1,
     },
   };
+
+  ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+    this.formFieldControl = this.matInput;
+  }
 }

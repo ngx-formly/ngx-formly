@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { FieldType } from '@ngx-formly/material/form-field';
 
@@ -47,8 +47,8 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType {
-  @ViewChild(MatSelect, { static: true }) formFieldControl!: MatSelect;
+export class FormlyFieldSelect extends FieldType implements AfterViewInit {
+  @ViewChild(MatSelect, { static: true }) matSelect!: MatSelect;
 
   defaultOptions = {
     templateOptions: {
@@ -104,5 +104,10 @@ export class FormlyFieldSelect extends FieldType {
     }
 
     return this.selectAllValue.value;
+  }
+
+  ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+    this.formFieldControl = this.matSelect;
   }
 }
