@@ -1,9 +1,9 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyFormFieldModule } from '@ngx-formly/ionic/form-field';
 
 const renderComponent = (field: FormlyFieldConfig) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [FormlyFormFieldModule],
   });
 };

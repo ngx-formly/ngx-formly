@@ -1,10 +1,10 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 import { FormlySelectModule } from '@ngx-formly/ionic/select';
-import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     imports: [FormlySelectModule],
   });
 };

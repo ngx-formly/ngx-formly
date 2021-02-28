@@ -3,7 +3,7 @@ import { CoreExtension } from '../../src/lib/extensions/core/core';
 import { FieldValidationExtension } from '../../src/lib/extensions/field-validation/field-validation';
 import { FieldFormExtension } from '../../src/lib/extensions/field-form/field-form';
 import { FieldExpressionExtension } from '../../src/lib/extensions';
-import { MockComponent } from './utils';
+import { mockComponent } from './utils';
 
 interface IBuilderOption {
   onInit?: (c: FormlyConfig) => void;
@@ -14,8 +14,8 @@ export function createBuilder({ extensions, onInit }: IBuilderOption = {}) {
   const config = new FormlyConfig();
   config.addConfig({
     types: [
-      { name: 'formly-group', component: MockComponent({ selector: 'formly-group' }) },
-      { name: 'formly-template', component: MockComponent({ selector: 'formly-template' }) },
+      { name: 'formly-group', component: mockComponent({ selector: 'formly-group' }) },
+      { name: 'formly-template', component: mockComponent({ selector: 'formly-template' }) },
     ],
     extensions: [
       { name: 'core', extension: new CoreExtension(config) },

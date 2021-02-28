@@ -1,4 +1,4 @@
-import { createFormlyFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyModule, FormlyFieldConfig } from '../core';
 import { of } from 'rxjs';
 import { DebugElement } from '@angular/core';
@@ -8,7 +8,7 @@ function validationMessageContent(query: (v: string) => DebugElement): string {
 }
 
 const renderComponent = (field: FormlyFieldConfig) => {
-  return createFormlyFieldComponent(field, {
+  return createFieldComponent(field, {
     template: '<formly-validation-message [field]="field"></formly-validation-message>',
     imports: [
       FormlyModule.forChild({

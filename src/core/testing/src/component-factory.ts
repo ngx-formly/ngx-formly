@@ -21,6 +21,9 @@ interface IComponentOptions<T> extends NgModule {
   config?: ConfigOption;
   detectChanges?: boolean;
 }
+interface IFormlyDebugElement<E> extends DebugElement {
+  readonly nativeElement: E;
+}
 
 export function createComponent<T>({
   template,
@@ -49,10 +52,6 @@ export function createComponent<T>({
 
   setInputs(fixture, inputs, detectChanges);
 
-  interface IFormlyDebugElement<E> extends DebugElement {
-    readonly nativeElement: E;
-  }
-
   type FixtureUtils = T & {
     fixture: ComponentFixture<T>;
     detectChanges: typeof fixture['detectChanges'];
@@ -78,7 +77,7 @@ export function createComponent<T>({
   return utils;
 }
 
-export function createFormlyFieldComponent(
+export function createFieldComponent(
   field: FormlyFieldConfig,
   config: IComponentOptions<{ field: FormlyFieldConfig }> = {},
 ) {
