@@ -100,10 +100,14 @@
             "main": "integration/ssr/src/main.ts",
             "polyfills": "integration/ssr/src/polyfills.ts",
             "tsConfig": "integration/ssr/tsconfig.app.json",
-            "assets": ["integration/ssr/src/favicon.ico", "integration/ssr/src/assets"],
-            "styles": ["integration/ssr/src/styles.css"],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "assets": [
+              "integration/ssr/src/favicon.ico",
+              "integration/ssr/src/assets"
+            ],
+            "styles": [
+              "integration/ssr/src/styles.css"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
