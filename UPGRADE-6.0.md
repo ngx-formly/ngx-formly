@@ -46,12 +46,34 @@ UPGRADE FROM 5.0 to 6.0
   ]
   ```
 
-- **BREAKING CHANGE**: The `lazyRender` option is enabled by default, to rely on the old behavior you need to pass `false` to that option:
+- **BREAKING CHANGE**: The `lazyRender` option is enabled by default, which remove the hidden fields from the DOM instead of using CSS to control their visibility. To rely on the old behavior you need to pass `false` to `lazyRender`:
 
   ```patch
   FormlyModule.forRoot({
   + extras: {
   +   lazyRender: false,
+  + },
+  }),
+  ```
+
+- **BREAKING CHANGE**: The `resetFieldOnHide` option is enabled by default, which remove the field value from the model on hide.
+
+  To disable this feature for a specific field use `resetOnHide`:
+  ```patch
+  let fields: FormlyFieldConfig[] = [
+    {
+      key: 'text',
+      type: 'input',
+  +   resetOnHide: false
+    }
+  ]
+  ```
+
+  To use the the old behavior pass `false` to `resetFieldOnHide`:
+  ```patch
+  FormlyModule.forRoot({
+  + extras: {
+  +   resetFieldOnHide: false,
   + },
   }),
   ```
