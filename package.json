@@ -61,7 +61,7 @@
     "@angular/platform-server": "^11.2.3",
     "@angular/router": "^11.2.3",
     "@ionic/angular": "^5.5.5",
-    "@nativescript/angular": "^10.1.7",
+    "@nativescript/angular": "^11.0.1",
     "@nguniversal/express-engine": "^10.1.0",
     "@ngx-loading-bar/core": "^5.1.1",
     "@ngx-loading-bar/router": "^5.1.1",
