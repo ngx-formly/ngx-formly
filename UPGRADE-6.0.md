@@ -45,3 +45,13 @@ UPGRADE FROM 5.0 to 6.0
     }
   ]
   ```
+
+- **BREAKING CHANGE**: The `lazyRender` option is enabled by default, to rely on the old behavior you need to pass `false` to that option:
+
+  ```patch
+  FormlyModule.forRoot({
+  + extras: {
+  +   lazyRender: false,
+  + },
+  }),
+  ```

@@ -203,13 +203,11 @@ export class FieldExpressionExtension implements FormlyExtension {
       if (hide === true && (!c['_fields'] || c['_fields'].every((f) => !!f._hide))) {
         unregisterControl(field, true);
         if (resetOnHide && field.resetOnHide) {
+          assignFieldValue(field, undefined);
           field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
-          if (field.fieldGroup) {
-            assignFieldValue(field, undefined);
-
-            if (field.formControl instanceof FormArray) {
-              field.fieldGroup.length = 0;
-            }
+          field.options.fieldChanges.next({ value: undefined, field, type: 'valueChanges' });
+          if (field.fieldGroup && field.formControl instanceof FormArray) {
+            field.fieldGroup.length = 0;
           }
         }
       } else if (hide === false) {
