@@ -81,7 +81,7 @@
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.6.5",
     "express": "^4.15.2",
-    "ng-zorro-antd": "^9.2.1",
+    "ng-zorro-antd": "^10.2.2",
     "primeng": "^9.1.0",
     "primeicons": "^2.0.0",
     "rxjs": "^6.5.5",
