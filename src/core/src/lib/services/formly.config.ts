@@ -25,7 +25,7 @@ export class FormlyConfig {
   messages: { [name: string]: ValidationMessageOption['message'] } = {};
   extras: ConfigOption['extras'] = {
     checkExpressionOn: 'changeDetectionCheck',
-    lazyRender: false,
+    lazyRender: true,
     showError(field: FieldType) {
       return (
         field.formControl &&

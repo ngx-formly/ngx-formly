@@ -67,10 +67,10 @@ export interface ConfigOption {
 
     /**
      * Whether to lazily render field components or not when marked as hidden.
-     * - `true`: lazily render field components (Will be set by default in the next major version).
+     * - `true`: lazily render field components.
      * - `false`: render field components and use CSS to control their visibility.
      *
-     * Defaults to `false`.
+     * Defaults to `true`.
      */
     lazyRender?: boolean;
 

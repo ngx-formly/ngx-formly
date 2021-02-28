@@ -21,6 +21,7 @@ export function animationExtension(field: FormlyFieldConfig) {
     ReactiveFormsModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
+      extras: { lazyRender: false },
       wrappers: [{ name: 'animation', component: AnimationWrapperComponent }],
       extensions: [{ name: 'animation', extension: { onPopulate: animationExtension } }],
     }),
