@@ -19,3 +19,24 @@ UPGRADE FROM 5.0 to 6.0
   ```
 
 - BREAKING CHANGE: The initial value of the created FormControl has been changed from `null` to `undefined` to match the field model value. ([#1917](https://github.com/ngx-formly/ngx-formly/pull/1917))
+  
+  before:
+  ```ts
+  let fields: FormlyFieldConfig[] = [
+    {
+      key: 'text',
+      type: 'input'
+    }
+  ]
+  ```
+  
+  after:
+  ```ts
+  let fields: FormlyFieldConfig[] = [
+    {
+      key: 'text',
+      type: 'input',
+      defaultValue: null
+    }
+  ]
+  ```
