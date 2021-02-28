@@ -41,17 +41,6 @@ const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
 };
 
 describe('FormlyField Component', () => {
-  it('should add style display none to hidden field', () => {
-    const { field, detectChanges, query } = renderComponent({ hide: true });
-    const { styles } = query('formly-field');
-
-    expect(styles.display).toEqual('none');
-
-    field.hide = false;
-    detectChanges();
-    expect(styles.display).toEqual('');
-  });
-
   it('should add field className', () => {
     const { query } = renderComponent({ className: 'foo-class' });
 
@@ -60,16 +49,16 @@ describe('FormlyField Component', () => {
 
   describe('host attrs', () => {
     it('should set style and class attrs on first render', () => {
-      const { query } = renderComponent({
-        hide: true,
-        className: 'foo',
-      });
+      const { query } = renderComponent(
+        { hide: true, className: 'foo' },
+        { config: { extras: { lazyRender: false } } },
+      );
       expect(query('formly-field').attributes.class).toEqual('foo');
       expect(query('formly-field').styles.display).toEqual('none');
     });
 
     it('should update style and class attrs on change', () => {
-      const { field, query } = renderComponent({});
+      const { field, query } = renderComponent({}, { config: { extras: { lazyRender: false } } });
 
       expect(query('formly-field').attributes.class).toEqual(undefined);
       expect(query('formly-field').styles.display).toEqual('');
@@ -156,21 +145,32 @@ describe('FormlyField Component', () => {
     expect(query('formly-type-input')).not.toBeNull();
   });
 
-  it('should lazy render field components', () => {
-    const { field, detectChanges, query, fixture } = renderComponent(
-      {
-        key: 'title',
-        type: 'input',
-        hide: true,
-      },
-      { config: { extras: { lazyRender: true } } },
-    );
+  it('should lazy render field components by default', () => {
+    const { field, detectChanges, query, fixture } = renderComponent({
+      key: 'title',
+      type: 'input',
+      hide: true,
+    });
 
     expect(query('formly-type-input')).toBeNull();
 
     field.hide = false;
     detectChanges();
     expect(query('formly-type-input')).not.toBeNull();
+  });
+
+  it('should add style display none to hidden field', () => {
+    const { field, detectChanges, query } = renderComponent(
+      { hide: true },
+      { config: { extras: { lazyRender: false } } },
+    );
+    const { styles } = query('formly-field');
+
+    expect(styles.display).toEqual('none');
+
+    field.hide = false;
+    detectChanges();
+    expect(styles.display).toEqual('');
   });
 
   it('init hooks with observables', () => {
