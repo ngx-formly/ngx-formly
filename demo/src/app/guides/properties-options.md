@@ -36,7 +36,6 @@ Everything starts with the `formly-form`. General use of it will look something 
 | id                   | `string`     | This allows you to specify the `id` of your field. Note, the `id` is generated if not set. |
 | name                 | `string`     | If you wish, you can specify a specific `name` for your field. This is useful if you're posting the form to a server using techniques of yester-year. |
 | type                 | `string`     | The `type` of field to be rendered. More information over at Custom templates. |
-| component            | `any`        | Can be set to replace the component that is defined in `type`. |
 | className            | `string`     | You can specify your own class that will be applied to the `formly-field` directive. |
 | templateOptions      | `object`     | This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this. |
 | template             | `string`     | Can be set instead of `type` to render custom `html` content. |
