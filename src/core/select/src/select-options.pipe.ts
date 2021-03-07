@@ -47,7 +47,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       }
     });
 
-    if (field && field.templateOptions) {
+    if (field?.templateOptions) {
       field.templateOptions._flatOptions = !Object.keys(groups).length;
     }
 

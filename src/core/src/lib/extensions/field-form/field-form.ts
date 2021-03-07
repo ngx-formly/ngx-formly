@@ -87,7 +87,7 @@ export class FieldFormExtension implements FormlyExtension {
         c.setValidators(() => {
           const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
 
-          return v ? v(c) : null;
+          return v?.(c);
         });
         c.setAsyncValidators(() => {
           const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
@@ -119,7 +119,7 @@ export class FieldFormExtension implements FormlyExtension {
   private mergeValidators<T>(field: FormlyFieldConfigCache, type: '_validators' | '_asyncValidators'): T[] {
     const validators: any = [];
     const c = field.formControl;
-    if (c && c['_fields'] && c['_fields'].length > 1) {
+    if (c?.['_fields']?.length > 1) {
       c['_fields']
         .filter((f: FormlyFieldConfigCache) => !f._hide)
         .forEach((f: FormlyFieldConfigCache) => validators.push(...f[type]));
@@ -129,7 +129,7 @@ export class FieldFormExtension implements FormlyExtension {
 
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter((f) => f && !f.key && f.fieldGroup)
+        .filter((f) => f?.fieldGroup && !f.key)
         .forEach((f) => validators.push(...this.mergeValidators(f, type)));
     }
 

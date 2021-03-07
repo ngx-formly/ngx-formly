@@ -136,9 +136,7 @@ export interface FormlyFieldConfig {
     debounce?: {
       default: number;
     };
-    /**
-     * @see https://angular.io/api/forms/AbstractControl#updateOn
-     */
+    // @see https://angular.io/api/forms/AbstractControl#updateOn
     updateOn?: 'change' | 'blur' | 'submit';
   };
 

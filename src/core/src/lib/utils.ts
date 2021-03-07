@@ -20,7 +20,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
   }
 
   /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
-  if (!field._keyPath || field._keyPath.key !== field.key) {
+  if (field._keyPath?.key !== field.key) {
     let path: string[] = [];
     if (typeof field.key === 'string') {
       const key = field.key.indexOf('[') === -1 ? field.key : field.key.replace(/\[(\w+)\]/g, '.$1');

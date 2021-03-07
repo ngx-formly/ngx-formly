@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
@@ -48,8 +48,6 @@ import { FieldType } from '@ngx-formly/material/form-field';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType {
-  @ViewChild(MatSelect, { static: true }) formFieldControl!: MatSelect;
-
   defaultOptions = {
     templateOptions: {
       options: [],
@@ -75,21 +73,15 @@ export class FormlyFieldSelect extends FieldType {
   }
 
   change($event: MatSelectChange) {
-    if (this.to.change) {
-      this.to.change(this.field, $event);
-    }
+    this.to.change?.(this.field, $event);
   }
 
   _getAriaLabelledby() {
-    if (this.to.attributes && this.to.attributes['aria-labelledby']) {
+    if (this.to.attributes?.['aria-labelledby']) {
       return this.to.attributes['aria-labelledby'];
     }
 
-    if (this.formField && this.formField._labelId) {
-      return this.formField._labelId;
-    }
-
-    return null;
+    return this.formField?._labelId;
   }
 
   private getSelectAllValue(options: any[]) {

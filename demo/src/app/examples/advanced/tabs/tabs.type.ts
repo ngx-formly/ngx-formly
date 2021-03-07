@@ -12,9 +12,7 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
       >
         <formly-field [field]="tab"></formly-field>
 
-        <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">
-          Submit
-        </button>
+        <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">Submit</button>
       </mat-tab>
     </mat-tab-group>
   `,

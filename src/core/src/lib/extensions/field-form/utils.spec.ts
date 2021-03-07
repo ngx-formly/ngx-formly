@@ -53,10 +53,7 @@ describe('registerControl', () => {
     const field = {
       key: ['test.0', '111'],
       formControl: new FormControl(),
-      parent: {
-        formControl: new FormGroup({}),
-        model: {},
-      },
+      form: new FormGroup({}),
     };
 
     registerControl(field);

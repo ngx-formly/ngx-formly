@@ -29,11 +29,8 @@ export class FormlyConfig {
     resetFieldOnHide: true,
     showError(field: FieldType) {
       return (
-        field.formControl &&
-        field.formControl.invalid &&
-        (field.formControl.touched ||
-          (field.options.parentForm && field.options.parentForm.submitted) ||
-          !!(field.field.validation && field.field.validation.show))
+        field.formControl?.invalid &&
+        (field.formControl?.touched || field.options.parentForm?.submitted || !!field.field.validation?.show)
       );
     },
   };
@@ -99,7 +96,7 @@ export class FormlyConfig {
       reverseDeepMerge(field, extendDefaults);
     }
 
-    if (field && field.optionsTypes) {
+    if (field?.optionsTypes) {
       field.optionsTypes.forEach((option) => {
         const defaultOptions = this.getType(option).defaultOptions;
         if (defaultOptions) {
@@ -109,7 +106,7 @@ export class FormlyConfig {
     }
 
     const componentRef = this.resolveFieldTypeRef(field);
-    if (componentRef && componentRef.instance && componentRef.instance.defaultOptions) {
+    if (componentRef?.instance?.defaultOptions) {
       reverseDeepMerge(field, componentRef.instance.defaultOptions);
     }
 

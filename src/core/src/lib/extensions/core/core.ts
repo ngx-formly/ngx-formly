@@ -116,7 +116,6 @@ export class CoreExtension implements FormlyExtension {
           : {
               label: '',
               placeholder: '',
-              focus: false,
               disabled: false,
             },
     });
@@ -160,12 +159,12 @@ export class CoreExtension implements FormlyExtension {
 
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
     const componentRef = this.config.resolveFieldTypeRef(field);
-    const instance: FormlyExtension = componentRef ? (componentRef.instance as any) : {};
+    const instance = componentRef?.instance as FormlyExtension;
 
     return {
-      prePopulate: () => instance.prePopulate && instance.prePopulate(field),
-      onPopulate: () => instance.onPopulate && instance.onPopulate(field),
-      postPopulate: () => instance.postPopulate && instance.postPopulate(field),
+      prePopulate: () => instance?.prePopulate?.(field),
+      onPopulate: () => instance?.onPopulate?.(field),
+      postPopulate: () => instance?.postPopulate?.(field),
     };
   }
 }

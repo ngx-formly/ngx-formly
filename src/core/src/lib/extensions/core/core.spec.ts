@@ -45,7 +45,6 @@ describe('CoreExtension', () => {
     expect(withType.templateOptions).toEqual({
       label: '',
       placeholder: '',
-      focus: false,
       disabled: false,
     });
   });

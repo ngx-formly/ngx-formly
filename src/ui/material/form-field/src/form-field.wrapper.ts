@@ -23,7 +23,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
   _matprefix: TemplateRef<any>;
   _matsuffix: TemplateRef<any>;
-  __formField__: FormlyWrapperFormField;
+  __formField__?: FormlyWrapperFormField;
 }
 
 @Component({
@@ -75,7 +75,8 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
+export class FormlyWrapperFormField
+  extends FieldWrapper<MatFormlyFieldConfig>
   implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
   @ViewChild('fieldComponent', { read: ViewContainerRef, static: true }) fieldComponent!: ViewContainerRef;
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;

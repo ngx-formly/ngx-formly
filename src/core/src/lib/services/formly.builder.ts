@@ -26,8 +26,8 @@ export class FormlyFormBuilder {
       this._setOptions(field);
       reduceFormUpdateValidityCalls(field.form, () => this._build(field));
       const options = (field as FormlyFieldConfigCache).options;
-      options.checkExpressions && options.checkExpressions(field, true);
-      options.detectChanges && options.detectChanges(field);
+      options.checkExpressions?.(field, true);
+      options.detectChanges?.(field);
     } else {
       this._build(field);
     }
@@ -38,14 +38,14 @@ export class FormlyFormBuilder {
       return;
     }
 
-    this.getExtensions().forEach((extension) => extension.prePopulate && extension.prePopulate(field));
-    this.getExtensions().forEach((extension) => extension.onPopulate && extension.onPopulate(field));
+    this.getExtensions().forEach((extension) => extension.prePopulate?.(field));
+    this.getExtensions().forEach((extension) => extension.onPopulate?.(field));
 
     if (field.fieldGroup) {
       field.fieldGroup.forEach((f) => this._build(f));
     }
 
-    this.getExtensions().forEach((extension) => extension.postPopulate && extension.postPopulate(field));
+    this.getExtensions().forEach((extension) => extension.postPopulate?.(field));
   }
 
   private getExtensions() {

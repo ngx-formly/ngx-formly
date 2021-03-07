@@ -25,9 +25,9 @@ import { take } from 'rxjs/operators';
 
         <ng-template #grouplist>
           <ng-container *ngFor="let opt of opts">
-            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{
-              opt.label
-            }}</option>
+            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
+              {{ opt.label }}
+            </option>
             <ng-template #optgroup>
               <optgroup [label]="opt.label">
                 <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
@@ -59,9 +59,9 @@ import { take } from 'rxjs/operators';
 
           <ng-template #grouplist>
             <ng-container *ngFor="let opt of opts">
-              <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{
-                opt.label
-              }}</option>
+              <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
+                {{ opt.label }}
+              </option>
               <ng-template #optgroup>
                 <optgroup [label]="opt.label">
                   <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
