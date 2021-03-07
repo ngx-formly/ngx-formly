@@ -187,13 +187,13 @@ export class FieldExpressionExtension implements FormlyExtension {
         .forEach((f) => this.changeDisabledState(f, value));
     }
 
-    if (field.key && field.templateOptions.disabled !== value) {
+    if (!isNil(field.key) && field.templateOptions.disabled !== value) {
       field.templateOptions.disabled = value;
     }
   }
 
   private changeHideState(field: FormlyFieldConfigCache, hide: boolean, resetOnHide: boolean) {
-    if (field.formControl && field.key) {
+    if (field.formControl && !isNil(field.key)) {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
       if (c['_fields'] && c['_fields'].length > 1) {
@@ -251,7 +251,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       throw error;
     }
 
-    if (prop === 'templateOptions.disabled' && field.key) {
+    if (prop === 'templateOptions.disabled' && !isNil(field.key)) {
       this.changeDisabledState(field, value);
     }
 

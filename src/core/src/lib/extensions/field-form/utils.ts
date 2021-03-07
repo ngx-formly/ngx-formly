@@ -73,7 +73,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     }
   }
 
-  if (!field.form || !field.key) {
+  if (!field.form || isNil(field.key)) {
     return;
   }
 

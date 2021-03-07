@@ -7,7 +7,7 @@ import {
   ValidatorFn,
   AsyncValidatorFn,
 } from '@angular/forms';
-import { getFieldValue, defineHiddenProp } from '../../utils';
+import { getFieldValue, defineHiddenProp, isNil } from '../../utils';
 import { registerControl, findControl, updateValidity as updateControlValidity } from './utils';
 import { of } from 'rxjs';
 
@@ -28,7 +28,7 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (field.hasOwnProperty('fieldGroup') && !field.key) {
+    if (field.hasOwnProperty('fieldGroup') && isNil(field.key)) {
       defineHiddenProp(field, 'formControl', field.form);
     } else {
       this.addFormControl(field);
@@ -65,7 +65,7 @@ export class FieldFormExtension implements FormlyExtension {
       if (field.fieldGroup) {
         control = new FormGroup({}, controlOptions);
       } else {
-        const value = field.key ? getFieldValue(field) : field.defaultValue;
+        const value = !isNil(field.key) ? getFieldValue(field) : field.defaultValue;
         control = new FormControl({ value, disabled: false }, controlOptions);
       }
     }
@@ -75,7 +75,7 @@ export class FieldFormExtension implements FormlyExtension {
 
   private setValidators(field: FormlyFieldConfigCache) {
     let updateValidity = false;
-    if (field.key || !field.parent || (!field.key && !field.fieldGroup)) {
+    if (!isNil(field.key) || !field.parent || (isNil(field.key) && !field.fieldGroup)) {
       const { formControl: c } = field;
       const disabled = field.templateOptions ? field.templateOptions.disabled : false;
       if (field.key && c) {
@@ -145,7 +145,7 @@ export class FieldFormExtension implements FormlyExtension {
 
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter((f) => f?.fieldGroup && !f.key)
+        .filter((f) => f?.fieldGroup && isNil(f.key))
         .forEach((f) => validators.push(...this.mergeValidators(f, type)));
     }
 

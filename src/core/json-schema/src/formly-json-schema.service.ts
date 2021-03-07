@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import {
-  ɵdefineHiddenProp as defineHiddenProp,
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldInitialValue as getFieldInitialValue,
   ɵclone as clone,
+  ɵisNil as isNil,
 } from '@ngx-formly/core';
 import { tap } from 'rxjs/operators';
 
@@ -45,7 +45,7 @@ function isConst(schema: JSONSchema7) {
 
 function totalMatchedFields(field: FormlyFieldConfig): number {
   if (!field.fieldGroup) {
-    return field.key && getFieldInitialValue(field) !== undefined ? 1 : 0;
+    return !isNil(field.key) && getFieldInitialValue(field) !== undefined ? 1 : 0;
   }
 
   return field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
