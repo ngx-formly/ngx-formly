@@ -81,14 +81,11 @@ export function createFieldComponent(
   field: FormlyFieldConfig,
   config: IComponentOptions<{ field: FormlyFieldConfig }> = {},
 ) {
-  const model = field && field.model ? field.model : {};
-  if (field && field.model) {
-    delete (field as any).model;
-  }
-  const options = field && field.options ? field.options : {};
-  if (field && field.options) {
-    delete (field as any).options;
-  }
+  const model = field?.model || {};
+  const options = field?.options || {};
+  delete (field as any)?.model;
+  delete (field as any)?.options;
+
   return createComponent<{ field: FormlyFieldConfig }>({
     template: '<formly-field [field]="field"></formly-field>',
     inputs: { field },

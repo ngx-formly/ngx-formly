@@ -6,7 +6,8 @@ import { FormlyFieldConfig, FormlyExtension } from '../models';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
 @Directive()
-export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F>
+export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig>
+  extends FieldType<F>
   implements FormlyExtension {
   get formControl() {
     return this.field.formControl as FormArray;

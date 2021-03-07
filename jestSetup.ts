@@ -1,4 +1,4 @@
-import 'jest-preset-angular';
+import 'jest-preset-angular/setup-jest';
 import 'jest-extended';
 
 // https://github.com/thymikee/jest-preset-angular/issues/347

@@ -75,10 +75,10 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
     if (this.containerRef === containerRef) {
       this.resetRefs(this.field);
       this.containerRef.clear();
-      wrappers = this.field ? this.field.wrappers : [];
+      wrappers = this.field?.wrappers;
     }
 
-    if (wrappers && wrappers.length > 0) {
+    if (wrappers?.length > 0) {
       const [wrapper, ...wps] = wrappers;
       const { component } = this.config.getWrapper(wrapper);
 
@@ -96,7 +96,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
           !firstChange && ref.changeDetectorRef.detectChanges();
         }
       });
-    } else if (f && f.type) {
+    } else if (f?.type) {
       const { component } = this.config.getType(f.type);
       const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
       this.attachComponentRef(ref, f);
@@ -108,7 +108,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
       this.valueChangesUnsubscribe = this.fieldChanges(this.field);
     }
 
-    if (this.field && this.field.hooks && this.field.hooks[name]) {
+    if (this.field?.hooks?.[name]) {
       if (!changes || changes.field) {
         const r = this.field.hooks[name](this.field);
         if (isObservable(r) && ['onInit', 'afterContentInit', 'afterViewInit'].indexOf(name) !== -1) {
@@ -220,20 +220,17 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
       }
 
       const { updateOn, debounce } = field.modelOptions;
-      if ((!updateOn || updateOn === 'change') && debounce && debounce.default > 0) {
+      if ((!updateOn || updateOn === 'change') && debounce?.default > 0) {
         valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
       }
 
       const sub = valueChanges.subscribe((value) => {
         // workaround for https://github.com/angular/angular/issues/13792
-        if (control instanceof FormControl && control['_fields'] && control['_fields'].length > 1) {
+        if (control instanceof FormControl && control['_fields']?.length > 1) {
           control.patchValue(value, { emitEvent: false, onlySelf: true });
         }
 
-        if (field.parsers && field.parsers.length > 0) {
-          field.parsers.forEach((parserFn) => (value = parserFn(value)));
-        }
-
+        field.parsers?.forEach((parserFn) => (value = parserFn(value)));
         assignFieldValue(field, value);
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });

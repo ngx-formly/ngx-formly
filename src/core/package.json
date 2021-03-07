@@ -3,10 +3,10 @@
   "version": "0.0.0-FORMLY-VERSION",
   "license": "MIT",
   "dependencies": {
-    "tslib": "^1.7.1"
+    "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/forms": ">=9.0.0",
-    "rxjs": ">=6.3.0"
+    "@angular/forms": ">=11.0.0",
+    "rxjs": ">=6.5.0"
   }
 }

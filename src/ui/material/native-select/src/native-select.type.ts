@@ -1,6 +1,5 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'formly-field-mat-native-select',
@@ -24,9 +23,9 @@ import { MatInput } from '@angular/material/input';
 
         <ng-template #grouplist>
           <ng-container *ngFor="let opt of opts">
-            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">{{
-              opt.label
-            }}</option>
+            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
+              {{ opt.label }}
+            </option>
             <ng-template #optgroup>
               <optgroup [label]="opt.label">
                 <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
@@ -42,7 +41,6 @@ import { MatInput } from '@angular/material/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldNativeSelect extends FieldType {
-  @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;
   defaultOptions = {
     templateOptions: {
       options: [],

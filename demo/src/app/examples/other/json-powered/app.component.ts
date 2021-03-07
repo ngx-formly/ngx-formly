@@ -8,14 +8,13 @@ import { UserService } from './user.service';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  form: FormGroup;
+  form = new FormGroup({});
   options: FormlyFormOptions = {};
   model: any;
   fields: FormlyFieldConfig[];
 
   constructor(private userService: UserService) {
     this.userService.getUserData().subscribe(([model, fields]) => {
-      this.form = new FormGroup({});
       this.model = model;
       this.fields = this.mapFields(fields);
     });

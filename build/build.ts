@@ -6,6 +6,7 @@ const distDir = 'dist/@ngx-formly';
 
 // cleanup
 exec(`rm -rf ${distDir}`);
+exec(`mkdir -p ${distDir}`);
 
 PACKAGES.map((name) => {
   // build package

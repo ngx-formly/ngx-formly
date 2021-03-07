@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
-import { action } from 'tns-core-modules/ui/dialogs';
+import { action } from '@nativescript/core/ui/dialogs';
 
 @Component({
   selector: 'formly-field-ns-select',

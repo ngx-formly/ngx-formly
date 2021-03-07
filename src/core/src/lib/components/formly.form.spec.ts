@@ -292,7 +292,7 @@ describe('FormlyForm Component', () => {
         fields: [
           {
             key: 'address[0].city',
-            hideExpression: '!(model.address && model.address[0] && model.address[0].city === "agadir")',
+            hideExpression: '!(model.address?.[0]?.city === "agadir")',
           },
         ],
       });

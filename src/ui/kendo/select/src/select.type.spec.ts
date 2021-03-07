@@ -3,6 +3,7 @@ import { FormlySelectModule } from '@ngx-formly/kendo/select';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { POPUP_CONTAINER } from '@progress/kendo-angular-popup';
+import { DebugElement } from '@angular/core';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -15,6 +16,13 @@ const renderComponent = (field: FormlyFieldConfig) => {
     ],
   });
 };
+
+function triggerSelectClick(element: DebugElement) {
+  element.triggerEventHandler('click', {
+    stopPropagation: () => {},
+    preventDefault: () => {},
+  });
+}
 
 describe('ui-kendo: Select Type', () => {
   it('should render select type', () => {
@@ -33,7 +41,12 @@ describe('ui-kendo: Select Type', () => {
 
     expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
 
-    query('kendo-dropdownlist .k-dropdown-wrap').triggerEventHandler('click', {});
+    const evt = {
+      stopPropagation: () => {},
+      preventDefault: () => {},
+    };
+
+    triggerSelectClick(query('kendo-dropdownlist .k-dropdown-wrap'));
     expect(document.querySelectorAll('.k-item')).toHaveLength(3);
   });
 
@@ -51,9 +64,7 @@ describe('ui-kendo: Select Type', () => {
       },
     });
 
-    expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
-
-    query('kendo-dropdownlist .k-dropdown-wrap').triggerEventHandler('click', {});
+    triggerSelectClick(query('kendo-dropdownlist .k-dropdown-wrap'));
     expect(document.querySelectorAll('.k-item')).toHaveLength(3);
   });
 
@@ -66,7 +77,7 @@ describe('ui-kendo: Select Type', () => {
       },
     });
 
-    query('kendo-dropdownlist .k-dropdown-wrap').triggerEventHandler('click', {});
+    triggerSelectClick(query('kendo-dropdownlist .k-dropdown-wrap'));
     document.querySelector<HTMLLIElement>('.k-item').click();
     expect(field.formControl.value).toEqual(1);
   });
