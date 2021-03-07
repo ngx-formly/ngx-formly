@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatDatepickerInput } from '@angular/material/datepicker';
 
 @Component({
   selector: 'formly-field-mat-datepicker',
@@ -43,7 +42,6 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyDatepickerTypeComponent extends FieldType implements AfterViewInit {
-  @ViewChild(MatDatepickerInput, { static: true }) datepickerInput!: MatDatepickerInput<any>;
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   defaultOptions = {
@@ -66,8 +64,5 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
   ngAfterViewInit() {
     super.ngAfterViewInit();
     this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
-
-    // temporary fix for https://github.com/angular/material2/issues/6728
-    (<any>this.datepickerInput)._formField = this.formField;
   }
 }

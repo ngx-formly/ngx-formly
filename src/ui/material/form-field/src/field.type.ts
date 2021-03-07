@@ -110,12 +110,30 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.focused || !this.empty;
   }
   get formField(): MatFormField {
-    return (this.field as any)?.['__formField__'];
+    return (this.field as any)?.['_formField'];
   }
 
   private attachControl(control: MatFormFieldControl<any>) {
     if (this.formField && control !== this.formField._control) {
       this.formField._control = control;
+
+      // temporary fix for https://github.com/angular/material2/issues/6728
+      if (control?.ngControl?.valueAccessor?.hasOwnProperty('_formField')) {
+        (control.ngControl.valueAccessor as any)['_formField'] = this.formField;
+      }
+
+      ['prefix', 'suffix'].forEach((type) =>
+        observe<TemplateRef<any>>(
+          this.field,
+          ['templateOptions', type],
+          ({ currentValue }) =>
+            currentValue &&
+            Promise.resolve().then(() => {
+              (<any>this.field)[`_mat${type}`] = currentValue;
+              this.options.detectChanges!(this.field);
+            }),
+        ),
+      );
 
       // https://github.com/angular/components/issues/16209
       const setDescribedByIds = control.setDescribedByIds.bind(control);
