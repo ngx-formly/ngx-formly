@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
-import { clone, assignFieldValue, getFieldValue } from '../utils';
+import { clone, assignFieldValue, getFieldValue, isNil } from '../utils';
 import { FormlyFieldConfig, FormlyExtension } from '../models';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
@@ -14,7 +14,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   }
 
   onPopulate(field: FormlyFieldConfig) {
-    if (!field.formControl && field.key) {
+    if (!field.formControl && !isNil(field.key)) {
       const control = findControl(field);
       registerControl(field, control ? control : new FormArray([], { updateOn: field.modelOptions.updateOn }));
     }
