@@ -9,6 +9,7 @@ import {
   reverseDeepMerge,
   defineHiddenProp,
   clone,
+  isNil,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -23,7 +24,7 @@ export class CoreExtension implements FormlyExtension {
     if (root) {
       Object.defineProperty(field, 'options', { get: () => root.options, configurable: true });
       Object.defineProperty(field, 'model', {
-        get: () => (field.key && field.fieldGroup ? getFieldValue(field) : root.model),
+        get: () => (!isNil(field.key) && field.fieldGroup ? getFieldValue(field) : root.model),
         configurable: true,
       });
     }
@@ -75,6 +76,7 @@ export class CoreExtension implements FormlyExtension {
 
     options.detectChanges = (f: FormlyFieldConfigCache) => {
       if (f._componentRefs) {
+        f.options.checkExpressions(f.parent);
         f._componentRefs.forEach((ref) => {
           // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
           const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
@@ -111,7 +113,7 @@ export class CoreExtension implements FormlyExtension {
       hooks: {},
       modelOptions: {},
       templateOptions:
-        !field.type || !field.key
+        !field.type || isNil(field.key)
           ? {}
           : {
               label: '',
@@ -139,7 +141,7 @@ export class CoreExtension implements FormlyExtension {
       this.config.getMergedField(field);
     }
 
-    if (!isUndefined(field.key) && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+    if (!isNil(field.key) && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
       let setDefaultValue = !field.resetOnHide || !(field.hide || field.hideExpression);
       if (setDefaultValue && field.resetOnHide) {
         let parent = field.parent;

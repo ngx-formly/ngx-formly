@@ -18,7 +18,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe, observeDeep, getFieldValue, assignFieldValue, isObject } from '../utils';
+import { defineHiddenProp, observe, observeDeep, getFieldValue, assignFieldValue, isObject, isNil } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
@@ -203,7 +203,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
       subscribes.push(() => fieldObserver.unsubscribe());
     }
 
-    if (field.key && !field.fieldGroup) {
+    if (field.formControl && !field.fieldGroup) {
       const control = field.formControl;
       let valueChanges = control.valueChanges.pipe(
         distinctUntilChanged((x, y) => {
@@ -231,7 +231,9 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
         }
 
         field.parsers?.forEach((parserFn) => (value = parserFn(value)));
-        assignFieldValue(field, value);
+        if (!isNil(field.key)) {
+          assignFieldValue(field, value);
+        }
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
       });
 

@@ -287,7 +287,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should hide/display field using a function with nested field key', () => {
-      const { form, model, fields, detectChanges } = renderComponent({
+      const { form, model, fields, detectChanges, setInputs } = renderComponent({
         model: { address: [{ city: '' }] },
         fields: [
           {
@@ -299,7 +299,7 @@ describe('FormlyForm Component', () => {
 
       expect(form.get('address.0.city')).toBeNull();
 
-      model.address[0].city = 'agadir';
+      setInputs({ model: { address: [{ city: 'agadir' }] } });
       detectChanges();
 
       expect(form.get('address.0.city')).not.toBeNull();
@@ -585,7 +585,7 @@ describe('FormlyForm Component', () => {
   });
 
   it('should keep in sync UI on checkExpressionChange', () => {
-    const { form, query, detectChanges } = renderComponent(
+    const { form, query, fields, fixture, detectChanges } = renderComponent(
       {
         fields: [
           {
@@ -602,7 +602,7 @@ describe('FormlyForm Component', () => {
 
     const input = query('input');
     input.triggerEventHandler('input', { target: { value: '***' } });
-    detectChanges();
+    fixture.autoDetectChanges();
 
     const control = form.get('city');
     expect(control.disabled).toBeTrue();
