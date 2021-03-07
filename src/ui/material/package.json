@@ -2,8 +2,11 @@
   "name": "@ngx-formly/material",
   "version": "0.0.0-FORMLY-VERSION",
   "license": "MIT",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "@angular/material": ">=9.0.0"
+    "@angular/material": ">=11.0.0"
   }
 }

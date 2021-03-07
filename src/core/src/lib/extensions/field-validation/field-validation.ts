@@ -129,11 +129,11 @@ export class FieldValidationExtension implements FormlyExtension {
     }
 
     const ctrl = field.formControl;
-    ctrl && ctrl['_childrenErrors'] && ctrl['_childrenErrors'][name] && ctrl['_childrenErrors'][name]();
+    ctrl?.['_childrenErrors']?.[name]?.();
 
     if (isObject(errors)) {
       Object.keys(errors).forEach((name) => {
-        const errorPath = errors[name].errorPath ? errors[name].errorPath : (options || {}).errorPath;
+        const errorPath = errors[name].errorPath ? errors[name].errorPath : options?.errorPath;
 
         const childCtrl = errorPath ? field.formControl.get(errorPath) : null;
         if (childCtrl) {

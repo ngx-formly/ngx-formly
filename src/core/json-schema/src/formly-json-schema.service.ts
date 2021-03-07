@@ -427,7 +427,7 @@ export class FormlyJsonschema {
 
     const definition = !pointer
       ? null
-      : pointer.split('/').reduce((def, path) => (def && def.hasOwnProperty(path) ? def[path] : null), options.schema);
+      : pointer.split('/').reduce((def, path) => (def?.hasOwnProperty(path) ? def[path] : null), options.schema);
 
     if (!definition) {
       throw Error(`Cannot find a definition for ${schema.$ref}.`);

@@ -166,7 +166,7 @@ describe('FieldFormExtension', () => {
       templateOptions: { required: true },
     });
 
-    expect(formControl.parent).toBeUndefined();
+    expect(formControl.parent).toBeNull();
     expect(formControl.updateValueAndValidity).toHaveBeenCalled();
   });
 

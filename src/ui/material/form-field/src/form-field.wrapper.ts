@@ -22,7 +22,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
-  __formField__: FormlyWrapperFormField;
+  __formField__?: FormlyWrapperFormField;
 }
 
 @Component({
@@ -74,7 +74,8 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
   styleUrls: ['./form-field.wrapper.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig>
+export class FormlyWrapperFormField
+  extends FieldWrapper<MatFormlyFieldConfig>
   implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked {
   @ViewChild('fieldComponent', { read: ViewContainerRef, static: true }) fieldComponent!: ViewContainerRef;
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;

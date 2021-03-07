@@ -2,6 +2,7 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../out-tsc/lib",
+    "declarationMap": true,
     "target": "es2015",
     "module": "es2015",
     "moduleResolution": "node",
@@ -13,6 +14,7 @@
     "importHelpers": true,
     "types": [],
     "lib": ["dom", "es2018"],
+    "skipLibCheck": true,
     "paths": {
       "@ngx-formly/core": ["dist/@ngx-formly/core"],
       "@ngx-formly/core/*": ["dist/@ngx-formly/core/*"]

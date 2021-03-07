@@ -2,8 +2,11 @@
   "name": "@ngx-formly/primeng",
   "version": "0.0.0-FORMLY-VERSION",
   "license": "MIT",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "primeng": ">=9.0.0"
+    "primeng": ">=11.0.0"
   }
 }

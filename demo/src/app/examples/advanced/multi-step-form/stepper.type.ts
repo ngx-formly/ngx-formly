@@ -10,17 +10,13 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
         <formly-field [field]="step"></formly-field>
 
         <div>
-          <button matStepperPrevious *ngIf="index !== 0" class="btn btn-primary" type="button">
-            Back
-          </button>
+          <button matStepperPrevious *ngIf="index !== 0" class="btn btn-primary" type="button">Back</button>
 
           <button matStepperNext *ngIf="!last" class="btn btn-primary" type="button" [disabled]="!isValid(step)">
             Next
           </button>
 
-          <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">
-            Submit
-          </button>
+          <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">Submit</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

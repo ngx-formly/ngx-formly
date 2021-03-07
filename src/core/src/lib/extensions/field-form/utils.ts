@@ -44,9 +44,7 @@ export function findControl(field: FormlyFieldConfig): AbstractControl {
     return null;
   }
 
-  const form = field.parent.formControl as FormGroup;
-
-  return form ? form.get(getKeyPath(field)) : null;
+  return field.form?.get(getKeyPath(field));
 }
 
 export function registerControl(field: FormlyFieldConfigCache, control?: any, emitEvent = false) {
@@ -138,7 +136,8 @@ function updateControl(form: FormGroup | FormArray, opts: { emitEvent: boolean }
 }
 
 export function clearControl(form: AbstractControl) {
-  form['_fields'] && delete form['_fields'];
+  delete form?.['_fields'];
+
   if (form instanceof FormGroup || form instanceof FormArray) {
     Object.keys(form.controls).forEach((k) => clearControl(form.controls[k]));
   }

@@ -57,12 +57,12 @@ export class FieldExpressionExtension implements FormlyExtension {
             if (subscription === null) {
               subscription = subscribe();
             }
-            return onInit && onInit(field);
+            return onInit?.(field);
           };
 
           const onDestroy = field.hooks.onDestroy;
           field.hooks.onDestroy = () => {
-            onDestroy && onDestroy(field);
+            onDestroy?.(field);
             subscription.unsubscribe();
             subscription = null;
           };
@@ -215,7 +215,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           assignFieldValue(field, field.defaultValue);
         }
         registerControl(field, undefined, true);
-        if (field.resetOnHide && field.fieldArray && (field.fieldGroup || []).length !== (field.model || []).length) {
+        if (field.resetOnHide && field.fieldArray && field.fieldGroup?.length !== field.model?.length) {
           field.options.build(field);
         }
       }
@@ -257,7 +257,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     if (prop.indexOf('model.') === 0) {
       const key = prop.replace(/^model\./, ''),
-        control = field.key && field.key === key ? field.formControl : field.form.get(key);
+        control = field?.key === key ? field.formControl : field.form.get(key);
 
       if (control && !(isNil(control.value) && isNil(value)) && control.value !== value) {
         control.patchValue(value);

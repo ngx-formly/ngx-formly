@@ -62,7 +62,7 @@ export class AppComponent {
       expressionProperties: {
         'templateOptions.placeholder': (model, formState) => {
           if (formState.awesomeIsForced) {
-            return 'Too bad... It really is awesome! Wasn\'t that cool?';
+            return `Too bad... It really is awesome! Wasn't that cool?`;
           } else {
             return 'Type in here... I dare you';
           }

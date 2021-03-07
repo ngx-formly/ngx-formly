@@ -26,7 +26,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
 
     expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
 
-    query('nz-select nz-select-top-control').triggerEventHandler('click', {});
+    query('nz-select').triggerEventHandler('click', {});
     fixture.autoDetectChanges();
     tick(500);
 
@@ -48,7 +48,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
 
     expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
 
-    query('nz-select nz-select-top-control').triggerEventHandler('click', {});
+    query('nz-select').triggerEventHandler('click', {});
     fixture.autoDetectChanges();
     tick(500);
 
@@ -64,7 +64,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
       },
     });
 
-    query('nz-select nz-select-top-control').triggerEventHandler('click', {});
+    query('nz-select').triggerEventHandler('click', {});
     fixture.autoDetectChanges();
     tick(500);
 

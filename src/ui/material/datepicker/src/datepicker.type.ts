@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput } from '@angular/material/datepicker';
 
 @Component({
@@ -24,7 +23,7 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
       (dateChange)="to.datepickerOptions.dateChange(field, $event)"
     />
     <ng-template #datepickerToggle>
-      <mat-datepicker-toggle [disabled]="to.disabled" [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle (click)="detectChanges()" [disabled]="to.disabled" [for]="picker"></mat-datepicker-toggle>
     </ng-template>
     <mat-datepicker
       #picker
@@ -44,7 +43,6 @@ import { MatDatepickerInput } from '@angular/material/datepicker';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyDatepickerTypeComponent extends FieldType implements AfterViewInit {
-  @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;
   @ViewChild(MatDatepickerInput, { static: true }) datepickerInput!: MatDatepickerInput<any>;
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
@@ -60,6 +58,10 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
       },
     },
   };
+
+  detectChanges() {
+    this.options.detectChanges?.(this.field);
+  }
 
   ngAfterViewInit() {
     super.ngAfterViewInit();

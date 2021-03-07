@@ -45,7 +45,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   private get fieldAttrElements(): ElementRef[] {
-    return (this.field && this.field['_elementRefs']) || [];
+    return this.field?.['_elementRefs'] || [];
   }
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
@@ -57,14 +57,14 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.field.name && this.setAttribute('name', this.field.name);
       this.uiEvents.listeners.forEach((listener) => listener());
       this.uiEvents.events.forEach((eventName) => {
-        if (this.to && this.to[eventName]) {
+        if (this.to?.[eventName]) {
           this.uiEvents.listeners.push(
             this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.to[eventName](this.field, e)),
           );
         }
       });
 
-      if (this.to && this.to.attributes) {
+      if (this.to?.attributes) {
         observe(this.field, ['templateOptions', 'attributes'], ({ currentValue, previousValue }) => {
           if (previousValue) {
             Object.keys(previousValue).forEach((attr) => this.removeAttribute(attr));
@@ -123,7 +123,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngOnDestroy() {
     this.uiEvents.listeners.forEach((listener) => listener());
     this.detachElementRef(this.field);
-    this.focusObserver && this.focusObserver.unsubscribe();
+    this.focusObserver?.unsubscribe();
   }
 
   toggleFocus(value: boolean) {
@@ -147,27 +147,18 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   onFocus($event: any) {
-    this.focusObserver && this.focusObserver.setValue(true);
-    if (this.to.focus) {
-      this.to.focus(this.field, $event);
-    }
+    this.focusObserver?.setValue(true);
+    this.to.focus?.(this.field, $event);
   }
 
   onBlur($event: any) {
-    this.focusObserver && this.focusObserver.setValue(false);
-    if (this.to.blur) {
-      this.to.blur(this.field, $event);
-    }
+    this.focusObserver?.setValue(false);
+    this.to.blur?.(this.field, $event);
   }
 
   onChange($event: any) {
-    if (this.to.change) {
-      this.to.change(this.field, $event);
-    }
-
-    if (this.field.formControl) {
-      this.field.formControl.markAsDirty();
-    }
+    this.to.change?.(this.field, $event);
+    this.field.formControl?.markAsDirty();
   }
 
   private attachElementRef(f: FormlyFieldConfig) {
@@ -175,7 +166,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       return;
     }
 
-    if (f['_elementRefs'] && f['_elementRefs'].indexOf(this.elementRef) === -1) {
+    if (f['_elementRefs']?.indexOf(this.elementRef) === -1) {
       f['_elementRefs'].push(this.elementRef);
     } else {
       defineHiddenProp(f, '_elementRefs', [this.elementRef]);
@@ -183,7 +174,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   private detachElementRef(f: FormlyFieldConfig) {
-    const index = f && f['_elementRefs'] ? this.fieldAttrElements.indexOf(this.elementRef) : -1;
+    const index = f?.['_elementRefs'] ? this.fieldAttrElements.indexOf(this.elementRef) : -1;
     if (index !== -1) {
       this.field['_elementRefs'].splice(index, 1);
     }

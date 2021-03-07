@@ -1,30 +1,41 @@
-import { OnInit, OnDestroy, AfterViewInit, TemplateRef, ViewChild, Type, Directive } from '@angular/core';
-import { FieldType as CoreFieldType, FormlyFieldConfig } from '@ngx-formly/core';
+import {
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  TemplateRef,
+  ViewChild,
+  Type,
+  Directive,
+  ViewChildren,
+  QueryList,
+} from '@angular/core';
+import { FieldType as CoreFieldType, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Directive()
-export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> extends CoreFieldType<F>
+export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
+  extends CoreFieldType<F>
   implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
   @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
   @ViewChild('matSuffix') matSuffix!: TemplateRef<any>;
 
-  get formFieldControl() {
-    return this._control || this;
-  }
-  set formFieldControl(control: MatFormFieldControl<any>) {
-    this._control = control;
-    this.attachControl(control);
+  formFieldControl!: MatFormFieldControl<any>;
+  @ViewChildren(MatFormFieldControl) set _controls(controls: QueryList<MatFormFieldControl<any>>) {
+    if (controls.length === 1 && !this.formFieldControl) {
+      this.formFieldControl = controls.first;
+    }
   }
 
   errorStateMatcher: ErrorStateMatcher = { isErrorState: () => this.field && this.showError };
   stateChanges = new Subject<void>();
   _errorState = false;
-  private _control!: MatFormFieldControl<any>;
 
   ngOnInit() {
-    this.attachControl(this.formFieldControl);
+    observe(this, ['formFieldControl'], ({ currentValue }) => {
+      this.attachControl(currentValue || this);
+    });
   }
 
   ngAfterViewInit() {
@@ -37,9 +48,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   ngOnDestroy() {
-    if (this.formField) {
-      delete this.formField._control;
-    }
+    delete (this.formField as any)?._control;
     this.stateChanges.complete();
   }
 
@@ -101,7 +110,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.focused || !this.empty;
   }
   get formField(): MatFormField {
-    return this.field ? (<any>this.field)['__formField__'] : null;
+    return (this.field as any)?.['__formField__'];
   }
 
   private attachControl(control: MatFormFieldControl<any>) {
