@@ -7,9 +7,11 @@ import {
   OnDestroy,
   AfterViewInit,
 } from '@angular/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { FieldType, MatFormlyTemplateOptions } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { FloatLabelType } from '@angular/material/form-field/form-field';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'formly-field-mat-checkbox',
@@ -35,10 +37,10 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, Aft
     templateOptions: {
       hideFieldUnderline: true,
       indeterminate: true,
-      floatLabel: 'always',
+      floatLabel: 'always' as const,
       hideLabel: true,
       align: 'start', // start or end
-      color: 'accent', // workaround for https://github.com/angular/components/issues/18465
+      color: 'accent' as const, // workaround for https://github.com/angular/components/issues/18465
     },
   };
 

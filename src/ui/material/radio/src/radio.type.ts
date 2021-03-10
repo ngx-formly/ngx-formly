@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatRadioGroup } from '@angular/material/radio';
 import { ɵobserve as observe } from '@ngx-formly/core';
+import { FloatLabelType } from '@angular/material/form-field/form-field';
 
 @Component({
   selector: 'formly-field-mat-radio',
@@ -31,7 +32,7 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDest
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
-      floatLabel: 'always',
+      floatLabel: 'always' as const,
       options: [],
       tabindex: -1,
     },

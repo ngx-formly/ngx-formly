@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatSlider } from '@angular/material/slider';
+import { FloatLabelType } from '@angular/material/form-field/form-field';
 
 @Component({
   selector: 'formly-field-mat-slider',
@@ -26,7 +27,7 @@ export class FormlySliderTypeComponent extends FieldType {
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
-      floatLabel: 'always',
+      floatLabel: 'always' as const,
       thumbLabel: false,
     },
   };

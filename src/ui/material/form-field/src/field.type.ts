@@ -9,13 +9,14 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import { FieldType as CoreFieldType, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
+import { FieldType as CoreFieldType, ɵobserve as observe } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MatFormlyFieldConfig } from './form-field.wrapper';
 
 @Directive()
-export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
+export abstract class FieldType<F extends MatFormlyFieldConfig = MatFormlyFieldConfig>
   extends CoreFieldType<F>
   implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
   @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
