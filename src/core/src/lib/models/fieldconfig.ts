@@ -83,6 +83,12 @@ export interface FormlyFieldConfig {
   wrappers?: string[];
 
   /**
+   * It is expected to be the name of defined wrappers.
+   * These wrappers will be added to the default ones after instead of replacing them.
+   */
+  additionalWrappers?: string[];
+
+  /**
    * Whether to hide the field. Defaults to false. If you wish this to be conditional use `hideExpression`
    */
   hide?: boolean;

@@ -111,7 +111,9 @@ export class FormlyConfig {
     }
 
     if (!field.wrappers && type.wrappers) {
-      field.wrappers = [...type.wrappers];
+      field.wrappers = [...type.wrappers, ...(field.additionalWrappers ?? [])];
+    } else if (field.wrappers) {
+      field.wrappers = [...field.wrappers, ...(field.additionalWrappers ?? [])];
     }
   }
 
