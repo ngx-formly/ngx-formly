@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChildren, QueryList } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { FloatLabelType } from '@angular/material/form-field/form-field';
 
 @Component({
   selector: 'formly-field-mat-multicheckbox',

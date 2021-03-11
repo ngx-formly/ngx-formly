@@ -1,3 +1,3 @@
 export { FormlyMatFormFieldModule } from './form-field.module';
 export { FieldType } from './field.type';
-export { MatFormlyFieldConfig, MatFormlyTemplateOptions } from './form-field.wrapper';
+export { FormlyFieldConfig } from './form-field.wrapper';

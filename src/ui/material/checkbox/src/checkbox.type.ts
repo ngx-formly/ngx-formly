@@ -7,11 +7,9 @@ import {
   OnDestroy,
   AfterViewInit,
 } from '@angular/core';
-import { FieldType, MatFormlyTemplateOptions } from '@ngx-formly/material/form-field';
+import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { FloatLabelType } from '@angular/material/form-field/form-field';
-import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'formly-field-mat-checkbox',

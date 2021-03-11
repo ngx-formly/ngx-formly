@@ -13,10 +13,10 @@ import { FieldType as CoreFieldType, ɵobserve as observe } from '@ngx-formly/co
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatFormlyFieldConfig } from './form-field.wrapper';
+import { FormlyFieldConfig } from './form-field.wrapper';
 
 @Directive()
-export abstract class FieldType<F extends MatFormlyFieldConfig = MatFormlyFieldConfig>
+export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   extends CoreFieldType<F>
   implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
   @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;

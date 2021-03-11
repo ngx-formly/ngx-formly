@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FloatLabelType } from '@angular/material/form-field/form-field';
 
 @Component({
   selector: 'formly-field-mat-toggle',
