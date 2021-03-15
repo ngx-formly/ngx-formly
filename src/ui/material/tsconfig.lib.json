@@ -17,7 +17,9 @@
     "lib": ["dom", "es2018"],
     "paths": {
       "@ngx-formly/core": ["dist/@ngx-formly/core"],
-      "@ngx-formly/core/*": ["dist/@ngx-formly/core/*"]
+      "@ngx-formly/core/*": ["dist/@ngx-formly/core/*"],
+      "@ngx-formly/material": ["dist/@ngx-formly/material"],
+      "@ngx-formly/material/*": ["dist/@ngx-formly/material/*"]
     }
   },
   "angularCompilerOptions": {

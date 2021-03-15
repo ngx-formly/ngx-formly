@@ -1,5 +1,5 @@
 import { Input, Directive } from '@angular/core';
-import { FormlyFieldConfig } from '../models';
+import { FormlyFieldConfig, FormlyTemplateOptions } from '../models';
 
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
@@ -26,8 +26,12 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.field.formControl;
   }
 
-  get to() {
-    return this.field.templateOptions || {};
+  get to(): NonNullable<Required<F>['templateOptions']> {
+    if (!!this.field.templateOptions) {
+      return this.field.templateOptions as NonNullable<Required<F>['templateOptions']>;
+    } else {
+      return {} as NonNullable<Required<F>['templateOptions']>;
+    }
   }
 
   get showError(): boolean {

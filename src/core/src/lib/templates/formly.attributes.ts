@@ -40,8 +40,8 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     events: ['click', 'keyup', 'keydown', 'keypress'],
   };
 
-  get to(): FormlyTemplateOptions {
-    return this.field.templateOptions || {};
+  get to() {
+    return this.field.templateOptions || ({} as FormlyTemplateOptions);
   }
 
   private get fieldAttrElements(): ElementRef[] {

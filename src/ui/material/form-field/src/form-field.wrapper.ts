@@ -11,15 +11,34 @@ import {
 } from '@angular/core';
 import {
   ɵdefineHiddenProp as defineHiddenProp,
-  ɵobserve as observe,
-  FormlyFieldConfig,
+  FormlyFieldConfig as CoreFieldConfig,
+  FormlyTemplateOptions,
   FieldWrapper,
 } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { FloatLabelType, MatFormFieldAppearance } from '@angular/material/form-field/form-field';
+import { ThemePalette } from '@angular/material/core';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
   _formField?: FormlyWrapperFormField;
+}
+
+export interface FormlyFieldConfig extends CoreFieldConfig {
+  templateOptions?: MatFormlyTemplateOptions;
+}
+
+interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
+  prefix?: TemplateRef<any>;
+  suffix?: TemplateRef<any>;
+  hideLabel?: boolean;
+  hideRequiredMarker?: boolean;
+  hideFieldUnderline?: boolean;
+  floatLabel?: FloatLabelType;
+  appearance?: MatFormFieldAppearance;
+  color?: ThemePalette;
+  hintStart?: TemplateRef<any> | string;
+  hintEnd?: TemplateRef<any> | string;
 }
 
 @Component({
