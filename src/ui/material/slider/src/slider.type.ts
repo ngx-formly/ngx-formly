@@ -26,7 +26,7 @@ export class FormlySliderTypeComponent extends FieldType {
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
-      floatLabel: 'always',
+      floatLabel: 'always' as const,
       thumbLabel: false,
     },
   };

@@ -35,10 +35,10 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, Aft
     templateOptions: {
       hideFieldUnderline: true,
       indeterminate: true,
-      floatLabel: 'always',
+      floatLabel: 'always' as const,
       hideLabel: true,
       align: 'start', // start or end
-      color: 'accent', // workaround for https://github.com/angular/components/issues/18465
+      color: 'accent' as const, // workaround for https://github.com/angular/components/issues/18465
     },
   };
 

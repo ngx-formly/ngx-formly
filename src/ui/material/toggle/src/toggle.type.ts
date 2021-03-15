@@ -23,7 +23,7 @@ export class FormlyToggleTypeComponent extends FieldType {
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
-      floatLabel: 'always',
+      floatLabel: 'always' as const,
       hideLabel: true,
     },
   };

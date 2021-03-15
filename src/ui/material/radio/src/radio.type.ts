@@ -31,7 +31,7 @@ export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDest
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
-      floatLabel: 'always',
+      floatLabel: 'always' as const,
       options: [],
       tabindex: -1,
     },
