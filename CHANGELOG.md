@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **schematics:** restrict angular dependencies ([5b18126](https://github.com/ngx-formly/ngx-formly/commit/5b18126))
+* **schematics:** restrict angular dependencies ([5b18126](https://github.com/ngx-formly/ngx-formly/commit/5b18126)), closes [#2701](https://github.com/ngx-formly/ngx-formly/issues/2701)
 
 
 
