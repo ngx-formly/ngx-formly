@@ -29,6 +29,9 @@
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
   "schematics": "./src/collection.json",
+  "ng-add": {
+    "save": "devDependencies"
+  },
   "dependencies": {
     "@angular-devkit/core": ">=7 <11",
     "@angular-devkit/schematics": ">=7 <11",
