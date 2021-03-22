@@ -9,6 +9,8 @@ import {
   Output,
   OnDestroy,
   NgZone,
+  ContentChildren,
+  QueryList,
 } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
@@ -17,10 +19,11 @@ import { FormlyConfig } from '../services/formly.config';
 import { clone } from '../utils';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
+import { FormlyTemplate } from './formly.template';
 
 @Component({
   selector: 'formly-form',
-  template: ` <formly-field *ngFor="let f of fields" [field]="f"></formly-field> `,
+  template: '<formly-field [field]="field"></formly-field>',
   providers: [FormlyFormBuilder],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -58,8 +61,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   @Output() modelChange = new EventEmitter<any>();
-
-  private field: FormlyFieldConfigCache = {};
+  @ContentChildren(FormlyTemplate) templates!: QueryList<FormlyTemplate>;
+  field: FormlyFieldConfigCache = {};
   private _modelChangeValue: any = {};
   private valueChangesUnsubscribe = () => {};
 
@@ -88,7 +91,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private checkExpressionChange() {
-    this.field.options.checkExpressions(this.field);
+    this.field.options.checkExpressions?.(this.field);
   }
 
   private valueChanges() {

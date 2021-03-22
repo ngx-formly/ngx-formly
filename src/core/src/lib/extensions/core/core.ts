@@ -1,4 +1,4 @@
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, ComponentRef } from '@angular/core';
 import { FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension } from '../../models';
 import {
@@ -76,11 +76,15 @@ export class CoreExtension implements FormlyExtension {
 
     options.detectChanges = (f: FormlyFieldConfigCache) => {
       if (f._componentRefs) {
-        f.options.checkExpressions(f.parent);
+        f.options.checkExpressions(f.parent ?? f);
         f._componentRefs.forEach((ref) => {
           // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
-          const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
-          changeDetectorRef.markForCheck();
+          if (ref instanceof ComponentRef) {
+            const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
+            changeDetectorRef.markForCheck();
+          } else {
+            ref.markForCheck();
+          }
         });
       }
 

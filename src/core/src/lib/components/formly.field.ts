@@ -15,6 +15,8 @@ import {
   Renderer2,
   ElementRef,
   ChangeDetectionStrategy,
+  EmbeddedViewRef,
+  Optional,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -24,6 +26,7 @@ import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { FormlyForm } from './formly.form';
 
 @Component({
   selector: 'formly-field',
@@ -32,7 +35,6 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   @Input() field: FormlyFieldConfig;
-
   @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
 
   private hostObservers: ReturnType<typeof observe>[] = [];
@@ -47,6 +49,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     private renderer: Renderer2,
     private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
+    @Optional() private form: FormlyForm,
   ) {}
 
   ngAfterContentInit() {
@@ -110,8 +113,14 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
         }
       });
     } else if (f?.type) {
-      const { component } = this.config.getType(f.type);
-      const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
+      const inlineType = this.form?.templates?.find((ref) => ref.name === f.type);
+      let ref: ComponentRef<any> | EmbeddedViewRef<any>;
+      if (inlineType) {
+        ref = containerRef.createEmbeddedView(inlineType.ref, { $implicit: f });
+      } else {
+        const { component } = this.config.getType(f.type, true);
+        ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
+      }
       this.attachComponentRef(ref, f);
     }
   }
@@ -137,10 +146,15 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     }
   }
 
-  private attachComponentRef<T extends FieldType>(ref: ComponentRef<T>, field: FormlyFieldConfigCache) {
+  private attachComponentRef<T extends FieldType>(
+    ref: ComponentRef<T> | EmbeddedViewRef<T>,
+    field: FormlyFieldConfigCache,
+  ) {
     this.componentRefs.push(ref);
     field._componentRefs.push(ref);
-    Object.assign(ref.instance, { field });
+    if (ref instanceof ComponentRef) {
+      Object.assign(ref.instance, { field });
+    }
   }
 
   private render() {
@@ -159,26 +173,27 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     this.hostObservers.forEach(hostObserver => hostObserver.unsubscribe());
     this.hostObservers = [
       observe<boolean>(this.field, ['hide'], ({ firstChange, currentValue }) => {
+        const containerRef = this.containerRef;
         if (this.config.extras.lazyRender === false) {
-          firstChange && this.renderField(this.containerRef, this.field);
+          firstChange && this.renderField(containerRef, this.field);
           if (!firstChange || (firstChange && currentValue)) {
             this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
           }
         } else {
           if (currentValue) {
-            this.containerRef.clear();
+            containerRef.clear();
             if (this.field.className) {
               this.renderer.removeAttribute(this.elementRef.nativeElement, 'class');
             }
           } else {
-            this.renderField(this.containerRef, this.field);
+            this.renderField(containerRef, this.field);
             if (this.field.className) {
               this.renderer.setAttribute(this.elementRef.nativeElement, 'class', this.field.className);
             }
           }
         }
 
-        this.field.options.detectChanges(this.field);
+        !firstChange && this.field.options.detectChanges(this.field);
       }),
       observe<string>(this.field, ['className'], ({ firstChange, currentValue }) => {
         if (

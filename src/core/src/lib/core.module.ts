@@ -14,6 +14,7 @@ import { FieldValidationExtension } from './extensions/field-validation/field-va
 import { FieldFormExtension } from './extensions/field-form/field-form';
 import { CoreExtension } from './extensions/core/core';
 import { ConfigOption } from './models';
+import { FormlyTemplate } from './components/formly.template';
 
 export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
   return {
@@ -31,8 +32,16 @@ export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
 }
 
 @NgModule({
-  declarations: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage, FormlyTemplateType],
-  exports: [FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage],
+  declarations: [
+    FormlyTemplate,
+    FormlyForm,
+    FormlyField,
+    FormlyAttributes,
+    FormlyGroup,
+    FormlyValidationMessage,
+    FormlyTemplateType,
+  ],
+  exports: [FormlyTemplate, FormlyForm, FormlyField, FormlyAttributes, FormlyGroup, FormlyValidationMessage],
   imports: [CommonModule],
 })
 export class FormlyModule {
