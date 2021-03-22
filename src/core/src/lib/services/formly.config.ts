@@ -73,11 +73,15 @@ export class FormlyConfig {
     }
   }
 
-  getType(name: string): TypeOption {
+  getType(name: string, throwIfNotFound = false): TypeOption {
     if (!this.types[name]) {
-      throw new Error(
-        `[Formly Error] The type "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`,
-      );
+      if (throwIfNotFound) {
+        throw new Error(
+          `[Formly Error] The type "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`,
+        );
+      }
+
+      return null;
     }
 
     this.mergeExtendedType(name);
@@ -87,6 +91,10 @@ export class FormlyConfig {
 
   getMergedField(field: FormlyFieldConfig = {}): any {
     const type = this.getType(field.type);
+    if (!type) {
+      return;
+    }
+
     if (type.defaultOptions) {
       reverseDeepMerge(field, type.defaultOptions);
     }
@@ -117,11 +125,11 @@ export class FormlyConfig {
 
   /** @internal */
   resolveFieldTypeRef(field: FormlyFieldConfigCache = {}): ComponentRef<FieldType> {
-    if (!field.type) {
+    const type = this.getType(field.type);
+    if (!type) {
       return null;
     }
 
-    const type = this.getType(field.type);
     if (!type.component || type['_componentRef']) {
       return type['_componentRef'];
     }

@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Injector } from '@angular/core';
 import { AsyncValidatorFn, ValidatorFn, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 import { FormlyFieldConfig, FormlyFormOptions } from './fieldconfig';
@@ -13,7 +13,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _hide?: boolean;
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];
-  _componentRefs?: ComponentRef<FieldType>[];
+  _componentRefs?: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[];
   _keyPath?: {
     key: FormlyFieldConfig['key'];
     path: string[];

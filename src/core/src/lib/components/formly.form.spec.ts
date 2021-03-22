@@ -41,7 +41,7 @@ const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
 };
 
 const FORMLY_FORM_SELECTOR = 'formly-form';
-const FORMLY_FIELDS_SELECTOR = 'formly-form > formly-field';
+const FORMLY_FIELDS_SELECTOR = 'formly-form > formly-field * > formly-field';
 
 describe('FormlyForm Component', () => {
   describe('fields input', () => {
@@ -559,6 +559,79 @@ describe('FormlyForm Component', () => {
       detectChanges();
 
       expect(form.get('name').value).toEqual('First');
+    });
+  });
+
+  describe('inline type', () => {
+    it('should render inline type', () => {
+      const { query } = renderComponent(
+        {
+          fields: [
+            {
+              type: 'inline-type',
+              templateOptions: { label: 'inline-type-label' },
+            },
+          ],
+        },
+        {
+          template: `
+            <formly-form [fields]="fields">
+              <ng-template formlyTemplate="inline-type" let-field>
+                <div id="inline-type">{{ field.templateOptions.label }}</div>
+              </ng-template>
+            </formly-form>
+          `,
+        },
+      );
+
+      expect(query('#inline-type')).not.toBeNull();
+      expect(query('#inline-type').nativeElement.textContent).toEqual('inline-type-label');
+    });
+
+    it('should override existing type', () => {
+      const { query } = renderComponent(
+        {
+          fields: [{ type: 'input' }],
+        },
+        {
+          template: `
+            <formly-form [fields]="fields">
+              <ng-template formlyTemplate="input" let-field>
+                <div id="inline-input"></div>
+              </ng-template>
+            </formly-form>
+          `,
+        },
+      );
+
+      expect(query('#inline-input')).not.toBeNull();
+      expect(query('input')).toBeNull();
+    });
+
+    it('should override default formly-group @@@', () => {
+      const { query, queryAll } = renderComponent(
+        {
+          fields: [
+            {
+              fieldGroup: [{ fieldGroup: [{ type: 'input' }] }],
+            },
+          ],
+        },
+        {
+          template: `
+            <formly-form [fields]="fields">
+              <ng-template formlyTemplate let-f>
+                <div class="inline-group">
+                  <formly-field *ngFor="let field of f.fieldGroup" [field]="field"></formly-field>
+                </div>
+              </ng-template>
+            </formly-form>
+          `,
+        },
+      );
+
+      expect(queryAll('.inline-group')).toHaveLength(3);
+      expect(query('formly-group')).toBeNull();
     });
   });
 

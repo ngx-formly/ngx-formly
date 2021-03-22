@@ -83,7 +83,7 @@ describe('FormlyConfig service', () => {
 
     it('should throw when type not found', () => {
       const config = new FormlyConfig();
-      expect(() => config.getType('custom_input')).toThrowError(
+      expect(() => config.getType('custom_input', true)).toThrowError(
         '[Formly Error] The type "custom_input" could not be found. Please make sure that is registered through the FormlyModule declaration.',
       );
     });
