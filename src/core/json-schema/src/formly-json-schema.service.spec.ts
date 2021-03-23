@@ -28,7 +28,6 @@ const renderComponent = ({ schema, model }: { schema: JSONSchema7; model?: any }
     imports: [FormlyInputModule],
     declarations: [ArrayTypeComponent],
     config: {
-      extras: { resetFieldOnHide: true },
       types: [
         { name: 'object', extends: 'formly-group' },
         { name: 'array', component: ArrayTypeComponent },

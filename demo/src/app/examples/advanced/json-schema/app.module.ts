@@ -59,7 +59,6 @@ export function constValidationMessage(err, field: FormlyFieldConfig) {
     HttpClientModule,
     MatMenuModule,
     FormlyModule.forRoot({
-      extras: { resetFieldOnHide: true },
       validationMessages: [
         { name: 'required', message: 'This field is required' },
         { name: 'null', message: 'should be null' },

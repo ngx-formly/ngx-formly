@@ -77,6 +77,39 @@ describe('FormlyField Component', () => {
     });
   });
 
+  describe('disable renderFormlyFieldElement', () => {
+    it('should not render content inside formly-field element', () => {
+      const { query } = renderComponent({ type: 'input' }, { config: { extras: { renderFormlyFieldElement: false } } });
+
+      expect(query('formly-wrapper-form-field')).toBeDefined();
+      expect(query('formly-field > formly-wrapper-form-field')).toBeNull();
+    });
+
+    it('should apply className and styles to formly-field wrapper', () => {
+      const { field, detectChanges, query } = renderComponent(
+        {
+          hide: true,
+          type: 'input',
+          className: 'foo',
+        },
+        { config: { extras: { lazyRender: false, renderFormlyFieldElement: false } } },
+      );
+
+      const formlyField = query('formly-field');
+      const wrapper = query('formly-wrapper-form-field');
+      expect(formlyField.styles.display).toEqual('');
+      expect(formlyField.attributes.class).toEqual(undefined);
+      expect(wrapper.styles.display).toEqual('none');
+      expect(wrapper.attributes.class).toEqual('foo');
+
+      field.hide = false;
+      field.className = '';
+      detectChanges();
+      expect(wrapper.styles.display).toEqual('');
+      expect(wrapper.styles.display).toEqual('');
+    });
+  });
+
   it('should call field hooks if set', () => {
     const f: FormlyFieldConfig = {
       hooks: {
