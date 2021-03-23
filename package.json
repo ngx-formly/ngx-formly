@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/common",
-  "version": "6.0.0-alpha",
+  "version": "6.0.0-next.1",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -16,7 +16,7 @@
     "commit": "git-cz",
     "bundlesize": "bundlesize",
     "build": "ts-node --dir build build.ts",
-    "release": "standard-version --prerelease alpha",
+    "release": "standard-version --prerelease next",
     "publish": "ts-node --dir build publish.ts",
     "start": "ng serve --port 4100 --open --hmr",
     "demo": "npm run start",
