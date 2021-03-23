@@ -75,10 +75,17 @@ export interface ConfigOption {
     lazyRender?: boolean;
 
     /**
-     * When true, reset the value of hidden fields.
+     * When `true`, reset the value of a hidden field.
      *
      * Defaults to `false`.
      */
     resetFieldOnHide?: boolean;
+
+    /**
+     * Whether to render fields inside <formly-field> component or not.
+     *
+     * Defaults to `true`.
+     */
+    renderFormlyFieldElement?: boolean;
   };
 }
