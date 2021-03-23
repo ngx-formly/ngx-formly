@@ -34,11 +34,25 @@ import { FormlyForm } from './formly.form';
 })
 export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   @Input() field: FormlyFieldConfig;
-  @ViewChild('container', { read: ViewContainerRef, static: true }) containerRef: ViewContainerRef;
+  @ViewChild('container', { read: ViewContainerRef, static: true }) viewContainerRef: ViewContainerRef;
 
   private hostObservers: ReturnType<typeof observe>[] = [];
-  private componentRefs: any[] = [];
+  private componentRefs: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[] = [];
   private hooksObservers: Function[] = [];
+  private get containerRef() {
+    return this.config.extras.renderFormlyFieldElement ? this.viewContainerRef : this.hostContainerRef;
+  }
+
+  private get elementRef() {
+    if (this.config.extras.renderFormlyFieldElement) {
+      return this._elementRef;
+    }
+    if (this.componentRefs?.[0] instanceof ComponentRef) {
+      return this.componentRefs[0].location;
+    }
+
+    return null;
+  }
 
   valueChangesUnsubscribe = () => {};
 
@@ -46,7 +60,8 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
     private config: FormlyConfig,
     private renderer: Renderer2,
     private resolver: ComponentFactoryResolver,
-    private elementRef: ElementRef,
+    private _elementRef: ElementRef,
+    private hostContainerRef: ViewContainerRef,
     @Optional() private form: FormlyForm,
   ) {}
 
@@ -156,7 +171,8 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
         if (this.config.extras.lazyRender === false) {
           firstChange && this.renderField(containerRef, this.field);
           if (!firstChange || (firstChange && currentValue)) {
-            this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
+            this.elementRef &&
+              this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
           }
         } else {
           if (currentValue) {
@@ -170,7 +186,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
       }),
       observe<string>(this.field, ['className'], ({ firstChange, currentValue }) => {
         if (!firstChange || (firstChange && currentValue)) {
-          this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
+          this.elementRef && this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
         }
       }),
     ];

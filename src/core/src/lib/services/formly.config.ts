@@ -27,6 +27,7 @@ export class FormlyConfig {
     checkExpressionOn: 'modelChange',
     lazyRender: true,
     resetFieldOnHide: true,
+    renderFormlyFieldElement: true,
     showError(field: FieldType) {
       return (
         field.formControl?.invalid &&

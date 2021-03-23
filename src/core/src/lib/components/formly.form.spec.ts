@@ -608,7 +608,7 @@ describe('FormlyForm Component', () => {
       expect(query('input')).toBeNull();
     });
 
-    it('should override default formly-group @@@', () => {
+    it('should override default formly-group', () => {
       const { query, queryAll } = renderComponent(
         {
           fields: [
