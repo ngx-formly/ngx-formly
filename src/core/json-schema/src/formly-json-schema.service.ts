@@ -349,7 +349,6 @@ export class FormlyJsonschema {
                 const value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
                   .filter(([f, i]) => {
-                    console.warn('---', control.value);
                     return this.isFieldValid(f, schemas[i], options);
                   })
                   .sort(([f1], [f2]) => {
