@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, TemplateRef, ElementRef, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, ElementRef, ViewContainerRef } from '@angular/core';
 import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -7,8 +7,6 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { FieldType } from './field.type';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
-  _matprefix: TemplateRef<any>;
-  _matsuffix: TemplateRef<any>;
   __formField__: FormlyWrapperFormField;
 }
 
@@ -28,12 +26,12 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
         <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
       </mat-label>
 
-      <ng-container matPrefix *ngIf="to.prefix || formlyField._matprefix">
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : formlyField._matprefix"></ng-container>
+      <ng-container matPrefix *ngIf="to.prefix || to._matPrefix">
+        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : to._matPrefix"></ng-container>
       </ng-container>
 
-      <ng-container matSuffix *ngIf="to.suffix || formlyField._matsuffix">
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matsuffix"></ng-container>
+      <ng-container matSuffix *ngIf="to.suffix || to._matSuffix">
+        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : to._matSuffix"></ng-container>
       </ng-container>
 
       <mat-error>

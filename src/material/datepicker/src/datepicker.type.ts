@@ -1,5 +1,4 @@
 import { Component, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
-import { ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput } from '@angular/material/datepicker';
@@ -64,7 +63,16 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
     (<any> this.datepickerInput)._formField = this.formField;
 
     setTimeout(() => {
-      defineHiddenProp(this.field, '_mat' + this.to.datepickerOptions.datepickerTogglePosition, this.datepickerToggle);
+      switch (this.to.datepickerOptions.datepickerTogglePosition) {
+        case 'suffix':
+          this.to._matSuffix = this.datepickerToggle;
+          break;
+
+        case 'prefix':
+          this.to._matPrefix = this.datepickerToggle;
+          break;
+      }
+
       (<any> this.options)._markForCheck(this.field);
     });
   }
