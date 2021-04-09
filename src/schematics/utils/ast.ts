@@ -111,6 +111,9 @@ export function findModuleFromOptions(host: Tree, options: any) {
   }
 
   const project = workspace.projects[options.project];
+  if (!project) {
+    throw new SchematicsException(`Could not find the specified Angular project: ${options.project}`);
+  }
 
   if (options.path === undefined) {
     options.path = `/${project.sourceRoot}`;
