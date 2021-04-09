@@ -53,6 +53,8 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
 
   if (!field.formControl && control) {
     defineHiddenProp(field, 'formControl', control);
+    control.setValidators(null);
+    control.setAsyncValidators(null);
 
     field.templateOptions.disabled = !!field.templateOptions.disabled;
     wrapProperty(field.templateOptions, 'disabled', ({ firstChange, currentValue }) => {
@@ -149,9 +151,6 @@ function updateControl(form: FormGroup|FormArray, opts: { emitEvent: boolean }, 
 
 export function clearControl(form: AbstractControl) {
   form['_fields'] && delete form['_fields'];
-  form.setValidators(null);
-  form.setAsyncValidators(null);
-
   if (form instanceof FormGroup || form instanceof FormArray) {
     Object.keys(form.controls)
       .forEach((k) => clearControl(form.controls[k]));
