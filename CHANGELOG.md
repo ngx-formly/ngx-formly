@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.17"></a>
+## [5.10.17](https://github.com/ngx-formly/ngx-formly/compare/v5.10.16...v5.10.17) (2021-04-09)
+
+
+### Bug Fixes
+
+* **schematics:** handle not found project ([af27dee](https://github.com/ngx-formly/ngx-formly/commit/af27dee))
+
+
+
 <a name="5.10.16"></a>
 ## [5.10.16](https://github.com/ngx-formly/ngx-formly/compare/v5.10.15...v5.10.16) (2021-04-09)
 
