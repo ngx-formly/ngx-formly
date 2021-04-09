@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.16"></a>
+## [5.10.16](https://github.com/ngx-formly/ngx-formly/compare/v5.10.15...v5.10.16) (2021-04-09)
+
+
+### Bug Fixes
+
+* **core:** preserve validation cache for detached fields ([#2794](https://github.com/ngx-formly/ngx-formly/issues/2794)) ([896c965](https://github.com/ngx-formly/ngx-formly/commit/896c965)), closes [#2786](https://github.com/ngx-formly/ngx-formly/issues/2786)
+* **json-schema:** remove console ([d2d8734](https://github.com/ngx-formly/ngx-formly/commit/d2d8734)), closes [#2777](https://github.com/ngx-formly/ngx-formly/issues/2777)
+* **material:** allow re-use internal prefix & suffix ([#2796](https://github.com/ngx-formly/ngx-formly/issues/2796)) ([bb9df21](https://github.com/ngx-formly/ngx-formly/commit/bb9df21)), closes [#2775](https://github.com/ngx-formly/ngx-formly/issues/2775)
+* **schematics:** allow passing --project option to ng-add ([#2793](https://github.com/ngx-formly/ngx-formly/issues/2793)) ([5f11350](https://github.com/ngx-formly/ngx-formly/commit/5f11350)), closes [#2791](https://github.com/ngx-formly/ngx-formly/issues/2791)
+* clean dist folder on build ([#2792](https://github.com/ngx-formly/ngx-formly/issues/2792)) ([99cd35c](https://github.com/ngx-formly/ngx-formly/commit/99cd35c))
+* **schematics:** move to dev dependencies ([#2753](https://github.com/ngx-formly/ngx-formly/issues/2753)) ([9ef4f38](https://github.com/ngx-formly/ngx-formly/commit/9ef4f38))
+
+
+
 <a name="5.10.15"></a>
 ## [5.10.15](https://github.com/ngx-formly/ngx-formly/compare/v5.10.14...v5.10.15) (2021-03-16)
 
