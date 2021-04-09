@@ -12,7 +12,7 @@
     "lint:fix": "tslint --fix -p tsconfig.json",
     "commit": "npm run build && git-cz",
     "bundlesize": "npm run build && bundlesize",
-    "build": "npm run build:core && npm run build:bootstrap && npm run build:material && npm run build:ionic && npm run build:primeng && npm run build:kendo && npm run build:nativescript && npm run build:schematics && node .config/build.js",
+    "build": "rm -rf dist/@ngx-formly && npm run build:core && npm run build:bootstrap && npm run build:material && npm run build:ionic && npm run build:primeng && npm run build:kendo && npm run build:nativescript && npm run build:schematics && node .config/build.js",
     "build:core": "ng build @ngx-formly/core",
     "build:bootstrap": "ng build @ngx-formly/bootstrap",
     "build:material": "ng build @ngx-formly/material",
