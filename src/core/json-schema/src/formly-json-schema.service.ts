@@ -346,7 +346,7 @@ export class FormlyJsonschema {
             hideExpression: (m, fs, f) => {
               const control = f.parent.parent.fieldGroup[0].formControl;
               if (control.value === -1) {
-                const value = f.parent.fieldGroup
+                let value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
                   .filter(([f, i]) => {
                     return this.isFieldValid(f, schemas[i], options);
@@ -367,9 +367,13 @@ export class FormlyJsonschema {
                   .map(([, i]) => i)
                 ;
 
-                const normalizedValue = [value.length === 0 ? 0 : value[0]];
-                const formattedValue = mode === 'anyOf' ? normalizedValue : normalizedValue[0];
-                control.setValue(formattedValue);
+                if (mode === 'anyOf') {
+                  const definedValue = value.filter(i => totalMatchedFields(f.parent.fieldGroup[i]));
+                  value = definedValue.length > 0 ? definedValue : [value[0] || 0];
+                }
+
+                value = value.length > 0 ? value : [0];
+                control.setValue(mode === 'anyOf' ? value : value[0]);
               }
 
               return Array.isArray(control.value)
