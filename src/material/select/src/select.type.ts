@@ -74,6 +74,8 @@ export class FormlyFieldSelect extends FieldType {
         ? selectAllValue
         : [],
     );
+
+    this.formControl.markAsDirty();
   }
 
   change($event: MatSelectChange) {
