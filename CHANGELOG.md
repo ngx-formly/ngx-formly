@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.18"></a>
+## [5.10.18](https://github.com/ngx-formly/ngx-formly/compare/v5.10.17...v5.10.18) (2021-04-17)
+
+
+### Bug Fixes
+
+* **json-schema:** select all populated anyOf schemas ([#2804](https://github.com/ngx-formly/ngx-formly/issues/2804)) ([43aa184](https://github.com/ngx-formly/ngx-formly/commit/43aa184)), closes [#2802](https://github.com/ngx-formly/ngx-formly/issues/2802)
+* **material:** mark as dirty on selectAll options ([#2805](https://github.com/ngx-formly/ngx-formly/issues/2805)) ([a9c5b0f](https://github.com/ngx-formly/ngx-formly/commit/a9c5b0f)), closes [#2800](https://github.com/ngx-formly/ngx-formly/issues/2800)
+
+
+
 <a name="5.10.17"></a>
 ## [5.10.17](https://github.com/ngx-formly/ngx-formly/compare/v5.10.16...v5.10.17) (2021-04-09)
 
