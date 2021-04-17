@@ -1194,7 +1194,7 @@ describe('Service: FormlyJsonschema', () => {
           expect(barField.hide).toBeFalsy();
         });
 
-        it('should render the filled anyOf field on first render', () => {
+        it('should render the filled anyOf field on first render (matched one anyOf schema)', () => {
           const { field } = renderComponent({
             model: { bar: 'bar' },
             schema: {
@@ -1209,6 +1209,24 @@ describe('Service: FormlyJsonschema', () => {
           const [, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
 
           expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+        });
+
+        it('should render the filled anyOf field on first render (matched multi anyOf schema)', () => {
+          const { field } = renderComponent({
+            model: { bar: 'bar', foo: 'test' },
+            schema: {
+              type: 'object',
+              anyOf: [
+                { properties: { foo: { type: 'string', default: 'foo' } } },
+                { properties: { bar: { type: 'string' } } },
+              ],
+            },
+          });
+
+          const [, { fieldGroup: [fooField, barField] }] = field.fieldGroup[0].fieldGroup;
+
+          expect(fooField.hide).toBeFalsy();
           expect(barField.hide).toBeFalsy();
         });
 
@@ -1227,7 +1245,7 @@ describe('Service: FormlyJsonschema', () => {
           expect(barField.hide).toBeFalsy();
         });
 
-        it('should reset the unselected anyOf field using default value', () => {
+        it('should reset the unselected anyOf field with default value', () => {
           const { field, model, fixture } = renderComponent({
             schema: {
               type: 'object',
