@@ -1343,6 +1343,66 @@ describe('Service: FormlyJsonschema', () => {
 
       expect(to.label).toBe('Age');
     });
+    it('should be possible to set the key via formlyConfig', () => {
+      const schema: JSONSchema7 = JSON.parse(`{
+        "title": "Custom model Key",
+        "type": "object",
+        "properties": {
+          "withkey": {
+            "type": "string",
+            "title": "With Key",
+            "widget": {
+              "formlyConfig": {
+                "key": "custom.key.path"
+              }
+            }
+          },
+          "withNumericKey": {
+            "type": "string",
+            "title": "With Key",
+            "widget": {
+              "formlyConfig": {
+                "key": 0
+              }
+            }
+          },
+          "withArrayKey": {
+            "type": "string",
+            "title": "With Key",
+            "widget": {
+              "formlyConfig": {
+                "key": []
+              }
+            }
+          },
+          "withoutKey": {
+            "type": "string",
+            "title": "Without key"
+          },
+          "alsoWithoutKey": {
+            "type": "string",
+            "title": "Also without key",
+            "widget": {
+              "formlyConfig": {
+                "templateOptions": {
+                  "type": "date"
+                }
+              }
+            }
+          }
+        }
+      }`);
+      const fields = formlyJsonschema.toFieldConfig(schema);
+      expect(fields.fieldGroup).toBeDefined();
+      const fg = fields.fieldGroup;
+      expect(fg.length).toEqual(5);
+      expect(fg[0].key).toEqual('custom.key.path');
+      expect(fg[1].key).toEqual(0);
+      expect(fg[2].key).toEqual([]);
+      // Check the falsy path also
+      expect(fg[3].key).toEqual('withoutKey');
+      expect(fg[4].key).toEqual('alsoWithoutKey');
+    });
   });
 
   describe('FormlyJsonSchemaOptions map function', () => {
