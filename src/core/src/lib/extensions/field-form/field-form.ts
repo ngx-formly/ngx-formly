@@ -112,7 +112,7 @@ export class FieldFormExtension implements FormlyExtension {
       c['_fields']
         .filter((f: FormlyFieldConfigCache) => !f._hide)
         .forEach((f: FormlyFieldConfigCache) => validators.push(...f[type]));
-    } else {
+    } else if (field[type]) {
       validators.push(...field[type]);
     }
 
