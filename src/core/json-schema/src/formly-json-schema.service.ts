@@ -143,39 +143,50 @@ export class FormlyJsonschema {
         field.fieldGroup = [];
 
         const [propDeps, schemaDeps] = this.resolveDependencies(schema);
-        Object.keys(schema.properties || {}).forEach(key => {
-          const f = this._toFieldConfig(<JSONSchema7> schema.properties[key], { ...options, key });
+        Object.keys(schema.properties || {}).forEach(property => {
+          const f = this._toFieldConfig(<JSONSchema7> schema.properties[property], { ...options, key: property });
           field.fieldGroup.push(f);
-          if (Array.isArray(schema.required) && schema.required.indexOf(key) !== -1) {
-            f.templateOptions.required = true;
-          }
-          if (f.templateOptions && !f.templateOptions.required && propDeps[key]) {
+          if (
+            (Array.isArray(schema.required) && schema.required.indexOf(property) !== -1)
+            || propDeps[property]
+          ) {
             f.expressionProperties = {
-              'templateOptions.required': m => m && propDeps[key].some(k => !isEmpty(m[k])),
+              'templateOptions.required': (m, s, f) => {
+                const { model, templateOptions: { required } } = f.parent ? f.parent : { templateOptions: {} } as any;
+                if (!model && !required) {
+                  return false;
+                }
+
+                if (Array.isArray(schema.required) && schema.required.indexOf(property) !== -1) {
+                  return true;
+                }
+
+                return propDeps[property] && propDeps[property].some(k => !isEmpty(m[k]));
+              },
             };
           }
 
-          if (schemaDeps[key]) {
+          if (schemaDeps[property]) {
             const getConstValue = (s: JSONSchema7) => {
               return s.hasOwnProperty('const') ? s.const : s.enum[0];
             };
 
-            const oneOfSchema = schemaDeps[key].oneOf;
+            const oneOfSchema = schemaDeps[property].oneOf;
             if (
               oneOfSchema
-              && oneOfSchema.every(o => o.properties && o.properties[key] && isConst(o.properties[key]))
+              && oneOfSchema.every(o => o.properties && o.properties[property] && isConst(o.properties[property]))
             ) {
               oneOfSchema.forEach(oneOfSchemaItem => {
-                const { [key]: constSchema, ...properties } = oneOfSchemaItem.properties;
+                const { [property]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
                   ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, resetOnHide: true }),
-                  hideExpression: m => !m || getConstValue(constSchema) !== m[key],
+                  hideExpression: m => !m || getConstValue(constSchema) !== m[property],
                 });
               });
             } else {
               field.fieldGroup.push({
-                ...this._toFieldConfig(schemaDeps[key], options),
-                hideExpression: m => !m || isEmpty(m[key]),
+                ...this._toFieldConfig(schemaDeps[property], options),
+                hideExpression: m => !m || isEmpty(m[property]),
               });
             }
 
