@@ -45,6 +45,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   shareFormControl?: boolean;
   ignoreDefault?: boolean;
   readOnly?: boolean;
+  key?: FormlyFieldConfig['key'];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -53,7 +54,7 @@ export class FormlyJsonschema {
     return this._toFieldConfig(schema, { schema, ...(options || {}) });
   }
 
-  private _toFieldConfig(schema: JSONSchema7, options: IOptions): FormlyFieldConfig {
+  private _toFieldConfig(schema: JSONSchema7, { key, ...options }: IOptions): FormlyFieldConfig {
     schema = this.resolveSchema(schema, options);
 
     let field: FormlyFieldConfig = {
@@ -65,6 +66,10 @@ export class FormlyJsonschema {
         description: schema.description,
       },
     };
+
+    if (key != null) {
+      field.key = key;
+    }
 
     if (!options.ignoreDefault && (schema.readOnly || options.readOnly)) {
       field.templateOptions.disabled = true;
@@ -139,9 +144,8 @@ export class FormlyJsonschema {
 
         const [propDeps, schemaDeps] = this.resolveDependencies(schema);
         Object.keys(schema.properties || {}).forEach(key => {
-          const f = this._toFieldConfig(<JSONSchema7> schema.properties[key], options);
+          const f = this._toFieldConfig(<JSONSchema7> schema.properties[key], { ...options, key });
           field.fieldGroup.push(f);
-          f.key = key;
           if (Array.isArray(schema.required) && schema.required.indexOf(key) !== -1) {
             f.templateOptions.required = true;
           }
