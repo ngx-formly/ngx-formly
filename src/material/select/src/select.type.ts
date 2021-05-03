@@ -24,6 +24,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [multiple]="to.multiple"
       (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher"
+      [aria-label]="_getAriaLabel()"
       [aria-labelledby]="_getAriaLabelledby()"
       [disableOptionCentering]="to.disableOptionCentering"
       >
@@ -93,7 +94,11 @@ export class FormlyFieldSelect extends FieldType {
       return this.formField._labelId;
     }
 
-    return null;
+    return undefined;
+  }
+
+  _getAriaLabel() {
+    return this.to.attributes ? this.to.attributes['aria-label'] : undefined;
   }
 
   private getSelectAllValue(options: any[]) {
