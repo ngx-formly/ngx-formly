@@ -27,6 +27,10 @@ function isEmpty(v: any) {
   return v === '' || v === undefined || v === null;
 }
 
+function isObject(v: any) {
+  return v != null && typeof v === 'object' && !Array.isArray(v);
+}
+
 function isConst(schema: JSONSchema7) {
   return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
 }
@@ -283,7 +287,7 @@ export class FormlyJsonschema {
 
     // map in possible formlyConfig options from the widget property
     if (schema['widget'] && schema['widget'].formlyConfig) {
-      field = reverseDeepMerge(schema['widget'].formlyConfig, field);
+      field = this.mergeFields(field, schema['widget'].formlyConfig);
     }
 
     // if there is a map function passed in, use it to allow the user to
@@ -521,5 +525,17 @@ export class FormlyJsonschema {
     });
 
     return form.valid;
+  }
+
+  private mergeFields(f1: FormlyFieldConfig, f2: FormlyFieldConfig) {
+    for (let prop in f2) {
+      if (isObject(f1[prop]) && isObject(f2[prop])) {
+        f1[prop] = this.mergeFields(f1[prop], f2[prop]);
+      } else if (f2[prop] != null) {
+        f1[prop] = f2[prop];
+      }
+    }
+
+    return f1;
   }
 }
