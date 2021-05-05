@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.19"></a>
+## [5.10.19](https://github.com/ngx-formly/ngx-formly/compare/v5.10.18...v5.10.19) (2021-05-05)
+
+
+### Bug Fixes
+
+* **core:** ensure validators key is defined on build ([#2820](https://github.com/ngx-formly/ngx-formly/issues/2820)) ([51300c8](https://github.com/ngx-formly/ngx-formly/commit/51300c8)), closes [#2818](https://github.com/ngx-formly/ngx-formly/issues/2818)
+* **json-schema:** do not override widget.formlyConfig.key ([#2807](https://github.com/ngx-formly/ngx-formly/issues/2807)) ([69140f0](https://github.com/ngx-formly/ngx-formly/commit/69140f0))
+* **json-schema:** resolve recursive schema when using widget ([#2827](https://github.com/ngx-formly/ngx-formly/issues/2827)) ([055c268](https://github.com/ngx-formly/ngx-formly/commit/055c268)), closes [#2823](https://github.com/ngx-formly/ngx-formly/issues/2823)
+* **json-schema:** take account of optional object with required props ([#2817](https://github.com/ngx-formly/ngx-formly/issues/2817)) ([6a97932](https://github.com/ngx-formly/ngx-formly/commit/6a97932)), closes [#2752](https://github.com/ngx-formly/ngx-formly/issues/2752)
+* **material:** allow passing aria-label to mat-select ([#2828](https://github.com/ngx-formly/ngx-formly/issues/2828)) ([f26d7e2](https://github.com/ngx-formly/ngx-formly/commit/f26d7e2)), closes [#2821](https://github.com/ngx-formly/ngx-formly/issues/2821)
+
+
+
 <a name="5.10.18"></a>
 ## [5.10.18](https://github.com/ngx-formly/ngx-formly/compare/v5.10.17...v5.10.18) (2021-04-17)
 
