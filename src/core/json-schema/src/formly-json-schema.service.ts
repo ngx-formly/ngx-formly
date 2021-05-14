@@ -154,7 +154,10 @@ export class FormlyJsonschema {
             (Array.isArray(schema.required) && schema.required.indexOf(property) !== -1)
             || propDeps[property]
           ) {
-            f.expressionProperties = {
+            if (!f.expressionProperties) {
+              f.expressionProperties = {};
+            }
+            f.expressionProperties =  { ...f.expressionProperties,
               'templateOptions.required': (m, s, f) => {
                 const { model, templateOptions: { required } } = f.parent ? f.parent : { templateOptions: {} } as any;
                 if (!model && !required) {
