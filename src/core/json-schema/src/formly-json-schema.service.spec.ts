@@ -388,6 +388,29 @@ describe('Service: FormlyJsonschema', () => {
           expect(childField.templateOptions.required).toBeTruthy();
         });
 
+        it('required with oneOf/anyOf', () => {
+          const { field } = renderComponent({
+            schema: {
+              type: 'object',
+              required: ['address'],
+              properties: {
+                address: {
+                  type: 'object',
+                  oneOf: [{
+                    required: ['city'],
+                    properties: {
+                      city: { type: 'string', title: 'foo' },
+                    },
+                  }],
+                },
+              },
+            },
+          });
+
+          const cityField = field.form.get('address.city');
+          expect(cityField.valid).toBeFalsy();
+        });
+
         it('should not kill other expressionProperties', () => {
           const {field} = renderComponent(JSON.parse(`{
             "schema": {

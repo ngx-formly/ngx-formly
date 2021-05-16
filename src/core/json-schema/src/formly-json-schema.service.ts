@@ -154,10 +154,16 @@ export class FormlyJsonschema {
             (Array.isArray(schema.required) && schema.required.indexOf(property) !== -1)
             || propDeps[property]
           ) {
-            f.expressionProperties =  {
+            f.expressionProperties = {
               ...(f.expressionProperties || {}),
               'templateOptions.required': (m, s, f) => {
-                const { model, templateOptions: { required } } = f.parent ? f.parent : { templateOptions: {} } as any;
+                let parent = f.parent;
+                const model = f.fieldGroup && f.key != null ? parent.model : f.model;
+                while (parent.key == null && parent.parent) {
+                  parent = parent.parent;
+                }
+
+                const required = parent && parent.templateOptions ? parent.templateOptions.required : false;
                 if (!model && !required) {
                   return false;
                 }
@@ -248,7 +254,7 @@ export class FormlyJsonschema {
         if (!this.isEnum(schema)) {
           const _this = this;
           Object.defineProperty(field, 'fieldArray', {
-            get: function() {
+            get: function () {
               if (!Array.isArray(schema.items)) {
                 // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
                 return _this._toFieldConfig(<JSONSchema7> schema.items, options);
@@ -385,7 +391,7 @@ export class FormlyJsonschema {
                     return matchedFields2 > matchedFields1 ? 1 : -1;
                   })
                   .map(([, i]) => i)
-                ;
+                  ;
 
                 if (mode === 'anyOf') {
                   const definedValue = value.filter(i => totalMatchedFields(f.parent.fieldGroup[i]));
