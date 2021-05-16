@@ -23,7 +23,7 @@ import { ɵwrapProperty as wrapProperty } from '@ngx-formly/core';
   `,
 })
 export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDestroy {
-  @ViewChild(MatRadioGroup) radioGroup!: MatRadioGroup;
+  @ViewChild(MatRadioGroup, <any> { static: true }) radioGroup!: MatRadioGroup;
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,

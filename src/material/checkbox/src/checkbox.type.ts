@@ -20,7 +20,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   `,
 })
 export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, AfterViewChecked, OnDestroy {
-  @ViewChild(MatCheckbox) checkbox!: MatCheckbox;
+  @ViewChild(MatCheckbox, <any> { static: true })checkbox!: MatCheckbox;
   defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
@@ -43,13 +43,15 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, Aft
   }
 
   ngAfterViewInit() {
-    this.focusMonitor.monitor(this.checkbox._inputElement, true).subscribe(focusOrigin => {
-      if (focusOrigin) {
-        this.to.focus && this.to.focus(this.field);
-      } else {
-        this.to.blur && this.to.blur(this.field);
-      }
-    });
+    if (this.checkbox) {
+      this.focusMonitor.monitor(this.checkbox._inputElement, true).subscribe(focusOrigin => {
+        if (focusOrigin) {
+          this.to.focus && this.to.focus(this.field);
+        } else {
+          this.to.blur && this.to.blur(this.field);
+        }
+      });
+    }
   }
 
   ngAfterViewChecked() {
