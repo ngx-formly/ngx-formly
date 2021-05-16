@@ -387,6 +387,32 @@ describe('Service: FormlyJsonschema', () => {
           fixture.detectChanges();
           expect(childField.templateOptions.required).toBeTruthy();
         });
+
+        it('should not kill other expressionProperties', () => {
+          const {field} = renderComponent(JSON.parse(`{
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "widget": {
+                    "formlyConfig": {
+                      "expressionProperties": {
+                        "templateOptions.readonly": "model.readonly"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }`));
+
+          const childField = field.fieldGroup[0];
+          expect(childField.expressionProperties['templateOptions.readonly']).toEqual('model.readonly');
+        });
       });
 
       describe('dependencies', () => {
