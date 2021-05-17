@@ -4,36 +4,26 @@ import { FieldType } from '@ngx-formly/core';
 @Component({
   selector: 'formly-field-multicheckbox',
   template: `
-    <div>
-      <div
-        *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
-        [ngClass]="{
-          'form-check': to.formCheck.indexOf('custom') === -1,
-          'form-check-inline': to.formCheck === 'inline',
-          'custom-control': to.formCheck.indexOf('custom') === 0,
-          'custom-checkbox': to.formCheck === 'custom' || to.formCheck === 'custom-inline',
-          'custom-control-inline': to.formCheck === 'custom-inline',
-          'custom-switch': to.formCheck === 'custom-switch'
-        }"
-      >
-        <input
-          type="checkbox"
-          [id]="id + '_' + i"
-          [class.form-check-input]="to.formCheck.indexOf('custom') === -1"
-          [class.custom-control-input]="to.formCheck.indexOf('custom') === 0"
-          [value]="option.value"
-          [checked]="isChecked(option)"
-          [formlyAttributes]="field"
-          (change)="onChange(option.value, $event.target.checked)"
-        />
-        <label
-          [class.form-check-label]="to.formCheck.indexOf('custom') === -1"
-          [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
-          [for]="id + '_' + i"
-        >
-          {{ option.label }}
-        </label>
-      </div>
+    <div
+      *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
+      class="form-check"
+      [ngClass]="{
+        'form-check-inline': to.formCheck === 'inline' || to.formCheck === 'inline-switch',
+        'form-switch': to.formCheck === 'switch' || to.formCheck === 'inline-switch'
+      }"
+    >
+      <input
+        type="checkbox"
+        [id]="id + '_' + i"
+        class="form-check-input"
+        [value]="option.value"
+        [checked]="isChecked(option)"
+        [formlyAttributes]="field"
+        (change)="onChange(option.value, $event.target.checked)"
+      />
+      <label class="form-check-label" [for]="id + '_' + i">
+        {{ option.label }}
+      </label>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,7 +32,7 @@ export class FormlyFieldMultiCheckbox extends FieldType {
   defaultOptions = {
     templateOptions: {
       options: [],
-      formCheck: 'custom', // 'custom' | 'custom-inline' | 'custom-switch' | 'stacked' | 'inline'
+      formCheck: 'default', // 'default' | 'inline' | 'switch' | 'inline-switch'
     },
   };
 

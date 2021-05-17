@@ -17,9 +17,9 @@ import { AppComponent } from './app.component';
             {
               title: 'Advanced Layout',
               description: `
-              This is an example of using
-              <code>formGroup</code>s and the
-              <code>className</code> property to have an advanced layout.
+              This is an example of using the
+              <code>fieldGroup</code> and
+              <code>className</code> properties to have an advanced layout.
             `,
               component: AppComponent,
               files: [
