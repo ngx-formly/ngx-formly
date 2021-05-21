@@ -155,6 +155,14 @@ export function clone(value: any): any {
     return value;
   }
 
+  if (value instanceof Set) {
+    return new Set(value);
+  }
+
+  if (value instanceof Map) {
+    return new Map(value);
+  }
+
   // https://github.com/moment/moment/blob/master/moment.js#L252
   if (value._isAMomentObject && isFunction(value.clone)) {
     return value.clone();
