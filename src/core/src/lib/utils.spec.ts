@@ -167,6 +167,17 @@ describe('clone', () => {
     expect(clone(d)).not.toBe(d);
   });
 
+  it('Map & Set', () => {
+    const set = new Set();
+    const map = new Map();
+
+    expect(set instanceof Set).toBeTruthy();
+    expect(clone(set)).not.toBe(set);
+
+    expect(map instanceof Map).toBeTruthy();
+    expect(clone(map)).not.toBe(map);
+  });
+
   it('Object with methods', () => {
     class Foo {
       constructor(public foo = '') {}
