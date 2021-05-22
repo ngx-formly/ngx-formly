@@ -244,6 +244,21 @@ describe('FormlyFormBuilder service', () => {
     expect(control.get('street').disabled).toEqual(false);
   });
 
+  it('should enable previously disabled control', () => {
+    const field: FormlyFieldConfig = {
+      key: 'address',
+      templateOptions: { disabled: true },
+    };
+
+    builder.buildForm(form, [field], {}, {});
+
+    const control = field.formControl;
+    expect(control.disabled).toEqual(true);
+
+    builder.buildForm(form, [field], {}, {});
+    expect(control.disabled).toEqual(false);
+  });
+
   describe('assign model to fields', () => {
     let fields: FormlyFieldConfig[],
       model: any;

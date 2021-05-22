@@ -78,6 +78,15 @@ export class FieldFormExtension implements FormlyExtension {
         }
       }
 
+      if (!disabled && c.disabled) {
+        c.enable({ emitEvent: false, onlySelf: true });
+        if (!c.parent) {
+          updateControlValidity(c);
+        } else {
+          updateValidity = true;
+        }
+      }
+
       if (null === c.validator || null === c.asyncValidator) {
         c.setValidators(() => {
           const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
