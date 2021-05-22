@@ -32,7 +32,11 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     if (fieldsToUpdate.length === 1) {
-      fieldsToUpdate[0].formControl.updateValueAndValidity();
+      let control = fieldsToUpdate[0].formControl;
+      while (control) {
+        (control as any)._updateTreeValidity({ onlySelf: true });
+        control = control.parent;
+      }
     } else {
       (field.formControl as any)._updateTreeValidity();
     }
