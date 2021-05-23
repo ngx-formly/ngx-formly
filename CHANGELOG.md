@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.20"></a>
+## [5.10.20](https://github.com/ngx-formly/ngx-formly/compare/v5.10.19...v5.10.20) (2021-05-23)
+
+
+### Bug Fixes
+
+* **core:** detect form validation changes on build ([#2856](https://github.com/ngx-formly/ngx-formly/issues/2856)) ([c9c26f4](https://github.com/ngx-formly/ngx-formly/commit/c9c26f4)), closes [#2843](https://github.com/ngx-formly/ngx-formly/issues/2843)
+* **core:** prevent unnecessary wrapper re-render ([#2855](https://github.com/ngx-formly/ngx-formly/issues/2855)) ([b26d64f](https://github.com/ngx-formly/ngx-formly/commit/b26d64f)), closes [#2847](https://github.com/ngx-formly/ngx-formly/issues/2847)
+* **core:** support Set/Map in immutable mode ([#2852](https://github.com/ngx-formly/ngx-formly/issues/2852)) ([4d688fe](https://github.com/ngx-formly/ngx-formly/commit/4d688fe)), closes [#2848](https://github.com/ngx-formly/ngx-formly/issues/2848)
+* **core:** take account of previously disabled control ([#2857](https://github.com/ngx-formly/ngx-formly/issues/2857)) ([84f47e5](https://github.com/ngx-formly/ngx-formly/commit/84f47e5)), closes [#2829](https://github.com/ngx-formly/ngx-formly/issues/2829)
+* **json-schema:** detect change of multischema ([#2858](https://github.com/ngx-formly/ngx-formly/issues/2858)) ([2296330](https://github.com/ngx-formly/ngx-formly/commit/2296330)), closes [#2815](https://github.com/ngx-formly/ngx-formly/issues/2815)
+* **json-schema:** do not replace expression properties if required fi… ([#2839](https://github.com/ngx-formly/ngx-formly/issues/2839)) ([56ee55c](https://github.com/ngx-formly/ngx-formly/commit/56ee55c))
+* **json-schema:** take account of multischema required prop ([#2845](https://github.com/ngx-formly/ngx-formly/issues/2845)) ([b9bb77f](https://github.com/ngx-formly/ngx-formly/commit/b9bb77f)), closes [#2831](https://github.com/ngx-formly/ngx-formly/issues/2831)
+* **material:** use ViewChild static query for checkbox ([#2844](https://github.com/ngx-formly/ngx-formly/issues/2844)) ([fd52a4c](https://github.com/ngx-formly/ngx-formly/commit/fd52a4c)), closes [#2838](https://github.com/ngx-formly/ngx-formly/issues/2838)
+
+
+
 <a name="5.10.19"></a>
 ## [5.10.19](https://github.com/ngx-formly/ngx-formly/compare/v5.10.18...v5.10.19) (2021-05-05)
 
