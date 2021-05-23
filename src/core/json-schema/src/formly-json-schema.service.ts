@@ -7,6 +7,7 @@ import {
   ɵgetFieldInitialValue as getFieldInitialValue,
   ɵclone as clone,
 } from '@ngx-formly/core';
+import { tap } from 'rxjs/operators';
 
 export interface FormlyJsonschemaOptions {
   /**
@@ -364,6 +365,11 @@ export class FormlyJsonschema {
             multiple: mode === 'anyOf',
             options: schemas
               .map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
+          },
+          hooks: {
+            onInit: f => f.formControl.valueChanges.pipe(
+              tap(() => (f.options as any)._checkField(f.parent)),
+            ),
           },
         },
         {
