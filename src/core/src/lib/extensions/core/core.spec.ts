@@ -311,4 +311,84 @@ describe('CoreExtension', () => {
       expect(f2.id).toEqual('formly_3__title_1');
     });
   });
+
+  describe('get', () => {
+    it('should find child field by key', () => {
+      const field = buildField({
+        key: 'parent',
+        fieldGroup: [
+          {
+            key: 'child1',
+            type: 'input',
+          },
+          {
+            key: 'child2',
+            type: 'input',
+          },
+          {
+            key: 'child3',
+            type: 'text',
+          },
+        ],
+      });
+      const childField = field.get('child1');
+      expect(childField.key).toEqual(field.fieldGroup[0].key);
+    });
+
+    it('should find the nested child field by key', () => {
+      const field = buildField({
+        key: 'parent',
+        fieldGroup: [
+          {
+            key: 'child1',
+            type: 'input',
+          },
+          {
+            key: 'child2',
+            type: 'input',
+          },
+          {
+            key: 'child3',
+            type: 'wrapper',
+            fieldGroup: [
+              {
+                key: 'child4',
+                type: 'input',
+              },
+              {
+                key: 'child5',
+                type: 'input',
+              },
+            ],
+          },
+        ],
+      });
+
+      const childField = field.get('child4');
+
+      expect(childField.key).toEqual(field.fieldGroup[2].fieldGroup[0].key);
+    });
+
+    it('should return null if no field was found', () => {
+      const field = buildField({
+        key: 'parent',
+        fieldGroup: [
+          {
+            key: 'child1',
+            type: 'input',
+          },
+          {
+            key: 'child2',
+            type: 'input',
+          },
+          {
+            key: 'child3',
+            type: 'text',
+          },
+        ],
+      });
+      const childField = field.get('child4');
+      expect(childField).toBeNull();
+    });
+  });
 });

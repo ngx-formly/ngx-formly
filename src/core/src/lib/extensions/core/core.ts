@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, ComponentRef } from '@angular/core';
 import { FormlyConfig } from '../../services/formly.config';
-import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension } from '../../models';
+import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension, FormlyFieldConfig } from '../../models';
 import {
   getFieldId,
   assignFieldValue,
@@ -28,6 +28,32 @@ export class CoreExtension implements FormlyExtension {
         configurable: true,
       });
     }
+
+    Object.defineProperty(field, 'get', {
+      value: (key) => {
+        let formlyField: FormlyFieldConfig = null;
+
+        const findField = (f: FormlyFieldConfig, keyValue: string | number) => {
+          if (f.fieldGroup && f.fieldGroup.length > 0) {
+            const match = f.fieldGroup.find((fg) => fg.key && fg.key === keyValue);
+            if (match) {
+              return (formlyField = match);
+            }
+
+            for (const innerField of f.fieldGroup) {
+              if (innerField.fieldGroup) {
+                findField(innerField, keyValue);
+                if (formlyField) break;
+              }
+            }
+          } else {
+            return null;
+          }
+        };
+        findField(field, key);
+        return formlyField;
+      },
+    });
 
     this.getFieldComponentInstance(field).prePopulate();
   }

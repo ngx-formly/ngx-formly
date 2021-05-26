@@ -148,6 +148,11 @@ export interface FormlyFieldConfig {
   parsers?: ((value: any) => any)[];
 
   /**
+   * Returns child field by key name
+   */
+  get?: (key: FormlyFieldConfig['key']) => FormlyFieldConfig;
+
+  /**
    * The model that stores all the data, where the model[key] is the value of the field
    */
   readonly model?: any;
