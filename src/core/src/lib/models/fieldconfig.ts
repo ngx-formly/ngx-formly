@@ -7,7 +7,7 @@ export interface FormlyFieldConfig {
   /**
    * The key that relates to the model. This will link the field value to the model
    */
-  key?: string | number | string[];
+  key?: string | number | (string | number)[];
 
   /**
    * This should be a formly-field type added either by you or a plugin. More information over at Creating Formly Fields.
@@ -146,6 +146,11 @@ export interface FormlyFieldConfig {
    * Array of functions to execute, as a pipeline, whenever the model updates, usually via user input.
    */
   parsers?: ((value: any) => any)[];
+
+  /**
+   * Returns child field by key name
+   */
+  get?: (key: FormlyFieldConfig['key']) => FormlyFieldConfig;
 
   /**
    * The model that stores all the data, where the model[key] is the value of the field

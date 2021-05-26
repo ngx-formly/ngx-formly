@@ -40,7 +40,7 @@ export class DatatableTypeComponent extends FieldArrayType implements OnInit {
     this.to.columns.forEach((column) => (column.cellTemplate = this.defaultColumn));
   }
 
-  getField(field: FormlyFieldConfig, column: TableColumn, rowIndex: number): FormlyFieldConfig {
-    return field.fieldGroup[rowIndex].fieldGroup.find((f) => f.key === column.prop);
+  getField(parent: FormlyFieldConfig, column: TableColumn, rowIndex: number): FormlyFieldConfig {
+    return parent.get([rowIndex, column.prop]);
   }
 }

@@ -315,4 +315,26 @@ describe('CoreExtension', () => {
       expect(f2.id).toEqual('formly_3__title_1');
     });
   });
+
+  it('should find child field by key', () => {
+    const field = buildField({
+      key: 'parent',
+      fieldGroup: [
+        {
+          key: 'child1',
+          type: 'input',
+        },
+        {
+          key: 'child2',
+          type: 'input',
+        },
+        {
+          key: 'child3',
+          type: 'text',
+        },
+      ],
+    });
+    const childField = field.get('child1');
+    expect(childField.key).toEqual(field.fieldGroup[0].key);
+  });
 });

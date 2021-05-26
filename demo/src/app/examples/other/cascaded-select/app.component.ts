@@ -47,7 +47,7 @@ export class AppComponent {
             { id: '3', name: 'Cleveland', sportId: '2' },
             { id: '4', name: 'Miami', sportId: '2' },
           ];
-          const sportControl = this.form.get('sport');
+          const sportControl = field.parent.get('sport').formControl;
           field.templateOptions.options = sportControl.valueChanges.pipe(
             startWith(sportControl.value),
             map((sportId) => teams.filter((team) => team.sportId === sportId)),
@@ -77,7 +77,7 @@ export class AppComponent {
             { id: '7', name: 'Miami (Player 1)', teamId: '4' },
             { id: '8', name: 'Miami (Player 2)', teamId: '4' },
           ];
-          const teamControl = this.form.get('team');
+          const teamControl = field.parent.get('team').formControl;
           field.templateOptions.options = teamControl.valueChanges.pipe(
             startWith(teamControl.value),
             map((teamId) => players.filter((player) => player.teamId === teamId)),

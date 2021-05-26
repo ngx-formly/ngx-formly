@@ -20,8 +20,8 @@ export class GridFormlyCellComponent implements ICellRendererAngularComp {
   getField(): FormlyFieldConfig {
     const rowIndex = this.params.rowIndex;
     const prop = this.params.colDef.field;
-    const fg = this.params.context.parentField.fieldGroup;
+    const parentField = this.params.context.parentField;
 
-    return fg[rowIndex].fieldGroup.find((f) => f.key === prop);
+    return parentField.get([rowIndex, prop]);
   }
 }
