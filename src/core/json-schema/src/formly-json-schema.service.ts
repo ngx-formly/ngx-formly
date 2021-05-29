@@ -18,10 +18,16 @@ export interface FormlyJsonschemaOptions {
   map?: (mappedField: FormlyFieldConfig, mapSource: JSONSchema7) => FormlyFieldConfig;
 }
 
-function isInteger(value: any) {
-  return Number.isInteger
-    ? Number.isInteger(value)
-    : typeof value === 'number' && Math.floor(value) === value;
+// https://stackoverflow.com/a/27865285
+function decimalPlaces(a: number) {
+  if (!isFinite(a)) {
+    return 0;
+  }
+
+  let e = 1, p = 0;
+  while (Math.round(a * e) / e !== a) { e *= 10; p++; }
+
+  return p;
 }
 
 function isEmpty(v: any) {
@@ -126,7 +132,9 @@ export class FormlyJsonschema {
               return true;
             }
 
-            return isInteger(value / schema.multipleOf);
+            // https://github.com/ajv-validator/ajv/issues/652#issue-283610859
+            const multiplier = Math.pow(10, decimalPlaces(schema.multipleOf));
+            return Math.round(value * multiplier) % Math.round(schema.multipleOf * multiplier) === 0;
           });
         }
         break;

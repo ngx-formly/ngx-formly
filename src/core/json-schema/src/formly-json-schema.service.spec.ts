@@ -147,6 +147,8 @@ describe('Service: FormlyJsonschema', () => {
         expect(multipleOfValidator(new FormControl(1))).toBeFalsy();
         expect(multipleOfValidator(new FormControl(10))).toBeFalsy();
         expect(multipleOfValidator(new FormControl(15))).toBeTruthy();
+        // rounding issues (15.30/0.15 = 102.00000000000001)
+        expect(multipleOfValidator(new FormControl(15.30))).toBeTruthy();
         expect(multipleOfValidator(new FormControl(150))).toBeTruthy();
       });
     });
