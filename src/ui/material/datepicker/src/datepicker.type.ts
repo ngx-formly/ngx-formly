@@ -34,6 +34,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [startAt]="to.datepickerOptions.startAt"
       [startView]="to.datepickerOptions.startView"
       [touchUi]="to.datepickerOptions.touchUi"
+      [calendarHeaderComponent]="to.datepickerOptions.calendarHeaderComponent"
       (monthSelected)="to.datepickerOptions.monthSelected(field, $event, picker)"
       (yearSelected)="to.datepickerOptions.yearSelected(field, $event, picker)"
     >
