@@ -447,7 +447,7 @@ export class FormlyJsonschema {
 
     return {
       ...definition,
-      ...['title', 'description', 'default'].reduce((annotation, p) => {
+      ...['title', 'description', 'default', 'widget'].reduce((annotation, p) => {
         if (schema.hasOwnProperty(p)) {
           annotation[p] = schema[p];
         }

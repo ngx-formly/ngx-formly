@@ -725,6 +725,34 @@ describe('Service: FormlyJsonschema', () => {
         expect(addressField.defaultValue).toEqual('bar');
       });
 
+      it('should use the locally widget keyword', () => {
+        const schema: JSONSchema7 = {
+          'definitions': {
+            'address': {
+              'type': 'string',
+              'title': 'Address',
+            },
+          },
+          'type': 'object',
+          'properties': {
+            'billing_address': {
+              '$ref': '#/definitions/address',
+              'widget': {
+                'formlyConfig': {
+                  'templateOptions': {
+                    'label': 'Billing address',
+                  },
+                },
+              },
+            },
+          },
+        } as any;
+
+        const config = formlyJsonschema.toFieldConfig(schema);
+        const addressField = config.fieldGroup[0];
+        expect(addressField.templateOptions.label).toEqual('Billing address');
+      });
+
       it('should resolve a nested schema definition', () => {
         const schema: JSONSchema7 = {
           'definitions': {
