@@ -12,10 +12,17 @@ import { MatSlider } from '@angular/material/slider';
       [formlyAttributes]="field"
       [tabIndex]="to.tabindex"
       [color]="to.color"
-      [thumbLabel]="to.thumbLabel"
-      [step]="to.step"
+      [displayWith]="to.displayWith"
+      [invert]="to.invert"
       [max]="to.max"
       [min]="to.min"
+      [step]="to.step"
+      [thumbLabel]="to.thumbLabel"
+      [tickInterval]="to.tickInterval"
+      [valueText]="to.valueText"
+      [vertical]="to.vertical"
+      (input)="to.input && to.input(field, $event)"
+      (change)="to.change && to.change(field, $event)"
     >
     </mat-slider>
   `,
