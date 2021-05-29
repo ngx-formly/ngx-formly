@@ -26,6 +26,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [errorStateMatcher]="errorStateMatcher"
       [aria-labelledby]="_getAriaLabelledby()"
       [disableOptionCentering]="to.disableOptionCentering"
+      [typeaheadDebounceInterval]="to.typeaheadDebounceInterval"
     >
       <ng-container *ngIf="to.options | formlySelectOptions: field | async as selectOptions">
         <ng-container
