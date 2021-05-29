@@ -9,10 +9,10 @@ import { FieldWrapper } from '@ngx-formly/core';
 })
 export class FormlyWrapperAddons extends FieldWrapper {
   addonRightClick($event: any) {
-    this.to.addonRight.onClick?.(this.to, this, $event);
+    this.to.addonRight.onClick?.(this.field, $event);
   }
 
   addonLeftClick($event: any) {
-    this.to.addonLeft.onClick?.(this.to, this, $event);
+    this.to.addonLeft.onClick?.(this.field, $event);
   }
 }

@@ -87,3 +87,12 @@ UPGRADE FROM 5.0 to 6.0
   + },
   }),
   ```
+
+@ngx-formly/bootstrap
+---------------------
+ * add-on: The two first argument of `onClick` handler has been replaced by `field` instance.
+
+  ```patch
+  - onClick: (to, fieldType, $event) => ...,
+  + onClick: (field, $event) => ...,
+  ```
