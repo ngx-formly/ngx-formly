@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.21"></a>
+## [5.10.21](https://github.com/ngx-formly/ngx-formly/compare/v5.10.20...v5.10.21) (2021-06-01)
+
+
+### Bug Fixes
+
+* **json-schema:** improve validation of multipleOf with decimal numbers ([#2869](https://github.com/ngx-formly/ngx-formly/issues/2869)) ([faece37](https://github.com/ngx-formly/ngx-formly/commit/faece37)), closes [#2863](https://github.com/ngx-formly/ngx-formly/issues/2863)
+* **json-schema:** support passing widget with $ref definition ([#2870](https://github.com/ngx-formly/ngx-formly/issues/2870)) ([fee312d](https://github.com/ngx-formly/ngx-formly/commit/fee312d)), closes [#2865](https://github.com/ngx-formly/ngx-formly/issues/2865)
+
+
+
 <a name="5.10.20"></a>
 ## [5.10.20](https://github.com/ngx-formly/ngx-formly/compare/v5.10.19...v5.10.20) (2021-05-23)
 
