@@ -264,13 +264,13 @@ export class FormlyJsonschema {
           const _this = this;
           Object.defineProperty(field, 'fieldArray', {
             get: function () {
-              if (!Array.isArray(schema.items)) {
+              if (schema.items && !Array.isArray(schema.items)) {
                 // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
                 return _this._toFieldConfig(<JSONSchema7> schema.items, options);
               }
 
               const length = this.fieldGroup ? this.fieldGroup.length : 0;
-              const itemSchema = schema.items[length]
+              const itemSchema = schema.items && schema.items[length]
                 ? schema.items[length]
                 : schema.additionalItems;
 
@@ -312,11 +312,11 @@ export class FormlyJsonschema {
   }
 
   private resolveSchema(schema: JSONSchema7, options: IOptions) {
-    if (schema.$ref) {
+    if (schema && schema.$ref) {
       schema = this.resolveDefinition(schema, options);
     }
 
-    if (schema.allOf) {
+    if (schema && schema.allOf) {
       schema = this.resolveAllOf(schema, options);
     }
 
@@ -482,8 +482,8 @@ export class FormlyJsonschema {
   }
 
   private guessType(schema: JSONSchema7) {
-    const type = schema.type as JSONSchema7TypeName;
-    if (!type && schema.properties) {
+    const type = schema ? schema.type as JSONSchema7TypeName : null;
+    if (!type && schema && schema.properties) {
       return 'object';
     }
 
