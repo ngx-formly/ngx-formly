@@ -181,7 +181,7 @@ export class FormlyJsonschema {
                   return true;
                 }
 
-                return propDeps[property] && propDeps[property].some(k => !isEmpty(m[k]));
+                return propDeps[property] && (m && propDeps[property].some(k => !isEmpty(m[k])));
               },
             };
           }
