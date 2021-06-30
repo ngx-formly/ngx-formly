@@ -6,12 +6,12 @@ Custom wrappers allows you to wrap a field type with a component.
 
 ui-bootstrap
   - form-field
-    - Shows validation messages bellow field.
+    - Shows validation messages below field.
   - addons
 
 ui-ionic
   - form-field
-    - Shows validation messages bellow field.
+    - Shows validation messages below field.
 
 ui-kendo
   - form-field
