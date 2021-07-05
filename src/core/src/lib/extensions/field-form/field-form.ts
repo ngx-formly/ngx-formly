@@ -69,23 +69,26 @@ export class FieldFormExtension implements FormlyExtension {
     if (field.key || !field.parent || (!field.key && !field.fieldGroup)) {
       const { formControl: c } = field;
       const disabled = field.templateOptions ? field.templateOptions.disabled : false;
-      if (disabled && c.enabled) {
-        c.disable({ emitEvent: false, onlySelf: true });
-        if (!c.parent) {
-          updateControlValidity(c);
-        } else {
-          updateValidity = true;
+      if (field.key) {
+        if (disabled && c.enabled) {
+          c.disable({ emitEvent: false, onlySelf: true });
+          if (!c.parent) {
+            updateControlValidity(c);
+          } else {
+            updateValidity = true;
+          }
+        }
+
+        if (!disabled && c.disabled) {
+          c.enable({ emitEvent: false, onlySelf: true });
+          if (!c.parent) {
+            updateControlValidity(c);
+          } else {
+            updateValidity = true;
+          }
         }
       }
 
-      if (!disabled && c.disabled) {
-        c.enable({ emitEvent: false, onlySelf: true });
-        if (!c.parent) {
-          updateControlValidity(c);
-        } else {
-          updateValidity = true;
-        }
-      }
 
       if (null === c.validator || null === c.asyncValidator) {
         c.setValidators(() => {

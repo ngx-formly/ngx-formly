@@ -245,18 +245,34 @@ describe('FormlyFormBuilder service', () => {
   });
 
   it('should enable previously disabled control', () => {
-    const field: FormlyFieldConfig = {
-      key: 'address',
-      templateOptions: { disabled: true },
-    };
+    let fields: FormlyFieldConfig[] = [
+      {
+        key: 'foo',
+        templateOptions: { disabled: true },
+      },
+      {
+        key: 'bar',
+        templateOptions: { disabled: true },
+      },
+    ];
 
-    builder.buildForm(form, [field], {}, {});
+    builder.buildForm(form, fields, {}, {});
 
     const control = field.formControl;
-    expect(control.disabled).toEqual(true);
+    expect(form.get('foo').disabled).toEqual(true);
+    expect(form.get('bar').disabled).toEqual(true);
 
-    builder.buildForm(form, [field], {}, {});
-    expect(control.disabled).toEqual(false);
+    fields = [
+      {
+        key: 'foo',
+        templateOptions: { disabled: true },
+      },
+      { key: 'bar' },
+    ];
+
+    builder.buildForm(form, fields, {}, {});
+    expect(form.get('foo').disabled).toEqual(true);
+    expect(form.get('bar').disabled).toEqual(false);
   });
 
   describe('assign model to fields', () => {
