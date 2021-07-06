@@ -247,7 +247,7 @@ describe('Service: FormlyJsonschema', () => {
         expect(config.fieldArray).toEqual({});
       });
 
-      it('supports array additionalitems wheh array items are defined as an array of schemas', () => {
+      it('supports array additionalitems when array items are defined as an array of schemas', () => {
         const schema: JSONSchema7 = {
           type: 'array',
           items: [
@@ -273,6 +273,17 @@ describe('Service: FormlyJsonschema', () => {
         // should return the additional items schema when the fieldGroup's length
         // is greater than the number of items array config validatoins
         expect(config.fieldArray).toEqual(childConfig3);
+        expect(config.type).toEqual('array');
+      });
+
+      it('supports array without items keyword', () => {
+        const schema: JSONSchema7 = {
+          type: 'array',
+        };
+        const config = formlyJsonschema.toFieldConfig(schema);
+        const childConfig: FormlyFieldConfig = {};
+
+        expect(config.fieldArray).toEqual(childConfig);
         expect(config.type).toEqual('array');
       });
 
