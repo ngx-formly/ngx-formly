@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, ElementRef, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Renderer2, AfterViewInit, AfterContentChecked, ElementRef, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -18,8 +18,7 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       [hideRequiredMarker]="true"
       [floatLabel]="to.floatLabel"
       [appearance]="to.appearance"
-      [color]="to.color"
-      [style.width]="'100%'">
+      [color]="to.color">
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="to.label && to.hideLabel !== true">
         {{ to.label }}
@@ -42,6 +41,8 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
     </mat-form-field>
   `,
   providers: [{ provide: MatFormFieldControl, useExisting: FormlyWrapperFormField }],
+  styleUrls: ['./form-field.wrapper.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FormlyWrapperFormField extends FieldWrapper<MatFormlyFieldConfig> implements OnInit, OnDestroy, MatFormFieldControl<any>, AfterViewInit, AfterContentChecked {
   // TODO: remove `any`, once dropping angular `V7` support.
