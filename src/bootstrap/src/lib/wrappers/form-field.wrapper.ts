@@ -7,7 +7,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <div class="form-group" [class.has-error]="showError">
       <label *ngIf="to.label && to.hideLabel !== true" [attr.for]="id">
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
       </label>
 
       <ng-template #fieldComponent></ng-template>

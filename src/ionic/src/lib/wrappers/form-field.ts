@@ -7,7 +7,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <ion-item [lines]="to.itemLines">
       <ion-label [position]="to.labelPosition">
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
       </ion-label>
       <ng-template #fieldComponent></ng-template>
     </ion-item>
