@@ -7,7 +7,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <label [for]="id" class="k-form-field">
       <span *ngIf="to.label && to.hideLabel !== true">
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" class="k-required">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
       </span>
       <ng-container #fieldComponent></ng-container>
     </label>

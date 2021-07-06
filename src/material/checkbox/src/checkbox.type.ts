@@ -15,7 +15,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">
       {{ to.label }}
-      <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
+      <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="mat-form-field-required-marker">*</span>
     </mat-checkbox>
   `,
 })

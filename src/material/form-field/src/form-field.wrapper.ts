@@ -22,7 +22,7 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="to.label && to.hideLabel !== true">
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="mat-form-field-required-marker">*</span>
       </mat-label>
 
       <ng-container matPrefix *ngIf="to.prefix || to._matPrefix">

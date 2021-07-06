@@ -26,7 +26,7 @@ import { FieldType } from '@ngx-formly/core';
         [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
       >
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
       </label>
     </div>
   `,
