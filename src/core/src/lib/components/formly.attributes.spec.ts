@@ -56,6 +56,21 @@ describe('FormlyAttributes Component', () => {
         expect(elm.getAttribute('readonly')).toBe(null);
       });
 
+      it('should allow overriding the default build-in attributes', () => {
+        const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
+        const elm = getFormlyAttributesElement(fixture.nativeElement);
+
+        expect(elm.getAttribute('min')).toBe('5');
+        expect(elm.getAttribute('max')).toBe('10');
+        fixture.componentInstance.field.templateOptions.attributes = {
+          min: '10',
+          max: null,
+        };
+        fixture.detectChanges();
+        expect(elm.getAttribute('min')).toBe('10');
+        expect(elm.getAttribute('max')).toEqual(null);
+      });
+
       it('should change element attribute on edit templateOptions attributes', () => {
         const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
         const elm = getFormlyAttributesElement(fixture.nativeElement);
