@@ -76,7 +76,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
           }
 
           if (currentValue) {
-            Object.keys(currentValue).forEach(attr => this.setAttribute(attr, currentValue[attr]));
+            Object.keys(currentValue).forEach(attr => {
+              if (currentValue[attr] != null) {
+                this.setAttribute(attr, currentValue[attr]);
+              }
+            });
           }
         });
       }
@@ -107,7 +111,10 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngDoCheck() {
     this.uiAttributes.forEach(attr => {
       const value = this.to[attr];
-      if (this.uiAttributesCache[attr] !== value) {
+      if (
+        this.uiAttributesCache[attr] !== value
+        && (!this.to.attributes || !this.to.attributes.hasOwnProperty(attr.toLowerCase()))
+      ) {
         this.uiAttributesCache[attr] = value;
         if (value || value === 0) {
           this.setAttribute(attr, value === true ? attr : `${value}`);
