@@ -33,6 +33,7 @@ export class FormlyFieldSelect extends FieldType {
       compareWith(o1: any, o2: any) {
         if (Array.isArray(o2)) {
           return o2.indexOf(o1)>=0;
+        }
         return o1 === o2;
       },
     },
