@@ -258,7 +258,6 @@ describe('FormlyFormBuilder service', () => {
 
     builder.buildForm(form, fields, {}, {});
 
-    const control = field.formControl;
     expect(form.get('foo').disabled).toEqual(true);
     expect(form.get('bar').disabled).toEqual(true);
 
