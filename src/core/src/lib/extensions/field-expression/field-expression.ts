@@ -1,7 +1,7 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { isObject, isNullOrUndefined, isUndefined, isFunction, defineHiddenProp, wrapProperty, reduceFormUpdateValidityCalls, getFieldValue, assignFieldValue } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
-import { Observable, Subscription } from 'rxjs';
+import { isObservable, Observable, Subscription } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 import { FormArray } from '@angular/forms';
@@ -175,7 +175,11 @@ export class FieldExpressionExtension implements FormlyExtension {
       if (
         ignoreCache || (
           expressionProperties[key].expressionValue !== expressionValue
-          && (!isObject(expressionValue) || JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue))
+          && (
+            !isObject(expressionValue)
+            || isObservable(expressionValue)
+            || JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue)
+          )
         )
       ) {
         markForCheck = true;
