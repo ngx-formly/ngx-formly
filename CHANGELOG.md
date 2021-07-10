@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.22"></a>
+## [5.10.22](https://github.com/ngx-formly/ngx-formly/compare/v5.10.21...v5.10.22) (2021-07-10)
+
+
+### Bug Fixes
+
+* **core:** allow overriding the default build-in html attributes ([#2915](https://github.com/ngx-formly/ngx-formly/issues/2915)) ([a20df51](https://github.com/ngx-formly/ngx-formly/commit/a20df51)), closes [#2908](https://github.com/ngx-formly/ngx-formly/issues/2908)
+* **core:** improve parse array notation in expression property ([#2924](https://github.com/ngx-formly/ngx-formly/issues/2924)) ([05d714f](https://github.com/ngx-formly/ngx-formly/commit/05d714f)), closes [#2916](https://github.com/ngx-formly/ngx-formly/issues/2916)
+* **core:** improve stream source comparison of expressionProperties ([#2923](https://github.com/ngx-formly/ngx-formly/issues/2923)) ([ce1ca29](https://github.com/ngx-formly/ngx-formly/commit/ce1ca29)), closes [#2922](https://github.com/ngx-formly/ngx-formly/issues/2922)
+* **core:** set aria-hidden to required marker ([#2913](https://github.com/ngx-formly/ngx-formly/issues/2913)) ([2d70d9f](https://github.com/ngx-formly/ngx-formly/commit/2d70d9f)), closes [#2887](https://github.com/ngx-formly/ngx-formly/issues/2887)
+* **core:** take account of previously disabled control ([#2910](https://github.com/ngx-formly/ngx-formly/issues/2910)) ([65c8a95](https://github.com/ngx-formly/ngx-formly/commit/65c8a95)), closes [#2907](https://github.com/ngx-formly/ngx-formly/issues/2907)
+* **json-schema:** handle array type without items keyword ([#2914](https://github.com/ngx-formly/ngx-formly/issues/2914)) ([6cb40ec](https://github.com/ngx-formly/ngx-formly/commit/6cb40ec)), closes [#2884](https://github.com/ngx-formly/ngx-formly/issues/2884)
+* **json-schema:** take account of empty model in required expr ([#2904](https://github.com/ngx-formly/ngx-formly/issues/2904)) ([22451d9](https://github.com/ngx-formly/ngx-formly/commit/22451d9)), closes [#2898](https://github.com/ngx-formly/ngx-formly/issues/2898)
+* **material:** support passing long error message ([#2912](https://github.com/ngx-formly/ngx-formly/issues/2912)) ([32fac5b](https://github.com/ngx-formly/ngx-formly/commit/32fac5b)), closes [#2892](https://github.com/ngx-formly/ngx-formly/issues/2892)
+
+
+
 <a name="5.10.21"></a>
 ## [5.10.21](https://github.com/ngx-formly/ngx-formly/compare/v5.10.20...v5.10.21) (2021-06-01)
 
