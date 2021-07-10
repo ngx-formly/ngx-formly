@@ -49,9 +49,9 @@ export class AppComponent {
           ];
           const sportControl = this.form.get('sport');
           field.templateOptions.options = sportControl.valueChanges.pipe(
+            tap(() => field.formControl.setValue(null)),
             startWith(sportControl.value),
             map(sportId => teams.filter(team => team.sportId === sportId)),
-            tap(() => field.formControl.setValue(null)),
           );
         },
       },
@@ -79,9 +79,9 @@ export class AppComponent {
           ];
           const teamControl = this.form.get('team');
           field.templateOptions.options = teamControl.valueChanges.pipe(
+            tap(() => field.formControl.setValue(null)),
             startWith(teamControl.value),
             map(teamId => players.filter(player => player.teamId === teamId)),
-            tap(() => field.formControl.setValue(null)),
           );
         },
       },
