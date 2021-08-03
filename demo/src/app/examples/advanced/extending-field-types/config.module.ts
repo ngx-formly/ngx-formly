@@ -17,8 +17,8 @@ import { AppComponent } from './app.component';
             {
               title: 'Extending Field Types',
               description: `
-              This example demonstrates how to use the <code>extending<code> option when defining field types in the formly module. <br/>
-              The <code>password<code> field type is simply a normal <code>input<code> type with a predefined type and label.
+              This example demonstrates how to use the <code>extending</code> option when defining field types in the formly module. <br/>
+              The <code>password</code> field type is simply a normal <code>input</code> type with a predefined type and label.
             `,
               component: AppComponent,
               files: [
