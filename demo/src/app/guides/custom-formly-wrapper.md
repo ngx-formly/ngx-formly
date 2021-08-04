@@ -1,6 +1,6 @@
 # Custom Wrapper
 
-Custom wrappers allows you to wrap a field type with a component.
+Custom wrappers allow you to wrap a field type with a component.
 
 ## Prebuilt Wrappers
 
@@ -8,6 +8,7 @@ ui-bootstrap
   - form-field
     - Shows validation messages below field.
   - addons
+    - Adds input addons to a field. See [input add-ons](https://formly.dev/examples/bootstrap-specific/input-add-ons).
 
 ui-ionic
   - form-field
@@ -62,8 +63,9 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
   > Example you can have both a label and validator wrapper.
 
   2. Register the custom wrapper in `NgModule` declaration:
-  Module
+  
   ```typescript
+  // app.module.ts
   import { NgModule } from '@angular/core';
   import { CommonModule } from '@angular/common';
   import { ReactiveFormsModule } from '@angular/forms';
@@ -94,7 +96,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
 
   `wrappers: [ ... ]` is where define what custom wrappers we want to inject into our module to use in our `FormlyFieldConfig`
 
-  3. Create a custom FormlyFieldConfig that uses that type.
+  1. Create a custom FormlyFieldConfig that uses that type.
 
   ```typescript
   fields: FormlyFieldConfig[] = [
@@ -116,7 +118,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
 
   ```
 
-  `wrappers: ['panel'],` is where FormlyFieldConfig assigns the field instance to use that panel.
+  `wrappers: ['panel']` is where FormlyFieldConfig assigns the field instance to use that panel.
 
 ## Creating default wrappers for components
 
