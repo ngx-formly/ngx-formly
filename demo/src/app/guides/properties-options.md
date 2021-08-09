@@ -16,7 +16,7 @@ Everything starts with the `formly-form`. General use of it will look something 
 
 | Name    | Type                   | Default             | Required      | Description   |
 | ------- | ---------------------- | ------------------- | ------------- | ------------- |
-| form    | `FormGroup or FormArray` | `new FormGroup({})` | no            | The form instance which allow to track model value and validation status. |
+| form    | `FormGroup` or `FormArray` | `new FormGroup({})` | no            | The form instance which allow to track model value and validation status. |
 | fields  | `FormlyFieldConfig[]`  |                     | yes           | The field configurations for building the form. |
 | model   | `any`                  |                     | yes           | The model to be represented by the form. |
 | options | `FormlyFormOptions`    |                     | no            | Options for the form. |
@@ -41,8 +41,8 @@ Everything starts with the `formly-form`. General use of it will look something 
 | template             | `string`     | Can be set instead of `type` to render custom `html` content. |
 | defaultValue         | `any` | If this is provided and the value of the model at compile-time is `undefined`, then the value of the model will be assigned the defaultValue. |
 | hide                 | `boolean`    | Whether to hide the field. Defaults to false. If you wish this to be conditional use `hideExpression`. |
-| hideExpression       | `boolean or string or function` | Conditionally hide the field based on values from other fields. |
-| expressionProperties | `boolean or string or function` | An object where the key is a property to be set on the main field config and the value is an expression used to assign that property. |
+| hideExpression       | `boolean`/`string`/`function` | Conditionally hide the field based on values from other fields. |
+| expressionProperties | `boolean`/`string`/`function` | An object where the key is a property to be set on the main field config and the value is an expression used to assign that property. |
 | focus                | `boolean`    | Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressionProperties` |
 | wrappers             | `string[]`   | It is expected to be the name of the wrappers. The formly field template will be wrapped by the first wrapper, then the second, then the third, etc. You can also specify these as part of a type (which is the recommended approach). |
 | parsers              | `function[]` | Array of functions to execute, as a pipeline, whenever the model updates, usually via user input. |

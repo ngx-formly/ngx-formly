@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
             {
               title: 'Custom validation parameters',
               description: `
-              This demonstrates how to pass extra parameters to the validators
+              This demonstrates how to pass extra parameters to the validators.
             `,
               component: AppComponent,
               files: [

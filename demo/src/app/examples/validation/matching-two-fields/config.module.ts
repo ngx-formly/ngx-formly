@@ -16,7 +16,7 @@ import { AppComponent } from './app.component';
           examples: [
             {
               title: 'Matching Two Fields',
-              description: `This is an example of how to add confirm password field using custom validation`,
+              description: `This is an example of how to add confirm password field using custom validation.`,
               component: AppComponent,
               files: [
                 {
