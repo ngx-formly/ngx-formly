@@ -14,11 +14,11 @@ there are prebuilt templates you can use:
 
 ## Creating a Custom Template
 
-Creating a custom template is quite easy, but also very flexible, the following example shows how we can create a simple input type:
+Creating a custom template is quite easy, but also very flexible. The following example shows how we can create a simple input type:
 
-The live example can be found in stackblitz: https://stackblitz.com/edit/ngx-formly-custom-template
+The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/ngx-formly-custom-template)
 
-1. Defining the Field Type class and it's template:
+1. Defining the Field Type class and its template:
 
   First you have to create a component representing the field which extends `FieldType` class.
 
@@ -58,7 +58,7 @@ The live example can be found in stackblitz: https://stackblitz.com/edit/ngx-for
 
   `types` allows you to specify a custom type which you can use in your field configuration.
 
-  A typical Type require two properties:
+  A typical Type requires two properties:
 
   1. `name`: The name of the template type. You use this in the `type` option of a field.
   2. `component`: the component that Formly should create when this type is set.

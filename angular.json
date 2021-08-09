@@ -415,6 +415,7 @@
   },
   "defaultProject": "app",
   "cli": {
+    "analytics": false,
     "packageManager": "npm"
   },
   "schematics": {

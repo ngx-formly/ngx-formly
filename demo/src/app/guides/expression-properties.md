@@ -1,12 +1,12 @@
 # Formly Expressions
 
-You can use `hideExpression` to hide fields dynamically and `Expression Properties` for allows you to dynamically change many properties of a field.
+You can use `hideExpression` to hide fields dynamically and `expressionProperties` allow you to dynamically change many properties of a field.
 
 ## Expression Properties
 
 Expression Properties allows you to dynamically change many properties of a field.
-For example, you can disable a form field dynamically. The value of this property can be `string or function`.
-you can see an example using string value [here](https://stackblitz.com/edit/angular-formly-eehxjb?file=app/app.component.ts)
+For example, you can disable a form field dynamically. The value of this property can be `string` or `function`.
+You can see an example using string value [here](https://stackblitz.com/edit/angular-formly-eehxjb?file=app/app.component.ts)
 
 ```typescript
 {
@@ -35,7 +35,7 @@ Example with function value:
   },
   expressionProperties: {
     'templateOptions.disabled': (model: any, formState: any, field: FormlyFieldConfig) => {
-      // access to the main model can be through `this.model` or `formState` or `model
+      // access to the main model can be through `this.model` or `formState` or `model`
       return !formState.mainModel.text
     },
   }
@@ -45,7 +45,7 @@ Example with function value:
 The field will be hidden when *formState.mainModel.text* is empty
 
 
-**ALERT**: You can use the formstate to store information. In the example we keep the model. formstate is a property of options. [Read more](https://formly.dev/examples/form-options/form-state)
+**ALERT**: You can use the `formState` to store information. In the example we keep the model. `formState` is a property of options. [Read more](https://formly.dev/examples/form-options/form-state)
 
 ```typescript
 options = {
@@ -57,11 +57,11 @@ options = {
 
 ## Conditional Rendering
 
-HideExpression property is used to set the hide property of your field. The value of this property can be `string, function or boolean`. Below is an example of each of them.
+The `hideExpression` property is used to set the hide property of your field. The value of this property can be `string`, `function` or `boolean`. Below is an example of each of them.
 
 First option with *string value*:
 
-You can see an example with [here](https://stackblitz.com/edit/angular-formly-f79kb3?file=app/app.component.ts)
+You can see an example [here](https://stackblitz.com/edit/angular-formly-f79kb3?file=app/app.component.ts)
 ```typescript
 {
   key: 'iLikeTwix',
@@ -72,7 +72,7 @@ You can see an example with [here](https://stackblitz.com/edit/angular-formly-f7
   hideExpression: '!model.name',
 }
 ```
-Second option with *function valu*e:
+Second option with *function value*:
 
 You can see an example [here](https://stackblitz.com/edit/angular-formly-ndfcmz?file=app/app.component.ts)
 
@@ -85,7 +85,7 @@ You can see an example [here](https://stackblitz.com/edit/angular-formly-ndfcmz?
     placeholder: 'set to 123'
   },
   hideExpression: (model: any, formState: any, field: FormlyFieldConfig) => {
-    // access to the main model can be through `this.model` or `formState` or `model
+    // access to the main model can be through `this.model` or `formState` or `model`
     if (formState.mainModel && formState.mainModel.city) {
       return formState.mainModel.city !== "123"
     }

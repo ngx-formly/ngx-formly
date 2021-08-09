@@ -8,7 +8,7 @@ Formly offers different methods to implement custom validations.
 ##### CUSTOM VALIDATION MESSAGE
 To define a custom validation message, you need to add an object with two properties: `name` and `message`. You will include this object to the validationMessages array of the FormlyModule config:
 
-The message property could be simply a string or be defined as a function which receives the *error* and the *field* (FormlyFieldConfig) that was validated as input. The last one allows you more customization, like including the value, the  min or max value allowed, etc.
+The message property could be simply a string or be defined as a function which receives the `error` and the `field` (FormlyFieldConfig) that was validated as input. The last one allows you more customization, like including the value, the  min or max value allowed, etc.
 
 The following code example shows how to include a new message "ip" with a function to generate the string message by using the formControl.value and a new message "required" as a simple string.
 
