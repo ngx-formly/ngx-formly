@@ -1,7 +1,7 @@
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 
-export class TranslateExtension {
+export class TranslateExtension implements FormlyExtension {
   constructor(private translate: TranslateService) {}
   prePopulate(field: FormlyFieldConfig) {
     const to = field.templateOptions || {};
