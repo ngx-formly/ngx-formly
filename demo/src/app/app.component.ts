@@ -84,6 +84,7 @@ export class AppComponent {
         { path: '/examples/advanced/tabs', title: 'Tabs Form' },
         { path: '/examples/advanced/grid-integration', title: 'ag-grid Integration' },
         { path: '/examples/advanced/datatable-integration', title: 'ngx-datatable Integration' },
+        { path: '/examples/advanced/extending-field-types', title: 'Extending Field Types' },
 
         { title: 'Other' },
         { path: '/examples/other/cascaded-select', title: 'Cascaded Select (using observable)' },

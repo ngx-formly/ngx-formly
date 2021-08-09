@@ -181,6 +181,11 @@ import { SharedModule } from '../shared';
                 loadChildren: () => import('./advanced/multi-step-form/config.module').then((m) => m.ConfigModule),
               },
               { path: 'tabs', loadChildren: () => import('./advanced/tabs/config.module').then((m) => m.ConfigModule) },
+              {
+                path: 'extending-field-types',
+                loadChildren: () =>
+                  import('./advanced/extending-field-types/config.module').then((m) => m.ConfigModule),
+              },
             ],
           },
 
