@@ -14,6 +14,7 @@ export class GuidesComponent implements OnInit {
     'getting-started': require('!!raw-loader!!highlight-loader!markdown-loader!./introduction.md'),
     'properties-options': require('!!raw-loader!!highlight-loader!markdown-loader!./properties-options.md'),
     'custom-formly-field': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-field.md'),
+    'custom-formly-extension': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-extension.md'),
     'custom-formly-wrapper': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-wrapper.md'),
     validation: require('!!raw-loader!!highlight-loader!markdown-loader!./validation.md'),
     'expression-properties': require('!!raw-loader!!highlight-loader!markdown-loader!./expression-properties.md'),
