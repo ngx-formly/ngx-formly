@@ -8,9 +8,8 @@ import { take } from 'rxjs/operators';
   template: `
     <select
       *ngIf="to.multiple; else singleSelect"
-      class="form-control"
+      class="form-select"
       multiple
-      [class.custom-select]="to.customSelect"
       [formControl]="formControl"
       [compareWith]="to.compareWith"
       [class.is-invalid]="showError"
@@ -42,10 +41,9 @@ import { take } from 'rxjs/operators';
 
     <ng-template #singleSelect>
       <select
-        class="form-control"
+        class="form-select"
         [formControl]="formControl"
         [compareWith]="to.compareWith"
-        [class.custom-select]="to.customSelect"
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
       >
@@ -88,6 +86,9 @@ export class FormlyFieldSelect extends FieldType {
   };
 
   // workaround for https://github.com/angular/angular/issues/10010
+  /**
+   * TODO: Check if this is still needed
+   */
   @ViewChild(SelectControlValueAccessor) set selectAccessor(s: any) {
     if (!s) {
       return;

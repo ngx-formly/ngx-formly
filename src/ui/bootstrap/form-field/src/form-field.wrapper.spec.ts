@@ -38,6 +38,7 @@ describe('ui-bootstrap: FormField Wrapper', () => {
       },
     });
 
+    expect(query('div.has-error')).not.toBeNull();
     expect(query('formly-validation-message')).not.toBeNull();
   });
 
