@@ -1,23 +1,23 @@
-<div class="input-group">
+<div class="input-group" [class.has-validation]="showError">
   <div
-    class="input-group-prepend"
+    class="input-group-text"
     *ngIf="to.addonLeft"
     [ngStyle]="{ cursor: to.addonLeft.onClick ? 'pointer' : 'inherit' }"
     (click)="addonLeftClick($event)"
   >
-    <i class="input-group-text" [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
-    <span *ngIf="to.addonLeft.text" class="input-group-text">{{ to.addonLeft.text }}</span>
+    <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
+    <span *ngIf="to.addonLeft.text">{{ to.addonLeft.text }}</span>
   </div>
   <div class="input-addons">
     <ng-container #fieldComponent></ng-container>
   </div>
   <div
-    class="input-group-append"
+    class="input-group-text"
     *ngIf="to.addonRight"
     [ngStyle]="{ cursor: to.addonRight.onClick ? 'pointer' : 'inherit' }"
     (click)="addonRightClick($event)"
   >
-    <i class="input-group-text" [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
-    <span *ngIf="to.addonRight.text" class="input-group-text">{{ to.addonRight.text }}</span>
+    <i [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
+    <span *ngIf="to.addonRight.text">{{ to.addonRight.text }}</span>
   </div>
 </div>

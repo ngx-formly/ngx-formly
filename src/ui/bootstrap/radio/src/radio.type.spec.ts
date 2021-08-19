@@ -45,23 +45,15 @@ describe('ui-bootstrap: Radio Type', () => {
       key: 'name',
       type: 'radio',
       templateOptions: {
-        formCheck: 'custom',
+        formCheck: 'default',
         options: [{ value: 1, label: 'label 1' }],
       },
     });
 
-    const formCheckElm = query('div > div');
+    const formCheckElm = query('div.form-check');
 
-    // 'custom'
-    expect(formCheckElm.classes).toEqual({
-      'custom-control': true,
-      'custom-radio': true,
-    });
-
-    // 'stacked'
-    field.templateOptions.formCheck = 'stacked';
-    detectChanges();
-    expect(formCheckElm.classes).toEqual({ 'form-check': true });
+    // 'default'
+    expect(formCheckElm).not.toBeNull();
 
     // 'inline'
     field.templateOptions.formCheck = 'inline';

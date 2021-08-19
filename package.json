@@ -82,7 +82,7 @@
     "@swimlane/ngx-datatable": "^19.0.0",
     "ag-grid-angular": "^25.1.0",
     "ag-grid-community": "^25.1.0",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^5.0.1",
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.9.1",
     "express": "^4.15.2",

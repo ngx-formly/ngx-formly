@@ -90,7 +90,17 @@ UPGRADE FROM 5.0 to 6.0
 
 @ngx-formly/bootstrap
 ---------------------
- * add-on: The two first argument of `onClick` handler has been replaced by `field` instance.
+- Bootstrap v4 support is removed and replaced with v5 support. To upgrade check the migration documentation [https://getbootstrap.com/docs/5.0/migration/](https://getbootstrap.com/docs/5.0/migration/)
+
+- `formCheck`: `custom` prefix has been removed and replaced by the following values:
+
+  | Before        | After    |
+  | ------------- | -------- |
+  | custom        | default  |
+  | custom-inline | inline   |
+  | custom-switch | switch   |
+
+- add-on: The two first argument of `onClick` handler has been replaced by `field` instance.
 
   ```patch
   - onClick: (to, fieldType, $event) => ...,

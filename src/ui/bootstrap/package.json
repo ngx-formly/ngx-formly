@@ -7,6 +7,6 @@
   },
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "bootstrap": "^4.0.0"
+    "bootstrap": "^5.0.0"
   }
 }

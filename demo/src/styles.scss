@@ -1,17 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 // bootstrap
+html {
+  box-sizing: border-box;
+  -ms-overflow-style: scrollbar;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
 @import '~bootstrap/scss/bootstrap-grid';
 @import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/alert';
 @import '~bootstrap/scss/root';
-@import '~bootstrap/scss/buttons';
 @import '~bootstrap/scss/forms';
-@import '~bootstrap/scss/input-group';
-@import '~bootstrap/scss/utilities/display';
-@import '~bootstrap/scss/utilities/text';
-@import '~bootstrap/scss/utilities/spacing';
-@import '~bootstrap/scss/custom-forms';
+@import '~bootstrap/scss/buttons';
 @import '~bootstrap/scss/card';
+@import '~bootstrap/scss/alert';
 
 legend {
   margin-bottom: 20px;
