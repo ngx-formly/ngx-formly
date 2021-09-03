@@ -4,6 +4,45 @@ UPGRADE FROM 5.0 to 6.0
 
 @ngx-formly/core
 ----------------
+- All Formly components now use `OnPush` change detection, so in order to let Angular detect changes of `templateOptions` properties either ensure a default value is set or use spread object assign instead of regular assign:
+
+  ### Solution 1: set a default value
+
+  ```patch
+  export class CustomFieldType extends FieldType {
+    defaultOptions = {
+      templateOptions: {
+  +     loading: false,
+      },
+    };
+
+    showLoader() {
+      field.templateOptions.loading = true
+    }
+  }
+  ```
+
+  ### Solution 2: use spread object assign
+
+  ```patch
+    showLoader() {
+  -   field.templateOptions.loading = true
+  +   field.templateOptions.loading = {
+  +     ...field.templateOptions,
+  +     loading: true
+  +   };
+    }
+  ```
+
+  - **Note**:
+    The above changes concern only the extra properties defined in your custom type and not the provided ones from Formly such as `disabled`, `label` ...
+
+    ```ts
+    // still working in `V6`
+    field.templateOptions.disabled = true;
+    ```
+
+
 - The defaultValue for fieldGroup and fieldArray has been changed to `undefined` instead of empty object. ([#1901](https://github.com/ngx-formly/ngx-formly/pull/1901), if you want to rely on the old behavior set the `defaultValue`:
 
   **before**:  

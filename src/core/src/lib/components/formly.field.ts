@@ -211,18 +211,8 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
     }
 
     const subscribes = [
-      observeDeep({
-        source: field,
-        target: field.templateOptions,
-        paths: ['templateOptions'],
-        setFn: () => field.options.detectChanges(field),
-      }),
-      observeDeep({
-        source: field,
-        target: field.options.formState,
-        paths: ['options', 'formState'],
-        setFn: () => field.options.detectChanges(field),
-      }),
+      observeDeep(field, ['templateOptions'], () => field.options.detectChanges(field)),
+      observeDeep(field, ['options', 'formState'], () => field.options.detectChanges(field)),
     ];
 
     for (const path of [['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
