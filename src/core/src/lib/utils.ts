@@ -225,34 +225,27 @@ interface IObserveTarget<T> {
   };
 }
 
-export function observeDeep({ source, paths, target, setFn }) {
-  const observers = [];
-  if (paths.length === 0) {
-    target = source;
-  }
+export function observeDeep(source: any, paths: string[], setFn: () => void): () => void {
+  let observers = [];
 
-  Object.keys(target).forEach((path) => {
-    let unsubscribe = () => {};
-    const observer = observe(source, [...paths, path], ({ firstChange, currentValue }) => {
-      !firstChange && setFn();
+  const unsubscribe = () => {
+    observers.forEach((observer) => observer());
+    observers = [];
+  };
+  const observer = observe(source, paths, ({ firstChange, currentValue }) => {
+    !firstChange && setFn();
 
-      unsubscribe();
-      const i = observers.indexOf(unsubscribe);
-      if (i > -1) {
-        observers.splice(i, 1);
-      }
-
-      if (isObject(currentValue) && currentValue.constructor.name === 'Object') {
-        unsubscribe = observeDeep({ source, setFn, paths: [...paths, path], target: currentValue });
-        observers.push(unsubscribe);
-      }
-    });
-
-    observers.push(() => observer.unsubscribe());
+    unsubscribe();
+    if (isObject(currentValue) && currentValue.constructor.name === 'Object') {
+      Object.keys(currentValue).forEach((prop) => {
+        observers.push(observeDeep(source, [...paths, prop], setFn));
+      });
+    }
   });
 
   return () => {
-    observers.forEach((observer) => observer());
+    observer.unsubscribe();
+    unsubscribe();
   };
 }
 
@@ -279,7 +272,7 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   if (state.onChange.indexOf(setFn) === -1) {
     state.onChange.push(setFn);
     setFn({ currentValue: state.value, firstChange: true });
-    if (state.onChange.length === 1) {
+    if (state.onChange.length >= 1) {
       const { enumerable } = Object.getOwnPropertyDescriptor(target, key) || { enumerable: true };
       Object.defineProperty(target, key, {
         enumerable,

@@ -8,6 +8,7 @@ import {
   observe,
   assignFieldValue,
   defineHiddenProp,
+  observeDeep,
 } from './utils';
 import { FormlyFieldConfig } from './models';
 import { of } from 'rxjs';
@@ -247,6 +248,54 @@ describe('clone', () => {
     value.name = 'foo';
 
     expect(value.a).toEqual('foo');
+  });
+});
+
+describe('observeDeep', () => {
+  it('should not emit first change on observe', () => {
+    const spy = jest.fn();
+    observeDeep({ foo: 'test' }, ['foo'], spy);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('should observe a scalar value', () => {
+    const spy = jest.fn();
+    const o = { foo: 'test' };
+    observeDeep(o, ['foo'], spy);
+    o.foo = 'bar';
+
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should observe an object', () => {
+    const spy = jest.fn();
+    const o = { address: { city: 'foo' } };
+    observeDeep(o, ['address'], spy);
+    const prevAddress = o.address;
+    o.address = { city: 'foo' };
+    o.address.city = 'bar';
+
+    expect(spy).toHaveBeenCalledTimes(2);
+
+    // check if unsubscribed from the old object
+    spy.mockReset();
+    prevAddress.city = 'bar';
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should be able to unsubscribe', () => {
+    const spy = jest.fn();
+    const o = { address: { city: 'foo' } };
+    const unsubscribe = observeDeep(o, ['address'], spy);
+    const prevAddress = o.address;
+    o.address.city = 'bar';
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    unsubscribe();
+    spy.mockReset();
+    o.address.city = 'test';
+
+    expect(spy).toHaveBeenCalledTimes(0);
   });
 });
 
