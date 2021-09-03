@@ -69,7 +69,7 @@ export class FieldFormExtension implements FormlyExtension {
     if (field.key || !field.parent || (!field.key && !field.fieldGroup)) {
       const { formControl: c } = field;
       const disabled = field.templateOptions ? field.templateOptions.disabled : false;
-      if (field.key) {
+      if (field.key && c) {
         if (disabled && c.enabled) {
           c.disable({ emitEvent: false, onlySelf: true });
           if (!c.parent) {
@@ -90,7 +90,7 @@ export class FieldFormExtension implements FormlyExtension {
       }
 
 
-      if (null === c.validator || null === c.asyncValidator) {
+      if (c && (null === c.validator || null === c.asyncValidator)) {
         c.setValidators(() => {
           const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
 

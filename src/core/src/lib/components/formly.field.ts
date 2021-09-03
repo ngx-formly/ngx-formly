@@ -38,6 +38,7 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
   private hostObservers: Function[] = [];
   private componentRefs: any[] = [];
   private hooksObservers: Function[] = [];
+  private detectFieldBuild = false;
 
   constructor(
     private formlyConfig: FormlyConfig,
@@ -68,6 +69,9 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
 
   ngDoCheck() {
     this.triggerHook('doCheck');
+    if (this.detectFieldBuild && (this.field && this.field.options)) {
+      this.render();
+    }
   }
 
   ngOnInit() {
@@ -158,6 +162,14 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
       return;
     }
 
+    // require Formly build
+    if (!this.field.options) {
+      this.detectFieldBuild = true;
+
+      return;
+    }
+
+    this.detectFieldBuild = false;
     this.hostObservers.forEach(unsubscribe => unsubscribe());
     this.hostObservers = [
       wrapProperty(this.field, 'hide', ({ firstChange, currentValue }) => {
