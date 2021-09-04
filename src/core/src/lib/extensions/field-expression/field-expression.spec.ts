@@ -588,6 +588,35 @@ describe('FieldExpressionExtension', () => {
       const buildForm = () => builder.buildForm(form, fields, model, options);
       expect(buildForm).toThrowError(/\[Formly Error\] \[Expression "nested.prop"\] Cannot set property 'prop' of undefined/i);
     });
+
+    it('should check expression when detecting new field changes', () => {
+      const fields: any[] = [
+        {
+          key: 'checkbox1',
+          type: 'checkbox',
+          defaultValue: true,
+          resetOnHide: true,
+        },
+        {
+          key: 'checkbox2',
+          type: 'checkbox',
+          defaultValue: true,
+          hideExpression: '!model.checkbox1',
+          resetOnHide: true,
+        },
+        {
+          key: 'checkbox3',
+          type: 'checkbox',
+          defaultValue: true,
+          hideExpression: '!model.checkbox1 || !model.checkbox2',
+          resetOnHide: true,
+        },
+      ];
+
+      builder.buildForm(form, fields, {}, options);
+      expect(fields[1].hide).toEqual(false);
+      expect(fields[2].hide).toEqual(false);
+    });
   });
 
   describe('field changes', () => {
