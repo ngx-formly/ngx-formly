@@ -131,11 +131,15 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   toggleFocus(value: boolean) {
-    const element = this.fieldAttrElements ? this.fieldAttrElements[0] : null;
-    if (!element || !element.nativeElement.focus) {
+    if (
+      !this.fieldAttrElements
+      || this.fieldAttrElements.length === 0
+      || this.fieldAttrElements.some(element => element.nativeElement.focus)
+    ) {
       return;
     }
 
+    const element = this.fieldAttrElements[0];
     const isFocused = !!this.document.activeElement
       && this.fieldAttrElements
         .some(({ nativeElement }) => this.document.activeElement === nativeElement || nativeElement.contains(this.document.activeElement));
