@@ -130,36 +130,40 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
-    this._checkField(field, ignoreCache);
+    const fieldChanged = this._checkField(field, ignoreCache);
 
     field.options._hiddenFieldsForCheck
       .sort(f => f.hide ? -1 : 1)
       .forEach(f => this.toggleFormControl(f, !!f.hide, !ignoreCache));
 
     field.options._hiddenFieldsForCheck = [];
+    if (fieldChanged) {
+      this.checkField(field);
+      if (field.options && field.options._markForCheck) {
+        field.options._markForCheck(field);
+      }
+    }
   }
 
   private _checkField(field: FormlyFieldConfigCache, ignoreCache = false) {
-    let markForCheck = false;
+    let fieldChanged = false;
     field.fieldGroup.forEach(f => {
       if (!f.options) {
         return;
       }
 
-      this.checkFieldExpressionChange(f, ignoreCache) && (markForCheck = true);
+      this.checkFieldExpressionChange(f, ignoreCache) && (fieldChanged = true);
       if (this.checkFieldVisibilityChange(f, ignoreCache)) {
         field.options._hiddenFieldsForCheck.push(f);
-        markForCheck = true;
+        fieldChanged = true;
       }
 
       if (f.fieldGroup && f.fieldGroup.length > 0) {
-        this._checkField(f, ignoreCache);
+        this._checkField(f, ignoreCache) && (fieldChanged = true);
       }
     });
 
-    if (markForCheck && field.options && field.options._markForCheck) {
-      field.options._markForCheck(field);
-    }
+    return fieldChanged;
   }
 
   private checkFieldExpressionChange(field: FormlyFieldConfigCache, ignoreCache): boolean {
