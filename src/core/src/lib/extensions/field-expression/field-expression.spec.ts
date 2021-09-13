@@ -1,4 +1,4 @@
-import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, inject} from '@angular/core/testing';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 import { Subject, of, BehaviorSubject } from 'rxjs';
@@ -564,13 +564,13 @@ describe('FieldExpressionExtension', () => {
             key: 'text',
             type: 'input',
             expressionProperties: {
-              'model.text2': "model.text",
+              'model.text2': 'model.text',
             },
           },
           {
             key: 'text2',
             type: 'input',
-          }
+          },
         ];
         const model: any = {};
         const options = {};
@@ -578,15 +578,15 @@ describe('FieldExpressionExtension', () => {
         builder.buildForm(form, fields, model, options);
         expect(fields[1].formControl.value).toEqual(null);
         const spy = jasmine.createSpy('formControl valueChanges spy');
-        fields[1].formControl.valueChanges.subscribe(spy)
+        fields[1].formControl.valueChanges.subscribe(spy);
         expect(spy).not.toHaveBeenCalled();
-        
+
         model.text = 'test';
         builder.buildForm(form, fields, model, options);
 
         expect(spy).toHaveBeenCalledWith('test');
-      })
-    })
+      });
+    });
 
     it('should supports array notation in expression property', () => {
       const fields: FormlyFieldConfig[] = [
