@@ -270,12 +270,15 @@ export class FormlyJsonschema {
               }
 
               const length = this.fieldGroup ? this.fieldGroup.length : 0;
-              const itemSchema = schema.items && schema.items[length]
-                ? schema.items[length]
-                : schema.additionalItems;
+              if (schema.items && schema.items[length]) {
+                const f = _this._toFieldConfig(<JSONSchema7> schema.items[length], { ...options});
+                f.templateOptions.removable = false;
 
-              return itemSchema
-                ? _this._toFieldConfig(<JSONSchema7> itemSchema, options)
+                return f;
+              }
+
+              return schema.additionalItems
+                ? _this._toFieldConfig(<JSONSchema7> schema.additionalItems, options)
                 : {};
             },
             enumerable: true,

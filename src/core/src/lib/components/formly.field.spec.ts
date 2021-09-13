@@ -94,6 +94,7 @@ describe('FormlyField Component', () => {
           field: {
             hide: true,
             className: 'foo',
+            options: {},
           },
         };
 
@@ -106,7 +107,7 @@ describe('FormlyField Component', () => {
 
       it('should update style and class attrs on change', () => {
         testComponentInputs = {
-          field: {},
+          field: { options: {} },
         };
 
         const fixture = createTestComponent('<formly-field [field]="field"></formly-field>');
@@ -124,7 +125,7 @@ describe('FormlyField Component', () => {
 
       it('should not override existing class', () => {
         testComponentInputs = {
-          field: {},
+          field: { options: {} },
         };
 
         const fixture = createTestComponent('<formly-field class="foo" [field]="field"></formly-field>');
@@ -234,6 +235,7 @@ describe('FormlyField Component', () => {
         hooks: {
           onInit: f => f.formControl = new FormControl(),
         },
+        options: {},
         templateOptions: {
           placeholder: 'Title',
           render: true,
@@ -258,6 +260,7 @@ describe('FormlyField Component', () => {
         formControl: new FormControl(),
         wrappers: [],
         duplicate: true,
+        options: {},
       },
       form: new FormGroup({}),
       templateOptions: { render: true },
@@ -279,6 +282,7 @@ describe('FormlyField Component', () => {
         type: 'text',
         formControl: new FormControl(),
         lifecycle: {},
+        options: {},
         templateOptions: {
           placeholder: 'Title',
         },
@@ -298,12 +302,14 @@ describe('FormlyField Component', () => {
       field: {
         type: 'formly-group',
         lifecycle: {},
+        options: {},
         fieldGroup: [
           {
             key: 'title1',
             type: 'text',
             formControl: new FormControl(),
             lifecycle: {},
+        options: {},
             templateOptions: { placeholder: 'Title1' },
           },
           {
@@ -311,6 +317,7 @@ describe('FormlyField Component', () => {
             type: 'text',
             formControl: new FormControl(),
             lifecycle: {},
+        options: {},
             templateOptions: { placeholder: 'Title2' },
           },
         ],
@@ -331,6 +338,7 @@ describe('FormlyField Component', () => {
           key: 'title',
           type: 'text',
           lifecycle: {},
+        options: {},
           templateOptions: {
             label: 'Title',
             placeholder: 'Title',
@@ -368,6 +376,7 @@ describe('FormlyField Component', () => {
         formControl: new FormControl(),
         optionsTypes: ['other'],
         lifecycle: {},
+        options: {},
         templateOptions: {
           placeholder: 'Title',
         },
@@ -387,6 +396,7 @@ describe('FormlyField Component', () => {
     const field: FormlyFieldConfig = {
       key: 'push',
       type: 'on-push',
+      options: {},
       templateOptions: {
         options: [
           { value: 1, label: 'Option 1' },

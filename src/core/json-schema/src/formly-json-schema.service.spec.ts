@@ -232,8 +232,8 @@ describe('Service: FormlyJsonschema', () => {
 
         const config = formlyJsonschema.toFieldConfig(schema);
 
-        const childConfig: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'string', defaultValue: undefined };
-        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'number', defaultValue: undefined, parsers: [jasmine.any(Function)] };
+        const childConfig: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions, removable: false }, type: 'string', defaultValue: undefined };
+        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions, removable: false }, type: 'number', defaultValue: undefined, parsers: [jasmine.any(Function)] };
 
         expect(config.type).toEqual('array');
         expect(config.fieldArray).toEqual(childConfig);
@@ -259,8 +259,8 @@ describe('Service: FormlyJsonschema', () => {
 
         const config = formlyJsonschema.toFieldConfig(schema);
 
-        const childConfig: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'string', defaultValue: undefined };
-        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'number', defaultValue: undefined, parsers: [jasmine.any(Function)]};
+        const childConfig: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions, removable: false }, type: 'string', defaultValue: undefined };
+        const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions, removable: false }, type: 'number', defaultValue: undefined, parsers: [jasmine.any(Function)]};
         const childConfig3: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'boolean', defaultValue: undefined };
 
         expect(config.fieldArray).toEqual(childConfig);

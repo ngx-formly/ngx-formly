@@ -204,7 +204,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private trackModelChanges(fields: FormlyFieldConfig[], rootKey: string[] = []) {
     fields.forEach(field => {
-      if (field.key && !field.fieldGroup) {
+      if (field.key && !field.fieldGroup && field.formControl) {
         const control = field.formControl;
         let valueChanges = control.valueChanges.pipe(
           distinctUntilChanged((x, y) => {

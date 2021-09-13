@@ -7,7 +7,11 @@ import { FieldType } from '@ngx-formly/core';
     <textarea
       [class.ng-dirty]="showError"
       [formControl]="formControl"
-      [formlyAttributes]="field" pInputTextarea></textarea>
+      [formlyAttributes]="field"
+      [cols]="to.cols"
+      [rows]="to.rows"
+      pInputTextarea
+    ></textarea>
   `,
 })
 export class FormlyFieldTextArea extends FieldType {}
