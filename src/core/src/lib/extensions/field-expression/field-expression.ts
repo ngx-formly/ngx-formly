@@ -308,7 +308,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         && !(isNullOrUndefined(control.value) && isNullOrUndefined(value))
         && control.value !== value
       ) {
-        control.patchValue(value, { emitEvent: false });
+        control.patchValue(value);
       }
     }
 
