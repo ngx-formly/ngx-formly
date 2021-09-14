@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { map, startWith, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 
 interface Model {
   readonly player: string;
@@ -49,6 +49,7 @@ export class AppComponent {
           ];
           const sportControl = this.form.get('sport');
           field.templateOptions.options = sportControl.valueChanges.pipe(
+            distinctUntilChanged(),
             tap(() => field.formControl.setValue(null)),
             startWith(sportControl.value),
             map(sportId => teams.filter(team => team.sportId === sportId)),
@@ -79,6 +80,7 @@ export class AppComponent {
           ];
           const teamControl = this.form.get('team');
           field.templateOptions.options = teamControl.valueChanges.pipe(
+            distinctUntilChanged(),
             tap(() => field.formControl.setValue(null)),
             startWith(teamControl.value),
             map(teamId => players.filter(player => player.teamId === teamId)),
