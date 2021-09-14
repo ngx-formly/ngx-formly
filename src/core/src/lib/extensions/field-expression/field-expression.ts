@@ -236,11 +236,11 @@ export class FieldExpressionExtension implements FormlyExtension {
     if (field.formControl && field.key) {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
-      if (c['_fields'].length > 1) {
+      if (c['_fields'] && c['_fields'].length > 1) {
         updateValidity(c);
       }
 
-      if (hide === true && c['_fields'].every(f => !!f._hide)) {
+      if (hide === true && (!c['_fields'] || c['_fields'].every(f => !!f._hide))) {
         unregisterControl(field, true);
         if (resetOnHide && field.resetOnHide) {
           field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
