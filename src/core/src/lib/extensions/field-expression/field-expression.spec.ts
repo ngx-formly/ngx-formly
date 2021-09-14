@@ -557,7 +557,7 @@ describe('FieldExpressionExtension', () => {
       });
     });
 
-    fdescribe('model changes', () => {
+    describe('model changes', () => {
       it('should emit formControl value changes', () => {
         const fields: FormlyFieldConfig[] = [
           {
