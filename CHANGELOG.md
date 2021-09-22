@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.23"></a>
+## [5.10.23](https://github.com/ngx-formly/ngx-formly/compare/v5.10.22...v5.10.23) (2021-09-22)
+
+
+### Bug Fixes
+
+* **core:** improve handling fields changes while building ([#2972](https://github.com/ngx-formly/ngx-formly/issues/2972)) ([a27e031](https://github.com/ngx-formly/ngx-formly/commit/a27e031)), closes [#2818](https://github.com/ngx-formly/ngx-formly/issues/2818)
+* **core:** re-check expression when detecting new field changes ([#2973](https://github.com/ngx-formly/ngx-formly/issues/2973)) ([7209e0e](https://github.com/ngx-formly/ngx-formly/commit/7209e0e)), closes [#2167](https://github.com/ngx-formly/ngx-formly/issues/2167) [#2966](https://github.com/ngx-formly/ngx-formly/issues/2966)
+* **json-schema:** add removable prop to array tuples ([#2976](https://github.com/ngx-formly/ngx-formly/issues/2976)) ([5b59bcb](https://github.com/ngx-formly/ngx-formly/commit/5b59bcb)), closes [#2862](https://github.com/ngx-formly/ngx-formly/issues/2862)
+* **kendo:** support rows and cols in text-area ([#2974](https://github.com/ngx-formly/ngx-formly/issues/2974)) ([370993b](https://github.com/ngx-formly/ngx-formly/commit/370993b)), closes [#2963](https://github.com/ngx-formly/ngx-formly/issues/2963)
+
+
+
 <a name="5.10.22"></a>
 ## [5.10.22](https://github.com/ngx-formly/ngx-formly/compare/v5.10.21...v5.10.22) (2021-07-10)
 
