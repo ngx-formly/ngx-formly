@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject} from '@angular/core/testing';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 import { Subject, of, BehaviorSubject } from 'rxjs';
@@ -557,7 +557,7 @@ describe('FieldExpressionExtension', () => {
       });
     });
 
-    fdescribe('model changes', () => {
+    describe('model changes', () => {
       it('should emit formControl value changes', () => {
         const fields: FormlyFieldConfig[] = [
           {
