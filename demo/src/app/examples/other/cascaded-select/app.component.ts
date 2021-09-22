@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
 interface Model {
   readonly player: string;
@@ -47,12 +47,18 @@ export class AppComponent {
             { id: '3', name: 'Cleveland', sportId: '2' },
             { id: '4', name: 'Miami', sportId: '2' },
           ];
-          const sportControl = this.form.get('sport');
+          const sportControl = field.form.get('sport');
           field.templateOptions.options = sportControl.valueChanges.pipe(
-            distinctUntilChanged(),
-            tap(() => field.formControl.setValue(null)),
             startWith(sportControl.value),
-            map(sportId => teams.filter(team => team.sportId === sportId)),
+            distinctUntilChanged(),
+            map(sportId => {
+              const options = teams.filter(team => team.sportId === sportId);
+              if (!options.find(option => sportId === option.id)) {
+                field.formControl.setValue(null);
+              }
+
+              return options;
+            }),
           );
         },
       },
@@ -78,12 +84,18 @@ export class AppComponent {
             { id: '7', name: 'Miami (Player 1)', teamId: '4' },
             { id: '8', name: 'Miami (Player 2)', teamId: '4' },
           ];
-          const teamControl = this.form.get('team');
+          const teamControl = field.form.get('team');
           field.templateOptions.options = teamControl.valueChanges.pipe(
-            distinctUntilChanged(),
-            tap(() => field.formControl.setValue(null)),
             startWith(teamControl.value),
-            map(teamId => players.filter(player => player.teamId === teamId)),
+            distinctUntilChanged(),
+            map(teamId => {
+              const options = players.filter(team => team.teamId === teamId);
+              if (!options.find(option => teamId === option.id)) {
+                field.formControl.setValue(null);
+              }
+
+              return options;
+            }),
           );
         },
       },

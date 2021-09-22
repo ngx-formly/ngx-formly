@@ -1,4 +1,4 @@
-import { TestBed, inject} from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 import { Subject, of, BehaviorSubject } from 'rxjs';
