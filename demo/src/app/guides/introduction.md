@@ -89,13 +89,13 @@ export class AppComponent {
     }
   ];
 
-  onSubmit() {
-    console.log(this.model);
+  onSubmit(model) {
+    console.log(model);
   }
 }
 ```
 
-That's it, the above example will render an email input 
+That's it, the above example will render an email input
 that is marked required and filled with 'email@gmail.com' value.
 
 <div align="center">
