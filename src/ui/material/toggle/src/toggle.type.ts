@@ -12,6 +12,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
       [color]="to.color"
       [tabIndex]="to.tabindex"
       [required]="to.required"
+      [labelPosition]="to.labelPosition"
     >
       {{ to.label }}
     </mat-slide-toggle>
