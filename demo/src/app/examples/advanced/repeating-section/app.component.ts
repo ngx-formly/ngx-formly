@@ -9,46 +9,23 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 export class AppComponent {
   form = new FormGroup({});
   model = {
-    investments: [{}],
+    tasks: [null],
   };
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [
     {
-      key: 'investments',
+      key: 'tasks',
       type: 'repeat',
       templateOptions: {
-        addText: 'Add another investment',
+        addText: 'Add Task',
+        label: 'TODO LIST',
       },
       fieldArray: {
-        fieldGroup: [
-          {
-            className: 'col-sm-4',
-            type: 'input',
-            key: 'investmentName',
-            templateOptions: {
-              label: 'Name of Investment:',
-              required: true,
-            },
-          },
-          {
-            type: 'input',
-            key: 'investmentDate',
-            className: 'col-sm-4',
-            templateOptions: {
-              type: 'date',
-              label: 'Date of Investment:',
-            },
-          },
-          {
-            type: 'input',
-            key: 'stockIdentifier',
-            className: 'col-sm-4',
-            templateOptions: {
-              label: 'Stock Identifier:',
-            },
-          },
-        ],
+        type: 'input',
+        templateOptions: {
+          placeholder: 'Task name',
+        },
       },
     },
   ];

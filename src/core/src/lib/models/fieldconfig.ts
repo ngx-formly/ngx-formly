@@ -120,7 +120,7 @@ export interface FormlyFieldConfig {
    */
   fieldGroup?: FormlyFieldConfig[];
 
-  fieldArray?: FormlyFieldConfig;
+  fieldArray?: FormlyFieldConfig | ((field: FormlyFieldConfig) => FormlyFieldConfig);
 
   /**
    * Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressionProperties`
