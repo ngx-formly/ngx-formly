@@ -215,7 +215,7 @@ describe('Service: FormlyJsonschema', () => {
           type: 'array',
           defaultValue: undefined,
           templateOptions: { ...emmptyTemplateOptions },
-          fieldArray: childConfig,
+          fieldArray: expect.any(Function),
         };
 
         expect(config).toEqual(baseConfig);
@@ -236,15 +236,15 @@ describe('Service: FormlyJsonschema', () => {
         const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions, removable: false }, type: 'number', defaultValue: undefined, parsers: [expect.any(Function)] };
 
         expect(config.type).toEqual('array');
-        expect(config.fieldArray).toEqual(childConfig);
+        expect(getFieldArrayChild(config)).toEqual(childConfig);
         expect(config.fieldGroup).toBeUndefined();
         // TODO: is this the best way to test this?
         // artificially increase the length of the fieldGroup
         // since the getter that is defined is based on that.
         config.fieldGroup = [null];
-        expect(config.fieldArray).toEqual(childConfig2);
+        expect(getFieldArrayChild(config)).toEqual(childConfig2);
         config.fieldGroup.push(null);
-        expect(config.fieldArray).toEqual({});
+        expect(getFieldArrayChild(config)).toEqual({});
       });
 
       it('supports array additionalitems when array items are defined as an array of schemas', () => {
@@ -263,16 +263,16 @@ describe('Service: FormlyJsonschema', () => {
         const childConfig2: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions, removable: false }, type: 'number', defaultValue: undefined, parsers: [expect.any(Function)] };
         const childConfig3: FormlyFieldConfig = { templateOptions: { ...emmptyTemplateOptions }, type: 'boolean', defaultValue: undefined };
 
-        expect(config.fieldArray).toEqual(childConfig);
+        expect(getFieldArrayChild(config)).toEqual(childConfig);
         // TODO: is this the best way to test this?
         // artificially increase the length of the fieldGroup
         // since the getter that is defined is based on that.
         config.fieldGroup = [null];
-        expect(config.fieldArray).toEqual(childConfig2);
+        expect(getFieldArrayChild(config)).toEqual(childConfig2);
         config.fieldGroup.push(null);
         // should return the additional items schema when the fieldGroup's length
         // is greater than the number of items array config validatoins
-        expect(config.fieldArray).toEqual(childConfig3);
+        expect(getFieldArrayChild(config)).toEqual(childConfig3);
         expect(config.type).toEqual('array');
       });
 
@@ -832,13 +832,17 @@ describe('Service: FormlyJsonschema', () => {
           type: 'array',
           defaultValue: undefined,
           templateOptions: emmptyTemplateOptions,
-          fieldArray: expect.any(Object) as any,
+          fieldArray: expect.any(Function),
         };
 
-        expect(config.fieldArray).toEqual(expectedConfig);
-        expect(config.fieldArray.fieldArray).toEqual(expectedConfig);
-        expect(config.fieldArray.fieldArray.fieldArray).toEqual(expectedConfig);
+        const childLevel1 = getFieldArrayChild(config);
+        expect(childLevel1).toEqual(expectedConfig);
 
+        const childLevel2 = getFieldArrayChild(childLevel1);
+        expect(childLevel2).toEqual(expectedConfig);
+
+        const childLevel3 = getFieldArrayChild(childLevel2);
+        expect(childLevel3).toEqual(expectedConfig);
       });
     });
 
@@ -1660,3 +1664,7 @@ describe('Service: FormlyJsonschema', () => {
   `,
 })
 class ArrayTypeComponent extends FieldArrayType {}
+
+function getFieldArrayChild(config: FormlyFieldConfig) {
+  return (config.fieldArray as Function)(config);
+}
