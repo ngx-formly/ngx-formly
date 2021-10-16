@@ -30,7 +30,10 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
     }
 
     for (let i = field.fieldGroup.length; i < length; i++) {
-      const f = { ...clone(field.fieldArray), key: `${i}` };
+      const f = {
+        ...clone(typeof field.fieldArray === 'function' ? field.fieldArray(field) : field.fieldArray),
+        key: `${i}`,
+      };
       field.fieldGroup.push(f);
     }
   }
