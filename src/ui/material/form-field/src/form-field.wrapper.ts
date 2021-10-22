@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   ElementRef,
   ViewEncapsulation,
+  TemplateRef,
 } from '@angular/core';
 import {
   ɵdefineHiddenProp as defineHiddenProp,
@@ -57,11 +58,11 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
       </mat-label>
 
       <ng-container matPrefix *ngIf="to._matPrefix">
-        <ng-container *ngTemplateOutlet="to._matPrefix"></ng-container>
+        <ng-container [ngTemplateOutlet]="to._matPrefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
       <ng-container matSuffix *ngIf="to._matSuffix">
-        <ng-container *ngTemplateOutlet="to._matSuffix"></ng-container>
+        <ng-container [ngTemplateOutlet]="to._matSuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
       <mat-error>
@@ -82,7 +83,7 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
     <ng-template #stringOrTemplate let-content="content">
       <ng-container *ngIf="!content.createEmbeddedView; else template">{{ content }}</ng-container>
       <ng-template #template>
-        <ng-container *ngTemplateOutlet="content"></ng-container>
+        <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-template>
     </ng-template>
   `,
