@@ -202,6 +202,10 @@ describe('CoreExtension', () => {
       options.updateInitialValue();
       options.resetModel();
       expect(model.title).toEqual('edit title');
+
+      options.updateInitialValue({ title: 'custom initial value' });
+      options.resetModel();
+      expect(model.title).toEqual('custom initial value');
     });
   });
 

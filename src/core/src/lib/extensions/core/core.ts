@@ -107,7 +107,7 @@ export class CoreExtension implements FormlyExtension {
       }
     };
 
-    options.updateInitialValue = () => (options._initialModel = clone(field.model));
+    options.updateInitialValue = (model?: any) => (options._initialModel = clone(model ?? field.model));
     field.options.updateInitialValue();
   }
 
