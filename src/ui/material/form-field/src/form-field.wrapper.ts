@@ -61,11 +61,11 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
       </mat-label>
 
       <ng-container matPrefix *ngIf="field._matprefix">
-        <ng-container *ngTemplateOutlet="field._matprefix"></ng-container>
+        <ng-container [ngTemplateOutlet]="field._matprefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
       <ng-container matSuffix *ngIf="field._matsuffix">
-        <ng-container *ngTemplateOutlet="field._matsuffix"></ng-container>
+        <ng-container [ngTemplateOutlet]="field._matsuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
       <mat-error>
@@ -86,7 +86,7 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
     <ng-template #stringOrTemplate let-content="content">
       <ng-container *ngIf="!content.createEmbeddedView; else template">{{ content }}</ng-container>
       <ng-template #template>
-        <ng-container *ngTemplateOutlet="content"></ng-container>
+        <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-template>
     </ng-template>
   `,
