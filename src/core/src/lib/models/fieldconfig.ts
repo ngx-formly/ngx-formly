@@ -220,7 +220,7 @@ export interface FormlyHookConfig {
 }
 
 export interface FormlyFormOptions {
-  updateInitialValue?: () => void;
+  updateInitialValue?: (model?: any) => void;
   resetModel?: (model?: any) => void;
   formState?: any;
   fieldChanges?: Subject<FormlyValueChangeEvent>;
