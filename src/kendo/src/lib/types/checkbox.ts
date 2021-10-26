@@ -13,7 +13,7 @@ import { FieldType } from '@ngx-formly/core';
     <label [for]="id" class="k-checkbox-label">
       <span>
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" [attr.aria-hidden]="isOsAndroid? false : true" class="k-required" aria-label="Required">*</span>
       </span>
     </label>
   `,
@@ -24,4 +24,6 @@ export class FormlyFieldCheckbox extends FieldType {
       hideLabel: true,
     },
   };
+
+  isOsAndroid = navigator.userAgent.includes('Android');
 }

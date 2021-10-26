@@ -26,7 +26,7 @@ import { FieldType } from '@ngx-formly/core';
         [class.custom-control-label]="to.formCheck.indexOf('custom') === 0"
       >
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" [attr.aria-hidden]="isOsAndroid? false : true" aria-label="Required">*</span>
       </label>
     </div>
   `,
@@ -39,4 +39,6 @@ export class FormlyFieldCheckbox extends FieldType {
       formCheck: 'custom', // 'custom' | 'custom-inline' | 'custom-switch' | 'stacked' | 'inline' | 'nolabel'
     },
   };
+
+  isOsAndroid = navigator.userAgent.includes('Android');
 }

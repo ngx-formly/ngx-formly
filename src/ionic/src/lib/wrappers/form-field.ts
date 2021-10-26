@@ -7,7 +7,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <ion-item [lines]="to.itemLines">
       <ion-label [position]="to.labelPosition">
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" [attr.aria-hidden]="isOsAndroid? false : true" aria-label="Required">*</span>
       </ion-label>
       <ng-template #fieldComponent></ng-template>
     </ion-item>
@@ -22,4 +22,6 @@ import { FieldWrapper } from '@ngx-formly/core';
     </ion-item>
   `,
 })
-export class FormlyWrapperFormField extends FieldWrapper {}
+export class FormlyWrapperFormField extends FieldWrapper {
+  isOsAndroid = navigator.userAgent.includes('Android');
+}

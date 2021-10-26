@@ -7,7 +7,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <div *ngIf="to.label && to.hideLabel !== true" class="ui-widget">
       <label [for]="id">
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" [attr.aria-hidden]="isOsAndroid? false : true" aria-label="Required">*</span>
       </label>
     </div>
     <ng-container #fieldComponent></ng-container>
@@ -18,4 +18,5 @@ import { FieldWrapper } from '@ngx-formly/core';
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper {
+  isOsAndroid = navigator.userAgent.includes('Android');
 }

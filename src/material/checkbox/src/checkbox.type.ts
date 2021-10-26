@@ -15,7 +15,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [color]="to.color"
       [labelPosition]="to.align || to.labelPosition">
       {{ to.label }}
-      <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="mat-form-field-required-marker">*</span>
+      <span *ngIf="to.required && to.hideRequiredMarker !== true" [attr.aria-hidden]="isOsAndroid? false : true" class="mat-form-field-required-marker" aria-label="Required">*</span>
     </mat-checkbox>
   `,
 })
@@ -31,6 +31,9 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, Aft
       color: 'accent', // workaround for https://github.com/angular/components/issues/18465
     },
   };
+
+  isOsAndroid = navigator.userAgent.includes('Android');
+
 
   private _required!: boolean;
   constructor(private renderer: Renderer2, private focusMonitor: FocusMonitor) {
