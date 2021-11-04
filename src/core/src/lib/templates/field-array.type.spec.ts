@@ -32,6 +32,22 @@ describe('Array Field Type', () => {
     expect(queryAll('formly-array > formly-field')).toHaveLength(2);
   });
 
+  it('should support passing a function to fieldArray', () => {
+    const { query, field } = renderComponent({
+      key: 'foo',
+      type: 'array',
+      defaultValue: [],
+      fieldArray: () => ({ fieldGroup: [{ key: 'name', defaultValue: 'foo' }] }),
+    });
+
+    expect(field.fieldGroup).toEqual([]);
+    expect(field.model).toEqual([]);
+    query('#add').triggerEventHandler('click', {});
+
+    expect(field.fieldGroup).toHaveLength(1);
+    expect(field.model).toEqual([{ name: 'foo' }]);
+  });
+
   it('should support field without key', () => {
     const { field, query, detectChanges } = renderComponent({ model: [], type: 'array' });
     expect(field.model).toEqual([]);
