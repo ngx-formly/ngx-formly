@@ -145,3 +145,18 @@ UPGRADE FROM 5.0 to 6.0
   - onClick: (to, fieldType, $event) => ...,
   + onClick: (field, $event) => ...,
   ```
+
+@ngx-formly/json-schema
+-----------------------
+
+- In case you use the extra option `map` to customize the generated `fieldArray`, you need to make change to take account of `fieldArray` which return `function` instead of an object.
+
+```ts
+this.formlyJsonschema.toFieldConfig(schema, {
+  map: (field: FormlyFieldConfig, schema: JSONSchema7) => {
+    ... // update `fieldArray` value
+
+    return field;
+  },
+});
+```
