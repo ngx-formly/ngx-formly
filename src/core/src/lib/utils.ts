@@ -21,7 +21,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
 
   /* We store the keyPath in the field for performance reasons. This function will be called frequently. */
   if (field._keyPath?.key !== field.key) {
-    let path: string[] = [];
+    let path: (string | number)[] = [];
     if (typeof field.key === 'string') {
       const key = field.key.indexOf('[') === -1 ? field.key : field.key.replace(/\[(\w+)\]/g, '.$1');
       path = key.indexOf('.') !== -1 ? key.split('.') : [key];
@@ -309,4 +309,26 @@ export function reduceFormUpdateValidityCalls(form: any, action: Function) {
 
   updateValidityArgs.called && updateValidity({ emitEvent: updateValidityArgs.emitEvent });
   form._updateTreeValidity = updateValidity;
+}
+
+export function getField(f: FormlyFieldConfig, key: FormlyFieldConfig['key']): FormlyFieldConfig {
+  key = (Array.isArray(key) ? key.join('.') : key) as string;
+  if (!f.fieldGroup) {
+    return;
+  }
+
+  for (let i = 0, len = f.fieldGroup.length; i < len; i++) {
+    const c = f.fieldGroup[i];
+    const k = (Array.isArray(c.key) ? c.key.join('.') : c.key) as string;
+    if (k === key) {
+      return c;
+    }
+
+    if (c.fieldGroup && (isNil(k) || key.indexOf(`${k}.`) === 0)) {
+      const field = getField(c, isNil(k) ? key : key.slice(k.length + 1));
+      if (field) {
+        return field;
+      }
+    }
+  }
 }

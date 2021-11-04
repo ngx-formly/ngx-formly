@@ -9,6 +9,7 @@ import {
   assignFieldValue,
   defineHiddenProp,
   observeDeep,
+  getField,
 } from './utils';
 import { FormlyFieldConfig } from './models';
 import { of } from 'rxjs';
@@ -435,5 +436,46 @@ describe('observe', () => {
     defineHiddenProp(field, 'bar', true);
     observe(field, ['bar'], () => {});
     expect(Object.getOwnPropertyDescriptor(field, 'bar').enumerable).toEqual(false);
+  });
+});
+
+describe('getField', () => {
+  it('should find child', () => {
+    const field = { fieldGroup: [{ key: 'child1' }] };
+    const childField = getField(field, 'child1');
+
+    expect(childField.key).toEqual('child1');
+  });
+
+  it('should find the nested child', () => {
+    const field = {
+      fieldGroup: [
+        {
+          key: 'parent',
+          fieldGroup: [{ key: 'child1' }],
+        },
+      ],
+    };
+
+    const childField = getField(field, 'parent.child1');
+    expect(childField.key).toEqual('child1');
+  });
+
+  it('find using array key', () => {
+    const field = {
+      fieldGroup: [
+        {
+          key: 'parent',
+          fieldGroup: [{ key: 'child1' }],
+        },
+      ],
+    };
+
+    const childField = getField(field, ['parent', 'child1']);
+    expect(childField.key).toEqual('child1');
+  });
+
+  it('should return undefined when field does not exist', () => {
+    expect(getField({}, ['parent', 'child1'])).toBeUndefined();
   });
 });
