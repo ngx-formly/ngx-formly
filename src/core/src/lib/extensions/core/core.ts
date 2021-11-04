@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, ComponentRef } from '@angular/core';
 import { FormlyConfig } from '../../services/formly.config';
-import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension } from '../../models';
+import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension, FormlyFieldConfig } from '../../models';
 import {
   getFieldId,
   assignFieldValue,
@@ -10,6 +10,7 @@ import {
   defineHiddenProp,
   clone,
   isNil,
+  getField,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -28,6 +29,10 @@ export class CoreExtension implements FormlyExtension {
         configurable: true,
       });
     }
+
+    Object.defineProperty(field, 'get', {
+      value: (key: FormlyFieldConfig['key']) => getField(field, key),
+    });
 
     this.getFieldComponentInstance(field).prePopulate();
   }
