@@ -22,10 +22,15 @@
             "main": "demo/src/main.ts",
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/tsconfig.app.json",
-            "aot": true,
             "assets": ["demo/src/favicon.ico", "demo/src/assets"],
             "styles": ["demo/src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -55,7 +60,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -93,7 +99,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "integration/ssr/dist/browser",
             "index": "integration/ssr/src/index.html",
             "main": "integration/ssr/src/main.ts",
@@ -101,7 +106,13 @@
             "tsConfig": "integration/ssr/tsconfig.app.json",
             "assets": ["integration/ssr/src/favicon.ico", "integration/ssr/src/assets"],
             "styles": ["integration/ssr/src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -115,7 +126,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -131,7 +141,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -156,7 +167,9 @@
           "options": {
             "outputPath": "integration/ssr/dist/server",
             "main": "integration/ssr/server.ts",
-            "tsConfig": "integration/ssr/tsconfig.server.json"
+            "tsConfig": "integration/ssr/tsconfig.server.json",
+            "sourceMap": true,
+            "optimization": false
           },
           "configurations": {
             "production": {
@@ -168,7 +181,8 @@
               ],
               "optimization": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
