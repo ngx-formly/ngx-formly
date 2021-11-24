@@ -617,7 +617,7 @@ describe('FieldExpressionExtension', () => {
       const model = {};
 
       const buildForm = () => builder.buildForm(form, fields, model, options);
-      expect(buildForm).toThrowError(/\[Formly Error\] \[Expression "nested.prop"\] Cannot set property 'prop' of undefined/i);
+      expect(buildForm).toThrowError(/\[Formly Error\] \[Expression "nested.prop"\] Cannot set properties of undefined \(setting 'prop'\)/i);
     });
 
     it('should check expression when detecting new field changes', () => {

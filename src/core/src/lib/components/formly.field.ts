@@ -181,13 +181,22 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
         } else {
           if (currentValue) {
             this.containerRef.clear();
+            if (this.field.className) {
+              this.renderer.removeAttribute(this.elementRef.nativeElement, 'class');
+            }
           } else {
             this.renderField(this.containerRef, this.field);
+            if (this.field.className) {
+              this.renderer.setAttribute(this.elementRef.nativeElement, 'class', this.field.className);
+            }
           }
         }
       }),
       wrapProperty(this.field, 'className', ({ firstChange, currentValue }) => {
-        if (!firstChange || (firstChange && currentValue)) {
+        if (
+          (!firstChange || (firstChange && currentValue))
+          && (!this.formlyConfig.extras.lazyRender || (this.field.hide !== true))
+        ) {
           this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
         }
       }),
