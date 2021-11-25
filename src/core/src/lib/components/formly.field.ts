@@ -5,7 +5,6 @@ import {
   ViewChild,
   ComponentRef,
   SimpleChanges,
-  ComponentFactoryResolver,
   OnInit,
   OnChanges,
   OnDestroy,
@@ -25,7 +24,7 @@ import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
-import { FormlyForm } from './formly.form';
+import { FormlyFieldTemplates } from './formly.template';
 
 @Component({
   selector: 'formly-field',
@@ -59,10 +58,9 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
   constructor(
     private config: FormlyConfig,
     private renderer: Renderer2,
-    private resolver: ComponentFactoryResolver,
     private _elementRef: ElementRef,
     private hostContainerRef: ViewContainerRef,
-    @Optional() private form: FormlyForm,
+    @Optional() private form: FormlyFieldTemplates,
   ) {}
 
   ngAfterContentInit() {
@@ -100,7 +98,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
       const [wrapper, ...wps] = wrappers;
       const { component } = this.config.getWrapper(wrapper);
 
-      const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
+      const ref = containerRef.createComponent<FieldWrapper>(component);
       this.attachComponentRef(ref, f);
       observe<ViewContainerRef>(ref.instance, ['fieldComponent'], ({ currentValue, previousValue, firstChange }) => {
         if (currentValue) {
@@ -121,7 +119,7 @@ export class FormlyField implements OnInit, OnChanges, AfterContentInit, AfterVi
         ref = containerRef.createEmbeddedView(inlineType.ref, { $implicit: f });
       } else {
         const { component } = this.config.getType(f.type, true);
-        ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
+        ref = containerRef.createComponent<FieldWrapper>(component);
       }
       this.attachComponentRef(ref, f);
     }

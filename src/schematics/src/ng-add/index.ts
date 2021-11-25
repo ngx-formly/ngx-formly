@@ -33,8 +33,8 @@ function addFormlyToPackageJson() {
 
 /** Add formly module to the relative module */
 function addFormlyModuleConfig(options: Schema) {
-  return (host: Tree) => {
-    const modulePath = findModuleFromOptions(host, options);
+  return async (host: Tree, context: SchematicContext) => {
+    const modulePath = await findModuleFromOptions(host, options);
 
     addModuleImportToModule(
       host,
@@ -49,15 +49,13 @@ function addFormlyModuleConfig(options: Schema) {
       'FormlyModule.forRoot()',
       '@ngx-formly/core',
     );
-
-    return host;
   };
 }
 
 /** Add UI module to app.module */
 function addUITheme(options: Schema) {
-  return (host: Tree, context: SchematicContext) => {
-    const modulePath = findModuleFromOptions(host, options);
+  return async (host: Tree, context: SchematicContext) => {
+    const modulePath = await findModuleFromOptions(host, options);
     const uiTheme = options.uiTheme;
 
     if (uiTheme) {
@@ -73,8 +71,6 @@ function addUITheme(options: Schema) {
         `@ngx-formly/${uiTheme}`,
       );
     }
-
-    return host;
   };
 }
 

@@ -19,12 +19,12 @@ import { FormlyConfig } from '../services/formly.config';
 import { clone } from '../utils';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
-import { FormlyTemplate } from './formly.template';
+import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
 
 @Component({
   selector: 'formly-form',
   template: '<formly-field [field]="field"></formly-field>',
-  providers: [FormlyFormBuilder],
+  providers: [FormlyFormBuilder, FormlyFieldTemplates],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
@@ -61,12 +61,20 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   @Output() modelChange = new EventEmitter<any>();
-  @ContentChildren(FormlyTemplate) templates!: QueryList<FormlyTemplate>;
+  @ContentChildren(FormlyTemplate) set templates(templates: QueryList<FormlyTemplate>) {
+    this.fieldTemplates.templates = templates;
+  }
+
   field: FormlyFieldConfigCache = {};
   private _modelChangeValue: any = {};
   private valueChangesUnsubscribe = () => {};
 
-  constructor(private builder: FormlyFormBuilder, private config: FormlyConfig, private ngZone: NgZone) {}
+  constructor(
+    private builder: FormlyFormBuilder,
+    private config: FormlyConfig,
+    private ngZone: NgZone,
+    private fieldTemplates: FormlyFieldTemplates,
+  ) {}
 
   ngDoCheck() {
     if (this.config.extras.checkExpressionOn === 'changeDetectionCheck') {
@@ -115,9 +123,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   private setField(field: FormlyFieldConfigCache) {
-    this.field = {
-      ...this.field,
-      ...(this.config.extras.immutable ? clone(field) : field),
-    };
+    if (this.config.extras.immutable) {
+      this.field = { ...this.field, ...clone(field) };
+    } else {
+      Object.keys(field).forEach((p) => (this.field[p] = field[p]));
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Directive, Input, OnChanges, TemplateRef } from '@angular/core';
+import { Directive, Injectable, Input, OnChanges, QueryList, TemplateRef } from '@angular/core';
 
 @Directive({ selector: '[formlyTemplate]' })
 export class FormlyTemplate implements OnChanges {
@@ -9,4 +9,10 @@ export class FormlyTemplate implements OnChanges {
   ngOnChanges() {
     this.name = this.name || 'formly-group';
   }
+}
+
+// workarround for https://github.com/angular/angular/issues/43227#issuecomment-904173738
+@Injectable()
+export class FormlyFieldTemplates {
+  templates!: QueryList<FormlyTemplate>;
 }

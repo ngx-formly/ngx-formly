@@ -18,7 +18,8 @@ import { FormlyFieldConfig } from './form-field.wrapper';
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   extends CoreFieldType<F>
-  implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any> {
+  implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any>
+{
   @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
   @ViewChild('matSuffix') matSuffix!: TemplateRef<any>;
 

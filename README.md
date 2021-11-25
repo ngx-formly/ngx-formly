@@ -56,7 +56,7 @@ Formly is a dynamic (JSON powered) form library for Angular that bring unmatched
 
 | Angular version | Formly version         |
 | --------------- | ---------------------- |
-| Angular >= 11   | `@ngx-formly/core@6.x` |
+| Angular >= 13   | `@ngx-formly/core@6.x` |
 | Angular >= 7    | `@ngx-formly/core@5.x` |
 | Angular >= 6    | `@ngx-formly/core@4.x` |
 | Angular >= 5    | `@ngx-formly/core@3.x` |

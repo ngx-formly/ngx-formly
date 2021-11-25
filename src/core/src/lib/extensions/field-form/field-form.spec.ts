@@ -140,9 +140,9 @@ describe('FieldFormExtension', () => {
 
   it('should update the formcontrol validation when field update', () => {
     const formControl = new FormControl();
-    spyOn(formControl, 'setValidators');
-    spyOn(formControl, 'setAsyncValidators');
-    spyOn(formControl, 'updateValueAndValidity');
+    jest.spyOn(formControl, 'setValidators');
+    jest.spyOn(formControl, 'setAsyncValidators');
+    jest.spyOn(formControl, 'updateValueAndValidity');
     buildField({
       key: 'test',
       formControl,
@@ -157,7 +157,7 @@ describe('FieldFormExtension', () => {
 
   it('should updateValueAndValidity of detached field', () => {
     const formControl = new FormControl();
-    spyOn(formControl, 'updateValueAndValidity');
+    jest.spyOn(formControl, 'updateValueAndValidity');
 
     buildField({
       key: 'test',
@@ -180,8 +180,8 @@ describe('FieldFormExtension', () => {
 
     buildField(field);
 
-    spyOn(formControl, 'setValidators');
-    spyOn(formControl, 'setAsyncValidators');
+    jest.spyOn(formControl, 'setValidators');
+    jest.spyOn(formControl, 'setAsyncValidators');
 
     buildField(field);
 

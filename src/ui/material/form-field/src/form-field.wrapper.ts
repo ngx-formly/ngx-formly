@@ -94,7 +94,8 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
 })
 export class FormlyWrapperFormField
   extends FieldWrapper<MatFormlyFieldConfig>
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;
   field!: MatFormlyFieldConfig;
 

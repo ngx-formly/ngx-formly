@@ -7,6 +7,6 @@
   },
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "ng-zorro-antd": ">=11.0.0"
+    "ng-zorro-antd": ">=13.0.0"
   }
 }

@@ -10,7 +10,11 @@ exec(`mkdir -p ${distDir}`);
 
 PACKAGES.map((name) => {
   // build package
-  exec(name === 'schematics' ? `ts-node --dir build schematics.ts` : `ng build --prod @ngx-formly/${name}`);
+  exec(
+    name === 'schematics'
+      ? `ts-node --dir build schematics.ts`
+      : `ng build --configuration production @ngx-formly/${name}`,
+  );
 
   const pkgDir = `${distDir}/${name}`;
   exec(`cp README.md ${pkgDir}`);

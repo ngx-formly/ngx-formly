@@ -3,6 +3,7 @@ export { FormlyFieldConfig, FormlyTemplateOptions, FormlyFormOptions, ConfigOpti
 export { FormlyField } from './components/formly.field';
 export { FormlyAttributes as ɵFormlyAttributes } from './templates/formly.attributes';
 export { FormlyGroup as ɵFormlyGroup } from './templates/formly.group';
+export { FormlyTemplate as ɵFormlyTemplate } from './components/formly.template';
 export { FormlyValidationMessage as ɵFormlyValidationMessage } from './templates/formly.validation-message';
 export { FORMLY_CONFIG, FormlyConfig } from './services/formly.config';
 export { FormlyFormBuilder } from './services/formly.builder';

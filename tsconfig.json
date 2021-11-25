@@ -16,7 +16,8 @@
     "paths": {
       "@ngx-formly/*": ["src/*/src/private_api", "src/*/src/public_api", "src/ui/*/src/public_api"],
       "@assets/*": ["demo/src/assets/*"]
-    }
+    },
+    "skipLibCheck": true
   },
   "exclude": [
     "demo/src/assets/stackblitz/**/*.ts",

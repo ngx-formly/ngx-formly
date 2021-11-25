@@ -79,13 +79,6 @@
           "options": {
             "browserTarget": "app:build"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["demo/tsconfig.app.json", "demo/tsconfig.spec.json", "demo/e2e/tsconfig.json"],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -155,13 +148,6 @@
             }
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["integration/ssr/tsconfig.app.json", "integration/ssr/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
-        },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
@@ -227,13 +213,6 @@
               "tsConfig": "src/core/tsconfig.lib.prod.json"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/core/tsconfig.lib.json", "src/core/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -253,13 +232,6 @@
             "production": {
               "tsConfig": "src/ui/bootstrap/tsconfig.lib.prod.json"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/ui/bootstrap/tsconfig.lib.json", "src/ui/bootstrap/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -281,13 +253,6 @@
               "tsConfig": "src/ui/ionic/tsconfig.lib.prod.json"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/ui/ionic/tsconfig.lib.json", "src/ui/ionic/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -307,13 +272,6 @@
             "production": {
               "tsConfig": "src/ui/kendo/tsconfig.lib.prod.json"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/ui/kendo/tsconfig.lib.json", "src/ui/kendo/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -335,13 +293,6 @@
               "tsConfig": "src/ui/material/tsconfig.lib.prod.json"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/ui/material/tsconfig.lib.json", "src/ui/material/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -361,13 +312,6 @@
             "production": {
               "tsConfig": "src/ui/primeng/tsconfig.lib.prod.json"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/ui/primeng/tsconfig.lib.json", "src/ui/primeng/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -389,13 +333,6 @@
               "tsConfig": "src/ui/ng-zorro-antd/tsconfig.lib.prod.json"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/ui/ng-zorro-antd/tsconfig.lib.json", "src/ui/ng-zorro-antd/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -415,13 +352,6 @@
             "production": {
               "tsConfig": "src/ui/nativescript/tsconfig.lib.prod.json"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/ui/nativescript/tsconfig.lib.json", "src/ui/nativescript/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
           }
         }
       }

@@ -1,6 +1,6 @@
 UPGRADE FROM 5.0 to 6.0
 =======================
-- Formly V6 now requires Angular Version >= 11
+- Formly V6 now requires Angular Version >= 13
 
 @ngx-formly/core
 ----------------

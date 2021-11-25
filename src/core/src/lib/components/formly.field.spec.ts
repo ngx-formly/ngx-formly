@@ -123,7 +123,7 @@ describe('FormlyField Component', () => {
 
     const hooks = f.hooks;
     Object.keys(f.hooks).forEach((hook) => {
-      spyOn(hooks, hook as any);
+      jest.spyOn(hooks, hook as any);
     });
 
     const { fixture, field } = renderComponent(f);

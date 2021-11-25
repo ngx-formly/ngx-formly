@@ -8,7 +8,8 @@ import { registerControl, unregisterControl, findControl } from '../extensions/f
 @Directive()
 export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig>
   extends FieldType<F>
-  implements FormlyExtension {
+  implements FormlyExtension
+{
   get formControl() {
     return this.field.formControl as FormArray;
   }
@@ -59,7 +60,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldCo
   }
 
   private _build() {
-    this.options.build(this.field);
+    this.options.build();
     this.options.fieldChanges.next({
       field: this.field,
       value: getFieldValue(this.field),

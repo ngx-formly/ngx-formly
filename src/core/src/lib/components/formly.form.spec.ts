@@ -138,7 +138,7 @@ describe('FormlyForm Component', () => {
       });
 
       const app = fixture.componentInstance;
-      spyOn(app, 'modelChange');
+      jest.spyOn(app, 'modelChange');
 
       setInputs({ model: { title: '****' } });
 
@@ -189,7 +189,7 @@ describe('FormlyForm Component', () => {
       });
 
       const app = fixture.componentInstance;
-      spyOn(app, 'modelChange');
+      jest.spyOn(app, 'modelChange');
 
       app.form.get('title').patchValue('***');
       fixture.detectChanges();
@@ -212,7 +212,7 @@ describe('FormlyForm Component', () => {
       });
 
       const app = fixture.componentInstance;
-      spyOn(app, 'modelChange');
+      jest.spyOn(app, 'modelChange');
 
       setInputs({ model: { title: '****' } });
 
@@ -399,7 +399,7 @@ describe('FormlyForm Component', () => {
       );
 
       const app = fixture.componentInstance;
-      spyOn(app, 'modelChange');
+      jest.spyOn(app, 'modelChange');
 
       app.form.get('title').patchValue('***');
       detectChanges();

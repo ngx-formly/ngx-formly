@@ -32,6 +32,7 @@ export class CoreExtension implements FormlyExtension {
 
     Object.defineProperty(field, 'get', {
       value: (key: FormlyFieldConfig['key']) => getField(field, key),
+      configurable: true,
     });
 
     this.getFieldComponentInstance(field).prePopulate();

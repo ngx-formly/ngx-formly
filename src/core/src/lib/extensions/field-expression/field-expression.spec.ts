@@ -86,7 +86,11 @@ describe('FieldExpressionExtension', () => {
       });
 
       it('should toggle field control when hide changed programmatically', () => {
-        const { fieldGroup: fields, form, options } = buildField({
+        const {
+          fieldGroup: fields,
+          form,
+          options,
+        } = buildField({
           fieldGroup: [
             { hide: false, key: 'foo' },
             { hide: true, fieldGroup: [{ key: 'bar' }] },
@@ -310,7 +314,7 @@ describe('FieldExpressionExtension', () => {
 
     it('should update field validity when using built-in validations expression', () => {
       const formControl = new FormControl();
-      spyOn(formControl, 'updateValueAndValidity');
+      jest.spyOn(formControl, 'updateValueAndValidity');
 
       buildField({
         key: 'checked',
