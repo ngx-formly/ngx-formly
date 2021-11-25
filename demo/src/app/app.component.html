@@ -37,7 +37,7 @@
 <mat-sidenav-container fullscreen [style.top]="'56px'" class="mat-typography">
   <mat-sidenav
     [mode]="(isSmallDevice$ | async) ? 'over' : 'side'"
-    [opened]="!homeLink.isActive && !(isSmallDevice$ | async)"
+    [opened]="!homeLink.isActive && (isSmallDevice$ | async) === false"
     [style.width.px]="250"
     #sidenav
   >

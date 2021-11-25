@@ -10,7 +10,7 @@ import { ExampleType } from '../example-viewer/example-viewer.component';
   templateUrl: './stackblitz-button.html',
   providers: [StackblitzWriter],
 })
-export class StackblitzButton {
+export class StackblitzButtonComponent {
   stackblitzForm;
 
   @Input() type: string;
@@ -34,8 +34,8 @@ export class StackblitzButton {
 
 @NgModule({
   imports: [MatTooltipModule, MatButtonModule, MatIconModule],
-  exports: [StackblitzButton],
-  declarations: [StackblitzButton],
+  exports: [StackblitzButtonComponent],
+  declarations: [StackblitzButtonComponent],
   providers: [StackblitzWriter],
 })
 export class StackblitzButtonModule {}

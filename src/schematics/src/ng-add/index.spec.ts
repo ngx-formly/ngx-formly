@@ -56,19 +56,19 @@ describe('ng-add-schematic', () => {
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { FormlyModule } from '@ngx-formly\/core';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /FormlyModule.forRoot/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { ReactiveFormsModule } from '@angular\/forms';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /ReactiveFormsModule,/
     );
   });
@@ -90,11 +90,11 @@ describe('ng-add-schematic', () => {
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { FormlyBootstrapModule } from '@ngx-formly\/bootstrap';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /FormlyBootstrapModule/
     );
   });
@@ -120,19 +120,19 @@ describe('ng-add-schematic', () => {
     const content = tree.readContent(fooModule);
 
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { FormlyModule } from '@ngx-formly\/core';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /FormlyModule.forRoot/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { ReactiveFormsModule } from '@angular\/forms';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /ReactiveFormsModule,/
     );
   });

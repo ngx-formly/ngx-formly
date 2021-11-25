@@ -79,6 +79,12 @@
           "options": {
             "browserTarget": "app:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["demo/**/*.ts", "demo/**/*.html"]
+          }
         }
       }
     },
@@ -193,6 +199,12 @@
           "configurations": {
             "production": {}
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["integration/ssr/**/*.ts", "integration/ssr/**/*.html"]
+          }
         }
       }
     },
@@ -212,6 +224,12 @@
             "production": {
               "tsConfig": "src/core/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/core/**/*.ts", "src/core/**/*.html"]
           }
         }
       }
@@ -233,6 +251,12 @@
               "tsConfig": "src/ui/bootstrap/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/bootstrap/**/*.ts", "src/ui/bootstrap/**/*.html"]
+          }
         }
       }
     },
@@ -252,6 +276,12 @@
             "production": {
               "tsConfig": "src/ui/ionic/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/ionic/**/*.ts", "src/ui/ionic/**/*.html"]
           }
         }
       }
@@ -273,6 +303,12 @@
               "tsConfig": "src/ui/kendo/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/kendo/**/*.ts", "src/ui/kendo/**/*.html"]
+          }
         }
       }
     },
@@ -292,6 +328,12 @@
             "production": {
               "tsConfig": "src/ui/material/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/material/**/*.ts", "src/ui/material/**/*.html"]
           }
         }
       }
@@ -313,6 +355,12 @@
               "tsConfig": "src/ui/primeng/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/primeng/**/*.ts", "src/ui/primeng/**/*.html"]
+          }
         }
       }
     },
@@ -332,6 +380,12 @@
             "production": {
               "tsConfig": "src/ui/ng-zorro-antd/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/ng-zorro-antd/**/*.ts", "src/ui/ng-zorro-antd/**/*.html"]
           }
         }
       }
@@ -353,6 +407,12 @@
               "tsConfig": "src/ui/nativescript/tsconfig.lib.prod.json"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/nativescript/**/*.ts", "src/ui/nativescript/**/*.html"]
+          }
         }
       }
     }
@@ -360,15 +420,16 @@
   "defaultProject": "app",
   "cli": {
     "analytics": false,
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "defaultCollection": "@angular-eslint/schematics"
   },
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "demo",
+      "prefix": "formly",
       "style": "scss"
     },
     "@schematics/angular:directive": {
-      "prefix": "demo"
+      "prefix": "formly"
     }
   }
 }
