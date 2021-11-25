@@ -5,7 +5,6 @@ import {
   ViewChild,
   ComponentRef,
   SimpleChanges,
-  ComponentFactoryResolver,
   DoCheck,
   OnInit,
   OnChanges,
@@ -26,7 +25,7 @@ import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
-import { FormlyForm } from './formly.form';
+import { FormlyFieldTemplates } from './formly.template';
 
 @Component({
   selector: 'formly-field',
@@ -62,10 +61,9 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
   constructor(
     private config: FormlyConfig,
     private renderer: Renderer2,
-    private resolver: ComponentFactoryResolver,
     private _elementRef: ElementRef,
     private hostContainerRef: ViewContainerRef,
-    @Optional() private form: FormlyForm,
+    @Optional() private form: FormlyFieldTemplates,
   ) {}
 
   ngAfterContentInit() {
@@ -76,9 +74,8 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     this.triggerHook('afterViewInit');
   }
 
-
   ngDoCheck() {
-    if (this.detectFieldBuild && (this.field && this.field.options)) {
+    if (this.detectFieldBuild && this.field && this.field.options) {
       this.render();
     }
   }
@@ -110,7 +107,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       const [wrapper, ...wps] = wrappers;
       const { component } = this.config.getWrapper(wrapper);
 
-      const ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
+      const ref = containerRef.createComponent<FieldWrapper>(component);
       this.attachComponentRef(ref, f);
       observe<ViewContainerRef>(ref.instance, ['fieldComponent'], ({ currentValue, previousValue, firstChange }) => {
         if (currentValue) {
@@ -135,7 +132,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
         ref = containerRef.createEmbeddedView(inlineType.ref, { $implicit: f });
       } else {
         const { component } = this.config.getType(f.type, true);
-        ref = containerRef.createComponent<FieldWrapper>(this.resolver.resolveComponentFactory(component));
+        ref = containerRef.createComponent<FieldWrapper>(component);
       }
       this.attachComponentRef(ref, f);
     }
@@ -186,7 +183,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     }
 
     this.detectFieldBuild = false;
-    this.hostObservers.forEach(hostObserver => hostObserver.unsubscribe());
+    this.hostObservers.forEach((hostObserver) => hostObserver.unsubscribe());
     this.hostObservers = [
       observe<boolean>(this.field, ['hide'], ({ firstChange, currentValue }) => {
         const containerRef = this.containerRef;
@@ -214,8 +211,8 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       }),
       observe<string>(this.field, ['className'], ({ firstChange, currentValue }) => {
         if (
-          (!firstChange || (firstChange && currentValue))
-          && (!this.config.extras.lazyRender || (this.field.hide !== true))
+          (!firstChange || (firstChange && currentValue)) &&
+          (!this.config.extras.lazyRender || this.field.hide !== true)
         ) {
           this.elementRef && this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
         }

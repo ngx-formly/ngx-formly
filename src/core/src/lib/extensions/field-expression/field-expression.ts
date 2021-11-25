@@ -84,7 +84,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
 
         checkLocked = true;
-        reduceFormUpdateValidityCalls(f.formControl, () => {
+        reduceFormUpdateValidityCalls(f.form, () => {
           const fieldChanged = this.checkExpressions(f, ignoreCache);
           const options = field.options;
           options._hiddenFieldsForCheck
@@ -141,11 +141,11 @@ export class FieldExpressionExtension implements FormlyExtension {
         );
 
         if (
-          ignoreCache || (currentValue !== exprValue && (
-            !isObject(exprValue)
-            || isObservable(exprValue)
-            || (JSON.stringify(exprValue) !== JSON.stringify(currentValue))
-          ))
+          ignoreCache ||
+          (currentValue !== exprValue &&
+            (!isObject(exprValue) ||
+              isObservable(exprValue) ||
+              JSON.stringify(exprValue) !== JSON.stringify(currentValue)))
         ) {
           currentValue = exprValue;
           this.evalExpr(field, path, exprValue);
@@ -174,7 +174,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     if (field.fieldGroup) {
-      field.fieldGroup.forEach(f => this.checkExpressions(f, ignoreCache) && (fieldChanged = true));
+      field.fieldGroup.forEach((f) => this.checkExpressions(f, ignoreCache) && (fieldChanged = true));
     }
 
     return fieldChanged;
@@ -233,13 +233,13 @@ export class FieldExpressionExtension implements FormlyExtension {
   private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
     try {
       let target = field;
-      const paths = prop.indexOf('[') === -1
-        ? prop.split('.')
-        : prop
-          .replace(/\'|\"/g, '')
-          .split(/[[\]]{1,2}/) // https://stackoverflow.com/a/20198206
-          .filter(v => v)
-      ;
+      const paths =
+        prop.indexOf('[') === -1
+          ? prop.split('.')
+          : prop
+              .replace(/\'|\"/g, '')
+              .split(/[[\]]{1,2}/) // https://stackoverflow.com/a/20198206
+              .filter((v) => v);
       const lastIndex = paths.length - 1;
       for (let i = 0; i < lastIndex; i++) {
         target = target[paths[i]];

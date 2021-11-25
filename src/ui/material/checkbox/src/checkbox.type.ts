@@ -24,7 +24,12 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [labelPosition]="to.align || to.labelPosition"
     >
       {{ to.label }}
-      <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="mat-form-field-required-marker">*</span>
+      <span
+        *ngIf="to.required && to.hideRequiredMarker !== true"
+        aria-hidden="true"
+        class="mat-form-field-required-marker"
+        >*</span
+      >
     </mat-checkbox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,7 +59,7 @@ export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, Aft
 
   ngAfterViewInit() {
     if (this.checkbox) {
-      this.focusMonitor.monitor(this.checkbox._inputElement, true).subscribe(focusOrigin => {
+      this.focusMonitor.monitor(this.checkbox._inputElement, true).subscribe((focusOrigin) => {
         if (focusOrigin) {
           this.to.focus && this.to.focus(this.field);
         } else {

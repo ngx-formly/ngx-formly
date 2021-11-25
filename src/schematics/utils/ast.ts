@@ -1,4 +1,4 @@
-import { JsonParseMode, normalize, parseJson } from '@angular-devkit/core';
+import { normalize } from '@angular-devkit/core';
 import { SchematicsException, Tree } from '@angular-devkit/schematics';
 import * as ts from 'typescript';
 import { addImportToModule } from '@schematics/angular/utility/ast-utils';
@@ -22,7 +22,7 @@ export function getWorkspace(host: Tree): WorkspaceSchema {
   }
   const content = configBuffer.toString();
 
-  return parseJson(content, JsonParseMode.Loose) as {} as WorkspaceSchema;
+  return JSON.parse(content) as {} as WorkspaceSchema;
 }
 
 /** Reads file given path and returns TypeScript source file. */

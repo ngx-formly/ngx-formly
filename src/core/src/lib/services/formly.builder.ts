@@ -72,7 +72,7 @@ export class FormlyFormBuilder {
         this.build(field);
       };
 
-      options.build = (f: FormlyFieldConfig) => {
+      options.build = (f: FormlyFieldConfig = field) => {
         this.build(f);
 
         return f;

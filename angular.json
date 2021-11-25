@@ -22,10 +22,15 @@
             "main": "demo/src/main.ts",
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/tsconfig.app.json",
-            "aot": true,
             "assets": ["demo/src/favicon.ico", "demo/src/assets"],
             "styles": ["demo/src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -55,7 +60,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -75,10 +81,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["demo/tsconfig.app.json", "demo/tsconfig.spec.json", "demo/e2e/tsconfig.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["demo/**/*.ts", "demo/**/*.html"]
           }
         }
       }
@@ -93,7 +98,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "integration/ssr/dist/browser",
             "index": "integration/ssr/src/index.html",
             "main": "integration/ssr/src/main.ts",
@@ -101,7 +105,13 @@
             "tsConfig": "integration/ssr/tsconfig.app.json",
             "assets": ["integration/ssr/src/favicon.ico", "integration/ssr/src/assets"],
             "styles": ["integration/ssr/src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -115,7 +125,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -131,7 +140,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -144,19 +154,14 @@
             }
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["integration/ssr/tsconfig.app.json", "integration/ssr/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
-        },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "integration/ssr/dist/server",
             "main": "integration/ssr/server.ts",
-            "tsConfig": "integration/ssr/tsconfig.server.json"
+            "tsConfig": "integration/ssr/tsconfig.server.json",
+            "sourceMap": true,
+            "optimization": false
           },
           "configurations": {
             "production": {
@@ -168,7 +173,8 @@
               ],
               "optimization": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
@@ -193,6 +199,12 @@
           "configurations": {
             "production": {}
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["integration/ssr/**/*.ts", "integration/ssr/**/*.html"]
+          }
         }
       }
     },
@@ -215,10 +227,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/core/tsconfig.lib.json", "src/core/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/core/**/*.ts", "src/core/**/*.html"]
           }
         }
       }
@@ -242,10 +253,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/ui/bootstrap/tsconfig.lib.json", "src/ui/bootstrap/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/ui/bootstrap/**/*.ts", "src/ui/bootstrap/**/*.html"]
           }
         }
       }
@@ -269,10 +279,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/ui/ionic/tsconfig.lib.json", "src/ui/ionic/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/ui/ionic/**/*.ts", "src/ui/ionic/**/*.html"]
           }
         }
       }
@@ -296,10 +305,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/ui/kendo/tsconfig.lib.json", "src/ui/kendo/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/ui/kendo/**/*.ts", "src/ui/kendo/**/*.html"]
           }
         }
       }
@@ -323,10 +331,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/ui/material/tsconfig.lib.json", "src/ui/material/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/ui/material/**/*.ts", "src/ui/material/**/*.html"]
           }
         }
       }
@@ -350,10 +357,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/ui/primeng/tsconfig.lib.json", "src/ui/primeng/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/ui/primeng/**/*.ts", "src/ui/primeng/**/*.html"]
           }
         }
       }
@@ -377,10 +383,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/ui/ng-zorro-antd/tsconfig.lib.json", "src/ui/ng-zorro-antd/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/ui/ng-zorro-antd/**/*.ts", "src/ui/ng-zorro-antd/**/*.html"]
           }
         }
       }
@@ -404,10 +409,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["src/ui/nativescript/tsconfig.lib.json", "src/ui/nativescript/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": ["src/ui/nativescript/**/*.ts", "src/ui/nativescript/**/*.html"]
           }
         }
       }
@@ -416,15 +420,16 @@
   "defaultProject": "app",
   "cli": {
     "analytics": false,
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "defaultCollection": "@angular-eslint/schematics"
   },
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "demo",
+      "prefix": "formly",
       "style": "scss"
     },
     "@schematics/angular:directive": {
-      "prefix": "demo"
+      "prefix": "formly"
     }
   }
 }

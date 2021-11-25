@@ -34,7 +34,7 @@ describe('FormlyFormBuilder service', () => {
     );
 
     global.console = { ...global.console, warn: jest.fn() };
-    spyOn(builder, 'build');
+    jest.spyOn(builder, 'build');
     field.options.build(field);
     field.options._buildForm();
     expect(console.warn).toBeCalled();
@@ -60,7 +60,7 @@ describe('FormlyFormBuilder service', () => {
 
   it('should build nested field', () => {
     const extension = { onPopulate: () => {} };
-    spyOn(extension, 'onPopulate');
+    jest.spyOn(extension, 'onPopulate');
 
     const builder = createBuilder({
       extensions: [{ name: 'core', extension }],

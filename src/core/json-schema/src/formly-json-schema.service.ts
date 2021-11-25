@@ -25,8 +25,12 @@ function decimalPlaces(a: number) {
     return 0;
   }
 
-  let e = 1, p = 0;
-  while (Math.round(a * e) / e !== a) { e *= 10; p++; }
+  let e = 1,
+    p = 0;
+  while (Math.round(a * e) / e !== a) {
+    e *= 10;
+    p++;
+  }
 
   return p;
 }
@@ -165,13 +169,10 @@ export class FormlyJsonschema {
         field.fieldGroup = [];
 
         const [propDeps, schemaDeps] = this.resolveDependencies(schema);
-        Object.keys(schema.properties || {}).forEach(property => {
-          const f = this._toFieldConfig(<JSONSchema7> schema.properties[property], { ...options, key: property });
+        Object.keys(schema.properties || {}).forEach((property) => {
+          const f = this._toFieldConfig(<JSONSchema7>schema.properties[property], { ...options, key: property });
           field.fieldGroup.push(f);
-          if (
-            (Array.isArray(schema.required) && schema.required.indexOf(property) !== -1)
-            || propDeps[property]
-          ) {
+          if ((Array.isArray(schema.required) && schema.required.indexOf(property) !== -1) || propDeps[property]) {
             f.expressionProperties = {
               ...(f.expressionProperties || {}),
               'templateOptions.required': (m, s, f) => {
@@ -190,7 +191,7 @@ export class FormlyJsonschema {
                   return true;
                 }
 
-                return propDeps[property] && (m && propDeps[property].some(k => !isEmpty(m[k])));
+                return propDeps[property] && m && propDeps[property].some((k) => !isEmpty(m[k]));
               },
             };
           }
@@ -203,19 +204,19 @@ export class FormlyJsonschema {
             const oneOfSchema = schemaDeps[property].oneOf;
             if (
               oneOfSchema &&
-              oneOfSchema.every(o => o.properties && o.properties[property] && isConst(o.properties[property]))
+              oneOfSchema.every((o) => o.properties && o.properties[property] && isConst(o.properties[property]))
             ) {
-              oneOfSchema.forEach(oneOfSchemaItem => {
+              oneOfSchema.forEach((oneOfSchemaItem) => {
                 const { [property]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
                   ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, resetOnHide: true }),
-                  hideExpression: m => !m || getConstValue(constSchema) !== m[property],
+                  hideExpression: (m) => !m || getConstValue(constSchema) !== m[property],
                 });
               });
             } else {
               field.fieldGroup.push({
                 ...this._toFieldConfig(schemaDeps[property], options),
-                hideExpression: m => !m || isEmpty(m[property]),
+                hideExpression: (m) => !m || isEmpty(m[property]),
               });
             }
           }
@@ -264,7 +265,7 @@ export class FormlyJsonschema {
           field.fieldArray = (root) => {
             if (!Array.isArray(schema.items)) {
               // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-              return this._toFieldConfig(<JSONSchema7>schema.items, options);
+              return schema.items ? this._toFieldConfig(<JSONSchema7>schema.items, options) : {};
             }
 
             const length = root.fieldGroup ? root.fieldGroup.length : 0;
@@ -363,9 +364,7 @@ export class FormlyJsonschema {
             options: schemas.map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
           },
           hooks: {
-            onInit: f => f.formControl.valueChanges.pipe(
-              tap(() => (f.options as any)._checkField(f.parent)),
-            ),
+            onInit: (f) => f.formControl.valueChanges.pipe(tap(() => f.options.detectChanges(f.parent))),
           },
         },
         {
@@ -395,7 +394,7 @@ export class FormlyJsonschema {
                   .map(([, i]) => i);
 
                 if (mode === 'anyOf') {
-                  const definedValue = value.filter(i => totalMatchedFields(f.parent.fieldGroup[i]));
+                  const definedValue = value.filter((i) => totalMatchedFields(f.parent.fieldGroup[i]));
                   value = definedValue.length > 0 ? definedValue : [value[0] || 0];
                 }
 
@@ -466,7 +465,7 @@ export class FormlyJsonschema {
   }
 
   private guessType(schema: JSONSchema7) {
-    const type = schema ? schema.type as JSONSchema7TypeName : null;
+    const type = schema ? (schema.type as JSONSchema7TypeName) : null;
     if (!type && schema && schema.properties) {
       return 'object';
     }

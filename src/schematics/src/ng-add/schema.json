@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsNgxFormlyShell",
-  "title": "@ngx-formly Shell Options Schema",
+  "$id": "ngx-formly-ng-add",
+  "title": "Angular Formly ng-add",
   "type": "object",
   "properties": {
     "project": {

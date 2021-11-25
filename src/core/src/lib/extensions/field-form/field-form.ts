@@ -98,7 +98,6 @@ export class FieldFormExtension implements FormlyExtension {
         }
       }
 
-
       if (c && (null === c.validator || null === c.asyncValidator)) {
         c.setValidators(() => {
           const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));

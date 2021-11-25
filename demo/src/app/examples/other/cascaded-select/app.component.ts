@@ -52,9 +52,9 @@ export class AppComponent {
           field.templateOptions.options = sportControl.valueChanges.pipe(
             startWith(sportControl.value),
             distinctUntilChanged(),
-            map(sportId => {
-              const options = teams.filter(team => team.sportId === sportId);
-              if (!options.find(option => sportId === option.id)) {
+            map((sportId) => {
+              const options = teams.filter((team) => team.sportId === sportId);
+              if (!options.find((option) => sportId === option.id)) {
                 field.formControl.setValue(null);
               }
 
@@ -90,9 +90,9 @@ export class AppComponent {
           field.templateOptions.options = teamControl.valueChanges.pipe(
             startWith(teamControl.value),
             distinctUntilChanged(),
-            map(teamId => {
-              const options = players.filter(team => team.teamId === teamId);
-              if (!options.find(option => teamId === option.id)) {
+            map((teamId) => {
+              const options = players.filter((team) => team.teamId === teamId);
+              if (!options.find((option) => teamId === option.id)) {
                 field.formControl.setValue(null);
               }
 

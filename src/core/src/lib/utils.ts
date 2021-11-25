@@ -1,4 +1,4 @@
-import { FormlyFieldConfig } from './core';
+import { FormlyFieldConfig } from './models';
 import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './models';

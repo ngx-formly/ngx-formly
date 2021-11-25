@@ -2,7 +2,8 @@ formly-wrapper-mat-form-field .mat-form-field {
   width: 100%;
 
   // https://github.com/angular/components/issues/4580
-  &-underline, &-subscript-wrapper {
+  &-underline,
+  &-subscript-wrapper {
     position: static;
   }
 }

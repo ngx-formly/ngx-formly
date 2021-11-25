@@ -9,8 +9,6 @@ import { FieldType } from '@ngx-formly/core';
       [class.k-state-invalid]="showError"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [cols]="to.cols"
-      [rows]="to.rows"
     ></textarea>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

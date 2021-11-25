@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 // bootstrap
 html {
   box-sizing: border-box;
@@ -27,19 +28,18 @@ legend {
 @import '~highlight.js/styles/github.css';
 
 // material
-@import '~@angular/material/theming';
 
 @import './app/shared/example-viewer/example-viewer-theme';
-@include mat-core();
+@include mat.core();
 
 // Define a theme.
-$primary: mat-palette($mat-indigo);
-$accent: mat-palette($mat-pink, A200, A100, A400);
+$primary: mat.define-palette(mat.$indigo-palette);
+$accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
-$theme: mat-light-theme($primary, $accent);
+$theme: mat.define-light-theme($primary, $accent);
 
 // Include all theme styles for the components.
-@include angular-material-theme($theme);
+@include mat.all-component-themes($theme);
 @include example-viewer-theme($theme);
 
 pre {

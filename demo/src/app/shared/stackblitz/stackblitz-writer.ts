@@ -204,9 +204,7 @@ export class StackblitzWriter {
     if (
       ['material', 'kendo', 'material'].indexOf(options.type) !== -1 ||
       options.includeMaterial ||
-      exampleData.files
-        .map((f) => f.filecontent.default)
-        .some((content) => content.indexOf('@angular/animations') !== -1)
+      exampleData.files.some((f) => this._getFilecontent(f.filecontent).indexOf('@angular/animations') !== -1)
     ) {
       options.useAnimation = true;
     }
@@ -258,7 +256,7 @@ export class StackblitzWriter {
     [...TEMPLATE_FILES.core, ...TEMPLATE_FILES[options.type]].forEach((data) => {
       this._addFileToForm(
         form,
-        this._replaceExamplePlaceholderNames(data.file, data.filecontent.default, options),
+        this._replaceExamplePlaceholderNames(data.file, data.filecontent, options),
         data.file,
         false,
       );
@@ -267,7 +265,7 @@ export class StackblitzWriter {
     exampleData.files.forEach((data) => {
       this._addFileToForm(
         form,
-        this._replaceExamplePlaceholderNames(data.file, data.filecontent.default, options),
+        this._replaceExamplePlaceholderNames(data.file, data.filecontent, options),
         data.file,
         data.file.indexOf('assets') !== 0,
       );
@@ -315,7 +313,8 @@ export class StackblitzWriter {
     this._appendFormInput(form, `files[${filename}]`, this._appendCopyright(filename, content));
   }
 
-  _replaceExamplePlaceholderNames(fileName: string, filecontent: string, options): string {
+  _replaceExamplePlaceholderNames(fileName: string, filecontent: any, options): string {
+    filecontent = this._getFilecontent(filecontent);
     if (fileName === 'app.module.ts') {
       if (options.type === 'ionic') {
         filecontent = filecontent.replace(
@@ -374,5 +373,13 @@ export class StackblitzWriter {
       content = `${content}\n\n<!-- ${COPYRIGHT} -->`;
     }
     return content;
+  }
+
+  _getFilecontent(content: any) {
+    if (typeof content === 'string') {
+      return content;
+    }
+
+    return content.default;
   }
 }

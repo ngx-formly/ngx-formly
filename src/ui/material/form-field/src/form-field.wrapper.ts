@@ -50,11 +50,17 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
       [hideRequiredMarker]="true"
       [floatLabel]="to.floatLabel"
       [appearance]="to.appearance"
-      [color]="to.color">
+      [color]="to.color"
+    >
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="to.label && to.hideLabel !== true">
         {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="mat-form-field-required-marker">*</span>
+        <span
+          *ngIf="to.required && to.hideRequiredMarker !== true"
+          aria-hidden="true"
+          class="mat-form-field-required-marker"
+          >*</span
+        >
       </mat-label>
 
       <ng-container matPrefix *ngIf="to._matPrefix">
@@ -93,7 +99,8 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
 })
 export class FormlyWrapperFormField
   extends FieldWrapper<MatFormlyFieldConfig>
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;
   field!: MatFormlyFieldConfig;
 

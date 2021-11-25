@@ -4,7 +4,7 @@ module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/src/'],
   testMatch: ['**/?(*.)+(spec|test).ts'],
-  setupFilesAfterEnv: ['jest-extended', '<rootDir>/jestSetup.ts'],
+  setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/jestSetup.ts'],
   coverageReporters: ['html'],
   testPathIgnorePatterns: [
     '/node_modules/',

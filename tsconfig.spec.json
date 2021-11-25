@@ -3,7 +3,6 @@
   "compilerOptions": {
     "types": ["jest", "node"],
     "noImplicitAny": false,
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true
+    "esModuleInterop": true
   }
 }

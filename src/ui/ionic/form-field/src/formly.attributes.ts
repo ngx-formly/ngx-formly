@@ -2,7 +2,7 @@ import { Directive, Input } from '@angular/core';
 import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
 
 @Directive({
-  // tslint:disable-next-line
+  // eslint-disable-next-line
   selector: '[ionFormlyAttributes]',
   host: {
     '(ionFocus)': 'onFocus($event)',

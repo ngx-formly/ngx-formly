@@ -10,7 +10,7 @@ const defaultWorkspaceOptions = {
 };
 
 const defaultAppOptions = {
-  name: 'bar',
+  name: 'formly',
   inlineStyle: false,
   inlineTemplate: false,
   viewEncapsulation: 'Emulated',

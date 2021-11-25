@@ -3,16 +3,10 @@
   "extends": ["@schematics/angular"],
   "schematics": {
     "ng-add": {
-      "description": "Adds @ngx-formly to the application without affecting any templates",
-      "factory": "./ng-add",
+      "description": "Installs Angular Formly",
+      "factory": "./ng-add/index",
       "schema": "./ng-add/schema.json",
-      "aliases": ["init"]
-    },
-    "wrapper": {
-      "aliases": [ "wc" ],
-      "factory": "./wrapper-component",
-      "description": "Create an @ngx-formly wrapper component.",
-      "schema": "./wrapper-component/schema.json"
+      "aliases": ["install"]
     }
   }
 }

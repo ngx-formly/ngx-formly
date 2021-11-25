@@ -38,6 +38,7 @@ export function createComponent<T>({
     declarations: [TestComponent, ...(declarations || [])],
     imports: [ReactiveFormsModule, FormlyModule.forRoot(config), ...(imports || [])],
     providers: providers || [],
+    teardown: { destroyAfterEach: false },
   }).overrideComponent(TestComponent, {
     set: {
       template,

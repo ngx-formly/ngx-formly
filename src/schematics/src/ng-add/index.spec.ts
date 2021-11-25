@@ -5,21 +5,21 @@ import { createWorkspace, getTestProjectPath } from '../../utils/testing';
 import { Schema } from './schema';
 
 describe('ng-add-schematic', () => {
-  const collectionPath = join(__dirname, '../collection.json');
-  const schematicRunner = new SchematicTestRunner('schematics', collectionPath);
+  const COLLECTION_PATH = join(__dirname, '../collection.json');
   const projectPath = getTestProjectPath();
 
+  let runner: SchematicTestRunner;
   let appTree: UnitTestTree;
 
   beforeEach(async () => {
-    appTree = await createWorkspace(schematicRunner, appTree);
+    runner = new SchematicTestRunner('schematics', COLLECTION_PATH);
+    appTree = await createWorkspace(runner, appTree);
   });
 
   it('should update package.json', async () => {
-    const tree = await schematicRunner
+    const tree = await runner
       .runSchematicAsync('ng-add', {}, appTree)
       .toPromise();
-
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
 
     expect(packageJson.dependencies['@angular/forms']).toBeDefined();
@@ -27,7 +27,7 @@ describe('ng-add-schematic', () => {
   });
 
   it('should not add a theme by default to package.json', async () => {
-    const tree = await schematicRunner
+    const tree = await runner
       .runSchematicAsync('ng-add', {}, appTree)
       .toPromise();
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
@@ -40,7 +40,7 @@ describe('ng-add-schematic', () => {
 
   it('should skip package.json update', async () => {
     const options = { skipPackageJson: true } as Schema;
-    const tree = await schematicRunner
+    const tree = await runner
       .runSchematicAsync('ng-add', options, appTree)
       .toPromise();
 
@@ -50,31 +50,31 @@ describe('ng-add-schematic', () => {
   });
 
   it('should add to root app module', async () => {
-    const tree = await schematicRunner
+    const tree = await runner
       .runSchematicAsync('ng-add', {}, appTree)
       .toPromise();
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { FormlyModule } from '@ngx-formly\/core';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /FormlyModule.forRoot/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { ReactiveFormsModule } from '@angular\/forms';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /ReactiveFormsModule,/
     );
   });
 
   it('should add UI theme to package.json', async () => {
-    const tree = await schematicRunner
+    const tree = await runner
       .runSchematicAsync('ng-add', { uiTheme: 'bootstrap' }, appTree)
       .toPromise();
 
@@ -84,17 +84,17 @@ describe('ng-add-schematic', () => {
   });
 
   it('should add UI theme to root app module', async () => {
-    const tree = await schematicRunner
+    const tree = await runner
       .runSchematicAsync('ng-add', { uiTheme: 'bootstrap' }, appTree)
       .toPromise();
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { FormlyBootstrapModule } from '@ngx-formly\/bootstrap';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /FormlyBootstrapModule/
     );
   });
@@ -113,26 +113,26 @@ describe('ng-add-schematic', () => {
       export class FooModule { }
     `);
 
-    const tree = await schematicRunner
+    const tree = await runner
       .runSchematicAsync('ng-add', { module: 'app/foo.module.ts' }, appTree)
       .toPromise();
 
     const content = tree.readContent(fooModule);
 
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { FormlyModule } from '@ngx-formly\/core';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /FormlyModule.forRoot/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /import { ReactiveFormsModule } from '@angular\/forms';/
     );
     expect(content).toMatch(
-      // tslint:disable-next-line:trailing-comma
+      // eslint-disable-next-line:trailing-comma
       /ReactiveFormsModule,/
     );
   });

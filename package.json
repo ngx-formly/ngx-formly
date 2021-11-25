@@ -9,8 +9,8 @@
   "scripts": {
     "postinstall": "ngcc",
     "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
-    "lint": "tslint -p tsconfig.json",
-    "lint:fix": "tslint --fix -p tsconfig.json",
+    "lint": "eslint --ext .ts,.html src/ demo/",
+    "lint:fix": "eslint --ext .ts,.html src/ demo/ --fix",
     "format": "prettier --list-different \"**/*.{ts,json,css,scss,html}\"",
     "format:fix": "prettier --write \"**/*.{ts,json,css,scss,html}\"",
     "commit": "git-cz",
@@ -26,8 +26,9 @@
     "e2e:ssr": "node integration/ssr/dist/server/main.js & pid=$!; cypress run --config integrationFolder=cypress/ssr; kill -9 $pid",
     "dev:ssr": "ng run ssr:serve-ssr",
     "serve:ssr": "node integration/ssr/dist/server/main.js",
-    "build:ssr": "ng build ssr --prod && ng run ssr:server:production",
-    "prerender": "ng run ssr:prerender"
+    "build:ssr": "ng build ssr --configuration production && ng run ssr:server:production",
+    "prerender": "ng run ssr:prerender",
+    "prepare": "husky install"
   },
   "keywords": [
     "angular",
@@ -50,150 +51,143 @@
   },
   "homepage": "https://github.com/ngx-formly/ngx-formly#readme",
   "dependencies": {
-    "@angular/animations": "^11.2.4",
-    "@angular/cdk": "^11.2.3",
-    "@angular/common": "^11.2.4",
-    "@angular/core": "^11.2.4",
-    "@angular/forms": "^11.2.4",
-    "@angular/localize": "^11.2.4",
-    "@angular/material": "^11.2.3",
-    "@angular/platform-browser": "^11.2.4",
-    "@angular/platform-browser-dynamic": "^11.2.4",
-    "@angular/platform-server": "^11.2.4",
-    "@angular/router": "^11.2.4",
+    "@angular/animations": "^13.0.2",
+    "@angular/cdk": "^13.0.2",
+    "@angular/common": "^13.0.2",
+    "@angular/core": "^13.0.2",
+    "@angular/forms": "^13.0.2",
+    "@angular/localize": "^13.0.2",
+    "@angular/material": "^13.0.2",
+    "@angular/platform-browser": "^13.0.2",
+    "@angular/platform-browser-dynamic": "^13.0.2",
+    "@angular/platform-server": "^13.0.2",
+    "@angular/router": "^13.0.2",
     "@ionic/angular": "^5.6.0",
-    "@nativescript/angular": "^9.0.0",
-    "@nativescript/core": "^7.3.0",
-    "@nguniversal/express-engine": "^11.2.1",
+    "@nativescript/angular": "^12.2.0",
+    "@nativescript/core": "^8.1.5",
+    "@nguniversal/express-engine": "^13.0.1",
     "@ngx-loading-bar/core": "^5.1.1",
     "@ngx-loading-bar/router": "^5.1.1",
-    "@ngx-translate/core": "^13.0.0",
-    "@ngx-translate/http-loader": "^6.0.0",
-    "@progress/kendo-angular-common": "^2.0.0",
-    "@progress/kendo-angular-dropdowns": "^5.1.0",
-    "@progress/kendo-angular-inputs": "^7.1.2",
-    "@progress/kendo-angular-intl": "^3.1.0",
-    "@progress/kendo-angular-l10n": "^3.0.0",
-    "@progress/kendo-angular-popup": "^4.0.0",
-    "@progress/kendo-angular-treeview": "^5.1.0",
-    "@progress/kendo-drawing": "^1.9.4",
-    "@progress/kendo-licensing": "^1.1.3",
-    "@progress/kendo-theme-default": "^4.34.0",
-    "@swimlane/ngx-datatable": "^19.0.0",
-    "ag-grid-angular": "^25.1.0",
-    "ag-grid-community": "^25.1.0",
-    "bootstrap": "^5.0.1",
-    "classlist.js": "^1.1.20150312",
-    "core-js": "^3.9.1",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
+    "@progress/kendo-angular-common": "^2.0.2",
+    "@progress/kendo-angular-dropdowns": "^5.5.0",
+    "@progress/kendo-angular-inputs": "^7.5.2",
+    "@progress/kendo-angular-intl": "^3.1.2",
+    "@progress/kendo-angular-l10n": "^3.0.3",
+    "@progress/kendo-angular-popup": "^4.0.2",
+    "@progress/kendo-angular-treeview": "^5.4.2",
+    "@progress/kendo-drawing": "^1.16.0",
+    "@progress/kendo-licensing": "^1.2.1",
+    "@progress/kendo-theme-default": "^4.43.0",
+    "@swimlane/ngx-datatable": "^20.0.0",
+    "ag-grid-angular": "^26.2.0",
+    "ag-grid-community": "^26.2.0",
+    "bootstrap": "^5.1.3",
+    "core-js": "^3.19.2",
     "express": "^4.15.2",
-    "ng-zorro-antd": "^11.2.0",
-    "primeflex": "^2.0.0",
-    "primeicons": "^4.1.0",
-    "primeng": "^11.2.3",
-    "rxjs": "^6.6.6",
-    "tslib": "^2.1.0",
+    "ng-zorro-antd": "12.0.1",
+    "primeflex": "^3.1.0",
+    "primeicons": "^5.0.0",
+    "primeng": "^13.0.0",
+    "rxjs": "^7.0.0",
+    "tslib": "^2.3.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.3",
-    "@angular-devkit/core": "^11.2.3",
-    "@angular-devkit/schematics": "^11.2.3",
-    "@angular/cli": "^11.2.3",
-    "@angular/compiler": "^11.2.4",
-    "@angular/compiler-cli": "^11.2.4",
-    "@angular/language-service": "^11.2.4",
-    "@commitlint/cli": "^12.0.1",
-    "@commitlint/config-angular": "^12.0.1",
-    "@nguniversal/builders": "^11.2.1",
-    "@schematics/angular": "^11.2.3",
+    "@angular-devkit/build-angular": "~13.0.3",
+    "@angular-devkit/core": "^13.0.3",
+    "@angular-devkit/schematics": "^13.0.3",
+    "@angular-eslint/builder": "13.0.1",
+    "@angular-eslint/eslint-plugin": "13.0.1",
+    "@angular-eslint/eslint-plugin-template": "13.0.1",
+    "@angular-eslint/schematics": "13.0.1",
+    "@angular-eslint/template-parser": "13.0.1",
+    "@angular/cli": "^13.0.3",
+    "@angular/compiler": "^13.0.2",
+    "@angular/compiler-cli": "^13.0.2",
+    "@angular/language-service": "^13.0.2",
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-angular": "^15.0.0",
+    "@nguniversal/builders": "^13.0.1",
+    "@schematics/angular": "^13.0.3",
+    "@types/estree": "^0.0.50",
     "@types/express": "^4.17.11",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^27.0.3",
     "@types/json-schema": "^7.0.7",
-    "@types/node": "^14.14.31",
+    "@types/node": "^16.11.11",
+    "@typescript-eslint/eslint-plugin": "5.5.0",
+    "@typescript-eslint/parser": "5.5.0",
     "bundlesize": "^0.18.1",
-    "codecov": "^3.8.1",
-    "codelyzer": "^6.0.0",
+    "codecov": "^3.8.3",
     "commitizen": "^4.2.3",
     "conventional-github-releaser": "^3.1.5",
-    "cypress": "^6.6.0",
+    "cypress": "^9.1.0",
     "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.2.0",
     "github-contributors-list": "^1.2.4",
+    "har-validator": "^5.1.5",
     "highlight-loader": "^0.7.4",
-    "highlight.js": "^10.6.0",
-    "html-loader": "^1.3.2",
-    "husky": "^4.3.8",
-    "istanbul-instrumenter-loader": "^3.0.1",
-    "jest": "^26.6.3",
-    "jest-extended": "^0.11.5",
-    "jest-preset-angular": "^8.4.0",
+    "highlight.js": "^11.3.1",
+    "html-loader": "^3.0.1",
+    "husky": "^7.0.4",
+    "jest": "^27.4.2",
+    "jest-extended": "^1.2.0",
+    "jest-preset-angular": "^11.0.1",
     "json-formatter-js": "^2.3.4",
-    "lint-staged": "^10.5.4",
+    "lint-staged": "^12.1.2",
     "markdown-loader": "^6.0.0",
-    "ng-packagr": "^11.2.4",
-    "parse5": "^6.0.1",
-    "prettier": "^2.2.1",
+    "ng-packagr": "^13.0.8",
+    "prettier": "^2.5.0",
     "raw-loader": "^4.0.2",
-    "remap-istanbul": "^0.13.0",
     "standard-version": "^9.1.1",
-    "ts-loader": "^8.0.17",
-    "ts-node": "^9.1.1",
-    "tslint": "^6.1.3",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "~4.1.5"
+    "typescript": "~4.4.4",
+    "webpack": "^5.64.4"
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "lint-staged": {
-    "**/*.{ts,json,css,scss,html}": [
-      "prettier --write",
-      "git add"
-    ],
-    "**/*.ts": [
-      "tslint --fix",
-      "git add"
-    ]
+    "*.{ts,html}": "eslint --cache --fix",
+    "*.{ts,json,css,scss,html}": "prettier --write"
   },
   "bundlesize": [
     {
-      "path": "./dist/@ngx-formly/core/bundles/ngx-formly-core.umd.min.js",
-      "maxSize": "15 kB"
-    },
-    {
-      "path": "./dist/@ngx-formly/bootstrap/bundles/ngx-formly-bootstrap.umd.min.js",
+      "path": "./dist/@ngx-formly/core/fesm2020/ngx-formly-core-*.mjs",
       "maxSize": "5 kB"
     },
     {
-      "path": "./dist/@ngx-formly/material/bundles/ngx-formly-material.umd.min.js",
-      "maxSize": "5 kB"
+      "path": "./dist/@ngx-formly/bootstrap/fesm2020/ngx-formly-bootstrap-*.mjs",
+      "maxSize": "4 kB"
     },
     {
-      "path": "./dist/@ngx-formly/ionic/bundles/ngx-formly-ionic.umd.min.js",
-      "maxSize": "5 kB"
+      "path": "./dist/@ngx-formly/material/fesm2020/ngx-formly-material-*.mjs",
+      "maxSize": "4 kB"
     },
     {
-      "path": "./dist/@ngx-formly/primeng/bundles/ngx-formly-primeng.umd.min.js",
-      "maxSize": "5 kB"
+      "path": "./dist/@ngx-formly/ionic/fesm2020/ngx-formly-ionic-*.mjs",
+      "maxSize": "4 kB"
     },
     {
-      "path": "./dist/@ngx-formly/kendo/bundles/ngx-formly-kendo.umd.min.js",
-      "maxSize": "5 kB"
+      "path": "./dist/@ngx-formly/primeng/fesm2020/ngx-formly-primeng-*.mjs",
+      "maxSize": "4 kB"
     },
     {
-      "path": "./dist/@ngx-formly/nativescript/bundles/ngx-formly-nativescript.umd.min.js",
-      "maxSize": "5 kB"
+      "path": "./dist/@ngx-formly/kendo/fesm2020/ngx-formly-kendo-*.mjs",
+      "maxSize": "4 kB"
     },
     {
-      "path": "./dist/@ngx-formly/ng-zorro-antd/bundles/ngx-formly-ng-zorro-antd.umd.min.js",
-      "maxSize": "5 kB"
+      "path": "./dist/@ngx-formly/nativescript/fesm2020/ngx-formly-nativescript-*.mjs",
+      "maxSize": "4 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/ng-zorro-antd/fesm2020/ngx-formly-ng-zorro-antd-*.mjs",
+      "maxSize": "4 kB"
     }
   ]
 }

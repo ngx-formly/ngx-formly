@@ -81,23 +81,17 @@ describe('FormlyAttributes Component', () => {
     });
 
     it('should allow overriding the default build-in attributes', () => {
-      const fixture = renderComponent({
+      const { query, field } = renderComponent({
         templateOptions: {
           min: 5,
           max: 10,
+          attributes: { max: null },
         },
       });
-      const elm = getFormlyAttributesElement(fixture.nativeElement);
+      const inputElm = query('input');
 
-      expect(elm.getAttribute('min')).toBe('5');
-      expect(elm.getAttribute('max')).toBe('10');
-      fixture.componentInstance.field.templateOptions.attributes = {
-        min: '10',
-        max: null,
-      };
-      fixture.detectChanges();
-      expect(elm.getAttribute('min')).toBe('10');
-      expect(elm.getAttribute('max')).toEqual(null);
+      expect(inputElm.attributes.min).toBe('5');
+      expect(inputElm.attributes.max).toBeUndefined();
     });
 
     it('should set attributes from templateOptions attributes', () => {

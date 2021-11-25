@@ -86,7 +86,11 @@ describe('FieldExpressionExtension', () => {
       });
 
       it('should toggle field control when hide changed programmatically', () => {
-        const { fieldGroup: fields, form, options } = buildField({
+        const {
+          fieldGroup: fields,
+          form,
+          options,
+        } = buildField({
           fieldGroup: [
             { hide: false, key: 'foo' },
             { hide: true, fieldGroup: [{ key: 'bar' }] },
@@ -310,7 +314,7 @@ describe('FieldExpressionExtension', () => {
 
     it('should update field validity when using built-in validations expression', () => {
       const formControl = new FormControl();
-      spyOn(formControl, 'updateValueAndValidity');
+      jest.spyOn(formControl, 'updateValueAndValidity');
 
       buildField({
         key: 'checked',
@@ -321,7 +325,7 @@ describe('FieldExpressionExtension', () => {
         model: { checked: true },
       });
 
-      expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(3);
+      expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(4);
     });
 
     describe('field disabled state', () => {
@@ -432,7 +436,11 @@ describe('FieldExpressionExtension', () => {
 
       describe('model changes', () => {
         it('should emit formControl value changes', () => {
-          const { fieldGroup: fields, options } = buildField({
+          const {
+            fieldGroup: fields,
+            options,
+            model,
+          } = buildField({
             fieldGroup: [
               {
                 key: 'text',
@@ -445,16 +453,16 @@ describe('FieldExpressionExtension', () => {
                 key: 'text2',
                 type: 'input',
               },
-            ]
+            ],
           });
 
-          expect(fields[1].formControl.value).toEqual(null);
-          const spy = jasmine.createSpy('formControl valueChanges spy');
+          expect(fields[1].formControl.value).toBeUndefined();
+          const spy = jest.fn();
           fields[1].formControl.valueChanges.subscribe(spy);
           expect(spy).not.toHaveBeenCalled();
 
           model.text = 'test';
-          (<any> options)._buildForm(true);
+          options.build();
 
           expect(spy).toHaveBeenCalledWith('test');
         });
@@ -466,7 +474,7 @@ describe('FieldExpressionExtension', () => {
           expressionProperties: {
             'model[0]': '1',
             'model["1"]': '2',
-            'model[\'2\']': '3',
+            "model['2']": '3',
           },
         });
 
@@ -483,7 +491,7 @@ describe('FieldExpressionExtension', () => {
           });
 
         expect(build).toThrowError(
-          /\[Formly Error\] \[Expression "nested.prop"\] Cannot set properties of undefined \(setting 'prop'\)/i
+          /\[Formly Error\] \[Expression "nested.prop"\] Cannot set property 'prop' of undefined/i,
         );
       });
     });
