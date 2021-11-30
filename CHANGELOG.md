@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.24"></a>
+## [5.10.24](https://github.com/ngx-formly/ngx-formly/compare/v5.10.23...v5.10.24) (2021-11-30)
+
+
+### Bug Fixes
+
+* **core:** remove className when lazyRender is enable ([#3060](https://github.com/ngx-formly/ngx-formly/issues/3060)) ([b0d612a](https://github.com/ngx-formly/ngx-formly/commit/b0d612a)), closes [#3043](https://github.com/ngx-formly/ngx-formly/issues/3043) [#3024](https://github.com/ngx-formly/ngx-formly/issues/3024)
+
+
+
 <a name="5.10.23"></a>
 ## [5.10.23](https://github.com/ngx-formly/ngx-formly/compare/v5.10.22...v5.10.23) (2021-09-22)
 
