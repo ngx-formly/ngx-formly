@@ -22,7 +22,7 @@
     "demo": "npm run start",
     "test": "ngcc --properties main && jest",
     "test:watch": "ngcc --properties main && jest --watch",
-    "github-release": "conventional-github-releaser -p angular -t $GH_TOKEN --draft",
+    "github-release": "conventional-github-releaser -p angular --draft",
     "e2e:ssr": "node integration/ssr/dist/server/main.js & pid=$!; cypress run --config integrationFolder=cypress/ssr; kill -9 $pid",
     "dev:ssr": "ng run ssr:serve-ssr",
     "serve:ssr": "node integration/ssr/dist/server/main.js",

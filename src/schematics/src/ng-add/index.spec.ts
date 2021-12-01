@@ -69,7 +69,7 @@ describe('ng-add-schematic', () => {
     );
     expect(content).toMatch(
       // eslint-disable-next-line:trailing-comma
-      /ReactiveFormsModule,/
+      /ReactiveFormsModule/
     );
   });
 
@@ -114,7 +114,7 @@ describe('ng-add-schematic', () => {
     `);
 
     const tree = await runner
-      .runSchematicAsync('ng-add', { module: 'app/foo.module.ts' }, appTree)
+      .runSchematicAsync('ng-add', { module: 'foo.module.ts' }, appTree)
       .toPromise();
 
     const content = tree.readContent(fooModule);
@@ -133,7 +133,7 @@ describe('ng-add-schematic', () => {
     );
     expect(content).toMatch(
       // eslint-disable-next-line:trailing-comma
-      /ReactiveFormsModule,/
+      /ReactiveFormsModule/
     );
   });
 });

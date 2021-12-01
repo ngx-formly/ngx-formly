@@ -4,7 +4,7 @@
   "schematics": {
     "ng-add": {
       "description": "Installs Angular Formly",
-      "factory": "./ng-add/index",
+      "factory": "./ng-add/index#ngAdd",
       "schema": "./ng-add/schema.json",
       "aliases": ["install"]
     }
