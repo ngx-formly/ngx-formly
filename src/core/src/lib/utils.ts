@@ -2,6 +2,7 @@ import { FormlyFieldConfig } from './core';
 import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './components/formly.field.config';
+import { TemplateRef } from '@angular/core';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
@@ -149,6 +150,7 @@ export function clone(value: any): any {
   if (
     !isObject(value)
     || isObservable(value)
+    || (value instanceof TemplateRef)
     || /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity
     || ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor.name) !== -1
   ) {
