@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-next.4](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-next.1...v6.0.0-next.4) (2021-12-01)
+
+To upgrade from 5.0 to 6.0 see [UPGRADE-6.0](./UPGRADE-6.0.md)
+
+### ⚠ BREAKING CHANGES
+
+* Formly v6 now requires Angular Version >= 13
+* **bootstrap:** The two first argument of `onClick` handler has been replaced by `field` instance
+
+### Features
+
+* **bootstrap:** change `add-on::onClick` callback signature ([f063d2b](https://github.com/ngx-formly/ngx-formly/commit/f063d2b7621b0ba2043b1063aeeb4eab3d65ca43)), closes [#2617](https://github.com/ngx-formly/ngx-formly/issues/2617)
+* **bootstrap:** update bootstrap to v5 ([#2846](https://github.com/ngx-formly/ngx-formly/issues/2846)) ([6130804](https://github.com/ngx-formly/ngx-formly/commit/61308046c8b061f66ec7384dd7f34113261517fb))
+* **core:**  add helper function to get the field by key ([#3040](https://github.com/ngx-formly/ngx-formly/issues/3040)) ([43cce72](https://github.com/ngx-formly/ngx-formly/commit/43cce72d1c12e57fbe9583536436ffb8bdaa6417)), closes [#2854](https://github.com/ngx-formly/ngx-formly/issues/2854)
+* **core:** allow passing function to fieldArray ([#3014](https://github.com/ngx-formly/ngx-formly/issues/3014)) ([ed4ec31](https://github.com/ngx-formly/ngx-formly/commit/ed4ec311a19f153c26f5317c64dd17255b637de2)), closes [#2809](https://github.com/ngx-formly/ngx-formly/issues/2809) [#1882](https://github.com/ngx-formly/ngx-formly/issues/1882)
+* **core:** Allow passing model to updateInitialValue ([#3022](https://github.com/ngx-formly/ngx-formly/issues/3022)) ([81e8f82](https://github.com/ngx-formly/ngx-formly/commit/81e8f82903ea0e0075b70fdfc6547acab7fbd0ad)), closes [#2943](https://github.com/ngx-formly/ngx-formly/issues/2943)
+* **material:** add calendarHeaderComponent input for datepicker ([#2871](https://github.com/ngx-formly/ngx-formly/issues/2871)) ([bc172ad](https://github.com/ngx-formly/ngx-formly/commit/bc172adb0fc9fea48c71baa1a27f59e4fb09fbd4)), closes [#2814](https://github.com/ngx-formly/ngx-formly/issues/2814)
+* **material:** add label position input to toggle type ([#3013](https://github.com/ngx-formly/ngx-formly/issues/3013)) ([30e83a2](https://github.com/ngx-formly/ngx-formly/commit/30e83a2e84f58574e0dced090a70f8bba9c75e41)), closes [#3006](https://github.com/ngx-formly/ngx-formly/issues/3006)
+* **material:** add slider missing inputs ([#2873](https://github.com/ngx-formly/ngx-formly/issues/2873)) ([015c25f](https://github.com/ngx-formly/ngx-formly/commit/015c25f0c9fd09700773a7a00c61a227061b9b84)), closes [#2110](https://github.com/ngx-formly/ngx-formly/issues/2110)
+* **material:** add typeaheadDebounceInterval input for select ([#2872](https://github.com/ngx-formly/ngx-formly/issues/2872)) ([f3b8137](https://github.com/ngx-formly/ngx-formly/commit/f3b81374de56bc4e5581ce395b47deb2d190a597)), closes [#2649](https://github.com/ngx-formly/ngx-formly/issues/2649)
+* **material:** pass field to suffix/prefix material template ([#3023](https://github.com/ngx-formly/ngx-formly/issues/3023)) ([1fcbb03](https://github.com/ngx-formly/ngx-formly/commit/1fcbb036e917463c24a3aa40b079d8f2f033b47c)), closes [#2895](https://github.com/ngx-formly/ngx-formly/issues/2895)
+* upgrade to angular v13 ([#3062](https://github.com/ngx-formly/ngx-formly/issues/3062)) ([7dbfdec](https://github.com/ngx-formly/ngx-formly/commit/7dbfdecb37c8c97de028c3946e8ddb9c8e0d64f8)), closes [#3053](https://github.com/ngx-formly/ngx-formly/issues/3053) [#3049](https://github.com/ngx-formly/ngx-formly/issues/3049) [#2701](https://github.com/ngx-formly/ngx-formly/issues/2701) [#2958](https://github.com/ngx-formly/ngx-formly/issues/2958)
+
+
+### Bug Fixes
+
+* **core:** improve detection changes of templateOptions props ([#2971](https://github.com/ngx-formly/ngx-formly/issues/2971)) ([5996c90](https://github.com/ngx-formly/ngx-formly/commit/5996c90bcc45f6d0732f1f598e52e79d6606f015)), closes [#2961](https://github.com/ngx-formly/ngx-formly/issues/2961)
+
 ## [6.0.0-next.1](https://github.com/ngx-formly/ngx-formly/compare/v5.10.14...v6.0.0-next.1) (2021-03-23)
 
 To upgrade from 5.0 to 6.0 see [UPGRADE-6.0](./UPGRADE-6.0.md)
