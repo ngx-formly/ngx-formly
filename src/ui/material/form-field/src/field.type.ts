@@ -131,7 +131,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
           ({ currentValue }) =>
             currentValue &&
             Promise.resolve().then(() => {
-              (<any>this.field)[`_mat${type}`] = currentValue;
+              this.field.templateOptions![`_mat${type}`] = currentValue;
               this.options.detectChanges!(this.field);
             }),
         ),
