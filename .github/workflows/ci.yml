@@ -27,7 +27,7 @@ jobs:
 
     - name: Commitlint
       if: github.event_name == 'pull_request'
-      uses: wagoid/commitlint-github-action@v1
+      uses: wagoid/commitlint-github-action@v4
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

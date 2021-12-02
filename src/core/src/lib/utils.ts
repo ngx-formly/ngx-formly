@@ -269,6 +269,10 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   }
 
   const state = o._observers[prop];
+  if (target[key] !== state.value) {
+    state.value = target[key];
+  }
+
   if (state.onChange.indexOf(setFn) === -1) {
     state.onChange.push(setFn);
     setFn({ currentValue: state.value, firstChange: true });
@@ -295,6 +299,9 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
     },
     unsubscribe() {
       state.onChange = state.onChange.filter((changeFn) => changeFn !== setFn);
+      if (state.onChange.length === 0) {
+        delete o._observers[prop];
+      }
     },
   };
 }
