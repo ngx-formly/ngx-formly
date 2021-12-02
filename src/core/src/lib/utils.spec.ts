@@ -284,6 +284,16 @@ describe('observeDeep', () => {
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
+  it('should observe a nested object', () => {
+    const spy = jest.fn();
+    const o = { foo: { bar: undefined } };
+    observeDeep(o, ['foo'], spy);
+    o.foo = { bar: 'test' };
+
+    expect(o.foo).toEqual({ bar: 'test' });
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('should be able to unsubscribe', () => {
     const spy = jest.fn();
     const o = { address: { city: 'foo' } };
