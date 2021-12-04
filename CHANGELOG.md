@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-next.5](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-next.4...v6.0.0-next.5) (2021-12-04)
+
+
+### Bug Fixes
+
+* **core:** clear cached value of observed object ([#3071](https://github.com/ngx-formly/ngx-formly/issues/3071)) ([c598ea0](https://github.com/ngx-formly/ngx-formly/commit/c598ea03f86689e8344ab0e7b74cc0c8a4465a82)), closes [#3068](https://github.com/ngx-formly/ngx-formly/issues/3068)
+* **material:** assign prefix to templateOptions instead of field ([#3072](https://github.com/ngx-formly/ngx-formly/issues/3072)) ([110e24d](https://github.com/ngx-formly/ngx-formly/commit/110e24d1e3f7d09a385379fd50b997a5e0c58157)), closes [#3070](https://github.com/ngx-formly/ngx-formly/issues/3070)
+
 ## [6.0.0-next.4](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-next.1...v6.0.0-next.4) (2021-12-01)
 
 To upgrade from 5.0 to 6.0 see [UPGRADE-6.0](./UPGRADE-6.0.md)
