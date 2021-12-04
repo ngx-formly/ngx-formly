@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.25"></a>
+## [5.10.25](https://github.com/ngx-formly/ngx-formly/compare/v5.10.24...v5.10.25) (2021-12-04)
+
+
+### Bug Fixes
+
+* **core:** handle TemplateRef clone ([#3067](https://github.com/ngx-formly/ngx-formly/issues/3067)) ([8e1ba9f](https://github.com/ngx-formly/ngx-formly/commit/8e1ba9f)), closes [#2574](https://github.com/ngx-formly/ngx-formly/issues/2574)
+* **material:** assign prefix to templateOptions instead of field ([ecca5d3](https://github.com/ngx-formly/ngx-formly/commit/ecca5d3)), closes [#3074](https://github.com/ngx-formly/ngx-formly/issues/3074)
+
+
+
 <a name="5.10.24"></a>
 ## [5.10.24](https://github.com/ngx-formly/ngx-formly/compare/v5.10.23...v5.10.24) (2021-11-30)
 
