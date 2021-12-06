@@ -81,7 +81,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   const paths = getKeyPath(field);
   const value = getFieldValue(field);
   if (!(isNil(control.value) && isNil(value)) && control.value !== value && control instanceof FormControl) {
-    control.patchValue(value, { emitEvent: false });
+    control.patchValue(value);
   }
 
   for (let i = 0; i < paths.length - 1; i++) {
