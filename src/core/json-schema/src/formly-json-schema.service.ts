@@ -386,9 +386,9 @@ export class FormlyJsonschema {
         {
           fieldGroup: schemas.map((s, i) => ({
             ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
-            hideExpression: (m, fs, f) => {
+            hideExpression: (m, fs, f, forceUpdate?: boolean) => {
               const control = f.parent.parent.fieldGroup[0].formControl;
-              if (control.value === -1) {
+              if ((control.value === -1) || forceUpdate) {
                 let value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
                   .filter(([f, i]) => {
