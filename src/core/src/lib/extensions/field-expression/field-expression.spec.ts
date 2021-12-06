@@ -648,6 +648,26 @@ describe('FieldExpressionExtension', () => {
       expect(fields[1].hide).toEqual(false);
       expect(fields[2].hide).toEqual(false);
     });
+
+    it('should detect assign an object and function in expression', () => {
+      const fields: FormlyFieldConfig[] = [
+        {
+          expressionProperties: {
+            'model.object': (m) => m.assign ? ({ 'test': 'foo' }) : undefined,
+            'model.function': (m) => m.assign ? () => 'test' : undefined,
+          },
+        },
+      ];
+
+      const model = { assign: false };
+      builder.buildForm(form, fields, model, options);
+
+      model.assign = true;
+      options._checkField({ formControl: form, fieldGroup: fields, model, options });
+
+      expect(model['object']).toEqual({ 'test': 'foo' });
+      expect(typeof model['function']).toEqual('function');
+    });
   });
 
   describe('field changes', () => {

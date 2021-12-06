@@ -184,7 +184,11 @@ export class FieldExpressionExtension implements FormlyExtension {
         ignoreCache || (
           expressionProperties[key].expressionValue !== expressionValue
           && (
-            !isObject(expressionValue)
+            !(isObject(expressionValue) || isFunction(expressionValue))
+            || (
+              isFunction(expressionValue)
+              && ('' + expressionProperties[key].expressionValue !== '' + expressionValue)
+            )
             || isObservable(expressionValue)
             || JSON.stringify(expressionValue) !== JSON.stringify(expressionProperties[key].expressionValue)
           )
