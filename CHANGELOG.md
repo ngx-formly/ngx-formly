@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.26"></a>
+## [5.10.26](https://github.com/ngx-formly/ngx-formly/compare/v5.10.25...v5.10.26) (2021-12-06)
+
+
+### Bug Fixes
+
+* **core:** improve detecting changes when using Function in expression ([#3080](https://github.com/ngx-formly/ngx-formly/issues/3080)) ([73551ee](https://github.com/ngx-formly/ngx-formly/commit/73551ee)), closes [#2993](https://github.com/ngx-formly/ngx-formly/issues/2993)
+* **json-schema:** take account of oneOf model change ([#3077](https://github.com/ngx-formly/ngx-formly/issues/3077)) ([1cbdc3e](https://github.com/ngx-formly/ngx-formly/commit/1cbdc3e)), closes [#3059](https://github.com/ngx-formly/ngx-formly/issues/3059)
+* **json-schema:** take account of undefined value for integer type ([#3078](https://github.com/ngx-formly/ngx-formly/issues/3078)) ([7bdd137](https://github.com/ngx-formly/ngx-formly/commit/7bdd137)), closes [#3075](https://github.com/ngx-formly/ngx-formly/issues/3075)
+
+
+
 <a name="5.10.25"></a>
 ## [5.10.25](https://github.com/ngx-formly/ngx-formly/compare/v5.10.24...v5.10.25) (2021-12-04)
 
