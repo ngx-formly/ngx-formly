@@ -1376,6 +1376,29 @@ describe('Service: FormlyJsonschema', () => {
           expect(f1.hide).toBeFalse();
           expect(f2.hide).toBeTrue();
         });
+
+        it('should take account of model change after build', () => {
+          const { field, fixture } = renderComponent({
+            model: { bar: 'test' },
+            schema,
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [fooField, barField],
+            },
+          ] = field.fieldGroup[0].fieldGroup;
+
+          expect(fooField.hide).toBeTruthy();
+          expect(barField.hide).toBeFalsy();
+
+          fixture.componentInstance['model'] = { foo: 'test' };
+          fixture.detectChanges();
+
+          expect(fooField.hide).toBeFalsy();
+          expect(barField.hide).toBeTruthy();
+        });
       });
 
       describe('anyOf', () => {

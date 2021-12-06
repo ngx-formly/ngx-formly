@@ -59,7 +59,7 @@ describe('FieldExpressionExtension', () => {
         hideExpression: spy,
       });
 
-      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field);
+      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field, expect.any(Boolean));
     });
 
     describe('attach/detach form control', () => {
@@ -241,7 +241,7 @@ describe('FieldExpressionExtension', () => {
         },
       });
 
-      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field);
+      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field, expect.any(Boolean));
     });
 
     it('should resolve a function expression', () => {
@@ -494,6 +494,52 @@ describe('FieldExpressionExtension', () => {
           /\[Formly Error\] \[Expression "nested.prop"\] Cannot set property 'prop' of undefined/i,
         );
       });
+    });
+
+    it('should check expression when detecting new field changes', () => {
+      const { fieldGroup: fields } = buildField({
+        fieldGroup: [
+          {
+            key: 'checkbox1',
+            type: 'checkbox',
+            defaultValue: true,
+            resetOnHide: true,
+          },
+          {
+            key: 'checkbox2',
+            type: 'checkbox',
+            defaultValue: true,
+            hideExpression: '!model.checkbox1',
+            resetOnHide: true,
+          },
+          {
+            key: 'checkbox3',
+            type: 'checkbox',
+            defaultValue: true,
+            hideExpression: '!model.checkbox1 || !model.checkbox2',
+            resetOnHide: true,
+          },
+        ],
+      });
+
+      expect(fields[1].hide).toEqual(false);
+      expect(fields[2].hide).toEqual(false);
+    });
+
+    it('should detect assign an object and function in expression', () => {
+      const field = buildField({
+        model: { assign: false },
+        expressionProperties: {
+          'model.object': (m) => (m.assign ? { test: 'foo' } : undefined),
+          'model.function': (m) => (m.assign ? () => 'test' : undefined),
+        },
+      });
+
+      field.model.assign = true;
+      field.options.checkExpressions(field);
+
+      expect(field.model['object']).toEqual({ test: 'foo' });
+      expect(typeof field.model['function']).toEqual('function');
     });
   });
 

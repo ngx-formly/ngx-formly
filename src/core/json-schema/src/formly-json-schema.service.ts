@@ -111,7 +111,7 @@ export class FormlyJsonschema {
       }
       case 'number':
       case 'integer': {
-        field.parsers = [(v) => (isEmpty(v) ? null : Number(v))];
+        field.parsers = [(v) => (isEmpty(v) ? (v === '' ? null : v) : Number(v))];
         if (schema.hasOwnProperty('minimum')) {
           field.templateOptions.min = schema.minimum;
         }
@@ -370,9 +370,9 @@ export class FormlyJsonschema {
         {
           fieldGroup: schemas.map((s, i) => ({
             ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
-            hideExpression: (m, fs, f) => {
+            hideExpression: (m, fs, f, forceUpdate?: boolean) => {
               const control = f.parent.parent.fieldGroup[0].formControl;
-              if (control.value === -1) {
+              if (control.value === -1 || forceUpdate) {
                 let value = f.parent.fieldGroup
                   .map((f, i) => [f, i] as [FormlyFieldConfig, number])
                   .filter(([f, i]) => {
