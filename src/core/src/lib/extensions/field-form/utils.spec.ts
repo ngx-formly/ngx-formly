@@ -146,6 +146,24 @@ describe('registerControl', () => {
       expect(spy).toHaveBeenCalledWith({ foo: null });
       subscription.unsubscribe();
     });
+
+    it('should emit valueChanges when FormControl value changes', () => {
+      const field = {
+        key: 'foo',
+        form: new FormGroup({}),
+        formControl: new FormControl(),
+        parent: { model: { foo: 'test' } },
+      };
+
+      const spy = jest.fn();
+      const subscription = field.formControl.valueChanges.subscribe(spy);
+
+      registerControl(field);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('test');
+      subscription.unsubscribe();
+    });
   });
 });
 
