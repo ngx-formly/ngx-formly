@@ -137,7 +137,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         const exprValue = evalExpression(
           parentExpression ? (...args) => parentExpression(field) || expr(...args) : expr,
           { field },
-          [field.model, field.options.formState, field],
+          [field.model, field.options.formState, field, ignoreCache],
         );
 
         if (
