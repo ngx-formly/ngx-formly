@@ -111,7 +111,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private _evalExpression(prop: string, expression, parentExpression?) {
-    return (model: any, formState: any, field: FormlyFieldConfig) => {
+    return (...args) => {
       try {
         if (typeof expression === 'string') {
           expression = evalStringExpression(expression, ['model', 'formState', 'field']);
@@ -121,7 +121,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           expression = () => !!expression;
         }
 
-        return (parentExpression && parentExpression()) || expression(model, formState, field);
+        return (parentExpression && parentExpression()) || expression(...args);
       } catch (error) {
         error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
         throw error;
@@ -175,7 +175,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     const expressionProperties = field._expressionProperties;
 
     for (const key in expressionProperties) {
-      let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState, field]);
+      let expressionValue = evalExpression(expressionProperties[key].expression, { field }, [field.model, field.options.formState, field, ignoreCache]);
       if (key === 'templateOptions.disabled') {
         expressionValue = !!expressionValue;
       }
@@ -207,7 +207,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     const hideExpressionResult: boolean = !!evalExpression(
       field.hideExpression,
       { field },
-      [field.model, field.options.formState, field],
+      [field.model, field.options.formState, field, ignoreCache],
     );
     let markForCheck = false;
     if (hideExpressionResult !== field.hide || ignoreCache) {
