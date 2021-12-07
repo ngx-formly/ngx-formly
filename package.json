@@ -80,6 +80,7 @@
     "@progress/kendo-drawing": "^1.16.0",
     "@progress/kendo-licensing": "^1.2.1",
     "@progress/kendo-theme-default": "^4.43.0",
+    "@stackblitz/sdk": "^1.5.3",
     "@swimlane/ngx-datatable": "^20.0.0",
     "ag-grid-angular": "^26.2.0",
     "ag-grid-community": "^26.2.0",
@@ -126,7 +127,6 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.2.0",
     "github-contributors-list": "^1.2.4",
-    "har-validator": "^5.1.5",
     "highlight-loader": "^0.7.4",
     "highlight.js": "^11.3.1",
     "html-loader": "^3.0.1",
@@ -143,7 +143,6 @@
     "standard-version": "^9.1.1",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "~4.4.4",
     "webpack": "^5.64.4"
   },

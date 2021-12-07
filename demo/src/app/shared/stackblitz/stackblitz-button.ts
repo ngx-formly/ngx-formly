@@ -11,24 +11,13 @@ import { ExampleType } from '../example-viewer/example-viewer.component';
   providers: [StackblitzWriter],
 })
 export class StackblitzButtonComponent {
-  stackblitzForm;
-
   @Input() type: string;
-  @Input()
-  set example(exampleData: ExampleType) {
-    this.stackblitzForm = this.stackblitzWriter.constructStackblitzForm(this.type, exampleData);
-  }
+  @Input() example: ExampleType;
 
   constructor(private stackblitzWriter: StackblitzWriter) {}
 
   openStackblitz(): void {
-    // When the form is submitted, it must be in the document body. The standard of forms is not
-    // to submit if it is detached from the document. See the following chromium commit for
-    // more details:
-    // https://chromium.googlesource.com/chromium/src/+/962c2a22ddc474255c776aefc7abeba00edc7470%5E!
-    document.body.appendChild(this.stackblitzForm);
-    this.stackblitzForm.submit();
-    document.body.removeChild(this.stackblitzForm);
+    this.stackblitzWriter.open(this.type, this.example);
   }
 }
 
