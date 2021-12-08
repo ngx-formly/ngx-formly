@@ -237,6 +237,12 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private toggleFormControl(field: FormlyFieldConfigCache, hide: boolean, resetOnHide: boolean) {
+    if (field.fieldGroup) {
+      field.fieldGroup
+        .filter(f => !f.hideExpression)
+        .forEach(f => this.toggleFormControl(f, hide, resetOnHide));
+    }
+
     if (field.formControl && field.key) {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
@@ -265,12 +271,6 @@ export class FieldExpressionExtension implements FormlyExtension {
           (<any> field.options)._buildForm(true);
         }
       }
-    }
-
-    if (field.fieldGroup) {
-      field.fieldGroup
-        .filter(f => !f.hideExpression)
-        .forEach(f => this.toggleFormControl(f, hide, resetOnHide));
     }
 
     if (field.options.fieldChanges) {
