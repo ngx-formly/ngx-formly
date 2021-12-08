@@ -9,7 +9,7 @@
   [![Npm version](https://badge.fury.io/js/%40ngx-formly%2Fcore.svg)](https://npmjs.org/package/@ngx-formly/core)
   [![Downloads](http://img.shields.io/npm/dm/@ngx-formly/core.svg)](https://npmjs.org/package/@ngx-formly/core)
   [![Gitter](https://badges.gitter.im/formly-js/ng2-formly.svg)](https://gitter.im/formly-js/ng2-formly)
-  [![Build Status](https://api.travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)](https://api.travis-ci.org/ngx-formly/ngx-formly.svg?branch=master)
+  [![Build Status](https://github.com/ngx-formly/ngx-formly/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ngx-formly/ngx-formly/actions/workflows/ci.yml/badge.svg?branch=main)
   [![Twitter](https://img.shields.io/badge/twitter-@formlydev-blue.svg)](https://twitter.com/formlydev)
   [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/ngx-formly/ngx-formly)
 </div>

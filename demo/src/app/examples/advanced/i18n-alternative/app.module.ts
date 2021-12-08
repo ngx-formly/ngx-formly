@@ -33,7 +33,6 @@ import { AppComponent } from './app.component';
       },
     }),
   ],
-  bootstrap: [AppComponent],
   providers: [
     { provide: FORMLY_CONFIG, multi: true, useFactory: registerTranslateExtension, deps: [TranslateService] },
   ],
