@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.27"></a>
+## [5.10.27](https://github.com/ngx-formly/ngx-formly/compare/v5.10.26...v5.10.27) (2021-12-11)
+
+
+### Bug Fixes
+
+* **core:** clear cache of registered fields on hide. ([#3089](https://github.com/ngx-formly/ngx-formly/issues/3089)) ([4d2367a](https://github.com/ngx-formly/ngx-formly/commit/4d2367a)), closes [#3083](https://github.com/ngx-formly/ngx-formly/issues/3083)
+* **core:** update validation of root form on fields change ([#3099](https://github.com/ngx-formly/ngx-formly/issues/3099)) ([3fc0c66](https://github.com/ngx-formly/ngx-formly/commit/3fc0c66)), closes [#2965](https://github.com/ngx-formly/ngx-formly/issues/2965)
+* **material:** export slider type ([#3098](https://github.com/ngx-formly/ngx-formly/issues/3098)) ([bd63ffe](https://github.com/ngx-formly/ngx-formly/commit/bd63ffe)), closes [#3094](https://github.com/ngx-formly/ngx-formly/issues/3094)
+* **material:** remove mat-form-field static position ([#3090](https://github.com/ngx-formly/ngx-formly/issues/3090)) ([1d3d706](https://github.com/ngx-formly/ngx-formly/commit/1d3d706)), closes [#3082](https://github.com/ngx-formly/ngx-formly/issues/3082)
+
+
+
 <a name="5.10.26"></a>
 ## [5.10.26](https://github.com/ngx-formly/ngx-formly/compare/v5.10.25...v5.10.26) (2021-12-06)
 
