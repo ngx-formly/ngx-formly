@@ -19,7 +19,7 @@ import { MatSlider } from '@angular/material/slider';
     </mat-slider>
   `,
 })
-export class FormlySliderTypeComponent extends FieldType {
+export class FormlyFieldSlider extends FieldType {
   @ViewChild(MatSlider) slider!: MatSlider;
   defaultOptions = {
     templateOptions: {
