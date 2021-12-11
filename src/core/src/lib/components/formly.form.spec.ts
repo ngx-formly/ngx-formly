@@ -726,6 +726,27 @@ describe('FormlyForm Component', () => {
     expect(app.form.valid).toEqual(false);
   });
 
+  it('should update validation of root form on fields input change', () => {
+    app = {
+      fields: [],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    expect(app.form.valid).toEqual(true);
+
+    fixture.componentInstance.fields = [{
+      fieldGroup: [{ key: 'name' }],
+      validators: { e: { expression: () => false } },
+    }];
+    fixture.detectChanges();
+
+    expect(app.form.valid).toEqual(false);
+  });
+
   it('should update the form controls when changing the model', () => {
     app = {
       fields: [{
