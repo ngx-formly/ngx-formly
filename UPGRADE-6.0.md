@@ -27,7 +27,7 @@ UPGRADE FROM 5.0 to 6.0
   ```patch
     showLoader() {
   -   field.templateOptions.loading = true
-  +   field.templateOptions.loading = {
+  +   field.templateOptions = {
   +     ...field.templateOptions,
   +     loading: true
   +   };
