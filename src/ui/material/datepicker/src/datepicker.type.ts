@@ -7,6 +7,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
     <input
       matInput
       [id]="id"
+      [type]="to.type"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [matDatepicker]="picker"
@@ -65,5 +66,9 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
   ngAfterViewInit() {
     super.ngAfterViewInit();
     this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
+    
+    if (!this.to.type) {
+      this.to.type = 'text';
+    }
   }
 }
