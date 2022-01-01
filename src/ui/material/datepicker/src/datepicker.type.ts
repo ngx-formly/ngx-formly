@@ -69,7 +69,7 @@ export class FormlyDatepickerTypeComponent extends FieldType implements AfterVie
     this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
     
     if (!['text', 'tel'].includes(this.to.type)) {
-      this.type.to = "text";
+      this.to.type = "text";
     }
   }
 }
