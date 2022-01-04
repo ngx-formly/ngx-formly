@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'formly-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   isSmallDevice$ = this.breakpointObserver.observe([Breakpoints.XSmall]).pipe(map((result) => result.matches));
 
   menu = [
@@ -102,5 +104,22 @@ export class AppComponent {
     },
   ];
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  private documentTitle$ = this.router.events.pipe(
+    filter((event) => event instanceof NavigationEnd),
+    map((event: NavigationEnd) => event.urlAfterRedirects),
+    map((currentUrl) => {
+      const sidebarLinks = this.menu.flatMap((group) => group.links);
+      const activeLink = sidebarLinks.find((link) => link.path === currentUrl);
+      const title = activeLink?.title;
+
+      const baseTitle = 'Angular Formly';
+      return title ? `${baseTitle} - ${title}` : baseTitle;
+    }),
+  );
+
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private titleService: Title) {}
+
+  ngOnInit(): void {
+    this.documentTitle$.subscribe((title) => this.titleService.setTitle(title));
+  }
 }
