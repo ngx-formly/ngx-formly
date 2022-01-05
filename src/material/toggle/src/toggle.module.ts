@@ -5,10 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 
-import { FormlyToggleTypeComponent } from './toggle.type';
+import { FormlyFieldToggle } from './toggle.type';
 
 @NgModule({
-  declarations: [FormlyToggleTypeComponent],
+  declarations: [FormlyFieldToggle],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -17,7 +17,7 @@ import { FormlyToggleTypeComponent } from './toggle.type';
     FormlyModule.forChild({
       types: [{
         name: 'toggle',
-        component: FormlyToggleTypeComponent,
+        component: FormlyFieldToggle,
         wrappers: ['form-field'],
       }],
     }),

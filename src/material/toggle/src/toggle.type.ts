@@ -16,7 +16,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
     </mat-slide-toggle>
   `,
 })
-export class FormlyToggleTypeComponent extends FieldType {
+export class FormlyFieldToggle extends FieldType {
   @ViewChild(MatSlideToggle) slideToggle!: MatSlideToggle;
   defaultOptions = {
     templateOptions: {
