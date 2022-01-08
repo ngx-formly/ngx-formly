@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.28"></a>
+## [5.10.28](https://github.com/ngx-formly/ngx-formly/compare/v5.10.27...v5.10.28) (2022-01-08)
+
+
+### Bug Fixes
+
+* **material:** export datepicker and toggle types ([#3117](https://github.com/ngx-formly/ngx-formly/issues/3117)) ([cebf97d](https://github.com/ngx-formly/ngx-formly/commit/cebf97d)), closes [#3094](https://github.com/ngx-formly/ngx-formly/issues/3094) [#3116](https://github.com/ngx-formly/ngx-formly/issues/3116)
+
+
+
 <a name="5.10.27"></a>
 ## [5.10.27](https://github.com/ngx-formly/ngx-formly/compare/v5.10.26...v5.10.27) (2021-12-11)
 
