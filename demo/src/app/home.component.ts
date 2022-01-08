@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <div class="container markdown github">
       <div [innerHtml]="contnent"></div>
     </div>
-  `,
+`,
 })
 export class HomeComponent {
   contnent = require('!!raw-loader!!highlight-loader!markdown-loader!./../../../README.md');

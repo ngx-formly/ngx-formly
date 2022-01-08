@@ -3,7 +3,7 @@
 <mat-toolbar color="primary" class="mat-elevation-z6 app-navbar" [class.navbar-small]="isSmallDevice$ | async">
   <a mat-button routerLink="" routerLinkActive="" #homeLink="routerLinkActive"
     [routerLinkActiveOptions]="{ exact: true }">
-    <img src="https://material.angular.io/assets/img/homepage/angular-white-transparent.svg">
+    <img src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true">
     FORMLY
   </a>
 
@@ -64,7 +64,45 @@
     </ng-container>
   </mat-sidenav>
 
-  <router-outlet></router-outlet>
+  <div style="min-height: 80vh;">
+    <router-outlet></router-outlet>
+  </div>
+
+  <footer class="text-muted text-muted pt-3 pt-md-5" [class.container]="homeLink.isActive">
+    <a mat-button routerLink="" routerLinkActive="" #homeLink="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }">
+
+      <span class="bd-footer-logo">
+        <img width="60" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true">
+        <span class="bd-footer-logo-text">
+          FORMLY
+        </span>
+      </span>
+    </a>
+    <div>
+      <ul class="bd-footer-links">
+        <li><a target="_blank" href="https://github.com/ngx-formly/ngx-formly">GitHub</a></li>
+        <li><a target="_blank" href="https://twitter.com/formlydev">Twitter</a></li>
+        <li><a routerLink="/guide">Guides</a></li>
+        <li><a routerLink="/ui">UI</a></li>
+        <li><a routerLink="/examples">Examples</a></li>
+      </ul>
+
+      <!-- <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener" target="_blank">Netlify</a>.</p> -->
+      <p>
+        Maintained by the <a href="https://github.com/ngx-formly/ngx-formly#core-team" rel="noopener" target="_blank">core team</a> with the help of <a href="https://github.com/ngx-formly/ngx-formly/graphs/contributors" rel="noopener" target="_blank">our contributors</a>.
+      </p>
+      <p>
+        Code licensed <a href="https://github.com/ngx-formly/ngx-formly/blob/main/LICENSE" target="_blank" rel="license noopener">MIT</a>.
+      </p>
+
+      <div class="bd-footer-badges">
+        <a href="https://www.netlify.com" rel="noopener" target="_blank">
+          <img height="40" src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify" />
+        </a>
+      </div>
+    </div>
+  </footer>
 </mat-sidenav-container>
 
 <ng-template #version>
