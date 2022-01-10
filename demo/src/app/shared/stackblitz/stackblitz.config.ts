@@ -16,6 +16,7 @@ export const dependencies = {
     '@angular/platform-browser': angularVersion,
     '@angular/platform-browser-dynamic': angularVersion,
     '@angular/animations': angularVersion,
+    '@angular/router': angularVersion,
     'core-js': '^3.19.1',
     rxjs: '^7.0.0',
     'zone.js': '~0.11.4',
@@ -47,18 +48,19 @@ export const dependencies = {
     '@ngx-formly/primeng': formlyVersion,
     '@angular/router': angularVersion,
     '@angular/cdk': angularVersion,
-    primeflex: '^3.1.0',
+    primeflex: '3.1.0',
     primeicons: '^5.0.0',
     primeng: '^13.0.0',
   },
   ionic: {
     '@ngx-formly/ionic': formlyVersion,
-    '@ionic/angular': '^5.6.0',
+    '@ionic/angular': '^6.0.1',
     '@angular/router': angularVersion,
   },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
-    'ng-zorro-antd': '^12.0.0',
+    '@angular/cdk': angularVersion,
+    'ng-zorro-antd': '^13.0.0',
   },
   // non UI framework libraries
   'ag-grid': {
@@ -91,7 +93,6 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
     { file: 'index.html', filecontent: require('!!raw-loader!@assets/stackblitz/index.html') },
     { file: 'tsconfig.json', filecontent: require('!!raw-loader!@assets/stackblitz/tsconfig_json') },
     { file: 'tsconfig.app.json', filecontent: require('!!raw-loader!@assets/stackblitz/tsconfig.app_json') },
-    { file: '.stackblitzrc', filecontent: require('!!raw-loader!@assets/stackblitz/.stackblitzrc') },
     { file: 'favicon.ico', filecontent: require('!!raw-loader!@assets/../favicon.ico') },
   ],
   bootstrap: [{ file: 'styles.scss', filecontent: { default: `@import 'bootstrap/scss/bootstrap.scss';` } }],
@@ -107,10 +108,10 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-          @import "~primeng/resources/themes/saga-blue/theme.css";
-          @import "~primeng/resources/primeng.min.css";
-          @import "~primeflex/primeflex.css";
-          @import "~primeicons/primeicons.css";
+@import "~primeng/resources/themes/saga-blue/theme.css";
+@import "~primeng/resources/primeng.min.css";
+@import "~primeflex/primeflex.css";
+@import "~primeicons/primeicons.css";
       `,
       },
     },
@@ -120,15 +121,15 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-          @import "~@ionic/angular/css/core.css";
-          @import "~@ionic/angular/css/normalize.css";
-          @import "~@ionic/angular/css/structure.css";
-          @import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/core.css";
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
 
-          @import "~@ionic/angular/css/padding.css";
-          @import "~@ionic/angular/css/float-elements.css";
-          @import "~@ionic/angular/css/text-alignment.css";
-          @import "~@ionic/angular/css/flex-utils.css";
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/flex-utils.css";
       `,
       },
     },
@@ -138,7 +139,7 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-        @import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
       `,
       },
     },

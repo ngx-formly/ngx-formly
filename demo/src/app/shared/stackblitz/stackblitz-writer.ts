@@ -7,13 +7,15 @@ import { angularVersion } from 'src/schematics/utils/lib-versions';
 @Injectable()
 export class StackblitzWriter {
   open(type: string, exampleData: ExampleType) {
+    const { files, dependencies } = this.getExampleFiles(type, exampleData);
     stackblitz.openProject(
       {
         title: `Angular Formly (${exampleData.title || ''})`,
         description: (exampleData.description || '').replace(/<[^>]*>?/gm, ''),
-        template: 'node',
+        template: 'angular-cli',
         tags: ['angular', 'formly', 'example', 'web'],
-        files: this.getExampleFiles(type, exampleData),
+        files,
+        dependencies,
       },
       { openFile: `src/app/app.component.ts` },
     );
@@ -96,8 +98,8 @@ export class StackblitzWriter {
     }
 
     const files = {
-      'src/environments/environment.ts': require('!!raw-loader!@assets/stackblitz/environment.ts'),
-      'src/environments/environment.prod.ts': require('!!raw-loader!@assets/stackblitz/environment.prod.ts'),
+      'src/environments/environment.ts': require('!!raw-loader!@assets/stackblitz/environment.ts').default,
+      'src/environments/environment.prod.ts': require('!!raw-loader!@assets/stackblitz/environment.prod.ts').default,
       'package.json': JSON.stringify(
         {
           name: 'formly-example-app',
@@ -137,7 +139,7 @@ export class StackblitzWriter {
       files[file] = this._replaceExamplePlaceholderNames(data.file, data.filecontent, options);
     });
 
-    return files;
+    return { files, dependencies: deps };
   }
 
   _replaceExamplePlaceholderNames(filename: string, filecontent: any, options): string {
