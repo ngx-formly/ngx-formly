@@ -72,6 +72,22 @@ describe('FormlyForm Component', () => {
 
       expect(form.valid).toEqual(false);
     });
+
+    it('should update validation of root form on fields input change', () => {
+      const { form, setInputs } = renderComponent({});
+      expect(form.valid).toEqual(true);
+
+      setInputs({
+        fields: [
+          {
+            fieldGroup: [{ key: 'name' }],
+            validators: { e: { expression: () => false } },
+          },
+        ],
+      });
+
+      expect(form.valid).toEqual(false);
+    });
   });
 
   describe('model input', () => {

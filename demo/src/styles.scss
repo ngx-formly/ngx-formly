@@ -33,10 +33,10 @@ legend {
 @include mat.core();
 
 // Define a theme.
-$primary: mat.define-palette(mat.$indigo-palette);
-$accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$matPrimary: mat.define-palette(mat.$blue-grey-palette, 900);
+$matAccent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
-$theme: mat.define-light-theme($primary, $accent);
+$theme: mat.define-light-theme($matPrimary, $matAccent);
 
 // Include all theme styles for the components.
 @include mat.all-component-themes($theme);
@@ -57,7 +57,7 @@ pre {
 }
 
 .active-link {
-  color: #3f51b5 !important;
+  color: map_get(mat.$blue-grey-palette, 900) !important;
 }
 
 @import './markdown.css';
@@ -65,3 +65,67 @@ pre {
 // ag-grid
 @import '~ag-grid-community/dist/styles/ag-grid.css';
 @import '~ag-grid-community/dist/styles/ag-theme-balham.css';
+
+footer {
+  font-size: 85%;
+  text-align: center;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+  }
+
+  a {
+    font-weight: 500;
+    color: $gray-700;
+
+    &:hover,
+    &:focus {
+      color: $link-color;
+    }
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  @include media-breakpoint-up(sm) {
+    text-align: left;
+  }
+
+  .bd-footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .bd-footer-logo-text {
+      position: relative;
+      &::after {
+        content: '.dev';
+        font-size: smaller;
+        position: absolute;
+        bottom: -11px;
+        right: 0px;
+      }
+    }
+  }
+
+  .bd-footer-badges {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .bd-footer-links {
+    padding-left: 0;
+    margin-bottom: 1rem;
+
+    li {
+      display: inline-block;
+
+      + li {
+        margin-left: 1rem;
+      }
+    }
+  }
+}

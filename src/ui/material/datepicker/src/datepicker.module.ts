@@ -7,10 +7,10 @@ import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
-import { FormlyDatepickerTypeComponent } from './datepicker.type';
+import { FormlyFieldDatepicker } from './datepicker.type';
 
 @NgModule({
-  declarations: [FormlyDatepickerTypeComponent],
+  declarations: [FormlyFieldDatepicker],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -22,7 +22,7 @@ import { FormlyDatepickerTypeComponent } from './datepicker.type';
       types: [
         {
           name: 'datepicker',
-          component: FormlyDatepickerTypeComponent,
+          component: FormlyFieldDatepicker,
           wrappers: ['form-field'],
         },
       ],

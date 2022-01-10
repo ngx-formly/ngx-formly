@@ -12,12 +12,17 @@ import {
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
-  const form = field.formControl.parent as FormArray | FormGroup;
+  const control = field.formControl;
+  const fieldIndex = control['_fields'] ? control['_fields'].indexOf(field) : -1;
+  if (fieldIndex !== -1) {
+    control['_fields'].splice(fieldIndex, 1);
+  }
+
+  const form = control.parent as FormArray | FormGroup;
   if (!form) {
     return;
   }
 
-  const control = field.formControl;
   const opts = { emitEvent };
   if (form instanceof FormArray) {
     const key = form.controls.findIndex((c) => c === control);
@@ -137,7 +142,8 @@ function updateControl(form: FormGroup | FormArray, opts: { emitEvent: boolean }
 
 export function clearControl(form: AbstractControl) {
   delete form?.['_fields'];
-
+  form.setValidators(null);
+  form.setAsyncValidators(null);
   if (form instanceof FormGroup || form instanceof FormArray) {
     Object.keys(form.controls).forEach((k) => clearControl(form.controls[k]));
   }

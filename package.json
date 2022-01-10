@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "postinstall": "ngcc",
-    "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 6 --sortOrder desc > CONTRIBUTORS.md",
+    "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 8 --sortOrder desc > CONTRIBUTORS.md",
     "lint": "eslint --ext .ts,.html src/ demo/",
     "lint:fix": "eslint --ext .ts,.html src/ demo/ --fix",
     "format": "prettier --list-different \"**/*.{ts,json,css,scss,html}\"",

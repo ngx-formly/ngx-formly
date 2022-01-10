@@ -5,10 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 
-import { FormlySliderTypeComponent } from './slider.type';
+import { FormlyFieldSlider } from './slider.type';
 
 @NgModule({
-  declarations: [FormlySliderTypeComponent],
+  declarations: [FormlyFieldSlider],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -18,7 +18,7 @@ import { FormlySliderTypeComponent } from './slider.type';
       types: [
         {
           name: 'slider',
-          component: FormlySliderTypeComponent,
+          component: FormlyFieldSlider,
           wrappers: ['form-field'],
         },
       ],

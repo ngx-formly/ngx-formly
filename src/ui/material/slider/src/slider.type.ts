@@ -28,7 +28,7 @@ import { MatSlider } from '@angular/material/slider';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlySliderTypeComponent extends FieldType {
+export class FormlyFieldSlider extends FieldType {
   @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
   defaultOptions = {
     templateOptions: {

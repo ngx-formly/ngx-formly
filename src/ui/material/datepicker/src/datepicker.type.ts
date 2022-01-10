@@ -42,7 +42,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyDatepickerTypeComponent extends FieldType implements AfterViewInit {
+export class FormlyFieldDatepicker extends FieldType implements AfterViewInit {
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   defaultOptions = {
