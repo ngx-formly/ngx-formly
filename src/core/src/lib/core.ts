@@ -10,6 +10,6 @@ export { FieldWrapper } from './templates/field.wrapper';
 export { FormlyModule } from './core.module';
 export { defineHiddenProp as ɵdefineHiddenProp } from './utils';
 export { reverseDeepMerge as ɵreverseDeepMerge } from './utils';
-export { getFieldInitialValue as ɵgetFieldInitialValue } from './utils';
+export { getFieldValue as ɵgetFieldValue } from './utils';
 export { clone as ɵclone } from './utils';
 export { wrapProperty as ɵwrapProperty } from './utils';

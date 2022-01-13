@@ -73,24 +73,6 @@ export function assignModelValue(model: any, paths: string[], value: any) {
   model[paths[paths.length - 1]] = clone(value);
 }
 
-export function getFieldInitialValue(field: FormlyFieldConfig) {
-  let value = field.options['_initialModel'];
-  let paths = getKeyPath(field);
-  while (field.parent) {
-    field = field.parent;
-    paths = [...getKeyPath(field), ...paths];
-  }
-
-  for (const path of paths) {
-    if (!value) {
-      return undefined;
-    }
-    value = value[path];
-  }
-
-  return value;
-}
-
 export function getFieldValue(field: FormlyFieldConfig): any {
   let model = field.parent.model;
   for (const path of getKeyPath(field)) {
