@@ -24,6 +24,7 @@ export function IpValidatorMessage(err, field: FormlyFieldConfig) {
       ],
       validationMessages: [
         { name: 'ip', message: IpValidatorMessage },
+        { name: 'required', message: 'This field is required' },
       ],
     }),
   ],
