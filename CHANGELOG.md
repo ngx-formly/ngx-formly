@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.29"></a>
+## [5.10.29](https://github.com/ngx-formly/ngx-formly/compare/v5.10.28...v5.10.29) (2022-01-13)
+
+
+### Bug Fixes
+
+* **core:** detect validation message changes in expressions ([84581bc](https://github.com/ngx-formly/ngx-formly/commit/84581bc)), closes [#3104](https://github.com/ngx-formly/ngx-formly/issues/3104)
+* **json-schema:** improve detecting oneOf selected item for object & array ([b71dabe](https://github.com/ngx-formly/ngx-formly/commit/b71dabe))
+* **json-schema:** improve handling oneOf array select change ([c11334a](https://github.com/ngx-formly/ngx-formly/commit/c11334a)), closes [#3124](https://github.com/ngx-formly/ngx-formly/issues/3124)
+
+
+
 <a name="5.10.28"></a>
 ## [5.10.28](https://github.com/ngx-formly/ngx-formly/compare/v5.10.27...v5.10.28) (2022-01-08)
 
