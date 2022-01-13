@@ -47,7 +47,10 @@ function totalMatchedFields(field: FormlyFieldConfig): number {
     return field.key && getFieldInitialValue(field) !== undefined ? 1 : 0;
   }
 
-  return field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
+  const total = field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
+  return total === 0
+    ? field.key && getFieldInitialValue(field) !== undefined ? 1 : 0
+    : total;
 }
 
 interface IOptions extends FormlyJsonschemaOptions {
