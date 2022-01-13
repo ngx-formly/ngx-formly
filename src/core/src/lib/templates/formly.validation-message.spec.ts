@@ -4,7 +4,7 @@ import { createGenericTestComponent } from '../test-utils';
 import { Component } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule, FormlyFieldConfig } from '../core';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -84,6 +84,41 @@ describe('FormlyValidationMessage Component', () => {
       expect(formlyMessageElm.textContent).toMatch(/Custom title: Should have at least 3 Characters/);
       expect(formlyMessageElm.textContent).not.toMatch(/Maximum Length Exceeded/);
       expect(formlyMessageElm.textContent).not.toMatch(/Title is required/);
+    });
+
+    it('should handle expressionProperties changes', () => {
+      const fixture = createTestComponent('<formly-validation-message [field]="field"></formly-validation-message>');
+      const formlyMessageElm = getFormlyValidationMessageElement(fixture.nativeElement);
+      const options = { fieldChanges: new Subject<any>() };
+      fixture.componentInstance.field = Object.assign({}, fixture.componentInstance.field, {
+        options,
+        validation: { messages: { required: 'field required' } },
+      });
+
+      fixture.detectChanges();
+      expect(formlyMessageElm.textContent).toMatch(/field required/);
+
+      // without emit expressionChanges
+      fixture.componentInstance.field.validation.messages.required = 'edited required message';
+      fixture.detectChanges();
+      expect(formlyMessageElm.textContent).not.toMatch(/edited required message/);
+
+      // emit expressionChanges from a different field
+      options.fieldChanges.next({
+        type: 'expressionChanges',
+        property: 'validation.messages.required',
+        field: {},
+      });
+      expect(formlyMessageElm.textContent).not.toMatch(/edited required message/);
+
+      // emit expressionChanges from component field
+      options.fieldChanges.next({
+        type: 'expressionChanges',
+        property: 'validation.messages.required',
+        field: fixture.componentInstance.field,
+        value: 'edit required message',
+      });
+      expect(formlyMessageElm.textContent).not.toMatch(/edited required message/);
     });
   });
 
