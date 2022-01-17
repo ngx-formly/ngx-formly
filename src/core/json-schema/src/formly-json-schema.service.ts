@@ -4,7 +4,7 @@ import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
-  ɵgetFieldInitialValue as getFieldInitialValue,
+  ɵgetFieldValue as getFieldValue,
   ɵclone as clone,
   ɵisNil as isNil,
 } from '@ngx-formly/core';
@@ -49,10 +49,11 @@ function isConst(schema: JSONSchema7) {
 
 function totalMatchedFields(field: FormlyFieldConfig): number {
   if (!field.fieldGroup) {
-    return !isNil(field.key) && getFieldInitialValue(field) !== undefined ? 1 : 0;
+    return !isNil(field.key) && getFieldValue(field) !== undefined ? 1 : 0;
   }
 
-  return field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
+  const total = field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
+  return total === 0 ? (field.key && getFieldValue(field) !== undefined ? 1 : 0) : total;
 }
 
 interface IOptions extends FormlyJsonschemaOptions {

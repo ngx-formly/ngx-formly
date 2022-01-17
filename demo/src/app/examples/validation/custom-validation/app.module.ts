@@ -20,7 +20,10 @@ export function IpValidatorMessage(err, field: FormlyFieldConfig) {
     FormlyBootstrapModule,
     FormlyModule.forRoot({
       validators: [{ name: 'ip', validation: IpValidator }],
-      validationMessages: [{ name: 'ip', message: IpValidatorMessage }],
+      validationMessages: [
+        { name: 'ip', message: IpValidatorMessage },
+        { name: 'required', message: 'This field is required' },
+      ],
     }),
   ],
   declarations: [AppComponent],

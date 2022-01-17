@@ -122,6 +122,7 @@ export class CoreExtension implements FormlyExtension {
       id: getFieldId(`formly_${this.formId}`, field, field['index']),
       hooks: {},
       modelOptions: {},
+      validation: { messages: {} },
       templateOptions:
         !field.type || isNil(field.key)
           ? {}

@@ -1324,6 +1324,35 @@ describe('Service: FormlyJsonschema', () => {
           expect(f2.hide).toBeFalse();
         });
 
+        it('should render the selected oneOf field (empty array object)', () => {
+          const { field } = renderComponent({
+            model: { bar: [] },
+            schema: {
+              type: 'object',
+              oneOf: [
+                { properties: { foo1: { type: 'string' } } },
+                {
+                  properties: {
+                    bar: {
+                      type: 'array',
+                      items: { type: 'string' },
+                    },
+                  },
+                },
+              ],
+            },
+          });
+          const [
+            ,
+            {
+              fieldGroup: [f1, f2],
+            },
+          ] = field.fieldGroup[0].fieldGroup;
+
+          expect(f1.hide).toBeTruthy();
+          expect(f2.hide).toBeFalsy();
+        });
+
         it('should not select oneOf readOnly option', () => {
           const { field } = renderComponent({
             schema: {

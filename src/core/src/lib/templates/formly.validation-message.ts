@@ -3,7 +3,8 @@ import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig } from '../models';
 import { isObject } from '../utils';
 import { Observable, isObservable, of } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { startWith, switchMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'formly-validation-message',
@@ -17,7 +18,16 @@ export class FormlyValidationMessage implements OnChanges {
   constructor(private config: FormlyConfig) {}
 
   ngOnChanges() {
-    this.errorMessage$ = this.field.formControl.statusChanges.pipe(
+    this.errorMessage$ = merge(
+      this.field.formControl.statusChanges,
+      !this.field.options
+        ? of(null)
+        : this.field.options.fieldChanges.pipe(
+            filter(({ field, type, property }) => {
+              return field === this.field && type === 'expressionChanges' && property.indexOf('validation') !== -1;
+            }),
+          ),
+    ).pipe(
       startWith(null),
       switchMap(() => (isObservable(this.errorMessage) ? this.errorMessage : of(this.errorMessage))),
     );

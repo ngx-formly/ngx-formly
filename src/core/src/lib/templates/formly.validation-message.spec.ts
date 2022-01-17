@@ -1,6 +1,6 @@
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyModule, FormlyFieldConfig } from '../core';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { DebugElement } from '@angular/core';
 
 function validationMessageContent(query: (v: string) => DebugElement): string {
@@ -73,6 +73,56 @@ describe('FormlyValidationMessage Component', () => {
       });
 
       expect(validationMessageContent(query)).toEqual('Custom error message.');
+    });
+
+    it('should handle expressionProperties changes', () => {
+      const { query } = renderComponent({
+        key: 'title',
+        validators: {
+          required: {
+            expression: () => false,
+            message: 'Custom error message.',
+          },
+        },
+      });
+
+      expect(validationMessageContent(query)).toEqual('Custom error message.');
+    });
+
+    it('should handle expressionProperties changes', () => {
+      const { query, field, detectChanges } = renderComponent({
+        key: 'title',
+        options: { fieldChanges: new Subject<any>() },
+        validators: {
+          required: {
+            expression: () => false,
+            message: 'Custom error message.',
+          },
+        },
+      });
+
+      // without emit expressionChanges
+      field.validation.messages.required = 'edited required message';
+      detectChanges();
+      expect(validationMessageContent(query)).not.toMatch(/edited required message/);
+
+      // emit expressionChanges from a different field
+      field.options.fieldChanges.next({
+        type: 'expressionChanges',
+        property: 'validation.messages.required',
+        field: field.parent,
+        value: 'edit required message',
+      });
+      expect(validationMessageContent(query)).not.toMatch(/edited required message/);
+
+      // emit expressionChanges from component field
+      field.options.fieldChanges.next({
+        type: 'expressionChanges',
+        property: 'validation.messages.required',
+        field: field,
+        value: 'edit required message',
+      });
+      expect(validationMessageContent(query)).not.toMatch(/edited required message/);
     });
   });
 });

@@ -99,6 +99,16 @@ All notable changes to this project will be documented in this file. See [standa
 * **material:** removed double tag closing in datepicker type ([#2327](https://github.com/ngx-formly/ngx-formly/issues/2327)) ([7969ac9](https://github.com/ngx-formly/ngx-formly/commit/7969ac913420e4b7b829c230f33e9ac44a8f4236))
 * sync v5 branch ([2acc4ea](https://github.com/ngx-formly/ngx-formly/commit/2acc4eaccb481df6f2931744a9a5cf00fbf2abd1))
 
+<a name="5.10.29"></a>
+## [5.10.29](https://github.com/ngx-formly/ngx-formly/compare/v5.10.28...v5.10.29) (2022-01-13)
+
+
+### Bug Fixes
+
+* **core:** detect validation message changes in expressions ([84581bc](https://github.com/ngx-formly/ngx-formly/commit/84581bc)), closes [#3104](https://github.com/ngx-formly/ngx-formly/issues/3104)
+* **json-schema:** improve detecting oneOf selected item for object & array ([b71dabe](https://github.com/ngx-formly/ngx-formly/commit/b71dabe))
+* **json-schema:** improve handling oneOf array select change ([c11334a](https://github.com/ngx-formly/ngx-formly/commit/c11334a)), closes [#3124](https://github.com/ngx-formly/ngx-formly/issues/3124)
+
 
 
 <a name="5.10.28"></a>
