@@ -46,7 +46,8 @@ export async function createWorkspace(
       workspaceOptions,
     )
     .toPromise();
-  appTree = await schematicRunner
+
+  return await schematicRunner
     .runExternalSchematicAsync(
       '@schematics/angular',
       'application',
@@ -54,6 +55,4 @@ export async function createWorkspace(
       appTree,
     )
     .toPromise();
-
-  return appTree;
 }
