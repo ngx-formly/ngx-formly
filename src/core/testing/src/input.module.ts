@@ -14,6 +14,9 @@ export class FormlyFieldInput extends FieldType {}
   template: `
     <label [attr.for]="id">{{ to.label }}</label>
     <ng-template #fieldComponent></ng-template>
+    <ng-container *ngIf="showError">
+      <formly-validation-message [field]="field"></formly-validation-message>
+    </ng-container>
   `,
 })
 export class FormlyWrapperFormField extends FieldWrapper {}
