@@ -180,27 +180,9 @@ UPGRADE FROM 5.0 to 6.0
   ```
 
 
-@ngx-formly/bootstrap
----------------------
-- Bootstrap v4 support is removed and replaced with v5 support. To upgrade check the migration documentation [https://getbootstrap.com/docs/5.0/migration/](https://getbootstrap.com/docs/5.0/migration/)
 
-- `formCheck`: `custom` prefix has been removed and replaced by the following values:
-
-  | Before        | After    |
-  | ------------- | -------- |
-  | custom        | default  |
-  | custom-inline | inline   |
-  | custom-switch | switch   |
-
-- add-on: The two first argument of `onClick` handler has been replaced by `field` instance.
-
-  ```patch
-  - onClick: (to, fieldType, $event) => ...,
-  + onClick: (field, $event) => ...,
-  ```
-
-@ngx-formly/json-schema
------------------------
+@ngx-formly/core/json-schema
+----------------------------
 
 - In case you use the extra option `map` to customize the generated `fieldArray`, you need to make change to take account of `fieldArray` which return `function` instead of an object.
 
@@ -233,3 +215,41 @@ this.formlyJsonschema.toFieldConfig(schema, {
 })
 export class AppModule {}
 ```
+
+
+
+@ngx-formly/bootstrap
+---------------------
+- Bootstrap v4 support is removed and replaced with v5 support. To upgrade check the migration documentation [https://getbootstrap.com/docs/5.0/migration/](https://getbootstrap.com/docs/5.0/migration/)
+
+- `formCheck`: `custom` prefix has been removed and replaced by the following values:
+
+  | Before        | After    |
+  | ------------- | -------- |
+  | custom        | default  |
+  | custom-inline | inline   |
+  | custom-switch | switch   |
+
+- add-on: The two first argument of `onClick` handler has been replaced by `field` instance.
+
+  ```patch
+  - onClick: (to, fieldType, $event) => ...,
+  + onClick: (field, $event) => ...,
+  ```
+
+
+
+@ngx-formly/ionic
+-----------------
+
+- The library now require the Ionic V6, To upgrade your Ionic 5 apps to Ionic 6 check [Ionic guide](https://ionicframework.com/docs/intro/upgrading-to-ionic-6)
+
+- `datetime`: due to the breaking changes introduced in `ion-datetime` component as described here https://ionicframework.com/docs/intro/upgrading-to-ionic-6#datetime, the following properies: `pickerOptions`, `pickerFormat`, `monthNames`, `monthShortNames`, `dayNames` and `dayShortNames` has been removed.
+  
+  To customize `datetime` presentation and format, use the following properties:
+
+  | property      | default   | |
+  | ------------- | -------   | -------- |
+  | presentation  | `date`    | https://ionicframework.com/docs/api/datetime#presentation |
+  | locale        | `default` | https://ionicframework.com/docs/api/datetime#locale | 
+  | displayFormat | `null`    | use the [Date pipe](https://angular.io/api/common/DatePipe#pre-defined-format-options) format |
