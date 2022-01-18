@@ -3,5 +3,6 @@
   "schedule": ["every weekend"],
   "automerge": true,
   "automergeType": "branch",
-  "semanticCommits": true
+  "semanticCommits": true,
+  "semanticCommitType": "build"
 }
