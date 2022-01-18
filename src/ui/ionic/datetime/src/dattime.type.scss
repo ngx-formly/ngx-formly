@@ -1,0 +1,14 @@
+.ion-datetime-modal {
+  --width: 310px;
+  --border-radius: 8px;
+
+  &.ion-datetime-modal-time-date {
+    --height: 440px;
+  }
+  &.ion-datetime-modal-date {
+    --height: 390px;
+  }
+  &.ion-datetime-modal-time {
+    --height: 260px;
+  }
+}
