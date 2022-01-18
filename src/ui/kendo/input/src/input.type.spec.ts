@@ -20,7 +20,7 @@ describe('ui-kendo: Input Type', () => {
     const { properties, attributes } = query('input[type="text"]');
     expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
-      class: 'k-textbox ng-untouched ng-pristine ng-valid',
+      class: 'ng-untouched ng-pristine ng-valid k-textbox k-input k-input-md k-rounded-md k-input-solid',
       id: 'formly_1_input_name_0',
     });
   });
@@ -36,7 +36,7 @@ describe('ui-kendo: Input Type', () => {
     const { properties, attributes } = query('input[type="text"]');
     expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
-      class: 'k-textbox ng-untouched ng-pristine ng-valid',
+      class: 'ng-untouched ng-pristine ng-valid k-textbox k-input k-input-md k-rounded-md k-input-solid',
       id: 'formly_1_string_name_0',
     });
   });
@@ -48,11 +48,10 @@ describe('ui-kendo: Input Type', () => {
       templateOptions: { type: 'number' },
     });
 
-    const { attributes } = query('input[type="number"]');
+    const { attributes } = query('kendo-numerictextbox');
     expect(attributes).toMatchObject({
-      class: 'k-textbox ng-untouched ng-pristine ng-valid',
+      class: 'k-input k-numerictextbox ng-untouched ng-pristine ng-valid k-input-md k-rounded-md k-input-solid',
       id: 'formly_1_input_name_0',
-      type: 'number',
     });
   });
 
@@ -62,11 +61,10 @@ describe('ui-kendo: Input Type', () => {
       type: 'number',
     });
 
-    const { attributes } = query('input[type="number"]');
+    const { attributes } = query('kendo-numerictextbox');
     expect(attributes).toMatchObject({
-      class: 'k-textbox ng-untouched ng-pristine ng-valid',
+      class: 'k-input k-numerictextbox ng-untouched ng-pristine ng-valid k-input-md k-rounded-md k-input-solid',
       id: 'formly_1_number_name_0',
-      type: 'number',
     });
   });
 
@@ -76,15 +74,14 @@ describe('ui-kendo: Input Type', () => {
       type: 'integer',
     });
 
-    const { attributes } = query('input[type="number"]');
+    const { attributes } = query('kendo-numerictextbox');
     expect(attributes).toMatchObject({
-      class: 'k-textbox ng-untouched ng-pristine ng-valid',
+      class: 'k-input k-numerictextbox ng-untouched ng-pristine ng-valid k-input-md k-rounded-md k-input-solid',
       id: 'formly_1_integer_name_0',
-      type: 'number',
     });
   });
 
-  it('should add "k-state-invalid" class on invalid', () => {
+  it('should add "ng-invalid" class on invalid', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
@@ -93,7 +90,7 @@ describe('ui-kendo: Input Type', () => {
     });
 
     const { classes } = query('input[type="text"]');
-    expect(classes['k-state-invalid']).toBeTrue();
+    expect(classes['ng-invalid']).toBeTrue();
   });
 
   it('should bind control value on change', () => {

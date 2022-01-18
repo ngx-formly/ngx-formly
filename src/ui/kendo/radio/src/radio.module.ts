@@ -4,6 +4,8 @@ import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormlyFormFieldModule } from '@ngx-formly/kendo/form-field';
+import { LabelModule } from '@progress/kendo-angular-label';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 import { FormlyFieldRadio } from './radio.type';
 
 @NgModule({
@@ -12,6 +14,8 @@ import { FormlyFieldRadio } from './radio.type';
     CommonModule,
     ReactiveFormsModule,
 
+    LabelModule,
+    InputsModule,
     FormlyFormFieldModule,
     FormlySelectModule,
     FormlyModule.forChild({

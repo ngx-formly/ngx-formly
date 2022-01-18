@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
+import { FieldType } from '@ngx-formly/kendo/form-field';
 
 @Component({
   selector: 'formly-field-kendo-radio',
@@ -7,13 +8,14 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
     <ng-container *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index">
       <input
         type="radio"
+        #radioInput
+        kendoRadioButton
         [id]="id + '_' + i"
         [name]="field.name || id"
         [value]="option.value"
         [formControl]="formControl"
         [formlyAttributes]="field"
         [attr.disabled]="option.disabled || formControl.disabled ? true : null"
-        class="k-radio"
       />
       <label class="k-radio-label" [for]="id + '_' + i">
         {{ option.label }}
@@ -21,5 +23,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./radio.type.scss'],
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {}

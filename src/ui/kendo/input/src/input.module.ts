@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyFormFieldModule } from '@ngx-formly/kendo/form-field';
-
+import { InputsModule } from '@progress/kendo-angular-inputs';
 import { FormlyFieldInput } from './input.type';
 
 @NgModule({
@@ -12,6 +12,7 @@ import { FormlyFieldInput } from './input.type';
     CommonModule,
     ReactiveFormsModule,
     FormlyFormFieldModule,
+    InputsModule,
     FormlyModule.forChild({
       types: [
         {

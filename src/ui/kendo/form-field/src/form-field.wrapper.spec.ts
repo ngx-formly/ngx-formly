@@ -19,9 +19,7 @@ describe('ui-kendo: FormField Wrapper', () => {
     });
 
     expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
-
-    // Label + Required marker
-    expect(query('label > span').nativeElement.textContent).toEqual(' Name *');
+    expect(query('label').nativeElement.textContent.trim()).toEqual('Name *');
   });
 
   it('should show error message', () => {
@@ -48,7 +46,7 @@ describe('ui-kendo: FormField Wrapper', () => {
       },
     });
 
-    expect(query('label').nativeElement.textContent).toEqual(' Name ');
+    expect(query('label').nativeElement.textContent.trim()).toEqual('Name');
   });
 
   it('should hide label', () => {
