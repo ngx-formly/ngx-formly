@@ -20,7 +20,16 @@ import {
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe, observeDeep, getFieldValue, assignFieldValue, isObject, isNil } from '../utils';
+import {
+  defineHiddenProp,
+  observe,
+  observeDeep,
+  getFieldValue,
+  assignFieldValue,
+  isObject,
+  isNil,
+  markFieldForCheck,
+} from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
@@ -217,6 +226,13 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           this.elementRef && this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
         }
       }),
+      ...['touched', 'pristine', 'status'].map((prop) =>
+        observe<string>(
+          this.field,
+          ['formControl', prop],
+          ({ firstChange }) => !firstChange && markFieldForCheck(this.field),
+        ),
+      ),
     ];
   }
 

@@ -11,6 +11,7 @@ import {
   clone,
   isNil,
   getField,
+  markFieldForCheck,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -83,15 +84,7 @@ export class CoreExtension implements FormlyExtension {
     options.detectChanges = (f: FormlyFieldConfigCache) => {
       if (f._componentRefs) {
         f.options.checkExpressions(f.parent ?? f);
-        f._componentRefs.forEach((ref) => {
-          // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
-          if (ref instanceof ComponentRef) {
-            const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
-            changeDetectorRef.markForCheck();
-          } else {
-            ref.markForCheck();
-          }
-        });
+        markFieldForCheck(f);
       }
 
       if (f.fieldGroup) {

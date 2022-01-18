@@ -2,7 +2,7 @@ import { FormlyFieldConfig } from './models';
 import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './models';
-import { TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, ComponentRef, TemplateRef } from '@angular/core';
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string | number) {
   if (field.id) {
@@ -322,4 +322,16 @@ export function getField(f: FormlyFieldConfig, key: FormlyFieldConfig['key']): F
       }
     }
   }
+}
+
+export function markFieldForCheck(field: FormlyFieldConfigCache) {
+  field._componentRefs?.forEach((ref) => {
+    // NOTE: we cannot use ref.changeDetectorRef, see https://github.com/ngx-formly/ngx-formly/issues/2191
+    if (ref instanceof ComponentRef) {
+      const changeDetectorRef = ref.injector.get(ChangeDetectorRef);
+      changeDetectorRef.markForCheck();
+    } else {
+      ref.markForCheck();
+    }
+  });
 }

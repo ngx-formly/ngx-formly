@@ -481,6 +481,16 @@ describe('FormlyField Component', () => {
     });
   });
 
+  it('should detect formControl status changes', () => {
+    const { query, field, detectChanges } = renderComponent({ key: 'foo', type: 'input' });
+    field.formControl.markAsTouched();
+    field.formControl.setErrors({ server: { message: 'server error :)' } });
+    detectChanges();
+
+    expect(query('formly-validation-message')).not.toBeNull();
+    expect(query('formly-validation-message').nativeElement.textContent).toEqual('server error :)');
+  });
+
   describe('component-level injectors', () => {
     it('should inject parent service to child type', () => {
       // should inject `ParentService` in `ChildComponent` without raising an error
