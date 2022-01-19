@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
@@ -49,7 +50,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType {
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     templateOptions: {
       options: [],
@@ -63,7 +64,7 @@ export class FormlyFieldSelect extends FieldType {
 
   getSelectAllState(options: any[]) {
     if (this.empty || this.value.length === 0) {
-      return '';
+      return null;
     }
 
     return this.value.length !== this.getSelectAllValue(options).length ? 'indeterminate' : 'checked';
@@ -81,14 +82,14 @@ export class FormlyFieldSelect extends FieldType {
 
   _getAriaLabelledby() {
     if (this.to.attributes?.['aria-labelledby']) {
-      return this.to.attributes['aria-labelledby'];
+      return this.to.attributes['aria-labelledby'] as string;
     }
 
     return this.formField?._labelId;
   }
 
   _getAriaLabel() {
-    return this.to.attributes?.['aria-label'];
+    return this.to.attributes?.['aria-label'] as string;
   }
 
   private getSelectAllValue(options: any[]) {

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-checkbox',
@@ -28,7 +28,7 @@ import { FieldType } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldCheckbox extends FieldType {
+export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     templateOptions: {
       indeterminate: true,

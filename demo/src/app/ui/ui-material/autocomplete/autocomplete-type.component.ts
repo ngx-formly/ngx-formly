@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
@@ -21,7 +22,7 @@ import { startWith, switchMap } from 'rxjs/operators';
     </mat-autocomplete>
   `,
 })
-export class AutocompleteTypeComponent extends FieldType implements OnInit {
+export class AutocompleteTypeComponent extends FieldType<FieldTypeConfig> implements OnInit {
   filter: Observable<any>;
 
   ngOnInit() {

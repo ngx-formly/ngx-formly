@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, NgZone } from '@angular/core';
 import { SelectControlValueAccessor } from '@angular/forms';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -75,7 +75,7 @@ import { take } from 'rxjs/operators';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType {
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     templateOptions: {
       options: [],

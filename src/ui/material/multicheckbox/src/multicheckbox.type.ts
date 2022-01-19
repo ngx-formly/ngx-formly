@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChildren, QueryList } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 
@@ -22,7 +23,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldMultiCheckbox extends FieldType {
+export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;
 
   defaultOptions = {

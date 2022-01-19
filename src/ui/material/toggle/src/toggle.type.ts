@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 
@@ -19,7 +20,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldToggle extends FieldType {
+export class FormlyFieldToggle extends FieldType<FieldTypeConfig> {
   @ViewChild(MatSlideToggle, { static: true }) slideToggle!: MatSlideToggle;
   defaultOptions = {
     templateOptions: {

@@ -1,13 +1,13 @@
 import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormlyModule, FieldType, FieldWrapper } from '@ngx-formly/core';
+import { FormlyModule, FieldType, FieldTypeConfig, FieldWrapper } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'formly-type-input',
   template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
 })
-export class FormlyFieldInput extends FieldType {}
+export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
 
 @Component({
   selector: 'formly-wrapper-form-field',

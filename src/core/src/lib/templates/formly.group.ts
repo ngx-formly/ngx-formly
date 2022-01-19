@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType } from './field.type';
+import { FieldType, FieldGroupTypeConfig } from './field.type';
 
 @Component({
   selector: 'formly-group',
@@ -12,4 +12,4 @@ import { FieldType } from './field.type';
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyGroup extends FieldType {}
+export class FormlyGroup extends FieldType<FieldGroupTypeConfig> {}

@@ -127,6 +127,21 @@ UPGRADE FROM 5.0 to 6.0
   }),
   ```
 
+- Add support of strict template checking:
+
+  In case `strictTemplates` is enabled after the upgrade, add `FieldTypeConfig` to all custom field type that use `[formControl]` input which expect the `formControl` property to be an instance of `FormControl`.
+ 
+  ```patch
+  - import { FieldType } from '@ngx-formly/core';
+  + import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+
+  @Component({
+    template: `<input [formControl]="formControl" />`,
+  })
+  - export class CustomFieldType extends FieldType {}
+  + export class CustomFieldType extends FieldType<FieldTypeConfig> {}
+  ```
+
 @ngx-formly/bootstrap
 ---------------------
 - Bootstrap v4 support is removed and replaced with v5 support. To upgrade check the migration documentation [https://getbootstrap.com/docs/5.0/migration/](https://getbootstrap.com/docs/5.0/migration/)

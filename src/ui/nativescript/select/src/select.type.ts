@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 import { action } from '@nativescript/core/ui/dialogs';
 
 @Component({
@@ -11,7 +11,7 @@ import { action } from '@nativescript/core/ui/dialogs';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType {
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   tap(options) {
     action({ title: this.to.label, actions: options.map((o) => o.label) }).then((selectedAction) =>
       this.formControl.patchValue(options.find((o) => o.label === selectedAction).value),

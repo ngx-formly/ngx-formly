@@ -97,10 +97,10 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.shouldLabelFloat;
   }
   get value() {
-    return this.formControl.value;
+    return this.formControl?.value;
   }
   set value(value) {
-    this.formControl.patchValue(value);
+    this.formControl?.patchValue(value);
   }
   get ngControl() {
     return this.formControl as any;
