@@ -23,6 +23,8 @@ export class FormlyFieldTabs extends FieldType {
       return field.formControl.valid;
     }
 
-    return field.fieldGroup.every(f => this.isValid(f));
+    return field.fieldGroup
+      ? field.fieldGroup.every((f) => this.isValid(f))
+      : true;
   }
 }
