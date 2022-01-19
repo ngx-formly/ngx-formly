@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
@@ -40,7 +41,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldNativeSelect extends FieldType {
+export class FormlyFieldNativeSelect extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     templateOptions: {
       options: [],

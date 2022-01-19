@@ -4,10 +4,10 @@ import { FormlyFieldConfig } from './fieldconfig';
 import { Observable } from 'rxjs';
 
 /** @experimental */
-export interface FormlyExtension {
-  prePopulate?(field: FormlyFieldConfig): void;
-  onPopulate?(field: FormlyFieldConfig): void;
-  postPopulate?(field: FormlyFieldConfig): void;
+export interface FormlyExtension<F extends FormlyFieldConfig = FormlyFieldConfig> {
+  prePopulate?(field: F): void;
+  onPopulate?(field: F): void;
+  postPopulate?(field: F): void;
 }
 
 export interface TypeOption {

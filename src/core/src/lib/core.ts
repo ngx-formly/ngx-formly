@@ -7,8 +7,8 @@ export { FormlyTemplate as ɵFormlyTemplate } from './components/formly.template
 export { FormlyValidationMessage as ɵFormlyValidationMessage } from './templates/formly.validation-message';
 export { FORMLY_CONFIG, FormlyConfig } from './services/formly.config';
 export { FormlyFormBuilder } from './services/formly.builder';
-export { FieldType } from './templates/field.type';
-export { FieldArrayType } from './templates/field-array.type';
+export { FieldType, FieldTypeConfig, FieldGroupTypeConfig } from './templates/field.type';
+export { FieldArrayType, FieldArrayTypeConfig } from './templates/field-array.type';
 export { FieldWrapper } from './templates/field.wrapper';
 export { FormlyModule } from './core.module';
 export { defineHiddenProp as ɵdefineHiddenProp } from './utils';

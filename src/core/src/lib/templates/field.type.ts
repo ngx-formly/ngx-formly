@@ -1,10 +1,21 @@
 import { Input, Directive } from '@angular/core';
-import { FormlyFieldConfig, FormlyTemplateOptions } from '../models';
+import { FormControl, FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '../models';
+
+export interface FieldTypeConfig extends FormlyFieldConfig {
+  formControl: FormControl;
+  templateOptions: NonNullable<Required<FormlyFieldConfig>['templateOptions']>;
+}
+
+export interface FieldGroupTypeConfig extends FormlyFieldConfig {
+  formControl: FormGroup;
+  templateOptions: NonNullable<Required<FormlyFieldConfig>['templateOptions']>;
+}
 
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
   @Input() field: F;
-  defaultOptions?: F;
+  defaultOptions?: Partial<F>;
 
   get model() {
     return this.field.model;
@@ -23,7 +34,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   get formControl() {
-    return this.field.formControl;
+    return this.field.formControl as F['formControl'];
   }
 
   get to(): NonNullable<Required<F>['templateOptions']> {

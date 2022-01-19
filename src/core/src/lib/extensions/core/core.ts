@@ -1,4 +1,3 @@
-import { ChangeDetectorRef, ComponentRef } from '@angular/core';
 import { FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension, FormlyFieldConfig } from '../../models';
 import {

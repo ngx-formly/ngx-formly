@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-multicheckbox',
@@ -19,7 +19,7 @@ import { FieldType } from '@ngx-formly/core';
         [value]="option.value"
         [checked]="isChecked(option)"
         [formlyAttributes]="field"
-        (change)="onChange(option.value, $event.target.checked)"
+        (change)="onChange(option.value, $any($event.target).checked)"
       />
       <label class="form-check-label" [for]="id + '_' + i">
         {{ option.label }}
@@ -28,7 +28,7 @@ import { FieldType } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldMultiCheckbox extends FieldType {
+export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     templateOptions: {
       options: [],

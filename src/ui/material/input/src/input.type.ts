@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
@@ -34,7 +35,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldInput extends FieldType implements OnInit {
+export class FormlyFieldInput extends FieldType<FieldTypeConfig> implements OnInit {
   get type() {
     return this.to.type || 'text';
   }

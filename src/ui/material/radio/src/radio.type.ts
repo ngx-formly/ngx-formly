@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatRadioGroup } from '@angular/material/radio';
 import { ɵobserve as observe } from '@ngx-formly/core';
@@ -26,7 +27,7 @@ import { ɵobserve as observe } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldRadio extends FieldType implements AfterViewInit, OnDestroy {
+export class FormlyFieldRadio extends FieldType<FieldTypeConfig> implements AfterViewInit, OnDestroy {
   @ViewChild(MatRadioGroup, { static: true }) radioGroup!: MatRadioGroup;
   defaultOptions = {
     templateOptions: {

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-ion-range',
@@ -12,4 +12,4 @@ import { FieldType } from '@ngx-formly/core';
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSlider extends FieldType {}
+export class FormlyFieldSlider extends FieldType<FieldTypeConfig> {}

@@ -1,12 +1,12 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-primeng-checkbox',
   template: `
     <div class="p-field-checkbox">
       <p-checkbox
-        binary="true"
+        [binary]="true"
         [label]="to.label"
         [formControl]="formControl"
         [formlyAttributes]="field"
@@ -17,7 +17,7 @@ import { FieldType } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldCheckbox extends FieldType {
+export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     templateOptions: {
       hideLabel: true,

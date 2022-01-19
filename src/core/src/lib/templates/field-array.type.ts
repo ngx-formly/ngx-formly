@@ -5,16 +5,17 @@ import { clone, assignFieldValue, getFieldValue, isNil } from '../utils';
 import { FormlyFieldConfig, FormlyExtension } from '../models';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
-@Directive()
-export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig>
-  extends FieldType<F>
-  implements FormlyExtension
-{
-  get formControl() {
-    return this.field.formControl as FormArray;
-  }
+export interface FieldArrayTypeConfig extends FormlyFieldConfig {
+  formControl: FormArray;
+  templateOptions: NonNullable<Required<FormlyFieldConfig>['templateOptions']>;
+}
 
-  onPopulate(field: FormlyFieldConfig) {
+@Directive()
+export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTypeConfig>
+  extends FieldType<F>
+  implements FormlyExtension<F>
+{
+  onPopulate(field: F) {
     if (!field.formControl && !isNil(field.key)) {
       const control = findControl(field);
       registerControl(field, control ? control : new FormArray([], { updateOn: field.modelOptions.updateOn }));

@@ -35,9 +35,9 @@ import { AppComponent } from './app.component';
                   filecontent: require('!!raw-loader!./app.module.ts'),
                 },
                 {
-                  file: 'custom-input.component.ts',
-                  content: require('!!highlight-loader?raw=true&lang=typescript!./custom-input.component.ts'),
-                  filecontent: require('!!raw-loader!./custom-input.component.ts'),
+                  file: 'custom-field.type.ts',
+                  content: require('!!highlight-loader?raw=true&lang=typescript!./custom-field.type.ts'),
+                  filecontent: require('!!raw-loader!./custom-field.type.ts'),
                 },
               ],
             },

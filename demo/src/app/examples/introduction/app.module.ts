@@ -5,7 +5,7 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 import { AppComponent } from './app.component';
-import { FormlyFieldCustomInput } from './custom-input.component';
+import { CustomFieldType } from './custom-field.type';
 
 @NgModule({
   imports: [
@@ -14,9 +14,9 @@ import { FormlyFieldCustomInput } from './custom-input.component';
     FormlyBootstrapModule,
     FormlyModule.forRoot({
       validationMessages: [{ name: 'required', message: 'This field is required' }],
-      types: [{ name: 'custom', component: FormlyFieldCustomInput, wrappers: ['form-field'] }],
+      types: [{ name: 'custom', component: CustomFieldType, wrappers: ['form-field'] }],
     }),
   ],
-  declarations: [AppComponent, FormlyFieldCustomInput],
+  declarations: [AppComponent, CustomFieldType],
 })
 export class AppModule {}

@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatSlider } from '@angular/material/slider';
 
@@ -28,7 +29,7 @@ import { MatSlider } from '@angular/material/slider';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSlider extends FieldType {
+export class FormlyFieldSlider extends FieldType<FieldTypeConfig> {
   @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
   defaultOptions = {
     templateOptions: {

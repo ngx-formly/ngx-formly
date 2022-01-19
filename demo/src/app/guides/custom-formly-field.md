@@ -24,7 +24,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
 
   ```typescript
   import { Component } from '@angular/core';
-  import { FieldType } from '@ngx-formly/core';
+  import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
   @Component({
     selector: 'formly-field-input',
@@ -32,7 +32,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
       <input type="input" [formControl]="formControl" [formlyAttributes]="field">
     `,
   })
-  export class FormlyFieldInput extends FieldType {}
+  export class InputFieldType extends FieldType<FieldTypeConfig> {}
   ```
 
   We passed a `formControl` instance which is created by Formly, to let Formly know that this is the input that you want to associate with your model.
@@ -40,15 +40,15 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
 2. Register the custom type in `NgModule` declaration:
 
   ```typescript
-  import { FormlyFieldInput } from './formly-field-input';
+  import { InputFieldType } from './intput-field.type';
 
   @NgModule({
-    declarations: [FormlyFieldInput],
+    declarations: [InputFieldType],
     imports: [
       ....
       FormlyModule.forRoot({
         types: [
-          { name: 'input', component: FormlyFieldInput },
+          { name: 'input', component: InputFieldType },
         ],
       }),
     ],

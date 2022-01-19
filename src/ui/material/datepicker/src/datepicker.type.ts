@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
@@ -42,7 +43,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldDatepicker extends FieldType implements AfterViewInit {
+export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements AfterViewInit {
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   defaultOptions = {

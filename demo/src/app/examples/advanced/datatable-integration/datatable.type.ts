@@ -18,7 +18,6 @@ import { TableColumn } from '@swimlane/ngx-datatable';
       [scrollbarH]="to.scrollbarH"
       [reorderable]="to.reorderable"
       [externalSorting]="true"
-      [selectionType]="'single'"
     >
       <ng-template
         #defaultColumn

@@ -18,10 +18,7 @@ describe('ui-primeng: Checkbox Type', () => {
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
     const { attributes } = query('p-checkbox');
-    expect(attributes).toMatchObject({
-      id: 'formly_1_checkbox_name_0',
-      binary: 'true',
-    });
+    expect(attributes).toMatchObject({ id: 'formly_1_checkbox_name_0' });
   });
 
   it('should render boolean type', () => {
@@ -33,10 +30,7 @@ describe('ui-primeng: Checkbox Type', () => {
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
     const { attributes } = query('p-checkbox');
-    expect(attributes).toMatchObject({
-      id: 'formly_1_boolean_name_0',
-      binary: 'true',
-    });
+    expect(attributes).toMatchObject({ id: 'formly_1_boolean_name_0' });
   });
 
   it('should bind control value on change', () => {

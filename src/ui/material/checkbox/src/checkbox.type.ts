@@ -7,6 +7,7 @@ import {
   OnDestroy,
   AfterViewInit,
 } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -34,7 +35,10 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldCheckbox extends FieldType implements AfterViewInit, AfterViewChecked, OnDestroy {
+export class FormlyFieldCheckbox
+  extends FieldType<FieldTypeConfig>
+  implements AfterViewInit, AfterViewChecked, OnDestroy
+{
   @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;
   defaultOptions = {
     templateOptions: {
