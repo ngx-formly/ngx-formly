@@ -223,14 +223,3 @@ export function wrapProperty<T = any>(
 
   return () => fns.splice(fns.indexOf(setFn), 1);
 }
-
-export function reduceFormUpdateValidityCalls(form: any, action: Function) {
-  const updateValidity = form._updateTreeValidity.bind(form);
-
-  let updateValidityArgs = { called: false, emitEvent: false };
-  form._updateTreeValidity = ({ emitEvent } = { emitEvent: true }) => updateValidityArgs = { called: true, emitEvent: emitEvent || updateValidityArgs.emitEvent };
-  action();
-
-  updateValidityArgs.called && updateValidity({ emitEvent: updateValidityArgs.emitEvent });
-  form._updateTreeValidity = updateValidity;
-}

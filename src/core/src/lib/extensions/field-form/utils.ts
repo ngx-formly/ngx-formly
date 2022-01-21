@@ -116,11 +116,16 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   }
 }
 
-export function updateValidity(c: AbstractControl) {
+export function updateValidity(c: AbstractControl, onlySelf = false) {
   const status = c.status;
-  c.updateValueAndValidity({ emitEvent: false });
+  const value = c.value;
+  c.updateValueAndValidity({ emitEvent: false, onlySelf });
   if (status !== c.status) {
     (c.statusChanges as EventEmitter<string>).emit(c.status);
+  }
+
+  if (value !== c.value) {
+    (c.valueChanges as EventEmitter<any>).emit(c.value);
   }
 }
 

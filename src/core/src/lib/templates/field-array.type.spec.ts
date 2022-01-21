@@ -237,6 +237,35 @@ describe('Array Field Type', () => {
     subscription.unsubscribe();
   });
 
+  it('should not triggers valueChanges in children fields on add/remove', () => {
+    app.fields = [
+      {
+        key: 'foo',
+        type: 'array',
+        fieldArray: { fieldGroup: [{key: 'title'}] },
+        defaultValue: [{ title: 'test' }],
+      },
+    ];
+
+    const fixture = createFormlyTestComponent();
+    const form = app.form.get('foo') as FormArray;
+    const spy = jasmine.createSpy('model change spy');
+    const subscription = form.at(0).get('title').valueChanges.subscribe(spy);
+
+    // add
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+
+    expect(spy).not.toHaveBeenCalled();
+
+    // remove
+    fixture.nativeElement.querySelector('#remove-0').click();
+    fixture.detectChanges();
+
+    expect(spy).not.toHaveBeenCalled();
+    subscription.unsubscribe();
+  });
+
   it('should share formControl when field key is duplicated', () => {
     app.fields = [
       {

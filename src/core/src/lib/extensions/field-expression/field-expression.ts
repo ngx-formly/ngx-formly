@@ -1,5 +1,5 @@
 import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../components/formly.field.config';
-import { isObject, isNullOrUndefined, isUndefined, isFunction, defineHiddenProp, wrapProperty, reduceFormUpdateValidityCalls, getFieldValue, assignFieldValue } from '../../utils';
+import { isObject, isNullOrUndefined, isUndefined, isFunction, defineHiddenProp, wrapProperty, getFieldValue, assignFieldValue } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
 import { isObservable, Observable, Subscription } from 'rxjs';
 import { FormlyExtension } from '../../services/formly.config';
@@ -17,10 +17,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     field.options._checkField = (f, ignoreCache) => {
       if (!checkLocked) {
         checkLocked = true;
-        reduceFormUpdateValidityCalls(
-          f.formControl,
-          () => this.checkField(f, ignoreCache),
-        );
+        this.checkField(f, ignoreCache);
         checkLocked = false;
       }
     };
