@@ -1,11 +1,11 @@
 <div class="docs-example-viewer-wrapper">
   <div class="docs-example-viewer-title">
     <div class="docs-example-viewer-title-spacer">{{ exampleData.title }}</div>
-    <button *ngIf="exampleData.debug && _debugFields" mat-icon-button type="button" (click)="toggleDebugView()" [matTooltip]="'Debug'">
+    <button *ngIf="exampleData.debug && _debugFields" mat-icon-button type="button" (click)="toggleDebugView()" [matTooltip]="'Debug'" aria-label="Debug example source">
       <mat-icon>bug_report</mat-icon>
     </button>
     <formly-stackblitz-button [type]="type" [example]="exampleData"></formly-stackblitz-button>
-    <button mat-icon-button type="button" (click)="toggleSourceView()" [matTooltip]="'View source'">
+    <button mat-icon-button type="button" (click)="toggleSourceView()" [matTooltip]="'View source'" aria-label="View example source">
       <mat-icon>
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fit="" preserveAspectRatio="xMidYMid meet"
           focusable="false">

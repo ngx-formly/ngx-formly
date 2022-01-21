@@ -19,6 +19,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
       </mat-checkbox>
     </ng-container>
   `,
+  host: {
+    '[id]': 'id',
+  },
 })
 export class FormlyFieldMultiCheckbox extends FieldType {
   @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;
