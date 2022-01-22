@@ -14,6 +14,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];
   _componentRefs?: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[];
+  _proxyInstance?: any;
   _keyPath?: {
     key: FormlyFieldConfig['key'];
     path: string[];
