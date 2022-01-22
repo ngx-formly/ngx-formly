@@ -377,6 +377,7 @@ describe('FormlyField Component', () => {
       field.formControl.setValue('15');
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith({ value: 15, field, type: 'valueChanges' });
+      expect(field.formControl.value).toEqual(15);
       subscription.unsubscribe();
     });
 

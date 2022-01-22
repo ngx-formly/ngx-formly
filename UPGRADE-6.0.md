@@ -175,3 +175,23 @@ this.formlyJsonschema.toFieldConfig(schema, {
   },
 });
 ```
+
+- The `null` validation message has been removed and replaced by `type` validation message:
+
+```patch
++ export function typeValidationMessage({ schemaType }) {
++  return `should be "${schemaType[0]}".`;
++ }
+
+@NgModule({
+  imports: [
+    FormlyModule.forRoot({
+      validationMessages: [
+-       { name: 'null', message: 'should be null' },
++       { name: 'type', message: typeValidationMessage },
+      ],
+    }),
+  ],
+})
+export class AppModule {}
+```

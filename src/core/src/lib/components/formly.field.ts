@@ -296,6 +296,11 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
         }
 
         field.parsers?.forEach((parserFn) => (value = parserFn(value)));
+        if (value !== field.formControl.value) {
+          field.formControl.setValue(value);
+          return;
+        }
+
         if (!isNil(field.key)) {
           assignFieldValue(field, value);
         }
