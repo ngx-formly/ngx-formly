@@ -65,7 +65,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     this.fieldTemplates.templates = templates;
   }
 
-  field: FormlyFieldConfigCache = {};
+  field: FormlyFieldConfigCache = { type: 'formly-group' };
   private _modelChangeValue: any = {};
   private valueChangesUnsubscribe = () => {};
 
