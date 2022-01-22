@@ -35,12 +35,12 @@ export class CoreExtension implements FormlyExtension {
       configurable: true,
     });
 
-    this.getFieldComponentInstance(field).prePopulate();
+    this.getFieldComponentInstance(field).prePopulate?.(field);
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
     this.initFieldOptions(field);
-    this.getFieldComponentInstance(field).onPopulate();
+    this.getFieldComponentInstance(field).onPopulate?.(field);
     if (field.fieldGroup) {
       field.fieldGroup.forEach((f, index) => {
         if (f) {
@@ -53,7 +53,7 @@ export class CoreExtension implements FormlyExtension {
   }
 
   postPopulate(field: FormlyFieldConfigCache) {
-    this.getFieldComponentInstance(field).postPopulate();
+    this.getFieldComponentInstance(field).postPopulate?.(field);
   }
 
   private initRootOptions(field: FormlyFieldConfigCache) {
@@ -163,13 +163,28 @@ export class CoreExtension implements FormlyExtension {
   }
 
   private getFieldComponentInstance(field: FormlyFieldConfigCache) {
-    const componentRef = this.config.resolveFieldTypeRef(field);
-    const instance = componentRef?.instance as FormlyExtension;
+    const componentRefInstance = () => {
+      let componentRef = this.config.resolveFieldTypeRef(field);
 
-    return {
-      prePopulate: () => instance?.prePopulate?.(field),
-      onPopulate: () => instance?.onPopulate?.(field),
-      postPopulate: () => instance?.postPopulate?.(field),
+      const fieldComponentRef = field._componentRefs?.slice(-1)[0];
+      if (fieldComponentRef?.['componentType'] === componentRef?.componentType) {
+        componentRef = fieldComponentRef as any;
+      }
+
+      return componentRef?.instance as FormlyExtension;
     };
+
+    if (!field._proxyInstance) {
+      defineHiddenProp(
+        field,
+        '_proxyInstance',
+        new Proxy({} as FormlyExtension, {
+          get: (_, prop) => componentRefInstance()?.[prop],
+          set: (_, prop, value) => (componentRefInstance()[prop] = value),
+        }),
+      );
+    }
+
+    return field._proxyInstance;
   }
 }

@@ -4,7 +4,7 @@ import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
-import { FormlyFieldConfigCache } from '../models';
+import { FormlyExtension, FormlyFieldConfigCache } from '../models';
 import { timer } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 
@@ -12,7 +12,13 @@ const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
   const { config, ...options } = opts;
   return createFieldComponent(field, {
     imports: [FormlyInputModule],
-    declarations: [FormlyWrapperFormFieldAsync, FormlyOnPushComponent, FormlyParentComponent, FormlyChildComponent],
+    declarations: [
+      FormlyWrapperFormFieldAsync,
+      FormlyOnPushComponent,
+      FormlyParentComponent,
+      FormlyChildComponent,
+      FormlyOnPopulateType,
+    ],
     config: {
       types: [
         {
@@ -26,6 +32,10 @@ const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
         {
           name: 'child',
           component: FormlyChildComponent,
+        },
+        {
+          name: 'on-populate',
+          component: FormlyOnPopulateType,
         },
       ],
       wrappers: [
@@ -313,6 +323,16 @@ describe('FormlyField Component', () => {
     );
   });
 
+  it('should update template options of OnPush FieldType #2191', async () => {
+    const { field, query } = renderComponent({ type: 'on-populate' });
+
+    expect(field.templateOptions.getInstanceId()).toEqual(
+      query('formly-on-populate-component').componentInstance.instanceId,
+    );
+
+    field.templateOptions.setInstanceId('123456');
+    expect(query('formly-on-populate-component').componentInstance.instanceId).toEqual('123456');
+  });
   it('should take account of formState update', () => {
     const { field, query, detectChanges } = renderComponent({
       key: 'push',
@@ -550,6 +570,20 @@ class FormlyWrapperFormFieldAsync extends FieldWrapper {}
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyOnPushComponent extends FieldType {}
+
+@Component({
+  selector: 'formly-on-populate-component',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FormlyOnPopulateType extends FieldType implements FormlyExtension {
+  instanceId = Math.random().toString(36).substring(2, 5);
+
+  onPopulate(field): void {
+    field.templateOptions.getInstanceId = () => this.instanceId;
+    field.templateOptions.setInstanceId = (instanceId: string) => (this.instanceId = instanceId);
+  }
+}
 
 @Injectable()
 export class ParentService {}
