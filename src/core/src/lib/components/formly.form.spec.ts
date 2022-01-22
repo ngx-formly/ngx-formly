@@ -54,6 +54,16 @@ describe('FormlyForm Component', () => {
       expect(queryAll(FORMLY_FIELDS_SELECTOR)).toHaveLength(2);
     });
 
+    it('should detect fields changes', () => {
+      const { queryAll, setInputs, detectChanges } = renderComponent({ fields: null });
+      expect(queryAll(FORMLY_FIELDS_SELECTOR)).toHaveLength(0);
+
+      setInputs({ fields: [{ key: 'foo' }] });
+      detectChanges();
+
+      expect(queryAll(FORMLY_FIELDS_SELECTOR)).toHaveLength(1);
+    });
+
     it('should not throw an error when fields is null', () => {
       const { query, queryAll } = renderComponent({ fields: null });
 
