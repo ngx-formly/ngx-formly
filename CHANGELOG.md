@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.30"></a>
+## [5.10.30](https://github.com/ngx-formly/ngx-formly/compare/v5.10.29...v5.10.30) (2022-01-23)
+
+
+### Bug Fixes
+
+* **core:** optimize emitted valueChanges for fieldArray items ([#3143](https://github.com/ngx-formly/ngx-formly/issues/3143)) ([6b95b50](https://github.com/ngx-formly/ngx-formly/commit/6b95b50)), closes [#3130](https://github.com/ngx-formly/ngx-formly/issues/3130)
+* **material:** fix invalid ARIA attributes in MultiCheckbox type ([#3144](https://github.com/ngx-formly/ngx-formly/issues/3144)) ([ca44093](https://github.com/ngx-formly/ngx-formly/commit/ca44093)), closes [#3004](https://github.com/ngx-formly/ngx-formly/issues/3004)
+
+
+
 <a name="5.10.29"></a>
 ## [5.10.29](https://github.com/ngx-formly/ngx-formly/compare/v5.10.28...v5.10.29) (2022-01-13)
 
