@@ -152,7 +152,7 @@ describe('FieldFormExtension', () => {
 
     expect(formControl.setValidators).toHaveBeenCalledTimes(1);
     expect(formControl.setAsyncValidators).toHaveBeenCalledTimes(1);
-    expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(2);
+    expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(1);
   });
 
   it('should updateValueAndValidity of detached field', () => {

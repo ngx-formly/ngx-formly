@@ -325,7 +325,7 @@ describe('FieldExpressionExtension', () => {
         model: { checked: true },
       });
 
-      expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(4);
+      expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(3);
     });
 
     describe('field disabled state', () => {

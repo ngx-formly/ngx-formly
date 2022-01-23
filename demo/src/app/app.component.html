@@ -1,5 +1,4 @@
 <ngx-loading-bar [color]="'#fafafa'"></ngx-loading-bar>
-
 <mat-toolbar color="primary" class="mat-elevation-z6 app-navbar" [class.navbar-small]="isSmallDevice$ | async">
   <a
     mat-button
@@ -8,7 +7,7 @@
     #homeLink="routerLinkActive"
     [routerLinkActiveOptions]="{ exact: true }"
   >
-    <img src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true" />
+    <img alt="Home" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true" />
     FORMLY
   </a>
 
@@ -16,7 +15,7 @@
     <span class="spacer" [style.flex]="'1 1 auto'"></span>
     <ng-container *ngTemplateOutlet="version"></ng-container>
     <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
+      <img alt="GitHub" src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
     </a>
     <button mat-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
@@ -28,7 +27,7 @@
 
     <ng-container *ngTemplateOutlet="version"></ng-container>
     <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-      <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
+      <img alt="GitHub" src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
       GitHub
     </a>
   </ng-template>
@@ -89,7 +88,11 @@
       [routerLinkActiveOptions]="{ exact: true }"
     >
       <span class="bd-footer-logo">
-        <img width="60" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true" />
+        <img
+          width="60"
+          alt="Home"
+          src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true"
+        />
         <span class="bd-footer-logo-text"> FORMLY </span>
       </span>
     </a>

@@ -7,11 +7,19 @@
       type="button"
       (click)="toggleDebugView()"
       [matTooltip]="'Debug'"
+      aria-label="Debug example source"
     >
+      >
       <mat-icon>bug_report</mat-icon>
     </button>
     <formly-stackblitz-button [type]="type" [example]="exampleData"></formly-stackblitz-button>
-    <button mat-icon-button type="button" (click)="toggleSourceView()" [matTooltip]="'View source'">
+    <button
+      mat-icon-button
+      type="button"
+      (click)="toggleSourceView()"
+      [matTooltip]="'View source'"
+      aria-label="View example source"
+    >
       <mat-icon>
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -99,6 +99,17 @@ All notable changes to this project will be documented in this file. See [standa
 * **material:** removed double tag closing in datepicker type ([#2327](https://github.com/ngx-formly/ngx-formly/issues/2327)) ([7969ac9](https://github.com/ngx-formly/ngx-formly/commit/7969ac913420e4b7b829c230f33e9ac44a8f4236))
 * sync v5 branch ([2acc4ea](https://github.com/ngx-formly/ngx-formly/commit/2acc4eaccb481df6f2931744a9a5cf00fbf2abd1))
 
+<a name="5.10.30"></a>
+## [5.10.30](https://github.com/ngx-formly/ngx-formly/compare/v5.10.29...v5.10.30) (2022-01-23)
+
+
+### Bug Fixes
+
+* **core:** optimize emitted valueChanges for fieldArray items ([#3143](https://github.com/ngx-formly/ngx-formly/issues/3143)) ([6b95b50](https://github.com/ngx-formly/ngx-formly/commit/6b95b50)), closes [#3130](https://github.com/ngx-formly/ngx-formly/issues/3130)
+* **material:** fix invalid ARIA attributes in MultiCheckbox type ([#3144](https://github.com/ngx-formly/ngx-formly/issues/3144)) ([ca44093](https://github.com/ngx-formly/ngx-formly/commit/ca44093)), closes [#3004](https://github.com/ngx-formly/ngx-formly/issues/3004)
+
+
+
 <a name="5.10.29"></a>
 ## [5.10.29](https://github.com/ngx-formly/ngx-formly/compare/v5.10.28...v5.10.29) (2022-01-13)
 

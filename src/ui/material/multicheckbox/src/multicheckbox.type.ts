@@ -22,6 +22,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[id]': 'id',
+  },
 })
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;

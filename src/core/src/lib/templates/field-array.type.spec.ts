@@ -150,6 +150,37 @@ describe('Array Field Type', () => {
     subscription.unsubscribe();
   });
 
+  it('should not triggers valueChanges in children fields on add/remove', () => {
+    const { detectChanges, field, query } = renderComponent({
+      fieldGroup: [
+        {
+          key: 'foo',
+          type: 'array',
+          fieldArray: { fieldGroup: [{ key: 'title' }] },
+          defaultValue: [{ title: 'test' }],
+        },
+      ],
+    });
+
+    const form = field.form.get('foo') as FormArray;
+
+    const spy = jest.fn();
+    const subscription = form.at(0).get('title').valueChanges.subscribe(spy);
+
+    // add
+    query('#add').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(spy).not.toHaveBeenCalled();
+
+    // remove
+    query('#remove-0').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(spy).not.toHaveBeenCalled();
+    subscription.unsubscribe();
+  });
+
   it('should share formControl when field key is duplicated', () => {
     const {
       field: { fieldGroup },

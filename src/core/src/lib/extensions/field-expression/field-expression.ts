@@ -6,7 +6,6 @@ import {
   isFunction,
   defineHiddenProp,
   observe,
-  reduceFormUpdateValidityCalls,
   getFieldValue,
   assignFieldValue,
 } from '../../utils';
@@ -84,21 +83,18 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
 
         checkLocked = true;
-        reduceFormUpdateValidityCalls(f.form, () => {
-          const fieldChanged = this.checkExpressions(f, ignoreCache);
-          const options = field.options;
-          options._hiddenFieldsForCheck
-            .sort((f) => (f.hide ? -1 : 1))
-            .forEach((f) => this.changeHideState(f, f.hide, !ignoreCache));
-          options._hiddenFieldsForCheck = [];
-          if (fieldChanged) {
-            this.checkExpressions(field);
-            if (field.options && field.options.detectChanges) {
-              field.options.detectChanges(field);
-            }
+        const fieldChanged = this.checkExpressions(f, ignoreCache);
+        const options = field.options;
+        options._hiddenFieldsForCheck
+          .sort((f) => (f.hide ? -1 : 1))
+          .forEach((f) => this.changeHideState(f, f.hide, !ignoreCache));
+        options._hiddenFieldsForCheck = [];
+        if (fieldChanged) {
+          this.checkExpressions(field);
+          if (field.options && field.options.detectChanges) {
+            field.options.detectChanges(field);
           }
-        });
-
+        }
         checkLocked = false;
       };
       field.options._checkField = (f, ignoreCache) => {

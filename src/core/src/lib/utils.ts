@@ -290,18 +290,6 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   };
 }
 
-export function reduceFormUpdateValidityCalls(form: any, action: Function) {
-  const updateValidity = form._updateTreeValidity.bind(form);
-
-  let updateValidityArgs = { called: false, emitEvent: false };
-  form._updateTreeValidity = ({ emitEvent } = { emitEvent: true }) =>
-    (updateValidityArgs = { called: true, emitEvent: emitEvent || updateValidityArgs.emitEvent });
-  action();
-
-  updateValidityArgs.called && updateValidity({ emitEvent: updateValidityArgs.emitEvent });
-  form._updateTreeValidity = updateValidity;
-}
-
 export function getField(f: FormlyFieldConfig, key: FormlyFieldConfig['key']): FormlyFieldConfig {
   key = (Array.isArray(key) ? key.join('.') : key) as string;
   if (!f.fieldGroup) {
