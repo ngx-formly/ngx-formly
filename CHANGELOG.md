@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-next.7](https://github.com/ngx-formly/ngx-formly/compare/v5.10.30...v6.0.0-next.7) (2022-01-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **nativescript:** minimal required version of `@nativescript/angular` is `v13`.
+
+### Features
+
+* **core:** add support of strictTemplates in FieldType ([#3139](https://github.com/ngx-formly/ngx-formly/issues/3139)) ([86a3c37](https://github.com/ngx-formly/ngx-formly/commit/86a3c375afc8b38a0d89e195df279067df3528b0)), closes [#2842](https://github.com/ngx-formly/ngx-formly/issues/2842)
+* **json-schema:** add schema type validation ([#3148](https://github.com/ngx-formly/ngx-formly/issues/3148)) ([8151910](https://github.com/ngx-formly/ngx-formly/commit/8151910e8f7554f68d0970af61af6eb285228505)), closes [#2360](https://github.com/ngx-formly/ngx-formly/issues/2360) [#2750](https://github.com/ngx-formly/ngx-formly/issues/2750)
+* **nativescript:** update peerDependencies to v13 ([#3137](https://github.com/ngx-formly/ngx-formly/issues/3137)) ([0106cb8](https://github.com/ngx-formly/ngx-formly/commit/0106cb8fe8628facdca420f820cfe1decc21cbd1)), closes [#3007](https://github.com/ngx-formly/ngx-formly/issues/3007)
+
+
+### Bug Fixes
+
+* **core:** detect fields input changes after the first render ([#3146](https://github.com/ngx-formly/ngx-formly/issues/3146)) ([61b17f8](https://github.com/ngx-formly/ngx-formly/commit/61b17f83a43398ba4978f42d81a1fc11cc25551f))
+* **core:** detect formControl status changes ([#3136](https://github.com/ngx-formly/ngx-formly/issues/3136)) ([da76615](https://github.com/ngx-formly/ngx-formly/commit/da766157b0d5ce1c8647cc483063f35c32b4d659)), closes [#3123](https://github.com/ngx-formly/ngx-formly/issues/3123)
+* **core:** update field component instance used in onPopulate ([#3145](https://github.com/ngx-formly/ngx-formly/issues/3145)) ([179c2ec](https://github.com/ngx-formly/ngx-formly/commit/179c2ec8d09e3f2cd8f7e5af5b8f70b8455f3f2e)), closes [#2285](https://github.com/ngx-formly/ngx-formly/issues/2285)
+* **upgrade:** update incorrect spread operator in upgrade docs ([#3102](https://github.com/ngx-formly/ngx-formly/issues/3102)) ([7e1ad6e](https://github.com/ngx-formly/ngx-formly/commit/7e1ad6ef9014639e058f0f3ba396177400ff9fa5))
+
 ## [6.0.0-next.6](https://github.com/ngx-formly/ngx-formly/compare/v5.10.26...v6.0.0-next.6) (2021-12-06)
 
 
