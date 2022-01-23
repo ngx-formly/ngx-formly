@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldValue as getFieldValue,
@@ -43,6 +43,10 @@ function isObject(v: any) {
   return v != null && typeof v === 'object' && !Array.isArray(v);
 }
 
+function isInteger(value: any) {
+  return Number.isInteger ? Number.isInteger(value) : typeof value === 'number' && Math.floor(value) === value;
+}
+
 function isConst(schema: JSONSchema7) {
   return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
 }
@@ -73,9 +77,10 @@ export class FormlyJsonschema {
 
   private _toFieldConfig(schema: JSONSchema7, { key, ...options }: IOptions): FormlyFieldConfig {
     schema = this.resolveSchema(schema, options);
+    const types = this.guessSchemaType(schema);
 
     let field: FormlyFieldConfig = {
-      type: this.guessType(schema),
+      type: types[0],
       defaultValue: schema.default,
       templateOptions: {
         label: schema.title,
@@ -105,14 +110,52 @@ export class FormlyJsonschema {
       delete field.defaultValue;
     }
 
+    this.addValidator(field, 'type', {
+      schemaType: types,
+      expression: ({ value }) => {
+        if (value === undefined) {
+          return true;
+        }
+
+        if (value === null && types.indexOf('null') !== -1) {
+          return true;
+        }
+
+        switch (types[0]) {
+          case 'null': {
+            return typeof value === null;
+          }
+          case 'string': {
+            return typeof value === 'string';
+          }
+          case 'integer': {
+            return isInteger(value);
+          }
+          case 'number': {
+            return typeof value === 'number';
+          }
+          case 'object': {
+            return isObject(value);
+          }
+          case 'array': {
+            return Array.isArray(value);
+          }
+        }
+
+        return true;
+      },
+    });
+
     switch (field.type) {
-      case 'null': {
-        this.addValidator(field, 'null', ({ value }) => value === null);
-        break;
-      }
       case 'number':
       case 'integer': {
-        field.parsers = [(v) => (isEmpty(v) ? (v === '' ? null : v) : Number(v))];
+        field.parsers = [
+          (v) => {
+            v = isEmpty(v) ? undefined : Number(v);
+
+            return v;
+          },
+        ];
         if (schema.hasOwnProperty('minimum')) {
           field.templateOptions.min = schema.minimum;
         }
@@ -154,10 +197,17 @@ export class FormlyJsonschema {
         break;
       }
       case 'string': {
-        const schemaType = schema.type as JSONSchema7TypeName;
-        if (Array.isArray(schemaType) && schemaType.indexOf('null') !== -1) {
-          field.parsers = [(v) => (isEmpty(v) ? null : v)];
-        }
+        field.parsers = [
+          (v) => {
+            if (types.indexOf('null') !== -1) {
+              v = isEmpty(v) ? null : v;
+            } else if (!field.templateOptions.required) {
+              v = v === '' ? undefined : v;
+            }
+
+            return v;
+          },
+        ];
 
         ['minLength', 'maxLength', 'pattern'].forEach((prop) => {
           if (schema.hasOwnProperty(prop)) {
@@ -266,12 +316,20 @@ export class FormlyJsonschema {
           field.fieldArray = (root) => {
             if (!Array.isArray(schema.items)) {
               // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-              return schema.items ? this._toFieldConfig(<JSONSchema7>schema.items, options) : {};
+              const f = schema.items ? this._toFieldConfig(<JSONSchema7>schema.items, options) : {};
+              if (f.templateOptions) {
+                f.templateOptions.required = true;
+              }
+
+              return f;
             }
 
             const length = root.fieldGroup ? root.fieldGroup.length : 0;
             const itemSchema = schema.items[length] ? schema.items[length] : schema.additionalItems;
             const f = itemSchema ? this._toFieldConfig(<JSONSchema7>itemSchema, options) : {};
+            if (f.templateOptions) {
+              f.templateOptions.required = true;
+            }
             if (schema.items[length]) {
               f.templateOptions.removable = false;
             }
@@ -465,26 +523,28 @@ export class FormlyJsonschema {
     return [deps, schemaDeps];
   }
 
-  private guessType(schema: JSONSchema7) {
-    const type = schema ? (schema.type as JSONSchema7TypeName) : null;
-    if (!type && schema && schema.properties) {
-      return 'object';
+  private guessSchemaType(schema: JSONSchema7) {
+    const type = schema?.type;
+    if (!type && schema?.properties) {
+      return ['object'];
     }
 
     if (Array.isArray(type)) {
       if (type.length === 1) {
-        return type[0];
+        return type;
       }
 
       if (type.length === 2 && type.indexOf('null') !== -1) {
-        return type[type[0] === 'null' ? 1 : 0];
+        return type.sort((t1, t2) => (t1 == 'null' ? 1 : -1));
       }
+
+      return type;
     }
 
-    return type;
+    return type ? [type] : [];
   }
 
-  private addValidator(field: FormlyFieldConfig, name: string, validator: (control: AbstractControl) => boolean) {
+  private addValidator(field: FormlyFieldConfig, name: string, validator: FormlyFieldConfig['validators']) {
     field.validators = field.validators || {};
     field.validators[name] = validator;
   }

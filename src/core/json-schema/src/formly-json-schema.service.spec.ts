@@ -150,18 +150,33 @@ describe('Service: FormlyJsonschema', () => {
         expect(multipleOfValidator(new FormControl(15.3))).toBeTrue();
         expect(multipleOfValidator(new FormControl(150))).toBeTrue();
       });
+
+      it('should be a number value', () => {
+        const f = formlyJsonschema.toFieldConfig({ type: 'number' });
+        expect(validateType(f, 5)).toBeTrue();
+        expect(validateType(f, 1.5)).toBeTrue();
+        expect(validateType(f, undefined)).toBeTrue();
+        expect(validateType(f, '1')).toBeFalse();
+        expect(validateType(f, null)).toBeFalse();
+      });
+
+      it('should be an integer value', () => {
+        const f = formlyJsonschema.toFieldConfig({ type: 'integer' });
+        expect(validateType(f, 5)).toBeTrue();
+        expect(validateType(f, undefined)).toBeTrue();
+        expect(validateType(f, 1.5)).toBeFalse();
+        expect(validateType(f, '1')).toBeFalse();
+        expect(validateType(f, null)).toBeFalse();
+      });
     });
 
     describe('null type', () => {
-      it('should support null validation', () => {
-        const schema: JSONSchema7 = {
-          type: 'null',
-        };
-        const { type, validators } = formlyJsonschema.toFieldConfig(schema);
-        expect(type).toEqual('null');
-        expect(validators.null).toBeDefined();
-        expect(validators.null(new FormControl(null))).toBeTrue();
-        expect(validators.null(new FormControl([1, 2, 3]))).toBeFalse();
+      it('should be a null value', () => {
+        const f = formlyJsonschema.toFieldConfig({ type: 'null' });
+        expect(validateType(f, null)).toBeTrue();
+        expect(validateType(f, undefined)).toBeTrue();
+        expect(validateType(f, '1')).toBeFalse();
+        expect(validateType(f, 5)).toBeFalse();
       });
     });
 
@@ -198,11 +213,36 @@ describe('Service: FormlyJsonschema', () => {
         expect(nullIfEmpty('')).toBeNull();
         expect(nullIfEmpty('test')).toEqual('test');
       });
+
+      it('should be a string value', () => {
+        const f = formlyJsonschema.toFieldConfig({ type: 'string' });
+        expect(validateType(f, '1')).toBeTrue();
+        expect(validateType(f, undefined)).toBeTrue();
+        expect(validateType(f, null)).toBeFalse();
+        expect(validateType(f, 5)).toBeFalse();
+      });
+
+      it('should be a string or null value', () => {
+        const f = formlyJsonschema.toFieldConfig({ type: ['string', 'null'] });
+        expect(validateType(f, '1')).toBeTrue();
+        expect(validateType(f, undefined)).toBeTrue();
+        expect(validateType(f, null)).toBeTrue();
+        expect(validateType(f, 5)).toBeFalse();
+      });
     });
 
     // TODO: Add support for contains
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.6.4
     describe('array validation keywords', () => {
+      it('should be an array value', () => {
+        const f = formlyJsonschema.toFieldConfig({ type: 'array' });
+        expect(validateType(f, ['sss'])).toBeTrue();
+        expect(validateType(f, undefined)).toBeTrue();
+        expect(validateType(f, null)).toBeFalse();
+        expect(validateType(f, 5)).toBeFalse();
+        expect(validateType(f, {})).toBeFalse();
+      });
+
       it('supports array items keyword as object', () => {
         const schema: JSONSchema7 = {
           type: 'array',
@@ -210,17 +250,12 @@ describe('Service: FormlyJsonschema', () => {
         };
 
         const config = formlyJsonschema.toFieldConfig(schema);
-
-        const childConfig: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions },
-          type: 'string',
-          defaultValue: undefined,
-        };
         const baseConfig: FormlyFieldConfig = {
           type: 'array',
           defaultValue: undefined,
           templateOptions: { ...emmptyTemplateOptions },
           fieldArray: expect.any(Function),
+          validators: expectTypeValidator(['array']),
         };
 
         expect(config).toEqual(baseConfig);
@@ -235,15 +270,18 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(schema);
 
         const childConfig: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, removable: false },
+          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
           type: 'string',
           defaultValue: undefined,
+          parsers: [expect.any(Function)],
+          validators: expectTypeValidator(['string']),
         };
         const childConfig2: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, removable: false },
+          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
           type: 'number',
           defaultValue: undefined,
           parsers: [expect.any(Function)],
+          validators: expectTypeValidator(['number']),
         };
 
         expect(config.type).toEqual('array');
@@ -268,20 +306,24 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(schema);
 
         const childConfig: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, removable: false },
+          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
           type: 'string',
           defaultValue: undefined,
+          parsers: [expect.any(Function)],
+          validators: expectTypeValidator(['string']),
         };
         const childConfig2: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, removable: false },
+          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
           type: 'number',
           defaultValue: undefined,
           parsers: [expect.any(Function)],
+          validators: expectTypeValidator(['number']),
         };
         const childConfig3: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions },
+          templateOptions: { ...emmptyTemplateOptions, required: true },
           type: 'boolean',
           defaultValue: undefined,
+          validators: expectTypeValidator(['boolean']),
         };
 
         expect(getFieldArrayChild(config)).toEqual(childConfig);
@@ -361,6 +403,15 @@ describe('Service: FormlyJsonschema', () => {
     // TODO: complete support for Object validation keywords
     // https://json-schema.org/latest/json-schema-validation.html#rfc.section.6.5
     describe('object validation keywords', () => {
+      it('should be an object value', () => {
+        const f = formlyJsonschema.toFieldConfig({ type: 'object' });
+        expect(validateType(f, {})).toBeTrue();
+        expect(validateType(f, undefined)).toBeTrue();
+        expect(validateType(f, null)).toBeFalse();
+        expect(validateType(f, 5)).toBeFalse();
+        expect(validateType(f, ['sss'])).toBeFalse();
+      });
+
       describe('required keyword', () => {
         it('root object with required property', () => {
           const { field } = renderComponent({
@@ -417,7 +468,7 @@ describe('Service: FormlyJsonschema', () => {
           const childField = field.fieldGroup[0].fieldGroup[0];
           expect(childField.templateOptions.required).toBeFalse();
 
-          childField.formControl.setValue('');
+          childField.formControl.setValue('***');
           fixture.detectChanges();
           expect(childField.templateOptions.required).toBeTrue();
         });
@@ -765,6 +816,8 @@ describe('Service: FormlyJsonschema', () => {
           type: 'string',
           defaultValue: undefined,
           templateOptions: emmptyTemplateOptions,
+          parsers: [expect.any(Function)],
+          validators: expectTypeValidator(['string']),
         });
       });
 
@@ -841,6 +894,8 @@ describe('Service: FormlyJsonschema', () => {
           key: 'address',
           type: 'string',
           defaultValue: undefined,
+          parsers: [expect.any(Function)],
+          validators: expectTypeValidator(['string']),
           templateOptions: {
             ...emmptyTemplateOptions,
             label: 'address1',
@@ -869,8 +924,9 @@ describe('Service: FormlyJsonschema', () => {
         const expectedConfig = {
           type: 'array',
           defaultValue: undefined,
-          templateOptions: emmptyTemplateOptions,
+          templateOptions: { ...emmptyTemplateOptions, required: true },
           fieldArray: expect.any(Function),
+          validators: expectTypeValidator(['array']),
         };
 
         const childLevel1 = getFieldArrayChild(config);
@@ -1768,4 +1824,17 @@ class ArrayTypeComponent extends FieldArrayType {}
 
 function getFieldArrayChild(config: FormlyFieldConfig) {
   return (config.fieldArray as Function)(config);
+}
+
+function expectTypeValidator(schemaType: string[]) {
+  return {
+    type: {
+      schemaType,
+      expression: expect.any(Function),
+    },
+  };
+}
+
+function validateType({ validators }: FormlyFieldConfig, value: any) {
+  return validators.type.expression(new FormControl({ value, disabled: false }));
 }

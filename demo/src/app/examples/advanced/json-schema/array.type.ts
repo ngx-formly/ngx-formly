@@ -7,19 +7,18 @@ import { FieldArrayType } from '@ngx-formly/core';
     <div class="mb-3">
       <legend *ngIf="to.label">{{ to.label }}</legend>
       <p *ngIf="to.description">{{ to.description }}</p>
+      <div class="d-flex flex-row-reverse">
+        <button class="btn btn-primary" type="button" (click)="add()">+</button>
+      </div>
 
       <div class="alert alert-danger" role="alert" *ngIf="showError && formControl.errors">
         <formly-validation-message [field]="field"></formly-validation-message>
       </div>
 
-      <div *ngFor="let field of field.fieldGroup; let i = index" class="row align-items-center">
+      <div *ngFor="let field of field.fieldGroup; let i = index" class="row align-items-start">
         <formly-field class="col" [field]="field"></formly-field>
         <div *ngIf="field.templateOptions.removable !== false" class="col-2 text-right">
           <button class="btn btn-danger" type="button" (click)="remove(i)">-</button>
-        </div>
-
-        <div class="d-flex flex-row-reverse">
-          <button class="btn btn-primary" type="button" (click)="add()">+</button>
         </div>
       </div>
     </div>

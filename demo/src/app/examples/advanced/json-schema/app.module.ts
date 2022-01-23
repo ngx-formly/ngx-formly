@@ -51,6 +51,10 @@ export function constValidationMessage(err, field: FormlyFieldConfig) {
   return `should be equal to constant "${field.templateOptions.const}"`;
 }
 
+export function typeValidationMessage({ schemaType }) {
+  return `should be "${schemaType[0]}".`;
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -61,7 +65,7 @@ export function constValidationMessage(err, field: FormlyFieldConfig) {
     FormlyModule.forRoot({
       validationMessages: [
         { name: 'required', message: 'This field is required' },
-        { name: 'null', message: 'should be null' },
+        { name: 'type', message: typeValidationMessage },
         { name: 'minlength', message: minlengthValidationMessage },
         { name: 'maxlength', message: maxlengthValidationMessage },
         { name: 'min', message: minValidationMessage },
