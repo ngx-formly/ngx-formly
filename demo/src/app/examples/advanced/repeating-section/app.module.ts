@@ -14,6 +14,7 @@ import { RepeatTypeComponent } from './repeat-section.type';
     FormlyBootstrapModule,
     FormlyModule.forRoot({
       types: [{ name: 'repeat', component: RepeatTypeComponent }],
+      validationMessages: [{ name: 'required', message: 'This field is required' }],
     }),
   ],
   declarations: [AppComponent, RepeatTypeComponent],

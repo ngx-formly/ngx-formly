@@ -7,7 +7,7 @@ import {
   ValidatorFn,
   AsyncValidatorFn,
 } from '@angular/forms';
-import { getFieldValue, defineHiddenProp, isNil } from '../../utils';
+import { getFieldValue, defineHiddenProp, isNil, markFieldForCheck } from '../../utils';
 import { registerControl, findControl, updateValidity } from './utils';
 import { of } from 'rxjs';
 
@@ -41,7 +41,16 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     this.root = null;
-    this.setValidators(field);
+    const markForCheck = this.setValidators(field);
+    if (markForCheck && field.parent) {
+      let parent = field.parent;
+      while (parent) {
+        if (!isNil(parent.key) || !parent.parent) {
+          updateValidity(parent.formControl, true);
+        }
+        parent = parent.parent;
+      }
+    }
   }
 
   private addFormControl(field: FormlyFieldConfigCache) {

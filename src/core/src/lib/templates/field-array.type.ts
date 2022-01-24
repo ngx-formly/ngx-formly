@@ -61,7 +61,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
   }
 
   private _build() {
-    this.options.build();
+    this.options.build(this.field);
     this.options.fieldChanges.next({
       field: this.field,
       value: getFieldValue(this.field),
