@@ -166,9 +166,17 @@ describe('FormlyField Component', () => {
     expect(query('formly-type-input')).not.toBeNull();
   });
 
+  it('should re-render on change', () => {
+    const { query, setInputs, detectChanges } = renderComponent({ key: 'foo', type: 'input', wrappers: [] });
+    expect(query('formly-wrapper-form-field')).toBeNull();
+
+    setInputs({ field: { key: 'foo', type: 'input' } });
+    detectChanges();
+    expect(query('formly-wrapper-form-field')).not.toBeNull();
+  });
+
   it('should not throw error when field is null', () => {
     const render = () => renderComponent(null);
-
     expect(render).not.toThrowError();
   });
 
