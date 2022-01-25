@@ -1,4 +1,8 @@
 :host ::ng-deep .input-group > {
+  .input-group-btn {
+    cursor: pointer;
+  }
+
   :not(:first-child) .form-control {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
