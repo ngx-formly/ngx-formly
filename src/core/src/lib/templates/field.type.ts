@@ -37,7 +37,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.field.formControl as F['formControl'];
   }
 
-  get to(): NonNullable<Required<F>['templateOptions']> {
+  get to() {
     if (!!this.field.templateOptions) {
       return this.field.templateOptions as NonNullable<Required<F>['templateOptions']>;
     } else {

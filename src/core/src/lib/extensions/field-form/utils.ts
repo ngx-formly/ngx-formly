@@ -1,14 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import {
-  getKeyPath,
-  getFieldValue,
-  isNil,
-  defineHiddenProp,
-  observe,
-  assignFieldValue,
-  isUndefined,
-} from '../../utils';
+import { getKeyPath, getFieldValue, isNil, defineHiddenProp, observe } from '../../utils';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
@@ -27,13 +19,13 @@ export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   if (form instanceof FormArray) {
     const key = form.controls.findIndex((c) => c === control);
     if (key !== -1) {
-      updateControl(form, opts, () => form.removeAt(key));
+      form.removeAt(key, opts);
     }
   } else if (form instanceof FormGroup) {
     const paths = getKeyPath(field);
     const key = paths[paths.length - 1];
     if (form.get([key]) === control) {
-      updateControl(form, opts, () => form.removeControl(key));
+      form.removeControl(key, opts);
     }
   }
 
@@ -92,7 +84,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
   for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
     if (!form.get([path])) {
-      updateControl(form, { emitEvent }, () => (form as FormGroup).setControl(path, new FormGroup({})));
+      (form as FormGroup).setControl(path, new FormGroup({}), { emitEvent });
     }
 
     form = <FormGroup>form.get([path]);
@@ -100,7 +92,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
 
   const key = paths[paths.length - 1];
   if (!field._hide && form.get([key]) !== control) {
-    updateControl(form, { emitEvent }, () => (form as FormGroup).setControl(key, control));
+    (form as FormGroup).setControl(key, control, { emitEvent });
   }
 }
 
@@ -114,34 +106,6 @@ export function updateValidity(c: AbstractControl, onlySelf = false) {
 
   if (value !== c.value) {
     (c.valueChanges as EventEmitter<any>).emit(c.value);
-  }
-}
-
-function updateControl(form: FormGroup | FormArray, opts: { emitEvent: boolean }, action: Function) {
-  /**
-   *  workaround for https://github.com/angular/angular/issues/27679
-   */
-  if (form instanceof FormGroup && !form['__patchForEachChild']) {
-    defineHiddenProp(form, '__patchForEachChild', true);
-    (form as any)._forEachChild = (cb: Function) => {
-      Object.keys(form.controls).forEach((k) => form.controls[k] && cb(form.controls[k], k));
-    };
-  }
-
-  /**
-   * workaround for https://github.com/angular/angular/issues/20439
-   */
-  const updateValueAndValidity = form.updateValueAndValidity.bind(form);
-  if (opts.emitEvent === false) {
-    form.updateValueAndValidity = (opts) => {
-      updateValueAndValidity({ ...(opts || {}), emitEvent: false });
-    };
-  }
-
-  action();
-
-  if (opts.emitEvent === false) {
-    form.updateValueAndValidity = updateValueAndValidity;
   }
 }
 

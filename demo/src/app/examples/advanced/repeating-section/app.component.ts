@@ -25,6 +25,7 @@ export class AppComponent {
         type: 'input',
         templateOptions: {
           placeholder: 'Task name',
+          required: true,
         },
       },
     },

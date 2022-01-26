@@ -707,4 +707,30 @@ describe('FormlyForm Component', () => {
     expect(control.disabled).toBeTrue();
     expect(input.attributes.disabled).toEqual('disabled');
   });
+
+  it('should detect changes when building a child field', () => {
+    const { form, fields, options, detectChanges } = renderComponent(
+      { fields: [{ fieldGroup: [{ key: 'bar', type: 'input' }] }] },
+      {
+        template: `
+          <form [formGroup]="form">
+            <formly-form
+              [model]="model"
+              [fields]="fields"
+              [options]="options"
+              [form]="form"
+              (modelChange)="modelChange($event)">
+            </formly-form>
+            <button type="submit" [disabled]="!form.valid">Submit</button>
+          </form>
+        `,
+      },
+    );
+
+    fields[0].fieldGroup.push({ key: 'foo', type: 'input', templateOptions: { required: true } });
+    options.build(fields[0]);
+    // NG0100: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value for 'disabled': 'false'. Current value: 'true'
+    expect(detectChanges).not.toThrowError(/ExpressionChangedAfterItHasBeenCheckedError/);
+    expect(form.valid).toBeFalse();
+  });
 });
