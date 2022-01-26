@@ -168,10 +168,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         field._expressions[key](ignoreCache) && (fieldChanged = true);
       }
     }
-
-    if (field.fieldGroup) {
-      field.fieldGroup.forEach((f) => this.checkExpressions(f, ignoreCache) && (fieldChanged = true));
-    }
+    field.fieldGroup?.forEach((f) => this.checkExpressions(f, ignoreCache) && (fieldChanged = true));
 
     return fieldChanged;
   }

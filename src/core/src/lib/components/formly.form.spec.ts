@@ -170,6 +170,17 @@ describe('FormlyForm Component', () => {
 
       expect(app.modelChange).not.toHaveBeenCalled();
     });
+
+    it('should not emit `modelChange` on a field without key changes', () => {
+      const { fixture, fields, setInputs } = renderComponent({ fields: [{}] });
+      const app = fixture.componentInstance;
+      jest.spyOn(app, 'modelChange');
+
+      fields[0].formControl.setValue('foo');
+      fixture.detectChanges();
+
+      expect(app.modelChange).not.toHaveBeenCalled();
+    });
   });
 
   describe('form input', () => {
