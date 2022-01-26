@@ -217,7 +217,9 @@ export class FormlyJsonschema {
         break;
       }
       case 'object': {
-        field.fieldGroup = [];
+        if (!field.fieldGroup) {
+          field.fieldGroup = [];
+        }
 
         const [propDeps, schemaDeps] = this.resolveDependencies(schema);
         Object.keys(schema.properties || {}).forEach((property) => {
@@ -354,6 +356,13 @@ export class FormlyJsonschema {
       field.templateOptions.multiple = field.type === 'array';
       field.type = 'enum';
       field.templateOptions.options = this.toEnumOptions(schema);
+    }
+
+    if (schema.oneOf && !field.type) {
+      delete field.key;
+      field.fieldGroup = [
+        this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, key, shareFormControl: false }),
+      ];
     }
 
     // map in possible formlyConfig options from the widget property
