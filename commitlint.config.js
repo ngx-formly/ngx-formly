@@ -11,6 +11,7 @@ module.exports = {
         'core',
         'schematics',
         'json-schema',
+        'testing',
         'material',
         'bootstrap',
         'ionic',

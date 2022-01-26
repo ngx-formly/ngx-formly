@@ -87,7 +87,7 @@ export function createFieldComponent(
   delete (field as any)?.model;
   delete (field as any)?.options;
 
-  return createComponent<{ field: FormlyFieldConfig }>({
+  const utils = createComponent<{ field: FormlyFieldConfig }>({
     template: '<formly-field [field]="field"></formly-field>',
     inputs: { field },
     ...config,
@@ -109,6 +109,18 @@ export function createFieldComponent(
       },
     ],
   });
+
+  const setInputs = utils.setInputs;
+  utils.setInputs = (props) => {
+    if (props.field) {
+      const builder = utils.fixture.componentRef.injector.get(FormlyFormBuilder);
+      builder.build(props.field);
+    }
+
+    setInputs(props);
+  };
+
+  return utils;
 }
 
 @Component({
