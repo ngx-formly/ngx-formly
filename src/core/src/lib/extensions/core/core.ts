@@ -82,13 +82,11 @@ export class CoreExtension implements FormlyExtension {
 
     options.detectChanges = (f: FormlyFieldConfigCache) => {
       if (f._componentRefs) {
-        f.options.checkExpressions(f.parent ?? f);
+        f.options.checkExpressions(f);
         markFieldForCheck(f);
       }
 
-      if (f.fieldGroup) {
-        f.fieldGroup.forEach((f) => f && options.detectChanges(f));
-      }
+      f.fieldGroup?.forEach((f) => f && options.detectChanges(f));
     };
 
     options.resetModel = (model?: any) => {
