@@ -2,7 +2,7 @@
   <div
     class="input-group-text"
     *ngIf="to.addonLeft"
-    [ngStyle]="{ cursor: to.addonLeft.onClick ? 'pointer' : 'inherit' }"
+    [class.input-group-btn]="to.addonLeft.onClick"
     (click)="addonLeftClick($event)"
   >
     <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
@@ -14,7 +14,7 @@
   <div
     class="input-group-text"
     *ngIf="to.addonRight"
-    [ngStyle]="{ cursor: to.addonRight.onClick ? 'pointer' : 'inherit' }"
+    [class.input-group-btn]="to.addonRight.onClick"
     (click)="addonRightClick($event)"
   >
     <i [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
