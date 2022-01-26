@@ -24,6 +24,7 @@ function renderComponent({ schema, model }: { schema: JSONSchema7, model?: any }
           { name: 'multischema', component: TestComponent },
           { name: 'enum', component: TestComponent },
           { name: 'string', component: TestComponent },
+          { name: 'integer', component: TestComponent },
         ],
       }),
     ],
@@ -1113,6 +1114,29 @@ describe('Service: FormlyJsonschema', () => {
 
           const [, { fieldGroup: [foo1Field, foo2Field] }] = field.fieldGroup[0].fieldGroup;
 
+          expect(foo1Field.hide).toBeTruthy();
+          expect(foo2Field.hide).toBeFalsy();
+        });
+
+        it('should support oneOf for a non-object type', () => {
+          const { field } = renderComponent({
+            model: { foo: 2 },
+            schema: {
+              type: 'object',
+              properties: {
+                foo: {
+                  oneOf: [{ type: 'string' }, { type: 'integer' }],
+                },
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [foo1Field, foo2Field],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
           expect(foo1Field.hide).toBeTruthy();
           expect(foo2Field.hide).toBeFalsy();
         });

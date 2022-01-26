@@ -38,6 +38,10 @@ function isObject(v: any) {
   return v != null && typeof v === 'object' && !Array.isArray(v);
 }
 
+function isInteger(value: any) {
+  return Number.isInteger ? Number.isInteger(value) : typeof value === 'number' && Math.floor(value) === value;
+}
+
 function isConst(schema: JSONSchema7) {
   return schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1);
 }
@@ -72,6 +76,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   resetOnHide?: boolean;
   shareFormControl?: boolean;
   ignoreDefault?: boolean;
+  strict?: boolean;
   readOnly?: boolean;
   key?: FormlyFieldConfig['key'];
 }
@@ -106,6 +111,33 @@ export class FormlyJsonschema {
 
     if (options.resetOnHide) {
       field['resetOnHide'] = true;
+    }
+
+    if (key && options.strict) {
+      this.addValidator(field, 'type', (c, f) => {
+        const value = getFieldValue(f);
+        if (value != null) {
+          switch (field.type) {
+            case 'string': {
+              return typeof value === 'string';
+            }
+            case 'integer': {
+              return isInteger(value);
+            }
+            case 'number': {
+              return typeof value === 'number';
+            }
+            case 'object': {
+              return isObject(value);
+            }
+            case 'array': {
+              return Array.isArray(value);
+            }
+          }
+        }
+
+        return true;
+      });
     }
 
     if (options.shareFormControl === false) {
@@ -170,7 +202,9 @@ export class FormlyJsonschema {
         break;
       }
       case 'object': {
-        field.fieldGroup = [];
+        if (!field.fieldGroup) {
+          field.fieldGroup = [];
+        }
 
         const [propDeps, schemaDeps] = this.resolveDependencies(schema);
         Object.keys(schema.properties || {}).forEach(property => {
@@ -319,6 +353,13 @@ export class FormlyJsonschema {
       field.templateOptions.multiple = field.type === 'array';
       field.type = 'enum';
       field.templateOptions.options = this.toEnumOptions(schema);
+    }
+
+    if (schema.oneOf && !field.type) {
+      delete field.key;
+      field.fieldGroup = [
+        this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, key, shareFormControl: false }),
+      ];
     }
 
     // map in possible formlyConfig options from the widget property
@@ -563,7 +604,7 @@ export class FormlyJsonschema {
     const model = field.model ? clone(field.model) : (field.fieldArray ? [] : {});
     const { form } = (field.options as any)._buildField({
       form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
-      fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null })],
+      fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null, strict: true })],
       model,
     });
 
