@@ -12,14 +12,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   private document: Document;
   private uiAttributesCache: any = {};
-  private uiAttributes = [
-    ...FORMLY_VALIDATORS,
-    'tabindex',
-    'placeholder',
-    'readonly',
-    'disabled',
-    'step',
-  ];
+  private uiAttributes: string[] = null;
 
   /**
    * HostBinding doesn't register listeners conditionally which may produce some perf issues.
@@ -107,6 +100,13 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * Material issue: https://github.com/angular/components/issues/14024
    */
   ngDoCheck() {
+    if (!this.uiAttributes) {
+      const element = this.elementRef.nativeElement as HTMLElement;
+      this.uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'].filter(
+        (attr) => !element.hasAttribute || !element.hasAttribute(attr),
+      );
+    }
+
     this.uiAttributes.forEach(attr => {
       const value = this.to[attr];
       if (
