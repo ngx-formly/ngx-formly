@@ -53,7 +53,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.field.name && this.setAttribute('name', this.field.name);
       this.uiEvents.listeners.forEach((listener) => listener());
       this.uiEvents.events.forEach((eventName) => {
-        if ((this.to && this.to[eventName]) || ['focus', 'blur', 'change'].includes(eventName)) {
+        if ((this.to && this.to[eventName]) || ['focus', 'blur', 'change'].indexOf(eventName) !== -1) {
           this.uiEvents.listeners.push(
             this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.uiEvents.callback(eventName, e)),
           );
