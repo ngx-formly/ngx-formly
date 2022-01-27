@@ -4,6 +4,13 @@ import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './components/formly.field.config';
 import { TemplateRef } from '@angular/core';
 
+export function disableTreeValidityCall(form: any, callback: Function) {
+  const _updateTreeValidity = form._updateTreeValidity.bind(form);
+  form._updateTreeValidity = () => {};
+  callback();
+  form._updateTreeValidity = _updateTreeValidity;
+}
+
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
   let type = field.type;
