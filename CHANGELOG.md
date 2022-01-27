@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.31"></a>
+## [5.10.31](https://github.com/ngx-formly/ngx-formly/compare/v5.10.30...v5.10.31) (2022-01-27)
+
+
+### Bug Fixes
+
+* **core:** call change callback after formControl update ([#3155](https://github.com/ngx-formly/ngx-formly/issues/3155)) ([f07e13b](https://github.com/ngx-formly/ngx-formly/commit/f07e13b))
+* **core:** ignore handle attr by formlyAttributes if already set ([#3156](https://github.com/ngx-formly/ngx-formly/issues/3156)) ([3ee0164](https://github.com/ngx-formly/ngx-formly/commit/3ee0164)), closes [#2532](https://github.com/ngx-formly/ngx-formly/issues/2532)
+
+
+### Performance Improvements
+
+* **core:** remove unnecessary validation calls during the build step ([#3157](https://github.com/ngx-formly/ngx-formly/issues/3157)) ([3bf8760](https://github.com/ngx-formly/ngx-formly/commit/3bf8760))
+
+
+
 <a name="5.10.30"></a>
 ## [5.10.30](https://github.com/ngx-formly/ngx-formly/compare/v5.10.29...v5.10.30) (2022-01-23)
 
