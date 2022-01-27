@@ -5,11 +5,6 @@ import { DOCUMENT } from '@angular/common';
 
 @Directive({
   selector: '[formlyAttributes]',
-  host: {
-    '(focus)': 'onFocus($event)',
-    '(blur)': 'onBlur($event)',
-    '(change)': 'onChange($event)',
-  },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   @Input('formlyAttributes') field: FormlyFieldConfig;
@@ -33,12 +28,19 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    */
   private uiEvents = {
     listeners: [],
-    events: [
-      'click',
-      'keyup',
-      'keydown',
-      'keypress',
-    ],
+    events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change'],
+    callback: (eventName: string, $event: any) => {
+      switch (eventName) {
+        case 'focus':
+          return this.onFocus($event);
+        case 'blur':
+          return this.onBlur($event);
+        case 'change':
+          return this.onChange($event);
+        default:
+          return this.to[eventName](this.field, $event);
+      }
+    },
   };
 
   get to(): FormlyTemplateOptions { return this.field.templateOptions || {}; }
@@ -56,15 +58,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
       this.field.name && this.setAttribute('name', this.field.name);
-      this.uiEvents.listeners.forEach(listener => listener());
-      this.uiEvents.events.forEach(eventName => {
-        if (this.to && this.to[eventName]) {
+      this.uiEvents.listeners.forEach((listener) => listener());
+      this.uiEvents.events.forEach((eventName) => {
+        if ((this.to && this.to[eventName]) || ['focus', 'blur', 'change'].includes(eventName)) {
           this.uiEvents.listeners.push(
-            this.renderer.listen(
-              this.elementRef.nativeElement,
-              eventName,
-              (e) => this.to[eventName](this.field, e),
-            ),
+            this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.uiEvents.callback(eventName, e)),
           );
         }
       });
