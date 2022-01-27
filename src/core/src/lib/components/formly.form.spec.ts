@@ -1616,6 +1616,16 @@ describe('FormlyForm Component', () => {
     fixture.componentInstance.options = {};
     fixture.detectChanges();
     expect(fooValidator.expression).not.toHaveBeenCalled();
+
+    // attach new field
+    spy.calls.reset();
+    fixture.componentInstance.fields = [
+      // usage of [formControl] input (disable FormGroupDirective::_updateTreeValidity call)
+      { key: 'f4', type: 'text' },
+      ...app.fields,
+    ];
+    fixture.detectChanges();
+    expect(fooValidator.expression).toHaveBeenCalledTimes(1);
   });
 
   it('should keep formly valueChanges calls consisting on rebuild', () => {

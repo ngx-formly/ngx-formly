@@ -3,7 +3,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyFormOptionsCache } from '../components/formly.field.config';
 import { Subject } from 'rxjs';
-import { defineHiddenProp } from '../utils';
+import { defineHiddenProp, disableTreeValidityCall } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -19,7 +19,7 @@ export class FormlyFormBuilder {
     }
 
     const field = { fieldGroup, model, formControl, options: this._setOptions(options) };
-    this._buildForm(field);
+    disableTreeValidityCall(formControl, () => this._buildForm(field));
     field.options._checkField(field, true);
   }
 
