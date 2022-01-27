@@ -33,6 +33,37 @@ describe('ui-bootstrap: Formly Field Select Component', () => {
     });
   });
 
+  it(`should call change callback after formControl update`, () => {
+    const changeFnSpy = jasmine.createSpy();
+    testComponentInputs = {
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+      fields: [{
+        key: 'sportId',
+        type: 'select',
+        templateOptions: {
+          placeholder: 'sport',
+          change: (f) => changeFnSpy(f.formControl.value),
+          options: [
+            { value: '1', label: 'Soccer' },
+          ],
+        },
+      }],
+    };
+
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+    expect(testComponentInputs.fields[0].formControl.value).toEqual(null);
+
+    const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
+    select.value = select.options[1].value;
+    select.dispatchEvent(new Event('change'));
+
+    expect(changeFnSpy).toHaveBeenCalledWith('1');
+    expect(testComponentInputs.fields[0].formControl.value).toEqual('1');
+  });
+
   describe('options', () => {
     beforeEach(() => {
       testComponentInputs = {
