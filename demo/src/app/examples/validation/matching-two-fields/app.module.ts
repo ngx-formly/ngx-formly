@@ -4,7 +4,7 @@ import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
-export function minlengthValidationMessages(err, field) {
+export function minLengthValidationMessages(err, field) {
   return `Should have atleast ${field.templateOptions.minLength} characters`;
 }
 
@@ -33,7 +33,7 @@ import { AppComponent } from './app.component';
       validators: [{ name: 'fieldMatch', validation: fieldMatchValidator }],
       validationMessages: [
         { name: 'required', message: 'This field is required' },
-        { name: 'minlength', message: minlengthValidationMessages },
+        { name: 'minLength', message: minLengthValidationMessages },
       ],
     }),
   ],

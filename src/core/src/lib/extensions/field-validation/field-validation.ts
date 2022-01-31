@@ -60,9 +60,21 @@ export class FieldValidationExtension implements FormlyExtension {
             case 'pattern':
               return Validators.pattern(value)(control);
             case 'minLength':
-              return Validators.minLength(value)(control);
+              const minLengthResult = Validators.minLength(value)(control);
+              const minLengthKey =
+                this.config.getValidatorMessage('minlength') || field.validation?.messages?.minlength
+                  ? 'minlength'
+                  : 'minLength';
+
+              return minLengthResult ? { [minLengthKey]: minLengthResult.minlength } : null;
             case 'maxLength':
-              return Validators.maxLength(value)(control);
+              const maxLengthResult = Validators.maxLength(value)(control);
+              const maxLengthKey =
+                this.config.getValidatorMessage('maxlength') || field.validation?.messages?.maxlength
+                  ? 'maxlength'
+                  : 'maxLength';
+
+              return maxLengthResult ? { [maxLengthKey]: maxLengthResult.maxlength } : null;
             case 'min':
               return Validators.min(value)(control);
             case 'max':

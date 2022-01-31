@@ -5,11 +5,11 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { AppComponent } from './app.component';
 
-export function minlengthValidationMessage(err, field) {
+export function minLengthValidationMessage(err, field) {
   return `Should have atleast ${field.templateOptions.minLength} characters`;
 }
 
-export function maxlengthValidationMessage(err, field) {
+export function maxLengthValidationMessage(err, field) {
   return `This value should be less than ${field.templateOptions.maxLength} characters`;
 }
 
@@ -29,8 +29,8 @@ export function maxValidationMessage(err, field) {
     FormlyModule.forRoot({
       validationMessages: [
         { name: 'required', message: 'This field is required' },
-        { name: 'minlength', message: minlengthValidationMessage },
-        { name: 'maxlength', message: maxlengthValidationMessage },
+        { name: 'minLength', message: minLengthValidationMessage },
+        { name: 'maxLength', message: maxLengthValidationMessage },
         { name: 'min', message: minValidationMessage },
         { name: 'max', message: maxValidationMessage },
       ],

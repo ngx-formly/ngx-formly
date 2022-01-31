@@ -43,7 +43,7 @@ UPGRADE FROM 5.0 to 6.0
     ```
 
 
-- The defaultValue for fieldGroup and fieldArray has been changed to `undefined` instead of empty object. ([#1901](https://github.com/ngx-formly/ngx-formly/pull/1901), if you want to rely on the old behavior set the `defaultValue`:
+- The defaultValue for fieldGroup and fieldArray has been changed to `undefined` instead of empty object. If you want to rely on the old behavior set the `defaultValue`:
 
   **before**:  
   If no default value is set the `defaultValue` for formlyGroup is `{}` and for fieldArray `[]`
@@ -62,7 +62,7 @@ UPGRADE FROM 5.0 to 6.0
   })
   ```
 
-- The initial value of the created FormControl has been changed from `null` to `undefined` to match the field model value. ([#1917](https://github.com/ngx-formly/ngx-formly/pull/1917))
+- The initial value of the created FormControl has been changed from `null` to `undefined` to match the field model value.
   
   **before**:  
   ```ts
@@ -141,6 +141,44 @@ UPGRADE FROM 5.0 to 6.0
   - export class CustomFieldType extends FieldType {}
   + export class CustomFieldType extends FieldType<FieldTypeConfig> {}
   ```
+
+- The message validation key: `maxlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
+  - NgModule declaration:
+  ```patch
+  FormlyModule.forRoot({
+    validationMessages: [
+  -   { name: 'minlength', message: minlengthValidationMessage },
+  +   { name: 'minLength', message: minLengthValidationMessage },
+
+  -   { name: 'maxlength', message: maxlengthValidationMessage },
+  +   { name: 'maxLength', message: maxLengthValidationMessage },
+    ],
+  })
+  ```
+
+  - Field Config declaration (if using `validation.messages`):
+  ```patch
+  fields: FormlyFieldConfig[] = [
+    {
+      key: 'password',
+      type: 'input',
+      templateOptions: {
+        label: 'Password',
+        minLength: 6,
+        maxLength: 20,
+      },
+      validation: {
+        messages: {
+  -       minLength: 'minLength custom message',
+  +       minLength: 'minLength custom message',
+
+  -       maxLength: 'maxLength custom message',
+  +       maxLength: 'maxLength custom message',
+        },
+      },
+    },
+  ```
+
 
 @ngx-formly/bootstrap
 ---------------------
