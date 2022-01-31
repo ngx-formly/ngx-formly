@@ -688,6 +688,38 @@ describe('FormlyForm Component', () => {
     expect(inputs[1].nativeElement.value).toEqual('First');
   });
 
+  it('should keep disabled state of field group consistent after detect changes', () => {
+    app = {
+      fields: [
+        {
+          key: 'f1',
+          fieldGroup: [
+            { key: 's1', templateOptions: { disabled: true } },
+            { key: 's2', templateOptions: { disabled: false } },
+          ],
+        },
+      ],
+      form: new FormGroup({}),
+      options: {},
+      model: {},
+    };
+
+    const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
+
+    let field = fixture.componentInstance.fields[0];
+    expect(field.templateOptions.disabled).toEqual(false);
+    expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
+    expect(field.fieldGroup[1].templateOptions.disabled).toEqual(false);
+
+    fixture.componentInstance.model = {};
+    fixture.detectChanges();
+
+    field = fixture.componentInstance.fields[0];
+    expect(field.templateOptions.disabled).toEqual(false);
+    expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
+    expect(field.fieldGroup[1].templateOptions.disabled).toEqual(false);
+  });
+
   it('should ignore validation of hidden fields (same key)', () => {
     app = {
       fields: [
