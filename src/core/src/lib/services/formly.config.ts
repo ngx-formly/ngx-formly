@@ -13,6 +13,7 @@ import {
 } from '../models';
 
 export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
+declare const ngDevMode: any;
 
 /**
  * Maintains list of formly field directive types. This can be used to register new field templates.
@@ -194,6 +195,15 @@ export class FormlyConfig {
 
   addValidatorMessage(name: string, message: ValidationMessageOption['message']) {
     this.messages[name] = message;
+    if (typeof ngDevMode === 'undefined' || ngDevMode) {
+      const deprecated = { minlength: 'minLength', maxlength: 'maxLength' };
+      if (deprecated[name]) {
+        console.warn(
+          `Formly deprecation: passing validation messages key '${name}' is deprecated since v6.0, use '${deprecated[name]}' instead.`,
+        );
+        this.messages[deprecated[name]] = message;
+      }
+    }
   }
 
   getValidatorMessage(name: string) {

@@ -41,6 +41,11 @@ export interface FormlyFieldConfig {
    */
   validation?: {
     messages?: {
+      /** @deprecated use minLength */
+      minlength?: ValidationMessageOption['message'];
+      /** @deprecated use maxLength */
+      maxlength?: ValidationMessageOption['message'];
+
       [messageProperties: string]: ValidationMessageOption['message'];
     };
     show?: boolean;

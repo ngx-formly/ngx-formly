@@ -14,8 +14,8 @@ const renderComponent = (field: FormlyFieldConfig) => {
       FormlyModule.forChild({
         validationMessages: [
           { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.` },
-          { name: 'maxlength', message: 'Maximum Length Exceeded.' },
-          { name: 'minlength', message: () => of('Minimum Length.') },
+          { name: 'maxLength', message: 'Maximum Length Exceeded.' },
+          { name: 'minLength', message: () => of('Minimum Length.') },
         ],
       }),
     ],

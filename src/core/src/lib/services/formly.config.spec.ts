@@ -151,12 +151,12 @@ describe('FormlyConfig service', () => {
   describe('message validation', () => {
     it('get validator error message', () => {
       expect(config.getValidatorMessage('required')).toEqual('This field is required.');
-      expect(config.getValidatorMessage('maxlength')).toEqual(undefined);
+      expect(config.getValidatorMessage('maxLength')).toEqual(undefined);
     });
 
     it('add validator error message', () => {
-      config.addValidatorMessage('maxlength', 'Maximum Length Exceeded.');
-      expect(config.getValidatorMessage('maxlength')).toEqual('Maximum Length Exceeded.');
+      config.addValidatorMessage('maxLength', 'Maximum Length Exceeded.');
+      expect(config.getValidatorMessage('maxLength')).toEqual('Maximum Length Exceeded.');
     });
   });
 });

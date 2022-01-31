@@ -64,7 +64,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       });
 
       validate(field, '12345', null);
-      validate(field, '123', { minlength: { requiredLength: 5, actualLength: 3 } });
+      validate(field, '123', { minLength: { requiredLength: 5, actualLength: 3 } });
     });
 
     it('maxLength', () => {
@@ -73,7 +73,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       });
 
       validate(field, '123', null);
-      validate(field, '12345678910', { maxlength: { requiredLength: 10, actualLength: 11 } });
+      validate(field, '12345678910', { maxLength: { requiredLength: 10, actualLength: 11 } });
     });
 
     it('min', () => {

@@ -19,11 +19,11 @@ export function maxItemsValidationMessage(err, field: FormlyFieldConfig) {
   return `should NOT have more than ${field.templateOptions.maxItems} items`;
 }
 
-export function minlengthValidationMessage(err, field: FormlyFieldConfig) {
+export function minLengthValidationMessage(err, field: FormlyFieldConfig) {
   return `should NOT be shorter than ${field.templateOptions.minLength} characters`;
 }
 
-export function maxlengthValidationMessage(err, field: FormlyFieldConfig) {
+export function maxLengthValidationMessage(err, field: FormlyFieldConfig) {
   return `should NOT be longer than ${field.templateOptions.maxLength} characters`;
 }
 
@@ -66,8 +66,8 @@ export function typeValidationMessage({ schemaType }) {
       validationMessages: [
         { name: 'required', message: 'This field is required' },
         { name: 'type', message: typeValidationMessage },
-        { name: 'minlength', message: minlengthValidationMessage },
-        { name: 'maxlength', message: maxlengthValidationMessage },
+        { name: 'minLength', message: minLengthValidationMessage },
+        { name: 'maxLength', message: maxLengthValidationMessage },
         { name: 'min', message: minValidationMessage },
         { name: 'max', message: maxValidationMessage },
         { name: 'multipleOf', message: multipleOfValidationMessage },
