@@ -51,14 +51,19 @@ export class FieldFormExtension implements FormlyExtension {
     registerControl(field, control);
   }
 
-  private setValidators(field: FormlyFieldConfigCache) {
+  private setValidators(field: FormlyFieldConfigCache, disabled = false) {
     let markForCheck = false;
-    (field.fieldGroup || []).forEach(f => this.setValidators(f) && (markForCheck = true));
+
+    if (disabled === false && field.key && field.templateOptions && field.templateOptions.disabled) {
+      disabled = true;
+    }
+
+    (field.fieldGroup || []).forEach(f => this.setValidators(f, disabled) && (markForCheck = true));
 
     if (field.key || !field.parent || (!field.key && !field.fieldGroup)) {
       const { formControl: c } = field;
-      const disabled = field.templateOptions ? field.templateOptions.disabled : false;
-      if (field.key && c) {
+      field.templateOptions = field.templateOptions || {};
+      if (field.key && c && c instanceof FormControl) {
         if (disabled && c.enabled) {
           c.disable({ emitEvent: false, onlySelf: true });
           markForCheck = true;
