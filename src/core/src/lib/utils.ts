@@ -14,7 +14,12 @@ export function disableTreeValidityCall(form: any, callback: Function) {
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string|number) {
   if (field.id) return field.id;
   let type = field.type;
-  if (!type && field.template) type = 'template';
+  if (!type && field.template) {
+    type = 'template';
+  }
+  if (isFunction(type)) {
+    type = (type as any).prototype.constructor.name;
+  }
   return [formId, type, field.key, index].join('_');
 }
 

@@ -1,6 +1,7 @@
 import { reverseDeepMerge, assignModelValue, getFieldId, getFieldValue, getKeyPath, clone, wrapProperty, assignFieldValue } from './utils';
 import { FormlyFieldConfig } from './components/formly.field.config';
 import { of } from 'rxjs';
+import { FormlyField } from './core';
 
 describe('FormlyUtils service', () => {
   describe('reverseDeepMerge', () => {
@@ -81,6 +82,13 @@ describe('FormlyUtils service', () => {
       let options: FormlyFieldConfig = {type: 'input', key: 'email'};
       let id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_input_email_2');
+    });
+
+    it('should take account passing a non-string for type', () => {
+      const customType = FormlyField;
+      let options: FormlyFieldConfig = { type: customType as any};
+      let id = getFieldId('formly_1', options, 2);
+      expect(id).toBe('formly_1_FormlyField__2');
     });
   });
 
