@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.32"></a>
+## [5.10.32](https://github.com/ngx-formly/ngx-formly/compare/v5.10.31...v5.10.32) (2022-02-05)
+
+
+### Bug Fixes
+
+* **core:** keep disabled state of field group consistent ([#3163](https://github.com/ngx-formly/ngx-formly/issues/3163)) ([d4e4758](https://github.com/ngx-formly/ngx-formly/commit/d4e4758)), closes [#3160](https://github.com/ngx-formly/ngx-formly/issues/3160)
+* **core:** take account passing a non-string value for field id ([962b190](https://github.com/ngx-formly/ngx-formly/commit/962b190))
+
+
+
 <a name="5.10.31"></a>
 ## [5.10.31](https://github.com/ngx-formly/ngx-formly/compare/v5.10.30...v5.10.31) (2022-01-27)
 
