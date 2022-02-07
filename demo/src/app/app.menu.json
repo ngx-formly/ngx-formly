@@ -63,6 +63,7 @@
           { "path": "/examples/validation/async-validation-update-on", "label": "Async validation and `updateOn`" },
           { "path": "/examples/validation/matching-two-fields", "label": "Matching Two Fields" },
           { "path": "/examples/validation/force-show-error", "label": "Force showing error state" },
+          { "path": "/examples/validation/show-valid", "label": "Control when to show validation " },
           { "path": "/examples/validation/toggle-required", "label": "Toggle required field" },
           { "path": "/examples/validation/disable-submit-button", "label": "Disable submit button" }
         ]

@@ -256,6 +256,7 @@ export interface FormlyFormOptions {
   formState?: any;
   fieldChanges?: Subject<FormlyValueChangeEvent>;
   showError?: (field: FieldType) => boolean;
+  showValid?: (field: FieldType) => boolean;
   build?: (field?: FormlyFieldConfig) => FormlyFieldConfig;
   checkExpressions?: (field: FormlyFieldConfig) => void;
   detectChanges?: (field: FormlyFieldConfig) => void;

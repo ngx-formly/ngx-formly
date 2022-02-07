@@ -68,6 +68,7 @@ export interface ConfigOption {
   extras?: {
     immutable?: boolean;
     showError?: (field: FieldType) => boolean;
+    showValid?: (field: FieldType) => boolean;
 
     /**
      * Defines the option which formly rely on to check field expression properties.

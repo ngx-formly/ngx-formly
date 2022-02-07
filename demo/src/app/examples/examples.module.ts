@@ -92,6 +92,10 @@ import { SharedModule } from '../shared';
                 loadChildren: () => import('./validation/force-show-error/config.module').then((m) => m.ConfigModule),
               },
               {
+                path: 'show-valid',
+                loadChildren: () => import('./validation/show-valid/config.module').then((m) => m.ConfigModule),
+              },
+              {
                 path: 'toggle-required',
                 loadChildren: () => import('./validation/toggle-required/config.module').then((m) => m.ConfigModule),
               },

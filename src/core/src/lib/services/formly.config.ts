@@ -42,6 +42,9 @@ export class FormlyConfig {
         (field.formControl?.touched || field.options.parentForm?.submitted || !!field.field.validation?.show)
       );
     },
+    showValid(field: FieldType) {
+      return field.formControl?.touched || field.options.parentForm?.submitted || !!field.field.validation?.show;
+    },
   };
   extensions: { [name: string]: FormlyExtension } = {};
   presets: { [name: string]: FormlyFieldConfig | FormlyFieldConfigPresetProvider } = {};

@@ -50,6 +50,10 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.options.showError(this);
   }
 
+  get showValid(): boolean {
+    return this.options.showValid(this);
+  }
+
   get id(): string {
     return this.field.id;
   }

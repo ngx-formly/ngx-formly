@@ -76,6 +76,9 @@ export class CoreExtension implements FormlyExtension {
     if (!options.showError) {
       options.showError = this.config.extras.showError;
     }
+    if (!options.showValid) {
+      options.showValid = this.config.extras.showValid;
+    }
 
     if (!options.fieldChanges) {
       defineHiddenProp(options, 'fieldChanges', new Subject<FormlyValueChangeEvent>());
