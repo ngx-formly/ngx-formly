@@ -21,6 +21,9 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
       - `kendo`
       - `nativescript`
 
+    **Note**: Angular 13 support of Formly schematics is only available using `next` tag (`ng add @ngx-formly/schematics@next`),
+    we suggest Installing with `npm` instead (see below) till the Formly `v6` stable release is ready.
+
   - Installing with `npm`:
     ```bash
     npm install @angular/forms @ngx-formly/core @ngx-formly/bootstrap --save
