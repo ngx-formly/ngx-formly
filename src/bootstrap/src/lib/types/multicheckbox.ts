@@ -21,6 +21,7 @@ import { FieldType } from '@ngx-formly/core';
           [class.custom-control-input]="to.formCheck.indexOf('custom') === 0"
           [value]="option.value"
           [checked]="isChecked(option)"
+          [disabled]=" formControl.disabled || option.disabled"
           [formlyAttributes]="field"
           (change)="onChange(option.value, $event.target.checked)">
         <label
