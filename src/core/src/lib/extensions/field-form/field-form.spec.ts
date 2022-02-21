@@ -117,6 +117,11 @@ describe('FieldFormExtension', () => {
 
       expect(field.formControl).toEqual(field.form);
     });
+
+    it('should assign parent formcontrol when key is an empty string', () => {
+      const field = buildField({ key: '', fieldGroup: [] });
+      expect(field.formControl).toEqual(field.form);
+    });
   });
 
   it('should use existing formcontrol from built form', () => {

@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { getKeyPath, getFieldValue, isNil, defineHiddenProp, observe } from '../../utils';
+import { getKeyPath, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
 
 export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
@@ -70,7 +70,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
     }
   }
 
-  if (!field.form || isNil(field.key)) {
+  if (!field.form || !hasKey(field)) {
     return;
   }
 

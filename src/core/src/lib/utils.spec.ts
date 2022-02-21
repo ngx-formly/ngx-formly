@@ -111,6 +111,8 @@ describe('FormlyUtils service', () => {
       expect(keyPath).toEqual([]);
       keyPath = getKeyPath({ key: '' });
       expect(keyPath).toEqual([]);
+      keyPath = getKeyPath({ key: 0 });
+      expect(keyPath).toEqual(['0']);
     });
 
     it('should get the correct key path of length 1 for a simple string', () => {

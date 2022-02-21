@@ -1,7 +1,7 @@
 import { FormlyConfig } from '../../services/formly.config';
 import { FormlyExtension, ValidatorOption, FormlyFieldConfigCache } from '../../models';
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
-import { FORMLY_VALIDATORS, defineHiddenProp, isPromise, observe, clone, isObject, isNil } from '../../utils';
+import { FORMLY_VALIDATORS, defineHiddenProp, isPromise, observe, clone, isObject, hasKey } from '../../utils';
 import { updateValidity } from '../field-form/utils';
 import { isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -17,7 +17,7 @@ export class FieldValidationExtension implements FormlyExtension {
 
   private initFieldValidation(field: FormlyFieldConfigCache, type: 'validators' | 'asyncValidators') {
     const validators: ValidatorFn[] = [];
-    if (type === 'validators' && !(field.hasOwnProperty('fieldGroup') && isNil(field.key))) {
+    if (type === 'validators' && !(field.hasOwnProperty('fieldGroup') && !hasKey(field))) {
       validators.push(this.getPredefinedFieldValidation(field));
     }
 
