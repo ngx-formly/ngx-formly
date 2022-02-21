@@ -8,6 +8,7 @@ import {
   observe,
   getFieldValue,
   assignFieldValue,
+  hasKey,
 } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
 import { isObservable, Observable, Subscription } from 'rxjs';
@@ -180,7 +181,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         .forEach((f) => this.changeDisabledState(f, value));
     }
 
-    if (!isNil(field.key) && field.templateOptions.disabled !== value) {
+    if (hasKey(field) && field.templateOptions.disabled !== value) {
       field.templateOptions.disabled = value;
     }
   }
@@ -190,7 +191,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       field.fieldGroup.filter((f) => !f.hideExpression).forEach((f) => this.changeHideState(f, hide, resetOnHide));
     }
 
-    if (field.formControl && !isNil(field.key)) {
+    if (field.formControl && hasKey(field)) {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
       if (c['_fields'] && c['_fields'].length > 1) {
@@ -244,7 +245,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       throw error;
     }
 
-    if (prop === 'templateOptions.disabled' && !isNil(field.key)) {
+    if (prop === 'templateOptions.disabled' && hasKey(field)) {
       this.changeDisabledState(field, value);
     }
 

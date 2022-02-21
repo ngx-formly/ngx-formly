@@ -16,7 +16,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { clone, isNil } from '../utils';
+import { clone, hasKey } from '../utils';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
@@ -107,7 +107,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     const sub = this.field.options.fieldChanges
       .pipe(
-        filter(({ field, type }) => !isNil(field.key) && type === 'valueChanges'),
+        filter(({ field, type }) => hasKey(field) && type === 'valueChanges'),
         switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
       )
       .subscribe(() =>

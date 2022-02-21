@@ -15,8 +15,12 @@ export function getFieldId(formId: string, field: FormlyFieldConfig, index: stri
   return [formId, type, field.key, index].join('_');
 }
 
+export function hasKey(field: FormlyFieldConfig) {
+  return !isNil(field.key) && field.key !== '';
+}
+
 export function getKeyPath(field: FormlyFieldConfigCache): string[] {
-  if (!field.key) {
+  if (!hasKey(field)) {
     return [];
   }
 

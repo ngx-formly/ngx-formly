@@ -29,6 +29,7 @@ import {
   isObject,
   isNil,
   markFieldForCheck,
+  hasKey,
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
@@ -301,7 +302,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           return;
         }
 
-        if (!isNil(field.key)) {
+        if (hasKey(field)) {
           assignFieldValue(field, value);
         }
         field.options.fieldChanges.next({ value, field, type: 'valueChanges' });

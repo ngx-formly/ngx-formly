@@ -11,6 +11,7 @@ import {
   isNil,
   getField,
   markFieldForCheck,
+  hasKey,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -25,7 +26,7 @@ export class CoreExtension implements FormlyExtension {
     if (root) {
       Object.defineProperty(field, 'options', { get: () => root.options, configurable: true });
       Object.defineProperty(field, 'model', {
-        get: () => (!isNil(field.key) && field.fieldGroup ? getFieldValue(field) : root.model),
+        get: () => (hasKey(field) && field.fieldGroup ? getFieldValue(field) : root.model),
         configurable: true,
       });
     }
@@ -114,7 +115,7 @@ export class CoreExtension implements FormlyExtension {
       modelOptions: {},
       validation: { messages: {} },
       templateOptions:
-        !field.type || isNil(field.key)
+        !field.type || !hasKey(field)
           ? {}
           : {
               label: '',
@@ -142,7 +143,7 @@ export class CoreExtension implements FormlyExtension {
       this.config.getMergedField(field);
     }
 
-    if (!isNil(field.key) && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
+    if (hasKey(field) && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
       let setDefaultValue = !field.resetOnHide || !(field.hide || field.hideExpression);
       if (setDefaultValue && field.resetOnHide) {
         let parent = field.parent;

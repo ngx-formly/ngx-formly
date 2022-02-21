@@ -7,7 +7,7 @@ import {
   ValidatorFn,
   AsyncValidatorFn,
 } from '@angular/forms';
-import { getFieldValue, defineHiddenProp, isNil, markFieldForCheck } from '../../utils';
+import { getFieldValue, defineHiddenProp, isNil, markFieldForCheck, hasKey } from '../../utils';
 import { registerControl, findControl, updateValidity } from './utils';
 import { of } from 'rxjs';
 
@@ -28,7 +28,7 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   onPopulate(field: FormlyFieldConfigCache) {
-    if (field.hasOwnProperty('fieldGroup') && isNil(field.key)) {
+    if (field.hasOwnProperty('fieldGroup') && !hasKey(field)) {
       defineHiddenProp(field, 'formControl', field.form);
     } else {
       this.addFormControl(field);
@@ -45,7 +45,7 @@ export class FieldFormExtension implements FormlyExtension {
     if (markForCheck && field.parent) {
       let parent = field.parent;
       while (parent) {
-        if (!isNil(parent.key) || !parent.parent) {
+        if (hasKey(parent) || !parent.parent) {
           updateValidity(parent.formControl, true);
         }
         parent = parent.parent;
@@ -61,7 +61,7 @@ export class FieldFormExtension implements FormlyExtension {
       if (field.fieldGroup) {
         control = new FormGroup({}, controlOptions);
       } else {
-        const value = !isNil(field.key) ? getFieldValue(field) : field.defaultValue;
+        const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
         control = new FormControl({ value, disabled: false }, controlOptions);
       }
     }
@@ -73,7 +73,7 @@ export class FieldFormExtension implements FormlyExtension {
     let markForCheck = false;
     field.fieldGroup?.forEach((f) => f && this.setValidators(f) && (markForCheck = true));
 
-    if (!isNil(field.key) || !field.parent || (isNil(field.key) && !field.fieldGroup)) {
+    if (hasKey(field) || !field.parent || (!hasKey(field) && !field.fieldGroup)) {
       const { formControl: c } = field;
       const disabled = field.templateOptions ? field.templateOptions.disabled : false;
       if (field.key && c) {
@@ -124,7 +124,7 @@ export class FieldFormExtension implements FormlyExtension {
 
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter((f) => f?.fieldGroup && isNil(f.key))
+        .filter((f) => f?.fieldGroup && !hasKey(f))
         .forEach((f) => validators.push(...this.mergeValidators(f, type)));
     }
 
