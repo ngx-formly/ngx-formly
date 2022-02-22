@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createComponent } from '@ngx-formly/core/testing';
+import { createComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig, { template }: { template?: string } = {}) => {
   return createComponent<{ field: FormlyFieldConfig }>({
@@ -145,7 +145,7 @@ describe('FormlyAttributes Component', () => {
         formControl: new FormControl(),
       });
 
-      query('input').triggerEventHandler('change', {});
+      query('input').triggerEventHandler('change', ɵCustomEvent());
       expect(field.formControl.dirty).toBeTrue();
     });
 

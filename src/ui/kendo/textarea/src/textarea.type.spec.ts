@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyTextAreaModule } from '@ngx-formly/kendo/textarea';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -35,13 +35,16 @@ describe('ui-kendo: Textarea Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'textarea',
+      templateOptions: { change: changeSpy },
     });
 
-    query('textarea').triggerEventHandler('input', { target: { value: 'foo' } });
+    ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

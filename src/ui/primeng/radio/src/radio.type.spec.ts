@@ -45,7 +45,10 @@ describe('ui-primeng: Radio Type', () => {
       key: 'name',
       type: 'radio',
       templateOptions: {
-        options: [{ value: 1, label: 'label 1' }],
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+        ],
       },
     });
 

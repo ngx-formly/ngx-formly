@@ -56,21 +56,29 @@ describe('ui-material: Formly Field Select Component', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, queryAll, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
-        options: [{ value: 1, label: 'label 1' }],
+        placeholder: 'Name',
+        change: changeSpy,
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+        ],
       },
     });
 
+    expect(field.formControl.value).toBeUndefined();
     query('.mat-select-trigger').triggerEventHandler('click', {});
     detectChanges();
 
-    const selectAllOption = queryAll('mat-option')[0];
+    const selectAllOption = queryAll('mat-option')[1];
     selectAllOption.triggerEventHandler('click', {});
     detectChanges();
-    expect(field.formControl.value).toEqual(1);
+    expect(field.formControl.value).toEqual(2);
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 
   describe('render select options', () => {

@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyCheckboxModule } from '@ngx-formly/ionic/checkbox';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -36,16 +36,19 @@ describe('ui-ionic: Checkbox Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
+      templateOptions: { change: changeSpy },
     });
 
     const inputDebugEl = query<HTMLInputElement>('ion-checkbox');
 
     inputDebugEl.nativeElement.checked = true;
-    inputDebugEl.triggerEventHandler('ionChange', { target: inputDebugEl.nativeElement });
+    inputDebugEl.triggerEventHandler('ionChange', ɵCustomEvent(inputDebugEl.nativeElement));
     detectChanges();
     expect(field.formControl.value).toBeTrue();
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

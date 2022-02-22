@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyInputModule } from '@ngx-formly/ionic/input';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -90,15 +90,18 @@ describe('ui-ionic: Input Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'input',
+      templateOptions: { change: changeSpy },
     });
 
     const inputEl = query<HTMLInputElement>('ion-input').nativeElement;
     inputEl.value = 'foo';
-    query('ion-input').triggerEventHandler('ionChange', { target: inputEl });
+    query('ion-input').triggerEventHandler('ionChange', ɵCustomEvent(inputEl));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

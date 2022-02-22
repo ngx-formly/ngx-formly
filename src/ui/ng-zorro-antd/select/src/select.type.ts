@@ -10,6 +10,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [nzMode]="to.multiple ? 'multiple' : 'default'"
+      (ngModelChange)="to.change && to.change(field, $event)"
     >
       <ng-container *ngFor="let item of to.options | formlySelectOptions: field | async">
         <nz-option-group *ngIf="item.group" [nzLabel]="item.label">

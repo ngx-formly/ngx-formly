@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyMatInputModule } from '@ngx-formly/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -88,13 +88,18 @@ describe('ui-material: Input Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'input',
+      templateOptions: { change: changeSpy },
     });
 
-    query('input[type="text"]').triggerEventHandler('input', { target: { value: 'foo' } });
+    ['input', 'change'].forEach((type) =>
+      query('input[type="text"]').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })),
+    );
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

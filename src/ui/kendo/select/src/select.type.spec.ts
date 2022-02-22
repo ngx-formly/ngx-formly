@@ -69,16 +69,22 @@ describe('ui-kendo: Select Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
-        options: [{ value: 1, label: 'label 1' }],
+        change: changeSpy,
+        options: [
+          { value: 1, label: 'label 1' },
+          { value: 2, label: 'label 2' },
+        ],
       },
     });
 
     triggerSelectClick(query('kendo-dropdownlist .k-dropdown-wrap'));
     document.querySelector<HTMLLIElement>('.k-item').click();
     expect(field.formControl.value).toEqual(1);
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

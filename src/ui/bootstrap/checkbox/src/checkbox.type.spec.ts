@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyBootstrapCheckboxModule } from '@ngx-formly/bootstrap/checkbox';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -44,19 +44,23 @@ describe('ui-bootstrap: Checkbox Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
+      templateOptions: { change: changeSpy },
     });
 
     const inputDebugEl = query<HTMLInputElement>('input[type="checkbox"]');
 
-    inputDebugEl.triggerEventHandler('change', { target: { checked: true } });
+    inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: true }));
     detectChanges();
+    expect(changeSpy).toHaveBeenCalledOnce();
     expect(field.formControl.value).toBeTrue();
 
-    inputDebugEl.triggerEventHandler('change', { target: { checked: false } });
+    inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: false }));
     detectChanges();
+    expect(changeSpy).toHaveBeenCalledTimes(2);
     expect(field.formControl.value).toBeFalse();
   });
 });

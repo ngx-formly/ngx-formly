@@ -43,10 +43,12 @@ describe('ui-ng-zorro-antd: Radio Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'radio',
       templateOptions: {
+        change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },
     });
@@ -59,5 +61,6 @@ describe('ui-ng-zorro-antd: Radio Type', () => {
     (query('label[nz-radio]').nativeElement as HTMLElement).click();
     detectChanges();
     expect(field.formControl.value).toEqual(1);
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

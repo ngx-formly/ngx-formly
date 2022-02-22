@@ -1,7 +1,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 import { FormlySelectModule } from '@ngx-formly/ionic/select';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -45,18 +45,21 @@ describe('ui-ionic: Select Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
+        change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },
     });
 
     const radioEl = query<HTMLIonSelectElement>('ion-select').nativeElement;
     radioEl.value = 1;
-    query('ion-select').triggerEventHandler('ionChange', { target: radioEl });
+    query('ion-select').triggerEventHandler('ionChange', ɵCustomEvent(radioEl));
     detectChanges();
     expect(field.formControl.value).toEqual(1);
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

@@ -27,3 +27,22 @@ export function createFieldChangesSpy(field: FormlyFieldConfig): [jest.Mock, Sub
 
   return [spy, field.options.fieldChanges.subscribe(spy)];
 }
+
+class TargetEvent extends Event {
+  get target() {
+    return this._target;
+  }
+  set target(_target) {
+    this._target = _target;
+  }
+  private _target: any;
+
+  constructor(type: string, target: any) {
+    super(type);
+    this.target = target;
+  }
+}
+
+export function ɵCustomEvent(target?: any) {
+  return new TargetEvent('custom', target);
+}

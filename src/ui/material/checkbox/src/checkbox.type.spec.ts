@@ -41,20 +41,22 @@ describe('ui-material: Checkbox Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
+      templateOptions: { change: changeSpy },
     });
 
-    const inputDebugEl = query('input[type="checkbox"]');
-    const evt = { stopPropagation: () => {} };
-
-    inputDebugEl.triggerEventHandler('click', evt);
+    const input = query('input[type="checkbox"]').nativeElement as HTMLInputElement;
+    input.click();
     detectChanges();
     expect(field.formControl.value).toBeTrue();
+    expect(changeSpy).toHaveBeenCalledOnce();
 
-    inputDebugEl.triggerEventHandler('click', evt);
+    input.click();
     detectChanges();
     expect(field.formControl.value).toBeFalse();
+    expect(changeSpy).toHaveBeenCalledTimes(2);
   });
 });

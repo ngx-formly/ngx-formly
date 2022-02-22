@@ -1,5 +1,5 @@
 import { fakeAsync, tick } from '@angular/core/testing';
-import { FormlyInputModule, createComponent } from '@ngx-formly/core/testing';
+import { FormlyInputModule, createComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 
@@ -97,6 +97,35 @@ describe('FormlyForm Component', () => {
       });
 
       expect(form.valid).toEqual(false);
+    });
+
+    it('should call the validation only once during build', () => {
+      const fooValidator = { expression: () => false };
+      const spy = jest.spyOn(fooValidator, 'expression');
+      const { form, setInputs, detectChanges, fields } = renderComponent({
+        form: new FormGroup({}),
+        fields: [
+          { key: 'f1', validators: { fooValidator } },
+          { key: 'f2' },
+          { key: 'f3', fieldGroup: [{ key: 'f4' }] },
+        ],
+      });
+
+      // re-build model change
+      spy.mockReset();
+      setInputs({ model: { f1: 'foo' } });
+      expect(fooValidator.expression).toHaveBeenCalledTimes(1);
+
+      // attach new field
+      spy.mockReset();
+      setInputs({
+        fields: [
+          // usage of [formControl] input which trigger FormGroupDirective::_updateTreeValidity call.
+          { key: 'f4', type: 'input' },
+          ...fields,
+        ],
+      });
+      expect(fooValidator.expression).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -560,7 +589,7 @@ describe('FormlyForm Component', () => {
 
       expect(form.get('name').value).toBeUndefined();
 
-      inputDebugEl.triggerEventHandler('input', { target: { value: 'First' } });
+      inputDebugEl.triggerEventHandler('input', ɵCustomEvent({ value: 'First' }));
       detectChanges();
 
       expect(form.get('name').value).toBeUndefined();
@@ -585,7 +614,7 @@ describe('FormlyForm Component', () => {
       const inputDebugEl = query('input');
 
       expect(form.get('name').value).toBeUndefined();
-      inputDebugEl.triggerEventHandler('input', { target: { value: 'First' } });
+      inputDebugEl.triggerEventHandler('input', ɵCustomEvent({ value: 'First' }));
 
       inputDebugEl.triggerEventHandler('blur', {});
       detectChanges();
@@ -711,7 +740,7 @@ describe('FormlyForm Component', () => {
     );
 
     const input = query('input');
-    input.triggerEventHandler('input', { target: { value: '***' } });
+    input.triggerEventHandler('input', ɵCustomEvent({ value: '***' }));
     fixture.autoDetectChanges();
 
     const control = form.get('city');

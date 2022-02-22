@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyInputModule } from '@ngx-formly/kendo/input';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -97,13 +97,18 @@ describe('ui-kendo: Input Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'input',
+      templateOptions: { change: changeSpy },
     });
 
-    query('input[type="text"]').triggerEventHandler('input', { target: { value: 'foo' } });
+    ['input', 'change'].forEach((type) =>
+      query('input[type="text"]').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })),
+    );
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

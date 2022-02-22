@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyTextAreaModule } from '@ngx-formly/ionic/textarea';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -38,14 +38,17 @@ describe('ui-ionic: Textarea Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const { query, field, detectChanges } = renderComponent({
+    const changeSpy = jest.fn();
+    const { query, field } = renderComponent({
       key: 'name',
       type: 'textarea',
+      templateOptions: { change: changeSpy },
     });
 
     const inputEl = query<HTMLTextAreaElement>('ion-textarea').nativeElement;
     inputEl.value = 'foo';
-    query('ion-textarea').triggerEventHandler('ionChange', { target: inputEl });
+    query('ion-textarea').triggerEventHandler('ionChange', ɵCustomEvent(inputEl));
     expect(field.formControl.value).toEqual('foo');
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });
