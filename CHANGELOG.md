@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-next.8](https://github.com/ngx-formly/ngx-formly/compare/v5.10.33...v6.0.0-next.8) (2022-02-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ionic:** minimal required version of `@ionic/angular` is `v6`.
+
+### Features
+
+* **bootstrap:** remove usage of inline-styles in addons ([#3153](https://github.com/ngx-formly/ngx-formly/issues/3153)) ([3e80086](https://github.com/ngx-formly/ngx-formly/commit/3e800865130e9a7f0c3f1444482f07c1f5b46446)), closes [#2496](https://github.com/ngx-formly/ngx-formly/issues/2496)
+* **core:** use minLength, maxLength for message validations ([#3164](https://github.com/ngx-formly/ngx-formly/issues/3164)) ([74e8dd5](https://github.com/ngx-formly/ngx-formly/commit/74e8dd54e077c9b5f8e87585b023741472ef9928)), closes [#1896](https://github.com/ngx-formly/ngx-formly/issues/1896)
+* **ionic:** update peerDependencies to v6 ([3e66e69](https://github.com/ngx-formly/ngx-formly/commit/3e66e69b8c6ff861df03be608281e3caea037880))
+* **ionic:** use modal for datetime type ([1c2e4a8](https://github.com/ngx-formly/ngx-formly/commit/1c2e4a8cccd320a5f82fa29fe04d0202a4de5f2a))
+* **json-schema:** support oneOf for non-object type ([#3152](https://github.com/ngx-formly/ngx-formly/issues/3152)) ([17bdf07](https://github.com/ngx-formly/ngx-formly/commit/17bdf0705b5668d4b28890922f26642003ad0695)), closes [#2528](https://github.com/ngx-formly/ngx-formly/issues/2528)
+
+
+### Bug Fixes
+
+* **core:** detect changes when building a child field ([#3151](https://github.com/ngx-formly/ngx-formly/issues/3151)) ([7d17f20](https://github.com/ngx-formly/ngx-formly/commit/7d17f20adb5d7961aab78955bc2ff7f26bea468c))
+* **core:** do not emit `modelChange` when a field without key changes ([#3154](https://github.com/ngx-formly/ngx-formly/issues/3154)) ([95f5cd2](https://github.com/ngx-formly/ngx-formly/commit/95f5cd2f64ba0be24117ce272174f1bd34e87d72))
+* **core:** ignore passing empty string to field key ([#3193](https://github.com/ngx-formly/ngx-formly/issues/3193)) ([33e8a8a](https://github.com/ngx-formly/ngx-formly/commit/33e8a8a5cc1229ed1ba063f2664c48d87ecff383)), closes [#3175](https://github.com/ngx-formly/ngx-formly/issues/3175)
+* **ng-zorro-antd:** add missing change event for select and radio type ([#3197](https://github.com/ngx-formly/ngx-formly/issues/3197)) ([eca28f7](https://github.com/ngx-formly/ngx-formly/commit/eca28f79113e73824f1ef24e36d43d492fb46476))
+* **testing:** build field on createField::setInputs call ([#3150](https://github.com/ngx-formly/ngx-formly/issues/3150)) ([e0e0243](https://github.com/ngx-formly/ngx-formly/commit/e0e0243176198bf5a227e5bfad30caf9fbe58161))
+
 ## [6.0.0-next.7](https://github.com/ngx-formly/ngx-formly/compare/v5.10.30...v6.0.0-next.7) (2022-01-23)
 
 
