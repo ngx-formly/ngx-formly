@@ -5,6 +5,9 @@ import { DOCUMENT } from '@angular/common';
 
 @Directive({
   selector: '[formlyAttributes]',
+  host: {
+    '(change)': 'onHostChange($event)',
+  },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   @Input('formlyAttributes') field: FormlyFieldConfig;
@@ -157,6 +160,15 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     if (this.to.blur) {
       this.to.blur(this.field, $event);
     }
+  }
+
+  // handle custom `change` event, for regular ones rely on DOM listener
+  onHostChange($event: any) {
+    if ($event instanceof Event) {
+      return;
+    }
+
+    this.onChange($event);
   }
 
   onChange($event: any) {
