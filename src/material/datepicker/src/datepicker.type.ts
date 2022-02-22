@@ -73,7 +73,7 @@ export class FormlyFieldDatepicker extends FieldType implements AfterViewInit, O
           const errors = Object.keys(currentValue)
             .sort(prop => prop === 'matDatepickerParse' ? -1 : 0)
             .reduce((errors, prop) => ({ ...errors, [prop]: currentValue[prop] }), {});
-          this.field.formControl['___$errors'] = errors;
+          (this.field.formControl as any)['___$errors'] = errors;
         }
       });
     }

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.10.33"></a>
+## [5.10.33](https://github.com/ngx-formly/ngx-formly/compare/v5.10.32...v5.10.33) (2022-02-22)
+
+
+### Bug Fixes
+
+* **bootstrap:** support disable a specific multicheckbox option ([#3192](https://github.com/ngx-formly/ngx-formly/issues/3192)) ([bed082f](https://github.com/ngx-formly/ngx-formly/commit/bed082f)), closes [#3184](https://github.com/ngx-formly/ngx-formly/issues/3184)
+* **core:** use host listener to catch custom change events ([#3196](https://github.com/ngx-formly/ngx-formly/issues/3196)) ([f7831c8](https://github.com/ngx-formly/ngx-formly/commit/f7831c8)), closes [#2353](https://github.com/ngx-formly/ngx-formly/issues/2353)
+* **material:** prioritize matDatepickerParse error over required ([#3195](https://github.com/ngx-formly/ngx-formly/issues/3195)) ([8c9a397](https://github.com/ngx-formly/ngx-formly/commit/8c9a397)), closes [#3190](https://github.com/ngx-formly/ngx-formly/issues/3190)
+
+
+
 <a name="5.10.32"></a>
 ## [5.10.32](https://github.com/ngx-formly/ngx-formly/compare/v5.10.31...v5.10.32) (2022-02-05)
 
