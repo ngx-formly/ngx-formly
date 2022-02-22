@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injectable, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent, FormlyInputModule, createFieldChangesSpy } from '@ngx-formly/core/testing';
+import { createFieldComponent, FormlyInputModule, createFieldChangesSpy, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyExtension, FormlyFieldConfigCache } from '../models';
@@ -501,7 +501,7 @@ describe('FormlyField Component', () => {
       });
 
       const inputs = queryAll<HTMLInputElement>('input');
-      inputs[0].triggerEventHandler('input', { target: { value: 'First' } });
+      inputs[0].triggerEventHandler('input', ɵCustomEvent({ value: 'First' }));
 
       detectChanges();
       expect(field.formControl.value).toEqual({ title: 'First' });

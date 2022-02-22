@@ -56,10 +56,12 @@ describe('ui-ng-zorro-antd: Select Type', () => {
   }));
 
   it('should bind control value on change', fakeAsync(() => {
+    const changeSpy = jest.fn();
     const { query, field, fixture } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
+        change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },
     });
@@ -72,5 +74,6 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     fixture.detectChanges();
     tick(500);
     expect(field.formControl.value).toEqual(1);
+    expect(changeSpy).toHaveBeenCalledOnce();
   }));
 });

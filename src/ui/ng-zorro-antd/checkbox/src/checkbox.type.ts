@@ -9,6 +9,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
       [nzIndeterminate]="to.indeterminate && formControl.value == null"
       [formControl]="formControl"
       [formlyAttributes]="field"
+      (ngModelChange)="to.change && to.change(field, $event)"
     >
       {{ to.label }}
     </label>

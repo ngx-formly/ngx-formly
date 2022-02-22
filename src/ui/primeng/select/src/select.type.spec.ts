@@ -1,8 +1,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/primeng/select';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { fakeAsync, tick } from '@angular/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -27,7 +26,7 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown div').triggerEventHandler('click', { target: { isSameNode: () => false } });
+    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
     expect(queryAll('p-dropdownItem')).toHaveLength(3);
   });
 
@@ -47,15 +46,17 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown div').triggerEventHandler('click', { target: { isSameNode: () => false } });
+    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
     expect(queryAll('p-dropdownItem')).toHaveLength(3);
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, queryAll, field } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
+        change: changeSpy,
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -63,8 +64,9 @@ describe('ui-primeng: Select Type', () => {
       },
     });
 
-    query('p-dropdown div').triggerEventHandler('click', { target: { isSameNode: () => false } });
+    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
     queryAll('p-dropdownItem>li')[1].triggerEventHandler('click', {});
     expect(field.formControl.value).toEqual(2);
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

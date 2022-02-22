@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyMatTextAreaModule } from '@ngx-formly/material/textarea';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -43,13 +43,16 @@ describe('ui-material: Textarea Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'textarea',
+      templateOptions: { change: changeSpy },
     });
 
-    query('textarea').triggerEventHandler('input', { target: { value: 'foo' } });
+    ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

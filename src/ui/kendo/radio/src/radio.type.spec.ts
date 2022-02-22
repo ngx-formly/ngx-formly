@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyRadioModule } from '@ngx-formly/kendo/radio';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -41,16 +41,19 @@ describe('ui-kendo: Radio Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'radio',
       templateOptions: {
+        change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },
     });
 
-    query('input[type="radio"]').triggerEventHandler('change', {});
+    query('input[type="radio"]').triggerEventHandler('change', ɵCustomEvent());
     detectChanges();
     expect(field.formControl.value).toEqual(1);
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 });

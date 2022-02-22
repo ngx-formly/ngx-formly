@@ -1,7 +1,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 import { FormlyBootstrapSelectModule } from '@ngx-formly/bootstrap/select';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -45,18 +45,21 @@ describe('ui-bootstrap: Select Type', () => {
   });
 
   it('should bind control value on change', () => {
+    const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
       templateOptions: {
+        change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },
     });
 
     const value = query('select option').properties.value;
-    query('select').triggerEventHandler('change', { target: { value } });
+    query('select').triggerEventHandler('change', ɵCustomEvent({ value }));
     detectChanges();
     expect(field.formControl.value).toEqual(1);
+    expect(changeSpy).toHaveBeenCalledOnce();
   });
 
   it('should select placeholder option when value is undefined', () => {
