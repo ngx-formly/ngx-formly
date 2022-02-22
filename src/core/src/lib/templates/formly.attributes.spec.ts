@@ -68,6 +68,18 @@ describe('FormlyAttributes Component', () => {
       });
     });
 
+    it('should ignore handle attr if already set', () => {
+      const { query } = renderComponent(
+        {},
+        {
+          template: `<input type="text" [attr.disabled]="'disabled'" [formlyAttributes]="field">`,
+        },
+      );
+
+      const inputElm = query('input');
+      expect(inputElm.attributes.disabled).toBe('disabled');
+    });
+
     it('should handle readonly attribute', () => {
       const { detectChanges, query, field } = renderComponent({
         templateOptions: { readonly: true },

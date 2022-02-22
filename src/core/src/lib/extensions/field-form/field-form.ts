@@ -7,7 +7,7 @@ import {
   ValidatorFn,
   AsyncValidatorFn,
 } from '@angular/forms';
-import { getFieldValue, defineHiddenProp, isNil, markFieldForCheck, hasKey } from '../../utils';
+import { getFieldValue, defineHiddenProp, hasKey } from '../../utils';
 import { registerControl, findControl, updateValidity } from './utils';
 import { of } from 'rxjs';
 
@@ -69,14 +69,17 @@ export class FieldFormExtension implements FormlyExtension {
     registerControl(field, control);
   }
 
-  private setValidators(field: FormlyFieldConfigCache) {
+  private setValidators(field: FormlyFieldConfigCache, disabled = false) {
     let markForCheck = false;
-    field.fieldGroup?.forEach((f) => f && this.setValidators(f) && (markForCheck = true));
+    if (disabled === false && hasKey(field) && field.templateOptions?.disabled) {
+      disabled = true;
+    }
+
+    field.fieldGroup?.forEach((f) => f && this.setValidators(f, disabled) && (markForCheck = true));
 
     if (hasKey(field) || !field.parent || (!hasKey(field) && !field.fieldGroup)) {
       const { formControl: c } = field;
-      const disabled = field.templateOptions ? field.templateOptions.disabled : false;
-      if (field.key && c) {
+      if (hasKey(field) && c && c instanceof FormControl) {
         if (disabled && c.enabled) {
           c.disable({ emitEvent: false, onlySelf: true });
           markForCheck = true;

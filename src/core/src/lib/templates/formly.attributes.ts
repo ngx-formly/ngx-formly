@@ -16,9 +16,7 @@ import { DOCUMENT } from '@angular/common';
 @Directive({
   selector: '[formlyAttributes]',
   host: {
-    '(focus)': 'onFocus($event)',
-    '(blur)': 'onBlur($event)',
-    '(change)': 'onChange($event)',
+    '(change)': 'onHostChange($event)',
   },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
@@ -27,7 +25,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   private document: Document;
   private uiAttributesCache: any = {};
-  private uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'];
+  private uiAttributes: string[] = null;
   private focusObserver: IObserver<boolean>;
 
   /**
@@ -37,7 +35,19 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    */
   private uiEvents = {
     listeners: [],
-    events: ['click', 'keyup', 'keydown', 'keypress'],
+    events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change'],
+    callback: (eventName: string, $event: any) => {
+      switch (eventName) {
+        case 'focus':
+          return this.onFocus($event);
+        case 'blur':
+          return this.onBlur($event);
+        case 'change':
+          return this.onChange($event);
+        default:
+          return this.to[eventName](this.field, $event);
+      }
+    },
   };
 
   get to() {
@@ -57,9 +67,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.field.name && this.setAttribute('name', this.field.name);
       this.uiEvents.listeners.forEach((listener) => listener());
       this.uiEvents.events.forEach((eventName) => {
-        if (this.to?.[eventName]) {
+        if (this.to?.[eventName] || ['focus', 'blur', 'change'].indexOf(eventName) !== -1) {
           this.uiEvents.listeners.push(
-            this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.to[eventName](this.field, e)),
+            this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.uiEvents.callback(eventName, e)),
           );
         }
       });
@@ -104,6 +114,13 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * Material issue: https://github.com/angular/components/issues/14024
    */
   ngDoCheck() {
+    if (!this.uiAttributes) {
+      const element = this.elementRef.nativeElement as HTMLElement;
+      this.uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'].filter(
+        (attr) => !element.hasAttribute || !element.hasAttribute(attr),
+      );
+    }
+
     this.uiAttributes.forEach((attr) => {
       const value = this.to[attr];
       if (
@@ -154,6 +171,15 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   onBlur($event: any) {
     this.focusObserver?.setValue(false);
     this.to.blur?.(this.field, $event);
+  }
+
+  // handle custom `change` event, for regular ones rely on DOM listener
+  onHostChange($event: any) {
+    if ($event instanceof Event) {
+      return;
+    }
+
+    this.onChange($event);
   }
 
   onChange($event: any) {

@@ -14,7 +14,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
         [color]="to.color"
         [labelPosition]="to.labelPosition"
         [checked]="isChecked(option)"
-        [disabled]="formControl.disabled"
+        [disabled]="formControl.disabled || option.disabled"
         (change)="onChange(option.value, $event.checked)"
       >
         {{ option.label }}

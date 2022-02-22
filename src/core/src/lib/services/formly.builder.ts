@@ -2,7 +2,7 @@ import { Injectable, ComponentFactoryResolver, Injector, Optional } from '@angul
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe } from '../utils';
+import { defineHiddenProp, observe, disableTreeValidityCall } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -24,7 +24,7 @@ export class FormlyFormBuilder {
 
     if (!field.parent) {
       this._setOptions(field);
-      this._build(field);
+      disableTreeValidityCall(field.form, () => this._build(field));
       const options = (field as FormlyFieldConfigCache).options;
       options.checkExpressions?.(field, true);
       options.detectChanges?.(field);

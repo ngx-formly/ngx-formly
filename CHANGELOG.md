@@ -120,6 +120,45 @@ All notable changes to this project will be documented in this file. See [standa
 * **material:** removed double tag closing in datepicker type ([#2327](https://github.com/ngx-formly/ngx-formly/issues/2327)) ([7969ac9](https://github.com/ngx-formly/ngx-formly/commit/7969ac913420e4b7b829c230f33e9ac44a8f4236))
 * sync v5 branch ([2acc4ea](https://github.com/ngx-formly/ngx-formly/commit/2acc4eaccb481df6f2931744a9a5cf00fbf2abd1))
 
+<a name="5.10.33"></a>
+## [5.10.33](https://github.com/ngx-formly/ngx-formly/compare/v5.10.32...v5.10.33) (2022-02-22)
+
+
+### Bug Fixes
+
+* **bootstrap:** support disable a specific multicheckbox option ([#3192](https://github.com/ngx-formly/ngx-formly/issues/3192)) ([bed082f](https://github.com/ngx-formly/ngx-formly/commit/bed082f)), closes [#3184](https://github.com/ngx-formly/ngx-formly/issues/3184)
+* **core:** use host listener to catch custom change events ([#3196](https://github.com/ngx-formly/ngx-formly/issues/3196)) ([f7831c8](https://github.com/ngx-formly/ngx-formly/commit/f7831c8)), closes [#2353](https://github.com/ngx-formly/ngx-formly/issues/2353)
+* **material:** prioritize matDatepickerParse error over required ([#3195](https://github.com/ngx-formly/ngx-formly/issues/3195)) ([8c9a397](https://github.com/ngx-formly/ngx-formly/commit/8c9a397)), closes [#3190](https://github.com/ngx-formly/ngx-formly/issues/3190)
+
+
+
+<a name="5.10.32"></a>
+## [5.10.32](https://github.com/ngx-formly/ngx-formly/compare/v5.10.31...v5.10.32) (2022-02-05)
+
+
+### Bug Fixes
+
+* **core:** keep disabled state of field group consistent ([#3163](https://github.com/ngx-formly/ngx-formly/issues/3163)) ([d4e4758](https://github.com/ngx-formly/ngx-formly/commit/d4e4758)), closes [#3160](https://github.com/ngx-formly/ngx-formly/issues/3160)
+* **core:** take account passing a non-string value for field id ([962b190](https://github.com/ngx-formly/ngx-formly/commit/962b190))
+
+
+
+<a name="5.10.31"></a>
+## [5.10.31](https://github.com/ngx-formly/ngx-formly/compare/v5.10.30...v5.10.31) (2022-01-27)
+
+
+### Bug Fixes
+
+* **core:** call change callback after formControl update ([#3155](https://github.com/ngx-formly/ngx-formly/issues/3155)) ([f07e13b](https://github.com/ngx-formly/ngx-formly/commit/f07e13b))
+* **core:** ignore handle attr by formlyAttributes if already set ([#3156](https://github.com/ngx-formly/ngx-formly/issues/3156)) ([3ee0164](https://github.com/ngx-formly/ngx-formly/commit/3ee0164)), closes [#2532](https://github.com/ngx-formly/ngx-formly/issues/2532)
+
+
+### Performance Improvements
+
+* **core:** remove unnecessary validation calls during the build step ([#3157](https://github.com/ngx-formly/ngx-formly/issues/3157)) ([3bf8760](https://github.com/ngx-formly/ngx-formly/commit/3bf8760))
+
+
+
 <a name="5.10.30"></a>
 ## [5.10.30](https://github.com/ngx-formly/ngx-formly/compare/v5.10.29...v5.10.30) (2022-01-23)
 

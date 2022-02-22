@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, TemplateRef } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy, TemplateRef } from '@angular/core';
+import { FieldTypeConfig, FormlyConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
@@ -43,7 +43,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements AfterViewInit {
+export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements AfterViewInit, OnDestroy {
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   defaultOptions = {
@@ -58,6 +58,11 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
       },
     },
   };
+  private fieldErrorsObserver!: ReturnType<typeof observe>;
+
+  constructor(private config: FormlyConfig) {
+    super();
+  }
 
   detectChanges() {
     this.options.detectChanges?.(this.field);
@@ -66,5 +71,22 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
   ngAfterViewInit() {
     super.ngAfterViewInit();
     this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
+
+    // temporary fix for https://github.com/angular/components/issues/16761
+    if (this.config.getValidatorMessage('matDatepickerParse')) {
+      this.fieldErrorsObserver = observe<any>(this.field, ['formControl', 'errors'], ({ currentValue }) => {
+        if (currentValue.required && currentValue.matDatepickerParse) {
+          const errors = Object.keys(currentValue)
+            .sort((prop) => (prop === 'matDatepickerParse' ? -1 : 0))
+            .reduce((errors, prop) => ({ ...errors, [prop]: currentValue[prop] }), {});
+
+          this.fieldErrorsObserver?.setValue(errors);
+        }
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.fieldErrorsObserver?.unsubscribe();
   }
 }

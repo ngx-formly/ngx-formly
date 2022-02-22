@@ -19,6 +19,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
         [value]="option.value"
         [checked]="isChecked(option)"
         [formlyAttributes]="field"
+        [disabled]="formControl.disabled || option.disabled"
         (change)="onChange(option.value, $any($event.target).checked)"
       />
       <label class="form-check-label" [for]="id + '_' + i">

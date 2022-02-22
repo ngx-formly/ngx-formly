@@ -77,6 +77,28 @@ describe('ui-bootstrap: Select Type', () => {
     expect(options[selectedIndex].text).toEqual('Placeholder option');
   });
 
+  it(`should call change callback after formControl update`, () => {
+    const changeFnSpy = jest.fn();
+    const { query, field } = renderComponent({
+      key: 'sportId',
+      type: 'select',
+      templateOptions: {
+        placeholder: 'sport',
+        change: (f) => changeFnSpy(f.formControl.value),
+        options: [{ value: '1', label: 'Soccer' }],
+      },
+    });
+
+    expect(field.formControl.value).toEqual(undefined);
+
+    const select = query('select').nativeElement as HTMLSelectElement;
+    select.value = select.options[1].value;
+    select.dispatchEvent(new Event('change'));
+
+    expect(changeFnSpy).toHaveBeenCalledWith('1');
+    expect(field.formControl.value).toEqual('1');
+  });
+
   describe('render select options', () => {
     it('should correctly bind to a static array of data', () => {
       const { queryAll } = renderComponent({

@@ -13,6 +13,7 @@ import {
 } from './utils';
 import { FormlyFieldConfig } from './models';
 import { of } from 'rxjs';
+import { FormlyField } from './core';
 
 describe('FormlyUtils service', () => {
   describe('reverseDeepMerge', () => {
@@ -100,6 +101,13 @@ describe('FormlyUtils service', () => {
       const options: FormlyFieldConfig = { type: 'input', key: 'email' };
       const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_input_email_2');
+    });
+
+    it('should take account passing a non-string for type', () => {
+      const customType = FormlyField;
+      let options: FormlyFieldConfig = { type: customType as any };
+      let id = getFieldId('formly_1', options, 2);
+      expect(id).toBe('formly_1_FormlyField__2');
     });
   });
 

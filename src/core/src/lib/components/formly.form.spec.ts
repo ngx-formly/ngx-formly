@@ -719,6 +719,35 @@ describe('FormlyForm Component', () => {
     expect(input.attributes.disabled).toEqual('disabled');
   });
 
+  it('should keep disabled state of field group consistent after detect changes', () => {
+    const {
+      fields: [field],
+      setInputs,
+      detectChanges,
+    } = renderComponent({
+      fields: [
+        {
+          key: 'f1',
+          fieldGroup: [
+            { key: 's1', templateOptions: { disabled: true } },
+            { key: 's2', templateOptions: { disabled: false } },
+          ],
+        },
+      ],
+    });
+
+    expect(field.templateOptions.disabled).toEqual(false);
+    expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
+    expect(field.fieldGroup[1].templateOptions.disabled).toEqual(false);
+
+    setInputs({ model: {} });
+    detectChanges();
+
+    expect(field.templateOptions.disabled).toEqual(false);
+    expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
+    expect(field.fieldGroup[1].templateOptions.disabled).toEqual(false);
+  });
+
   it('should detect changes when building a child field', () => {
     const { form, fields, options, detectChanges } = renderComponent(
       { fields: [{ fieldGroup: [{ key: 'bar', type: 'input' }] }] },

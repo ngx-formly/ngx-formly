@@ -8,37 +8,46 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
 1. Install Formly packages:
 
-  ```bash
-  ng add @ngx-formly/schematics --ui-theme=bootstrap
-  ```
+  - Installing with `ng add` (recomanded):
+    ```bash
+    ng add @ngx-formly/schematics@next --ui-theme=bootstrap
+    ```
 
-  - `ui-theme`: is optional flag which allows choosing the UI theme to install along with the core package, choose one of the following themes:
-    - `bootstrap`
-    - `material`
-    - `ionic`
-    - `primeng`
-    - `kendo`
-    - `nativescript`
+    - `ui-theme`: is optional flag which allows choosing the UI theme to install along with the core package, choose one of the following themes:
+      - `bootstrap`
+      - `material`
+      - `ng-zorro-antd`
+      - `ionic`
+      - `primeng`
+      - `kendo`
+      - `nativescript`
+
+  - Installing with `npm`:
+    ```bash
+    npm install @angular/forms @ngx-formly/core @ngx-formly/bootstrap --save
+    ```
+    - replace `bootstrap` with one of the following available themes: `material`, `ionic`, `primeng`, `kendo`, `nativescript`.
 
   Once installed, `FormlyModule` will be imported in the `AppModule`:
 
-  ```ts
+  ```patch
   import { AppComponent } from './app.component';
-  import { ReactiveFormsModule } from '@angular/forms';
-  import { FormlyModule } from '@ngx-formly/core';
-  import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+  + import { ReactiveFormsModule } from '@angular/forms';
+  + import { FormlyModule } from '@ngx-formly/core';
+  + import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
   @NgModule({
     imports: [
       BrowserModule
-      ReactiveFormsModule,
-      FormlyModule.forRoot(),
-      FormlyBootstrapModule
+  +   ReactiveFormsModule,
+  +   FormlyModule.forRoot(),
+  +   FormlyBootstrapModule
     ],
     ...
   })
   export class AppModule { }
   ```
+
   The `forRoot()` call is required at the application's root level. The `forRoot()` method accepts a config argument where you can pass extra config, register custom field types, wrappers, extensions and validation.
 
 2. add `<formly-form>` inside the `form` tag to your `AppComponent` template:
