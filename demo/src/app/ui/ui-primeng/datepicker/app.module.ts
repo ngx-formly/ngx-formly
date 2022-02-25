@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
-import { FormlyDatePickerModule } from '@ngx-formly/primeng/datepicker/';
+import { FormlyDatePickerModule } from '@ngx-formly/primeng/datepicker';
 
 import { AppComponent } from './app.component';
 

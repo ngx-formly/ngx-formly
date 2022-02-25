@@ -40,13 +40,12 @@ export interface FormlyFieldConfig {
    * - `validation.show`: A boolean you as the developer can set to force displaying errors whatever the state of field. This is useful when you're trying to call the user's attention to some fields for some reason.
    */
   validation?: {
-    messages?: {
-      /** @deprecated use minLength */
+    messages?: { [messageProperties: string]: ValidationMessageOption['message'] } & {
+      /** @deprecated use `minLength` */
       minlength?: ValidationMessageOption['message'];
-      /** @deprecated use maxLength */
-      maxlength?: ValidationMessageOption['message'];
 
-      [messageProperties: string]: ValidationMessageOption['message'];
+      /** @deprecated use `maxLength` */
+      maxlength?: ValidationMessageOption['message'];
     };
     show?: boolean;
     [additionalProperties: string]: any;
@@ -201,8 +200,15 @@ export interface FormlyTemplateOptions {
   hidden?: boolean;
   max?: number;
   min?: number;
+
   minLength?: number;
+  /** @deprecated use `minLength` */
+  minlength?: number;
+
   maxLength?: number;
+  /** @deprecated use `minLength` */
+  maxlength?: number;
+
   pattern?: string | RegExp;
   required?: boolean;
   tabindex?: number;
