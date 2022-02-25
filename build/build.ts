@@ -5,8 +5,8 @@ const mainPkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const distDir = 'dist/@ngx-formly';
 
 // cleanup
-exec(`rm -rf ${distDir}`);
-exec(`mkdir -p ${distDir}`);
+fs.rmSync(distDir, { recursive: true, force: true });
+fs.mkdirSync(distDir, { recursive: true });
 
 PACKAGES.map((name) => {
   // build package
@@ -17,7 +17,9 @@ PACKAGES.map((name) => {
   );
 
   const pkgDir = `${distDir}/${name}`;
-  exec(`cp README.md ${pkgDir}`);
+  fs.copyFile('README.md', `${pkgDir}/README.md`, (err) => {
+    if (err) throw err;
+  });
 
   // update `FORMLY-VERSION` in package.json for all sub-packages
   const pkgPath = `${pkgDir}/package.json`;
