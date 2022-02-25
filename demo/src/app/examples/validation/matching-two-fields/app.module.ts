@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
-export function minLengthValidationMessages(err, field) {
+export function minLengthValidationMessages(error: any, field: FormlyFieldConfig) {
   return `Should have atleast ${field.templateOptions.minLength} characters`;
 }
 

@@ -13,7 +13,9 @@ export function mockComponent(options: Component): Component {
     exportAs: options.exportAs || '',
   };
 
-  class Mock {}
+  class Mock {
+    [id: string]: any;
+  }
 
   metadata.outputs.forEach((method) => {
     Mock.prototype[method] = new EventEmitter<any>();
@@ -29,10 +31,10 @@ export function createFieldChangesSpy(field: FormlyFieldConfig): [jest.Mock, Sub
 }
 
 class TargetEvent extends Event {
-  get target() {
+  override get target() {
     return this._target;
   }
-  set target(_target) {
+  override set target(_target) {
     this._target = _target;
   }
   private _target: any;

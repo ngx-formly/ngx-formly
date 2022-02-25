@@ -17,7 +17,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig> {
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       cols: 1,
       rows: 1,

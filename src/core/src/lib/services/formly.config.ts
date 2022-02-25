@@ -25,7 +25,7 @@ export class FormlyConfig {
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
   messages: { [name: string]: ValidationMessageOption['message'] } = {};
-  extras: ConfigOption['extras'] = {
+  extras: NonNullable<ConfigOption['extras']> = {
     checkExpressionOn: 'modelChange',
     lazyRender: true,
     resetFieldOnHide: true,

@@ -11,7 +11,7 @@ import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-
   },
 })
 export class IonFormlyAttributes extends FormlyAttributes {
-  @Input('ionFormlyAttributes') field: FormlyFieldConfig;
+  @Input('ionFormlyAttributes') override field: FormlyFieldConfig;
 
   focusElement(element, value: boolean) {
     if (!element.setFocus || !value) {

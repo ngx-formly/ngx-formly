@@ -40,7 +40,7 @@ export class FormlyFieldCheckbox
   implements AfterViewInit, AfterViewChecked, OnDestroy
 {
   @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
       indeterminate: true,
@@ -56,7 +56,7 @@ export class FormlyFieldCheckbox
     super();
   }
 
-  onContainerClick(event: MouseEvent): void {
+  override onContainerClick(event: MouseEvent): void {
     this.checkbox.focus();
     super.onContainerClick(event);
   }
@@ -85,7 +85,8 @@ export class FormlyFieldCheckbox
     }
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy();
     if (this.checkbox) {
       this.focusMonitor.stopMonitoring(this.checkbox._inputElement);
     }

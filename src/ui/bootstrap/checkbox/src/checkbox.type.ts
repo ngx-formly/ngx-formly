@@ -29,7 +29,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       indeterminate: true,
       hideLabel: true,

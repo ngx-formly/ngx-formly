@@ -29,7 +29,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;
 
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
@@ -52,7 +52,7 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   }
 
   // TODO: find a solution to prevent scroll on focus
-  onContainerClick() {}
+  override onContainerClick() {}
 
   isChecked(option: any) {
     const value = this.formControl.value;

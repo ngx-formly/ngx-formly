@@ -27,7 +27,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       options: [],
       compareWith(o1: any, o2: any) {

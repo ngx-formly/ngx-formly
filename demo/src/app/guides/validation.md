@@ -13,7 +13,7 @@ The message property could be simply a string or be defined as a function which 
 The following code example shows how to include a new message "ip" with a function to generate the string message by using the formControl.value and a new message "required" as a simple string.
 
 ```typescript
-export function IpValidatorMessage(err, field: FormlyFieldConfig) {
+export function IpValidatorMessage(error: any, field: FormlyFieldConfig) {
   return `"${field.formControl.value}" is not a valid IP Address`;
 }
 ...
@@ -159,7 +159,7 @@ As can be seen in the following code example, you just need to give a name to th
   validators: {
     ip: {
       expression: (c) => /(\d{1,3}\.){3}\d{1,3}/.test(c.value),
-      message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
+      message: (error: any, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
     },
   },
 },
@@ -182,7 +182,7 @@ As can be seen in the following code example, you just need to give a name to th
           resolve(/(\d{1,3}\.){3}\d{1,3}/.test(c.value));
         }, 1000);
       }),
-      message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
+      message: (error: any, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
     },
   },
 },
@@ -195,7 +195,7 @@ As can be seen in the following code example, you just need to give a name to th
 Create a custom validation message as described in point 1.
 
 ```typescript
-export function IpValidatorMessage(err, field: FormlyFieldConfig) {
+export function IpValidatorMessage(error: any, field: FormlyFieldConfig) {
   return `"${field.formControl.value}" is not a valid IP Address`;
 }
 ...

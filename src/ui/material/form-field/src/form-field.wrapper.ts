@@ -102,7 +102,6 @@ export class FormlyWrapperFormField
   implements OnInit, OnDestroy, AfterViewInit
 {
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;
-  field!: MatFormlyFieldConfig;
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef, private focusMonitor: FocusMonitor) {
     super();

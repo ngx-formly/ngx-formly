@@ -8,7 +8,28 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class AppComponent {
   form = new FormGroup({});
-  model: any;
+  model: any = {
+    name: 'name1',
+    surname: 'surname1',
+    investments: [
+      {
+        investmentName: 'project1',
+        investmentDate: '',
+        stockIdentifier: 1,
+      },
+      {
+        investmentName: 'project2',
+        investmentDate: '',
+        stockIdentifier: 2,
+      },
+      {
+        investmentName: 'project3',
+        investmentDate: '',
+        stockIdentifier: 3,
+      },
+    ],
+  };
+
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [
@@ -74,35 +95,7 @@ export class AppComponent {
     },
   ];
 
-  constructor() {
-    this.fetch((data) => (this.model = data));
-  }
-
   submit() {
     alert(JSON.stringify(this.model));
-  }
-
-  fetch(cb) {
-    cb({
-      name: 'name1',
-      surname: 'surname1',
-      investments: [
-        {
-          investmentName: 'project1',
-          investmentDate: '',
-          stockIdentifier: 1,
-        },
-        {
-          investmentName: 'project2',
-          investmentDate: '',
-          stockIdentifier: 2,
-        },
-        {
-          investmentName: 'project3',
-          investmentDate: '',
-          stockIdentifier: 3,
-        },
-      ],
-    });
   }
 }

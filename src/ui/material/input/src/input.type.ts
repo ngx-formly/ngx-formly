@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
@@ -11,7 +11,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [id]="id"
       [type]="type || 'text'"
       [readonly]="to.readonly"
-      [required]="to.required"
+      [required]="required"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field"
@@ -24,7 +24,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
         [id]="id"
         type="number"
         [readonly]="to.readonly"
-        [required]="to.required"
+        [required]="required"
         [errorStateMatcher]="errorStateMatcher"
         [formControl]="formControl"
         [formlyAttributes]="field"
@@ -35,7 +35,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldInput extends FieldType<FieldTypeConfig> implements OnInit {
+export class FormlyFieldInput extends FieldType<FieldTypeConfig> {
   get type() {
     return this.to.type || 'text';
   }

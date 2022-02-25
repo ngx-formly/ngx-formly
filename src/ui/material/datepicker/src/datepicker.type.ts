@@ -18,7 +18,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [placeholder]="to.placeholder"
       [tabindex]="to.tabindex"
       [readonly]="to.readonly"
-      [required]="to.required"
+      [required]="required"
       (dateInput)="to.datepickerOptions.dateInput(field, $event)"
       (dateChange)="to.datepickerOptions.dateChange(field, $event)"
     />
@@ -46,7 +46,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
 export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements AfterViewInit, OnDestroy {
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       datepickerOptions: {
         startView: 'month',
@@ -69,7 +69,6 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
   }
 
   ngAfterViewInit() {
-    super.ngAfterViewInit();
     this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
 
     // temporary fix for https://github.com/angular/components/issues/16761
@@ -86,7 +85,8 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
     }
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy();
     this.fieldErrorsObserver?.unsubscribe();
   }
 }

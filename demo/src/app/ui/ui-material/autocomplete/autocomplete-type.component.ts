@@ -26,7 +26,6 @@ export class AutocompleteTypeComponent extends FieldType<FieldTypeConfig> implem
   filter: Observable<any>;
 
   ngOnInit() {
-    super.ngOnInit();
     this.filter = this.formControl.valueChanges.pipe(
       startWith(''),
       switchMap((term) => this.to.filter(term)),

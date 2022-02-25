@@ -30,8 +30,8 @@ import { FieldWrapper } from '@ngx-formly/core';
   `,
 })
 export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
-  @ViewChild('matPrefix', { static: true }) matPrefix: TemplateRef<any>;
-  @ViewChild('matSuffix', { static: true }) matSuffix: TemplateRef<any>;
+  @ViewChild('matPrefix', { static: true }) matPrefix!: TemplateRef<any>;
+  @ViewChild('matSuffix', { static: true }) matSuffix!: TemplateRef<any>;
 
   ngAfterViewInit() {
     if (this.matPrefix) {

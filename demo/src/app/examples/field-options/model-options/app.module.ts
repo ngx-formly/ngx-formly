@@ -6,7 +6,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 import { AppComponent } from './app.component';
 
-export function RequiredValidatorMessage(err, field: FormlyFieldConfig) {
+export function RequiredValidatorMessage(error: any, field: FormlyFieldConfig) {
   return `"This required field was validated after ${field.formControl.updateOn}"`;
 }
 

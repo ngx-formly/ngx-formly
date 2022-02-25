@@ -10,12 +10,12 @@ interface ISelectOption {
   group?: ISelectOption[];
 }
 
-type ITransformOption = Partial<{
+type ITransformOption = {
   labelProp: (option: any) => string;
   valueProp: (option: any) => any;
   disabledProp: (option: any) => boolean;
   groupProp: (option: any) => string;
-}>;
+};
 
 @Pipe({ name: 'formlySelectOptions' })
 export class FormlySelectOptionsPipe implements PipeTransform {
@@ -76,8 +76,8 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     return option;
   }
 
-  private transformSelectProps(field: FormlyFieldConfig): ITransformOption {
-    const to = field && field.templateOptions ? field.templateOptions : {};
+  private transformSelectProps(field?: FormlyFieldConfig): ITransformOption {
+    const to = field?.templateOptions || {};
     const selectPropFn = (prop: any) => (typeof prop === 'function' ? prop : (o) => o[prop]);
 
     return {

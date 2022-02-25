@@ -30,6 +30,7 @@ import {
   isNil,
   markFieldForCheck,
   hasKey,
+  IObserver,
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
@@ -44,9 +45,9 @@ import { FormlyFieldTemplates } from './formly.template';
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   @Input() field: FormlyFieldConfig;
-  @ViewChild('container', { read: ViewContainerRef, static: true }) viewContainerRef: ViewContainerRef;
+  @ViewChild('container', { read: ViewContainerRef, static: true }) viewContainerRef!: ViewContainerRef;
 
-  private hostObservers: ReturnType<typeof observe>[] = [];
+  private hostObservers: IObserver<any>[] = [];
   private componentRefs: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[] = [];
   private hooksObservers: Function[] = [];
   private detectFieldBuild = false;

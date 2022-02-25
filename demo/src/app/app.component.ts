@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
   ];
 
   private documentTitle$ = this.router.events.pipe(
-    filter((event) => event instanceof NavigationEnd),
+    filter((event: any) => event instanceof NavigationEnd),
     map((event: NavigationEnd) => event.urlAfterRedirects),
     map((currentUrl) => {
       const sidebarLinks = this.menu.flatMap((group) => group.links);

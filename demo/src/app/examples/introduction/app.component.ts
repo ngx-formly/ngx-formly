@@ -38,6 +38,8 @@ export class AppComponent {
           if (formState.awesomeIsForced) {
             return 'And look! This field magically got focus!';
           }
+
+          return '';
         },
       },
     },

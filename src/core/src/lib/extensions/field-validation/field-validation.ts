@@ -78,14 +78,16 @@ export class FieldValidationExtension implements FormlyExtension {
               return Validators.min(value)(control);
             case 'max':
               return Validators.max(value)(control);
+            default:
+              return null;
           }
         }),
-      )(control);
+      )!(control);
     };
   }
 
   private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: any, validatorName?: string) {
-    let validatorOption: ValidatorOption = null;
+    let validatorOption: ValidatorOption;
     if (typeof validator === 'string') {
       validatorOption = clone(this.config.getValidator(validator));
     }

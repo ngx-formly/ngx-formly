@@ -12,7 +12,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
       [formlyAttributes]="field"
       [color]="to.color"
       [tabIndex]="to.tabindex"
-      [required]="to.required"
+      [required]="required"
       [labelPosition]="to.labelPosition"
     >
       {{ to.label }}
@@ -22,7 +22,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 })
 export class FormlyFieldToggle extends FieldType<FieldTypeConfig> {
   @ViewChild(MatSlideToggle, { static: true }) slideToggle!: MatSlideToggle;
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
@@ -30,7 +30,7 @@ export class FormlyFieldToggle extends FieldType<FieldTypeConfig> {
     },
   };
 
-  onContainerClick(event: MouseEvent): void {
+  override onContainerClick(event: MouseEvent): void {
     this.slideToggle.focus();
     super.onContainerClick(event);
   }

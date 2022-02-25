@@ -150,7 +150,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
 
         return false;
-      } catch (error) {
+      } catch (error: any) {
         error.message = `[Formly Error] [Expression "${path}"] ${error.message}`;
         throw error;
       }
@@ -173,7 +173,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     return fieldChanged;
   }
 
-  private changeDisabledState(field: FormlyFieldConfig, value: boolean) {
+  private changeDisabledState(field: FormlyFieldConfigCache, value: boolean) {
     if (field.fieldGroup) {
       field.fieldGroup
         .filter((f) => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('templateOptions.disabled'))
@@ -239,7 +239,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
 
       target[paths[lastIndex]] = value;
-    } catch (error) {
+    } catch (error: any) {
       error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
       throw error;
     }

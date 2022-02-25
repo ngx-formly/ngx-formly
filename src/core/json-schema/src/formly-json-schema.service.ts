@@ -392,7 +392,7 @@ export class FormlyJsonschema {
       throw Error(`allOf array can not be empty ${allOf}.`);
     }
 
-    return allOf.reduce((base: JSONSchema7, schema: JSONSchema7) => {
+    return (allOf as JSONSchema7[]).reduce((base: JSONSchema7, schema: JSONSchema7) => {
       schema = this.resolveSchema(schema, options);
       if (base.required && schema.required) {
         base.required = [...base.required, ...schema.required];
@@ -561,8 +561,8 @@ export class FormlyJsonschema {
   private isEnum(schema: JSONSchema7) {
     return (
       schema.enum ||
-      (schema.anyOf && schema.anyOf.every(isConst)) ||
-      (schema.oneOf && schema.oneOf.every(isConst)) ||
+      (schema.anyOf && (schema.anyOf as JSONSchema7[]).every(isConst)) ||
+      (schema.oneOf && (schema.oneOf as JSONSchema7[]).every(isConst)) ||
       (schema.uniqueItems && schema.items && !Array.isArray(schema.items) && this.isEnum(<JSONSchema7>schema.items))
     );
   }
@@ -583,11 +583,11 @@ export class FormlyJsonschema {
     };
 
     if (schema.anyOf) {
-      return schema.anyOf.map(toEnum);
+      return (schema.anyOf as JSONSchema7[]).map(toEnum);
     }
 
     if (schema.oneOf) {
-      return schema.oneOf.map(toEnum);
+      return (schema.oneOf as JSONSchema7[]).map(toEnum);
     }
 
     return this.toEnumOptions(<JSONSchema7>schema.items);

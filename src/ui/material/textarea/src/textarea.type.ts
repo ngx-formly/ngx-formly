@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
@@ -10,7 +10,7 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
       matInput
       [id]="id"
       [readonly]="to.readonly"
-      [required]="to.required"
+      [required]="required"
       [formControl]="formControl"
       [errorStateMatcher]="errorStateMatcher"
       [cols]="to.cols"
@@ -32,8 +32,8 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldTextArea extends FieldType<FieldTypeConfig> implements OnInit {
-  defaultOptions = {
+export class FormlyFieldTextArea extends FieldType<FieldTypeConfig> {
+  override defaultOptions = {
     templateOptions: {
       cols: 1,
       rows: 1,

@@ -25,7 +25,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   private document: Document;
   private uiAttributesCache: any = {};
-  private uiAttributes: string[] = null;
+  private uiAttributes: string[];
   private focusObserver: IObserver<boolean>;
 
   /**
