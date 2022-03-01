@@ -11,7 +11,6 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [matDatepicker]="picker"
-      [matDatepickerFilter]="to.datepickerOptions.filter"
       [max]="to.datepickerOptions.max"
       [min]="to.datepickerOptions.min"
       [formlyAttributes]="field"
@@ -36,6 +35,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [startView]="to.datepickerOptions.startView"
       [touchUi]="to.datepickerOptions.touchUi"
       [calendarHeaderComponent]="to.datepickerOptions.calendarHeaderComponent"
+      [matDatepickerFilter]="to.datepickerOptions.filter"
       (monthSelected)="to.datepickerOptions.monthSelected(field, $event, picker)"
       (yearSelected)="to.datepickerOptions.yearSelected(field, $event, picker)"
     >
