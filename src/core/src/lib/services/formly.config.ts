@@ -10,6 +10,7 @@ import {
   WrapperOption,
   FormlyExtension,
   ValidationMessageOption,
+  ExtensionOption,
 } from '../models';
 
 export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
@@ -36,6 +37,7 @@ export class FormlyConfig {
       );
     },
   };
+  private extensionsByPriority: Record<number, { [name: string]: FormlyExtension }> = {};
   extensions: { [name: string]: FormlyExtension } = {};
 
   addConfig(config: ConfigOption) {
@@ -52,7 +54,7 @@ export class FormlyConfig {
       config.validationMessages.forEach((validation) => this.addValidatorMessage(validation.name, validation.message));
     }
     if (config.extensions) {
-      config.extensions.forEach((c) => (this.extensions[c.name] = c.extension));
+      this.setSortedExtensions(config.extensions);
     }
     if (config.extras) {
       this.extras = { ...this.extras, ...config.extras };
@@ -208,6 +210,27 @@ export class FormlyConfig {
 
   getValidatorMessage(name: string) {
     return this.messages[name];
+  }
+
+  private setSortedExtensions(extensionOptions: ExtensionOption[]) {
+    // insert new extensions, grouped by priority
+    extensionOptions.forEach((extensionOption) => {
+      const priority = extensionOption.priority ?? 1;
+      this.extensionsByPriority[priority] = {
+        ...this.extensionsByPriority[priority],
+        [extensionOption.name]: extensionOption.extension,
+      };
+    });
+    // flatten extensions object with sorted keys
+    this.extensions = Object.keys(this.extensionsByPriority)
+      .sort()
+      .reduce(
+        (acc, prio) => ({
+          ...acc,
+          ...this.extensionsByPriority[prio],
+        }),
+        {},
+      );
   }
 
   private mergeExtendedType(name: string) {
