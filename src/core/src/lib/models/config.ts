@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 
 /** @experimental */
 export interface FormlyExtension<F extends FormlyFieldConfig = FormlyFieldConfig> {
+  priority?: number;
+
   prePopulate?(field: F): void;
   onPopulate?(field: F): void;
   postPopulate?(field: F): void;
@@ -39,6 +41,7 @@ export interface ValidatorOption {
 export interface ExtensionOption {
   name: string;
   extension: FormlyExtension;
+  priority?: number;
 }
 
 export interface ValidationMessageOption {
