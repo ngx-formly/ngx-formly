@@ -15,7 +15,6 @@ import {
 } from '../../utils';
 import { Subject } from 'rxjs';
 
-/** @experimental */
 export class CoreExtension implements FormlyExtension {
   private formId = 0;
   constructor(private config: FormlyConfig) {}
