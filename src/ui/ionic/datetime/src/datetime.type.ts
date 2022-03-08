@@ -44,12 +44,11 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   encapsulation: ViewEncapsulation.None,
 })
 export class FormlyFieldDatetime extends FieldType<FieldTypeConfig> {
-  @ViewChild(IonDatetime) datetime: IonDatetime;
+  @ViewChild(IonDatetime) datetime!: IonDatetime;
   isOpen = false;
 
-  defaultOptions? = {
+  override defaultOptions = {
     templateOptions: {
-      displayFormat: undefined,
       presentation: 'date', // date | time | time-date
     },
   };

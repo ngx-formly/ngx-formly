@@ -1,3 +1,4 @@
+import { ComponentRef } from '@angular/core';
 import { FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache, FormlyValueChangeEvent, FormlyExtension, FormlyFieldConfig } from '../../models';
 import {
@@ -8,7 +9,6 @@ import {
   reverseDeepMerge,
   defineHiddenProp,
   clone,
-  isNil,
   getField,
   markFieldForCheck,
   hasKey,
@@ -109,7 +109,7 @@ export class CoreExtension implements FormlyExtension {
 
   private initFieldOptions(field: FormlyFieldConfigCache) {
     reverseDeepMerge(field, {
-      id: getFieldId(`formly_${this.formId}`, field, field['index']),
+      id: getFieldId(`formly_${this.formId}`, field, field.index),
       hooks: {},
       modelOptions: {},
       validation: { messages: {} },
@@ -165,11 +165,14 @@ export class CoreExtension implements FormlyExtension {
       let componentRef = this.config.resolveFieldTypeRef(field);
 
       const fieldComponentRef = field._componentRefs?.slice(-1)[0];
-      if (fieldComponentRef?.['componentType'] === componentRef?.componentType) {
+      if (
+        fieldComponentRef instanceof ComponentRef &&
+        fieldComponentRef?.componentType === componentRef?.componentType
+      ) {
         componentRef = fieldComponentRef as any;
       }
 
-      return componentRef?.instance as FormlyExtension;
+      return componentRef?.instance as any;
     };
 
     if (!field._proxyInstance) {

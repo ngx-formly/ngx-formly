@@ -20,7 +20,7 @@ export class FieldFormExtension implements FormlyExtension {
 
     if (field.parent) {
       Object.defineProperty(field, 'form', {
-        get: () => field.parent.formControl,
+        get: () => field.parent!.formControl,
         configurable: true,
       });
     }
@@ -69,44 +69,45 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   private setValidators(field: FormlyFieldConfigCache, disabled = false) {
-    let markForCheck = false;
     if (disabled === false && hasKey(field) && field.templateOptions?.disabled) {
       disabled = true;
     }
 
+    let markForCheck = false;
     field.fieldGroup?.forEach((f) => f && this.setValidators(f, disabled) && (markForCheck = true));
-
     if (hasKey(field) || !field.parent || (!hasKey(field) && !field.fieldGroup)) {
       const { formControl: c } = field;
-      if (hasKey(field) && c && c instanceof FormControl) {
-        if (disabled && c.enabled) {
-          c.disable({ emitEvent: false, onlySelf: true });
+      if (c) {
+        if (hasKey(field) && c instanceof FormControl) {
+          if (disabled && c.enabled) {
+            c.disable({ emitEvent: false, onlySelf: true });
+            markForCheck = true;
+          }
+
+          if (!disabled && c.disabled) {
+            c.enable({ emitEvent: false, onlySelf: true });
+            markForCheck = true;
+          }
+        }
+
+        if (null === c.validator || null === c.asyncValidator) {
+          c.setValidators(() => {
+            const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
+
+            return v ? v(c) : null;
+          });
+          c.setAsyncValidators(() => {
+            const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
+
+            return v ? v(c) : of(null);
+          });
+
           markForCheck = true;
         }
 
-        if (!disabled && c.disabled) {
-          c.enable({ emitEvent: false, onlySelf: true });
-          markForCheck = true;
+        if (markForCheck) {
+          updateValidity(c, true);
         }
-      }
-
-      if (c && (null === c.validator || null === c.asyncValidator)) {
-        c.setValidators(() => {
-          const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
-
-          return v?.(c);
-        });
-        c.setAsyncValidators(() => {
-          const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
-
-          return v ? v(c) : of(null);
-        });
-
-        markForCheck = true;
-      }
-
-      if (markForCheck) {
-        updateValidity(c, true);
       }
     }
 
@@ -116,8 +117,8 @@ export class FieldFormExtension implements FormlyExtension {
   private mergeValidators<T>(field: FormlyFieldConfigCache, type: '_validators' | '_asyncValidators'): T[] {
     const validators: any = [];
     const c = field.formControl;
-    if (c?.['_fields']?.length > 1) {
-      c['_fields']
+    if (c?._fields?.length > 1) {
+      c._fields
         .filter((f: FormlyFieldConfigCache) => !f._hide)
         .forEach((f: FormlyFieldConfigCache) => validators.push(...f[type]));
     } else if (field[type]) {

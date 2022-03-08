@@ -9,7 +9,7 @@ import {
   Inject,
   OnDestroy,
 } from '@angular/core';
-import { FormlyFieldConfig, FormlyTemplateOptions } from '../models';
+import { FormlyFieldConfig, FormlyFieldConfigCache, FormlyTemplateOptions } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe, IObserver } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
@@ -25,7 +25,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   private document: Document;
   private uiAttributesCache: any = {};
-  private uiAttributes: string[] = null;
+  private uiAttributes: string[];
   private focusObserver: IObserver<boolean>;
 
   /**
@@ -34,7 +34,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * Formly issue: https://github.com/ngx-formly/ngx-formly/issues/1991
    */
   private uiEvents = {
-    listeners: [],
+    listeners: [] as Function[],
     events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change'],
     callback: (eventName: string, $event: any) => {
       switch (eventName) {
@@ -55,7 +55,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   private get fieldAttrElements(): ElementRef[] {
-    return this.field?.['_elementRefs'] || [];
+    return (this.field as FormlyFieldConfigCache)?.['_elementRefs'] || [];
   }
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
@@ -187,7 +187,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     this.field.formControl?.markAsDirty();
   }
 
-  private attachElementRef(f: FormlyFieldConfig) {
+  private attachElementRef(f: FormlyFieldConfigCache) {
     if (!f) {
       return;
     }
@@ -199,10 +199,10 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
   }
 
-  private detachElementRef(f: FormlyFieldConfig) {
+  private detachElementRef(f: FormlyFieldConfigCache) {
     const index = f?.['_elementRefs'] ? this.fieldAttrElements.indexOf(this.elementRef) : -1;
     if (index !== -1) {
-      this.field['_elementRefs'].splice(index, 1);
+      f['_elementRefs'].splice(index, 1);
     }
   }
 

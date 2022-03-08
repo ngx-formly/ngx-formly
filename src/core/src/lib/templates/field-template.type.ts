@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FieldType } from './field.type';
 
 @Component({
@@ -19,7 +19,7 @@ export class FormlyTemplateType extends FieldType {
     return this.innerHtml.content;
   }
 
-  private innerHtml = { content: null, template: null };
+  private innerHtml: { content?: SafeHtml; template?: string } = {};
   constructor(private sanitizer: DomSanitizer) {
     super();
   }

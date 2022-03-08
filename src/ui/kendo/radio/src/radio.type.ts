@@ -22,8 +22,4 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {
-  defaultOptions = {
-    templateOptions: { options: [] },
-  };
-}
+export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {}

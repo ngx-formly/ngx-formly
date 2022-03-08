@@ -20,7 +20,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [formlyAttributes]="field"
       [placeholder]="to.placeholder"
       [tabIndex]="to.tabindex"
-      [required]="to.required"
+      [required]="required"
       [compareWith]="to.compareWith"
       [multiple]="to.multiple"
       (selectionChange)="change($event)"
@@ -51,9 +51,8 @@ import { FieldType } from '@ngx-formly/material/form-field';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
-      options: [],
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },

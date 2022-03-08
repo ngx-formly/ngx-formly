@@ -13,7 +13,7 @@ The message property could be simply a string or be defined as a function which 
 The following code example shows how to include a new message "ip" with a function to generate the string message by using the formControl.value and a new message "required" as a simple string.
 
 ```typescript
-export function IpValidatorMessage(err, field: FormlyFieldConfig) {
+export function IpValidatorMessage(error: any, field: FormlyFieldConfig) {
   return `"${field.formControl.value}" is not a valid IP Address`;
 }
 ...
@@ -31,12 +31,12 @@ export function IpValidatorMessage(err, field: FormlyFieldConfig) {
 ```
 
 ##### CUSTOM VALIDATION FUNCTION
-The validation function receives the `FormControl` as input and it will return `null` if there is not error, and otherwise it will send an object which property is set as `true`.  The name of the property must be the same as the name set to the error message for this validation.
+The validation function receives the `AbstractControl` as input and it will return `null` if there is not error, and otherwise it will send an object which property is set as `true`.  The name of the property must be the same as the name set to the error message for this validation.
 
 The following code example shows a function to validate an IP. As can be seen, the object returned when there is an error has a property called 'ip' which matches with the name of the custom validation message.
 
 ```typescript
-export function IpValidator(control: FormControl): ValidationErrors {
+export function IpValidator(control: AbstractControl): ValidationErrors {
   return /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { 'ip': true };
 }
 ...
@@ -97,7 +97,7 @@ You just need to include the name of the validate function, declared in `FormlyM
 You could implement the validation function within field definition. For instance, you could use this method if you want to use several validation functions with the same error message.
 
 ```typescript
-export function IpValidator(control: FormControl): ValidationErrors {
+export function IpValidator(control: AbstractControl): ValidationErrors {
   return /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { 'ip': true };
 }
 ```
@@ -158,8 +158,8 @@ As can be seen in the following code example, you just need to give a name to th
   },
   validators: {
     ip: {
-      expression: (c) => /(\d{1,3}\.){3}\d{1,3}/.test(c.value),
-      message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
+      expression: (c: AbstractControl) => /(\d{1,3}\.){3}\d{1,3}/.test(c.value),
+      message: (error: any, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
     },
   },
 },
@@ -177,12 +177,12 @@ As can be seen in the following code example, you just need to give a name to th
   },
   asyncValidators: {
     ip: {
-      expression: (c) => return new Promise((resolve, reject) => {
+      expression: (c: AbstractControl) => return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve(/(\d{1,3}\.){3}\d{1,3}/.test(c.value));
         }, 1000);
       }),
-      message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
+      message: (error: any, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
     },
   },
 },
@@ -195,7 +195,7 @@ As can be seen in the following code example, you just need to give a name to th
 Create a custom validation message as described in point 1.
 
 ```typescript
-export function IpValidatorMessage(err, field: FormlyFieldConfig) {
+export function IpValidatorMessage(error: any, field: FormlyFieldConfig) {
   return `"${field.formControl.value}" is not a valid IP Address`;
 }
 ...
@@ -213,12 +213,12 @@ export function IpValidatorMessage(err, field: FormlyFieldConfig) {
 ```
 
 ##### CUSTOM VALIDATION FUNCTION USED ON A FORMLY TYPE
-The validation function receives the `FormControl` as input and it will return a boolean value, `false` if there is no error, otherwise `true`.
+The validation function receives the `AbstractControl` as input and it will return a boolean value, `false` if there is no error, otherwise `true`.
 
 The following code example shows a function to validate an IP. It has to return a boolean instead of a ValidationErrors object.
 
 ```typescript
-export function IpValidator(control: FormControl): boolean {
+export function IpValidator(control: AbstractControl): boolean {
   return /(\d{1,3}\.){3}\d{1,3}/.test(control.value);
 }
 ...

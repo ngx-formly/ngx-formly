@@ -20,7 +20,7 @@ export function exec(cmd: string, options: ExecSyncOptions = { stdio: 'inherit' 
   return execSync(cmd, options);
 }
 
-export function copyDirSync(src, dest) {
+export function copyDirSync(src: string, dest: string) {
   fs.mkdirSync(dest, { recursive: true });
   let entries = fs.readdirSync(src, { withFileTypes: true });
 

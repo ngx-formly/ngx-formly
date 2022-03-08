@@ -9,7 +9,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       matNativeControl
       [id]="id"
       [readonly]="to.readonly"
-      [required]="to.required"
+      [required]="required"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field"
@@ -41,10 +41,4 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldNativeSelect extends FieldType<FieldTypeConfig> {
-  defaultOptions = {
-    templateOptions: {
-      options: [],
-    },
-  };
-}
+export class FormlyFieldNativeSelect extends FieldType<FieldTypeConfig> {}

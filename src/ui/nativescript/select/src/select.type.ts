@@ -12,13 +12,13 @@ import { action } from '@nativescript/core/ui/dialogs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
-  tap(options) {
+  tap(options: any[]) {
     action({ title: this.to.label, actions: options.map((o) => o.label) }).then((selectedAction) =>
       this.formControl.patchValue(options.find((o) => o.label === selectedAction).value),
     );
   }
 
-  selectedItem(options) {
+  selectedItem(options: any[]) {
     if (this.formControl.value) {
       return options.find((o) => o.value === this.formControl.value).label;
     }

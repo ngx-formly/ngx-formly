@@ -126,7 +126,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (this.config.extras.immutable) {
       this.field = { ...this.field, ...clone(field) };
     } else {
-      Object.keys(field).forEach((p) => (this.field[p] = field[p]));
+      Object.keys(field).forEach((p) => ((this.field as any)[p] = (field as any)[p]));
     }
   }
 }

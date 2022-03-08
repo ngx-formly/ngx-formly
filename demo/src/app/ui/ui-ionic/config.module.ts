@@ -1,14 +1,14 @@
-import { NgModule, APP_INITIALIZER, Inject } from '@angular/core';
+import { APP_INITIALIZER, Inject, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule, CommonExampleConfigs, CommonExampleComponents, debugFields } from '../common';
+import { CommonModule, CommonExampleConfigs, debugFields } from '../common';
 
 import { AppComponent } from './app.component';
 import { FormlyIonicModule } from '@ngx-formly/ionic';
 import { IonicModule } from '@ionic/angular';
 
-import { DatetimeAppModule, DatetimeExampleConfig, DatetimeAppComponent } from './datetime';
-import { RangeAppModule, RangeExampleConfig, RangeAppComponent } from './range';
-import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './toggle';
+import { DatetimeAppModule, DatetimeExampleConfig } from './datetime';
+import { RangeAppModule, RangeExampleConfig } from './range';
+import { ToggleAppModule, ToggleExampleConfig } from './toggle';
 
 @NgModule({
   imports: [
@@ -33,7 +33,7 @@ import { ToggleAppModule, ToggleExampleConfig, ToggleAppComponent } from './togg
   declarations: [AppComponent],
 })
 export class ConfigModule {
-  constructor(@Inject(APP_INITIALIZER) appInitialize) {
+  constructor(@Inject(APP_INITIALIZER) appInitialize: any) {
     // temporary workaround to make ionic working in a child module
     appInitialize[0]();
   }

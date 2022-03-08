@@ -226,7 +226,7 @@ interface IObserveTarget<T> {
 }
 
 export function observeDeep(source: any, paths: string[], setFn: () => void): () => void {
-  let observers = [];
+  let observers: Function[] = [];
 
   const unsubscribe = () => {
     observers.forEach((observer) => observer());
@@ -309,7 +309,7 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
 export function getField(f: FormlyFieldConfig, key: FormlyFieldConfig['key']): FormlyFieldConfig {
   key = (Array.isArray(key) ? key.join('.') : key) as string;
   if (!f.fieldGroup) {
-    return;
+    return undefined;
   }
 
   for (let i = 0, len = f.fieldGroup.length; i < len; i++) {
@@ -326,6 +326,8 @@ export function getField(f: FormlyFieldConfig, key: FormlyFieldConfig['key']): F
       }
     }
   }
+
+  return undefined;
 }
 
 export function markFieldForCheck(field: FormlyFieldConfigCache) {

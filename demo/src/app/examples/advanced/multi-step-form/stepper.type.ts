@@ -23,7 +23,7 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
   `,
 })
 export class FormlyFieldStepper extends FieldType {
-  isValid(field: FormlyFieldConfig) {
+  isValid(field: FormlyFieldConfig): boolean {
     if (field.key) {
       return field.formControl.valid;
     }

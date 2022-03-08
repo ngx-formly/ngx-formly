@@ -81,7 +81,7 @@ export class AppComponent {
         required: true,
         label: 'Autocomplete',
         placeholder: 'Placeholder',
-        filter: (term) => of(term ? this.filterStates(term) : states.slice()),
+        filter: (term: string) => of(term ? this.filterStates(term) : states.slice()),
       },
     },
   ];

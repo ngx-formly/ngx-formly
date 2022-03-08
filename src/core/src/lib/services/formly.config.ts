@@ -25,7 +25,7 @@ export class FormlyConfig {
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
   messages: { [name: string]: ValidationMessageOption['message'] } = {};
-  extras: ConfigOption['extras'] = {
+  extras: NonNullable<ConfigOption['extras']> = {
     checkExpressionOn: 'modelChange',
     lazyRender: true,
     resetFieldOnHide: true,
@@ -69,7 +69,7 @@ export class FormlyConfig {
         this.types[options.name] = <TypeOption>{ name: options.name };
       }
 
-      ['component', 'extends', 'defaultOptions', 'wrappers'].forEach((prop) => {
+      (['component', 'extends', 'defaultOptions', 'wrappers'] as (keyof TypeOption)[]).forEach((prop) => {
         if (options.hasOwnProperty(prop)) {
           this.types[options.name][prop] = options[prop];
         }
@@ -129,13 +129,13 @@ export class FormlyConfig {
 
   /** @internal */
   resolveFieldTypeRef(field: FormlyFieldConfigCache = {}): ComponentRef<FieldType> {
-    const type = this.getType(field.type);
+    const type: TypeOption & { _componentRef?: ComponentRef<any> } = this.getType(field.type);
     if (!type) {
       return null;
     }
 
-    if (!type.component || type['_componentRef']) {
-      return type['_componentRef'];
+    if (!type.component || type._componentRef) {
+      return type._componentRef;
     }
 
     const { _resolver, _injector } = field.options;
@@ -147,7 +147,7 @@ export class FormlyConfig {
     defineHiddenProp(type, '_componentRef', componentRef);
     componentRef.destroy();
 
-    return type['_componentRef'];
+    return type._componentRef;
   }
 
   setWrapper(options: WrapperOption) {
@@ -198,7 +198,7 @@ export class FormlyConfig {
   addValidatorMessage(name: string, message: ValidationMessageOption['message']) {
     this.messages[name] = message;
     if (typeof ngDevMode === 'undefined' || ngDevMode) {
-      const deprecated = { minlength: 'minLength', maxlength: 'maxLength' };
+      const deprecated = { minlength: 'minLength', maxlength: 'maxLength' } as any;
       if (deprecated[name]) {
         console.warn(
           `Formly deprecation: passing validation messages key '${name}' is deprecated since v6.0, use '${deprecated[name]}' instead.`,
@@ -223,6 +223,7 @@ export class FormlyConfig {
     });
     // flatten extensions object with sorted keys
     this.extensions = Object.keys(this.extensionsByPriority)
+      .map(Number)
       .sort()
       .reduce(
         (acc, prio) => ({

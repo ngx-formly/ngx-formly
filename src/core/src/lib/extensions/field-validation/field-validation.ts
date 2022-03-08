@@ -23,7 +23,7 @@ export class FieldValidationExtension implements FormlyExtension {
     if (field[type]) {
       for (const validatorName of Object.keys(field[type])) {
         validatorName === 'validation'
-          ? validators.push(...field[type].validation.map((v) => this.wrapNgValidatorFn(field, v)))
+          ? validators.push(...field[type].validation.map((v: any) => this.wrapNgValidatorFn(field, v)))
           : validators.push(this.wrapNgValidatorFn(field, field[type][validatorName], validatorName));
       }
     }
@@ -32,7 +32,7 @@ export class FieldValidationExtension implements FormlyExtension {
   }
 
   private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn {
-    let VALIDATORS = [];
+    let VALIDATORS: string[] = [];
     FORMLY_VALIDATORS.forEach((opt) =>
       observe(field, ['templateOptions', opt], ({ currentValue, firstChange }) => {
         VALIDATORS = VALIDATORS.filter((o) => o !== opt);
@@ -78,14 +78,16 @@ export class FieldValidationExtension implements FormlyExtension {
               return Validators.min(value)(control);
             case 'max':
               return Validators.max(value)(control);
+            default:
+              return null;
           }
         }),
-      )(control);
+      )!(control);
     };
   }
 
   private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: any, validatorName?: string) {
-    let validatorOption: ValidatorOption = null;
+    let validatorOption: ValidatorOption;
     if (typeof validator === 'string') {
       validatorOption = clone(this.config.getValidator(validator));
     }

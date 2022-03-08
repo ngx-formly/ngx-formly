@@ -33,10 +33,10 @@ import { TableColumn } from '@swimlane/ngx-datatable';
   `,
 })
 export class DatatableTypeComponent extends FieldArrayType implements OnInit {
-  @ViewChild('defaultColumn', { static: true }) public defaultColumn: TemplateRef<any>;
+  @ViewChild('defaultColumn', { static: true }) public defaultColumn!: TemplateRef<any>;
 
   ngOnInit() {
-    this.to.columns.forEach((column) => (column.cellTemplate = this.defaultColumn));
+    (this.to.columns as TableColumn[]).forEach((column) => (column.cellTemplate = this.defaultColumn));
   }
 
   getField(parent: FormlyFieldConfig, column: TableColumn, rowIndex: number): FormlyFieldConfig {

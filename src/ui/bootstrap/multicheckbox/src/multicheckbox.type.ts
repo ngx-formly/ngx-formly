@@ -30,9 +30,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
-      options: [],
       formCheck: 'default', // 'default' | 'inline' | 'switch' | 'inline-switch'
     },
   };

@@ -7,8 +7,8 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  @ViewChild('hintStart', { static: true }) hintStart: TemplateRef<any>;
-  @ViewChild('hintEnd', { static: true }) hintEnd: TemplateRef<any>;
+  @ViewChild('hintStart', { static: true }) hintStart!: TemplateRef<any>;
+  @ViewChild('hintEnd', { static: true }) hintEnd!: TemplateRef<any>;
 
   form = new FormGroup({});
   model: any = {};

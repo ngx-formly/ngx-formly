@@ -1,20 +1,24 @@
-import { ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Injector } from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, ElementRef, EmbeddedViewRef, Injector } from '@angular/core';
 import { AsyncValidatorFn, ValidatorFn, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
+import { FormlyExtension } from './config';
 import { FormlyFieldConfig, FormlyFormOptions } from './fieldconfig';
 
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   form?: FormGroup | FormArray;
   model?: any;
-  formControl?: AbstractControl;
+  formControl?: AbstractControl & { _fields?: FormlyFieldConfigCache[]; _childrenErrors?: { [id: string]: Function } };
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
+  shareFormControl?: boolean;
+  index?: number;
+  _elementRefs?: ElementRef[];
   _expressions?: { [property: string]: (ingoreCache: boolean) => boolean };
   _hide?: boolean;
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];
   _componentRefs?: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[];
-  _proxyInstance?: any;
+  _proxyInstance?: FormlyExtension;
   _keyPath?: {
     key: FormlyFieldConfig['key'];
     path: string[];

@@ -7,7 +7,7 @@ export const COPYRIGHT = `Copyright 2021 Formly. All Rights Reserved.
 export const angularVersion = '^13.0.0';
 export const formlyVersion = '^6.0.0-next';
 
-export const dependencies = {
+export const dependencies: { [id: string]: { [id: string]: string } } = {
   core: {
     '@angular/common': angularVersion,
     '@angular/compiler': angularVersion,
@@ -76,7 +76,7 @@ export const dependencies = {
   },
 };
 
-export const ngModule = {
+export const ngModule: { [id: string]: string } = {
   bootstrap: 'FormlyBootstrapModule',
   material: 'FormlyMaterialModule',
   kendo: 'FormlyKendoModule',

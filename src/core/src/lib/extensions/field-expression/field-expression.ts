@@ -107,7 +107,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   private parseExpressions(field: FormlyFieldConfigCache, path: string, expr: any) {
     let parentExpression: any;
     if (field.parent && ['hide', 'templateOptions.disabled'].includes(path)) {
-      const rootValue = (f) => {
+      const rootValue = (f: FormlyFieldConfigCache) => {
         return path === 'hide' ? f.hide : f.templateOptions.disabled;
       };
 
@@ -131,7 +131,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     return (ignoreCache?: boolean) => {
       try {
         const exprValue = evalExpression(
-          parentExpression ? (...args) => parentExpression(field) || expr(...args) : expr,
+          parentExpression ? (...args: any) => parentExpression(field) || expr(...args) : expr,
           { field },
           [field.model, field.options.formState, field, ignoreCache],
         );
@@ -150,7 +150,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
 
         return false;
-      } catch (error) {
+      } catch (error: any) {
         error.message = `[Formly Error] [Expression "${path}"] ${error.message}`;
         throw error;
       }
@@ -173,7 +173,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     return fieldChanged;
   }
 
-  private changeDisabledState(field: FormlyFieldConfig, value: boolean) {
+  private changeDisabledState(field: FormlyFieldConfigCache, value: boolean) {
     if (field.fieldGroup) {
       field.fieldGroup
         .filter((f) => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('templateOptions.disabled'))
@@ -193,11 +193,11 @@ export class FieldExpressionExtension implements FormlyExtension {
     if (field.formControl && hasKey(field)) {
       defineHiddenProp(field, '_hide', !!(hide || field.hide));
       const c = field.formControl;
-      if (c['_fields'] && c['_fields'].length > 1) {
+      if (c._fields?.length > 1) {
         updateValidity(c);
       }
 
-      if (hide === true && (!c['_fields'] || c['_fields'].every((f) => !!f._hide))) {
+      if (hide === true && (!c._fields || c._fields.every((f) => !!f._hide))) {
         unregisterControl(field, true);
         if (resetOnHide && field.resetOnHide) {
           assignFieldValue(field, undefined);
@@ -225,7 +225,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
   private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
     try {
-      let target = field;
+      let target: any = field;
       const paths =
         prop.indexOf('[') === -1
           ? prop.split('.')
@@ -239,7 +239,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
 
       target[paths[lastIndex]] = value;
-    } catch (error) {
+    } catch (error: any) {
       error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
       throw error;
     }

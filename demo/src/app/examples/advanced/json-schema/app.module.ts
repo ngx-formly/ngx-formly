@@ -11,47 +11,47 @@ import { ObjectTypeComponent } from './object.type';
 import { MultiSchemaTypeComponent } from './multischema.type';
 import { NullTypeComponent } from './null.type';
 
-export function minItemsValidationMessage(err, field: FormlyFieldConfig) {
+export function minItemsValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should NOT have fewer than ${field.templateOptions.minItems} items`;
 }
 
-export function maxItemsValidationMessage(err, field: FormlyFieldConfig) {
+export function maxItemsValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should NOT have more than ${field.templateOptions.maxItems} items`;
 }
 
-export function minLengthValidationMessage(err, field: FormlyFieldConfig) {
+export function minLengthValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should NOT be shorter than ${field.templateOptions.minLength} characters`;
 }
 
-export function maxLengthValidationMessage(err, field: FormlyFieldConfig) {
+export function maxLengthValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should NOT be longer than ${field.templateOptions.maxLength} characters`;
 }
 
-export function minValidationMessage(err, field: FormlyFieldConfig) {
+export function minValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should be >= ${field.templateOptions.min}`;
 }
 
-export function maxValidationMessage(err, field: FormlyFieldConfig) {
+export function maxValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should be <= ${field.templateOptions.max}`;
 }
 
-export function multipleOfValidationMessage(err, field: FormlyFieldConfig) {
+export function multipleOfValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should be multiple of ${field.templateOptions.step}`;
 }
 
-export function exclusiveMinimumValidationMessage(err, field: FormlyFieldConfig) {
+export function exclusiveMinimumValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should be > ${field.templateOptions.step}`;
 }
 
-export function exclusiveMaximumValidationMessage(err, field: FormlyFieldConfig) {
+export function exclusiveMaximumValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should be < ${field.templateOptions.step}`;
 }
 
-export function constValidationMessage(err, field: FormlyFieldConfig) {
+export function constValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should be equal to constant "${field.templateOptions.const}"`;
 }
 
-export function typeValidationMessage({ schemaType }) {
+export function typeValidationMessage({ schemaType }: any) {
   return `should be "${schemaType[0]}".`;
 }
 

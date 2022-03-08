@@ -2,17 +2,25 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "module": "es2020",
     "outDir": "./dist/out-tsc",
+    // Remaing option for full strict mode
+    "strictNullChecks": false,
+    "noPropertyAccessFromIndexSignature": false,
+
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
+    "target": "es2017",
+    "module": "es2020",
+    "lib": ["es2020", "dom"],
     "paths": {
       "@ngx-formly/*": ["src/*/src/private_api", "src/*/src/public_api", "src/ui/*/src/public_api"],
       "@assets/*": ["demo/src/assets/*"],
@@ -26,7 +34,12 @@
     "src/schematics/src/*/files/**/*",
     "index.ts",
     "dist/**/*",
-    "cypress/**/*",
-    "node_modules/**/*"
-  ]
+    "cypress/**/*"
+  ],
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

@@ -10,7 +10,7 @@ import { ɵobserve as observe } from '@ngx-formly/core';
     <mat-radio-group
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [required]="to.required"
+      [required]="required"
       [tabindex]="to.tabindex"
     >
       <mat-radio-button
@@ -29,11 +29,10 @@ import { ɵobserve as observe } from '@ngx-formly/core';
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig> implements AfterViewInit, OnDestroy {
   @ViewChild(MatRadioGroup, { static: true }) radioGroup!: MatRadioGroup;
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
-      options: [],
       tabindex: -1,
     },
   };
@@ -52,9 +51,10 @@ export class FormlyFieldRadio extends FieldType<FieldTypeConfig> implements Afte
   }
 
   // TODO: find a solution to prevent scroll on focus
-  onContainerClick() {}
+  override onContainerClick() {}
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy();
     this.focusObserver && this.focusObserver.unsubscribe();
   }
 }

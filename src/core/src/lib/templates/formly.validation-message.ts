@@ -41,7 +41,7 @@ export class FormlyValidationMessage implements OnChanges {
 
         if (isObject(fieldForm.errors[error])) {
           if (fieldForm.errors[error].errorPath) {
-            return;
+            return undefined;
           }
 
           if (fieldForm.errors[error].message) {
@@ -68,5 +68,7 @@ export class FormlyValidationMessage implements OnChanges {
         return message;
       }
     }
+
+    return undefined;
   }
 }

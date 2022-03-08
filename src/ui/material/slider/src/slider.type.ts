@@ -31,7 +31,7 @@ import { MatSlider } from '@angular/material/slider';
 })
 export class FormlyFieldSlider extends FieldType<FieldTypeConfig> {
   @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
-  defaultOptions = {
+  override defaultOptions = {
     templateOptions: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
@@ -39,7 +39,7 @@ export class FormlyFieldSlider extends FieldType<FieldTypeConfig> {
     },
   };
 
-  onContainerClick(event: MouseEvent): void {
+  override onContainerClick(event: MouseEvent): void {
     this.slider.focus();
     super.onContainerClick(event);
   }

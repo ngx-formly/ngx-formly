@@ -1,14 +1,4 @@
-import {
-  OnInit,
-  OnDestroy,
-  AfterViewInit,
-  TemplateRef,
-  ViewChild,
-  Type,
-  Directive,
-  ViewChildren,
-  QueryList,
-} from '@angular/core';
+import { OnDestroy, TemplateRef, ViewChild, Type, Directive, ViewChildren, QueryList } from '@angular/core';
 import { FieldType as CoreFieldType, ɵobserve as observe } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
@@ -18,36 +8,26 @@ import { FormlyFieldConfig } from './form-field.wrapper';
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   extends CoreFieldType<F>
-  implements OnInit, AfterViewInit, OnDestroy, MatFormFieldControl<any>
+  implements OnDestroy, MatFormFieldControl<any>
 {
-  @ViewChild('matPrefix') matPrefix!: TemplateRef<any>;
-  @ViewChild('matSuffix') matSuffix!: TemplateRef<any>;
-
-  formFieldControl!: MatFormFieldControl<any>;
-  @ViewChildren(MatFormFieldControl) set _controls(controls: QueryList<MatFormFieldControl<any>>) {
-    if (controls.length === 1 && !this.formFieldControl) {
-      this.formFieldControl = controls.first;
+  @ViewChild('matPrefix') set matPrefix(prefix: TemplateRef<any>) {
+    if (prefix) {
+      this.to.prefix = prefix;
     }
+  }
+  @ViewChild('matSuffix') set matSuffix(suffix: TemplateRef<any>) {
+    if (suffix) {
+      this.to.suffix = suffix;
+    }
+  }
+
+  @ViewChildren(MatFormFieldControl) set _controls(controls: QueryList<MatFormFieldControl<any>>) {
+    this.attachControl(controls.length === 1 ? controls.first : this);
   }
 
   errorStateMatcher: ErrorStateMatcher = { isErrorState: () => this.field && this.showError };
   stateChanges = new Subject<void>();
   _errorState = false;
-
-  ngOnInit() {
-    observe(this, ['formFieldControl'], ({ currentValue }) => {
-      this.attachControl(currentValue || this);
-    });
-  }
-
-  ngAfterViewInit() {
-    if (this.matPrefix) {
-      this.to.prefix = this.matPrefix;
-    }
-    if (this.matSuffix) {
-      this.to.prefix = this.matSuffix;
-    }
-  }
 
   ngOnDestroy() {
     delete (this.formField as any)?._control;

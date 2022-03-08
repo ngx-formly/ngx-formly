@@ -9,7 +9,7 @@ import { startWith, tap, filter } from 'rxjs/operators';
 })
 export class AppComponent {
   form = new FormGroup({});
-  model = {
+  model: any = {
     investmentsCount: 3,
     investments: [],
   };

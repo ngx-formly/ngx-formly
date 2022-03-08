@@ -15,7 +15,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {
-  tap(id) {
+  tap(id: any) {
     const value = this.formControl.value === id ? null : id;
     setTimeout(() => {
       this.formControl.patchValue(value);

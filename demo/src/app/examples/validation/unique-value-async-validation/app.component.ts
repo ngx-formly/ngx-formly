@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 
@@ -25,7 +25,7 @@ export class AppComponent {
       },
       asyncValidators: {
         uniqueUsername: {
-          expression: (control: FormControl) => {
+          expression: (control: AbstractControl) => {
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 resolve(this.existingUsers.indexOf(control.value) === -1);
@@ -46,7 +46,7 @@ export class AppComponent {
       },
       asyncValidators: {
         uniqueUsername: {
-          expression: (control: FormControl) => {
+          expression: (control: AbstractControl) => {
             return of(this.existingUsers.indexOf(control.value) === -1);
           },
           message: 'This username is already taken.',
