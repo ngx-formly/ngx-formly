@@ -1,4 +1,5 @@
 import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material';
 import { MatInput } from '@angular/material/input';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -21,7 +22,7 @@ import { startWith, switchMap } from 'rxjs/operators';
     </mat-autocomplete>
   `,
 })
-export class AutocompleteTypeComponent extends FieldType implements OnInit, AfterViewInit {
+export class AutocompleteTypeComponent extends FieldType<FieldTypeConfig> implements OnInit, AfterViewInit {
   @ViewChild(MatInput) formFieldControl: MatInput;
   @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
 

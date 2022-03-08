@@ -1,6 +1,13 @@
 import { Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '../components/formly.field.config';
+
+export interface FieldTypeConfig extends FormlyFieldConfig {
+  formControl: FormControl;
+}
+export interface FieldGroupTypeConfig extends FormlyFieldConfig {
+  formControl: FormGroup;
+}
 
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
   @Input() field: F;
@@ -20,7 +27,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
 
   get key() { return this.field.key; }
 
-  get formControl() { return this.field.formControl; }
+  get formControl() { return this.field.formControl as NonNullable<F['formControl']>; }
 
   get to() { return this.field.templateOptions || {}; }
 
