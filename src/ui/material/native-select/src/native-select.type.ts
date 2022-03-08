@@ -41,10 +41,4 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldNativeSelect extends FieldType<FieldTypeConfig> {
-  override defaultOptions = {
-    templateOptions: {
-      options: [],
-    },
-  };
-}
+export class FormlyFieldNativeSelect extends FieldType<FieldTypeConfig> {}

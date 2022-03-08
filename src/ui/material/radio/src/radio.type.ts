@@ -33,7 +33,6 @@ export class FormlyFieldRadio extends FieldType<FieldTypeConfig> implements Afte
     templateOptions: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
-      options: [],
       tabindex: -1,
     },
   };

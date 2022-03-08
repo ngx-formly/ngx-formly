@@ -5,7 +5,6 @@
     "outDir": "./dist/out-tsc",
     // Remaing option for full strict mode
     "strictNullChecks": false,
-    "noImplicitAny": false,
     "noPropertyAccessFromIndexSignature": false,
 
     "forceConsistentCasingInFileNames": true,

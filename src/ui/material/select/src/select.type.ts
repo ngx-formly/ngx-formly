@@ -53,7 +53,6 @@ import { FieldType } from '@ngx-formly/material/form-field';
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
     templateOptions: {
-      options: [],
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },

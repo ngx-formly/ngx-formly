@@ -31,7 +31,6 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
     templateOptions: {
-      options: [],
       formCheck: 'default', // 'default' | 'inline'
     },
   };

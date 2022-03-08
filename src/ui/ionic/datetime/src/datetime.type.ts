@@ -49,7 +49,6 @@ export class FormlyFieldDatetime extends FieldType<FieldTypeConfig> {
 
   override defaultOptions = {
     templateOptions: {
-      displayFormat: undefined,
       presentation: 'date', // date | time | time-date
     },
   };

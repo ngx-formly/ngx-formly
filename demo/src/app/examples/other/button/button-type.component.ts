@@ -12,7 +12,7 @@ import { FieldType } from '@ngx-formly/core';
   `,
 })
 export class FormlyFieldButton extends FieldType {
-  onClick($event) {
+  onClick($event: Event) {
     if (this.to.onClick) {
       this.to.onClick($event);
     }

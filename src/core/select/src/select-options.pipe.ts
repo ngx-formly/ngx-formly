@@ -31,7 +31,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     const to = this.transformSelectProps(field);
 
     const opts: ISelectOption[] = [];
-    const groups = {};
+    const groups: { [id: string]: number } = {};
 
     options.forEach((option) => {
       const o = this.transformOption(option, to);
@@ -78,7 +78,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
 
   private transformSelectProps(field?: FormlyFieldConfig): ITransformOption {
     const to = field?.templateOptions || {};
-    const selectPropFn = (prop: any) => (typeof prop === 'function' ? prop : (o) => o[prop]);
+    const selectPropFn = (prop: any) => (typeof prop === 'function' ? prop : (o: any) => o[prop]);
 
     return {
       groupProp: selectPropFn(to.groupProp || 'group'),

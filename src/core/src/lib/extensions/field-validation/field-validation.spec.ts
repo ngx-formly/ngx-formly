@@ -1,4 +1,4 @@
-import { FormControl, Validators, ValidationErrors, FormGroup } from '@angular/forms';
+import { FormControl, Validators, ValidationErrors, FormGroup, AbstractControl } from '@angular/forms';
 import { of } from 'rxjs';
 import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
@@ -148,7 +148,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       it(`using expression property`, () => {
         const field = buildField({
           validators: {
-            custom: { expression: (control) => control.value === 'test' },
+            custom: { expression: (control: AbstractControl) => control.value === 'test' },
           },
         });
 
@@ -189,7 +189,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
         const field = buildField({
           validators: {
             validation: ['required'],
-            required: { expression: (control) => control.value === 'test' },
+            required: { expression: (control: AbstractControl) => control.value === 'test' },
           },
         });
 

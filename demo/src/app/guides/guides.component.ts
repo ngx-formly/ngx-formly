@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   },
 })
 export class GuidesComponent implements OnInit {
-  contents = {
+  contents: { [id: string]: any } = {
     'getting-started': require('!!raw-loader!!highlight-loader!markdown-loader!./introduction.md'),
     'properties-options': require('!!raw-loader!!highlight-loader!markdown-loader!./properties-options.md'),
     'custom-formly-field': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-field.md'),

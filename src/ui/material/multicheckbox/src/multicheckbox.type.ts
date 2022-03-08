@@ -33,7 +33,6 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
     templateOptions: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
-      options: [],
       color: 'accent' as const, // workaround for https://github.com/angular/components/issues/18465
     },
   };

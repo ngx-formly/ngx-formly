@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 
 function setInputs<T>(fixture: ComponentFixture<T>, inputs: T, detectChanges = true) {
-  Object.keys(inputs).forEach((input) => {
+  (Object.keys(inputs) as (keyof T)[]).forEach((input) => {
     fixture.componentInstance[input] = inputs[input];
   });
 
@@ -46,8 +46,8 @@ export function createComponent<T>({
     },
   });
 
-  const fixture = TestBed.createComponent(TestComponent);
-  Object.keys(inputs).forEach((input) => {
+  const fixture = TestBed.createComponent(TestComponent) as ComponentFixture<T>;
+  (Object.keys(inputs) as (keyof T)[]).forEach((input) => {
     fixture.componentInstance[input] = inputs[input];
   });
 
@@ -69,7 +69,7 @@ export function createComponent<T>({
     queryAll: (selector: string) => fixture.debugElement.queryAll(By.css(selector)),
   } as FixtureUtils;
 
-  Object.keys(inputs).forEach((input) => {
+  (Object.keys(inputs) as (keyof T)[]).forEach((input) => {
     Object.defineProperty(utils, input, {
       get: () => fixture.componentInstance[input],
     });

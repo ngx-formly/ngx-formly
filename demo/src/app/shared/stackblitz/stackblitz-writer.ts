@@ -4,6 +4,16 @@ import stackblitz from '@stackblitz/sdk';
 import { COPYRIGHT, dependencies, ngModule, TEMPLATE_FILES } from './stackblitz.config';
 import { angularVersion } from 'src/schematics/utils/lib-versions';
 
+interface IStackblitzThemeOption {
+  type: string;
+  useAnimation?: boolean;
+  includeMaterial?: boolean;
+  includeAgGrid?: boolean;
+  includeFontawesome?: boolean;
+  includeNgxDatable?: boolean;
+  includeNgxTranslate?: boolean;
+}
+
 @Injectable()
 export class StackblitzWriter {
   open(type: string, exampleData: ExampleType) {
@@ -25,7 +35,7 @@ export class StackblitzWriter {
     const appModuleContent = exampleData.files.find((f) => f.file === 'app.module.ts').filecontent.default;
     exampleData.deps = exampleData.deps || [];
 
-    const options: any = { type };
+    const options: IStackblitzThemeOption = { type };
 
     if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng', 'ng-zorro-antd'].indexOf(options.type) === -1) {
       if (appModuleContent.indexOf('@ngx-formly/bootstrap') !== -1) {
@@ -97,7 +107,7 @@ export class StackblitzWriter {
       Object.assign(deps, dependencies['ngx-translate']);
     }
 
-    const files = {
+    const files: { [id: string]: string } = {
       'src/environments/environment.ts': require('!!raw-loader!@assets/stackblitz/environment.ts').default,
       'src/environments/environment.prod.ts': require('!!raw-loader!@assets/stackblitz/environment.prod.ts').default,
       'package.json': JSON.stringify(
@@ -142,7 +152,7 @@ export class StackblitzWriter {
     return { files, dependencies: deps };
   }
 
-  _replaceExamplePlaceholderNames(filename: string, filecontent: any, options): string {
+  _replaceExamplePlaceholderNames(filename: string, filecontent: any, options: IStackblitzThemeOption): string {
     filecontent = this._getFilecontent(filecontent);
     if (filename === 'app.module.ts') {
       if (options.type === 'ionic') {

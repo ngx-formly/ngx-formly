@@ -226,7 +226,7 @@ interface IObserveTarget<T> {
 }
 
 export function observeDeep(source: any, paths: string[], setFn: () => void): () => void {
-  let observers = [];
+  let observers: Function[] = [];
 
   const unsubscribe = () => {
     observers.forEach((observer) => observer());

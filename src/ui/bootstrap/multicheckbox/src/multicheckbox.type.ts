@@ -32,7 +32,6 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
     templateOptions: {
-      options: [],
       formCheck: 'default', // 'default' | 'inline' | 'switch' | 'inline-switch'
     },
   };

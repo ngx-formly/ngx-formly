@@ -1,4 +1,4 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
@@ -200,7 +200,7 @@ describe('FieldFormExtension', () => {
         {
           fieldGroup: [],
           validators: {
-            custom: { expression: (control) => control.value === 'test' },
+            custom: { expression: (control: AbstractControl) => control.value === 'test' },
           },
         },
       ],

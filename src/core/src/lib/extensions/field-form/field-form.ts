@@ -117,8 +117,8 @@ export class FieldFormExtension implements FormlyExtension {
   private mergeValidators<T>(field: FormlyFieldConfigCache, type: '_validators' | '_asyncValidators'): T[] {
     const validators: any = [];
     const c = field.formControl;
-    if (c?.['_fields']?.length > 1) {
-      c['_fields']
+    if (c?._fields?.length > 1) {
+      c._fields
         .filter((f: FormlyFieldConfigCache) => !f._hide)
         .forEach((f: FormlyFieldConfigCache) => validators.push(...f[type]));
     } else if (field[type]) {

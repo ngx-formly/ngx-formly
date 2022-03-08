@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldArrayType } from '@ngx-formly/core';
-import { GridOptions } from 'ag-grid-community';
+import { FirstDataRenderedEvent, GridOptions, ColDef } from 'ag-grid-community';
 import { GridFormlyCellComponent } from './grid-formly-cell.component';
 
 @Component({
@@ -29,7 +29,9 @@ export class GridTypeComponent extends FieldArrayType implements OnInit {
     };
 
     // map cell Renderer to Formly Component
-    this.to.gridOptions.columnDefs.forEach((column) => (column.cellRendererFramework = GridFormlyCellComponent));
+    this.to.gridOptions.columnDefs.forEach((column: ColDef) => {
+      column.cellRenderer = GridFormlyCellComponent;
+    });
 
     // set grid options and context of the parent formly field
     const gridOptions: GridOptions = this.to.gridOptions || {};
@@ -40,7 +42,7 @@ export class GridTypeComponent extends FieldArrayType implements OnInit {
     this.gridOptions = gridOptions;
   }
 
-  onFirstDataRendered(params) {
+  onFirstDataRendered(params: FirstDataRenderedEvent) {
     params.api.sizeColumnsToFit();
   }
 }

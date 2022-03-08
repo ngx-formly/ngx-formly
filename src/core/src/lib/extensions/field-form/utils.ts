@@ -1,13 +1,13 @@
 import { EventEmitter } from '@angular/core';
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { getKeyPath, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
-import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
+import { FormlyFieldConfigCache } from '../../models';
 
-export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
+export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = false) {
   const control = field.formControl;
-  const fieldIndex = control['_fields'] ? control['_fields'].indexOf(field) : -1;
+  const fieldIndex = control._fields ? control._fields.indexOf(field) : -1;
   if (fieldIndex !== -1) {
-    control['_fields'].splice(fieldIndex, 1);
+    control._fields.splice(fieldIndex, 1);
   }
 
   const form = control.parent as FormArray | FormGroup;
@@ -32,26 +32,30 @@ export function unregisterControl(field: FormlyFieldConfig, emitEvent = false) {
   control.setParent(null);
 }
 
-export function findControl(field: FormlyFieldConfig): AbstractControl {
+export function findControl(field: FormlyFieldConfigCache): AbstractControl {
   if (field.formControl) {
     return field.formControl;
   }
 
-  if (field['shareFormControl'] === false) {
+  if (field.shareFormControl === false) {
     return null;
   }
 
   return field.form?.get(getKeyPath(field));
 }
 
-export function registerControl(field: FormlyFieldConfigCache, control?: any, emitEvent = false) {
+export function registerControl(
+  field: FormlyFieldConfigCache,
+  control?: FormlyFieldConfigCache['formControl'],
+  emitEvent = false,
+) {
   control = control || field.formControl;
 
-  if (!control['_fields']) {
+  if (!control._fields) {
     defineHiddenProp(control, '_fields', []);
   }
-  if (control['_fields'].indexOf(field) === -1) {
-    control['_fields'].push(field);
+  if (control._fields.indexOf(field) === -1) {
+    control._fields.push(field);
   }
 
   if (!field.formControl && control) {
@@ -65,7 +69,7 @@ export function registerControl(field: FormlyFieldConfigCache, control?: any, em
         currentValue ? field.formControl.disable() : field.formControl.enable();
       }
     });
-    if (control.registerOnDisabledChange) {
+    if (control instanceof FormControl) {
       control.registerOnDisabledChange(disabledObserver.setValue);
     }
   }
@@ -109,11 +113,11 @@ export function updateValidity(c: AbstractControl, onlySelf = false) {
   }
 }
 
-export function clearControl(form: AbstractControl) {
-  delete form?.['_fields'];
+export function clearControl(form: FormlyFieldConfigCache['formControl']) {
+  delete form?._fields;
   form.setValidators(null);
   form.setAsyncValidators(null);
   if (form instanceof FormGroup || form instanceof FormArray) {
-    Object.keys(form.controls).forEach((k) => clearControl(form.controls[k]));
+    Object.values(form.controls).forEach((c) => clearControl(c));
   }
 }

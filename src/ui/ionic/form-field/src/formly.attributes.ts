@@ -12,16 +12,4 @@ import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-
 })
 export class IonFormlyAttributes extends FormlyAttributes {
   @Input('ionFormlyAttributes') override field: FormlyFieldConfig;
-
-  focusElement(element, value: boolean) {
-    if (!element.setFocus || !value) {
-      return;
-    }
-
-    if (!element.getInputElement()) {
-      setTimeout(() => element.setFocus(), 300);
-    } else {
-      element.setFocus();
-    }
-  }
 }
