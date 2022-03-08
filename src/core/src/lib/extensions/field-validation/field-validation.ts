@@ -6,7 +6,6 @@ import { updateValidity } from '../field-form/utils';
 import { isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-/** @experimental */
 export class FieldValidationExtension implements FormlyExtension {
   constructor(private config: FormlyConfig) {}
 

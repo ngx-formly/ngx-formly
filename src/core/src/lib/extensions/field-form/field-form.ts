@@ -11,7 +11,6 @@ import { getFieldValue, defineHiddenProp, hasKey } from '../../utils';
 import { registerControl, findControl, updateValidity } from './utils';
 import { of } from 'rxjs';
 
-/** @experimental */
 export class FieldFormExtension implements FormlyExtension {
   private root: FormlyFieldConfigCache;
   prePopulate(field: FormlyFieldConfigCache) {

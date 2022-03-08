@@ -16,7 +16,6 @@ import { FormlyExtension } from '../../models';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 import { FormArray } from '@angular/forms';
 
-/** @experimental */
 export class FieldExpressionExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
     if (field._expressions) {

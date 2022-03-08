@@ -3,7 +3,6 @@ import { FieldType } from './../templates/field.type';
 import { FormlyFieldConfig } from './fieldconfig';
 import { Observable } from 'rxjs';
 
-/** @experimental */
 export interface FormlyExtension<F extends FormlyFieldConfig = FormlyFieldConfig> {
   priority?: number;
 
