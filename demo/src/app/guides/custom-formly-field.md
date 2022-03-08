@@ -24,7 +24,7 @@ The live example can be found in stackblitz: https://stackblitz.com/edit/ngx-for
 
   ```typescript
   import { Component } from '@angular/core';
-  import { FieldType } from '@ngx-formly/core';
+  import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
   @Component({
     selector: 'formly-field-input',
@@ -32,7 +32,7 @@ The live example can be found in stackblitz: https://stackblitz.com/edit/ngx-for
       <input type="input" [formControl]="formControl" [formlyAttributes]="field">
     `,
   })
-  export class FormlyFieldInput extends FieldType {}
+  export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
   ```
 
   We passed a `formControl` instance which is created by Formly, to let Formly know that this is the input that you want to associate with your model.

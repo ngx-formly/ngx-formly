@@ -8,14 +8,15 @@ import { FORMLY_CONFIG, FormlyExtension } from '../services/formly.config';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 import { Directive } from '@angular/core';
 
+export interface FieldArrayTypeConfig extends FormlyFieldConfig {
+  formControl: FormArray;
+  templateOptions: NonNullable<Required<FormlyFieldConfig>['templateOptions']>;
+}
+
 // TODO remove `selector` in V6
 // tslint:disable-next-line
 @Directive({ selector: '[ɵfieldArray]' })
-export abstract class FieldArrayType<F extends FormlyFieldConfig = FormlyFieldConfig> extends FieldType<F> implements FormlyExtension {
-  get formControl() {
-    return this.field.formControl as FormArray;
-  }
-
+export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTypeConfig> extends FieldType<F> implements FormlyExtension {
   defaultOptions: any = {
     defaultValue: [],
   };

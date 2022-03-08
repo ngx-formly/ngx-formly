@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-custom-input',
@@ -7,7 +7,7 @@ import { FieldType } from '@ngx-formly/core';
     <input [type]="type" [formControl]="formControl" [formlyAttributes]="field">
   `,
 })
-export class FormlyFieldCustomInput extends FieldType {
+export class FormlyFieldCustomInput extends FieldType<FieldTypeConfig> {
   get type() {
     return this.to.type || 'text';
   }
