@@ -179,7 +179,7 @@ UPGRADE FROM 5.0 to 6.0
     },
   ```
 
-
+  - Reset form value: In case you rely on `form.reset()` instead of `options.resetModel()`, please note that if you call `reset` without an explicit value, its value reverts to its default value instead of `null`. 
 
 @ngx-formly/core/json-schema
 ----------------------------

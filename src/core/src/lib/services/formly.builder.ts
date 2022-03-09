@@ -38,18 +38,11 @@ export class FormlyFormBuilder {
       return;
     }
 
-    this.getExtensions().forEach((extension) => extension.prePopulate?.(field));
-    this.getExtensions().forEach((extension) => extension.onPopulate?.(field));
-
-    if (field.fieldGroup) {
-      field.fieldGroup.forEach((f) => this._build(f));
-    }
-
-    this.getExtensions().forEach((extension) => extension.postPopulate?.(field));
-  }
-
-  private getExtensions() {
-    return Object.keys(this.config.extensions).map((name) => this.config.extensions[name]);
+    const extensions = Object.values(this.config.extensions);
+    extensions.forEach((extension) => extension.prePopulate?.(field));
+    extensions.forEach((extension) => extension.onPopulate?.(field));
+    field.fieldGroup?.forEach((f) => this._build(f));
+    extensions.forEach((extension) => extension.postPopulate?.(field));
   }
 
   private _setOptions(field: FormlyFieldConfigCache) {

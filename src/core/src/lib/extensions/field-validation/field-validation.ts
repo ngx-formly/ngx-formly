@@ -142,7 +142,7 @@ export class FieldValidationExtension implements FormlyExtension {
     }
 
     const ctrl = field.formControl;
-    ctrl?.['_childrenErrors']?.[name]?.();
+    ctrl?._childrenErrors?.[name]?.();
 
     if (isObject(errors)) {
       Object.keys(errors).forEach((name) => {
@@ -153,8 +153,8 @@ export class FieldValidationExtension implements FormlyExtension {
           const { errorPath, ...opts } = errors[name];
           childCtrl.setErrors({ ...(childCtrl.errors || {}), [name]: opts });
 
-          !ctrl['_childrenErrors'] && defineHiddenProp(ctrl, '_childrenErrors', {});
-          ctrl['_childrenErrors'][name] = () => {
+          !ctrl._childrenErrors && defineHiddenProp(ctrl, '_childrenErrors', {});
+          ctrl._childrenErrors[name] = () => {
             const { [name]: toDelete, ...childErrors } = childCtrl.errors || {};
             childCtrl.setErrors(Object.keys(childErrors).length === 0 ? null : childErrors);
           };
