@@ -348,8 +348,8 @@ describe('FormlyForm Component', () => {
       );
 
       form.reset();
-      expect(model.bar).toBeNull();
-      expect(fields[1].formControl.value).toBeNull();
+      expect(model.bar).toBeUndefined();
+      expect(fields[1].formControl.value).toBeUndefined();
     });
 
     it('should hide/display field using a function with nested field key', () => {

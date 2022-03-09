@@ -25,8 +25,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     });
 
     expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
-
-    query('nz-select').triggerEventHandler('click', {});
+    (query('nz-select').nativeElement as HTMLElement).click();
     fixture.autoDetectChanges();
     tick(500);
 
@@ -48,7 +47,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
 
     expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
 
-    query('nz-select').triggerEventHandler('click', {});
+    (query('nz-select').nativeElement as HTMLElement).click();
     fixture.autoDetectChanges();
     tick(500);
 
@@ -66,11 +65,11 @@ describe('ui-ng-zorro-antd: Select Type', () => {
       },
     });
 
-    query('nz-select').triggerEventHandler('click', {});
+    (query('nz-select').nativeElement as HTMLElement).click();
     fixture.autoDetectChanges();
     tick(500);
 
-    query('nz-option-item').triggerEventHandler('click', {});
+    (query('nz-option-item').nativeElement as HTMLElement).click();
     fixture.detectChanges();
     tick(500);
     expect(field.formControl.value).toEqual(1);
