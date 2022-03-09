@@ -20,11 +20,11 @@ describe('ui-kendo: Checkbox Type', () => {
     });
 
     expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
-    expect(query('label').nativeElement.textContent).toEqual(' Name *');
+    expect(query('label').nativeElement.textContent.trim()).toEqual('Name *');
 
     const { attributes } = query('input[type="checkbox"]');
     expect(attributes).toMatchObject({
-      class: 'k-checkbox ng-untouched ng-pristine ng-invalid',
+      class: 'ng-untouched ng-pristine ng-invalid k-checkbox k-checkbox-md k-rounded-md',
       id: 'formly_1_checkbox_name_0',
       type: 'checkbox',
     });
@@ -41,17 +41,17 @@ describe('ui-kendo: Checkbox Type', () => {
     });
 
     expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
-    expect(query('label').nativeElement.textContent).toEqual(' Name *');
+    expect(query('label').nativeElement.textContent.trim()).toEqual('Name *');
 
     const { attributes } = query('input[type="checkbox"]');
     expect(attributes).toMatchObject({
-      class: 'k-checkbox ng-untouched ng-pristine ng-invalid',
+      class: 'ng-untouched ng-pristine ng-invalid k-checkbox k-checkbox-md k-rounded-md',
       id: 'formly_1_boolean_name_0',
       type: 'checkbox',
     });
   });
 
-  it('should add "k-state-invalid" class on invalid', () => {
+  it('should add "ng-invalid" class on invalid', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'checkbox',
@@ -60,7 +60,7 @@ describe('ui-kendo: Checkbox Type', () => {
     });
 
     const { classes } = query('input[type="checkbox"]');
-    expect(classes['k-state-invalid']).toBeTrue();
+    expect(classes['ng-invalid']).toBeTrue();
   });
 
   it('should bind control value on change', () => {

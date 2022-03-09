@@ -1,25 +1,20 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
+import { FieldType } from '@ngx-formly/kendo/form-field';
 
 @Component({
   selector: 'formly-field-kendo-input',
   template: `
     <input
       *ngIf="to.type !== 'number'; else numberTmp"
+      kendoTextBox
       [type]="to.type || 'text'"
-      [formControl]="formControl"
-      class="k-textbox"
       [formlyAttributes]="field"
-      [class.k-state-invalid]="showError"
+      [formControl]="formControl"
+      [formControl]="formControl"
     />
     <ng-template #numberTmp>
-      <input
-        type="number"
-        [formControl]="formControl"
-        class="k-textbox"
-        [formlyAttributes]="field"
-        [class.k-state-invalid]="showError"
-      />
+      <kendo-numerictextbox [formlyAttributes]="field" [formControl]="formControl"> </kendo-numerictextbox>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

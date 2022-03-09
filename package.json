@@ -71,15 +71,16 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@progress/kendo-angular-common": "^2.0.2",
-    "@progress/kendo-angular-dropdowns": "^5.5.1",
-    "@progress/kendo-angular-inputs": "^7.5.2",
+    "@progress/kendo-angular-dropdowns": "^6.0.2",
+    "@progress/kendo-angular-inputs": "^8.0.7",
     "@progress/kendo-angular-intl": "^3.1.2",
     "@progress/kendo-angular-l10n": "^3.0.3",
+    "@progress/kendo-angular-label": "^3.1.1",
     "@progress/kendo-angular-popup": "^4.0.3",
-    "@progress/kendo-angular-treeview": "^5.4.2",
+    "@progress/kendo-angular-treeview": "^6.0.2",
     "@progress/kendo-drawing": "^1.16.1",
     "@progress/kendo-licensing": "^1.2.1",
-    "@progress/kendo-theme-default": "^4.43.0",
+    "@progress/kendo-theme-default": "^5.2.0",
     "@stackblitz/sdk": "^1.5.3",
     "@swimlane/ngx-datatable": "^20.0.0",
     "ag-grid-angular": "^27.0.0",
@@ -145,7 +146,7 @@
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
     "typescript": "~4.5.2",
-    "webpack": "^5.66.0"
+    "webpack": "^5.70.0"
   },
   "config": {
     "commitizen": {

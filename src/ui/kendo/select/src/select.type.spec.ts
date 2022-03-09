@@ -17,13 +17,6 @@ const renderComponent = (field: FormlyFieldConfig) => {
   });
 };
 
-function triggerSelectClick(element: DebugElement) {
-  element.triggerEventHandler('click', {
-    stopPropagation: () => {},
-    preventDefault: () => {},
-  });
-}
-
 describe('ui-kendo: Select Type', () => {
   it('should render select type', () => {
     const { query } = renderComponent({
@@ -46,8 +39,8 @@ describe('ui-kendo: Select Type', () => {
       preventDefault: () => {},
     };
 
-    triggerSelectClick(query('kendo-dropdownlist .k-dropdown-wrap'));
-    expect(document.querySelectorAll('.k-item')).toHaveLength(3);
+    query<HTMLElement>('kendo-dropdownlist').nativeElement.click();
+    expect(document.querySelectorAll('.k-list-item')).toHaveLength(3);
   });
 
   it('should render enum type', () => {
@@ -64,8 +57,8 @@ describe('ui-kendo: Select Type', () => {
       },
     });
 
-    triggerSelectClick(query('kendo-dropdownlist .k-dropdown-wrap'));
-    expect(document.querySelectorAll('.k-item')).toHaveLength(3);
+    query<HTMLElement>('kendo-dropdownlist').nativeElement.click();
+    expect(document.querySelectorAll('.k-list-item')).toHaveLength(3);
   });
 
   it('should bind control value on change', () => {
@@ -82,8 +75,8 @@ describe('ui-kendo: Select Type', () => {
       },
     });
 
-    triggerSelectClick(query('kendo-dropdownlist .k-dropdown-wrap'));
-    document.querySelector<HTMLLIElement>('.k-item').click();
+    query<HTMLElement>('kendo-dropdownlist').nativeElement.click();
+    document.querySelector<HTMLLIElement>('.k-list-item').click();
     expect(field.formControl.value).toEqual(1);
     expect(changeSpy).toHaveBeenCalledOnce();
   });
