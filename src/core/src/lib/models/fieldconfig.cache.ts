@@ -1,4 +1,11 @@
-import { ComponentFactoryResolver, ComponentRef, ElementRef, EmbeddedViewRef, Injector } from '@angular/core';
+import {
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef,
+  EmbeddedViewRef,
+  Injector,
+  ViewContainerRef,
+} from '@angular/core';
 import { AsyncValidatorFn, ValidatorFn, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 import { FormlyExtension } from './config';
@@ -27,7 +34,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
 
 export interface FormlyFormOptionsCache extends FormlyFormOptions {
   checkExpressions?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
-  _resolver?: ComponentFactoryResolver;
+  _viewContainerRef?: ViewContainerRef;
   _injector?: Injector;
   _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
   _initialModel?: any;

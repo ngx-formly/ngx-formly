@@ -138,12 +138,12 @@ export class FormlyConfig {
       return type._componentRef;
     }
 
-    const { _resolver, _injector } = field.options;
-    if (!_resolver || !_injector) {
+    const { _viewContainerRef, _injector } = field.options;
+    if (!_viewContainerRef || !_injector) {
       return null;
     }
 
-    const componentRef = _resolver.resolveComponentFactory<FieldType>(type.component).create(_injector);
+    const componentRef = _viewContainerRef.createComponent<FieldType>(type.component, { injector: _injector });
     defineHiddenProp(type, '_componentRef', componentRef);
     componentRef.destroy();
 
