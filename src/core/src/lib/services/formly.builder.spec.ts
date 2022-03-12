@@ -26,7 +26,7 @@ describe('FormlyFormBuilder service', () => {
     expect(field.form).toEqual(expect.any(FormGroup));
     expect(field.options).toEqual(
       expect.objectContaining({
-        _resolver: null,
+        _viewContainerRef: null,
         _injector: null,
         _buildForm: expect.any(Function),
         build: expect.any(Function),

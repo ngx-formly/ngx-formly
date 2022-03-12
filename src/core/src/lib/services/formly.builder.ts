@@ -1,4 +1,4 @@
-import { Injectable, ComponentFactoryResolver, Injector, Optional } from '@angular/core';
+import { Injectable, Injector, Optional, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
@@ -8,8 +8,8 @@ import { defineHiddenProp, observe, disableTreeValidityCall } from '../utils';
 export class FormlyFormBuilder {
   constructor(
     private config: FormlyConfig,
-    private resolver: ComponentFactoryResolver,
     private injector: Injector,
+    @Optional() private viewContainerRef: ViewContainerRef,
     @Optional() private parentForm: FormGroupDirective,
   ) {}
 
@@ -51,8 +51,8 @@ export class FormlyFormBuilder {
     field.options = field.options || {};
     const options = field.options;
 
-    if (!options._resolver) {
-      defineHiddenProp(options, '_resolver', this.resolver);
+    if (!options._viewContainerRef) {
+      defineHiddenProp(options, '_viewContainerRef', this.viewContainerRef);
     }
 
     if (!options._injector) {

@@ -91,29 +91,15 @@ export function createFieldComponent(
     template: '<formly-field [field]="field"></formly-field>',
     inputs: { field },
     ...config,
-    providers: [
-      ...(config.providers || []),
-      {
-        provide: APP_INITIALIZER,
-        useFactory: (builder: FormlyFormBuilder) => () => {
-          builder.build({
-            model,
-            options,
-            fieldGroup: [field],
-          });
-
-          return of(null);
-        },
-        deps: [FormlyFormBuilder],
-        multi: true,
-      },
-    ],
+    detectChanges: false,
   });
+  const builder = (utils.fixture.componentRef.instance as any).builder;
+  builder.build({ model, options, fieldGroup: [field] });
+  utils.detectChanges();
 
   const setInputs = utils.setInputs;
   utils.setInputs = (props) => {
     if (props.field) {
-      const builder = utils.fixture.componentRef.injector.get(FormlyFormBuilder);
       builder.build(props.field);
     }
 
@@ -126,5 +112,8 @@ export function createFieldComponent(
 @Component({
   selector: 'formly-test-component',
   template: '',
+  providers: [FormlyFormBuilder],
 })
-class TestComponent {}
+class TestComponent {
+  constructor(public builder?: FormlyFormBuilder) {}
+}
