@@ -103,7 +103,7 @@ When registering an extension with the `FormlyModule`, you can provide an additi
 This will be used to change the order in which extensions are executed. If you have multiple extensions that change the same properties of a `FormlyFieldConfig`, you can use this to ensure they are executed in the correct order. Extensions with higher `priority` values will be executed later.
 
 If you don't provide a `priority` option, a default value of `1` will be used. <br/>
-Formly's own internal extensions have a priority of `-1`.
+Formly's own internal extensions have a priority of `<= -1`.
 
 ```typescript
   FormlyModule.forRoot({

@@ -224,7 +224,7 @@ export class FormlyConfig {
     // flatten extensions object with sorted keys
     this.extensions = Object.keys(this.extensionsByPriority)
       .map(Number)
-      .sort()
+      .sort((a, b) => a - b)
       .reduce(
         (acc, prio) => ({
           ...acc,
