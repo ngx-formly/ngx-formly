@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.11.1"></a>
+## [5.11.1](https://github.com/ngx-formly/ngx-formly/compare/v5.11.0...v5.11.1) (2022-03-13)
+
+
+### Bug Fixes
+
+* **core:** mark defaultOptions as optional ([c71d799](https://github.com/ngx-formly/ngx-formly/commit/c71d799))
+
+
+
 <a name="5.11.0"></a>
 # [5.11.0](https://github.com/ngx-formly/ngx-formly/compare/v5.10.33...v5.11.0) (2022-03-13)
 
