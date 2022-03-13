@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-next.9](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-next.8...v6.0.0-next.9) (2022-03-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **core:** minimal required version of `@angular/forms` is `v13.2`.
+
+### Features
+
+* **core:** change Formly internal extensions priority to <=-1 ([#3226](https://github.com/ngx-formly/ngx-formly/issues/3226)) ([9885067](https://github.com/ngx-formly/ngx-formly/commit/98850679c61912d20f431101dd8686ae37779f70))
+* **core:** enable initialValueIsDefault for all fields ([#3219](https://github.com/ngx-formly/ngx-formly/issues/3219)) ([3388a9a](https://github.com/ngx-formly/ngx-formly/commit/3388a9a88885a129df2298be88be9540520c5b92))
+* **core:** introduce priority to sort extensions ([#3203](https://github.com/ngx-formly/ngx-formly/issues/3203)) ([6ecf382](https://github.com/ngx-formly/ngx-formly/commit/6ecf382e2e13577d5c62b9d82ee8fbf3f055b634))
+* **core:** partial support strict mode ([#3217](https://github.com/ngx-formly/ngx-formly/issues/3217)) ([ecc3ee1](https://github.com/ngx-formly/ngx-formly/commit/ecc3ee1a19ba33d1edb7115687d53345d8202a02))
+* **kendo:** use the new formfield layout ([#3220](https://github.com/ngx-formly/ngx-formly/issues/3220)) ([f49dd7e](https://github.com/ngx-formly/ngx-formly/commit/f49dd7eadeef56f0361d2187031429dc0fc3d0fc)), closes [#2511](https://github.com/ngx-formly/ngx-formly/issues/2511)
+
+
+### Bug Fixes
+
+* **core:** remove OnPush change detection in wrappers ([#3227](https://github.com/ngx-formly/ngx-formly/issues/3227)) ([b507a51](https://github.com/ngx-formly/ngx-formly/commit/b507a514ba4592019f3cc5c976bbf9ce9954b20f)), closes [#3207](https://github.com/ngx-formly/ngx-formly/issues/3207)
+* **core:** removes usage of deprecated ComponentFactoryResolver ([#3225](https://github.com/ngx-formly/ngx-formly/issues/3225)) ([21905b1](https://github.com/ngx-formly/ngx-formly/commit/21905b1d0ed382693b29188a820c98967b0bf413))
+* **core:** update validation messages signature ([#3206](https://github.com/ngx-formly/ngx-formly/issues/3206)) ([e6d309e](https://github.com/ngx-formly/ngx-formly/commit/e6d309e35ee196bad967aaa3004d46ae88e3bae9)), closes [#3201](https://github.com/ngx-formly/ngx-formly/issues/3201)
+
 ## [6.0.0-next.8](https://github.com/ngx-formly/ngx-formly/compare/v5.10.33...v6.0.0-next.8) (2022-02-22)
 
 
