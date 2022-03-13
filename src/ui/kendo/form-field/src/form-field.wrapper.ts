@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormFieldComponent } from '@progress/kendo-angular-inputs';
 import { ɵdefineHiddenProp as defineHiddenProp, FieldWrapper } from '@ngx-formly/core';
 
@@ -19,7 +19,6 @@ import { ɵdefineHiddenProp as defineHiddenProp, FieldWrapper } from '@ngx-forml
       </kendo-formerror>
     </kendo-formfield>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyWrapperFormField extends FieldWrapper implements OnInit {
   @ViewChild(FormFieldComponent, { static: true }) formfield!: FormFieldComponent;
