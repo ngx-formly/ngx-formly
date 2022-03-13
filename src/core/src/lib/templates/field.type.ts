@@ -11,7 +11,7 @@ export interface FieldGroupTypeConfig extends FormlyFieldConfig {
 
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
   @Input() field: F;
-  defaultOptions?: F;
+  defaultOptions?: Partial<F>;
 
   @Input()
   get model() { return this.field.model; }
