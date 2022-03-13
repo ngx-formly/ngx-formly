@@ -23,10 +23,10 @@ export function defaultFormlyConfig(config: FormlyConfig): ConfigOption {
       { name: 'formly-template', component: FormlyTemplateType },
     ],
     extensions: [
-      { name: 'core', extension: new CoreExtension(config), priority: -1 },
-      { name: 'field-validation', extension: new FieldValidationExtension(config), priority: -1 },
-      { name: 'field-form', extension: new FieldFormExtension(), priority: -1 },
-      { name: 'field-expression', extension: new FieldExpressionExtension(), priority: -1 },
+      { name: 'core', extension: new CoreExtension(config), priority: -250 },
+      { name: 'field-validation', extension: new FieldValidationExtension(config), priority: -200 },
+      { name: 'field-form', extension: new FieldFormExtension(), priority: -150 },
+      { name: 'field-expression', extension: new FieldExpressionExtension(), priority: -100 },
     ],
   };
 }
