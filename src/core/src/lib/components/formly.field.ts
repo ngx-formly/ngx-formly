@@ -27,7 +27,6 @@ import {
   getFieldValue,
   assignFieldValue,
   isObject,
-  isNil,
   markFieldForCheck,
   hasKey,
   IObserver,
@@ -41,7 +40,6 @@ import { FormlyFieldTemplates } from './formly.template';
 @Component({
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   @Input() field: FormlyFieldConfig;

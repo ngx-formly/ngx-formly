@@ -1,6 +1,5 @@
 import {
   Component,
-  ChangeDetectionStrategy,
   ViewChild,
   OnInit,
   OnDestroy,
@@ -93,7 +92,6 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
       </ng-template>
     </ng-template>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./form-field.wrapper.scss'],
   encapsulation: ViewEncapsulation.None,
 })
