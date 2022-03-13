@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.11.0"></a>
+# [5.11.0](https://github.com/ngx-formly/ngx-formly/compare/v5.10.33...v5.11.0) (2022-03-13)
+
+
+### Features
+
+* **core:** add support of strictTemplates in FieldType ([#3218](https://github.com/ngx-formly/ngx-formly/issues/3218)) ([99e7e2b](https://github.com/ngx-formly/ngx-formly/commit/99e7e2b))
+
+
+
 <a name="5.10.33"></a>
 ## [5.10.33](https://github.com/ngx-formly/ngx-formly/compare/v5.10.32...v5.10.33) (2022-02-22)
 
