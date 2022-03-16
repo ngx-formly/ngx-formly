@@ -3,10 +3,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '../components/formly.field.config';
 
 export interface FieldTypeConfig extends FormlyFieldConfig {
-  formControl: FormControl;
+  formControl: NonNullable<FormControl>;
+  templateOptions: NonNullable<FormlyFieldConfig['templateOptions']>;
+  options: NonNullable<FormlyFieldConfig['options']>;
 }
 export interface FieldGroupTypeConfig extends FormlyFieldConfig {
-  formControl: FormGroup;
+  formControl: NonNullable<FormGroup>;
+  templateOptions: NonNullable<FormlyFieldConfig['templateOptions']>;
+  options: NonNullable<FormlyFieldConfig['options']>;
 }
 
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
