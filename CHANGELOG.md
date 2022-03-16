@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.11.2"></a>
+## [5.11.2](https://github.com/ngx-formly/ngx-formly/compare/v5.11.1...v5.11.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* **core:** allow override typing for field property in FieldArrayType ([#3230](https://github.com/ngx-formly/ngx-formly/issues/3230)) ([3aa5537](https://github.com/ngx-formly/ngx-formly/commit/3aa5537)), closes [#3218](https://github.com/ngx-formly/ngx-formly/issues/3218)
+
+
+
 <a name="5.11.1"></a>
 ## [5.11.1](https://github.com/ngx-formly/ngx-formly/compare/v5.11.0...v5.11.1) (2022-03-13)
 
