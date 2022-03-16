@@ -25,7 +25,6 @@ import { TableColumn } from '@swimlane/ngx-datatable';
     </ngx-datatable>
 `,
 })
-
 export class DatatableTypeComponent extends FieldArrayType implements OnInit {
   @ViewChild('defaultColumn') public defaultColumn: TemplateRef<any>;
 
