@@ -22,11 +22,11 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
 
   it('should add a flag for flat options', () => {
     const field: any = { templateOptions: {} };
-    pipe.transform([{ label: '1', value: '1' }], field).subscribe((options) => {
+    pipe.transform([{ label: '1', value: '1' }], field).subscribe(() => {
       expect(field.templateOptions._flatOptions).toBeTrue();
     });
 
-    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe((options) => {
+    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe(() => {
       expect(field.templateOptions._flatOptions).toBeFalse();
     });
   });

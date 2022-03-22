@@ -34,8 +34,8 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     this.stateChanges.complete();
   }
 
-  setDescribedByIds(ids: string[]): void {}
-  onContainerClick(event: MouseEvent): void {
+  setDescribedByIds(_ids: string[]): void {}
+  onContainerClick(_event: MouseEvent): void {
     this.field.focus = true;
     this.stateChanges.next();
   }

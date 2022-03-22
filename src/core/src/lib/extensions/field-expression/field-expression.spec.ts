@@ -134,7 +134,7 @@ describe('FieldExpressionExtension', () => {
           hideExpression: () => false,
           defaultValue: 'foo',
         };
-        const field = buildField({
+        buildField({
           fieldGroup: [
             {
               key: 'parent',

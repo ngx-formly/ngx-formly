@@ -1,9 +1,8 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { Component, DebugElement, APP_INITIALIZER, NgModule } from '@angular/core';
+import { Component, DebugElement, NgModule } from '@angular/core';
 import { FormlyModule, FormlyFormBuilder, FormlyFieldConfig, ConfigOption } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
 
 function setInputs<T>(fixture: ComponentFixture<T>, inputs: T, detectChanges = true) {
   (Object.keys(inputs) as (keyof T)[]).forEach((input) => {

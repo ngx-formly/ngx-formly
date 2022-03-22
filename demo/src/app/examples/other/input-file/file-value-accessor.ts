@@ -16,7 +16,7 @@ export class FileValueAccessor implements ControlValueAccessor {
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  writeValue(value: any) {}
+  writeValue(_value: any) {}
   registerOnChange(fn: any) {
     this.onChange = fn;
   }

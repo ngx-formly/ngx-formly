@@ -3,7 +3,6 @@ import { FormlySelectModule } from '@ngx-formly/kendo/select';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { POPUP_CONTAINER } from '@progress/kendo-angular-popup';
-import { DebugElement } from '@angular/core';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -33,11 +32,6 @@ describe('ui-kendo: Select Type', () => {
     });
 
     expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
-
-    const evt = {
-      stopPropagation: () => {},
-      preventDefault: () => {},
-    };
 
     query<HTMLElement>('kendo-dropdownlist').nativeElement.click();
     expect(document.querySelectorAll('.k-list-item')).toHaveLength(3);

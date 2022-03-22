@@ -1,4 +1,4 @@
-import { FormlyFieldConfig, FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../models';
+import { FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../models';
 import {
   isObject,
   isNil,

@@ -197,7 +197,7 @@ describe('FormlyField Component', () => {
   });
 
   it('should lazy render field components by default', () => {
-    const { field, detectChanges, query, fixture } = renderComponent({
+    const { field, detectChanges, query } = renderComponent({
       key: 'title',
       type: 'input',
       hide: true,
@@ -523,7 +523,7 @@ describe('FormlyField Component', () => {
   describe('component-level injectors', () => {
     it('should inject parent service to child type', () => {
       // should inject `ParentService` in `ChildComponent` without raising an error
-      const { field, query } = renderComponent({
+      const { query } = renderComponent({
         type: 'parent',
         fieldGroup: [
           {
@@ -540,7 +540,7 @@ describe('FormlyField Component', () => {
     });
 
     it('should inject parent wrapper to child type', () => {
-      const { field, query } = renderComponent({
+      const { query } = renderComponent({
         wrappers: ['form-field-async'],
         templateOptions: { render: true },
         fieldGroup: [

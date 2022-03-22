@@ -150,12 +150,12 @@ export class FieldValidationExtension implements FormlyExtension {
 
         const childCtrl = errorPath ? field.formControl.get(errorPath) : null;
         if (childCtrl) {
-          const { errorPath, ...opts } = errors[name];
+          const { errorPath: _errorPath, ...opts } = errors[name];
           childCtrl.setErrors({ ...(childCtrl.errors || {}), [name]: opts });
 
           !ctrl._childrenErrors && defineHiddenProp(ctrl, '_childrenErrors', {});
           ctrl._childrenErrors[name] = () => {
-            const { [name]: toDelete, ...childErrors } = childCtrl.errors || {};
+            const { [name]: _toDelete, ...childErrors } = childCtrl.errors || {};
             childCtrl.setErrors(Object.keys(childErrors).length === 0 ? null : childErrors);
           };
         }

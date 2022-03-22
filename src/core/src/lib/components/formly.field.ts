@@ -13,7 +13,6 @@ import {
   AfterViewInit,
   Renderer2,
   ElementRef,
-  ChangeDetectionStrategy,
   EmbeddedViewRef,
   Optional,
 } from '@angular/core';

@@ -31,7 +31,7 @@ export class AppComponent {
     {
       key: 'lastname',
       type: 'input',
-      hideExpression: (model) => !this.model.firstName,
+      hideExpression: (model) => !model.firstName,
       templateOptions: {
         label: 'Last name',
       },

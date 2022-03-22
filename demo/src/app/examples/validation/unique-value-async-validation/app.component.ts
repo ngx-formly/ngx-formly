@@ -26,7 +26,7 @@ export class AppComponent {
       asyncValidators: {
         uniqueUsername: {
           expression: (control: AbstractControl) => {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
               setTimeout(() => {
                 resolve(this.existingUsers.indexOf(control.value) === -1);
               }, 1000);

@@ -10,7 +10,7 @@ const renderComponent = (field: FormlyFieldConfig) => {
 
 describe('ui-bootstrap: Checkbox Type', () => {
   it('should render checkbox type', () => {
-    const { field, query } = renderComponent({
+    const { query } = renderComponent({
       key: 'name',
       type: 'checkbox',
     });

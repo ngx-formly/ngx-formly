@@ -53,11 +53,6 @@ describe('ui-ng-zorro-antd: Radio Type', () => {
       },
     });
 
-    const evt = {
-      stopPropagation: () => {},
-      preventDefault: () => {},
-    };
-
     (query('label[nz-radio]').nativeElement as HTMLElement).click();
     detectChanges();
     expect(field.formControl.value).toEqual(1);
