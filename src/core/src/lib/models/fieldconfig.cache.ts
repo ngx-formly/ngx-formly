@@ -1,11 +1,4 @@
-import {
-  ComponentFactoryResolver,
-  ComponentRef,
-  ElementRef,
-  EmbeddedViewRef,
-  Injector,
-  ViewContainerRef,
-} from '@angular/core';
+import { ComponentRef, ElementRef, EmbeddedViewRef, Injector, ViewContainerRef } from '@angular/core';
 import { AsyncValidatorFn, ValidatorFn, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { FieldType } from '../templates/field.type';
 import { FormlyExtension } from './config';

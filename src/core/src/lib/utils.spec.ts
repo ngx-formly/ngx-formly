@@ -308,7 +308,6 @@ describe('observeDeep', () => {
     const spy = jest.fn();
     const o = { address: { city: 'foo' } };
     const unsubscribe = observeDeep(o, ['address'], spy);
-    const prevAddress = o.address;
     o.address.city = 'bar';
     expect(spy).toHaveBeenCalledTimes(1);
 

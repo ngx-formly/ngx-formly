@@ -556,7 +556,7 @@ export class FormlyJsonschema {
       }
 
       if (type.length === 2 && type.indexOf('null') !== -1) {
-        return type.sort((t1, t2) => (t1 == 'null' ? 1 : -1));
+        return type.sort((t1) => (t1 == 'null' ? 1 : -1));
       }
 
       return type;

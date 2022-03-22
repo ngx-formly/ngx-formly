@@ -1,5 +1,4 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { of } from 'rxjs';
 import { FormlySelectModule } from '@ngx-formly/ionic/select';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 

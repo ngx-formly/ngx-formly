@@ -93,7 +93,7 @@ describe('FormlyAttributes Component', () => {
     });
 
     it('should allow overriding the default build-in attributes', () => {
-      const { query, field } = renderComponent({
+      const { query } = renderComponent({
         templateOptions: {
           min: 5,
           max: 10,

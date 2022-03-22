@@ -1786,7 +1786,7 @@ describe('Service: FormlyJsonschema', () => {
       }`);
 
       const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema, {
-        map: (field: FormlyFieldConfig, mapSource: JSONSchema7) => {
+        map: (field: FormlyFieldConfig) => {
           // not a very real-world mapping scenario 😊
           if (field.type === 'integer') {
             field.templateOptions.label = 'my custom label';
@@ -1818,7 +1818,7 @@ describe('Service: FormlyJsonschema', () => {
       }`);
 
       const field = formlyJsonschema.toFieldConfig(schema, {
-        map: (field: FormlyFieldConfig, mapSource: JSONSchema7) => {
+        map: (field: FormlyFieldConfig) => {
           if (field.type === '__space__') {
             // redefine the field
             field = {

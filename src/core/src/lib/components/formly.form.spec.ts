@@ -17,7 +17,7 @@ const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
     model: {},
     options: {},
     fields: [],
-    modelChange: (model) => {},
+    modelChange: () => {},
     ...inputs,
   };
 
@@ -102,7 +102,7 @@ describe('FormlyForm Component', () => {
     it('should call the validation only once during build', () => {
       const fooValidator = { expression: () => false };
       const spy = jest.spyOn(fooValidator, 'expression');
-      const { form, setInputs, detectChanges, fields } = renderComponent({
+      const { setInputs, fields } = renderComponent({
         form: new FormGroup({}),
         fields: [
           { key: 'f1', validators: { fooValidator } },
@@ -201,7 +201,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not emit `modelChange` on a field without key changes', () => {
-      const { fixture, fields, setInputs } = renderComponent({ fields: [{}] });
+      const { fixture, fields } = renderComponent({ fields: [{}] });
       const app = fixture.componentInstance;
       jest.spyOn(app, 'modelChange');
 
@@ -353,7 +353,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should hide/display field using a function with nested field key', () => {
-      const { form, model, fields, detectChanges, setInputs } = renderComponent({
+      const { form, detectChanges, setInputs } = renderComponent({
         model: { address: [{ city: '' }] },
         fields: [
           {
@@ -724,7 +724,7 @@ describe('FormlyForm Component', () => {
   });
 
   it('should keep in sync UI on checkExpressionChange', () => {
-    const { form, query, fields, fixture, detectChanges } = renderComponent(
+    const { form, query, fixture } = renderComponent(
       {
         fields: [
           {

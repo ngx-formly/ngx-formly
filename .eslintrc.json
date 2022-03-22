@@ -1,6 +1,5 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -26,17 +25,23 @@
             "type": "attribute"
           }
         ],
-        "@angular-eslint/no-conflicting-lifecycle": ["warn"],
+        "@angular-eslint/no-conflicting-lifecycle": ["off"],
         "@angular-eslint/no-host-metadata-property": ["warn"],
         "@angular-eslint/directive-class-suffix": ["off"],
-        "@angular-eslint/component-class-suffix": ["off"]
+        "@angular-eslint/component-class-suffix": ["off"],
+        "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
       }
     },
     {
       "files": ["*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {
-        "@angular-eslint/template/eqeqeq": ["warn"]
+        "@angular-eslint/template/eqeqeq": [
+          "warn",
+          {
+            "allowNullOrUndefined": true
+          }
+        ]
       }
     }
   ]
