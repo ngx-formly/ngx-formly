@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, ComponentRef } from '@angular/core';
+import { Injectable, InjectionToken, ComponentRef, Type } from '@angular/core';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
 import {
@@ -77,7 +77,11 @@ export class FormlyConfig {
     }
   }
 
-  getType(name: string, throwIfNotFound = false): TypeOption {
+  getType(name: FormlyFieldConfig['type'], throwIfNotFound = false): TypeOption {
+    if (name instanceof Type) {
+      return { component: name, name: name.prototype.constructor.name };
+    }
+
     if (!this.types[name]) {
       if (throwIfNotFound) {
         throw new Error(

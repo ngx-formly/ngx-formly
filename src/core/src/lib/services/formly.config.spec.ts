@@ -1,6 +1,7 @@
 import { FormlyConfig } from './formly.config';
 import { Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
+import { FormlyFieldInput } from '@ngx-formly/core/testing';
 
 describe('FormlyConfig service', () => {
   let config: FormlyConfig;
@@ -79,6 +80,10 @@ describe('FormlyConfig service', () => {
 
       expect(config.getType('custom_input1').name).toEqual('custom_input1');
       expect(config.getType('custom_input2').name).toEqual('custom_input2');
+    });
+
+    it('should handle passing component as type', () => {
+      expect(config.getType(FormlyFieldInput).name).toEqual('FormlyFieldInput');
     });
 
     it('should throw when type not found', () => {

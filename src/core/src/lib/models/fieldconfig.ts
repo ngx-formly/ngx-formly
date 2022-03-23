@@ -2,6 +2,7 @@ import { FormGroup, FormArray, AbstractControl, FormGroupDirective } from '@angu
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { ValidationMessageOption } from '../models';
+import { Type } from '@angular/core';
 
 export interface FormlyFieldConfig {
   /**
@@ -12,7 +13,7 @@ export interface FormlyFieldConfig {
   /**
    * This should be a formly-field type added either by you or a plugin. More information over at Creating Formly Fields.
    */
-  type?: string;
+  type?: string | Type<FieldType>;
 
   /**
    * Use `defaultValue` to initialize it the model. If this is provided and the value of the model at compile-time is undefined, then the value of the model will be assigned to `defaultValue`.

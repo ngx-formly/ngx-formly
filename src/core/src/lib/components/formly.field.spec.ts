@@ -1,7 +1,13 @@
 import { Component, ChangeDetectionStrategy, Injectable, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent, FormlyInputModule, createFieldChangesSpy, ɵCustomEvent } from '@ngx-formly/core/testing';
+import {
+  createFieldComponent,
+  FormlyInputModule,
+  createFieldChangesSpy,
+  ɵCustomEvent,
+  FormlyFieldInput,
+} from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyExtension, FormlyFieldConfigCache } from '../models';
@@ -152,6 +158,15 @@ describe('FormlyField Component', () => {
     });
 
     expect(query('formly-wrapper-form-field')).toBeNull();
+    expect(query('formly-type-input')).not.toBeNull();
+  });
+
+  it('should allow passing component to the field definition', () => {
+    const { query } = renderComponent({
+      key: 'title',
+      type: FormlyFieldInput,
+    });
+
     expect(query('formly-type-input')).not.toBeNull();
   });
 

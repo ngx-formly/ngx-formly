@@ -55,11 +55,8 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
       return this.to.type;
     }
 
-    if (<any>this.field.type instanceof Type) {
-      return this.field.type!.constructor.name;
-    }
-
-    return this.field.type!;
+    const type = this.field.type!;
+    return type instanceof Type ? type.prototype.constructor.name : type;
   }
   get focused() {
     return !!this.field.focus && !this.disabled;

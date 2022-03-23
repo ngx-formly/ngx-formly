@@ -2,7 +2,7 @@ import { FormlyFieldConfig } from './models';
 import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './models';
-import { ChangeDetectorRef, ComponentRef, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, ComponentRef, TemplateRef, Type } from '@angular/core';
 
 export function disableTreeValidityCall(form: any, callback: Function) {
   const _updateTreeValidity = form._updateTreeValidity.bind(form);
@@ -20,8 +20,8 @@ export function getFieldId(formId: string, field: FormlyFieldConfig, index: stri
     type = 'template';
   }
 
-  if (isFunction(type)) {
-    type = (type as any).prototype.constructor.name;
+  if (type instanceof Type) {
+    type = type.prototype.constructor.name;
   }
 
   return [formId, type, field.key, index].join('_');
