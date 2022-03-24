@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
         { path: '/guide/properties-options', title: 'Properties and Options' },
         { path: '/guide/validation', title: 'Validation' },
         { path: '/guide/expression-properties', title: 'Formly Expressions' },
-        { path: '/guide/custom-formly-field', title: 'Custom Templates' },
+        { path: '/guide/custom-formly-field', title: 'Custom Type' },
         { path: '/guide/custom-formly-wrapper', title: 'Custom Wrapper' },
         { path: '/guide/custom-formly-extension', title: 'Custom Extension' },
       ],
