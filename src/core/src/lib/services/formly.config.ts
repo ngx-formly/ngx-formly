@@ -163,7 +163,11 @@ export class FormlyConfig {
     }
   }
 
-  getWrapper(name: string): WrapperOption {
+  getWrapper(name: FormlyFieldConfig['wrappers'][0]): WrapperOption {
+    if (name instanceof Type) {
+      return { component: name, name: name.prototype.constructor.name };
+    }
+
     if (!this.wrappers[name]) {
       throw new Error(
         `[Formly Error] The wrapper "${name}" could not be found. Please make sure that is registered through the FormlyModule declaration.`,

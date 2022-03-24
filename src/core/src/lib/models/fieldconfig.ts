@@ -1,6 +1,7 @@
 import { FormGroup, FormArray, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
+import { FieldWrapper } from '../templates/field.wrapper';
 import { ValidationMessageOption } from '../models';
 import { Type } from '@angular/core';
 
@@ -85,7 +86,7 @@ export interface FormlyFieldConfig {
    *  The formly field template will be wrapped by the first wrapper, then the second, then the third, etc.
    *  You can also specify these as part of a type (which is the recommended approach).
    */
-  wrappers?: string[];
+  wrappers?: (string | Type<FieldWrapper>)[];
 
   /**
    * Whether to hide the field. Defaults to false. If you wish this to be conditional use `hideExpression`
