@@ -104,7 +104,11 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     this.triggerHook('onDestroy');
   }
 
-  private renderField(containerRef: ViewContainerRef, f: FormlyFieldConfigCache, wrappers: string[] = []) {
+  private renderField(
+    containerRef: ViewContainerRef,
+    f: FormlyFieldConfigCache,
+    wrappers: FormlyFieldConfig['wrappers'] = [],
+  ) {
     if (this.containerRef === containerRef) {
       this.resetRefs(this.field);
       this.containerRef.clear();

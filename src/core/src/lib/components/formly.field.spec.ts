@@ -7,6 +7,7 @@ import {
   createFieldChangesSpy,
   ɵCustomEvent,
   FormlyFieldInput,
+  FormlyWrapperFormField,
 } from '@ngx-formly/core/testing';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
@@ -175,6 +176,17 @@ describe('FormlyField Component', () => {
       key: 'title',
       type: 'input',
       wrappers: ['form-field'],
+    });
+
+    expect(query('formly-wrapper-form-field')).not.toBeNull();
+    expect(query('formly-type-input')).not.toBeNull();
+  });
+
+  it('should allow passing wrapper component to the field definition', () => {
+    const { query } = renderComponent({
+      key: 'title',
+      type: FormlyFieldInput,
+      wrappers: [FormlyWrapperFormField],
     });
 
     expect(query('formly-wrapper-form-field')).not.toBeNull();
