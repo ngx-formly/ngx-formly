@@ -36,7 +36,7 @@ export class AppComponent {
     {
       key: 'sport',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Sport',
         options: [
           { id: '1', name: 'Soccer' },
@@ -49,31 +49,31 @@ export class AppComponent {
     {
       key: 'team',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Team',
         options: [],
         valueProp: 'id',
         labelProp: 'name',
       },
       expressionProperties: {
-        'templateOptions.options': 'formState.selectOptionsData.teams.filter(team => team.sportId === model.sport)',
+        'props.options': 'formState.selectOptionsData.teams.filter(team => team.sportId === model.sport)',
         // reset model when updating select options
-        'model.team': `field.templateOptions.options.find(o => o.id === model.team) ? model.team:null`,
+        'model.team': `field.props.options.find(o => o.id === model.team) ? model.team:null`,
       },
     },
     {
       key: 'player',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Player',
         options: [],
         valueProp: 'id',
         labelProp: 'name',
       },
       expressionProperties: {
-        'templateOptions.options': 'formState.selectOptionsData.players.filter(player => player.teamId === model.team)',
+        'props.options': 'formState.selectOptionsData.players.filter(player => player.teamId === model.team)',
         // reset model when updating select options
-        'model.player': `field.templateOptions.options.find(o => o.id === model.player) ? model.player:null`,
+        'model.player': `field.props.options.find(o => o.id === model.player) ? model.player:null`,
       },
     },
   ];

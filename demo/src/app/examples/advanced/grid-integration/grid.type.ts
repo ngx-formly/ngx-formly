@@ -24,17 +24,17 @@ export class GridTypeComponent extends FieldArrayType implements OnInit {
 
   ngOnInit() {
     this.style = {
-      width: this.to.width,
-      height: this.to.height,
+      width: this.props.width,
+      height: this.props.height,
     };
 
     // map cell Renderer to Formly Component
-    this.to.gridOptions.columnDefs.forEach((column: ColDef) => {
+    this.props.gridOptions.columnDefs.forEach((column: ColDef) => {
       column.cellRenderer = GridFormlyCellComponent;
     });
 
     // set grid options and context of the parent formly field
-    const gridOptions: GridOptions = this.to.gridOptions || {};
+    const gridOptions: GridOptions = this.props.gridOptions || {};
     gridOptions.context = {
       parentField: this.field,
     };

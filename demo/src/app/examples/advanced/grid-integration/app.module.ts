@@ -22,7 +22,7 @@ import { GridFormlyCellComponent } from './grid-formly-cell.component';
           name: 'grid',
           component: GridTypeComponent,
           defaultOptions: {
-            templateOptions: {
+            props: {
               width: '100%',
               height: '400px',
             },

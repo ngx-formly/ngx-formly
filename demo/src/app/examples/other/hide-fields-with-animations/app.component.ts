@@ -23,7 +23,7 @@ export class AppComponent {
     {
       key: 'firstName',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'First name',
         placeholder: 'Type in here to display the hidden field using slideInOut animation',
       },
@@ -32,7 +32,7 @@ export class AppComponent {
       key: 'lastname',
       type: 'input',
       hideExpression: (model) => !model.firstName,
-      templateOptions: {
+      props: {
         label: 'Last name',
       },
     },

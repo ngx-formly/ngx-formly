@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
           name: 'password',
           extends: 'input',
           defaultOptions: {
-            templateOptions: {
+            props: {
               type: 'password',
               label: 'Default Password Field',
             },

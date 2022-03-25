@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Slider',
       type: 'slider',
-      templateOptions: {
+      props: {
         label: 'Slider label',
         // placeholder: 'Slider Placeholder',
         // thumbLabel: true,

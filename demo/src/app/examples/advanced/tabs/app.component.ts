@@ -16,12 +16,12 @@ export class AppComponent {
       type: 'tabs',
       fieldGroup: [
         {
-          templateOptions: { label: 'Personal data' },
+          props: { label: 'Personal data' },
           fieldGroup: [
             {
               key: 'firstname',
               type: 'input',
-              templateOptions: {
+              props: {
                 label: 'First name',
                 required: true,
               },
@@ -29,7 +29,7 @@ export class AppComponent {
             {
               key: 'age',
               type: 'input',
-              templateOptions: {
+              props: {
                 type: 'number',
                 label: 'Age',
                 required: true,
@@ -38,12 +38,12 @@ export class AppComponent {
           ],
         },
         {
-          templateOptions: { label: 'Destination' },
+          props: { label: 'Destination' },
           fieldGroup: [
             {
               key: 'country',
               type: 'input',
-              templateOptions: {
+              props: {
                 label: 'Country',
                 required: true,
               },
@@ -51,12 +51,12 @@ export class AppComponent {
           ],
         },
         {
-          templateOptions: { label: 'Day of the trip' },
+          props: { label: 'Day of the trip' },
           fieldGroup: [
             {
               key: 'day',
               type: 'input',
-              templateOptions: {
+              props: {
                 type: 'date',
                 label: 'Day of the trip',
                 required: true,

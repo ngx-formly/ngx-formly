@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'text',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Text',
         placeholder: 'This is required!',
         required: true,

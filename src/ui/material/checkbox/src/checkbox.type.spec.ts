@@ -45,7 +45,7 @@ describe('ui-material: Checkbox Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     const input = query('input[type="checkbox"]').nativeElement as HTMLInputElement;

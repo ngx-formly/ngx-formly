@@ -62,7 +62,7 @@ You just need to include the name of the validate function, declared in `FormlyM
 {
   key: 'ip',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'IP Address (using custom validation declared in ngModule)',
     required: true,
   },
@@ -77,7 +77,7 @@ You just need to include the name of the validate function, declared in `FormlyM
 {
   key: 'ip',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'IP Address (using custom validation declared in ngModule)',
     required: true,
   },
@@ -107,7 +107,7 @@ You just need to include the validation function, declared wherever you want, wi
 {
   key: 'ip',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'IP Address (using custom validation through `validators.validation` property)',
     required: true,
   },
@@ -123,7 +123,7 @@ You just need to include the validation function, declared wherever you want, wi
 {
   key: 'ip',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'IP Address (using custom validation through `validators.validation` property)',
     required: true,
   },
@@ -151,7 +151,7 @@ As can be seen in the following code example, you just need to give a name to th
 {
   key: 'ip',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'IP Address (using custom validation through `validators.expression` property)',
     description: 'custom validation message through `validators.expression` property',
     required: true,
@@ -170,7 +170,7 @@ As can be seen in the following code example, you just need to give a name to th
 {
   key: 'ip',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'IP Address (using custom validation through `validators.expression` property)',
     description: 'custom validation message through `validators.expression` property',
     required: true,
@@ -250,7 +250,7 @@ The formly type has to be referenced in the field
 {
   key: 'ip',
   type: 'ip', // the formly type defined
-  templateOptions: {
+  props: {
     label: 'IP Address (using custom validation declared in ngModule)',
     required: true,
   },

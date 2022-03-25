@@ -20,7 +20,7 @@ export class AppComponent {
       key: 'investmentsCount',
       type: 'input',
       defaultValue: 3,
-      templateOptions: {
+      props: {
         type: 'number',
         label: 'Investments count',
         required: true,
@@ -47,7 +47,7 @@ export class AppComponent {
       fieldArray: {
         type: 'input',
         key: 'investmentName',
-        templateOptions: {
+        props: {
           label: 'Name of Investment:',
           required: true,
         },

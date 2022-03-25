@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Toggle',
       type: 'toggle',
-      templateOptions: {
+      props: {
         label: 'Toggle label',
         description: 'Toggle Description',
         required: true,

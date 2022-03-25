@@ -20,7 +20,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
           name: 'datatable',
           component: DatatableTypeComponent,
           defaultOptions: {
-            templateOptions: {
+            props: {
               columnMode: 'force',
               rowHeight: 'auto',
               headerHeight: '40',

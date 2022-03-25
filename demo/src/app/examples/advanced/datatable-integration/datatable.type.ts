@@ -9,14 +9,14 @@ import { TableColumn } from '@swimlane/ngx-datatable';
       #table
       class="bootstrap"
       [rows]="model"
-      [columns]="to.columns"
-      [columnMode]="to.columnMode"
-      [rowHeight]="to.rowHeight"
-      [headerHeight]="to.headerHeight"
-      [footerHeight]="to.footerHeight"
-      [limit]="to.limit"
-      [scrollbarH]="to.scrollbarH"
-      [reorderable]="to.reorderable"
+      [columns]="props.columns"
+      [columnMode]="props.columnMode"
+      [rowHeight]="props.rowHeight"
+      [headerHeight]="props.headerHeight"
+      [footerHeight]="props.footerHeight"
+      [limit]="props.limit"
+      [scrollbarH]="props.scrollbarH"
+      [reorderable]="props.reorderable"
       [externalSorting]="true"
     >
       <ng-template
@@ -36,7 +36,7 @@ export class DatatableTypeComponent extends FieldArrayType implements OnInit {
   @ViewChild('defaultColumn', { static: true }) public defaultColumn!: TemplateRef<any>;
 
   ngOnInit() {
-    (this.to.columns as TableColumn[]).forEach((column) => (column.cellTemplate = this.defaultColumn));
+    (this.props.columns as TableColumn[]).forEach((column) => (column.cellTemplate = this.defaultColumn));
   }
 
   getField(parent: FormlyFieldConfig, column: TableColumn, rowIndex: number): FormlyFieldConfig {

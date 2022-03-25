@@ -1,6 +1,6 @@
 import { FormlyJsonschema } from './formly-json-schema.service';
 import { JSONSchema7 } from 'json-schema';
-import { FormlyFieldConfig, FormlyTemplateOptions, FieldArrayType } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFieldProps, FieldArrayType } from '@ngx-formly/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
 import { createComponent, FormlyInputModule } from '@ngx-formly/core/testing';
 import { Component } from '@angular/core';
@@ -44,7 +44,7 @@ const renderComponent = ({ schema, model }: { schema: JSONSchema7; model?: any }
 
 describe('Service: FormlyJsonschema', () => {
   let formlyJsonschema: FormlyJsonschema;
-  const emmptyTemplateOptions: FormlyTemplateOptions = {
+  const emmptyFieldProps: FormlyFieldProps = {
     label: undefined,
     readonly: undefined,
     description: undefined,
@@ -87,9 +87,9 @@ describe('Service: FormlyJsonschema', () => {
           minimum: 5,
           maximum: 10,
         };
-        const { templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
-        expect(to.min).toBe(numSchema.minimum);
-        expect(to.max).toBe(numSchema.maximum);
+        const { props } = formlyJsonschema.toFieldConfig(numSchema);
+        expect(props.min).toBe(numSchema.minimum);
+        expect(props.max).toBe(numSchema.maximum);
       });
 
       it('should support exclusiveMinimum', () => {
@@ -126,7 +126,7 @@ describe('Service: FormlyJsonschema', () => {
           multipleOf: 5,
         };
         const config = formlyJsonschema.toFieldConfig(numSchema);
-        expect(config.templateOptions.step).toBe(numSchema.multipleOf);
+        expect(config.props.step).toBe(numSchema.multipleOf);
 
         const multipleOfValidator = config.validators.multipleOf;
         expect(multipleOfValidator).toBeDefined();
@@ -140,7 +140,7 @@ describe('Service: FormlyJsonschema', () => {
           multipleOf: 0.15,
         };
         const config = formlyJsonschema.toFieldConfig(numSchema);
-        expect(config.templateOptions.step).toBe(numSchema.multipleOf);
+        expect(config.props.step).toBe(numSchema.multipleOf);
 
         const multipleOfValidator = config.validators.multipleOf;
         expect(multipleOfValidator).toBeDefined();
@@ -189,8 +189,8 @@ describe('Service: FormlyJsonschema', () => {
           type: 'string',
           pattern: 'Hello World!',
         };
-        const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-        expect(to.pattern).toBe(schema.pattern);
+        const { props } = formlyJsonschema.toFieldConfig(schema);
+        expect(props.pattern).toBe(schema.pattern);
       });
 
       it('should support minLength and maxLength', () => {
@@ -199,9 +199,9 @@ describe('Service: FormlyJsonschema', () => {
           minLength: 5,
           maxLength: 10,
         };
-        const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-        expect(to.minLength).toBe(schema.minLength);
-        expect(to.maxLength).toBe(schema.maxLength);
+        const { props } = formlyJsonschema.toFieldConfig(schema);
+        expect(props.minLength).toBe(schema.minLength);
+        expect(props.maxLength).toBe(schema.maxLength);
       });
 
       it('should set nullable string type to `null` if empty', () => {
@@ -255,7 +255,8 @@ describe('Service: FormlyJsonschema', () => {
         const baseConfig: FormlyFieldConfig = {
           type: 'array',
           defaultValue: undefined,
-          templateOptions: { ...emmptyTemplateOptions },
+          props: { ...emmptyFieldProps },
+          templateOptions: { ...emmptyFieldProps },
           fieldArray: expect.any(Function),
           validators: expectTypeValidator(['array']),
         };
@@ -272,14 +273,16 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(schema);
 
         const childConfig: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
+          props: { ...emmptyFieldProps, required: true, removable: false },
+          templateOptions: { ...emmptyFieldProps, required: true, removable: false },
           type: 'string',
           defaultValue: undefined,
           parsers: [expect.any(Function)],
           validators: expectTypeValidator(['string']),
         };
         const childConfig2: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
+          props: { ...emmptyFieldProps, required: true, removable: false },
+          templateOptions: { ...emmptyFieldProps, required: true, removable: false },
           type: 'number',
           defaultValue: undefined,
           parsers: [expect.any(Function)],
@@ -308,21 +311,24 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(schema);
 
         const childConfig: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
+          props: { ...emmptyFieldProps, required: true, removable: false },
+          templateOptions: { ...emmptyFieldProps, required: true, removable: false },
           type: 'string',
           defaultValue: undefined,
           parsers: [expect.any(Function)],
           validators: expectTypeValidator(['string']),
         };
         const childConfig2: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, required: true, removable: false },
+          props: { ...emmptyFieldProps, required: true, removable: false },
+          templateOptions: { ...emmptyFieldProps, required: true, removable: false },
           type: 'number',
           defaultValue: undefined,
           parsers: [expect.any(Function)],
           validators: expectTypeValidator(['number']),
         };
         const childConfig3: FormlyFieldConfig = {
-          templateOptions: { ...emmptyTemplateOptions, required: true },
+          props: { ...emmptyFieldProps, required: true },
+          templateOptions: { ...emmptyFieldProps, required: true },
           type: 'boolean',
           defaultValue: undefined,
           validators: expectTypeValidator(['boolean']),
@@ -358,7 +364,7 @@ describe('Service: FormlyJsonschema', () => {
           minItems: 2,
         };
         const config = formlyJsonschema.toFieldConfig(numSchema);
-        expect(config.templateOptions.minItems).toBe(numSchema.minItems);
+        expect(config.props.minItems).toBe(numSchema.minItems);
 
         const minItemsValidator = config.validators.minItems;
         expect(minItemsValidator).toBeDefined();
@@ -374,7 +380,7 @@ describe('Service: FormlyJsonschema', () => {
           maxItems: 2,
         };
         const config = formlyJsonschema.toFieldConfig(numSchema);
-        expect(config.templateOptions.maxItems).toBe(numSchema.maxItems);
+        expect(config.props.maxItems).toBe(numSchema.maxItems);
 
         const maxItemsValidator = config.validators.maxItems;
         expect(maxItemsValidator).toBeDefined();
@@ -389,7 +395,7 @@ describe('Service: FormlyJsonschema', () => {
           uniqueItems: true,
         };
         const config = formlyJsonschema.toFieldConfig(numSchema);
-        expect(config.templateOptions.uniqueItems).toBeTrue();
+        expect(config.props.uniqueItems).toBeTrue();
 
         const uniqueItemsValidator = config.validators.uniqueItems;
         expect(uniqueItemsValidator).toBeDefined();
@@ -427,7 +433,7 @@ describe('Service: FormlyJsonschema', () => {
           });
 
           const childField = field.fieldGroup[0];
-          expect(childField.templateOptions.required).toBeTrue();
+          expect(childField.props.required).toBeTrue();
         });
 
         it('nested required object with required property', () => {
@@ -448,7 +454,7 @@ describe('Service: FormlyJsonschema', () => {
           });
 
           const childField = field.fieldGroup[0].fieldGroup[0];
-          expect(childField.templateOptions.required).toBeTrue();
+          expect(childField.props.required).toBeTrue();
         });
 
         it('nested optional object with required property', () => {
@@ -468,11 +474,11 @@ describe('Service: FormlyJsonschema', () => {
           });
 
           const childField = field.fieldGroup[0].fieldGroup[0];
-          expect(childField.templateOptions.required).toBeFalse();
+          expect(childField.props.required).toBeFalse();
 
           childField.formControl.setValue('***');
           fixture.detectChanges();
-          expect(childField.templateOptions.required).toBeTrue();
+          expect(childField.props.required).toBeTrue();
         });
 
         it('required with oneOf/anyOf', () => {
@@ -514,7 +520,7 @@ describe('Service: FormlyJsonschema', () => {
                   "widget": {
                     "formlyConfig": {
                       "expressionProperties": {
-                        "templateOptions.readonly": "model.readonly"
+                        "props.readonly": "model.readonly"
                       }
                     }
                   }
@@ -525,7 +531,7 @@ describe('Service: FormlyJsonschema', () => {
           );
 
           const childField = field.fieldGroup[0];
-          expect(childField.expressionProperties['templateOptions.readonly']).toEqual('model.readonly');
+          expect(childField.expressionProperties['props.readonly']).toEqual('model.readonly');
         });
       });
 
@@ -547,11 +553,11 @@ describe('Service: FormlyJsonschema', () => {
             });
 
             const [creditCardField, billingAddressField] = field.fieldGroup;
-            expect(billingAddressField.templateOptions.required).toBeTrue();
+            expect(billingAddressField.props.required).toBeTrue();
 
             creditCardField.formControl.setValue(null);
             fixture.detectChanges();
-            expect(billingAddressField.templateOptions.required).toBeFalse();
+            expect(billingAddressField.props.required).toBeFalse();
           });
         });
 
@@ -650,17 +656,17 @@ describe('Service: FormlyJsonschema', () => {
           // labelProp and valueProp should be a function that returns what it is given
           const config = formlyJsonschema.toFieldConfig(schemaStringEnum);
           expect(config.type).toBe('enum');
-          expect(config.templateOptions.options).toEqual(enumOptions(schemaStringEnum.enum));
+          expect(config.props.options).toEqual(enumOptions(schemaStringEnum.enum));
 
           const config2 = formlyJsonschema.toFieldConfig(schemaNumberEnum);
           expect(config2.parsers).toEqual([expect.any(Function)]);
           expect(config2.type).toBe('enum');
-          expect(config2.templateOptions.options).toEqual(enumOptions(schemaNumberEnum.enum));
+          expect(config2.props.options).toEqual(enumOptions(schemaNumberEnum.enum));
 
           const config3 = formlyJsonschema.toFieldConfig(schemaIntegerEnum);
           expect(config3.parsers).toEqual([expect.any(Function)]);
           expect(config3.type).toBe('enum');
-          expect(config3.templateOptions.options).toEqual(enumOptions(schemaIntegerEnum.enum));
+          expect(config3.props.options).toEqual(enumOptions(schemaIntegerEnum.enum));
         });
 
         // https://github.com/json-schema-org/json-schema-spec/issues/57#issuecomment-247861695
@@ -676,7 +682,7 @@ describe('Service: FormlyJsonschema', () => {
 
             const {
               type,
-              templateOptions: { options },
+              props: { options },
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
@@ -698,7 +704,7 @@ describe('Service: FormlyJsonschema', () => {
 
             const {
               type,
-              templateOptions: { options },
+              props: { options },
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
@@ -719,7 +725,7 @@ describe('Service: FormlyJsonschema', () => {
 
             const {
               type,
-              templateOptions: { options },
+              props: { options },
             } = formlyJsonschema.toFieldConfig(schema);
 
             expect(type).toEqual('enum');
@@ -740,10 +746,10 @@ describe('Service: FormlyJsonschema', () => {
                 enum: ['The', 'Best', 'Forms'],
               },
             };
-            const { type, validators, templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
+            const { type, validators, props } = formlyJsonschema.toFieldConfig(numSchema);
 
             expect(type).toEqual('enum');
-            expect(to.multiple).toBeTrue();
+            expect(props.multiple).toBeTrue();
             expect(validators.uniqueItems).toBeDefined();
           });
 
@@ -763,9 +769,9 @@ describe('Service: FormlyJsonschema', () => {
               items: { $ref: '#/definitions/foo' },
             };
 
-            const { type, templateOptions: to } = formlyJsonschema.toFieldConfig(numSchema);
+            const { type, props } = formlyJsonschema.toFieldConfig(numSchema);
             expect(type).toEqual('enum');
-            expect(to.multiple).toBeTrue();
+            expect(props.multiple).toBeTrue();
           });
         });
       });
@@ -817,7 +823,8 @@ describe('Service: FormlyJsonschema', () => {
           key: 'billing_address',
           type: 'string',
           defaultValue: undefined,
-          templateOptions: emmptyTemplateOptions,
+          props: emmptyFieldProps,
+          templateOptions: emmptyFieldProps,
           parsers: [expect.any(Function)],
           validators: expectTypeValidator(['string']),
         });
@@ -846,8 +853,8 @@ describe('Service: FormlyJsonschema', () => {
 
         const config = formlyJsonschema.toFieldConfig(schema);
         const addressField = config.fieldGroup[0];
-        expect(addressField.templateOptions.label).toEqual('Billing address');
-        expect(addressField.templateOptions.description).toEqual('default billing address');
+        expect(addressField.props.label).toEqual('Billing address');
+        expect(addressField.props.description).toEqual('default billing address');
         expect(addressField.defaultValue).toEqual('bar');
       });
 
@@ -865,7 +872,7 @@ describe('Service: FormlyJsonschema', () => {
               $ref: '#/definitions/address',
               widget: {
                 formlyConfig: {
-                  templateOptions: {
+                  props: {
                     label: 'Billing address',
                   },
                 },
@@ -876,7 +883,7 @@ describe('Service: FormlyJsonschema', () => {
 
         const config = formlyJsonschema.toFieldConfig(schema);
         const addressField = config.fieldGroup[0];
-        expect(addressField.templateOptions.label).toEqual('Billing address');
+        expect(addressField.props.label).toEqual('Billing address');
       });
 
       it('should resolve a nested schema definition', () => {
@@ -898,8 +905,12 @@ describe('Service: FormlyJsonschema', () => {
           defaultValue: undefined,
           parsers: [expect.any(Function)],
           validators: expectTypeValidator(['string']),
+          props: {
+            ...emmptyFieldProps,
+            label: 'address1',
+          },
           templateOptions: {
-            ...emmptyTemplateOptions,
+            ...emmptyFieldProps,
             label: 'address1',
           },
         });
@@ -923,10 +934,11 @@ describe('Service: FormlyJsonschema', () => {
 
         const config = formlyJsonschema.toFieldConfig(schema).fieldGroup[0];
 
-        const expectedConfig = {
+        const expectedConfig: FormlyFieldConfig = {
           type: 'array',
           defaultValue: undefined,
-          templateOptions: { ...emmptyTemplateOptions, required: true },
+          props: { ...emmptyFieldProps, required: true },
+          templateOptions: { ...emmptyFieldProps, required: true },
           fieldArray: expect.any(Function),
           validators: expectTypeValidator(['array']),
         };
@@ -974,7 +986,7 @@ describe('Service: FormlyJsonschema', () => {
             },
           },
         });
-        const expected = field.fieldGroup[0].fieldGroup.map(({ key, type, templateOptions: { required } }) => ({
+        const expected = field.fieldGroup[0].fieldGroup.map(({ key, type, props: { required } }) => ({
           key,
           type,
           required,
@@ -1027,7 +1039,7 @@ describe('Service: FormlyJsonschema', () => {
             },
           },
         });
-        const expected = field.fieldGroup[0].fieldGroup.map(({ key, type, templateOptions: { required } }) => ({
+        const expected = field.fieldGroup[0].fieldGroup.map(({ key, type, props: { required } }) => ({
           key,
           type,
           required,
@@ -1057,7 +1069,7 @@ describe('Service: FormlyJsonschema', () => {
         const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
         const expected = fieldGroup.map(({ key, expressionProperties }) => ({
           key,
-          required: !!expressionProperties['templateOptions.required'],
+          required: !!expressionProperties['props.required'],
         }));
         expect(expected).toEqual([
           { key: 'firstname', required: true },
@@ -1082,7 +1094,7 @@ describe('Service: FormlyJsonschema', () => {
             ],
           },
         });
-        const expected = field.fieldGroup.map(({ key, templateOptions: { required } }) => ({ key, required }));
+        const expected = field.fieldGroup.map(({ key, props: { required } }) => ({ key, required }));
         expect(expected).toEqual([
           { key: 'firstname', required: true },
           { key: 'familyname', required: true },
@@ -1096,8 +1108,8 @@ describe('Service: FormlyJsonschema', () => {
             type: 'array',
             allOf: [{ uniqueItems: false }, { uniqueItems: true }],
           };
-          const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-          expect(to.uniqueItems).toBeTrue();
+          const { props } = formlyJsonschema.toFieldConfig(schema);
+          expect(props.uniqueItems).toBeTrue();
         });
 
         it('minLength', () => {
@@ -1105,8 +1117,8 @@ describe('Service: FormlyJsonschema', () => {
             type: 'string',
             allOf: [{ minLength: 10 }, { minLength: 100 }],
           };
-          const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-          expect(to.minLength).toEqual(100);
+          const { props } = formlyJsonschema.toFieldConfig(schema);
+          expect(props.minLength).toEqual(100);
         });
 
         it('maxLength', () => {
@@ -1114,8 +1126,8 @@ describe('Service: FormlyJsonschema', () => {
             type: 'string',
             allOf: [{ maxLength: 10 }, { maxLength: 100 }],
           };
-          const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-          expect(to.maxLength).toEqual(10);
+          const { props } = formlyJsonschema.toFieldConfig(schema);
+          expect(props.maxLength).toEqual(10);
         });
       });
     });
@@ -1455,7 +1467,7 @@ describe('Service: FormlyJsonschema', () => {
             },
           ] = field.fieldGroup[0].fieldGroup;
 
-          expect(f1.templateOptions.disabled).toBeTrue();
+          expect(f1.props.disabled).toBeTrue();
           expect(f1.hide).toBeTrue();
           expect(f2.hide).toBeFalse();
         });
@@ -1482,7 +1494,7 @@ describe('Service: FormlyJsonschema', () => {
             },
           ] = field.fieldGroup[0].fieldGroup;
 
-          expect(f1.templateOptions.disabled).toBeTrue();
+          expect(f1.props.disabled).toBeTrue();
           expect(f1.hide).toBeFalse();
           expect(f2.hide).toBeTrue();
         });
@@ -1665,12 +1677,12 @@ describe('Service: FormlyJsonschema', () => {
           default: 'Super Heroic Forms Generator',
           type: 'string',
         };
-        const { defaultValue, templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-        expect(to.label).toBe(schema.title);
+        const { defaultValue, props } = formlyJsonschema.toFieldConfig(schema);
+        expect(props.label).toBe(schema.title);
         expect(defaultValue).toBe(schema.default);
-        expect(to.description).toBe(schema.description);
-        expect(to.readonly).toBe(schema.readOnly);
-        expect(to.disabled).toBe(schema.readOnly);
+        expect(props.description).toBe(schema.description);
+        expect(props.readonly).toBe(schema.readOnly);
+        expect(props.disabled).toBe(schema.readOnly);
       });
     });
   });
@@ -1681,21 +1693,20 @@ describe('Service: FormlyJsonschema', () => {
         "type": "integer",
         "widget": {
           "formlyConfig": {
-            "templateOptions": {
+            "props": {
               "label": "Age"
             }
           }
         }
       }`);
 
-      const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
-      expect(to.label).toBe('Age');
+      const { props } = formlyJsonschema.toFieldConfig(schema);
+      expect(props.label).toBe('Age');
     });
 
-    it('should override properties that have already been set', () => {
+    it('should handle legacy templateOptions on merge', () => {
       const schema: JSONSchema7 = JSON.parse(`{
         "type": "integer",
-        "title": "Person Age",
         "widget": {
           "formlyConfig": {
             "templateOptions": {
@@ -1705,9 +1716,26 @@ describe('Service: FormlyJsonschema', () => {
         }
       }`);
 
-      const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema);
+      const { props } = formlyJsonschema.toFieldConfig(schema);
+      expect(props.label).toBe('Age');
+    });
 
-      expect(to.label).toBe('Age');
+    it('should override properties that have already been set', () => {
+      const schema: JSONSchema7 = JSON.parse(`{
+        "type": "integer",
+        "title": "Person Age",
+        "widget": {
+          "formlyConfig": {
+            "props": {
+              "label": "Age"
+            }
+          }
+        }
+      }`);
+
+      const { props } = formlyJsonschema.toFieldConfig(schema);
+
+      expect(props.label).toBe('Age');
     });
     it('should be possible to set the key via formlyConfig', () => {
       const schema: JSONSchema7 = JSON.parse(`{
@@ -1750,7 +1778,7 @@ describe('Service: FormlyJsonschema', () => {
             "title": "Also without key",
             "widget": {
               "formlyConfig": {
-                "templateOptions": {
+                "props": {
                   "type": "date"
                 }
               }
@@ -1778,28 +1806,28 @@ describe('Service: FormlyJsonschema', () => {
         "title": "Person Age",
         "widget": {
           "formlyConfig": {
-            "templateOptions": {
+            "props": {
               "label": "Age"
             }
           }
         }
       }`);
 
-      const { templateOptions: to } = formlyJsonschema.toFieldConfig(schema, {
+      const { props } = formlyJsonschema.toFieldConfig(schema, {
         map: (field: FormlyFieldConfig) => {
           // not a very real-world mapping scenario 😊
           if (field.type === 'integer') {
-            field.templateOptions.label = 'my custom label';
+            field.props.label = 'my custom label';
           }
 
           return field;
         },
       });
 
-      expect(to.label).toBe('my custom label');
+      expect(props.label).toBe('my custom label');
     });
 
-    it('should not crash when templateOptions are not defined', () => {
+    it('should not crash when props are not defined', () => {
       const schema: JSONSchema7 = JSON.parse(`{
         "title": "Oggetto P1",
         "type": "object",

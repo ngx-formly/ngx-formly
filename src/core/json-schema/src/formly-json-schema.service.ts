@@ -86,7 +86,7 @@ export class FormlyJsonschema {
     let field: FormlyFieldConfig & { shareFormControl?: boolean } = {
       type: types[0],
       defaultValue: schema.default,
-      templateOptions: {
+      props: {
         label: schema.title,
         readonly: schema.readOnly,
         description: schema.description,
@@ -98,7 +98,7 @@ export class FormlyJsonschema {
     }
 
     if (!options.ignoreDefault && (schema.readOnly || options.readOnly)) {
-      field.templateOptions.disabled = true;
+      field.props.disabled = true;
       options = { ...options, readOnly: true };
     }
 
@@ -155,15 +155,15 @@ export class FormlyJsonschema {
       case 'integer': {
         field.parsers = [(v: string | number) => (isEmpty(v) ? undefined : Number(v))];
         if (schema.hasOwnProperty('minimum')) {
-          field.templateOptions.min = schema.minimum;
+          field.props.min = schema.minimum;
         }
 
         if (schema.hasOwnProperty('maximum')) {
-          field.templateOptions.max = schema.maximum;
+          field.props.max = schema.maximum;
         }
 
         if (schema.hasOwnProperty('exclusiveMinimum')) {
-          field.templateOptions.exclusiveMinimum = schema.exclusiveMinimum;
+          field.props.exclusiveMinimum = schema.exclusiveMinimum;
           this.addValidator(
             field,
             'exclusiveMinimum',
@@ -172,7 +172,7 @@ export class FormlyJsonschema {
         }
 
         if (schema.hasOwnProperty('exclusiveMaximum')) {
-          field.templateOptions.exclusiveMaximum = schema.exclusiveMaximum;
+          field.props.exclusiveMaximum = schema.exclusiveMaximum;
           this.addValidator(
             field,
             'exclusiveMaximum',
@@ -181,7 +181,7 @@ export class FormlyJsonschema {
         }
 
         if (schema.hasOwnProperty('multipleOf')) {
-          field.templateOptions.step = schema.multipleOf;
+          field.props.step = schema.multipleOf;
           this.addValidator(field, 'multipleOf', ({ value }: AbstractControl) => {
             if (isEmpty(value) || typeof value !== 'number' || value === 0 || schema.multipleOf <= 0) {
               return true;
@@ -199,7 +199,7 @@ export class FormlyJsonschema {
           (v) => {
             if (types.indexOf('null') !== -1) {
               v = isEmpty(v) ? null : v;
-            } else if (!field.templateOptions.required) {
+            } else if (!field.props.required) {
               v = v === '' ? undefined : v;
             }
 
@@ -209,7 +209,7 @@ export class FormlyJsonschema {
 
         ['minLength', 'maxLength', 'pattern'].forEach((prop) => {
           if (schema.hasOwnProperty(prop)) {
-            field.templateOptions[prop] = (schema as any)[prop];
+            field.props[prop] = (schema as any)[prop];
           }
         });
         break;
@@ -226,14 +226,14 @@ export class FormlyJsonschema {
           if ((Array.isArray(schema.required) && schema.required.indexOf(property) !== -1) || propDeps[property]) {
             f.expressionProperties = {
               ...(f.expressionProperties || {}),
-              'templateOptions.required': (m, s, f) => {
+              'props.required': (m, s, f) => {
                 let parent = f.parent;
                 const model = f.fieldGroup && f.key != null ? parent.model : f.model;
                 while (parent.key == null && parent.parent) {
                   parent = parent.parent;
                 }
 
-                const required = parent && parent.templateOptions ? parent.templateOptions.required : false;
+                const required = parent && parent.props ? parent.props.required : false;
                 if (!model && !required) {
                   return false;
                 }
@@ -286,7 +286,7 @@ export class FormlyJsonschema {
       }
       case 'array': {
         if (schema.hasOwnProperty('minItems')) {
-          field.templateOptions.minItems = schema.minItems;
+          field.props.minItems = schema.minItems;
           this.addValidator(
             field,
             'minItems',
@@ -294,7 +294,7 @@ export class FormlyJsonschema {
           );
         }
         if (schema.hasOwnProperty('maxItems')) {
-          field.templateOptions.maxItems = schema.maxItems;
+          field.props.maxItems = schema.maxItems;
           this.addValidator(
             field,
             'maxItems',
@@ -302,7 +302,7 @@ export class FormlyJsonschema {
           );
         }
         if (schema.hasOwnProperty('uniqueItems')) {
-          field.templateOptions.uniqueItems = schema.uniqueItems;
+          field.props.uniqueItems = schema.uniqueItems;
           this.addValidator(field, 'uniqueItems', ({ value }: AbstractControl) => {
             if (isEmpty(value) || !schema.uniqueItems) {
               return true;
@@ -325,8 +325,8 @@ export class FormlyJsonschema {
             if (!Array.isArray(schema.items)) {
               // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
               const f = schema.items ? this._toFieldConfig(<JSONSchema7>schema.items, options) : {};
-              if (f.templateOptions) {
-                f.templateOptions.required = true;
+              if (f.props) {
+                f.props.required = true;
               }
 
               return f;
@@ -335,11 +335,11 @@ export class FormlyJsonschema {
             const length = root.fieldGroup ? root.fieldGroup.length : 0;
             const itemSchema = schema.items[length] ? schema.items[length] : schema.additionalItems;
             const f = itemSchema ? this._toFieldConfig(<JSONSchema7>itemSchema, options) : {};
-            if (f.templateOptions) {
-              f.templateOptions.required = true;
+            if (f.props) {
+              f.props.required = true;
             }
             if (schema.items[length]) {
-              f.templateOptions.removable = false;
+              f.props.removable = false;
             }
 
             return f;
@@ -351,7 +351,7 @@ export class FormlyJsonschema {
     }
 
     if (schema.hasOwnProperty('const')) {
-      field.templateOptions.const = schema.const;
+      field.props.const = schema.const;
       this.addValidator(field, 'const', ({ value }: AbstractControl) => value === schema.const);
       if (!field.type) {
         field.defaultValue = schema.const;
@@ -359,9 +359,9 @@ export class FormlyJsonschema {
     }
 
     if (this.isEnum(schema)) {
-      field.templateOptions.multiple = field.type === 'array';
+      field.props.multiple = field.type === 'array';
       field.type = 'enum';
-      field.templateOptions.options = this.toEnumOptions(schema);
+      field.props.options = this.toEnumOptions(schema);
     }
 
     if (schema.oneOf && !field.type) {
@@ -376,6 +376,7 @@ export class FormlyJsonschema {
       field = this.mergeFields(field, schema.widget.formlyConfig);
     }
 
+    field.templateOptions = field.props;
     // if there is a map function passed in, use it to allow the user to
     // further customize how fields are being mapped
     return options.map ? options.map(field, schema) : field;
@@ -437,7 +438,7 @@ export class FormlyJsonschema {
         {
           type: 'enum',
           defaultValue: -1,
-          templateOptions: {
+          props: {
             multiple: mode === 'anyOf',
             options: schemas.map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
           },
@@ -460,11 +461,11 @@ export class FormlyJsonschema {
                     const matchedFields1 = totalMatchedFields(f1);
                     const matchedFields2 = totalMatchedFields(f2);
                     if (matchedFields1 === matchedFields2) {
-                      if (f1.templateOptions.disabled === f2.templateOptions.disabled) {
+                      if (f1.props.disabled === f2.props.disabled) {
                         return 0;
                       }
 
-                      return f1.templateOptions.disabled ? 1 : -1;
+                      return f1.props.disabled ? 1 : -1;
                     }
 
                     return matchedFields2 > matchedFields1 ? 1 : -1;
@@ -617,10 +618,11 @@ export class FormlyJsonschema {
 
   private mergeFields(f1: any, f2: any) {
     for (let prop in f2) {
-      if (isObject(f1[prop]) && isObject(f2[prop])) {
-        f1[prop] = this.mergeFields(f1[prop], f2[prop]);
+      const f1Prop = prop === 'templateOptions' ? 'props' : prop;
+      if (isObject(f1[f1Prop]) && isObject(f2[prop])) {
+        f1[f1Prop] = this.mergeFields(f1[f1Prop], f2[prop]);
       } else if (f2[prop] != null) {
-        f1[prop] = f2[prop];
+        f1[f1Prop] = f2[prop];
       }
     }
 

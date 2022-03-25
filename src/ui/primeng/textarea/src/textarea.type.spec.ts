@@ -27,7 +27,7 @@ describe('ui-primeng: Textarea Type', () => {
       key: 'name',
       type: 'textarea',
       validation: { show: true },
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     expect(query('textarea').classes['ng-invalid']).toBeTrue();
@@ -38,7 +38,7 @@ describe('ui-primeng: Textarea Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'textarea',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));

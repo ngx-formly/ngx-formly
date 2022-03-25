@@ -6,7 +6,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   template: `
     <StackLayout class="form">
       <StackLayout class="input-field">
-        <Label *ngIf="to.label && to.hideLabel !== true" class="label" [text]="to.label"></Label>
+        <Label *ngIf="props.label && props.hideLabel !== true" class="label" [text]="props.label"></Label>
         <ng-container #fieldComponent></ng-container>
         <StackLayout class="hr-light"></StackLayout>
         <ng-container *ngIf="showError">

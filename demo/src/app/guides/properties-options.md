@@ -37,7 +37,7 @@ Everything starts with the `formly-form`. General use of it will look something 
 | name                 | `string`     | If you wish, you can specify a specific `name` for your field. This is useful if you're posting the form to a server using techniques of yester-year. |
 | type                 | `string`     | The `type` of field to be rendered. More information over at Custom templates. |
 | className            | `string`     | You can specify your own class that will be applied to the `formly-field` directive. |
-| templateOptions      | `object`     | This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this. |
+| props      | `object`     | This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this. |
 | template             | `string`     | Can be set instead of `type` to render custom `html` content. |
 | defaultValue         | `any` | If this is provided and the value of the model at compile-time is `undefined`, then the value of the model will be assigned the defaultValue. |
 | hide                 | `boolean`    | Whether to hide the field. Defaults to false. If you wish this to be conditional use `hideExpression`. |

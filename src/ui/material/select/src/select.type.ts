@@ -10,7 +10,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
       <mat-option (click)="toggleSelectAll(selectOptions)">
         <mat-pseudo-checkbox class="mat-option-pseudo-checkbox" [state]="getSelectAllState(selectOptions)">
         </mat-pseudo-checkbox>
-        {{ to.selectAllOption }}
+        {{ props.selectAllOption }}
       </mat-option>
     </ng-template>
 
@@ -18,21 +18,21 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [id]="id"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [placeholder]="to.placeholder"
-      [tabIndex]="to.tabindex"
+      [placeholder]="props.placeholder"
+      [tabIndex]="props.tabindex"
       [required]="required"
-      [compareWith]="to.compareWith"
-      [multiple]="to.multiple"
+      [compareWith]="props.compareWith"
+      [multiple]="props.multiple"
       (selectionChange)="change($event)"
       [errorStateMatcher]="errorStateMatcher"
       [aria-label]="_getAriaLabel()"
       [aria-labelledby]="_getAriaLabelledby()"
-      [disableOptionCentering]="to.disableOptionCentering"
-      [typeaheadDebounceInterval]="to.typeaheadDebounceInterval"
+      [disableOptionCentering]="props.disableOptionCentering"
+      [typeaheadDebounceInterval]="props.typeaheadDebounceInterval"
     >
-      <ng-container *ngIf="to.options | formlySelectOptions: field | async as selectOptions">
+      <ng-container *ngIf="props.options | formlySelectOptions: field | async as selectOptions">
         <ng-container
-          *ngIf="to.multiple && to.selectAllOption"
+          *ngIf="props.multiple && props.selectAllOption"
           [ngTemplateOutlet]="selectAll"
           [ngTemplateOutletContext]="{ selectOptions: selectOptions }"
         >
@@ -52,7 +52,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },
@@ -76,19 +76,19 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   }
 
   change($event: MatSelectChange) {
-    this.to.change?.(this.field, $event);
+    this.props.change?.(this.field, $event);
   }
 
   _getAriaLabelledby() {
-    if (this.to.attributes?.['aria-labelledby']) {
-      return this.to.attributes['aria-labelledby'] as string;
+    if (this.props.attributes?.['aria-labelledby']) {
+      return this.props.attributes['aria-labelledby'] as string;
     }
 
     return this.formField?._labelId;
   }
 
   _getAriaLabel() {
-    return this.to.attributes?.['aria-label'] as string;
+    return this.props.attributes?.['aria-label'] as string;
   }
 
   private getSelectAllValue(options: any[]) {

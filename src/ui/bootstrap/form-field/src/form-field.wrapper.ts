@@ -5,9 +5,9 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-form-field',
   template: `
     <div class="mb-3" [class.has-error]="showError">
-      <label *ngIf="to.label && to.hideLabel !== true" [attr.for]="id" class="form-label">
-        {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
+      <label *ngIf="props.label && props.hideLabel !== true" [attr.for]="id" class="form-label">
+        {{ props.label }}
+        <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
       </label>
 
       <ng-template #fieldComponent></ng-template>
@@ -16,7 +16,7 @@ import { FieldWrapper } from '@ngx-formly/core';
         <formly-validation-message [field]="field"></formly-validation-message>
       </div>
 
-      <small *ngIf="to.description" class="form-text text-muted">{{ to.description }}</small>
+      <small *ngIf="props.description" class="form-text text-muted">{{ props.description }}</small>
     </div>
   `,
 })

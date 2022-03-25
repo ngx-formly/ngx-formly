@@ -28,7 +28,7 @@
         "widget": {
           "formlyConfig": {
             "type": "textarea",
-            "templateOptions": {
+            "props": {
               "placeholder": "Leaving this field empty will cause formData property to be `null`",
               "rows": 5
             }

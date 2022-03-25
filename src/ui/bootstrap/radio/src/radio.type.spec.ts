@@ -13,7 +13,7 @@ describe('ui-bootstrap: Radio Type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
       type: 'radio',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -31,7 +31,7 @@ describe('ui-bootstrap: Radio Type', () => {
       key: 'name',
       type: 'radio',
       validation: { show: true },
-      templateOptions: {
+      props: {
         options: [{ value: 1, label: 'label 1' }],
         required: true,
       },
@@ -44,7 +44,7 @@ describe('ui-bootstrap: Radio Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'radio',
-      templateOptions: {
+      props: {
         formCheck: 'default',
         options: [{ value: 1, label: 'label 1' }],
       },
@@ -56,7 +56,7 @@ describe('ui-bootstrap: Radio Type', () => {
     expect(formCheckElm).not.toBeNull();
 
     // 'inline'
-    field.templateOptions.formCheck = 'inline';
+    field.props.formCheck = 'inline';
     detectChanges();
     expect(formCheckElm.classes).toEqual({
       'form-check': true,
@@ -69,7 +69,7 @@ describe('ui-bootstrap: Radio Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'radio',
-      templateOptions: {
+      props: {
         options: [{ value: 1, label: 'label 1' }],
         change: changeSpy,
       },

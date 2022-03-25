@@ -11,33 +11,37 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [matDatepicker]="picker"
-      [matDatepickerFilter]="to.datepickerOptions.filter"
-      [max]="to.datepickerOptions.max"
-      [min]="to.datepickerOptions.min"
+      [matDatepickerFilter]="props.datepickerOptions.filter"
+      [max]="props.datepickerOptions.max"
+      [min]="props.datepickerOptions.min"
       [formlyAttributes]="field"
-      [placeholder]="to.placeholder"
-      [tabindex]="to.tabindex"
-      [readonly]="to.readonly"
+      [placeholder]="props.placeholder"
+      [tabindex]="props.tabindex"
+      [readonly]="props.readonly"
       [required]="required"
-      (dateInput)="to.datepickerOptions.dateInput(field, $event)"
-      (dateChange)="to.datepickerOptions.dateChange(field, $event)"
+      (dateInput)="props.datepickerOptions.dateInput(field, $event)"
+      (dateChange)="props.datepickerOptions.dateChange(field, $event)"
     />
     <ng-template #datepickerToggle>
-      <mat-datepicker-toggle (click)="detectChanges()" [disabled]="to.disabled" [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle
+        (click)="detectChanges()"
+        [disabled]="props.disabled"
+        [for]="picker"
+      ></mat-datepicker-toggle>
     </ng-template>
     <mat-datepicker
       #picker
-      [color]="to.color"
-      [dateClass]="to.datepickerOptions.dateClass"
-      [disabled]="to.datepickerOptions.disabled"
-      [opened]="to.datepickerOptions.opened"
-      [panelClass]="to.datepickerOptions.panelClass"
-      [startAt]="to.datepickerOptions.startAt"
-      [startView]="to.datepickerOptions.startView"
-      [touchUi]="to.datepickerOptions.touchUi"
-      [calendarHeaderComponent]="to.datepickerOptions.calendarHeaderComponent"
-      (monthSelected)="to.datepickerOptions.monthSelected(field, $event, picker)"
-      (yearSelected)="to.datepickerOptions.yearSelected(field, $event, picker)"
+      [color]="props.color"
+      [dateClass]="props.datepickerOptions.dateClass"
+      [disabled]="props.datepickerOptions.disabled"
+      [opened]="props.datepickerOptions.opened"
+      [panelClass]="props.datepickerOptions.panelClass"
+      [startAt]="props.datepickerOptions.startAt"
+      [startView]="props.datepickerOptions.startView"
+      [touchUi]="props.datepickerOptions.touchUi"
+      [calendarHeaderComponent]="props.datepickerOptions.calendarHeaderComponent"
+      (monthSelected)="props.datepickerOptions.monthSelected(field, $event, picker)"
+      (yearSelected)="props.datepickerOptions.yearSelected(field, $event, picker)"
     >
     </mat-datepicker>
   `,
@@ -47,7 +51,7 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   override defaultOptions = {
-    templateOptions: {
+    props: {
       datepickerOptions: {
         startView: 'month',
         datepickerTogglePosition: 'suffix',
@@ -69,7 +73,7 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
   }
 
   ngAfterViewInit() {
-    this.to[this.to.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
+    this.to[this.props.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
 
     // temporary fix for https://github.com/angular/components/issues/16761
     if (this.config.getValidatorMessage('matDatepickerParse')) {

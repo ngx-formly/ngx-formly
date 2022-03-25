@@ -4,12 +4,12 @@ import { FormlyFieldConfig } from '../models';
 
 export interface FieldTypeConfig extends FormlyFieldConfig {
   formControl: FormControl;
-  templateOptions: NonNullable<Required<FormlyFieldConfig>['templateOptions']>;
+  props: NonNullable<Required<FormlyFieldConfig>['props']>;
 }
 
 export interface FieldGroupTypeConfig extends FormlyFieldConfig {
   formControl: FormGroup;
-  templateOptions: NonNullable<Required<FormlyFieldConfig>['templateOptions']>;
+  props: NonNullable<Required<FormlyFieldConfig>['props']>;
 }
 
 @Directive()
@@ -37,12 +37,13 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return this.field.formControl as F['formControl'];
   }
 
+  get props() {
+    return (this.field.props || {}) as NonNullable<F['props']>;
+  }
+
+  /** @deprecated Use `props` instead. */
   get to() {
-    if (!!this.field.templateOptions) {
-      return this.field.templateOptions as NonNullable<Required<F>['templateOptions']>;
-    } else {
-      return {} as NonNullable<Required<F>['templateOptions']>;
-    }
+    return this.props;
   }
 
   get showError(): boolean {

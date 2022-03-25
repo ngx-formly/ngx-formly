@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'input',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Firstname',
         addonLeft: {
           icon: 'face',

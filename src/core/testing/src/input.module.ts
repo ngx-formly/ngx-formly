@@ -12,7 +12,7 @@ export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-wrapper-form-field',
   template: `
-    <label [attr.for]="id">{{ to.label }}</label>
+    <label [attr.for]="id">{{ props.label }}</label>
     <ng-template #fieldComponent></ng-template>
     <ng-container *ngIf="showError">
       <formly-validation-message [field]="field"></formly-validation-message>

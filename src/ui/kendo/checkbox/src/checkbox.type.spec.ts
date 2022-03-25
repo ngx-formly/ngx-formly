@@ -13,7 +13,7 @@ describe('ui-kendo: Checkbox Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'checkbox',
-      templateOptions: {
+      props: {
         label: 'Name',
         required: true,
       },
@@ -34,7 +34,7 @@ describe('ui-kendo: Checkbox Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'boolean',
-      templateOptions: {
+      props: {
         label: 'Name',
         required: true,
       },
@@ -56,7 +56,7 @@ describe('ui-kendo: Checkbox Type', () => {
       key: 'name',
       type: 'checkbox',
       validation: { show: true },
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     const { classes } = query('input[type="checkbox"]');
@@ -68,7 +68,7 @@ describe('ui-kendo: Checkbox Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     const inputDebugEl = query<HTMLInputElement>('input[type="checkbox"]');

@@ -40,7 +40,7 @@ describe('ui-ionic: Checkbox Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     const inputDebugEl = query<HTMLInputElement>('ion-checkbox');

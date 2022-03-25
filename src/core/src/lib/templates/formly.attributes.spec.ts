@@ -10,12 +10,12 @@ const renderComponent = (field: FormlyFieldConfig, { template }: { template?: st
 };
 
 describe('FormlyAttributes Component', () => {
-  describe('templateOptions attributes', () => {
+  describe('props attributes', () => {
     it('should set built-in attributes if present', () => {
       const { query } = renderComponent({
         name: 'title-name',
         id: 'title-id',
-        templateOptions: {
+        props: {
           placeholder: 'Title',
           required: true,
           disabled: true,
@@ -40,7 +40,7 @@ describe('FormlyAttributes Component', () => {
       const { query, setInputs } = renderComponent({
         name: 'title-name',
         id: 'title-id',
-        templateOptions: {
+        props: {
           placeholder: 'Title',
           required: true,
           disabled: true,
@@ -57,7 +57,7 @@ describe('FormlyAttributes Component', () => {
       setInputs({
         field: {
           key: 'title',
-          templateOptions: {
+          props: {
             placeholder: 'Title Edit',
           },
         },
@@ -82,19 +82,19 @@ describe('FormlyAttributes Component', () => {
 
     it('should handle readonly attribute', () => {
       const { detectChanges, query, field } = renderComponent({
-        templateOptions: { readonly: true },
+        props: { readonly: true },
       });
 
       const inputElm = query('input');
       expect(inputElm.attributes.readonly).toBe('readonly');
-      field.templateOptions.readonly = false;
+      field.props.readonly = false;
       detectChanges();
       expect(inputElm.attributes.readonly).toBe(undefined);
     });
 
     it('should allow overriding the default build-in attributes', () => {
       const { query } = renderComponent({
-        templateOptions: {
+        props: {
           min: 5,
           max: 10,
           attributes: { max: null },
@@ -106,9 +106,9 @@ describe('FormlyAttributes Component', () => {
       expect(inputElm.attributes.max).toBeUndefined();
     });
 
-    it('should set attributes from templateOptions attributes', () => {
+    it('should set attributes from props attributes', () => {
       const { query } = renderComponent({
-        templateOptions: { attributes: { min: 5, max: 10 } },
+        props: { attributes: { min: 5, max: 10 } },
       });
 
       expect(query('input').attributes).toMatchObject({
@@ -117,9 +117,9 @@ describe('FormlyAttributes Component', () => {
       });
     });
 
-    it('should handle edit templateOptions attributes', () => {
+    it('should handle edit props attributes', () => {
       const { query, field } = renderComponent({
-        templateOptions: { attributes: { min: 5, max: 10 } },
+        props: { attributes: { min: 5, max: 10 } },
       });
 
       expect(query('input').attributes).toMatchObject({
@@ -127,19 +127,19 @@ describe('FormlyAttributes Component', () => {
         max: '10',
       });
 
-      field.templateOptions.attributes = {
+      field.props.attributes = {
         style: 'background: green',
       };
 
       expect(query('input').attributes).toMatchObject({ style: 'background: green' });
     });
 
-    it('should not fail without templateOptions', () => {
+    it('should not fail without props', () => {
       expect(() => renderComponent({})).not.toThrowError();
     });
   });
 
-  describe('templateOptions events', () => {
+  describe('props events', () => {
     it(`should mark formControl as dirty on trigger change Event`, () => {
       const { query, field } = renderComponent({
         formControl: new FormControl(),
@@ -149,9 +149,9 @@ describe('FormlyAttributes Component', () => {
       expect(field.formControl.dirty).toBeTrue();
     });
 
-    it(`should trigger templateOptions events`, () => {
+    it(`should trigger props events`, () => {
       const { query, field } = renderComponent({
-        templateOptions: {
+        props: {
           focus: jest.fn(),
           blur: jest.fn(),
           change: jest.fn(),
@@ -164,7 +164,7 @@ describe('FormlyAttributes Component', () => {
 
       const expectEventCall = (evt: string) => {
         query('input').triggerEventHandler(evt, {});
-        expect(field.templateOptions[evt]).toHaveBeenCalledWith(field, expect.any(Object));
+        expect(field.props[evt]).toHaveBeenCalledWith(field, expect.any(Object));
       };
 
       expectEventCall('focus');

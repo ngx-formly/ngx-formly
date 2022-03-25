@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'marvel1',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Normal Select',
         options: [
           { label: 'Iron Man', value: 'iron_man' },
@@ -29,7 +29,7 @@ export class AppComponent {
     {
       key: 'marvel2',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Grouped Select',
         options: [
           { label: 'Iron Man', value: 'iron_man', group: 'Male' },
@@ -43,7 +43,7 @@ export class AppComponent {
     {
       key: 'marvel2',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Grouped Select (as nested options)',
         options: [
           {
@@ -67,7 +67,7 @@ export class AppComponent {
     {
       key: 'marvel3',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Select with custom name/value/group',
         options: [
           { label: 'Iron Man', id: 'iron_man', gender: 'Male' },
@@ -84,7 +84,7 @@ export class AppComponent {
     {
       key: 'multiselect',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Multi-select',
         multiple: true,
         options: [

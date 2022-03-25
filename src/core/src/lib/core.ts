@@ -1,5 +1,12 @@
 export { FormlyForm } from './components/formly.form';
-export { FormlyFieldConfig, FormlyTemplateOptions, FormlyFormOptions, ConfigOption, FormlyExtension } from './models';
+export {
+  FormlyFieldConfig,
+  FormlyTemplateOptions,
+  FormlyFormOptions,
+  FormlyFieldProps,
+  ConfigOption,
+  FormlyExtension,
+} from './models';
 export { FormlyField } from './components/formly.field';
 export { FormlyAttributes as ɵFormlyAttributes } from './templates/formly.attributes';
 export { FormlyGroup as ɵFormlyGroup } from './templates/formly.group';

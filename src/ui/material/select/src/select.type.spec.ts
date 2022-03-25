@@ -17,7 +17,7 @@ describe('ui-material: Formly Field Select Component', () => {
     const { query, queryAll, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -38,7 +38,7 @@ describe('ui-material: Formly Field Select Component', () => {
     const { query, queryAll, detectChanges } = renderComponent({
       key: 'name',
       type: 'enum',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -60,7 +60,7 @@ describe('ui-material: Formly Field Select Component', () => {
     const { query, queryAll, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         placeholder: 'Name',
         change: changeSpy,
         options: [
@@ -86,7 +86,7 @@ describe('ui-material: Formly Field Select Component', () => {
       const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           options: [
             { id: '1', name: 'Soccer' },
             { id: '2', name: 'Basketball' },
@@ -107,7 +107,7 @@ describe('ui-material: Formly Field Select Component', () => {
       const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           options: of([
             { id: '1', name: 'Soccer' },
             { id: '2', name: 'Basketball' },
@@ -130,7 +130,7 @@ describe('ui-material: Formly Field Select Component', () => {
       const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           multiple: true,
           selectAllOption: 'Select All',
           options: [
@@ -151,7 +151,7 @@ describe('ui-material: Formly Field Select Component', () => {
       const { field, query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           multiple: true,
           selectAllOption: 'Select All',
           options: [
@@ -183,7 +183,7 @@ describe('ui-material: Formly Field Select Component', () => {
       const { field, query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           multiple: true,
           selectAllOption: 'Click me!!',
           options: [
@@ -219,7 +219,7 @@ describe('ui-material: Formly Field Select Component', () => {
       const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           multiple: true,
           selectAllOption: 'Click me!!',
           options: [
@@ -245,7 +245,7 @@ describe('ui-material: Formly Field Select Component', () => {
         model: { sportId: [1] },
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           multiple: true,
           selectAllOption: 'Click me!!',
           options: of([
@@ -272,7 +272,7 @@ describe('ui-material: Formly Field Select Component', () => {
       const { query } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           attributes: {
             'aria-labelledby': 'TEST_LABEL',
           },

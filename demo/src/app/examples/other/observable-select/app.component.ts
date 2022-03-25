@@ -16,7 +16,7 @@ export class AppComponent {
     {
       key: 'sport',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Sport',
         options: this.dataService.getSports(),
         valueProp: 'id',

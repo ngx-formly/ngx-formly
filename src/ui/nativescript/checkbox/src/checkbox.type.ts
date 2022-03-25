@@ -5,7 +5,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'formly-field-ns-checkbox',
   template: `
     <GridLayout class="input-field input-sides" rows="auto, auto" columns="*,*">
-      <Label class="label" [text]="to.label"></Label>
+      <Label class="label" [text]="props.label"></Label>
       <Switch class="switch input" [formlyAttributes]="field" [formControl]="formControl" col="1"></Switch>
     </GridLayout>
   `,
@@ -13,7 +13,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideLabel: true,
     },
   };

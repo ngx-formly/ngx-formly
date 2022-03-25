@@ -6,13 +6,13 @@ import { MatCheckbox } from '@angular/material/checkbox';
 @Component({
   selector: 'formly-field-mat-multicheckbox',
   template: `
-    <ng-container *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index">
+    <ng-container *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index">
       <mat-checkbox
         [id]="id + '_' + i"
         [formlyAttributes]="field"
-        [tabIndex]="to.tabindex"
-        [color]="to.color"
-        [labelPosition]="to.labelPosition"
+        [tabIndex]="props.tabindex"
+        [color]="props.color"
+        [labelPosition]="props.labelPosition"
         [checked]="isChecked(option)"
         [disabled]="formControl.disabled || option.disabled"
         (change)="onChange(option.value, $event.checked)"
@@ -30,7 +30,7 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;
 
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
       color: 'accent' as const, // workaround for https://github.com/angular/components/issues/18465
@@ -38,7 +38,7 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   };
 
   onChange(value: any, checked: boolean) {
-    if (this.to.type === 'array') {
+    if (this.props.type === 'array') {
       this.formControl.patchValue(
         checked
           ? [...(this.formControl.value || []), value]
@@ -56,6 +56,6 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   isChecked(option: any) {
     const value = this.formControl.value;
 
-    return value && (this.to.type === 'array' ? value.indexOf(option.value) !== -1 : value[option.value]);
+    return value && (this.props.type === 'array' ? value.indexOf(option.value) !== -1 : value[option.value]);
   }
 }

@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Input',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Input',
         placeholder: 'Placeholder',
         description: 'Description',

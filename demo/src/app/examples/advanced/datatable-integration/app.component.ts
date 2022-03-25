@@ -44,7 +44,7 @@ export class AppComponent {
           key: 'name',
           type: 'input',
           className: 'col-md-6',
-          templateOptions: {
+          props: {
             label: 'Name',
             required: true,
           },
@@ -53,7 +53,7 @@ export class AppComponent {
           key: 'surname',
           type: 'input',
           className: 'col-md-6',
-          templateOptions: {
+          props: {
             label: 'Surname',
             required: true,
           },
@@ -63,7 +63,7 @@ export class AppComponent {
     {
       key: 'investments',
       type: 'datatable',
-      templateOptions: {
+      props: {
         columns: [
           { name: 'Name of Investment', prop: 'investmentName' },
           { name: 'Date of Investment', prop: 'investmentDate' },
@@ -75,14 +75,14 @@ export class AppComponent {
           {
             type: 'input',
             key: 'investmentName',
-            templateOptions: {
+            props: {
               required: true,
             },
           },
           {
             type: 'input',
             key: 'investmentDate',
-            templateOptions: {
+            props: {
               type: 'date',
             },
           },

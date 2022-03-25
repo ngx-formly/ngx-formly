@@ -13,7 +13,7 @@ const renderComponent = (field: FormlyFieldConfig) => {
     imports: [
       FormlyModule.forChild({
         validationMessages: [
-          { name: 'required', message: (err, field) => `${field.templateOptions.label} is required.` },
+          { name: 'required', message: (err, field) => `${field.props.label} is required.` },
           { name: 'maxLength', message: 'Maximum Length Exceeded.' },
           { name: 'minLength', message: () => of('Minimum Length.') },
         ],
@@ -34,7 +34,7 @@ describe('FormlyValidationMessage Component', () => {
       const { query } = renderComponent({
         key: 'title',
         defaultValue: '1234567',
-        templateOptions: { maxLength: 3 },
+        props: { maxLength: 3 },
       });
       expect(validationMessageContent(query)).toEqual('Maximum Length Exceeded.');
     });
@@ -42,7 +42,7 @@ describe('FormlyValidationMessage Component', () => {
     it('with a function validation message', () => {
       const { query, detectChanges } = renderComponent({
         key: 'title',
-        templateOptions: {
+        props: {
           required: true,
           label: 'Title',
         },
@@ -55,7 +55,7 @@ describe('FormlyValidationMessage Component', () => {
       const { query, detectChanges } = renderComponent({
         key: 'title',
         defaultValue: '1',
-        templateOptions: { minLength: 5 },
+        props: { minLength: 5 },
       });
       detectChanges();
       expect(validationMessageContent(query)).toEqual('Minimum Length.');

@@ -7,33 +7,33 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   template: `
     <ion-item [button]="true" [detail]="false" (click)="isOpen = true">
       <ion-label>
-        {{ formControl.value ? (formControl.value | date: displayFormat()) : to.placeholder }}
+        {{ formControl.value ? (formControl.value | date: displayFormat()) : props.placeholder }}
       </ion-label>
     </ion-item>
     <ion-modal
       [isOpen]="isOpen"
       (didDismiss)="close()"
-      [cssClass]="'ion-datetime-modal ion-datetime-modal-' + to.presentation"
+      [cssClass]="'ion-datetime-modal ion-datetime-modal-' + props.presentation"
     >
       <ng-template>
         <ion-datetime
-          [locale]="to.locale"
-          [presentation]="to.presentation"
-          [cancelText]="to.cancelText"
-          [dayValues]="to.dayValues"
-          [doneText]="to.doneText"
-          [hourValues]="to.hourValues"
-          [minuteValues]="to.minuteValues"
-          [monthValues]="to.monthValues"
-          [yearValues]="to.yearValues"
-          [min]="to.minDate ? to.minDate : to.min"
-          [max]="to.maxDate ? to.maxDate : to.max"
+          [locale]="props.locale"
+          [presentation]="props.presentation"
+          [cancelText]="props.cancelText"
+          [dayValues]="props.dayValues"
+          [doneText]="props.doneText"
+          [hourValues]="props.hourValues"
+          [minuteValues]="props.minuteValues"
+          [monthValues]="props.monthValues"
+          [yearValues]="props.yearValues"
+          [min]="props.minDate ? props.minDate : props.min"
+          [max]="props.maxDate ? props.maxDate : props.max"
           [formControl]="formControl"
           [ionFormlyAttributes]="field"
         >
           <ion-buttons slot="buttons">
-            <ion-button (click)="reset()">{{ to.cancelText || 'Cancel' }}</ion-button>
-            <ion-button (click)="confirm()">{{ to.doneText || 'Done' }}</ion-button>
+            <ion-button (click)="reset()">{{ props.cancelText || 'Cancel' }}</ion-button>
+            <ion-button (click)="confirm()">{{ props.doneText || 'Done' }}</ion-button>
           </ion-buttons>
         </ion-datetime>
       </ng-template>
@@ -48,17 +48,17 @@ export class FormlyFieldDatetime extends FieldType<FieldTypeConfig> {
   isOpen = false;
 
   override defaultOptions = {
-    templateOptions: {
+    props: {
       presentation: 'date', // date | time | time-date
     },
   };
 
   displayFormat() {
-    if (this.to.displayFormat) {
-      return this.to.displayFormat;
+    if (this.props.displayFormat) {
+      return this.props.displayFormat;
     }
 
-    switch (this.to.presentation) {
+    switch (this.props.presentation) {
       case 'time-date':
         return 'short';
       case 'time':

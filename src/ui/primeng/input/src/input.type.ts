@@ -5,9 +5,9 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'formly-field-primeng-input',
   template: `
     <input
-      *ngIf="to.type !== 'number'; else numberTmp"
+      *ngIf="props.type !== 'number'; else numberTmp"
       pInputText
-      [type]="to.type || 'text'"
+      [type]="props.type || 'text'"
       [formControl]="formControl"
       [formlyAttributes]="field"
     />

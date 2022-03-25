@@ -11,13 +11,13 @@ import { ɵobserve as observe } from '@ngx-formly/core';
       [formControl]="formControl"
       [formlyAttributes]="field"
       [required]="required"
-      [tabindex]="to.tabindex"
+      [tabindex]="props.tabindex"
     >
       <mat-radio-button
-        *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
+        *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index"
         [id]="id + '_' + i"
-        [color]="to.color"
-        [labelPosition]="to.labelPosition"
+        [color]="props.color"
+        [labelPosition]="props.labelPosition"
         [disabled]="option.disabled"
         [value]="option.value"
       >
@@ -30,7 +30,7 @@ import { ɵobserve as observe } from '@ngx-formly/core';
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig> implements AfterViewInit, OnDestroy {
   @ViewChild(MatRadioGroup, { static: true }) radioGroup!: MatRadioGroup;
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
       tabindex: -1,
@@ -40,7 +40,7 @@ export class FormlyFieldRadio extends FieldType<FieldTypeConfig> implements Afte
   private focusObserver!: ReturnType<typeof observe>;
   ngAfterViewInit() {
     this.focusObserver = observe(this.field, ['focus'], ({ currentValue }) => {
-      if (this.to.tabindex === -1 && currentValue && this.radioGroup._radios.length > 0) {
+      if (this.props.tabindex === -1 && currentValue && this.radioGroup._radios.length > 0) {
         // https://github.com/ngx-formly/ngx-formly/issues/2498
         setTimeout(() => {
           const radio = this.radioGroup.selected ? this.radioGroup.selected : this.radioGroup._radios.first;

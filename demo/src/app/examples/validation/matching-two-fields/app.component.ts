@@ -20,7 +20,7 @@ export class AppComponent {
         {
           key: 'password',
           type: 'input',
-          templateOptions: {
+          props: {
             type: 'password',
             label: 'Password',
             placeholder: 'Must be at least 3 characters',
@@ -31,7 +31,7 @@ export class AppComponent {
         {
           key: 'passwordConfirm',
           type: 'input',
-          templateOptions: {
+          props: {
             type: 'password',
             label: 'Confirm Password',
             placeholder: 'Please re-enter your password',

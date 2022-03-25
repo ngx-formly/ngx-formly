@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'text',
       type: 'textarea',
-      templateOptions: {
+      props: {
         label: 'Textarea with specified rows',
         placeholder: 'This has 10 rows',
         rows: 10,

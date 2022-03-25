@@ -13,7 +13,7 @@ export class AppComponent {
     {
       key: 'text',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Text',
         placeholder: 'Type here to see the other field become enabled...',
       },
@@ -21,12 +21,12 @@ export class AppComponent {
     {
       key: 'text2',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Hey!',
         placeholder: 'This one is disabled if there is no text in the other input',
       },
       expressionProperties: {
-        'templateOptions.disabled': '!model.text',
+        'props.disabled': '!model.text',
       },
     },
   ];

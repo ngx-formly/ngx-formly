@@ -1,23 +1,23 @@
 <div class="input-group" [class.has-validation]="showError">
   <div
     class="input-group-text"
-    *ngIf="to.addonLeft"
-    [class.input-group-btn]="to.addonLeft.onClick"
+    *ngIf="props.addonLeft"
+    [class.input-group-btn]="props.addonLeft.onClick"
     (click)="addonLeftClick($event)"
   >
-    <i [ngClass]="to.addonLeft.class" *ngIf="to.addonLeft.class"></i>
-    <span *ngIf="to.addonLeft.text">{{ to.addonLeft.text }}</span>
+    <i [ngClass]="props.addonLeft.class" *ngIf="props.addonLeft.class"></i>
+    <span *ngIf="props.addonLeft.text">{{ props.addonLeft.text }}</span>
   </div>
   <div class="input-addons">
     <ng-container #fieldComponent></ng-container>
   </div>
   <div
     class="input-group-text"
-    *ngIf="to.addonRight"
-    [class.input-group-btn]="to.addonRight.onClick"
+    *ngIf="props.addonRight"
+    [class.input-group-btn]="props.addonRight.onClick"
     (click)="addonRightClick($event)"
   >
-    <i [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
-    <span *ngIf="to.addonRight.text">{{ to.addonRight.text }}</span>
+    <i [ngClass]="props.addonRight.class" *ngIf="props.addonRight.class"></i>
+    <span *ngIf="props.addonRight.text">{{ props.addonRight.text }}</span>
   </div>
 </div>

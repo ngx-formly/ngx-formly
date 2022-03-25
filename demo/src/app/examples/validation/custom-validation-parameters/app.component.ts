@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'date1',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Date (using default validator options declared in ngModule)',
         type: 'date',
       },
@@ -26,7 +26,7 @@ export class AppComponent {
     {
       key: 'date2',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Date (passing extra params to the validator)',
         type: 'date',
       },

@@ -8,15 +8,15 @@ import { FieldType } from '@ngx-formly/material/form-field';
     <select
       matNativeControl
       [id]="id"
-      [readonly]="to.readonly"
+      [readonly]="props.readonly"
       [required]="required"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field"
     >
-      <option *ngIf="to.placeholder" [ngValue]="undefined">{{ to.placeholder }}</option>
-      <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
-        <ng-container *ngIf="to._flatOptions; else grouplist">
+      <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
+      <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
+        <ng-container *ngIf="props._flatOptions; else grouplist">
           <ng-container *ngFor="let opt of opts">
             <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
           </ng-container>

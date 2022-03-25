@@ -25,44 +25,44 @@ const CommonExampleComponents = [
 
 const debugFields: FormlyFieldConfig[] = [
   {
-    key: 'templateOptions',
+    key: 'props',
     fieldGroupClassName: 'row',
     fieldGroup: [
       {
         key: 'label',
         type: 'input',
         className: 'col-md-6',
-        templateOptions: { label: 'label' },
+        props: { label: 'label' },
       },
       {
         key: 'hideLabel',
         className: 'col-md-6',
         type: 'checkbox',
-        templateOptions: { label: 'hideLabel' },
+        props: { label: 'hideLabel' },
       },
       {
         key: 'disabled',
         className: 'col-md-6',
         type: 'checkbox',
-        templateOptions: { label: 'disabled' },
+        props: { label: 'disabled' },
       },
       {
         key: 'required',
         className: 'col-md-6',
         type: 'checkbox',
-        templateOptions: { label: 'required' },
+        props: { label: 'required' },
       },
       {
         key: 'hideRequiredMarker',
         className: 'col-md-6',
         type: 'checkbox',
-        templateOptions: { label: 'hideRequiredMarker' },
+        props: { label: 'hideRequiredMarker' },
       },
       {
         key: 'description',
         className: 'col-md-6',
         type: 'input',
-        templateOptions: { label: 'description' },
+        props: { label: 'description' },
       },
     ],
   },

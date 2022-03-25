@@ -26,13 +26,13 @@ describe('FieldExpressionExtension', () => {
       });
 
       expect(field.hide).toBeTrue();
-      expect(field.templateOptions.hidden).toBeTrue();
+      expect(field.props.hidden).toBeTrue();
 
       field.model.visibilityToggle = 'test';
       field.options.checkExpressions(field);
 
       expect(field.hide).toBeFalse();
-      expect(field.templateOptions.hidden).toBeFalse();
+      expect(field.props.hidden).toBeFalse();
     });
 
     it('should evaluate function expression', () => {
@@ -202,7 +202,7 @@ describe('FieldExpressionExtension', () => {
 
     it('should ignore validation of hidden fields (same key)', () => {
       const field = buildField({
-        fieldGroup: [{ key: 'name', hide: true, templateOptions: { required: true } }, { key: 'name' }],
+        fieldGroup: [{ key: 'name', hide: true, props: { required: true } }, { key: 'name' }],
       });
 
       field.fieldGroup[0].hide = false;
@@ -222,15 +222,15 @@ describe('FieldExpressionExtension', () => {
           // using formState
           className: 'formState.className',
           // using field
-          'templateOptions.key': 'field.key',
+          'props.key': 'field.key',
           // using model
-          'templateOptions.label': 'model.label',
+          'props.label': 'model.label',
         },
       });
 
       expect(field.className).toEqual('name_test');
-      expect(field.templateOptions.key).toEqual('name');
-      expect(field.templateOptions.label).toEqual('test');
+      expect(field.props.key).toEqual('name');
+      expect(field.props.label).toEqual('test');
     });
 
     it('should provide model, formState and field args', () => {
@@ -248,22 +248,22 @@ describe('FieldExpressionExtension', () => {
       const field = buildField({
         model: { label: 'test' },
         expressionProperties: {
-          'templateOptions.label': () => 'test',
+          'props.label': () => 'test',
         },
       });
 
-      expect(field.templateOptions.label).toEqual('test');
+      expect(field.props.label).toEqual('test');
     });
 
     it('should resolve an observable expression', () => {
       const field = buildField({
         expressionProperties: {
-          'templateOptions.label': of('test'),
+          'props.label': of('test'),
         },
       });
 
       field.hooks.onInit(field);
-      expect(field.templateOptions.label).toEqual('test');
+      expect(field.props.label).toEqual('test');
     });
 
     describe('model expression', () => {
@@ -320,7 +320,7 @@ describe('FieldExpressionExtension', () => {
         key: 'checked',
         formControl,
         expressionProperties: {
-          'templateOptions.required': 'model.checked',
+          'props.required': 'model.checked',
         },
         model: { checked: true },
       });
@@ -333,16 +333,16 @@ describe('FieldExpressionExtension', () => {
         const field = buildField({
           key: 'text',
           expressionProperties: {
-            'templateOptions.disabled': 'model.disableToggle',
+            'props.disabled': 'model.disableToggle',
           },
         });
 
-        expect(field.templateOptions.disabled).toBeFalse();
+        expect(field.props.disabled).toBeFalse();
 
         field.model.disableToggle = 'test';
         field.options.checkExpressions(field);
 
-        expect(field.templateOptions.disabled).toBeTrue();
+        expect(field.props.disabled).toBeTrue();
       });
 
       it('should take account of parent disabled state', () => {
@@ -352,34 +352,34 @@ describe('FieldExpressionExtension', () => {
         };
         const field = buildField({
           key: 'address',
-          expressionProperties: { 'templateOptions.disabled': () => disabled.address },
+          expressionProperties: { 'props.disabled': () => disabled.address },
           fieldGroup: [
             {
               key: 'city',
-              expressionProperties: { 'templateOptions.disabled': () => disabled.city },
+              expressionProperties: { 'props.disabled': () => disabled.city },
             },
             {
               key: 'street',
-              expressionProperties: { 'templateOptions.label': () => 'Street' },
+              expressionProperties: { 'props.label': () => 'Street' },
             },
           ],
         });
 
-        expect(field.templateOptions.disabled).toBeTrue();
-        expect(field.fieldGroup[0].templateOptions.disabled).toBeTrue();
-        expect(field.fieldGroup[1].templateOptions.label).toEqual('Street');
+        expect(field.props.disabled).toBeTrue();
+        expect(field.fieldGroup[0].props.disabled).toBeTrue();
+        expect(field.fieldGroup[1].props.label).toEqual('Street');
 
         disabled.address = false;
         field.options.checkExpressions(field);
 
-        expect(field.templateOptions.disabled).toBeFalse();
-        expect(field.fieldGroup[0].templateOptions.disabled).toBeFalse();
+        expect(field.props.disabled).toBeFalse();
+        expect(field.fieldGroup[0].props.disabled).toBeFalse();
 
         disabled.city = true;
         field.options.checkExpressions(field);
 
-        expect(field.templateOptions.disabled).toBeFalse();
-        expect(field.fieldGroup[0].templateOptions.disabled).toBeTrue();
+        expect(field.props.disabled).toBeFalse();
+        expect(field.fieldGroup[0].props.disabled).toBeTrue();
       });
 
       it('should update disabled state of hidden fields', () => {
@@ -387,19 +387,19 @@ describe('FieldExpressionExtension', () => {
           key: 'group',
           model: { group: { disableToggle: false } },
           expressionProperties: {
-            'templateOptions.disabled': 'model.disableToggle',
+            'props.disabled': 'model.disableToggle',
           },
           fieldGroup: [{ key: 'child', hide: true }],
         });
 
-        expect(field.templateOptions.disabled).toBeFalse();
-        expect(field.fieldGroup[0].templateOptions.disabled).toBeFalse();
+        expect(field.props.disabled).toBeFalse();
+        expect(field.fieldGroup[0].props.disabled).toBeFalse();
 
         field.model.disableToggle = true;
         field.options.checkExpressions(field.parent);
 
-        expect(field.templateOptions.disabled).toBeTrue();
-        expect(field.fieldGroup[0].templateOptions.disabled).toBeTrue();
+        expect(field.props.disabled).toBeTrue();
+        expect(field.fieldGroup[0].props.disabled).toBeTrue();
       });
 
       it('should update field on re-render', () => {
@@ -407,19 +407,19 @@ describe('FieldExpressionExtension', () => {
         const field = buildField({
           key: 'text',
           expressionProperties: {
-            'templateOptions.label': stream$,
+            'props.label': stream$,
           },
         });
 
         field.hooks.onInit();
-        expect(field.templateOptions.label).toEqual('test');
+        expect(field.props.label).toEqual('test');
 
         field.hooks.onDestroy();
         stream$.next('test2');
-        expect(field.templateOptions.label).toEqual('test');
+        expect(field.props.label).toEqual('test');
 
         field.hooks.onInit();
-        expect(field.templateOptions.label).toEqual('test2');
+        expect(field.props.label).toEqual('test2');
       });
 
       it('should change model through observable', () => {
@@ -577,7 +577,7 @@ describe('FieldExpressionExtension', () => {
         key: 'text',
         options: { fieldChanges },
         expressionProperties: {
-          'templateOptions.label': 'field.formControl.value',
+          'props.label': 'field.formControl.value',
         },
       });
 
@@ -585,7 +585,7 @@ describe('FieldExpressionExtension', () => {
       expect(spy).toHaveBeenCalledWith({
         field,
         type: 'expressionChanges',
-        property: 'templateOptions.label',
+        property: 'props.label',
         value: undefined,
       });
 
@@ -597,7 +597,7 @@ describe('FieldExpressionExtension', () => {
       expect(spy).toHaveBeenCalledWith({
         field,
         type: 'expressionChanges',
-        property: 'templateOptions.label',
+        property: 'props.label',
         value: 'foo',
       });
 

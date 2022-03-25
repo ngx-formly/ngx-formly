@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'text',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Some awesome text',
         placeholder: 'Some sweet text',
         required: true,
@@ -24,7 +24,7 @@ export class AppComponent {
     {
       key: 'candy',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Multiple Options',
         options: [
           { label: 'Snickers', value: 'snickers' },

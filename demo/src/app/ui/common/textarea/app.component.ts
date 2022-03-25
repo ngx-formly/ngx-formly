@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Textarea',
       type: 'textarea',
-      templateOptions: {
+      props: {
         label: 'Textarea',
         placeholder: 'Placeholder',
         description: 'Description',

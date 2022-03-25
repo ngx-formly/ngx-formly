@@ -63,8 +63,8 @@ export function registerControl(
     control.setValidators(null);
     control.setAsyncValidators(null);
 
-    field.templateOptions.disabled = !!field.templateOptions.disabled;
-    const disabledObserver = observe(field, ['templateOptions', 'disabled'], ({ firstChange, currentValue }) => {
+    field.props.disabled = !!field.props.disabled;
+    const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
       if (!firstChange) {
         currentValue ? field.formControl.disable() : field.formControl.enable();
       }

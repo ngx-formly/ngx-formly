@@ -29,7 +29,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     observe(field, ['hide'], ({ currentValue, firstChange }) => {
       defineHiddenProp(field, '_hide', !!currentValue);
       if (!firstChange || (firstChange && currentValue === true)) {
-        field.templateOptions.hidden = currentValue;
+        field.props.hidden = currentValue;
         field.options._hiddenFieldsForCheck.push(field);
       }
     });
@@ -106,9 +106,9 @@ export class FieldExpressionExtension implements FormlyExtension {
 
   private parseExpressions(field: FormlyFieldConfigCache, path: string, expr: any) {
     let parentExpression: any;
-    if (field.parent && ['hide', 'templateOptions.disabled'].includes(path)) {
+    if (field.parent && ['hide', 'props.disabled'].includes(path)) {
       const rootValue = (f: FormlyFieldConfigCache) => {
-        return path === 'hide' ? f.hide : f.templateOptions.disabled;
+        return path === 'hide' ? f.hide : f.props.disabled;
       };
 
       parentExpression = () => {
@@ -176,12 +176,12 @@ export class FieldExpressionExtension implements FormlyExtension {
   private changeDisabledState(field: FormlyFieldConfigCache, value: boolean) {
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter((f) => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('templateOptions.disabled'))
+        .filter((f) => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('props.disabled'))
         .forEach((f) => this.changeDisabledState(f, value));
     }
 
-    if (hasKey(field) && field.templateOptions.disabled !== value) {
-      field.templateOptions.disabled = value;
+    if (hasKey(field) && field.props.disabled !== value) {
+      field.props.disabled = value;
     }
   }
 
@@ -244,7 +244,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       throw error;
     }
 
-    if (prop === 'templateOptions.disabled' && hasKey(field)) {
+    if (['templateOptions.disabled', 'props.disabled'].includes(prop) && hasKey(field)) {
       this.changeDisabledState(field, value);
     }
 

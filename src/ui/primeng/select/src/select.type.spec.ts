@@ -14,7 +14,7 @@ describe('ui-primeng: Select Type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Select',
         options: [
           { value: 1, label: 'label 1' },
@@ -34,7 +34,7 @@ describe('ui-primeng: Select Type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
       type: 'enum',
-      templateOptions: {
+      props: {
         label: 'Select',
         options: [
           { value: 1, label: 'label 1' },
@@ -55,7 +55,7 @@ describe('ui-primeng: Select Type', () => {
     const { query, queryAll, field } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         change: changeSpy,
         options: [
           { value: 1, label: 'label 1' },

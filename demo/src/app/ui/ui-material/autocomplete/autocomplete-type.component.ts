@@ -12,7 +12,7 @@ import { startWith, switchMap } from 'rxjs/operators';
       [matAutocomplete]="auto"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [placeholder]="to.placeholder"
+      [placeholder]="props.placeholder"
       [errorStateMatcher]="errorStateMatcher"
     />
     <mat-autocomplete #auto="matAutocomplete">
@@ -28,7 +28,7 @@ export class AutocompleteTypeComponent extends FieldType<FieldTypeConfig> implem
   ngOnInit() {
     this.filter = this.formControl.valueChanges.pipe(
       startWith(''),
-      switchMap((term) => this.to.filter(term)),
+      switchMap((term) => this.props.filter(term)),
     );
   }
 }

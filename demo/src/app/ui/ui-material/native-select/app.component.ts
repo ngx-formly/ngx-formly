@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'NativeSelect',
       type: 'native-select',
-      templateOptions: {
+      props: {
         label: 'Native select',
         placeholder: 'Placeholder',
         description: 'Description',

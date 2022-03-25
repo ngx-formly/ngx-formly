@@ -12,7 +12,7 @@ import {
 import {
   ɵdefineHiddenProp as defineHiddenProp,
   FormlyFieldConfig as CoreFieldConfig,
-  FormlyTemplateOptions,
+  FormlyFieldProps,
   FieldWrapper,
 } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
@@ -25,10 +25,10 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig {
 }
 
 export interface FormlyFieldConfig extends CoreFieldConfig {
-  templateOptions?: MatFormlyTemplateOptions;
+  props?: MatFormlyFieldProps;
 }
 
-interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
+interface MatFormlyFieldProps extends FormlyFieldProps {
   prefix?: TemplateRef<any>;
   suffix?: TemplateRef<any>;
   hideLabel?: boolean;
@@ -47,39 +47,39 @@ interface MatFormlyTemplateOptions extends FormlyTemplateOptions {
     <!-- fix https://github.com/angular/material2/pull/7083 by setting width to 100% -->
     <mat-form-field
       [hideRequiredMarker]="true"
-      [floatLabel]="to.floatLabel"
-      [appearance]="to.appearance"
-      [color]="to.color"
+      [floatLabel]="props.floatLabel"
+      [appearance]="props.appearance"
+      [color]="props.color"
     >
       <ng-container #fieldComponent></ng-container>
-      <mat-label *ngIf="to.label && to.hideLabel !== true">
-        {{ to.label }}
+      <mat-label *ngIf="props.label && props.hideLabel !== true">
+        {{ props.label }}
         <span
-          *ngIf="to.required && to.hideRequiredMarker !== true"
+          *ngIf="props.required && props.hideRequiredMarker !== true"
           aria-hidden="true"
           class="mat-form-field-required-marker"
           >*</span
         >
       </mat-label>
 
-      <ng-container matPrefix *ngIf="to._matPrefix">
-        <ng-container [ngTemplateOutlet]="to._matPrefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
+      <ng-container matPrefix *ngIf="props._matPrefix">
+        <ng-container [ngTemplateOutlet]="props._matPrefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
-      <ng-container matSuffix *ngIf="to._matSuffix">
-        <ng-container [ngTemplateOutlet]="to._matSuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
+      <ng-container matSuffix *ngIf="props._matSuffix">
+        <ng-container [ngTemplateOutlet]="props._matSuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
       <mat-error>
         <formly-validation-message [field]="field"></formly-validation-message>
       </mat-error>
 
-      <mat-hint *ngIf="to.description || to.hintStart as hint">
+      <mat-hint *ngIf="props.description || props.hintStart as hint">
         <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hint }">
         </ng-container>
       </mat-hint>
 
-      <mat-hint *ngIf="to.hintEnd as hintEnd" align="end">
+      <mat-hint *ngIf="props.hintEnd as hintEnd" align="end">
         <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hintEnd }">
         </ng-container>
       </mat-hint>
@@ -116,7 +116,7 @@ export class FormlyWrapperFormField
 
   ngAfterViewInit() {
     // temporary fix for https://github.com/angular/material2/issues/7891
-    if (this.formField.appearance !== 'outline' && this.to.hideFieldUnderline === true) {
+    if (this.formField.appearance !== 'outline' && this.props.hideFieldUnderline === true) {
       const underlineElement = this.formField._elementRef.nativeElement.querySelector('.mat-form-field-underline');
       underlineElement && this.renderer.removeChild(underlineElement.parentNode, underlineElement);
     }

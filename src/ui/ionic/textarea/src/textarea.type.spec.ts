@@ -13,7 +13,7 @@ describe('ui-ionic: Textarea Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'textarea',
-      templateOptions: {
+      props: {
         cols: 5,
         rows: 7,
       },
@@ -31,7 +31,7 @@ describe('ui-ionic: Textarea Type', () => {
       key: 'name',
       type: 'textarea',
       validation: { show: true },
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     expect(query('ion-textarea').classes['ng-invalid']).toBeTrue();
@@ -42,7 +42,7 @@ describe('ui-ionic: Textarea Type', () => {
     const { query, field } = renderComponent({
       key: 'name',
       type: 'textarea',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     const inputEl = query<HTMLTextAreaElement>('ion-textarea').nativeElement;

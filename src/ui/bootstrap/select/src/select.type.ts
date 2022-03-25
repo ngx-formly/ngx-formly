@@ -7,16 +7,16 @@ import { take } from 'rxjs/operators';
   selector: 'formly-field-select',
   template: `
     <select
-      *ngIf="to.multiple; else singleSelect"
+      *ngIf="props.multiple; else singleSelect"
       class="form-select"
       multiple
       [formControl]="formControl"
-      [compareWith]="to.compareWith"
+      [compareWith]="props.compareWith"
       [class.is-invalid]="showError"
       [formlyAttributes]="field"
     >
-      <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
-        <ng-container *ngIf="to._flatOptions; else grouplist">
+      <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
+        <ng-container *ngIf="props._flatOptions; else grouplist">
           <ng-container *ngFor="let opt of opts">
             <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
           </ng-container>
@@ -43,13 +43,13 @@ import { take } from 'rxjs/operators';
       <select
         class="form-select"
         [formControl]="formControl"
-        [compareWith]="to.compareWith"
+        [compareWith]="props.compareWith"
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
       >
-        <option *ngIf="to.placeholder" [ngValue]="undefined">{{ to.placeholder }}</option>
-        <ng-container *ngIf="to.options | formlySelectOptions: field | async as opts">
-          <ng-container *ngIf="to._flatOptions; else grouplist">
+        <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
+        <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
+          <ng-container *ngIf="props._flatOptions; else grouplist">
             <ng-container *ngFor="let opt of opts">
               <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
             </ng-container>
@@ -77,7 +77,7 @@ import { take } from 'rxjs/operators';
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },

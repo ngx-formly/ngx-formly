@@ -21,7 +21,7 @@ export class AppComponent {
           className: 'flex-1',
           type: 'input',
           key: 'firstName',
-          templateOptions: {
+          props: {
             label: 'First Name',
           },
         },
@@ -29,11 +29,11 @@ export class AppComponent {
           className: 'flex-1',
           type: 'input',
           key: 'lastName',
-          templateOptions: {
+          props: {
             label: 'Last Name',
           },
           expressionProperties: {
-            'templateOptions.disabled': '!model.firstName',
+            'props.disabled': '!model.firstName',
           },
         },
       ],
@@ -48,7 +48,7 @@ export class AppComponent {
           className: 'flex-2',
           type: 'input',
           key: 'street',
-          templateOptions: {
+          props: {
             label: 'Street',
           },
         },
@@ -56,7 +56,7 @@ export class AppComponent {
           className: 'flex-1',
           type: 'input',
           key: 'cityName',
-          templateOptions: {
+          props: {
             label: 'City',
           },
         },
@@ -64,7 +64,7 @@ export class AppComponent {
           className: 'flex-1',
           type: 'input',
           key: 'zip',
-          templateOptions: {
+          props: {
             type: 'number',
             label: 'Zip',
             max: 99999,
@@ -80,14 +80,14 @@ export class AppComponent {
     {
       type: 'input',
       key: 'otherInput',
-      templateOptions: {
+      props: {
         label: 'Other Input',
       },
     },
     {
       type: 'checkbox',
       key: 'otherToo',
-      templateOptions: {
+      props: {
         label: 'Other Checkbox',
       },
     },

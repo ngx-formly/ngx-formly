@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'name',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Name (required)',
         required: true,
       },
@@ -23,7 +23,7 @@ export class AppComponent {
     {
       key: 'age',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Age (min= 18, max= 40)',
         type: 'number',
         min: 18,
@@ -34,7 +34,7 @@ export class AppComponent {
     {
       key: 'password',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Password (minLength = 6)',
         type: 'password',
         required: true,
@@ -44,7 +44,7 @@ export class AppComponent {
     {
       key: 'comment',
       type: 'textarea',
-      templateOptions: {
+      props: {
         label: 'Comment (maxLength = 100)',
         required: true,
         maxLength: 100,
@@ -54,7 +54,7 @@ export class AppComponent {
     {
       key: 'ip',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'IP Address (pattern = /(d{1,3}.){3}d{1,3}/)',
         pattern: /(\d{1,3}\.){3}\d{1,3}/,
         required: true,

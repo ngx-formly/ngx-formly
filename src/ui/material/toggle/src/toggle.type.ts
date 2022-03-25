@@ -10,12 +10,12 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
       [id]="id"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [color]="to.color"
-      [tabIndex]="to.tabindex"
+      [color]="props.color"
+      [tabIndex]="props.tabindex"
       [required]="required"
-      [labelPosition]="to.labelPosition"
+      [labelPosition]="props.labelPosition"
     >
-      {{ to.label }}
+      {{ props.label }}
     </mat-slide-toggle>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,7 +23,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 export class FormlyFieldToggle extends FieldType<FieldTypeConfig> {
   @ViewChild(MatSlideToggle, { static: true }) slideToggle!: MatSlideToggle;
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
       hideLabel: true,

@@ -21,7 +21,7 @@ describe('ui-kendo: Select Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Select',
         options: [
           { value: 1, label: 'label 1' },
@@ -41,7 +41,7 @@ describe('ui-kendo: Select Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'enum',
-      templateOptions: {
+      props: {
         label: 'Select',
         options: [
           { value: 1, label: 'label 1' },
@@ -60,7 +60,7 @@ describe('ui-kendo: Select Type', () => {
     const { query, field } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         change: changeSpy,
         options: [
           { value: 1, label: 'label 1' },

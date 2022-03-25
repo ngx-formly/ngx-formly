@@ -60,25 +60,25 @@ describe('registerControl', () => {
     expect(field.formControl.parent).not.toBeNull();
   });
 
-  it('should keep disabled state in sync with "templateOptions.disabled"', () => {
+  it('should keep disabled state in sync with "props.disabled"', () => {
     const field: FormlyFieldConfig = {
       key: 'test',
-      templateOptions: { disabled: false },
+      props: { disabled: false },
       parent: {},
     };
 
     registerControl(field, new FormControl());
-    field.templateOptions.disabled = true;
+    field.props.disabled = true;
     expect(field.formControl.disabled).toBeTrue();
 
-    field.templateOptions.disabled = false;
+    field.props.disabled = false;
     expect(field.formControl.disabled).toBeFalse();
 
     field.formControl.disable();
-    expect(field.templateOptions.disabled).toBeTrue();
+    expect(field.props.disabled).toBeTrue();
 
     field.formControl.enable();
-    expect(field.templateOptions.disabled).toBeFalse();
+    expect(field.props.disabled).toBeFalse();
   });
 
   it('should replace existing control with the field one', () => {

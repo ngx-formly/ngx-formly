@@ -34,7 +34,7 @@ export class FieldValidationExtension implements FormlyExtension {
   private getPredefinedFieldValidation(field: FormlyFieldConfigCache): ValidatorFn {
     let VALIDATORS: string[] = [];
     FORMLY_VALIDATORS.forEach((opt) =>
-      observe(field, ['templateOptions', opt], ({ currentValue, firstChange }) => {
+      observe(field, ['props', opt], ({ currentValue, firstChange }) => {
         VALIDATORS = VALIDATORS.filter((o) => o !== opt);
         if (currentValue != null && currentValue !== false) {
           VALIDATORS.push(opt);
@@ -52,7 +52,7 @@ export class FieldValidationExtension implements FormlyExtension {
 
       return Validators.compose(
         VALIDATORS.map((opt) => () => {
-          const value = field.templateOptions[opt];
+          const value = field.props[opt];
           switch (opt) {
             case 'required':
               return Validators.required(control);

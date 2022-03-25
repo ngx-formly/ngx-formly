@@ -19,14 +19,14 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [formControl]="formControl"
       [id]="id"
       [formlyAttributes]="field"
-      [tabIndex]="to.tabindex"
-      [indeterminate]="to.indeterminate && formControl.value == null"
-      [color]="to.color"
-      [labelPosition]="to.align || to.labelPosition"
+      [tabIndex]="props.tabindex"
+      [indeterminate]="props.indeterminate && formControl.value == null"
+      [color]="props.color"
+      [labelPosition]="props.align || props.labelPosition"
     >
-      {{ to.label }}
+      {{ props.label }}
       <span
-        *ngIf="to.required && to.hideRequiredMarker !== true"
+        *ngIf="props.required && props.hideRequiredMarker !== true"
         aria-hidden="true"
         class="mat-form-field-required-marker"
         >*</span
@@ -41,7 +41,7 @@ export class FormlyFieldCheckbox
 {
   @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideFieldUnderline: true,
       indeterminate: true,
       floatLabel: 'always' as const,
@@ -65,9 +65,9 @@ export class FormlyFieldCheckbox
     if (this.checkbox) {
       this.focusMonitor.monitor(this.checkbox._inputElement, true).subscribe((focusOrigin) => {
         if (focusOrigin) {
-          this.to.focus && this.to.focus(this.field);
+          this.props.focus && this.props.focus(this.field);
         } else {
-          this.to.blur && this.to.blur(this.field);
+          this.props.blur && this.props.blur(this.field);
         }
       });
     }

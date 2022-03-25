@@ -14,14 +14,14 @@ export class AppComponent {
   fields: FormlyFieldConfig[] = [
     {
       type: 'button',
-      templateOptions: {
+      props: {
         text: 'With Function',
         onClick: () => alert('You clicked me!'),
       },
     },
     {
       type: 'button',
-      templateOptions: {
+      props: {
         label: 'Click this guy',
         text: 'JSON Only',
         btnType: 'info',
@@ -34,7 +34,7 @@ export class AppComponent {
     {
       key: 'someInput',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Some Input',
       },
     },

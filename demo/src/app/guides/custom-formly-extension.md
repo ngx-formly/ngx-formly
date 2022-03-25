@@ -28,11 +28,11 @@ See live demo: [demo](https://stackblitz.com/edit/ngx-formly-ui-bootstrap-slzm3p
 
     export const defaultLabelExtension: FormlyExtension = {
       prePopulate(field): void {
-        if (field.templateOptions?.label) {
+        if (field.props?.label) {
           return;
         }
-        field.templateOptions = {
-          ...field.templateOptions,
+        field.props = {
+          ...field.props,
           label: 'Default Label'
         }
       },
@@ -84,7 +84,7 @@ See live demo: [demo](https://stackblitz.com/edit/ngx-formly-ui-bootstrap-slzm3p
       {
         key: 'input',
         type: 'input',
-        templateOptions: {
+        props: {
           label: 'Basic Input'
         }
       },

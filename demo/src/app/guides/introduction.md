@@ -90,7 +90,7 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
       {
         key: 'email',
         type: 'input',
-        templateOptions: {
+        props: {
           label: 'Email address',
           placeholder: 'Enter email',
           required: true,

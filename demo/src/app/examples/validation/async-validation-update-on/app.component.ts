@@ -18,7 +18,7 @@ export class AppComponent {
     {
       key: 'username',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Username (validated on `blur`)',
         placeholder: 'Username',
         required: true,

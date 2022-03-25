@@ -9,19 +9,19 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
     <textarea
       matInput
       [id]="id"
-      [readonly]="to.readonly"
+      [readonly]="props.readonly"
       [required]="required"
       [formControl]="formControl"
       [errorStateMatcher]="errorStateMatcher"
-      [cols]="to.cols"
-      [rows]="to.rows"
+      [cols]="props.cols"
+      [rows]="props.rows"
       [formlyAttributes]="field"
-      [placeholder]="to.placeholder"
-      [tabindex]="to.tabindex"
-      [cdkTextareaAutosize]="to.autosize"
-      [cdkAutosizeMinRows]="to.autosizeMinRows"
-      [cdkAutosizeMaxRows]="to.autosizeMaxRows"
-      [class.cdk-textarea-autosize]="to.autosize"
+      [placeholder]="props.placeholder"
+      [tabindex]="props.tabindex"
+      [cdkTextareaAutosize]="props.autosize"
+      [cdkAutosizeMinRows]="props.autosizeMinRows"
+      [cdkAutosizeMaxRows]="props.autosizeMaxRows"
+      [class.cdk-textarea-autosize]="props.autosize"
     >
     </textarea>
   `,
@@ -34,7 +34,7 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       cols: 1,
       rows: 1,
     },

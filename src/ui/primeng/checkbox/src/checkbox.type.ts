@@ -7,10 +7,10 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
     <div class="p-field-checkbox">
       <p-checkbox
         [binary]="true"
-        [label]="to.label"
+        [label]="props.label"
         [formControl]="formControl"
         [formlyAttributes]="field"
-        (onChange)="to.change && to.change(field, $event)"
+        (onChange)="props.change && props.change(field, $event)"
       >
       </p-checkbox>
     </div>
@@ -19,7 +19,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideLabel: true,
     },
   };

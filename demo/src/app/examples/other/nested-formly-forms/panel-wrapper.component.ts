@@ -5,7 +5,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-panel',
   template: `
     <div class="card">
-      <h3 class="card-header">{{ to.label }}</h3>
+      <h3 class="card-header">{{ props.label }}</h3>
       <div class="card-body">
         <ng-container #fieldComponent></ng-container>
       </div>

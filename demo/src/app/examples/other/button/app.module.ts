@@ -19,7 +19,7 @@ import { FormlyFieldButton } from './button-type.component';
           component: FormlyFieldButton,
           wrappers: ['form-field'],
           defaultOptions: {
-            templateOptions: {
+            props: {
               btnType: 'default',
               type: 'button',
             },

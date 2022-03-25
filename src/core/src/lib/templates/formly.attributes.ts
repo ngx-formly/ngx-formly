@@ -9,7 +9,7 @@ import {
   Inject,
   OnDestroy,
 } from '@angular/core';
-import { FormlyFieldConfig, FormlyFieldConfigCache, FormlyTemplateOptions } from '../models';
+import { FormlyFieldConfig, FormlyFieldConfigCache, FormlyFieldProps } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe, IObserver } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
@@ -45,13 +45,13 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
         case 'change':
           return this.onChange($event);
         default:
-          return this.to[eventName](this.field, $event);
+          return this.props[eventName](this.field, $event);
       }
     },
   };
 
-  get to() {
-    return this.field.templateOptions || ({} as FormlyTemplateOptions);
+  private get props() {
+    return this.field.props || ({} as FormlyFieldProps);
   }
 
   private get fieldAttrElements(): ElementRef[] {
@@ -67,15 +67,15 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       this.field.name && this.setAttribute('name', this.field.name);
       this.uiEvents.listeners.forEach((listener) => listener());
       this.uiEvents.events.forEach((eventName) => {
-        if (this.to?.[eventName] || ['focus', 'blur', 'change'].indexOf(eventName) !== -1) {
+        if (this.props?.[eventName] || ['focus', 'blur', 'change'].indexOf(eventName) !== -1) {
           this.uiEvents.listeners.push(
             this.renderer.listen(this.elementRef.nativeElement, eventName, (e) => this.uiEvents.callback(eventName, e)),
           );
         }
       });
 
-      if (this.to?.attributes) {
-        observe(this.field, ['templateOptions', 'attributes'], ({ currentValue, previousValue }) => {
+      if (this.props?.attributes) {
+        observe(this.field, ['props', 'attributes'], ({ currentValue, previousValue }) => {
           if (previousValue) {
             Object.keys(previousValue).forEach((attr) => this.removeAttribute(attr));
           }
@@ -122,10 +122,10 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
 
     this.uiAttributes.forEach((attr) => {
-      const value = this.to[attr];
+      const value = this.props[attr];
       if (
         this.uiAttributesCache[attr] !== value &&
-        (!this.to.attributes || !this.to.attributes.hasOwnProperty(attr.toLowerCase()))
+        (!this.props.attributes || !this.props.attributes.hasOwnProperty(attr.toLowerCase()))
       ) {
         this.uiAttributesCache[attr] = value;
         if (value || value === 0) {
@@ -165,12 +165,12 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   onFocus($event: any) {
     this.focusObserver?.setValue(true);
-    this.to.focus?.(this.field, $event);
+    this.props.focus?.(this.field, $event);
   }
 
   onBlur($event: any) {
     this.focusObserver?.setValue(false);
-    this.to.blur?.(this.field, $event);
+    this.props.blur?.(this.field, $event);
   }
 
   // handle custom `change` event, for regular ones rely on DOM listener
@@ -183,7 +183,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   onChange($event: any) {
-    this.to.change?.(this.field, $event);
+    this.props.change?.(this.field, $event);
     this.field.formControl?.markAsDirty();
   }
 

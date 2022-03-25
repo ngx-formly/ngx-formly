@@ -5,9 +5,9 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-nz-form-field',
   template: `
     <nz-form-item>
-      <ng-container *ngIf="to.label && to.hideLabel !== true">
-        <nz-form-label [nzRequired]="to.required && to.hideRequiredMarker !== true" [nzFor]="id">
-          {{ to.label }}
+      <ng-container *ngIf="props.label && props.hideLabel !== true">
+        <nz-form-label [nzRequired]="props.required && props.hideRequiredMarker !== true" [nzFor]="id">
+          {{ props.label }}
         </nz-form-label>
       </ng-container>
       <nz-form-control [nzValidateStatus]="errorState" [nzErrorTip]="errorTpl">

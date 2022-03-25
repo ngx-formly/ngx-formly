@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Range',
       type: 'range',
-      templateOptions: {
+      props: {
         label: 'Range',
         placeholder: 'Placeholder',
         description: 'Description',

@@ -18,7 +18,7 @@ export class AppComponent {
     {
       key: 'email',
       type: 'input',
-      templateOptions: {
+      props: {
         type: 'email',
         label: 'Email',
         required: true,
@@ -33,7 +33,7 @@ export class AppComponent {
     {
       key: 'showErrorState',
       type: 'checkbox',
-      templateOptions: {
+      props: {
         label: 'Force show error state',
       },
     },

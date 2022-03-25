@@ -6,9 +6,9 @@ import { FieldType } from '@ngx-formly/kendo/form-field';
   selector: 'formly-field-kendo-input',
   template: `
     <input
-      *ngIf="to.type !== 'number'; else numberTmp"
+      *ngIf="props.type !== 'number'; else numberTmp"
       kendoTextBox
-      [type]="to.type || 'text'"
+      [type]="props.type || 'text'"
       [formlyAttributes]="field"
       [formControl]="formControl"
       [formControl]="formControl"

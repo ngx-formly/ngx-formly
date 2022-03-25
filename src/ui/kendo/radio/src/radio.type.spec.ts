@@ -13,7 +13,7 @@ describe('ui-kendo: Radio Type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
       type: 'radio',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -31,7 +31,7 @@ describe('ui-kendo: Radio Type', () => {
       key: 'name',
       type: 'radio',
       validation: { show: true },
-      templateOptions: {
+      props: {
         options: [{ value: 1, label: 'label 1' }],
         required: true,
       },
@@ -45,7 +45,7 @@ describe('ui-kendo: Radio Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'radio',
-      templateOptions: {
+      props: {
         change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },

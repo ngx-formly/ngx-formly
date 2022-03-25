@@ -10,26 +10,26 @@ import { FieldType } from '@ngx-formly/material/form-field';
       matInput
       [id]="id"
       [type]="type || 'text'"
-      [readonly]="to.readonly"
+      [readonly]="props.readonly"
       [required]="required"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [tabIndex]="to.tabindex"
-      [placeholder]="to.placeholder"
+      [tabIndex]="props.tabindex"
+      [placeholder]="props.placeholder"
     />
     <ng-template #numberTmp>
       <input
         matInput
         [id]="id"
         type="number"
-        [readonly]="to.readonly"
+        [readonly]="props.readonly"
         [required]="required"
         [errorStateMatcher]="errorStateMatcher"
         [formControl]="formControl"
         [formlyAttributes]="field"
-        [tabIndex]="to.tabindex"
-        [placeholder]="to.placeholder"
+        [tabIndex]="props.tabindex"
+        [placeholder]="props.placeholder"
       />
     </ng-template>
   `,
@@ -37,6 +37,6 @@ import { FieldType } from '@ngx-formly/material/form-field';
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig> {
   get type() {
-    return this.to.type || 'text';
+    return this.props.type || 'text';
   }
 }

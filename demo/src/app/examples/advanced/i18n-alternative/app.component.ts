@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'lang',
       type: 'select',
-      templateOptions: {
+      props: {
         required: true,
         translate: true,
         label: 'FORM.LANG',
@@ -29,7 +29,7 @@ export class AppComponent {
     {
       key: 'name',
       type: 'input',
-      templateOptions: {
+      props: {
         translate: true,
         label: 'FORM.NAME',
         required: true,
