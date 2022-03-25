@@ -6,12 +6,12 @@ import { FieldWrapper } from '@ngx-formly/core';
   template: `
     <ng-template #matPrefix>
       <span
-        *ngIf="to.addonLeft"
-        [ngStyle]="{ cursor: to.addonLeft.onClick ? 'pointer' : 'inherit' }"
+        *ngIf="props.addonLeft"
+        [ngStyle]="{ cursor: props.addonLeft.onClick ? 'pointer' : 'inherit' }"
         (click)="addonLeftClick($event)"
       >
-        <mat-icon *ngIf="to.addonLeft.icon">{{ to.addonLeft.icon }}</mat-icon>
-        <span *ngIf="to.addonLeft.text">{{ to.addonLeft.text }}</span>
+        <mat-icon *ngIf="props.addonLeft.icon">{{ props.addonLeft.icon }}</mat-icon>
+        <span *ngIf="props.addonLeft.text">{{ props.addonLeft.text }}</span>
       </span>
     </ng-template>
 
@@ -19,12 +19,12 @@ import { FieldWrapper } from '@ngx-formly/core';
 
     <ng-template #matSuffix>
       <span
-        *ngIf="to.addonRight"
-        [ngStyle]="{ cursor: to.addonRight.onClick ? 'pointer' : 'inherit' }"
+        *ngIf="props.addonRight"
+        [ngStyle]="{ cursor: props.addonRight.onClick ? 'pointer' : 'inherit' }"
         (click)="addonRightClick($event)"
       >
-        <mat-icon *ngIf="to.addonRight.icon">{{ to.addonRight.icon }}</mat-icon>
-        <span *ngIf="to.addonRight.text">{{ to.addonRight.text }}</span>
+        <mat-icon *ngIf="props.addonRight.icon">{{ props.addonRight.icon }}</mat-icon>
+        <span *ngIf="props.addonRight.text">{{ props.addonRight.text }}</span>
       </span>
     </ng-template>
   `,
@@ -35,23 +35,23 @@ export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.matPrefix) {
-      this.to.prefix = this.matPrefix;
+      this.props.prefix = this.matPrefix;
     }
 
     if (this.matSuffix) {
-      this.to.suffix = this.matSuffix;
+      this.props.suffix = this.matSuffix;
     }
   }
 
   addonRightClick($event: any) {
-    if (this.to.addonRight.onClick) {
-      this.to.addonRight.onClick(this.to, this, $event);
+    if (this.props.addonRight.onClick) {
+      this.props.addonRight.onClick(this.to, this, $event);
     }
   }
 
   addonLeftClick($event: any) {
-    if (this.to.addonLeft.onClick) {
-      this.to.addonLeft.onClick(this.to, this, $event);
+    if (this.props.addonLeft.onClick) {
+      this.props.addonLeft.onClick(this.to, this, $event);
     }
   }
 }

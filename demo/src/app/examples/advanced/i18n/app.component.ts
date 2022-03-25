@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'lang',
       type: 'select',
-      templateOptions: {
+      props: {
         required: true,
         change: (field) => this.translate.use(field.formControl.value),
         options: [
@@ -24,15 +24,15 @@ export class AppComponent {
         ],
       },
       expressionProperties: {
-        'templateOptions.label': this.translate.stream('FORM.LANG'),
+        'props.label': this.translate.stream('FORM.LANG'),
       },
     },
     {
       key: 'name',
       type: 'input',
-      templateOptions: { required: true },
+      props: { required: true },
       expressionProperties: {
-        'templateOptions.label': this.translate.stream('FORM.NAME'),
+        'props.label': this.translate.stream('FORM.NAME'),
       },
     },
   ];

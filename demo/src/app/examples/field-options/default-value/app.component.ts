@@ -20,7 +20,7 @@ export class AppComponent {
       key: 'firstName',
       type: 'input',
       defaultValue: 'This is a default value',
-      templateOptions: {
+      props: {
         label: 'First Name (initialized via default value)',
       },
     },
@@ -28,7 +28,7 @@ export class AppComponent {
       key: 'lastName',
       type: 'input',
       defaultValue: 'This is a default value',
-      templateOptions: {
+      props: {
         label: 'Last Name (initialized via the model)',
       },
     },
@@ -36,7 +36,7 @@ export class AppComponent {
       key: 'candy',
       type: 'select',
       defaultValue: 'milky_way',
-      templateOptions: {
+      props: {
         label: 'Favorite Candy (initialized via default value',
         options: [
           { label: 'Snickers', value: 'snickers' },
@@ -48,7 +48,7 @@ export class AppComponent {
     {
       key: 'agree',
       type: 'checkbox',
-      templateOptions: {
+      props: {
         label: 'Agree? (not initialized at all)',
         required: true,
       },

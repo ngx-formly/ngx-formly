@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Checkbox',
       type: 'checkbox',
-      templateOptions: {
+      props: {
         label: 'Accept terms',
         description: 'In order to proceed, please accept terms',
         pattern: 'true',

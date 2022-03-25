@@ -5,8 +5,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'formly-field-ion-input',
   template: `
     <ion-input
-      *ngIf="to.type !== 'number'; else numberTmp"
-      [type]="to.type || 'text'"
+      *ngIf="props.type !== 'number'; else numberTmp"
+      [type]="props.type || 'text'"
       [formControl]="formControl"
       [ionFormlyAttributes]="field"
     ></ion-input>

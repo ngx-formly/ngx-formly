@@ -5,16 +5,16 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-button',
   template: `
     <div>
-      <button [type]="to.type" [ngClass]="'btn btn-' + to.btnType" (click)="onClick($event)">
-        {{ to.text }}
+      <button [type]="props.type" [ngClass]="'btn btn-' + props.btnType" (click)="onClick($event)">
+        {{ props.text }}
       </button>
     </div>
   `,
 })
 export class FormlyFieldButton extends FieldType {
   onClick($event: Event) {
-    if (this.to.onClick) {
-      this.to.onClick($event);
+    if (this.props.onClick) {
+      this.props.onClick($event);
     }
   }
 }

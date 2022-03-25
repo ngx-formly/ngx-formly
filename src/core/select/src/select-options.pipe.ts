@@ -47,26 +47,26 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       }
     });
 
-    if (field?.templateOptions) {
-      field.templateOptions._flatOptions = !Object.keys(groups).length;
+    if (field?.props) {
+      field.props._flatOptions = !Object.keys(groups).length;
     }
 
     return opts;
   }
 
-  private transformOption(option: any, to: ITransformOption): ISelectOption {
-    const group = to.groupProp(option);
+  private transformOption(option: any, props: ITransformOption): ISelectOption {
+    const group = props.groupProp(option);
     if (Array.isArray(group)) {
       return {
-        label: to.labelProp(option),
-        group: group.map((opt) => this.transformOption(opt, to)),
+        label: props.labelProp(option),
+        group: group.map((opt) => this.transformOption(opt, props)),
       };
     }
 
     option = {
-      label: to.labelProp(option),
-      value: to.valueProp(option),
-      disabled: !!to.disabledProp(option),
+      label: props.labelProp(option),
+      value: props.valueProp(option),
+      disabled: !!props.disabledProp(option),
     };
 
     if (group) {
@@ -77,14 +77,14 @@ export class FormlySelectOptionsPipe implements PipeTransform {
   }
 
   private transformSelectProps(field?: FormlyFieldConfig): ITransformOption {
-    const to = field?.templateOptions || {};
+    const props = field?.props || field?.templateOptions || {};
     const selectPropFn = (prop: any) => (typeof prop === 'function' ? prop : (o: any) => o[prop]);
 
     return {
-      groupProp: selectPropFn(to.groupProp || 'group'),
-      labelProp: selectPropFn(to.labelProp || 'label'),
-      valueProp: selectPropFn(to.valueProp || 'value'),
-      disabledProp: selectPropFn(to.disabledProp || 'disabled'),
+      groupProp: selectPropFn(props.groupProp || 'group'),
+      labelProp: selectPropFn(props.labelProp || 'label'),
+      valueProp: selectPropFn(props.valueProp || 'value'),
+      disabledProp: selectPropFn(props.disabledProp || 'disabled'),
     };
   }
 }

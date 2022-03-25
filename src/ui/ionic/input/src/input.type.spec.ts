@@ -41,7 +41,7 @@ describe('ui-ionic: Input Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
-      templateOptions: { type: 'number' },
+      props: { type: 'number' },
     });
 
     const { attributes } = query('ion-input[type="number"]');
@@ -82,7 +82,7 @@ describe('ui-ionic: Input Type', () => {
       key: 'name',
       type: 'input',
       validation: { show: true },
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     const { classes } = query('ion-input');
@@ -94,7 +94,7 @@ describe('ui-ionic: Input Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'input',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     const inputEl = query<HTMLInputElement>('ion-input').nativeElement;

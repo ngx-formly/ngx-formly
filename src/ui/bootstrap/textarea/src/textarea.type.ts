@@ -6,8 +6,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   template: `
     <textarea
       [formControl]="formControl"
-      [cols]="to.cols"
-      [rows]="to.rows"
+      [cols]="props.cols"
+      [rows]="props.rows"
       class="form-control"
       [class.is-invalid]="showError"
       [formlyAttributes]="field"
@@ -18,7 +18,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       cols: 1,
       rows: 1,
     },

@@ -45,7 +45,7 @@ describe('ui-kendo: Input Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
-      templateOptions: { type: 'number' },
+      props: { type: 'number' },
     });
 
     const { attributes } = query('kendo-numerictextbox');
@@ -86,7 +86,7 @@ describe('ui-kendo: Input Type', () => {
       key: 'name',
       type: 'input',
       validation: { show: true },
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     const { classes } = query('input[type="text"]');
@@ -98,7 +98,7 @@ describe('ui-kendo: Input Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'input',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     ['input', 'change'].forEach((type) =>

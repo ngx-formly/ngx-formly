@@ -7,22 +7,22 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
     <div
       class="form-check"
       [ngClass]="{
-        'form-check-inline': to.formCheck === 'inline' || to.formCheck === 'inline-switch',
-        'form-switch': to.formCheck === 'switch' || to.formCheck === 'inline-switch'
+        'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',
+        'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch'
       }"
     >
       <input
         type="checkbox"
         [class.is-invalid]="showError"
         class="form-check-input"
-        [class.position-static]="to.formCheck === 'nolabel'"
-        [indeterminate]="to.indeterminate && formControl.value == null"
+        [class.position-static]="props.formCheck === 'nolabel'"
+        [indeterminate]="props.indeterminate && formControl.value == null"
         [formControl]="formControl"
         [formlyAttributes]="field"
       />
-      <label *ngIf="to.formCheck !== 'nolabel'" [for]="id" class="form-check-label">
-        {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
+      <label *ngIf="props.formCheck !== 'nolabel'" [for]="id" class="form-check-label">
+        {{ props.label }}
+        <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
       </label>
     </div>
   `,
@@ -30,7 +30,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       indeterminate: true,
       hideLabel: true,
       formCheck: 'default', // 'default' | 'inline' | 'switch' | 'inline-switch' | 'nolabel'

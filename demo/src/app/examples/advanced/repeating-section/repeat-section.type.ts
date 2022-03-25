@@ -5,8 +5,8 @@ import { FieldArrayType } from '@ngx-formly/core';
   selector: 'formly-repeat-section',
   template: `
     <div class="mb-3">
-      <legend *ngIf="to.label">{{ to.label }}</legend>
-      <p *ngIf="to.description">{{ to.description }}</p>
+      <legend *ngIf="props.label">{{ props.label }}</legend>
+      <p *ngIf="props.description">{{ props.description }}</p>
 
       <div *ngFor="let field of field.fieldGroup; let i = index" class="row align-items-baseline">
         <formly-field class="col" [field]="field"></formly-field>
@@ -15,7 +15,7 @@ import { FieldArrayType } from '@ngx-formly/core';
         </div>
       </div>
       <div style="margin:30px 0;">
-        <button class="btn btn-primary" type="button" (click)="add()">{{ to.addText }}</button>
+        <button class="btn btn-primary" type="button" (click)="add()">{{ props.addText }}</button>
       </div>
     </div>
   `,

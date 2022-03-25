@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Select',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Select',
         placeholder: 'Placeholder',
         description: 'Description',
@@ -30,7 +30,7 @@ export class AppComponent {
     {
       key: 'select_multi',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Select Multiple',
         placeholder: 'Placeholder',
         description: 'Description',

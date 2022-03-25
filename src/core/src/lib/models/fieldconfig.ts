@@ -34,7 +34,10 @@ export interface FormlyFieldConfig {
   /**
    * This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this.
    */
-  templateOptions?: FormlyTemplateOptions;
+  props?: FormlyFieldProps;
+
+  /** @deprecated Use `props` instead. */
+  templateOptions?: FormlyFieldConfig['props'];
 
   /**
    * An object with a few useful properties
@@ -190,7 +193,10 @@ export interface FormlyFieldConfig {
 
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
 
-export interface FormlyTemplateOptions {
+/**  @deprecated */
+export type FormlyTemplateOptions = FormlyFieldProps;
+
+export interface FormlyFieldProps {
   type?: string;
   label?: string;
   placeholder?: string;

@@ -34,15 +34,15 @@ function buildField({ model, options, ...field }: FormlyFieldConfig): FormlyFiel
 }
 
 describe('CoreExtension', () => {
-  it('should assign default templateOptions when empty', () => {
+  it('should assign default props when empty', () => {
     const {
       fieldGroup: [withoutType, withType],
     } = buildField({
       fieldGroup: [{ key: 'title' }, { key: 'title', type: 'input' }],
     });
 
-    expect(withoutType.templateOptions).toEqual({});
-    expect(withType.templateOptions).toEqual({
+    expect(withoutType.props).toEqual({});
+    expect(withType.props).toEqual({
       label: '',
       placeholder: '',
       disabled: false,

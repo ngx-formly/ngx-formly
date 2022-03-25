@@ -19,7 +19,7 @@ export class AppComponent {
     {
       key: 'ip',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'IP Address (using custom validation declared in ngModule)',
         required: true,
       },
@@ -30,7 +30,7 @@ export class AppComponent {
     {
       key: 'ip',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'IP Address (using custom validation through `validators.validation` property)',
         required: true,
       },
@@ -41,7 +41,7 @@ export class AppComponent {
     {
       key: 'ip',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'IP Address (using custom validation through `validators.expression` property)',
         description: 'custom validation message through `validators` property',
         required: true,

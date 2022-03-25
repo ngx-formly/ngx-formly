@@ -5,7 +5,7 @@ import { action } from '@nativescript/core/ui/dialogs';
 @Component({
   selector: 'formly-field-ns-select',
   template: `
-    <ng-container *ngIf="to.options | formlySelectOptions: field | async as options">
+    <ng-container *ngIf="props.options | formlySelectOptions: field | async as options">
       <Button (tap)="tap(options)" [text]="selectedItem(options)"></Button>
     </ng-container>
   `,
@@ -13,7 +13,7 @@ import { action } from '@nativescript/core/ui/dialogs';
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   tap(options: any[]) {
-    action({ title: this.to.label, actions: options.map((o) => o.label) }).then((selectedAction) =>
+    action({ title: this.props.label, actions: options.map((o) => o.label) }).then((selectedAction) =>
       this.formControl.patchValue(options.find((o) => o.label === selectedAction).value),
     );
   }
@@ -23,6 +23,6 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
       return options.find((o) => o.value === this.formControl.value).label;
     }
 
-    return this.to.placeholder;
+    return this.props.placeholder;
   }
 }

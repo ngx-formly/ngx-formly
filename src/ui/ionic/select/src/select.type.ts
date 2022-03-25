@@ -5,17 +5,17 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'formly-field-ion-select',
   template: `
     <!-- ng-container used as a workaround for https://github.com/ionic-team/ionic/issues/19324 -->
-    <ng-container *ngIf="to.options | formlySelectOptions: field | async; let selectOptions">
+    <ng-container *ngIf="props.options | formlySelectOptions: field | async; let selectOptions">
       <ion-select
-        [style.align-self]="to.labelPosition === 'floating' ? 'stretch' : ''"
-        [style.max-width.%]="to.labelPosition === 'floating' ? 100 : ''"
+        [style.align-self]="props.labelPosition === 'floating' ? 'stretch' : ''"
+        [style.max-width.%]="props.labelPosition === 'floating' ? 100 : ''"
         [formControl]="formControl"
-        [compareWith]="to.compareWith"
+        [compareWith]="props.compareWith"
         [ionFormlyAttributes]="field"
-        [multiple]="to.multiple"
-        [interface]="to.interface"
-        [okText]="to.okText"
-        [cancelText]="to.cancelText"
+        [multiple]="props.multiple"
+        [interface]="props.interface"
+        [okText]="props.okText"
+        [cancelText]="props.cancelText"
       >
         <ion-select-option *ngFor="let option of selectOptions" [value]="option.value" [disabled]="option.disabled">
           {{ option.label }}
@@ -28,7 +28,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },

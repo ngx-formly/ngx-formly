@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'name',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Name',
         placeholder: 'Type in here to display the hidden field',
       },
@@ -23,7 +23,7 @@ export class AppComponent {
     {
       key: 'iLikeTwix',
       type: 'checkbox',
-      templateOptions: {
+      props: {
         label: 'I like twix',
       },
       hideExpression: '!model.name',

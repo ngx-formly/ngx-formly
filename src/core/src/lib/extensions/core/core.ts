@@ -22,6 +22,7 @@ export class CoreExtension implements FormlyExtension {
   prePopulate(field: FormlyFieldConfigCache) {
     const root = field.parent;
     this.initRootOptions(field);
+    this.initFieldProps(field);
     if (root) {
       Object.defineProperty(field, 'options', { get: () => root.options, configurable: true });
       Object.defineProperty(field, 'model', {
@@ -54,6 +55,18 @@ export class CoreExtension implements FormlyExtension {
 
   postPopulate(field: FormlyFieldConfigCache) {
     this.getFieldComponentInstance(field).postPopulate?.(field);
+  }
+
+  private initFieldProps(field: FormlyFieldConfigCache) {
+    if (!field.props) {
+      field.props = field.templateOptions;
+    }
+
+    Object.defineProperty(field, 'templateOptions', {
+      get: () => field.props,
+      set: (props) => (field.props = props),
+      configurable: true,
+    });
   }
 
   private initRootOptions(field: FormlyFieldConfigCache) {
@@ -113,7 +126,7 @@ export class CoreExtension implements FormlyExtension {
       hooks: {},
       modelOptions: {},
       validation: { messages: {} },
-      templateOptions:
+      props:
         !field.type || !hasKey(field)
           ? {}
           : {

@@ -18,7 +18,7 @@ export class AppComponent {
     {
       key: 'username1',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Username (validated using `Promise`)',
         placeholder: 'Username',
         required: true,
@@ -39,7 +39,7 @@ export class AppComponent {
     {
       key: 'username2',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Username (validated using `Observable`)',
         placeholder: 'Username',
         required: true,

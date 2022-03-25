@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Radio',
       type: 'radio',
-      templateOptions: {
+      props: {
         label: 'Radio',
         placeholder: 'Placeholder',
         description: 'Description',

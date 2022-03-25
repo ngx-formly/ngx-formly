@@ -5,15 +5,15 @@ import { ɵdefineHiddenProp as defineHiddenProp, FieldWrapper } from '@ngx-forml
 @Component({
   selector: 'formly-wrapper-kendo-form-field',
   template: `
-    <kendo-formfield [orientation]="to.orientation">
-      <label *ngIf="to.label && to.hideLabel !== true" [for]="id">
-        {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
+    <kendo-formfield [orientation]="props.orientation">
+      <label *ngIf="props.label && props.hideLabel !== true" [for]="id">
+        {{ props.label }}
+        <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
       </label>
 
       <ng-container #fieldComponent></ng-container>
 
-      <kendo-formhint *ngIf="to.description">{{ to.description }}</kendo-formhint>
+      <kendo-formhint *ngIf="props.description">{{ props.description }}</kendo-formhint>
       <kendo-formerror *ngIf="showError">
         <formly-validation-message [field]="field"></formly-validation-message>
       </kendo-formerror>

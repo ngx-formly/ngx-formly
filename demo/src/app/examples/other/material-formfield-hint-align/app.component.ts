@@ -18,7 +18,7 @@ export class AppComponent {
     {
       key: 'Input',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Input with string hints',
         placeholder: 'Placeholder',
         hintStart: 'hintStart accepts strings and TemplateRefs and is aligned to start',
@@ -29,21 +29,21 @@ export class AppComponent {
     {
       key: 'Input2',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Input with template hints',
         required: true,
       },
       hooks: {
         afterViewInit: (field) => {
-          field.templateOptions.hintStart = this.hintStart;
-          field.templateOptions.hintEnd = this.hintEnd;
+          field.props.hintStart = this.hintStart;
+          field.props.hintEnd = this.hintEnd;
         },
       },
     },
     {
       key: 'Input3',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Input with description',
         description: 'Description field accepts strings and gets aligned to start',
         required: true,

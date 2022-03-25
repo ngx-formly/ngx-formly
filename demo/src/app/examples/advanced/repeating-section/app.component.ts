@@ -17,13 +17,13 @@ export class AppComponent {
     {
       key: 'tasks',
       type: 'repeat',
-      templateOptions: {
+      props: {
         addText: 'Add Task',
         label: 'TODO LIST',
       },
       fieldArray: {
         type: 'input',
-        templateOptions: {
+        props: {
           placeholder: 'Task name',
           required: true,
         },

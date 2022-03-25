@@ -13,12 +13,12 @@ export class AppComponent {
 
   fields: FormlyFieldConfig[] = [
     {
-      templateOptions: { label: 'Personal data' },
+      props: { label: 'Personal data' },
       fieldGroup: [
         {
           key: 'input',
           type: 'input',
-          templateOptions: {
+          props: {
             label: 'Input Field',
           },
         },
@@ -29,7 +29,7 @@ export class AppComponent {
         {
           key: 'customized-password',
           type: 'password',
-          templateOptions: {
+          props: {
             label: 'Password Field (with custom label)',
           },
         },

@@ -6,13 +6,13 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   template: `
     <nz-select
       [class.ng-dirty]="showError"
-      [nzPlaceHolder]="to.placeholder"
+      [nzPlaceHolder]="props.placeholder"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [nzMode]="to.multiple ? 'multiple' : 'default'"
-      (ngModelChange)="to.change && to.change(field, $event)"
+      [nzMode]="props.multiple ? 'multiple' : 'default'"
+      (ngModelChange)="props.change && props.change(field, $event)"
     >
-      <ng-container *ngFor="let item of to.options | formlySelectOptions: field | async">
+      <ng-container *ngFor="let item of props.options | formlySelectOptions: field | async">
         <nz-option-group *ngIf="item.group" [nzLabel]="item.label">
           <nz-option
             *ngFor="let child of item.group"

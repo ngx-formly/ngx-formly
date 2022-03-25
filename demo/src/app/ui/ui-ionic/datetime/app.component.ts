@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Datetime',
       type: 'datetime',
-      templateOptions: {
+      props: {
         label: 'Datetime',
         placeholder: 'Placeholder',
         description: 'Description',

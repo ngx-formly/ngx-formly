@@ -12,7 +12,7 @@ describe('ui-bootstrap: FormField Wrapper', () => {
   it('should render form-field wrapper', () => {
     const { query } = renderComponent({
       wrappers: ['form-field'],
-      templateOptions: {
+      props: {
         label: 'Name',
         required: true,
         description: 'Name description',
@@ -32,7 +32,7 @@ describe('ui-bootstrap: FormField Wrapper', () => {
       key: 'name',
       wrappers: ['form-field'],
       validation: { show: true },
-      templateOptions: {
+      props: {
         label: 'Name',
         required: true,
       },
@@ -45,7 +45,7 @@ describe('ui-bootstrap: FormField Wrapper', () => {
   it('should hide required marker', () => {
     const { query } = renderComponent({
       wrappers: ['form-field'],
-      templateOptions: {
+      props: {
         label: 'Name',
         hideRequiredMarker: true,
         required: true,
@@ -58,7 +58,7 @@ describe('ui-bootstrap: FormField Wrapper', () => {
   it('should hide label', () => {
     const { query } = renderComponent({
       wrappers: ['form-field'],
-      templateOptions: {
+      props: {
         label: 'Name',
         hideLabel: true,
       },

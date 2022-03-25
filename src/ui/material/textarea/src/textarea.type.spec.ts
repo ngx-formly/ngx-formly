@@ -14,7 +14,7 @@ describe('ui-material: Textarea Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'textarea',
-      templateOptions: {
+      props: {
         cols: 5,
         rows: 7,
       },
@@ -36,7 +36,7 @@ describe('ui-material: Textarea Type', () => {
       key: 'name',
       type: 'textarea',
       validation: { show: true },
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     expect(query('textarea').classes['ng-invalid']).toBeTrue();
@@ -47,7 +47,7 @@ describe('ui-material: Textarea Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'textarea',
-      templateOptions: { change: changeSpy },
+      props: { change: changeSpy },
     });
 
     ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));

@@ -12,12 +12,12 @@ You can see an example using string value [here](https://stackblitz.com/edit/ang
 {
   key: 'text2',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'Hey!',
     placeholder: 'This one is disabled if there is no text in the other input',
   },
   expressionProperties: {
-    'templateOptions.disabled': '!model.text',
+    'props.disabled': '!model.text',
   },
 },
 ```
@@ -29,12 +29,12 @@ Example with function value:
 {
   key: 'country',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'field 2',
     placeholder: ''
   },
   expressionProperties: {
-    'templateOptions.disabled': (model: any, formState: any, field: FormlyFieldConfig) => {
+    'props.disabled': (model: any, formState: any, field: FormlyFieldConfig) => {
       // access to the main model can be through `this.model` or `formState` or `model`
       return !formState.mainModel.text
     },
@@ -66,7 +66,7 @@ You can see an example [here](https://stackblitz.com/edit/angular-formly-f79kb3?
 {
   key: 'iLikeTwix',
   type: 'checkbox',
-  templateOptions: {
+  props: {
     label: 'I like twix',
   },
   hideExpression: '!model.name',
@@ -80,7 +80,7 @@ You can see an example [here](https://stackblitz.com/edit/angular-formly-ndfcmz?
 {
   key: 'country',
   type: 'input',
-  templateOptions: {
+  props: {
     label: 'City',
     placeholder: 'set to 123'
   },
@@ -107,7 +107,7 @@ fields: FormlyFieldConfig[] = [
   {
     key: 'country',
     type: 'input',
-    templateOptions: {
+    props: {
       label: 'Street',
       placeholder: ''
     },

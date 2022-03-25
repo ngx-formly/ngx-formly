@@ -18,7 +18,7 @@ export class AppComponent {
     {
       key: 'text',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Text',
         placeholder: 'Formly is terrific!',
         required: true,
@@ -27,14 +27,14 @@ export class AppComponent {
     {
       key: 'nested.story',
       type: 'textarea',
-      templateOptions: {
+      props: {
         label: 'Some sweet story',
         placeholder: 'It allows you to build and maintain your forms with the ease of JavaScript :-)',
         description: '',
       },
       expressionProperties: {
         focus: 'formState.awesomeIsForced',
-        'templateOptions.description': (model, formState) => {
+        'props.description': (model, formState) => {
           if (formState.awesomeIsForced) {
             return 'And look! This field magically got focus!';
           }
@@ -46,10 +46,10 @@ export class AppComponent {
     {
       key: 'awesome',
       type: 'checkbox',
-      templateOptions: { label: '' },
+      props: { label: '' },
       expressionProperties: {
-        'templateOptions.disabled': 'formState.awesomeIsForced',
-        'templateOptions.label': (model, formState) => {
+        'props.disabled': 'formState.awesomeIsForced',
+        'props.label': (model, formState) => {
           if (formState.awesomeIsForced) {
             return 'Too bad, formly is really awesome...';
           } else {
@@ -62,17 +62,17 @@ export class AppComponent {
       key: 'whyNot',
       type: 'textarea',
       expressionProperties: {
-        'templateOptions.placeholder': (model, formState) => {
+        'props.placeholder': (model, formState) => {
           if (formState.awesomeIsForced) {
             return `Too bad... It really is awesome! Wasn't that cool?`;
           } else {
             return 'Type in here... I dare you';
           }
         },
-        'templateOptions.disabled': 'formState.awesomeIsForced',
+        'props.disabled': 'formState.awesomeIsForced',
       },
       hideExpression: 'model.awesome',
-      templateOptions: {
+      props: {
         label: 'Why Not?',
         placeholder: 'Type in here... I dare you',
       },
@@ -80,7 +80,7 @@ export class AppComponent {
     {
       key: 'custom',
       type: 'custom',
-      templateOptions: {
+      props: {
         label: 'Custom inlined',
       },
     },

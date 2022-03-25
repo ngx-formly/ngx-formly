@@ -15,7 +15,7 @@ describe('ui-primeng: Date Picker Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'datepicker',
-      templateOptions: {
+      props: {
         dateFormat: 'yy/mm/dd',
       },
     });
@@ -28,7 +28,7 @@ describe('ui-primeng: Date Picker Type', () => {
       key: 'name',
       type: 'datepicker',
       validation: { show: true },
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     const { classes } = query('p-calendar');
@@ -39,7 +39,7 @@ describe('ui-primeng: Date Picker Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'datepicker',
-      templateOptions: {
+      props: {
         dateFormat: 'yy/mm/dd',
       },
     });

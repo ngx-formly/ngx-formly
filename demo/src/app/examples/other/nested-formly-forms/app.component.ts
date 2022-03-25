@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'firstName',
       type: 'input',
-      templateOptions: {
+      props: {
         required: true,
         type: 'text',
         label: 'First Name',
@@ -24,12 +24,12 @@ export class AppComponent {
     {
       key: 'address',
       wrappers: ['panel'],
-      templateOptions: { label: 'Address' },
+      props: { label: 'Address' },
       fieldGroup: [
         {
           key: 'town',
           type: 'input',
-          templateOptions: {
+          props: {
             required: true,
             type: 'text',
             label: 'Town',

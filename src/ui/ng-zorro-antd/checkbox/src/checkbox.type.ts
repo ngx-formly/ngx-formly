@@ -6,19 +6,19 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   template: `
     <label
       nz-checkbox
-      [nzIndeterminate]="to.indeterminate && formControl.value == null"
+      [nzIndeterminate]="props.indeterminate && formControl.value == null"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      (ngModelChange)="to.change && to.change(field, $event)"
+      (ngModelChange)="props.change && props.change(field, $event)"
     >
-      {{ to.label }}
+      {{ props.label }}
     </label>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       indeterminate: true,
       hideLabel: true,
     },

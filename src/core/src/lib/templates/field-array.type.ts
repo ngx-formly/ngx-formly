@@ -7,7 +7,7 @@ import { registerControl, unregisterControl, findControl } from '../extensions/f
 
 export interface FieldArrayTypeConfig extends FormlyFieldConfig {
   formControl: FormArray;
-  templateOptions: NonNullable<Required<FormlyFieldConfig>['templateOptions']>;
+  props: NonNullable<Required<FormlyFieldConfig>['props']>;
 }
 
 @Directive()

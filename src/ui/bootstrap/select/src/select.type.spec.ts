@@ -14,7 +14,7 @@ describe('ui-bootstrap: Select Type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -31,7 +31,7 @@ describe('ui-bootstrap: Select Type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
       type: 'enum',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -49,7 +49,7 @@ describe('ui-bootstrap: Select Type', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },
@@ -66,7 +66,7 @@ describe('ui-bootstrap: Select Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         placeholder: 'Placeholder option',
         options: [
           { value: 1, label: 'label 1' },
@@ -85,7 +85,7 @@ describe('ui-bootstrap: Select Type', () => {
     const { query, field } = renderComponent({
       key: 'sportId',
       type: 'select',
-      templateOptions: {
+      props: {
         placeholder: 'sport',
         change: (f) => changeFnSpy(f.formControl.value),
         options: [{ value: '1', label: 'Soccer' }],
@@ -107,7 +107,7 @@ describe('ui-bootstrap: Select Type', () => {
       const { queryAll } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           options: [
             { id: '1', name: 'Soccer' },
             { id: '2', name: 'Basketball' },
@@ -125,7 +125,7 @@ describe('ui-bootstrap: Select Type', () => {
       const { queryAll } = renderComponent({
         key: 'sportId',
         type: 'select',
-        templateOptions: {
+        props: {
           options: of([
             { id: '1', name: 'Soccer' },
             { id: '2', name: 'Basketball' },

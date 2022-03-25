@@ -5,9 +5,9 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'formly-wrapper-primeng-form-field',
   template: `
     <div class="p-field">
-      <label *ngIf="to.label && to.hideLabel !== true" [for]="id">
-        {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true">*</span>
+      <label *ngIf="props.label && props.hideLabel !== true" [for]="id">
+        {{ props.label }}
+        <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
       </label>
       <ng-container #fieldComponent></ng-container>
 

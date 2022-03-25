@@ -5,9 +5,9 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'formly-field-radio',
   template: `
     <div
-      *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
+      *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index"
       class="form-check"
-      [class.form-check-inline]="to.formCheck === 'inline'"
+      [class.form-check-inline]="props.formCheck === 'inline'"
     >
       <input
         type="radio"
@@ -30,7 +30,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       formCheck: 'default', // 'default' | 'inline'
     },
   };

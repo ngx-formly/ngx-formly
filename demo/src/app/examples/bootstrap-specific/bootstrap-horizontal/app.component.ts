@@ -16,7 +16,7 @@ export class AppComponent {
       key: 'email',
       type: 'input',
       wrappers: ['form-field-horizontal'],
-      templateOptions: {
+      props: {
         label: 'Email',
         type: 'email',
         placeholder: 'Formly is terrific!',
@@ -27,7 +27,7 @@ export class AppComponent {
       key: 'password',
       type: 'input',
       wrappers: ['form-field-horizontal'],
-      templateOptions: {
+      props: {
         label: 'Password',
         type: 'password',
         placeholder: 'Formly is terrific!',

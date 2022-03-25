@@ -12,12 +12,12 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
 {
   @ViewChild('matPrefix') set matPrefix(prefix: TemplateRef<any>) {
     if (prefix) {
-      this.to.prefix = prefix;
+      this.props.prefix = prefix;
     }
   }
   @ViewChild('matSuffix') set matSuffix(suffix: TemplateRef<any>) {
     if (suffix) {
-      this.to.suffix = suffix;
+      this.props.suffix = suffix;
     }
   }
 
@@ -51,8 +51,8 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   get controlType() {
-    if (this.to.type) {
-      return this.to.type;
+    if (this.props.type) {
+      return this.props.type;
     }
 
     const type = this.field.type!;
@@ -62,13 +62,13 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
     return !!this.field.focus && !this.disabled;
   }
   get disabled() {
-    return !!this.to.disabled;
+    return !!this.props.disabled;
   }
   get required() {
-    return !!this.to.required;
+    return !!this.props.required;
   }
   get placeholder() {
-    return this.to.placeholder || '';
+    return this.props.placeholder || '';
   }
   get shouldPlaceholderFloat() {
     return this.shouldLabelFloat;
@@ -104,11 +104,11 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
       ['Prefix', 'Suffix'].forEach((type) =>
         observe<TemplateRef<any>>(
           this.field,
-          ['templateOptions', type.toLowerCase()],
+          ['props', type.toLowerCase()],
           ({ currentValue }) =>
             currentValue &&
             Promise.resolve().then(() => {
-              this.field.templateOptions![`_mat${type}`] = currentValue;
+              this.field.props![`_mat${type}`] = currentValue;
               this.options.detectChanges!(this.field);
             }),
         ),

@@ -6,19 +6,19 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { AppComponent } from './app.component';
 
 export function minLengthValidationMessage(error: any, field: FormlyFieldConfig) {
-  return `Should have atleast ${field.templateOptions.minLength} characters`;
+  return `Should have atleast ${field.props.minLength} characters`;
 }
 
 export function maxLengthValidationMessage(error: any, field: FormlyFieldConfig) {
-  return `This value should be less than ${field.templateOptions.maxLength} characters`;
+  return `This value should be less than ${field.props.maxLength} characters`;
 }
 
 export function minValidationMessage(error: any, field: FormlyFieldConfig) {
-  return `This value should be more than ${field.templateOptions.min}`;
+  return `This value should be more than ${field.props.min}`;
 }
 
 export function maxValidationMessage(error: any, field: FormlyFieldConfig) {
-  return `This value should be less than ${field.templateOptions.max}`;
+  return `This value should be less than ${field.props.max}`;
 }
 
 @NgModule({

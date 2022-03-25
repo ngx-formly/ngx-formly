@@ -42,7 +42,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
   describe('built-in validations', () => {
     it('required', () => {
       const field = buildField({
-        templateOptions: { required: true },
+        props: { required: true },
       });
 
       validate(field, 'test', null);
@@ -51,7 +51,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
 
     it('pattern', () => {
       const field = buildField({
-        templateOptions: { pattern: '[0-9]{5}' },
+        props: { pattern: '[0-9]{5}' },
       });
 
       validate(field, '75964', null);
@@ -60,7 +60,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
 
     it('minLength', () => {
       const field = buildField({
-        templateOptions: { minLength: 5 },
+        props: { minLength: 5 },
       });
 
       validate(field, '12345', null);
@@ -69,7 +69,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
 
     it('maxLength', () => {
       const field = buildField({
-        templateOptions: { maxLength: 10 },
+        props: { maxLength: 10 },
       });
 
       validate(field, '123', null);
@@ -78,7 +78,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
 
     it('min', () => {
       const field = buildField({
-        templateOptions: { min: 10 },
+        props: { min: 10 },
       });
 
       validate(field, null, null);
@@ -88,7 +88,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
 
     it('max', () => {
       const field = buildField({
-        templateOptions: { max: 4 },
+        props: { max: 4 },
       });
 
       validate(field, null, null);
@@ -101,13 +101,13 @@ describe('FieldValidationExtension: initialise field validators', () => {
       field.formControl = new FormControl(null, field._validators);
       expect(field.formControl.valid).toBeTrue();
 
-      field.templateOptions.required = true;
+      field.props.required = true;
       expect(field.formControl.valid).toBeFalse();
     });
 
     it(`should ignore fieldGroup with empty key`, () => {
       const field = buildField({
-        templateOptions: { max: 4 },
+        props: { max: 4 },
         fieldGroup: [],
       });
       expect(field._validators).toHaveLength(0);

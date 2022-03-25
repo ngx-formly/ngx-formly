@@ -5,11 +5,11 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'formly-field-multicheckbox',
   template: `
     <div
-      *ngFor="let option of to.options | formlySelectOptions: field | async; let i = index"
+      *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index"
       class="form-check"
       [ngClass]="{
-        'form-check-inline': to.formCheck === 'inline' || to.formCheck === 'inline-switch',
-        'form-switch': to.formCheck === 'switch' || to.formCheck === 'inline-switch'
+        'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',
+        'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch'
       }"
     >
       <input
@@ -31,13 +31,13 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       formCheck: 'default', // 'default' | 'inline' | 'switch' | 'inline-switch'
     },
   };
 
   onChange(value: any, checked: boolean) {
-    if (this.to.type === 'array') {
+    if (this.props.type === 'array') {
       this.formControl.patchValue(
         checked
           ? [...(this.formControl.value || []), value]
@@ -52,6 +52,6 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
   isChecked(option: any) {
     const value = this.formControl.value;
 
-    return value && (this.to.type === 'array' ? value.indexOf(option.value) !== -1 : value[option.value]);
+    return value && (this.props.type === 'array' ? value.indexOf(option.value) !== -1 : value[option.value]);
   }
 }

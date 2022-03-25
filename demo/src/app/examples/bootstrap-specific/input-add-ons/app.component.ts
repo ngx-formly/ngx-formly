@@ -15,7 +15,7 @@ export class AppComponent {
     {
       key: 'left',
       type: 'input',
-      templateOptions: {
+      props: {
         placeholder: 'Formly is terrific!',
         addonLeft: {
           class: 'fa fa-euro',
@@ -26,7 +26,7 @@ export class AppComponent {
     {
       key: 'both',
       type: 'input',
-      templateOptions: {
+      props: {
         placeholder: 'How great is this?',
         addonLeft: {
           class: 'fa fa-home',
@@ -40,7 +40,7 @@ export class AppComponent {
     {
       key: 'right',
       type: 'input',
-      templateOptions: {
+      props: {
         placeholder: `Nice, isn't it??`,
 
         addonRight: {

@@ -8,9 +8,9 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
       class="input"
       [formlyAttributes]="field"
       [formControl]="formControl"
-      [hint]="to.hint"
-      [autocorrect]="to.autocorrect"
-      [keyboardType]="to.keyboardType"
+      [hint]="props.hint"
+      [autocorrect]="props.autocorrect"
+      [keyboardType]="props.keyboardType"
     >
     </TextView>
   `,

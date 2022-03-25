@@ -151,7 +151,7 @@ describe('FieldFormExtension', () => {
     buildField({
       key: 'test',
       formControl,
-      templateOptions: { required: true },
+      props: { required: true },
       form: new FormGroup({ test: formControl }),
     });
 
@@ -168,7 +168,7 @@ describe('FieldFormExtension', () => {
       key: 'test',
       _hide: true,
       formControl,
-      templateOptions: { required: true },
+      props: { required: true },
     });
 
     expect(formControl.parent).toBeNull();
@@ -209,11 +209,11 @@ describe('FieldFormExtension', () => {
     expect(form.errors).toEqual({ custom: true });
   });
 
-  describe('templateOptions disabled state', () => {
+  describe('props disabled state', () => {
     it('should disable sub-fields when parent is disabled', () => {
       const field = buildField({
         key: 'address',
-        templateOptions: { disabled: true },
+        props: { disabled: true },
         fieldGroup: [{ key: 'city' }, { key: 'street' }],
       });
 
@@ -226,7 +226,7 @@ describe('FieldFormExtension', () => {
     it('should not affect parent disabled state', () => {
       const field = buildField({
         key: 'address',
-        fieldGroup: [{ key: 'city', templateOptions: { disabled: true } }, { key: 'street' }],
+        fieldGroup: [{ key: 'city', props: { disabled: true } }, { key: 'street' }],
       });
 
       const control = field.formControl;
@@ -240,11 +240,11 @@ describe('FieldFormExtension', () => {
         fieldGroup: [
           {
             key: 'foo',
-            templateOptions: { disabled: true },
+            props: { disabled: true },
           },
           {
             key: 'bar',
-            templateOptions: { disabled: true },
+            props: { disabled: true },
           },
         ],
       });
@@ -257,7 +257,7 @@ describe('FieldFormExtension', () => {
         fieldGroup: [
           {
             key: 'foo',
-            templateOptions: { disabled: true },
+            props: { disabled: true },
           },
           { key: 'bar' },
         ],

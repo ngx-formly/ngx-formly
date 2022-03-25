@@ -5,12 +5,12 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'formly-field-primeng-select',
   template: `
     <p-dropdown
-      [placeholder]="to.placeholder"
-      [options]="to.options | formlySelectOptions: field | async"
+      [placeholder]="props.placeholder"
+      [options]="props.options | formlySelectOptions: field | async"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [showClear]="!to.required"
-      (onChange)="to.change && to.change(field, $event)"
+      [showClear]="!props.required"
+      (onChange)="props.change && props.change(field, $event)"
     >
     </p-dropdown>
   `,

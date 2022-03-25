@@ -11,19 +11,19 @@ import { MatSlider } from '@angular/material/slider';
       [style.width]="'100%'"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [tabIndex]="to.tabindex"
-      [color]="to.color"
-      [displayWith]="to.displayWith"
-      [invert]="to.invert"
-      [max]="to.max"
-      [min]="to.min"
-      [step]="to.step"
-      [thumbLabel]="to.thumbLabel"
-      [tickInterval]="to.tickInterval"
-      [valueText]="to.valueText"
-      [vertical]="to.vertical"
-      (input)="to.input && to.input(field, $event)"
-      (change)="to.change && to.change(field, $event)"
+      [tabIndex]="props.tabindex"
+      [color]="props.color"
+      [displayWith]="props.displayWith"
+      [invert]="props.invert"
+      [max]="props.max"
+      [min]="props.min"
+      [step]="props.step"
+      [thumbLabel]="props.thumbLabel"
+      [tickInterval]="props.tickInterval"
+      [valueText]="props.valueText"
+      [vertical]="props.vertical"
+      (input)="props.input && props.input(field, $event)"
+      (change)="props.change && props.change(field, $event)"
     >
     </mat-slider>
   `,
@@ -32,7 +32,7 @@ import { MatSlider } from '@angular/material/slider';
 export class FormlyFieldSlider extends FieldType<FieldTypeConfig> {
   @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
       thumbLabel: false,

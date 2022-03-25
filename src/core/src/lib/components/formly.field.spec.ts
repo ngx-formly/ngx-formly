@@ -212,13 +212,13 @@ describe('FormlyField Component', () => {
       key: 'title',
       type: 'input',
       wrappers: ['form-field-async'],
-      templateOptions: { render: false },
+      props: { render: false },
     });
 
     expect(query('formly-wrapper-form-field-async')).not.toBeNull();
     expect(query('formly-type-input')).toBeNull();
 
-    field.templateOptions.render = true;
+    field.props.render = true;
     detectChanges();
     expect(query('formly-type-input')).not.toBeNull();
   });
@@ -301,11 +301,11 @@ describe('FormlyField Component', () => {
         type: 'input',
         formControl: new FormControl(),
         modelOptions: {},
-        templateOptions: { duplicate: true },
+        props: { duplicate: true },
       },
       {
         template: `
-          <formly-field *ngIf="field.templateOptions.duplicate" [field]="field"></formly-field>
+          <formly-field *ngIf="field.props.duplicate" [field]="field"></formly-field>
           <formly-field class="target" [field]="field"></formly-field>
         `,
       },
@@ -322,19 +322,19 @@ describe('FormlyField Component', () => {
     const { field, query, detectChanges } = renderComponent({
       key: 'push',
       type: 'on-push',
-      templateOptions: {
+      props: {
         options: [{ value: 1, label: 'Option 1' }],
       },
       expressionProperties: {
-        'templateOptions.options': options$,
+        'props.options': options$,
       },
     });
 
-    const onPushInstance = query('.to').nativeElement;
+    const onPushInstance = query('.props').nativeElement;
     expect(onPushInstance.textContent).toEqual(
       JSON.stringify(
         {
-          ...field.templateOptions,
+          ...field.props,
           options: [{ value: 1, label: 'Option 1' }],
         },
         null,
@@ -349,7 +349,7 @@ describe('FormlyField Component', () => {
     expect(onPushInstance.textContent).toEqual(
       JSON.stringify(
         {
-          ...field.templateOptions,
+          ...field.props,
           options: [{ value: 5, label: 'Option 5' }],
         },
         null,
@@ -361,18 +361,16 @@ describe('FormlyField Component', () => {
   it('should update template options of OnPush FieldType #2191', async () => {
     const { field, query } = renderComponent({ type: 'on-populate' });
 
-    expect(field.templateOptions.getInstanceId()).toEqual(
-      query('formly-on-populate-component').componentInstance.instanceId,
-    );
+    expect(field.props.getInstanceId()).toEqual(query('formly-on-populate-component').componentInstance.instanceId);
 
-    field.templateOptions.setInstanceId('123456');
+    field.props.setInstanceId('123456');
     expect(query('formly-on-populate-component').componentInstance.instanceId).toEqual('123456');
   });
   it('should take account of formState update', () => {
     const { field, query, detectChanges } = renderComponent({
       key: 'push',
       type: 'on-push',
-      templateOptions: {},
+      props: {},
       options: { formState: { foo: true } },
     });
 
@@ -569,7 +567,7 @@ describe('FormlyField Component', () => {
     it('should inject parent wrapper to child type', () => {
       const { query } = renderComponent({
         wrappers: ['form-field-async'],
-        templateOptions: { render: true },
+        props: { render: true },
         fieldGroup: [
           {
             type: 'child',
@@ -590,7 +588,7 @@ describe('FormlyField Component', () => {
 @Component({
   selector: 'formly-wrapper-form-field-async',
   template: `
-    <div *ngIf="to.render">
+    <div *ngIf="props.render">
       <ng-container #fieldComponent></ng-container>
     </div>
   `,
@@ -600,7 +598,7 @@ class FormlyWrapperFormFieldAsync extends FieldWrapper {}
 @Component({
   selector: 'formly-on-push-component',
   template: `
-    <div class="to">{{ to | json }}</div>
+    <div class="props">{{ props | json }}</div>
     <div class="formState">{{ formState | json }}</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -615,9 +613,9 @@ export class FormlyOnPushComponent extends FieldType {}
 export class FormlyOnPopulateType extends FieldType implements FormlyExtension {
   instanceId = Math.random().toString(36).substring(2, 5);
 
-  onPopulate(field): void {
-    field.templateOptions.getInstanceId = () => this.instanceId;
-    field.templateOptions.setInstanceId = (instanceId: string) => (this.instanceId = instanceId);
+  onPopulate(field: FormlyFieldConfig): void {
+    field.props.getInstanceId = () => this.instanceId;
+    field.props.setInstanceId = (instanceId: string) => (this.instanceId = instanceId);
   }
 }
 

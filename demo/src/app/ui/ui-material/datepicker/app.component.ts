@@ -14,7 +14,7 @@ export class AppComponent {
     {
       key: 'Datepicker',
       type: 'datepicker',
-      templateOptions: {
+      props: {
         label: 'Datepicker',
         placeholder: 'Placeholder',
         description: 'Description',

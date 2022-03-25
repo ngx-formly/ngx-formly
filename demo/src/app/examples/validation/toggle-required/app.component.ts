@@ -15,14 +15,14 @@ export class AppComponent {
     {
       key: 'checked',
       type: 'checkbox',
-      templateOptions: {
+      props: {
         label: 'Required?',
       },
     },
     {
       key: 'text',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'Moehahah',
         placeholder: 'Formly is terrific!',
       },
@@ -30,7 +30,7 @@ export class AppComponent {
         show: true,
       },
       expressionProperties: {
-        'templateOptions.required': 'model.checked',
+        'props.required': 'model.checked',
       },
     },
   ];

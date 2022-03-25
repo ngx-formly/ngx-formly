@@ -5,8 +5,8 @@ import { FieldArrayType } from '@ngx-formly/core';
   selector: 'formly-array-type',
   template: `
     <div class="mb-3">
-      <legend *ngIf="to.label">{{ to.label }}</legend>
-      <p *ngIf="to.description">{{ to.description }}</p>
+      <legend *ngIf="props.label">{{ props.label }}</legend>
+      <p *ngIf="props.description">{{ props.description }}</p>
       <div class="d-flex flex-row-reverse">
         <button class="btn btn-primary" type="button" (click)="add()">+</button>
       </div>
@@ -17,7 +17,7 @@ import { FieldArrayType } from '@ngx-formly/core';
 
       <div *ngFor="let field of field.fieldGroup; let i = index" class="row align-items-start">
         <formly-field class="col" [field]="field"></formly-field>
-        <div *ngIf="field.templateOptions.removable !== false" class="col-2 text-right">
+        <div *ngIf="field.props.removable !== false" class="col-2 text-right">
           <button class="btn btn-danger" type="button" (click)="remove(i)">-</button>
         </div>
       </div>

@@ -262,7 +262,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     }
 
     const subscribes = [
-      observeDeep(field, ['templateOptions'], () => field.options.detectChanges(field)),
+      observeDeep(field, ['props'], () => field.options.detectChanges(field)),
       observeDeep(field, ['options', 'formState'], () => field.options.detectChanges(field)),
     ];
 

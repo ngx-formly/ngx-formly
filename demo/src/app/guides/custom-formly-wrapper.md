@@ -46,7 +46,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
     template: `
       <div class="card">
         <h3 class="card-header">Its time to party</h3>
-        <h3 class="card-header">{{ to.label }}</h3>
+        <h3 class="card-header">{{ props.label }}</h3>
         <div class="card-body">
           <ng-container #fieldComponent></ng-container>
         </div>
@@ -103,11 +103,11 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
       {
         key: 'address',
         wrappers: [PanelFieldWrapper],
-        templateOptions: { label: 'Address' },
+        props: { label: 'Address' },
         fieldGroup: [{
           key: 'town',
           type: 'input',
-          templateOptions: {
+          props: {
             required: true,
             type: 'text',
             label: 'Town',
@@ -125,11 +125,11 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
       {
         key: 'address',
         wrappers: ['panel'],
-        templateOptions: { label: 'Address' },
+        props: { label: 'Address' },
         fieldGroup: [{
           key: 'town',
           type: 'input',
-          templateOptions: {
+          props: {
             required: true,
             type: 'text',
             label: 'Town',

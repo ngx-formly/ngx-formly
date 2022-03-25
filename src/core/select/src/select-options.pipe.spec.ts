@@ -21,13 +21,13 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
   });
 
   it('should add a flag for flat options', () => {
-    const field: any = { templateOptions: {} };
+    const field: any = { props: {} };
     pipe.transform([{ label: '1', value: '1' }], field).subscribe(() => {
-      expect(field.templateOptions._flatOptions).toBeTrue();
+      expect(field.props._flatOptions).toBeTrue();
     });
 
     pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe(() => {
-      expect(field.templateOptions._flatOptions).toBeFalse();
+      expect(field.props._flatOptions).toBeFalse();
     });
   });
 
@@ -72,7 +72,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
 
     it('as a string', () => {
       const field = {
-        templateOptions: {
+        props: {
           labelProp: 'name',
           valueProp: 'id',
           disabledProp: 'locked',
@@ -86,7 +86,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
 
     it('as a function', () => {
       const field = {
-        templateOptions: {
+        props: {
           labelProp: (item) => item.name,
           valueProp: (item) => item.id,
           disabledProp: (item) => item.locked,
@@ -106,7 +106,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
       ];
 
       const field = {
-        templateOptions: {
+        props: {
           labelProp: (item) => item.name,
           valueProp: (item) => item.id,
           disabledProp: (item) => item.locked,
@@ -143,7 +143,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     });
 
     it('as a string', () => {
-      const field = { templateOptions: { groupProp: 'parent' } };
+      const field = { props: { groupProp: 'parent' } };
 
       pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([
@@ -163,7 +163,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     });
 
     it('as a function', () => {
-      const field = { templateOptions: { groupProp: (item) => item.parent } };
+      const field = { props: { groupProp: (item) => item.parent } };
 
       pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([

@@ -20,7 +20,7 @@ export class AppComponent {
     {
       key: 'sport',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Sport',
         options: [
           { id: '1', name: 'Soccer' },
@@ -33,7 +33,7 @@ export class AppComponent {
     {
       key: 'team',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Team',
         options: [],
         valueProp: 'id',
@@ -49,7 +49,7 @@ export class AppComponent {
           ];
 
           const sportControl = field.parent.get('sport').formControl;
-          field.templateOptions.options = sportControl.valueChanges.pipe(
+          field.props.options = sportControl.valueChanges.pipe(
             startWith(sportControl.value),
             distinctUntilChanged(),
             map((sportId) => {
@@ -67,7 +67,7 @@ export class AppComponent {
     {
       key: 'player',
       type: 'select',
-      templateOptions: {
+      props: {
         label: 'Player',
         options: [],
         valueProp: 'id',
@@ -87,7 +87,7 @@ export class AppComponent {
           ];
 
           const teamControl = field.parent.get('team').formControl;
-          field.templateOptions.options = teamControl.valueChanges.pipe(
+          field.props.options = teamControl.valueChanges.pipe(
             startWith(teamControl.value),
             distinctUntilChanged(),
             map((teamId) => {

@@ -77,7 +77,7 @@ export class AppComponent {
     {
       key: 'Autocomplete',
       type: 'autocomplete',
-      templateOptions: {
+      props: {
         required: true,
         label: 'Autocomplete',
         placeholder: 'Placeholder',

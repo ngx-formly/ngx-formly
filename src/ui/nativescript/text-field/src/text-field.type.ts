@@ -8,10 +8,10 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
       class="input"
       [formlyAttributes]="field"
       [formControl]="formControl"
-      [autocorrect]="to.autocorrect"
-      [secure]="to.secure"
-      [hint]="to.hint"
-      [keyboardType]="to.keyboardType"
+      [autocorrect]="props.autocorrect"
+      [secure]="props.secure"
+      [hint]="props.hint"
+      [keyboardType]="props.keyboardType"
     >
     </TextField>
   `,

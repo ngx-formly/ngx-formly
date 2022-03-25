@@ -69,7 +69,7 @@ export class FieldFormExtension implements FormlyExtension {
   }
 
   private setValidators(field: FormlyFieldConfigCache, disabled = false) {
-    if (disabled === false && hasKey(field) && field.templateOptions?.disabled) {
+    if (disabled === false && hasKey(field) && field.props?.disabled) {
       disabled = true;
     }
 

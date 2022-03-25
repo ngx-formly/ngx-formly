@@ -20,7 +20,7 @@ export class AppComponent {
           default: 2000,
         },
       },
-      templateOptions: {
+      props: {
         label: 'Debounce',
       },
     },
@@ -30,7 +30,7 @@ export class AppComponent {
       modelOptions: {
         updateOn: 'blur',
       },
-      templateOptions: {
+      props: {
         label: '`updateOn` on Blur',
         required: true,
       },
@@ -41,7 +41,7 @@ export class AppComponent {
       modelOptions: {
         updateOn: 'submit',
       },
-      templateOptions: {
+      props: {
         label: '`updateOn` on Submit',
         required: true,
       },

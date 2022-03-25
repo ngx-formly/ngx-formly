@@ -30,7 +30,7 @@ import { FormlyFieldInput } from './input.type';
           name: 'number',
           extends: 'input',
           defaultOptions: {
-            templateOptions: {
+            props: {
               type: 'number',
             },
           },
@@ -39,7 +39,7 @@ import { FormlyFieldInput } from './input.type';
           name: 'integer',
           extends: 'input',
           defaultOptions: {
-            templateOptions: {
+            props: {
               type: 'number',
             },
           },

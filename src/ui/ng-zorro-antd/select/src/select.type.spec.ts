@@ -15,7 +15,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     const { query, queryAll, fixture } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -36,7 +36,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     const { query, queryAll, fixture } = renderComponent({
       key: 'name',
       type: 'enum',
-      templateOptions: {
+      props: {
         options: [
           { value: 1, label: 'label 1' },
           { value: 2, label: 'label 2' },
@@ -59,7 +59,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     const { query, field, fixture } = renderComponent({
       key: 'name',
       type: 'select',
-      templateOptions: {
+      props: {
         change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },

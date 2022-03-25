@@ -34,7 +34,7 @@ export class AppComponent {
       // Bind an observable to `color` field.
       if (f.key === 'color') {
         f.type = 'radio';
-        f.templateOptions.options = this.userService.getColors();
+        f.props.options = this.userService.getColors();
       }
 
       return f;

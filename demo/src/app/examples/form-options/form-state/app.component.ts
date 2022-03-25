@@ -19,12 +19,12 @@ export class AppComponent {
     {
       key: 'text',
       type: 'input',
-      templateOptions: {
+      props: {
         label: 'First Name',
       },
       expressionProperties: {
         // apply expressionProperty for disabled based on formState
-        'templateOptions.disabled': 'formState.disabled',
+        'props.disabled': 'formState.disabled',
       },
     },
   ];

@@ -5,7 +5,7 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 export function minLengthValidationMessages(error: any, field: FormlyFieldConfig) {
-  return `Should have atleast ${field.templateOptions.minLength} characters`;
+  return `Should have atleast ${field.props.minLength} characters`;
 }
 
 export function fieldMatchValidator(control: AbstractControl) {

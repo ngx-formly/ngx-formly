@@ -77,7 +77,7 @@ describe('FormlyForm Component', () => {
       expect(form.valid).toEqual(true);
 
       setInputs({
-        fields: [{ key: 'name', templateOptions: { required: true } }],
+        fields: [{ key: 'name', props: { required: true } }],
       });
 
       expect(form.valid).toEqual(false);
@@ -271,7 +271,7 @@ describe('FormlyForm Component', () => {
             key: 'title',
             type: 'input',
             expressionProperties: {
-              'templateOptions.disabled': 'model.title === "****"',
+              'props.disabled': 'model.title === "****"',
             },
           },
         ],
@@ -635,7 +635,7 @@ describe('FormlyForm Component', () => {
           fields: [
             {
               type: 'inline-type',
-              templateOptions: { label: 'inline-type-label' },
+              props: { label: 'inline-type-label' },
             },
           ],
         },
@@ -643,7 +643,7 @@ describe('FormlyForm Component', () => {
           template: `
             <formly-form [fields]="fields">
               <ng-template formlyTemplate="inline-type" let-field>
-                <div id="inline-type">{{ field.templateOptions.label }}</div>
+                <div id="inline-type">{{ field.props.label }}</div>
               </ng-template>
             </formly-form>
           `,
@@ -731,7 +731,7 @@ describe('FormlyForm Component', () => {
             key: 'city',
             type: 'input',
             expressionProperties: {
-              'templateOptions.disabled': 'model.city === "***"',
+              'props.disabled': 'model.city === "***"',
             },
           },
         ],
@@ -758,23 +758,23 @@ describe('FormlyForm Component', () => {
         {
           key: 'f1',
           fieldGroup: [
-            { key: 's1', templateOptions: { disabled: true } },
-            { key: 's2', templateOptions: { disabled: false } },
+            { key: 's1', props: { disabled: true } },
+            { key: 's2', props: { disabled: false } },
           ],
         },
       ],
     });
 
-    expect(field.templateOptions.disabled).toEqual(false);
-    expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
-    expect(field.fieldGroup[1].templateOptions.disabled).toEqual(false);
+    expect(field.props.disabled).toEqual(false);
+    expect(field.fieldGroup[0].props.disabled).toEqual(true);
+    expect(field.fieldGroup[1].props.disabled).toEqual(false);
 
     setInputs({ model: {} });
     detectChanges();
 
-    expect(field.templateOptions.disabled).toEqual(false);
-    expect(field.fieldGroup[0].templateOptions.disabled).toEqual(true);
-    expect(field.fieldGroup[1].templateOptions.disabled).toEqual(false);
+    expect(field.props.disabled).toEqual(false);
+    expect(field.fieldGroup[0].props.disabled).toEqual(true);
+    expect(field.fieldGroup[1].props.disabled).toEqual(false);
   });
 
   it('should detect changes when building a child field', () => {
@@ -796,7 +796,7 @@ describe('FormlyForm Component', () => {
       },
     );
 
-    fields[0].fieldGroup.push({ key: 'foo', type: 'input', templateOptions: { required: true } });
+    fields[0].fieldGroup.push({ key: 'foo', type: 'input', props: { required: true } });
     options.build(fields[0]);
     // NG0100: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value for 'disabled': 'false'. Current value: 'true'
     expect(detectChanges).not.toThrowError(/ExpressionChangedAfterItHasBeenCheckedError/);

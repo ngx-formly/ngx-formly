@@ -2,21 +2,21 @@
   {
     "key": "firstName",
     "type": "input",
-    "templateOptions": {
+    "props": {
       "label": "First Name"
     }
   },
   {
     "key": "lastName",
     "type": "input",
-    "templateOptions": {
+    "props": {
       "label": "Last Name"
     }
   },
   {
     "key": "mac",
     "type": "input",
-    "templateOptions": {
+    "props": {
       "label": "Mac Address",
       "pattern": "([0-9A-F]{2}[:-]){5}([0-9A-F]{2})"
     }
@@ -24,18 +24,18 @@
   {
     "key": "color",
     "type": "input",
-    "templateOptions": {
+    "props": {
       "label": "Color Preference (try this out)"
     }
   },
   {
     "key": "reason",
     "type": "textarea",
-    "templateOptions": {
+    "props": {
       "label": "Why?"
     },
     "expressionProperties": {
-      "templateOptions.label": "'Why did you choose ' + model.color + '?'"
+      "props.label": "'Why did you choose ' + model.color + '?'"
     },
     "hideExpression": "!model.color"
   }

@@ -8,11 +8,11 @@ import { FieldType } from '@ngx-formly/kendo/form-field';
     <kendo-dropdownlist
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [data]="to.options | formlySelectOptions: field | async"
+      [data]="props.options | formlySelectOptions: field | async"
       [textField]="'label'"
       [valueField]="'value'"
       [valuePrimitive]="true"
-      (valueChange)="to.change && to.change(field, $event)"
+      (valueChange)="props.change && props.change(field, $event)"
     >
     </kendo-dropdownlist>
   `,

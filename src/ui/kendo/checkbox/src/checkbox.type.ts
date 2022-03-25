@@ -7,8 +7,8 @@ import { FieldType } from '@ngx-formly/kendo/form-field';
   template: `
     <input type="checkbox" kendoCheckBox [formControl]="formControl" [formlyAttributes]="field" />
     <label [for]="id" class="k-checkbox-label">
-      {{ to.label }}
-      <span *ngIf="to.required && to.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
+      {{ props.label }}
+      <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
     </label>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,7 +17,7 @@ import { FieldType } from '@ngx-formly/kendo/form-field';
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
   override defaultOptions = {
-    templateOptions: {
+    props: {
       hideLabel: true,
     },
   };
