@@ -1,10 +1,6 @@
 # Formly Expressions
 
-You can use `hideExpression` to hide fields dynamically and `expressionProperties` allow you to dynamically change many properties of a field.
-
-## Expression Properties
-
-Expression Properties allows you to dynamically change many properties of a field.
+Expressions allows you to dynamically field properties.
 For example, you can disable a form field dynamically. The value of this property can be `string` or `function`.
 You can see an example using string value [here](https://stackblitz.com/edit/angular-formly-eehxjb?file=app/app.component.ts)
 
@@ -16,7 +12,7 @@ You can see an example using string value [here](https://stackblitz.com/edit/ang
     label: 'Hey!',
     placeholder: 'This one is disabled if there is no text in the other input',
   },
-  expressionProperties: {
+  expressions: {
     'props.disabled': '!model.text',
   },
 },
@@ -33,10 +29,9 @@ Example with function value:
     label: 'field 2',
     placeholder: ''
   },
-  expressionProperties: {
-    'props.disabled': (model: any, formState: any, field: FormlyFieldConfig) => {
-      // access to the main model can be through `this.model` or `formState` or `model`
-      return !formState.mainModel.text
+  expressions: {
+    'props.disabled': (field: FormlyFieldConfig) => {
+      return !field.model.text;
     },
   }
 }
@@ -57,7 +52,7 @@ options = {
 
 ## Conditional Rendering
 
-The `hideExpression` property is used to set the hide property of your field. The value of this property can be `string`, `function` or `boolean`. Below is an example of each of them.
+The `hide` property is used to set the hide property of your field. The value of this property can be a `boolean`. To make this property conditional we'll use `expressions: { hide: ... }` where the value can  `string`, `function` or `boolean`. Below is an example of each of them.
 
 First option with *string value*:
 
@@ -69,7 +64,7 @@ You can see an example [here](https://stackblitz.com/edit/angular-formly-f79kb3?
   props: {
     label: 'I like twix',
   },
-  hideExpression: '!model.name',
+  expressions: { hide: '!model.name' },
 }
 ```
 Second option with *function value*:
@@ -81,16 +76,14 @@ You can see an example [here](https://stackblitz.com/edit/angular-formly-ndfcmz?
   key: 'country',
   type: 'input',
   props: {
-    label: 'City',
-    placeholder: 'set to 123'
+    label: 'Country',
+    placeholder: 'set city field to 123'
   },
-  hideExpression: (model: any, formState: any, field: FormlyFieldConfig) => {
-    // access to the main model can be through `this.model` or `formState` or `model`
-    if (formState.mainModel && formState.mainModel.city) {
-      return formState.mainModel.city !== "123"
-    }
-    return true;
-  },
+  expressions: {
+    hide: (field: FormlyFieldConfig) => {
+      return field.model?.city === "123";
+    },
+  }
 },
 ```
 
@@ -111,12 +104,10 @@ fields: FormlyFieldConfig[] = [
       label: 'Street',
       placeholder: ''
     },
-    hideExpression: this.show
   },
 ];
 
 toggle(){
-  this.show = !this.show;
-  this.fields[1].hideExpression = this.show;
+  this.fields[0].hide = !this.fields[0].hide;
 }
 ```

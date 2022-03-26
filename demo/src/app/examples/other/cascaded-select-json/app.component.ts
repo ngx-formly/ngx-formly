@@ -55,7 +55,7 @@ export class AppComponent {
         valueProp: 'id',
         labelProp: 'name',
       },
-      expressionProperties: {
+      expressions: {
         'props.options': 'formState.selectOptionsData.teams.filter(team => team.sportId === model.sport)',
         // reset model when updating select options
         'model.team': `field.props.options.find(o => o.id === model.team) ? model.team:null`,
@@ -70,7 +70,7 @@ export class AppComponent {
         valueProp: 'id',
         labelProp: 'name',
       },
-      expressionProperties: {
+      expressions: {
         'props.options': 'formState.selectOptionsData.players.filter(player => player.teamId === model.team)',
         // reset model when updating select options
         'model.player': `field.props.options.find(o => o.id === model.player) ? model.player:null`,

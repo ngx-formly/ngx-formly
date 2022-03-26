@@ -92,7 +92,7 @@ export interface FormlyFieldConfig {
   wrappers?: (string | Type<FieldWrapper>)[];
 
   /**
-   * Whether to hide the field. Defaults to false. If you wish this to be conditional use `hideExpression`
+   * Whether to hide the field. Defaults to false. If you wish this to be conditional use `expressions: { hide: ... }`
    */
   hide?: boolean;
 
@@ -103,14 +103,23 @@ export interface FormlyFieldConfig {
 
   /**
    * Conditionally hiding Field based on values from other Fields
+   * @deprecated use `expressions: { hide: ... }`
    */
   hideExpression?: boolean | string | ((model: any, formState: any, field?: FormlyFieldConfig) => boolean);
 
   /**
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
+   * @deprecated use `expressions`
    */
   expressionProperties?: {
     [property: string]: string | ((model: any, formState: any, field?: FormlyFieldConfig) => any) | Observable<any>;
+  };
+
+  /**
+   * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
+   */
+  expressions?: {
+    [property: string]: string | ((field?: FormlyFieldConfig) => any) | Observable<any>;
   };
 
   /**
@@ -132,7 +141,7 @@ export interface FormlyFieldConfig {
   fieldArray?: FormlyFieldConfig | ((field: FormlyFieldConfig) => FormlyFieldConfig);
 
   /**
-   * Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressionProperties`
+   * Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressions`
    */
   focus?: boolean;
 

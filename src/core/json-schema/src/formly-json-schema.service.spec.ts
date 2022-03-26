@@ -506,7 +506,7 @@ describe('Service: FormlyJsonschema', () => {
           expect(cityField.valid).toBeFalsy();
         });
 
-        it('should not kill other expressionProperties', () => {
+        it('should not kill other expressions', () => {
           const { field } = renderComponent(
             JSON.parse(`{
             "schema": {
@@ -519,7 +519,7 @@ describe('Service: FormlyJsonschema', () => {
                   "type": "string",
                   "widget": {
                     "formlyConfig": {
-                      "expressionProperties": {
+                      "expressions": {
                         "props.readonly": "model.readonly"
                       }
                     }
@@ -531,7 +531,7 @@ describe('Service: FormlyJsonschema', () => {
           );
 
           const childField = field.fieldGroup[0];
-          expect(childField.expressionProperties['props.readonly']).toEqual('model.readonly');
+          expect(childField.expressions['props.readonly']).toEqual('model.readonly');
         });
       });
 
@@ -579,7 +579,7 @@ describe('Service: FormlyJsonschema', () => {
             };
 
             const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
-            const hideExpr = config[1].hideExpression as any;
+            const hideExpr = config[1].expressions.hide as any;
             expect(hideExpr({ credit_card: null })).toBeTrue();
             expect(hideExpr({ credit_card: 121223233 })).toBeFalse();
           });
@@ -611,11 +611,11 @@ describe('Service: FormlyJsonschema', () => {
             };
 
             const [, opt1Field, opt2Field] = formlyJsonschema.toFieldConfig(schema).fieldGroup;
-            const opt1HideExpr = opt1Field.hideExpression as any;
+            const opt1HideExpr = opt1Field.expressions.hide as any;
             expect(opt1HideExpr({ state: true })).toBeFalse();
             expect(opt1HideExpr({ state: false })).toBeTrue();
 
-            const opt2HideExpr = opt2Field.hideExpression as any;
+            const opt2HideExpr = opt2Field.expressions.hide as any;
             expect(opt2HideExpr({ state: true })).toBeTrue();
             expect(opt2HideExpr({ state: false })).toBeFalse();
           });
@@ -1067,9 +1067,9 @@ describe('Service: FormlyJsonschema', () => {
           ],
         };
         const { fieldGroup } = formlyJsonschema.toFieldConfig(schema);
-        const expected = fieldGroup.map(({ key, expressionProperties }) => ({
+        const expected = fieldGroup.map(({ key, expressions }) => ({
           key,
-          required: !!expressionProperties['props.required'],
+          required: !!expressions['props.required'],
         }));
         expect(expected).toEqual([
           { key: 'firstname', required: true },

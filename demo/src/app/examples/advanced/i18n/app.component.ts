@@ -23,7 +23,7 @@ export class AppComponent {
           { label: 'en', value: 'en' },
         ],
       },
-      expressionProperties: {
+      expressions: {
         'props.label': this.translate.stream('FORM.LANG'),
       },
     },
@@ -31,7 +31,7 @@ export class AppComponent {
       key: 'name',
       type: 'input',
       props: { required: true },
-      expressionProperties: {
+      expressions: {
         'props.label': this.translate.stream('FORM.NAME'),
       },
     },

@@ -75,7 +75,7 @@ describe('FormlyValidationMessage Component', () => {
       expect(validationMessageContent(query)).toEqual('Custom error message.');
     });
 
-    it('should handle expressionProperties changes', () => {
+    it('should handle expressions changes', () => {
       const { query } = renderComponent({
         key: 'title',
         validators: {
@@ -89,7 +89,7 @@ describe('FormlyValidationMessage Component', () => {
       expect(validationMessageContent(query)).toEqual('Custom error message.');
     });
 
-    it('should handle expressionProperties changes', () => {
+    it('should handle expressions changes', () => {
       const { query, field, detectChanges } = renderComponent({
         key: 'title',
         options: { fieldChanges: new Subject<any>() },

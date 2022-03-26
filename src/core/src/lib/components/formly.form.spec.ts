@@ -136,7 +136,7 @@ describe('FormlyForm Component', () => {
           {
             key: 'title',
             type: 'input',
-            expressionProperties: {
+            expressions: {
               className: 'model.title',
             },
           },
@@ -270,7 +270,7 @@ describe('FormlyForm Component', () => {
           {
             key: 'title',
             type: 'input',
-            expressionProperties: {
+            expressions: {
               'props.disabled': 'model.title === "****"',
             },
           },
@@ -292,7 +292,7 @@ describe('FormlyForm Component', () => {
             { key: 'foo' },
             {
               key: 'bar',
-              hideExpression: '!model.foo',
+              expressions: { hide: '!model.foo' },
             },
           ],
         },
@@ -314,7 +314,7 @@ describe('FormlyForm Component', () => {
         fields: [
           {
             key: 'foo',
-            hideExpression: '!!model.bar',
+            expressions: { hide: '!!model.bar' },
             hooks: {
               // Changing `field.hide` during `afterViewInit` throw the following error:
               // Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'display: '. Current value: 'display: none'.
@@ -339,7 +339,7 @@ describe('FormlyForm Component', () => {
             },
             {
               key: 'bar',
-              hideExpression: '!model.foo',
+              expressions: { hide: '!model.foo' },
               defaultValue: 'bar',
             },
           ],
@@ -358,7 +358,7 @@ describe('FormlyForm Component', () => {
         fields: [
           {
             key: 'address[0].city',
-            hideExpression: '!(model.address?.[0]?.city === "agadir")',
+            expressions: { hide: '!(model.address?.[0]?.city === "agadir")' },
           },
         ],
       });
@@ -394,7 +394,7 @@ describe('FormlyForm Component', () => {
           {
             key: 'title',
             type: 'input',
-            expressionProperties: {
+            expressions: {
               className: 'model.title',
             },
           },
@@ -413,7 +413,7 @@ describe('FormlyForm Component', () => {
             {
               key: 'title',
               type: 'input',
-              expressionProperties: {
+              expressions: {
                 className: 'model.title',
               },
             },
@@ -708,7 +708,7 @@ describe('FormlyForm Component', () => {
           {
             key: 'name',
             type: 'input',
-            hideExpression: 'field.options.parentForm.submitted',
+            expressions: { hide: 'field.options.parentForm.submitted' },
           },
         ],
       },
@@ -730,7 +730,7 @@ describe('FormlyForm Component', () => {
           {
             key: 'city',
             type: 'input',
-            expressionProperties: {
+            expressions: {
               'props.disabled': 'model.city === "***"',
             },
           },

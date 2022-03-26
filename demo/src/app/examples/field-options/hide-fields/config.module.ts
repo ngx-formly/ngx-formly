@@ -17,8 +17,8 @@ import { AppComponent } from './app.component';
             {
               title: 'Hide Fields',
               description: `
-              <code>hideExpression</code> is used to set the
-              <code>hide</code> property of your field.
+              <code>expressions</code> is used to set the
+              <code>hide</code> property of your field conditionally based on model value.
             `,
               component: AppComponent,
               files: [

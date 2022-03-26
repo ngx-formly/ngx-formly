@@ -26,7 +26,9 @@ export class AppComponent {
       props: {
         label: 'I like twix',
       },
-      hideExpression: '!model.name',
+      expressions: {
+        hide: '!model.name',
+      },
     },
   ];
 

@@ -305,8 +305,8 @@ describe('Array Field Type', () => {
       defaultValue: ['test'],
       fieldArray: {
         type: 'input',
-        hideExpression: 'model[0] === "test"',
-        expressionProperties: {
+        expressions: {
+          hide: 'model[0] === "test"',
           className: 'model[0]',
         },
       },

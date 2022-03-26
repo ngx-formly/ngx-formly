@@ -31,9 +31,11 @@ export class AppComponent {
     {
       key: 'lastname',
       type: 'input',
-      hideExpression: (model) => !model.firstName,
       props: {
         label: 'Last name',
+      },
+      expressions: {
+        hide: ({ model }) => !model.firstName,
       },
     },
   ];

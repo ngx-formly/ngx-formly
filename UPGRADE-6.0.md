@@ -184,7 +184,11 @@ UPGRADE FROM 5.0 to 6.0
 @ngx-formly/core/json-schema
 ----------------------------
 
-- In case you use the extra option `map` to customize the generated `fieldArray`, you need to make change to take account of `fieldArray` which return `function` instead of an object.
+- In case you use the extra option `map` to customize the generated field, you need to make change to take account of following properties:
+  1. `fieldArray` which return `function` instead of an object.
+  2. `templateOptions` which has been replaced by `props`.
+  3. `hideExpression` which has been replaced by `expressions: { hide: ... }`.
+  4. `expressionProperties` which has been replaced by `expressions`.
 
 ```ts
 this.formlyJsonschema.toFieldConfig(schema, {

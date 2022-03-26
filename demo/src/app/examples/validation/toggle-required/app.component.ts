@@ -29,7 +29,7 @@ export class AppComponent {
       validation: {
         show: true,
       },
-      expressionProperties: {
+      expressions: {
         'props.required': 'model.checked',
       },
     },

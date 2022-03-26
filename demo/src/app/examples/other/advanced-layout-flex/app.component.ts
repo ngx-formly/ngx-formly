@@ -32,7 +32,7 @@ export class AppComponent {
           props: {
             label: 'Last Name',
           },
-          expressionProperties: {
+          expressions: {
             'props.disabled': '!model.firstName',
           },
         },
