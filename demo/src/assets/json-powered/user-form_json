@@ -34,9 +34,9 @@
     "props": {
       "label": "Why?"
     },
-    "expressionProperties": {
+    "expressions": {
+      "hide": "!model.color",
       "props.label": "'Why did you choose ' + model.color + '?'"
-    },
-    "hideExpression": "!model.color"
+    }
   }
 ]

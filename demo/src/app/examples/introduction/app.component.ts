@@ -32,9 +32,9 @@ export class AppComponent {
         placeholder: 'It allows you to build and maintain your forms with the ease of JavaScript :-)',
         description: '',
       },
-      expressionProperties: {
+      expressions: {
         focus: 'formState.awesomeIsForced',
-        'props.description': (model, formState) => {
+        'props.description': ({ options: { formState } }) => {
           if (formState.awesomeIsForced) {
             return 'And look! This field magically got focus!';
           }
@@ -47,9 +47,9 @@ export class AppComponent {
       key: 'awesome',
       type: 'checkbox',
       props: { label: '' },
-      expressionProperties: {
+      expressions: {
         'props.disabled': 'formState.awesomeIsForced',
-        'props.label': (model, formState) => {
+        'props.label': ({ options: { formState } }) => {
           if (formState.awesomeIsForced) {
             return 'Too bad, formly is really awesome...';
           } else {
@@ -61,8 +61,13 @@ export class AppComponent {
     {
       key: 'whyNot',
       type: 'textarea',
-      expressionProperties: {
-        'props.placeholder': (model, formState) => {
+      props: {
+        label: 'Why Not?',
+        placeholder: 'Type in here... I dare you',
+      },
+      expressions: {
+        hide: 'model.awesome',
+        'props.placeholder': ({ options: { formState } }) => {
           if (formState.awesomeIsForced) {
             return `Too bad... It really is awesome! Wasn't that cool?`;
           } else {
@@ -70,11 +75,6 @@ export class AppComponent {
           }
         },
         'props.disabled': 'formState.awesomeIsForced',
-      },
-      hideExpression: 'model.awesome',
-      props: {
-        label: 'Why Not?',
-        placeholder: 'Type in here... I dare you',
       },
     },
     {

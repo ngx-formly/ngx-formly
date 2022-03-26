@@ -224,9 +224,9 @@ export class FormlyJsonschema {
           const f = this._toFieldConfig(<JSONSchema7>schema.properties[property], { ...options, key: property });
           field.fieldGroup.push(f);
           if ((Array.isArray(schema.required) && schema.required.indexOf(property) !== -1) || propDeps[property]) {
-            f.expressionProperties = {
-              ...(f.expressionProperties || {}),
-              'props.required': (m, s, f) => {
+            f.expressions = {
+              ...(f.expressions || {}),
+              'props.required': (f) => {
                 let parent = f.parent;
                 const model = f.fieldGroup && f.key != null ? parent.model : f.model;
                 while (parent.key == null && parent.parent) {
@@ -242,7 +242,7 @@ export class FormlyJsonschema {
                   return true;
                 }
 
-                return propDeps[property] && m && propDeps[property].some((k) => !isEmpty(m[k]));
+                return propDeps[property] && f.model && propDeps[property].some((k) => !isEmpty(f.model[k]));
               },
             };
           }
@@ -261,13 +261,17 @@ export class FormlyJsonschema {
                 const { [property]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
                   ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, resetOnHide: true }),
-                  hideExpression: (m: any) => !m || getConstValue(constSchema as JSONSchema7) !== m[property],
+                  expressions: {
+                    hide: (m: any) => !m || getConstValue(constSchema as JSONSchema7) !== m[property],
+                  },
                 });
               });
             } else {
               field.fieldGroup.push({
                 ...this._toFieldConfig(schemaDeps[property], options),
-                hideExpression: (m: any) => !m || isEmpty(m[property]),
+                expressions: {
+                  hide: (m: any) => !m || isEmpty(m[property]),
+                },
               });
             }
           }
@@ -449,39 +453,41 @@ export class FormlyJsonschema {
         {
           fieldGroup: schemas.map((s, i) => ({
             ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
-            hideExpression: (m, fs, f, forceUpdate?: boolean) => {
-              const control = f.parent.parent.fieldGroup[0].formControl;
-              if (control.value === -1 || forceUpdate) {
-                let value = f.parent.fieldGroup
-                  .map((f, i) => [f, i] as [FormlyFieldConfig, number])
-                  .filter(([f, i]) => {
-                    return this.isFieldValid(f, schemas[i], options);
-                  })
-                  .sort(([f1], [f2]) => {
-                    const matchedFields1 = totalMatchedFields(f1);
-                    const matchedFields2 = totalMatchedFields(f2);
-                    if (matchedFields1 === matchedFields2) {
-                      if (f1.props.disabled === f2.props.disabled) {
-                        return 0;
+            expressions: {
+              hide: (f, forceUpdate?: boolean) => {
+                const control = f.parent.parent.fieldGroup[0].formControl;
+                if (control.value === -1 || forceUpdate) {
+                  let value = f.parent.fieldGroup
+                    .map((f, i) => [f, i] as [FormlyFieldConfig, number])
+                    .filter(([f, i]) => {
+                      return this.isFieldValid(f, schemas[i], options);
+                    })
+                    .sort(([f1], [f2]) => {
+                      const matchedFields1 = totalMatchedFields(f1);
+                      const matchedFields2 = totalMatchedFields(f2);
+                      if (matchedFields1 === matchedFields2) {
+                        if (f1.props.disabled === f2.props.disabled) {
+                          return 0;
+                        }
+
+                        return f1.props.disabled ? 1 : -1;
                       }
 
-                      return f1.props.disabled ? 1 : -1;
-                    }
+                      return matchedFields2 > matchedFields1 ? 1 : -1;
+                    })
+                    .map(([, i]) => i);
 
-                    return matchedFields2 > matchedFields1 ? 1 : -1;
-                  })
-                  .map(([, i]) => i);
+                  if (mode === 'anyOf') {
+                    const definedValue = value.filter((i) => totalMatchedFields(f.parent.fieldGroup[i]));
+                    value = definedValue.length > 0 ? definedValue : [value[0] || 0];
+                  }
 
-                if (mode === 'anyOf') {
-                  const definedValue = value.filter((i) => totalMatchedFields(f.parent.fieldGroup[i]));
-                  value = definedValue.length > 0 ? definedValue : [value[0] || 0];
+                  value = value.length > 0 ? value : [0];
+                  control.setValue(mode === 'anyOf' ? value : value[0]);
                 }
 
-                value = value.length > 0 ? value : [0];
-                control.setValue(mode === 'anyOf' ? value : value[0]);
-              }
-
-              return Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
+                return Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
+              },
             },
           })),
         },

@@ -10,8 +10,8 @@ export class TranslateExtension implements FormlyExtension {
     }
 
     props._translated = true;
-    field.expressionProperties = {
-      ...(field.expressionProperties || {}),
+    field.expressions = {
+      ...(field.expressions || {}),
       'props.label': this.translate.stream(props.label),
     };
   }

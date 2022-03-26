@@ -18,11 +18,13 @@ function buildField({ model, options, ...field }: FormlyFieldConfigCache): Forml
 }
 
 describe('FieldExpressionExtension', () => {
-  describe('field visibility (hideExpression)', () => {
+  describe('expressions: field visibility', () => {
     it('should evaluate string expression', () => {
       const field = buildField({
         key: 'text',
-        hideExpression: '!model.visibilityToggle',
+        expressions: {
+          hide: '!model.visibilityToggle',
+        },
       });
 
       expect(field.hide).toBeTrue();
@@ -38,7 +40,7 @@ describe('FieldExpressionExtension', () => {
     it('should evaluate function expression', () => {
       const field = buildField({
         key: 'text',
-        hideExpression: () => true,
+        expressions: { hide: () => true },
       });
 
       expect(field.hide).toBeTrue();
@@ -56,10 +58,10 @@ describe('FieldExpressionExtension', () => {
     it('should provide model, formState and field args', () => {
       const spy = jest.fn();
       const field = buildField({
-        hideExpression: spy,
+        expressions: { hide: spy },
       });
 
-      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field, expect.any(Boolean));
+      expect(spy).toHaveBeenCalledWith(field, expect.any(Boolean));
     });
 
     describe('attach/detach form control', () => {
@@ -111,11 +113,11 @@ describe('FieldExpressionExtension', () => {
           fieldGroup: [
             {
               key: 'key1',
-              hideExpression: (model) => model.type,
+              expressions: { hide: ({ model }) => model.type },
             },
             {
               key: 'key1',
-              hideExpression: (model) => !model.type,
+              expressions: { hide: ({ model }) => !model.type },
             },
           ],
         });
@@ -131,8 +133,8 @@ describe('FieldExpressionExtension', () => {
       it('should take account of parent hide state', () => {
         const child: FormlyFieldConfig = {
           key: 'child',
-          hideExpression: () => false,
           defaultValue: 'foo',
+          expressions: { hide: () => false },
         };
         buildField({
           fieldGroup: [
@@ -153,12 +155,12 @@ describe('FieldExpressionExtension', () => {
             {
               key: 'key1',
               formControl: new FormControl(),
-              hideExpression: (model) => model.type,
+              expressions: { hide: ({ model }) => model.type },
             },
             {
               key: 'key1',
               formControl: new FormControl(),
-              hideExpression: (model) => !model.type,
+              expressions: { hide: ({ model }) => !model.type },
             },
           ],
         });
@@ -187,7 +189,7 @@ describe('FieldExpressionExtension', () => {
 
     it('should not override hide field within fieldGroup', () => {
       const field = buildField({
-        hideExpression: () => false,
+        expressions: { hide: () => false },
         fieldGroup: [
           {
             key: 'test',
@@ -212,13 +214,13 @@ describe('FieldExpressionExtension', () => {
     });
   });
 
-  describe('expressionProperties', () => {
+  describe('expressions', () => {
     it('should resolve a string expression', () => {
       const field = buildField({
         key: 'name',
         model: { label: 'test' },
         options: { formState: { className: 'name_test' } },
-        expressionProperties: {
+        expressions: {
           // using formState
           className: 'formState.className',
           // using field
@@ -236,18 +238,18 @@ describe('FieldExpressionExtension', () => {
     it('should provide model, formState and field args', () => {
       const spy = jest.fn();
       const field = buildField({
-        expressionProperties: {
+        expressions: {
           className: spy,
         },
       });
 
-      expect(spy).toHaveBeenCalledWith(field.model, field.options.formState, field, expect.any(Boolean));
+      expect(spy).toHaveBeenCalledWith(field, expect.any(Boolean));
     });
 
     it('should resolve a function expression', () => {
       const field = buildField({
         model: { label: 'test' },
-        expressionProperties: {
+        expressions: {
           'props.label': () => 'test',
         },
       });
@@ -257,7 +259,7 @@ describe('FieldExpressionExtension', () => {
 
     it('should resolve an observable expression', () => {
       const field = buildField({
-        expressionProperties: {
+        expressions: {
           'props.label': of('test'),
         },
       });
@@ -272,7 +274,7 @@ describe('FieldExpressionExtension', () => {
           model: { label: 'test' },
           options: { formState: { className: 'name_test' } },
           key: 'name',
-          expressionProperties: {
+          expressions: {
             'model.name': () => 'name_test',
           },
         });
@@ -287,7 +289,7 @@ describe('FieldExpressionExtension', () => {
           fieldGroup: [
             {
               key: 'name',
-              expressionProperties: {
+              expressions: {
                 'model.custom': () => 'custom_test',
               },
             },
@@ -301,7 +303,7 @@ describe('FieldExpressionExtension', () => {
       it('should resolve a model expression (nested field key)', () => {
         const field = buildField({
           model: { address: {} },
-          expressionProperties: {
+          expressions: {
             'model.address.city': () => 'custom_test',
           },
           fieldGroup: [{ key: 'address', fieldGroup: [{ key: 'city' }] }],
@@ -319,7 +321,7 @@ describe('FieldExpressionExtension', () => {
       buildField({
         key: 'checked',
         formControl,
-        expressionProperties: {
+        expressions: {
           'props.required': 'model.checked',
         },
         model: { checked: true },
@@ -332,7 +334,7 @@ describe('FieldExpressionExtension', () => {
       it('should update field disabled state', () => {
         const field = buildField({
           key: 'text',
-          expressionProperties: {
+          expressions: {
             'props.disabled': 'model.disableToggle',
           },
         });
@@ -352,15 +354,15 @@ describe('FieldExpressionExtension', () => {
         };
         const field = buildField({
           key: 'address',
-          expressionProperties: { 'props.disabled': () => disabled.address },
+          expressions: { 'props.disabled': () => disabled.address },
           fieldGroup: [
             {
               key: 'city',
-              expressionProperties: { 'props.disabled': () => disabled.city },
+              expressions: { 'props.disabled': () => disabled.city },
             },
             {
               key: 'street',
-              expressionProperties: { 'props.label': () => 'Street' },
+              expressions: { 'props.label': () => 'Street' },
             },
           ],
         });
@@ -386,7 +388,7 @@ describe('FieldExpressionExtension', () => {
         const field = buildField({
           key: 'group',
           model: { group: { disableToggle: false } },
-          expressionProperties: {
+          expressions: {
             'props.disabled': 'model.disableToggle',
           },
           fieldGroup: [{ key: 'child', hide: true }],
@@ -406,7 +408,7 @@ describe('FieldExpressionExtension', () => {
         const stream$ = new BehaviorSubject('test');
         const field = buildField({
           key: 'text',
-          expressionProperties: {
+          expressions: {
             'props.label': stream$,
           },
         });
@@ -425,7 +427,7 @@ describe('FieldExpressionExtension', () => {
       it('should change model through observable', () => {
         const field = buildField({
           key: 'text',
-          expressionProperties: {
+          expressions: {
             'model.text': of('test'),
           },
         });
@@ -445,7 +447,7 @@ describe('FieldExpressionExtension', () => {
               {
                 key: 'text',
                 type: 'input',
-                expressionProperties: {
+                expressions: {
                   'model.text2': 'model.text',
                 },
               },
@@ -471,7 +473,7 @@ describe('FieldExpressionExtension', () => {
       it('should supports array notation in expression property', () => {
         const field = buildField({
           model: [],
-          expressionProperties: {
+          expressions: {
             'model[0]': '1',
             'model["1"]': '2',
             "model['2']": '3',
@@ -485,7 +487,7 @@ describe('FieldExpressionExtension', () => {
         const build = () =>
           buildField({
             key: 'text',
-            expressionProperties: {
+            expressions: {
               'nested.prop': '"ddd"',
             },
           });
@@ -509,14 +511,14 @@ describe('FieldExpressionExtension', () => {
             key: 'checkbox2',
             type: 'checkbox',
             defaultValue: true,
-            hideExpression: '!model.checkbox1',
+            expressions: { hide: '!model.checkbox1' },
             resetOnHide: true,
           },
           {
             key: 'checkbox3',
             type: 'checkbox',
             defaultValue: true,
-            hideExpression: '!model.checkbox1 || !model.checkbox2',
+            expressions: { hide: '!model.checkbox1 || !model.checkbox2' },
             resetOnHide: true,
           },
         ],
@@ -529,9 +531,9 @@ describe('FieldExpressionExtension', () => {
     it('should detect assign an object and function in expression', () => {
       const field = buildField({
         model: { assign: false },
-        expressionProperties: {
-          'model.object': (m) => (m.assign ? { test: 'foo' } : undefined),
-          'model.function': (m) => (m.assign ? () => 'test' : undefined),
+        expressions: {
+          'model.object': ({ model }) => (model.assign ? { test: 'foo' } : undefined),
+          'model.function': ({ model }) => (model.assign ? () => 'test' : undefined),
         },
       });
 
@@ -551,7 +553,7 @@ describe('FieldExpressionExtension', () => {
 
       const field = buildField({
         key: 'text',
-        hideExpression: '!model.visibilityToggle',
+        expressions: { hide: '!model.visibilityToggle' },
         options: { fieldChanges },
       });
 
@@ -576,7 +578,7 @@ describe('FieldExpressionExtension', () => {
       const field = buildField({
         key: 'text',
         options: { fieldChanges },
-        expressionProperties: {
+        expressions: {
           'props.label': 'field.formControl.value',
         },
       });

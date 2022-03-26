@@ -26,7 +26,7 @@ export class AppComponent {
       validation: {
         show: true,
       },
-      expressionProperties: {
+      expressions: {
         'validation.show': 'model.showErrorState',
       },
     },

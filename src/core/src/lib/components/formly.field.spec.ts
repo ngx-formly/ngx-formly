@@ -325,7 +325,7 @@ describe('FormlyField Component', () => {
       props: {
         options: [{ value: 1, label: 'Option 1' }],
       },
-      expressionProperties: {
+      expressions: {
         'props.options': options$,
       },
     });

@@ -24,7 +24,6 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     // cache built expression
     defineHiddenProp(field, '_expressions', {});
-    field.expressionProperties = field.expressionProperties || {};
 
     observe(field, ['hide'], ({ currentValue, firstChange }) => {
       defineHiddenProp(field, '_hide', !!currentValue);
@@ -40,33 +39,43 @@ export class FieldExpressionExtension implements FormlyExtension {
       });
     }
 
-    for (const key of Object.keys(field.expressionProperties)) {
-      observe(field, ['expressionProperties', key], ({ currentValue: expr }) => {
-        if (typeof expr === 'string' || isFunction(expr)) {
-          field._expressions[key] = this.parseExpressions(field, key, expr);
-        } else if (expr instanceof Observable) {
-          const subscribe = () =>
-            (expr as Observable<any>).subscribe((v) => {
-              this.evalExpr(field, key, v);
-            });
+    const evalExpr = (key: string, expr: any) => {
+      if (typeof expr === 'string' || isFunction(expr)) {
+        field._expressions[key] = this.parseExpressions(field, key, expr);
+      } else if (expr instanceof Observable) {
+        const subscribe = () =>
+          (expr as Observable<any>).subscribe((v) => {
+            this.evalExpr(field, key, v);
+          });
 
-          let subscription: Subscription = null;
-          const onInit = field.hooks.onInit;
-          field.hooks.onInit = () => {
-            if (subscription === null) {
-              subscription = subscribe();
-            }
-            return onInit?.(field);
-          };
+        let subscription: Subscription = null;
+        const onInit = field.hooks.onInit;
+        field.hooks.onInit = () => {
+          if (subscription === null) {
+            subscription = subscribe();
+          }
+          return onInit?.(field);
+        };
 
-          const onDestroy = field.hooks.onDestroy;
-          field.hooks.onDestroy = () => {
-            onDestroy?.(field);
-            subscription.unsubscribe();
-            subscription = null;
-          };
-        }
+        const onDestroy = field.hooks.onDestroy;
+        field.hooks.onDestroy = () => {
+          onDestroy?.(field);
+          subscription.unsubscribe();
+          subscription = null;
+        };
+      }
+    };
+
+    field.expressions = field.expressions || {};
+    for (const key of Object.keys(field.expressions)) {
+      observe(field, ['expressions', key], ({ currentValue: expr }) => {
+        evalExpr(key, isFunction(expr) ? (...args: any) => expr(field, args[3]) : expr);
       });
+    }
+
+    field.expressionProperties = field.expressionProperties || {};
+    for (const key of Object.keys(field.expressionProperties)) {
+      observe(field, ['expressionProperties', key], ({ currentValue }) => evalExpr(key, currentValue));
     }
   }
 
@@ -176,7 +185,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   private changeDisabledState(field: FormlyFieldConfigCache, value: boolean) {
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter((f) => !f.expressionProperties || !f.expressionProperties.hasOwnProperty('props.disabled'))
+        .filter((f: FormlyFieldConfigCache) => !f._expressions.hasOwnProperty('props.disabled'))
         .forEach((f) => this.changeDisabledState(f, value));
     }
 
@@ -187,7 +196,9 @@ export class FieldExpressionExtension implements FormlyExtension {
 
   private changeHideState(field: FormlyFieldConfigCache, hide: boolean, resetOnHide: boolean) {
     if (field.fieldGroup) {
-      field.fieldGroup.filter((f) => !f.hideExpression).forEach((f) => this.changeHideState(f, hide, resetOnHide));
+      field.fieldGroup
+        .filter((f: FormlyFieldConfigCache) => !f._expressions.hide)
+        .forEach((f) => this.changeHideState(f, hide, resetOnHide));
     }
 
     if (field.formControl && hasKey(field)) {

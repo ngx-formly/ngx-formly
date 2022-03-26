@@ -25,7 +25,7 @@ export class AppComponent {
         label: 'Hey!',
         placeholder: 'This one is disabled if there is no text in the other input',
       },
-      expressionProperties: {
+      expressions: {
         'props.disabled': '!model.text',
       },
     },

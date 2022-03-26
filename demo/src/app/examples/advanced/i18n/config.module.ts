@@ -19,9 +19,9 @@ import { AppComponent } from './app.component';
               description: `
               This is an example of using ngx-formly with ngx-translate to internationalize your forms.
               <div>
-                This example demonstrates dynamic i18n using <code>expressionProperties</code>.
+                This example demonstrates dynamic i18n using <code>expressions</code>.
                 If you don't need a dynamic solution (language doesn't change after the app has started up,
-                simply omit the <code>expressionProperties</code> in the example.
+                simply omit the <code>expressions</code> in the example.
               </div>
             `,
               component: AppComponent,

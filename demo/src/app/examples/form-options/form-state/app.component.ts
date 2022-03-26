@@ -22,7 +22,7 @@ export class AppComponent {
       props: {
         label: 'First Name',
       },
-      expressionProperties: {
+      expressions: {
         // apply expressionProperty for disabled based on formState
         'props.disabled': 'formState.disabled',
       },

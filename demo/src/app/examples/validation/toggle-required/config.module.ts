@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
               description: `
               This is an example of how to toggle <code>required</code> of a field. It uses:
               <ul>
-                <li><code>expressionProperties</code>: to have formly add <code>required</code> to the input field</li>
+                <li><code>expressions</code>: to have formly add <code>required</code> to the input field</li>
                 <li><code>validation.show</code>: to show validation errors even when they the field has not been touched</li>
                 <li><code>validationMessages</code>: to add a globally available validation message</li>
               </ul>

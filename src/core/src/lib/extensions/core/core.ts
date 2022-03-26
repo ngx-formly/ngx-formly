@@ -142,7 +142,7 @@ export class CoreExtension implements FormlyExtension {
 
     if (
       field.type !== 'formly-template' &&
-      (field.template || (field.expressionProperties && field.expressionProperties.template))
+      (field.template || field.expressions?.template || field.expressionProperties?.template)
     ) {
       field.type = 'formly-template';
     }
@@ -156,13 +156,14 @@ export class CoreExtension implements FormlyExtension {
     }
 
     if (hasKey(field) && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-      let setDefaultValue = !field.resetOnHide || !(field.hide || field.hideExpression);
-      if (setDefaultValue && field.resetOnHide) {
+      const isHidden = (f: FormlyFieldConfig) => f.hide || f.expressions?.hide || f.hideExpression;
+      let setDefaultValue = !field.resetOnHide || !isHidden(field);
+      if (!isHidden(field) && field.resetOnHide) {
         let parent = field.parent;
-        while (parent && !parent.hideExpression && !parent.hide) {
+        while (parent && !isHidden(parent)) {
           parent = parent.parent;
         }
-        setDefaultValue = !parent || !(parent.hideExpression || parent.hide);
+        setDefaultValue = !parent || !isHidden(parent);
       }
 
       if (setDefaultValue) {

@@ -38,12 +38,13 @@ Everything starts with the `formly-form`. General use of it will look something 
 | type                 | `string`     | The `type` of field to be rendered. More information over at Custom templates. |
 | className            | `string`     | You can specify your own class that will be applied to the `formly-field` directive. |
 | props      | `object`     | This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this. |
+| templateOptions      | `object`     | This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this. @deprecated use `props` instead |
 | template             | `string`     | Can be set instead of `type` to render custom `html` content. |
 | defaultValue         | `any` | If this is provided and the value of the model at compile-time is `undefined`, then the value of the model will be assigned the defaultValue. |
-| hide                 | `boolean`    | Whether to hide the field. Defaults to false. If you wish this to be conditional use `hideExpression`. |
-| hideExpression       | `boolean`/`string`/`function` | Conditionally hide the field based on values from other fields. |
-| expressionProperties | `boolean`/`string`/`function` | An object where the key is a property to be set on the main field config and the value is an expression used to assign that property. |
-| focus                | `boolean`    | Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressionProperties` |
+| hide                 | `boolean`    | Whether to hide the field. Defaults to false. If you wish this to be conditional use `expressions: { hide: ... }`. |
+| hideExpression       | `boolean`/`string`/`function` | Conditionally hide the field based on values from other fields. @deprecated use `expressions: { hide: ... }` instead |
+| expressions | `boolean`/`string`/`function` | An object where the key is a property to be set on the main field config and the value is an expression used to assign that property. |
+| focus                | `boolean`    | Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressions` |
 | wrappers             | `string[]`   | It is expected to be the name of the wrappers. The formly field template will be wrapped by the first wrapper, then the second, then the third, etc. You can also specify these as part of a type (which is the recommended approach). |
 | parsers              | `function[]` | Array of functions to execute, as a pipeline, whenever the model updates, usually via user input. |
 | fieldGroup           | `FormlyFieldConfig[]` | A field group is a way to group fields together, making advanced layout very simple. It can also be used to group fields that are associated with the same model (useful if it's different than the model for the rest of the fields). |
