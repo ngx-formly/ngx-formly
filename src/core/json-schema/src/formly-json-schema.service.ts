@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldValue as getFieldValue,
@@ -48,9 +48,23 @@ function totalMatchedFields(field: FormlyFieldConfig): number {
   }
 
   const total = field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
-  return total === 0
-    ? field.key && getFieldValue(field) !== undefined ? 1 : 0
-    : total;
+  if (total === 0 && field.key) {
+    const value = getFieldValue(field);
+    if (
+      value === null
+      || (
+        (value !== undefined)
+        && (
+          (field.fieldArray && Array.isArray(value))
+          || (!field.fieldArray && isObject(value))
+        )
+      )
+    ) {
+      return 1;
+    }
+  }
+
+  return total;
 }
 
 interface IOptions extends FormlyJsonschemaOptions {
@@ -393,11 +407,12 @@ export class FormlyJsonschema {
               const control = f.parent.parent.fieldGroup[0].formControl;
               if ((control.value === -1) || forceUpdate) {
                 let value = f.parent.fieldGroup
-                  .map((f, i) => [f, i] as [FormlyFieldConfig, number])
-                  .filter(([f, i]) => {
-                    return this.isFieldValid(f, schemas[i], options);
-                  })
-                  .sort(([f1], [f2]) => {
+                  .map((f, i) => [f, i, this.isFieldValid(f, schemas[i], options)] as [FormlyFieldConfig, number, boolean])
+                  .sort(([f1, i1, f1Valid], [f2, i2, f2Valid]) => {
+                    if (f1Valid !== f2Valid) {
+                      return f2Valid ? 1 : -1;
+                    }
+
                     const matchedFields1 = totalMatchedFields(f1);
                     const matchedFields2 = totalMatchedFields(f2);
                     if (matchedFields1 === matchedFields2) {
@@ -506,7 +521,7 @@ export class FormlyJsonschema {
     return type;
   }
 
-  private addValidator(field: FormlyFieldConfig, name: string, validator: (control: AbstractControl) => boolean) {
+  private addValidator(field: FormlyFieldConfig, name: string, validator: (control: AbstractControl, field: FormlyFieldConfig) => boolean) {
     field.validators = field.validators || {};
     field.validators[name] = validator;
   }
@@ -545,10 +560,11 @@ export class FormlyJsonschema {
   }
 
   private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
+    const model = field.model ? clone(field.model) : (field.fieldArray ? [] : {});
     const { form } = (field.options as any)._buildField({
-      form: new FormGroup({}),
+      form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null })],
-      model: field.model ? clone(field.model) : (field.fieldArray ? [] : {}),
+      model,
     });
 
     return form.valid;
