@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.12.0"></a>
+# [5.12.0](https://github.com/ngx-formly/ngx-formly/compare/v5.11.2...v5.12.0) (2022-03-30)
+
+
+### Bug Fixes
+
+* **json-schema:** improve oneOf selection of mixed type ([#3248](https://github.com/ngx-formly/ngx-formly/issues/3248)) ([39d41a3](https://github.com/ngx-formly/ngx-formly/commit/39d41a3)), closes [#3245](https://github.com/ngx-formly/ngx-formly/issues/3245)
+
+
+### Features
+
+* **core:** export FormlySelectOptionsPipe ([#3249](https://github.com/ngx-formly/ngx-formly/issues/3249)) ([e93ccff](https://github.com/ngx-formly/ngx-formly/commit/e93ccff)), closes [#3236](https://github.com/ngx-formly/ngx-formly/issues/3236)
+* **json-schema:** support oneOf for non-object type ([#3152](https://github.com/ngx-formly/ngx-formly/issues/3152)) ([f3a7e70](https://github.com/ngx-formly/ngx-formly/commit/f3a7e70)), closes [#2528](https://github.com/ngx-formly/ngx-formly/issues/2528)
+
+
+
 <a name="5.11.2"></a>
 ## [5.11.2](https://github.com/ngx-formly/ngx-formly/compare/v5.11.1...v5.11.2) (2022-03-16)
 
