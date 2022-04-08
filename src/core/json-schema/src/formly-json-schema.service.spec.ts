@@ -374,6 +374,15 @@ describe('Service: FormlyJsonschema', () => {
         expect(minItemsValidator(new FormControl([1, 2, 3]))).toBeTrue();
       });
 
+      it('minItems: should set default value', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'array',
+          minItems: 2,
+        };
+        const config = formlyJsonschema.toFieldConfig(numSchema);
+        expect(config.defaultValue).toEqual([undefined, undefined]);
+      });
+
       it('should support maxItems', () => {
         const numSchema: JSONSchema7 = {
           type: 'array',

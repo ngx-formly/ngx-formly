@@ -296,6 +296,10 @@ export class FormlyJsonschema {
             'minItems',
             ({ value }: AbstractControl) => isEmpty(value) || value.length >= schema.minItems,
           );
+
+          if (schema.minItems > 0 && field.defaultValue === undefined) {
+            field.defaultValue = Array.from(new Array(schema.minItems));
+          }
         }
         if (schema.hasOwnProperty('maxItems')) {
           field.props.maxItems = schema.maxItems;
