@@ -239,6 +239,10 @@ import { SharedModule } from '../shared';
                 path: 'input-file',
                 loadChildren: () => import('./other/input-file/config.module').then((m) => m.ConfigModule),
               },
+              {
+                path: 'presets',
+                loadChildren: () => import('./other/presets/config.module').then((m) => m.ConfigModule),
+              },
             ],
           },
         ],

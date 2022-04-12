@@ -11,6 +11,7 @@ import {
   FormlyExtension,
   ValidationMessageOption,
   ExtensionOption,
+  FormlyFieldConfigPresetProvider,
 } from '../models';
 
 export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
@@ -37,8 +38,10 @@ export class FormlyConfig {
       );
     },
   };
-  private extensionsByPriority: Record<number, { [name: string]: FormlyExtension }> = {};
   extensions: { [name: string]: FormlyExtension } = {};
+  presets: { [name: string]: FormlyFieldConfig | FormlyFieldConfigPresetProvider } = {};
+
+  private extensionsByPriority: Record<number, { [name: string]: FormlyExtension }> = {};
 
   addConfig(config: ConfigOption) {
     if (config.types) {
@@ -58,6 +61,12 @@ export class FormlyConfig {
     }
     if (config.extras) {
       this.extras = { ...this.extras, ...config.extras };
+    }
+    if (config.presets) {
+      this.presets = {
+        ...this.presets,
+        ...config.presets.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.config }), {}),
+      };
     }
   }
 

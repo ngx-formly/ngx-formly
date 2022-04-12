@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
         { path: '/guide/custom-formly-field', title: 'Custom Type' },
         { path: '/guide/custom-formly-wrapper', title: 'Custom Wrapper' },
         { path: '/guide/custom-formly-extension', title: 'Custom Extension' },
+        { path: '/guide/formly-field-presets', title: 'Formly Field Presets' },
       ],
     },
     {
@@ -100,6 +101,7 @@ export class AppComponent implements OnInit {
         { path: '/examples/other/button', title: 'Button Type' },
         { path: '/examples/other/json-powered', title: 'JSON powered' },
         { path: '/examples/other/input-file', title: 'File input' },
+        { path: '/examples/other/presets', title: 'Presets' },
       ],
     },
   ];
