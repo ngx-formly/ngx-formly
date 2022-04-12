@@ -95,3 +95,26 @@ fields: FormlyFieldConfig[] = [
   }
 ];
 ```
+
+## The pipe `formlySelectOptions` could not be found
+
+If you receive a 'pipe could not be found' error, such as the one below, make sure to import the necessary modules.
+
+```
+Template parse errors:
+The pipe 'formlySelectOptions' could not be found
+```
+
+In this error, the `formlySelectOptions` pipe is part of `FormlySelectModule`. This must be imported into the application before templates, including your custom templates, can use the pipe.
+
+```typescript
+import { FormlySelectModule } from '@ngx-formly/core/select';
+
+@NgModule({
+  imports: [
+    ...
+    FormlySelectModule,
+  ],
+})
+export class AppModule { }
+```
