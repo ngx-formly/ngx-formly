@@ -10,6 +10,7 @@ there are prebuilt templates you can use:
   - Ionic
   - Kendo
   - PrimeNG
+  - NG-ZORRO
 
 
 ## Creating a Custom Type
@@ -50,7 +51,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
 
 3. ### set an aliase for `InputFieldType` component (Optional):
 
-  > Note: This step is required only for JSON powered form (see "Method-2" below).
+  > Note: This step is required only for JSON powered forms (see "Method-2" below).
 
   ```typescript
   import { InputFieldType } from './intput-field.type';

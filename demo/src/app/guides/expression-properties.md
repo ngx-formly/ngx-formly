@@ -1,6 +1,6 @@
 # Formly Expressions
 
-Expressions allows you to dynamically field properties.
+Expressions allow you to dynamically change field properties.
 For example, you can disable a form field dynamically. The value of this property can be `string` or `function`.
 You can see an example using string value [here](https://stackblitz.com/edit/angular-formly-eehxjb?file=app/app.component.ts)
 
@@ -87,7 +87,7 @@ You can see an example [here](https://stackblitz.com/edit/angular-formly-ndfcmz?
 },
 ```
 
-Third option with boolean.  You can see an example [here](https://stackblitz.com/edit/angular-formly-dpyzb9?file=app/app.component.ts)
+Third option with boolean. You can see an example [here](https://stackblitz.com/edit/angular-formly-dpyzb9?file=app/app.component.ts)
 
 HTML
 ```html
