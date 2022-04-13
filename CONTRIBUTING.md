@@ -1,6 +1,6 @@
 # Contributing
 
-We would love for you to contribute to `ng-formly` and help make it even better than it is
+We would love for you to contribute to `ngx-formly` and help make it even better than it is
 today! As a contributor, here are the guidelines we would like you to follow:
 
  - [Code of Conduct](#coc)
@@ -13,7 +13,7 @@ today! As a contributor, here are the guidelines we would like you to follow:
  - [Contributing to Community](#community)
 
 ## <a name="coc"></a> Code of Conduct
-Help us keep Angular open and inclusive. Please read and follow our [Code of Conduct][coc].
+Help us keep Formly open and inclusive. Please read and follow our [Code of Conduct][coc].
 
 ## <a name="question"></a> Got a Question or Problem?
 
@@ -78,7 +78,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
 * All features or bug fixes **must be tested** by one or more specs (unit-tests).
-* All public API methods **must be documented**. (Details TBC).
+* All public API methods **must be documented**. (Details TBA).
 * Follow the existing styles (we have an `.editorconfig` file)
 * Document your changes in the README (try to follow the convention you see in the rest of the file)
 * Create an example for the website that demonstrates your changes so people can see how your changes work

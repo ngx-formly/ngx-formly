@@ -85,7 +85,7 @@ UPGRADE FROM 5.0 to 6.0
   ]
   ```
 
-- The `checkExpressionOn` option is set to `modelChange` by default, which improve performance. To rely on the old behavior you need to pass `changeDetectionCheck` to `checkExpressionOn`:
+- The `checkExpressionOn` option is set to `modelChange` by default, which improves performance. To rely on the old behavior you need to pass `changeDetectionCheck` to `checkExpressionOn`:
 
   ```patch
   FormlyModule.forRoot({
@@ -95,7 +95,7 @@ UPGRADE FROM 5.0 to 6.0
   }),
   ```
 
-- The `lazyRender` option is enabled by default, which remove the hidden fields from the DOM instead of using CSS to control their visibility. To rely on the old behavior you need to pass `false` to `lazyRender`:
+- The `lazyRender` option is enabled by default, which removes the hidden fields from the DOM instead of using CSS to control their visibility. To rely on the old behavior you need to pass `false` to `lazyRender`:
 
   ```patch
   FormlyModule.forRoot({
@@ -105,7 +105,7 @@ UPGRADE FROM 5.0 to 6.0
   }),
   ```
 
-- The `resetFieldOnHide` option is enabled by default, which remove the field value from the model on hide.
+- The `resetFieldOnHide` option is enabled by default, which removes the field value from the model on hide.
 
   To disable this feature for a specific field use `resetOnHide`:
   ```patch
