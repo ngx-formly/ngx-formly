@@ -1,4 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy, TemplateRef } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewChild,
+  AfterViewInit,
+  OnDestroy,
+  TemplateRef,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FieldTypeConfig, FormlyConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
@@ -42,6 +50,8 @@ import { FieldType } from '@ngx-formly/material/form-field';
       [calendarHeaderComponent]="props.datepickerOptions.calendarHeaderComponent"
       (monthSelected)="props.datepickerOptions.monthSelected(field, $event, picker)"
       (yearSelected)="props.datepickerOptions.yearSelected(field, $event, picker)"
+      (opened)="props.datepickerOptions.opened = true"
+      (closed)="props.datepickerOptions.opened = false"
     >
     </mat-datepicker>
   `,
@@ -55,6 +65,8 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
       datepickerOptions: {
         startView: 'month',
         datepickerTogglePosition: 'suffix',
+        disabled: false,
+        opened: false,
         dateInput: () => {},
         dateChange: () => {},
         monthSelected: () => {},
@@ -64,7 +76,7 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
   };
   private fieldErrorsObserver!: ReturnType<typeof observe>;
 
-  constructor(private config: FormlyConfig) {
+  constructor(private config: FormlyConfig, private cdRef: ChangeDetectorRef) {
     super();
   }
 
@@ -73,7 +85,10 @@ export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements
   }
 
   ngAfterViewInit() {
-    this.to[this.props.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
+    this.props[this.props.datepickerOptions.datepickerTogglePosition] = this.datepickerToggle;
+    observe<boolean>(this.field, ['props', 'datepickerOptions', 'opened'], () => {
+      this.cdRef.detectChanges();
+    });
 
     // temporary fix for https://github.com/angular/components/issues/16761
     if (this.config.getValidatorMessage('matDatepickerParse')) {
