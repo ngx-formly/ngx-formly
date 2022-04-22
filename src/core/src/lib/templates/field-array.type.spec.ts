@@ -205,6 +205,34 @@ describe('Array Field Type', () => {
     subscription.unsubscribe();
   });
 
+  it('should emit `valueChanges` on model change', () => {
+    app.fields = [
+      {
+        key: 'foo',
+        type: 'array',
+        fieldArray: { key: 'title' },
+      },
+    ];
+
+    const fixture = createFormlyTestComponent();
+    const spy = jasmine.createSpy('model change spy');
+    const subscription = app.form.get('foo').valueChanges.subscribe(spy);
+
+    // add
+    fixture.componentInstance.model = { foo: [{ title: 1 }] };
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith([{ title: 1 }]);
+
+    // remove
+    spy.calls.reset();
+    fixture.componentInstance.model = { foo: [] };
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith([]);
+    subscription.unsubscribe();
+  });
+
   it('should not triggers valueChanges for all fields on add/remove', () => {
     app.fields = [
       {
