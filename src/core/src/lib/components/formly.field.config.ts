@@ -174,6 +174,7 @@ export interface FormlyFieldConfig {
 export interface ExpressionPropertyCache {
   expression: (model: any, formState: any, field: FormlyFieldConfigCache) => boolean;
   expressionValue?: any;
+  expressionPaths?: string[];
 }
 
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
