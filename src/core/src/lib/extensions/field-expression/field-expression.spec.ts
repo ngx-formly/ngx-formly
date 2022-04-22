@@ -591,10 +591,19 @@ describe('FieldExpressionExtension', () => {
     it('should supports array notation in expression property', () => {
       const fields: FormlyFieldConfig[] = [
         {
+          templateOptions: {
+            options: [
+              { label: 'bar', value: 'bar' },
+              { label: 'baz', value: 'baz' },
+            ],
+          },
           expressionProperties: {
             'model[0]': '1',
             'model["1"]': '2',
             'model[\'2\']': '3',
+            'templateOptions[\'prop1\']': '1',
+            'templateOptions["prop.2"]': '2',
+            'templateOptions.options[1].label': '"123"',
           },
         },
       ];
@@ -602,6 +611,9 @@ describe('FieldExpressionExtension', () => {
       const model = [];
       builder.buildForm(form, fields, model, options);
       expect(model).toEqual([1, 2, 3]);
+      expect(fields[0].templateOptions.prop1).toEqual(1);
+      expect(fields[0].templateOptions['prop.2']).toEqual(2);
+      expect(fields[0].templateOptions.options[1].label).toEqual('123');
     });
 
     it('should throw error when assign to an undefined prop', () => {
