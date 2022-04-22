@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.12.1"></a>
+## [5.12.1](https://github.com/ngx-formly/ngx-formly/compare/v5.12.0...v5.12.1) (2022-04-22)
+
+
+### Bug Fixes
+
+* **core:** emit valueChanges when fieldArray length is decreasing ([#3279](https://github.com/ngx-formly/ngx-formly/issues/3279)) ([169bc62](https://github.com/ngx-formly/ngx-formly/commit/169bc62)), closes [#3250](https://github.com/ngx-formly/ngx-formly/issues/3250)
+* **core:** improve eval array notation in expressions ([#3278](https://github.com/ngx-formly/ngx-formly/issues/3278)) ([17c0bd6](https://github.com/ngx-formly/ngx-formly/commit/17c0bd6)), closes [#3264](https://github.com/ngx-formly/ngx-formly/issues/3264)
+
+
+
 <a name="5.12.0"></a>
 # [5.12.0](https://github.com/ngx-formly/ngx-formly/compare/v5.11.2...v5.12.0) (2022-03-30)
 
