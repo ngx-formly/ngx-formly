@@ -23,8 +23,7 @@
     "lib": ["es2020", "dom"],
     "paths": {
       "@ngx-formly/*": ["src/*/src/private_api", "src/*/src/public_api", "src/ui/*/src/public_api"],
-      "@assets/*": ["demo/src/assets/*"],
-      "@ngx-formly/tslint": ["dist/ngx-formly/tslint/ngx-formly-tslint", "dist/ngx-formly/tslint"]
+      "@assets/*": ["demo/src/assets/*"]
     },
     "skipLibCheck": true
   },
