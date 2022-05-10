@@ -13,4 +13,3 @@ gulpfile.js
 karma.conf.js
 npm-debug.log
 tsconfig.json
-tslint.json
