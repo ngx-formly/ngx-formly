@@ -9,9 +9,10 @@ module.exports = {
         'demo',
         'guides',
         'core',
+        'testing',
+        'select',
         'schematics',
         'json-schema',
-        'testing',
         'material',
         'bootstrap',
         'ionic',
@@ -19,14 +20,14 @@ module.exports = {
         'kendo',
         'ng-zorro-antd',
         'nativescript',
-      ]
+      ],
     ],
     'scope-empty': [1, 'never'],
     'scope-case': [2, 'always', 'lowerCase'],
     'type-enum': [
       2,
       'always',
-      ['build', 'ci', 'docs', 'feat', 'fix', 'perf', 'refactor', 'release', 'revert', 'style', 'test', 'chore']
-    ]
-  }
+      ['build', 'ci', 'docs', 'feat', 'fix', 'perf', 'refactor', 'release', 'revert', 'style', 'test', 'chore'],
+    ],
+  },
 };
