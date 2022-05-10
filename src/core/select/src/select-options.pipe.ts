@@ -3,11 +3,11 @@ import { Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-interface ISelectOption {
+export interface FormlySelectOption {
   label: string;
   disabled?: boolean;
   value?: any;
-  group?: ISelectOption[];
+  group?: FormlySelectOption[];
 }
 
 type ITransformOption = {
@@ -19,7 +19,7 @@ type ITransformOption = {
 
 @Pipe({ name: 'formlySelectOptions' })
 export class FormlySelectOptionsPipe implements PipeTransform {
-  transform(options: any, field?: FormlyFieldConfig): Observable<ISelectOption[]> {
+  transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[]> {
     if (!(options instanceof Observable)) {
       options = observableOf(options);
     }
@@ -27,10 +27,10 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     return (options as Observable<any>).pipe(map((value) => this.transformOptions(value, field)));
   }
 
-  private transformOptions(options: any[], field?: FormlyFieldConfig): ISelectOption[] {
+  private transformOptions(options: any[], field?: FormlyFieldConfig): FormlySelectOption[] {
     const to = this.transformSelectProps(field);
 
-    const opts: ISelectOption[] = [];
+    const opts: FormlySelectOption[] = [];
     const groups: { [id: string]: number } = {};
 
     options.forEach((option) => {
@@ -54,7 +54,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     return opts;
   }
 
-  private transformOption(option: any, props: ITransformOption): ISelectOption {
+  private transformOption(option: any, props: ITransformOption): FormlySelectOption {
     const group = props.groupProp(option);
     if (Array.isArray(group)) {
       return {

@@ -1,2 +1,2 @@
 export { FormlySelectModule } from './select.module';
-export { FormlySelectOptionsPipe as ɵFormlySelectOptionsPipe } from './select-options.pipe';
+export { FormlySelectOptionsPipe as ɵFormlySelectOptionsPipe, FormlySelectOption } from './select-options.pipe';
