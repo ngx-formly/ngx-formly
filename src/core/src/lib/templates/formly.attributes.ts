@@ -9,7 +9,7 @@ import {
   Inject,
   OnDestroy,
 } from '@angular/core';
-import { FormlyFieldConfig, FormlyFieldConfigCache, FormlyFieldProps } from '../models';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe, IObserver } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
@@ -51,7 +51,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   };
 
   private get props() {
-    return this.field.props || ({} as FormlyFieldProps);
+    return this.field.props || ({} as FormlyFieldConfigCache['props']);
   }
 
   private get fieldAttrElements(): ElementRef[] {

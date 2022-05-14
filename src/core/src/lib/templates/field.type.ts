@@ -2,14 +2,14 @@ import { Input, Directive } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '../models';
 
-export interface FieldTypeConfig extends FormlyFieldConfig {
+export interface FieldTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
   formControl: FormControl;
-  props: NonNullable<Required<FormlyFieldConfig>['props']>;
+  props: NonNullable<T>;
 }
 
-export interface FieldGroupTypeConfig extends FormlyFieldConfig {
+export interface FieldGroupTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
   formControl: FormGroup;
-  props: NonNullable<Required<FormlyFieldConfig>['props']>;
+  props: NonNullable<T>;
 }
 
 @Directive()
