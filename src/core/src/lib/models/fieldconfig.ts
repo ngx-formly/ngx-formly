@@ -5,7 +5,7 @@ import { FieldWrapper } from '../templates/field.wrapper';
 import { ValidationMessageOption } from '../models';
 import { Type } from '@angular/core';
 
-export interface FormlyFieldConfig {
+export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalProperties: string]: any }> {
   /**
    * The key that relates to the model. This will link the field value to the model
    */
@@ -34,10 +34,10 @@ export interface FormlyFieldConfig {
   /**
    * This is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this.
    */
-  props?: FormlyFieldProps;
+  props?: Props;
 
   /** @deprecated Use `props` instead. */
-  templateOptions?: FormlyFieldConfig['props'];
+  templateOptions?: FormlyTemplateOptions;
 
   /**
    * An object with a few useful properties
@@ -203,7 +203,9 @@ export interface FormlyFieldConfig {
 export type FormlyAttributeEvent = (field: FormlyFieldConfig, event?: any) => void;
 
 /**  @deprecated */
-export type FormlyTemplateOptions = FormlyFieldProps;
+export interface FormlyTemplateOptions extends FormlyFieldProps {
+  [additionalProperties: string]: any;
+}
 
 export interface FormlyFieldProps {
   type?: string;
@@ -239,7 +241,6 @@ export interface FormlyFieldProps {
   click?: FormlyAttributeEvent;
   change?: FormlyAttributeEvent;
   keypress?: FormlyAttributeEvent;
-  [additionalProperties: string]: any;
 }
 
 export type FormlyHookFn = (field?: FormlyFieldConfig) => void;

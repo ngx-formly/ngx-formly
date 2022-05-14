@@ -62,12 +62,12 @@ interface MatFormlyFieldProps extends FormlyFieldProps {
         >
       </mat-label>
 
-      <ng-container matPrefix *ngIf="props._matPrefix">
-        <ng-container [ngTemplateOutlet]="props._matPrefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
+      <ng-container matPrefix *ngIf="props.prefix">
+        <ng-container [ngTemplateOutlet]="props.prefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
-      <ng-container matSuffix *ngIf="props._matSuffix">
-        <ng-container [ngTemplateOutlet]="props._matSuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
+      <ng-container matSuffix *ngIf="props.suffix">
+        <ng-container [ngTemplateOutlet]="props.suffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-container>
 
       <mat-error>

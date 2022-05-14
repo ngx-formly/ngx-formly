@@ -101,14 +101,13 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
         (control.ngControl.valueAccessor as any)['_formField'] = this.formField;
       }
 
-      ['Prefix', 'Suffix'].forEach((type) =>
+      ['prefix', 'suffix'].forEach((type) =>
         observe<TemplateRef<any>>(
           this.field,
-          ['props', type.toLowerCase()],
+          ['props', type],
           ({ currentValue }) =>
             currentValue &&
             Promise.resolve().then(() => {
-              this.field.props![`_mat${type}`] = currentValue;
               this.options.detectChanges!(this.field);
             }),
         ),

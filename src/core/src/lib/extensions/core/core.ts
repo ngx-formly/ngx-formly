@@ -58,10 +58,7 @@ export class CoreExtension implements FormlyExtension {
   }
 
   private initFieldProps(field: FormlyFieldConfigCache) {
-    if (!field.props) {
-      field.props = field.templateOptions;
-    }
-
+    field.props ??= field.templateOptions;
     Object.defineProperty(field, 'templateOptions', {
       get: () => field.props,
       set: (props) => (field.props = props),
