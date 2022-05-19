@@ -602,13 +602,14 @@ export class FormlyJsonschema {
 
   private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
     const model = field.model ? clone(field.model) : (field.fieldArray ? [] : {});
-    const { form } = (field.options as any)._buildField({
-      form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
+    const { formControl } = (field.options as any)._buildField({
+      formControl: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
       fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null, strict: true })],
       model,
+      options: {},
     });
 
-    return form.valid;
+    return formControl.valid;
   }
 
   private mergeFields(f1: FormlyFieldConfig, f2: FormlyFieldConfig) {

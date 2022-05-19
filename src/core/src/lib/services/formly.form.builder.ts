@@ -80,7 +80,10 @@ export class FormlyFormBuilder {
 
     if (!options._buildField) {
       options._buildField = (field: FormlyFieldConfig) => {
-        this.buildForm(field.form, field.fieldGroup, field.model, field.options);
+        this._setOptions(field.options);
+        this._buildForm(field);
+        (field.options as FormlyFormOptionsCache)._checkField(field, true);
+
         return field;
       };
     }
