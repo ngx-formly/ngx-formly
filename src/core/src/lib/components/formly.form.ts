@@ -189,6 +189,16 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         }
       };
     }
+
+    if (!(<any> this.options)._trackModelChanges) {
+      (this.options as any)._trackModelChanges = (emitModelChange = false) => {
+        this.clearModelSubscriptions();
+        this.trackModelChanges(this.fields);
+        if (emitModelChange) {
+          this.modelChange.emit(this._modelChangeValue = clone(this.model));
+        }
+      };
+    }
   }
 
   private checkExpressionChange() {
