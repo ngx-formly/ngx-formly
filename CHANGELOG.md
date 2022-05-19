@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.12.2"></a>
+## [5.12.2](https://github.com/ngx-formly/ngx-formly/compare/v5.12.1...v5.12.2) (2022-05-19)
+
+
+### Performance Improvements
+
+* **core:** avoid rebuild all fields on FieldArray update ([#3301](https://github.com/ngx-formly/ngx-formly/issues/3301)) ([2f17e73](https://github.com/ngx-formly/ngx-formly/commit/2f17e73))
+
+
+
 <a name="5.12.1"></a>
 ## [5.12.1](https://github.com/ngx-formly/ngx-formly/compare/v5.12.0...v5.12.1) (2022-04-22)
 
