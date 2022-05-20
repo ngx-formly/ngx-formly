@@ -473,10 +473,19 @@ describe('FieldExpressionExtension', () => {
       it('should supports array notation in expression property', () => {
         const field = buildField({
           model: [],
+          props: {
+            options: [
+              { label: 'bar', value: 'bar' },
+              { label: 'baz', value: 'baz' },
+            ],
+          },
           expressions: {
             'model[0]': '1',
             'model["1"]': '2',
             "model['2']": '3',
+            "props['prop1']": '1',
+            'props["prop.2"]': '2',
+            'props.options[1].label': '"123"',
           },
         });
 

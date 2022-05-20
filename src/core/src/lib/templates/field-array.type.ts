@@ -26,7 +26,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     const length = field.model ? field.model.length : 0;
     if (field.fieldGroup.length > length) {
       for (let i = field.fieldGroup.length - 1; i >= length; --i) {
-        unregisterControl(field.fieldGroup[i]);
+        unregisterControl(field.fieldGroup[i], true);
         field.fieldGroup.splice(i, 1);
       }
     }

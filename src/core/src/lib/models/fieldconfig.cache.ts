@@ -13,7 +13,12 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   shareFormControl?: boolean;
   index?: number;
   _elementRefs?: ElementRef[];
-  _expressions?: { [property: string]: (ingoreCache: boolean) => boolean };
+  _expressions?: {
+    [property: string]: {
+      callback: (ingoreCache: boolean) => boolean;
+      paths?: string[];
+    };
+  };
   _hide?: boolean;
   _validators?: ValidatorFn[];
   _asyncValidators?: AsyncValidatorFn[];

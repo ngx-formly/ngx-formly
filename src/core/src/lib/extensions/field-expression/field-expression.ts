@@ -137,32 +137,34 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     let currentValue: any;
 
-    return (ignoreCache?: boolean) => {
-      try {
-        const exprValue = evalExpression(
-          parentExpression ? (...args: any) => parentExpression(field) || expr(...args) : expr,
-          { field },
-          [field.model, field.options.formState, field, ignoreCache],
-        );
+    return {
+      callback: (ignoreCache?: boolean) => {
+        try {
+          const exprValue = evalExpression(
+            parentExpression ? (...args: any) => parentExpression(field) || expr(...args) : expr,
+            { field },
+            [field.model, field.options.formState, field, ignoreCache],
+          );
 
-        if (
-          ignoreCache ||
-          (currentValue !== exprValue &&
-            (!isObject(exprValue) ||
-              isObservable(exprValue) ||
-              JSON.stringify(exprValue) !== JSON.stringify(currentValue)))
-        ) {
-          currentValue = exprValue;
-          this.evalExpr(field, path, exprValue);
+          if (
+            ignoreCache ||
+            (currentValue !== exprValue &&
+              (!isObject(exprValue) ||
+                isObservable(exprValue) ||
+                JSON.stringify(exprValue) !== JSON.stringify(currentValue)))
+          ) {
+            currentValue = exprValue;
+            this.evalExpr(field, path, exprValue);
 
-          return true;
+            return true;
+          }
+
+          return false;
+        } catch (error: any) {
+          error.message = `[Formly Error] [Expression "${path}"] ${error.message}`;
+          throw error;
         }
-
-        return false;
-      } catch (error: any) {
-        error.message = `[Formly Error] [Expression "${path}"] ${error.message}`;
-        throw error;
-      }
+      },
     };
   }
 
@@ -174,7 +176,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     let fieldChanged = false;
     if (field._expressions) {
       for (const key of Object.keys(field._expressions)) {
-        field._expressions[key](ignoreCache) && (fieldChanged = true);
+        field._expressions[key].callback(ignoreCache) && (fieldChanged = true);
       }
     }
     field.fieldGroup?.forEach((f) => this.checkExpressions(f, ignoreCache) && (fieldChanged = true));
@@ -237,13 +239,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
     try {
       let target: any = field;
-      const paths =
-        prop.indexOf('[') === -1
-          ? prop.split('.')
-          : prop
-              .replace(/\'|\"/g, '')
-              .split(/[[\]]{1,2}/) // https://stackoverflow.com/a/20198206
-              .filter((v) => v);
+      const paths = this._evalExpressionPath(field, prop);
       const lastIndex = paths.length - 1;
       for (let i = 0; i < lastIndex; i++) {
         target = target[paths[i]];
@@ -282,5 +278,34 @@ export class FieldExpressionExtension implements FormlyExtension {
       property,
       value,
     });
+  }
+
+  private _evalExpressionPath(field: FormlyFieldConfigCache, prop: string) {
+    if (field._expressions[prop] && field._expressions[prop].paths) {
+      return field._expressions[prop].paths;
+    }
+
+    let paths: string[] = [];
+    if (prop.indexOf('[') === -1) {
+      paths = prop.split('.');
+    } else {
+      prop
+        .split(/[[\]]{1,2}/) // https://stackoverflow.com/a/20198206
+        .filter((p) => p)
+        .forEach((path) => {
+          const arrayPath = path.match(/['|"](.*?)['|"]/);
+          if (arrayPath) {
+            paths.push(arrayPath[1]);
+          } else {
+            paths.push(...path.split('.').filter((p) => p));
+          }
+        });
+    }
+
+    if (field._expressions[prop]) {
+      field._expressions[prop].paths = paths;
+    }
+
+    return paths;
   }
 }

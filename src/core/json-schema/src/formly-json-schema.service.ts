@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldValue as getFieldValue,
@@ -61,7 +61,17 @@ function totalMatchedFields(field: FormlyFieldConfig): number {
   }
 
   const total = field.fieldGroup.reduce((s, f) => totalMatchedFields(f) + s, 0);
-  return total === 0 ? (field.key && getFieldValue(field) !== undefined ? 1 : 0) : total;
+  if (total === 0 && hasKey(field)) {
+    const value = getFieldValue(field);
+    if (
+      value === null ||
+      (value !== undefined && ((field.fieldArray && Array.isArray(value)) || (!field.fieldArray && isObject(value))))
+    ) {
+      return 1;
+    }
+  }
+
+  return total;
 }
 
 interface IOptions extends FormlyJsonschemaOptions {
@@ -69,6 +79,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   resetOnHide?: boolean;
   shareFormControl?: boolean;
   ignoreDefault?: boolean;
+  strict?: boolean;
   readOnly?: boolean;
   key?: FormlyFieldConfig['key'];
 }
@@ -104,6 +115,33 @@ export class FormlyJsonschema {
 
     if (options.resetOnHide) {
       field.resetOnHide = true;
+    }
+
+    if (key && options.strict) {
+      this.addValidator(field, 'type', (c: AbstractControl, f: FormlyFieldConfig) => {
+        const value = getFieldValue(f);
+        if (value != null) {
+          switch (field.type) {
+            case 'string': {
+              return typeof value === 'string';
+            }
+            case 'integer': {
+              return isInteger(value);
+            }
+            case 'number': {
+              return typeof value === 'number';
+            }
+            case 'object': {
+              return isObject(value);
+            }
+            case 'array': {
+              return Array.isArray(value);
+            }
+          }
+        }
+
+        return true;
+      });
     }
 
     if (options.shareFormControl === false) {
@@ -379,6 +417,13 @@ export class FormlyJsonschema {
       ];
     }
 
+    if (schema.oneOf && !field.type) {
+      delete field.key;
+      field.fieldGroup = [
+        this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, key, shareFormControl: false }),
+      ];
+    }
+
     // map in possible formlyConfig options from the widget property
     if (schema.widget?.formlyConfig) {
       field = this.mergeFields(field, schema.widget.formlyConfig);
@@ -462,11 +507,15 @@ export class FormlyJsonschema {
                 const control = f.parent.parent.fieldGroup[0].formControl;
                 if (control.value === -1 || forceUpdate) {
                   let value = f.parent.fieldGroup
-                    .map((f, i) => [f, i] as [FormlyFieldConfig, number])
-                    .filter(([f, i]) => {
-                      return this.isFieldValid(f, schemas[i], options);
-                    })
-                    .sort(([f1], [f2]) => {
+                    .map(
+                      (f, i) =>
+                        [f, i, this.isFieldValid(f, schemas[i], options)] as [FormlyFieldConfig, number, boolean],
+                    )
+                    .sort(([f1, , f1Valid], [f2, , f2Valid]) => {
+                      if (f1Valid !== f2Valid) {
+                        return f2Valid ? 1 : -1;
+                      }
+
                       const matchedFields1 = totalMatchedFields(f1);
                       const matchedFields2 = totalMatchedFields(f2);
                       if (matchedFields1 === matchedFields2) {
@@ -474,7 +523,7 @@ export class FormlyJsonschema {
                           return 0;
                         }
 
-                        return f1.props.disabled ? 1 : -1;
+                        return matchedFields2 > matchedFields1 ? 1 : -1;
                       }
 
                       return matchedFields2 > matchedFields1 ? 1 : -1;
@@ -617,10 +666,14 @@ export class FormlyJsonschema {
   }
 
   private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
+    const model = field.model ? clone(field.model) : field.fieldArray ? [] : {};
     const { form } = field.options.build({
-      form: new FormGroup({}),
-      fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null })],
-      model: field.model ? clone(field.model) : field.fieldArray ? [] : {},
+      form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
+      fieldGroup: [
+        this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null, strict: true }),
+      ],
+      model,
+      options: {},
     });
 
     return form.valid;

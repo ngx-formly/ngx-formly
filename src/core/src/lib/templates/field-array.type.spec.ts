@@ -3,6 +3,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
 import { FormlyInputModule, createFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
 import { FormArray } from '@angular/forms';
+import { renderComponent as renderFormComponent } from '../components/formly.form.spec';
 
 const renderComponent = (field: FormlyFieldConfig, config = {}) => {
   return createFieldComponent(field, {
@@ -114,6 +115,47 @@ describe('Array Field Type', () => {
     expect(spy).toHaveBeenCalledWith({ value: [], field, type: 'valueChanges' });
     expect(field.parent.model).toEqual({ array: [] });
 
+    subscription.unsubscribe();
+  });
+
+  it('should emit `valueChanges` on model change', () => {
+    const { fields, setInputs, detectChanges } = renderFormComponent(
+      {
+        fields: [
+          {
+            key: 'foo',
+            type: 'array',
+            fieldArray: { key: 'title' },
+          },
+        ],
+      },
+      {
+        config: {
+          declarations: [ArrayTypeComponent],
+          types: [
+            {
+              name: 'array',
+              component: ArrayTypeComponent,
+            },
+          ],
+        },
+      },
+    );
+    const spy = jest.fn();
+    const subscription = fields[0].formControl.valueChanges.subscribe(spy);
+
+    // add
+    setInputs({ model: { foo: [{ title: 1 }] } });
+    detectChanges();
+
+    expect(spy).toHaveBeenCalledWith([{ title: 1 }]);
+
+    // remove
+    spy.mockReset();
+
+    setInputs({ model: { foo: [] } });
+
+    expect(spy).toHaveBeenCalledWith([]);
     subscription.unsubscribe();
   });
 

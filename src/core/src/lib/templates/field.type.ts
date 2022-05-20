@@ -34,7 +34,7 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   get formControl() {
-    return this.field.formControl as F['formControl'];
+    return this.field.formControl as NonNullable<F['formControl']>;
   }
 
   get props() {

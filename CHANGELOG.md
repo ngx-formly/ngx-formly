@@ -166,6 +166,73 @@ All notable changes to this project will be documented in this file. See [standa
 * **material:** removed double tag closing in datepicker type ([#2327](https://github.com/ngx-formly/ngx-formly/issues/2327)) ([7969ac9](https://github.com/ngx-formly/ngx-formly/commit/7969ac913420e4b7b829c230f33e9ac44a8f4236))
 * sync v5 branch ([2acc4ea](https://github.com/ngx-formly/ngx-formly/commit/2acc4eaccb481df6f2931744a9a5cf00fbf2abd1))
 
+<a name="5.12.2"></a>
+## [5.12.2](https://github.com/ngx-formly/ngx-formly/compare/v5.12.1...v5.12.2) (2022-05-19)
+
+
+### Performance Improvements
+
+* **core:** avoid rebuild all fields on FieldArray update ([#3301](https://github.com/ngx-formly/ngx-formly/issues/3301)) ([2f17e73](https://github.com/ngx-formly/ngx-formly/commit/2f17e73))
+
+
+
+<a name="5.12.1"></a>
+## [5.12.1](https://github.com/ngx-formly/ngx-formly/compare/v5.12.0...v5.12.1) (2022-04-22)
+
+
+### Bug Fixes
+
+* **core:** emit valueChanges when fieldArray length is decreasing ([#3279](https://github.com/ngx-formly/ngx-formly/issues/3279)) ([169bc62](https://github.com/ngx-formly/ngx-formly/commit/169bc62)), closes [#3250](https://github.com/ngx-formly/ngx-formly/issues/3250)
+* **core:** improve eval array notation in expressions ([#3278](https://github.com/ngx-formly/ngx-formly/issues/3278)) ([17c0bd6](https://github.com/ngx-formly/ngx-formly/commit/17c0bd6)), closes [#3264](https://github.com/ngx-formly/ngx-formly/issues/3264)
+
+
+
+<a name="5.12.0"></a>
+# [5.12.0](https://github.com/ngx-formly/ngx-formly/compare/v5.11.2...v5.12.0) (2022-03-30)
+
+
+### Bug Fixes
+
+* **json-schema:** improve oneOf selection of mixed type ([#3248](https://github.com/ngx-formly/ngx-formly/issues/3248)) ([39d41a3](https://github.com/ngx-formly/ngx-formly/commit/39d41a3)), closes [#3245](https://github.com/ngx-formly/ngx-formly/issues/3245)
+
+
+### Features
+
+* **core:** export FormlySelectOptionsPipe ([#3249](https://github.com/ngx-formly/ngx-formly/issues/3249)) ([e93ccff](https://github.com/ngx-formly/ngx-formly/commit/e93ccff)), closes [#3236](https://github.com/ngx-formly/ngx-formly/issues/3236)
+* **json-schema:** support oneOf for non-object type ([#3152](https://github.com/ngx-formly/ngx-formly/issues/3152)) ([f3a7e70](https://github.com/ngx-formly/ngx-formly/commit/f3a7e70)), closes [#2528](https://github.com/ngx-formly/ngx-formly/issues/2528)
+
+
+
+<a name="5.11.2"></a>
+## [5.11.2](https://github.com/ngx-formly/ngx-formly/compare/v5.11.1...v5.11.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* **core:** allow override typing for field property in FieldArrayType ([#3230](https://github.com/ngx-formly/ngx-formly/issues/3230)) ([3aa5537](https://github.com/ngx-formly/ngx-formly/commit/3aa5537)), closes [#3218](https://github.com/ngx-formly/ngx-formly/issues/3218)
+
+
+
+<a name="5.11.1"></a>
+## [5.11.1](https://github.com/ngx-formly/ngx-formly/compare/v5.11.0...v5.11.1) (2022-03-13)
+
+
+### Bug Fixes
+
+* **core:** mark defaultOptions as optional ([c71d799](https://github.com/ngx-formly/ngx-formly/commit/c71d799))
+
+
+
+<a name="5.11.0"></a>
+# [5.11.0](https://github.com/ngx-formly/ngx-formly/compare/v5.10.33...v5.11.0) (2022-03-13)
+
+
+### Features
+
+* **core:** add support of strictTemplates in FieldType ([#3218](https://github.com/ngx-formly/ngx-formly/issues/3218)) ([99e7e2b](https://github.com/ngx-formly/ngx-formly/commit/99e7e2b))
+
+
+
 <a name="5.10.33"></a>
 ## [5.10.33](https://github.com/ngx-formly/ngx-formly/compare/v5.10.32...v5.10.33) (2022-02-22)
 

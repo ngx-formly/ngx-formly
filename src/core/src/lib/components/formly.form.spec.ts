@@ -11,7 +11,7 @@ type IFormlyFormInputs = Partial<{
   modelChange: (m: any) => void;
 }>;
 
-const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
+export const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
   inputs = {
     form: new FormGroup({}),
     model: {},
@@ -483,7 +483,7 @@ describe('FormlyForm Component', () => {
         { extras: { immutable: true } },
       );
 
-      let titleField;
+      let titleField: FormlyFieldConfig;
       setInputs({
         model: { title: 'foo' },
         fields: [{ key: 'title', hooks: { onInit: (f) => (titleField = f) } }],
