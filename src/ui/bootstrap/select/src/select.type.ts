@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, ViewChild, NgZone, Type } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, NgZone, Type, ViewContainerRef } from '@angular/core';
 import { SelectControlValueAccessor } from '@angular/forms';
-import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 import { take } from 'rxjs/operators';
-import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
@@ -17,40 +17,16 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 @Component({
   selector: 'formly-field-select',
   template: `
-    <select
-      *ngIf="props.multiple; else singleSelect"
-      class="form-select"
-      multiple
-      [formControl]="formControl"
-      [compareWith]="props.compareWith"
-      [class.is-invalid]="showError"
-      [formlyAttributes]="field"
-    >
-      <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
-        <ng-container *ngFor="let opt of opts">
-          <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
-            {{ opt.label }}
-          </option>
-          <ng-template #optgroup>
-            <optgroup [label]="opt.label">
-              <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
-                {{ child.label }}
-              </option>
-            </optgroup>
-          </ng-template>
-        </ng-container>
-      </ng-container>
-    </select>
-
-    <ng-template #singleSelect>
+    <ng-template #fieldTypeTemplate>
       <select
+        *ngIf="props.multiple; else singleSelect"
         class="form-select"
+        multiple
         [formControl]="formControl"
         [compareWith]="props.compareWith"
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
       >
-        <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
         <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
           <ng-container *ngFor="let opt of opts">
             <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
@@ -66,6 +42,32 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
           </ng-container>
         </ng-container>
       </select>
+
+      <ng-template #singleSelect>
+        <select
+          class="form-select"
+          [formControl]="formControl"
+          [compareWith]="props.compareWith"
+          [class.is-invalid]="showError"
+          [formlyAttributes]="field"
+        >
+          <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
+          <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
+            <ng-container *ngFor="let opt of opts">
+              <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
+                {{ opt.label }}
+              </option>
+              <ng-template #optgroup>
+                <optgroup [label]="opt.label">
+                  <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
+                    {{ child.label }}
+                  </option>
+                </optgroup>
+              </ng-template>
+            </ng-container>
+          </ng-container>
+        </select>
+      </ng-template>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -113,7 +115,7 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
     };
   }
 
-  constructor(private ngZone: NgZone) {
-    super();
+  constructor(private ngZone: NgZone, hostContainerRef: ViewContainerRef) {
+    super(hostContainerRef);
   }
 }

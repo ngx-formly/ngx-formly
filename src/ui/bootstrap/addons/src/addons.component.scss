@@ -1,20 +1,3 @@
-:host ::ng-deep .input-group > {
-  .input-group-btn {
-    cursor: pointer;
-  }
-
-  :not(:first-child) .form-control {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  :not(:last-child) .form-control {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .input-addons {
-    position: relative;
-    flex: 1 1 auto;
-    width: 1%;
-    margin-bottom: 0;
-  }
+formly-wrapper-form-field .input-group-btn {
+  cursor: pointer;
 }

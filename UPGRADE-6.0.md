@@ -241,7 +241,14 @@ export class AppModule {}
   + onClick: (field, $event) => ...,
   ```
 
-
+- The following selectors are no longer used to customize bootstrap types instead rely on `formly-wrapper-form-field`:
+  - `formly-wrapper-addons`
+  - `formly-field-checkbox`
+  - `formly-field-input`
+  - `formly-field-multicheckbox`
+  - `formly-field-radio`
+  - `formly-field-select`
+  - `formly-field-textarea`
 
 @ngx-formly/ionic
 -----------------
