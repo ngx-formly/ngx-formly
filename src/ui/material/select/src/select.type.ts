@@ -1,7 +1,20 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+
+interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
+  multiple?: boolean;
+  selectAllOption?: string;
+  disableOptionCentering?: boolean;
+  typeaheadDebounceInterval?: number;
+  compareWith?: (o1: any, o2: any) => boolean;
+}
+
+export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
+  type: 'select' | Type<FormlyFieldSelect>;
+}
 
 @Component({
   selector: 'formly-field-mat-select',
@@ -50,7 +63,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   override defaultOptions = {
     props: {
       compareWith(o1: any, o2: any) {

@@ -1,6 +1,13 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/kendo/form-field';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/kendo/form-field';
+import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+
+interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {}
+
+export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
+  type: 'select' | Type<FormlyFieldSelect>;
+}
 
 @Component({
   selector: 'formly-field-kendo-select',
@@ -18,4 +25,4 @@ import { FieldType } from '@ngx-formly/kendo/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {}
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {}

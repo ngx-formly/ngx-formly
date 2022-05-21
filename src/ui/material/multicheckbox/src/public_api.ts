@@ -1,2 +1,2 @@
 export { FormlyMatMultiCheckboxModule } from './multicheckbox.module';
-export { FormlyFieldMultiCheckbox } from './multicheckbox.type';
+export { FormlyFieldMultiCheckbox, FormlyMultiCheckboxFieldConfig } from './multicheckbox.type';

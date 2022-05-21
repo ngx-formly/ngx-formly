@@ -1,2 +1,2 @@
 export { FormlyNzCheckboxModule } from './checkbox.module';
-export { FormlyFieldCheckbox } from './checkbox.type';
+export { FormlyFieldCheckbox, FormlyCheckboxFieldConfig } from './checkbox.type';

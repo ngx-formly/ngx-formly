@@ -1,5 +1,29 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
+
+interface DatepickerProps extends FormlyFieldProps {
+  defaultDate?: Date;
+  dateFormat?: string;
+  hourFormat?: string;
+  showTime?: boolean;
+  showIcon?: boolean;
+  showButtonBar?: boolean;
+  showOtherMonths?: boolean;
+  selectOtherMonths?: boolean;
+  selectionMode?: string;
+  numberOfMonths?: number;
+  inline?: boolean;
+  readonlyInput?: boolean;
+  touchUI?: boolean;
+  monthNavigator?: boolean;
+  yearNavigator?: boolean;
+  yearRange?: string;
+}
+
+export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<DatepickerProps> {
+  type: 'datepicker' | Type<FormlyFieldDatepicker>;
+}
 
 @Component({
   selector: 'formly-field-primeng-datepicker',
@@ -29,4 +53,4 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyDatePicker extends FieldType<FieldTypeConfig> {}
+export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig<DatepickerProps>> {}

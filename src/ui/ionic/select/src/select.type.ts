@@ -1,5 +1,19 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
+import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+
+interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
+  compareWith?: ((currentValue: any, compareValue: any) => boolean) | null | string | undefined;
+  multiple?: boolean;
+  interface?: 'action-sheet' | 'alert' | 'popover';
+  okText?: string;
+  cancelText?: string;
+}
+
+export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
+  type: 'select' | Type<FormlyFieldSelect>;
+}
 
 @Component({
   selector: 'formly-field-ion-select',
@@ -26,7 +40,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   override defaultOptions = {
     props: {
       compareWith(o1: any, o2: any) {

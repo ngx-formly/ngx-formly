@@ -1,7 +1,15 @@
-import { Component, ChangeDetectionStrategy, ViewChildren, QueryList } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { Component, ChangeDetectionStrategy, ViewChildren, QueryList, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+
+interface MultiCheckboxProps extends FormlyFieldProps {
+  labelPosition?: 'before' | 'after';
+}
+
+export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiCheckboxProps> {
+  type: 'multicheckbox' | Type<FormlyFieldMultiCheckbox>;
+}
 
 @Component({
   selector: 'formly-field-mat-multicheckbox',
@@ -26,7 +34,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
     '[id]': 'id',
   },
 })
-export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
+export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig<MultiCheckboxProps>> {
   @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;
 
   override defaultOptions = {

@@ -1,5 +1,16 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/nativescript/form-field';
+
+interface TextAreaProps extends FormlyFieldProps {
+  hint?: string;
+  autocorrect?: boolean;
+  keyboardType?: any;
+}
+
+export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaProps> {
+  type: 'textarea' | Type<FormlyFieldTextArea>;
+}
 
 @Component({
   selector: 'formly-field-ns-textarea',
@@ -16,4 +27,4 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldTextarea extends FieldType<FieldTypeConfig> {}
+export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {}

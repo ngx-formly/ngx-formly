@@ -1,5 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/ng-zorro-antd/form-field';
+
+interface InputProps extends FormlyFieldProps {}
+
+export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
+  type: 'input' | Type<FormlyFieldInput>;
+}
 
 @Component({
   selector: 'formly-field-nz-input',
@@ -17,4 +24,4 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
+export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {}

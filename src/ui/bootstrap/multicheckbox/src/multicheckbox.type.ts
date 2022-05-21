@@ -1,5 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
+
+interface MultiCheckboxProps extends FormlyFieldProps {
+  formCheck: 'default' | 'inline' | 'switch' | 'inline-switch';
+}
+
+export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiCheckboxProps> {
+  type: 'multicheckbox' | Type<FormlyFieldMultiCheckbox>;
+}
 
 @Component({
   selector: 'formly-field-multicheckbox',
@@ -29,10 +38,10 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig> {
+export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig<MultiCheckboxProps>> {
   override defaultOptions = {
     props: {
-      formCheck: 'default', // 'default' | 'inline' | 'switch' | 'inline-switch'
+      formCheck: 'default' as const, // 'default' | 'inline' | 'switch' | 'inline-switch'
     },
   };
 

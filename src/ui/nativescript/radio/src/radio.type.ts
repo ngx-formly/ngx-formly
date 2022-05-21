@@ -1,5 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/nativescript/form-field';
+
+interface RadioProps extends FormlyFieldProps {}
+
+export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
+  type: 'radio' | Type<FormlyFieldRadio>;
+}
 
 @Component({
   selector: 'formly-field-ns-radio',
@@ -14,7 +21,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {
+export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   tap(id: any) {
     const value = this.formControl.value === id ? null : id;
     setTimeout(() => {

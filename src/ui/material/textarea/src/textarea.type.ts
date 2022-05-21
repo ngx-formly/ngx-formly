@@ -1,7 +1,17 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
+
+interface TextAreaProps extends FormlyFieldProps {
+  autosize?: boolean;
+  autosizeMinRows?: number;
+  autosizeMaxRows?: number;
+}
+
+export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaProps> {
+  type: 'textarea' | Type<FormlyFieldTextArea>;
+}
 
 @Component({
   selector: 'formly-field-mat-textarea',
@@ -32,7 +42,7 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldTextArea extends FieldType<FieldTypeConfig> {
+export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {
   override defaultOptions = {
     props: {
       cols: 1,

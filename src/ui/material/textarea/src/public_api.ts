@@ -1,2 +1,2 @@
 export { FormlyMatTextAreaModule } from './textarea.module';
-export { FormlyFieldTextArea } from './textarea.type';
+export { FormlyFieldTextArea, FormlyTextAreaFieldConfig } from './textarea.type';

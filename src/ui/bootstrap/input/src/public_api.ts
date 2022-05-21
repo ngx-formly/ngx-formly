@@ -1,2 +1,2 @@
 export { FormlyBootstrapInputModule } from './input.module';
-export { FormlyFieldInput } from './input.type';
+export { FormlyFieldInput, FormlyInputFieldConfig } from './input.type';

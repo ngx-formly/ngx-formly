@@ -1,12 +1,12 @@
 import { OnDestroy, TemplateRef, ViewChild, Type, Directive, ViewChildren, QueryList } from '@angular/core';
-import { FieldType as CoreFieldType, ɵobserve as observe } from '@ngx-formly/core';
+import { FieldType as CoreFieldType, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { FormlyFieldConfig } from './form-field.wrapper';
+import { FormlyFieldProps } from './form-field.wrapper';
 
 @Directive()
-export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
+export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
   extends CoreFieldType<F>
   implements OnDestroy, MatFormFieldControl<any>
 {

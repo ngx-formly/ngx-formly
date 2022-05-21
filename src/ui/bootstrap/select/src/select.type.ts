@@ -1,7 +1,18 @@
-import { Component, ChangeDetectionStrategy, ViewChild, NgZone } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, NgZone, Type } from '@angular/core';
 import { SelectControlValueAccessor } from '@angular/forms';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { take } from 'rxjs/operators';
+import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
+import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+
+interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
+  multiple?: boolean;
+  compareWith?: (o1: any, o2: any) => boolean;
+}
+
+export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
+  type: 'select' | Type<FormlyFieldSelect>;
+}
 
 @Component({
   selector: 'formly-field-select',
@@ -16,26 +27,18 @@ import { take } from 'rxjs/operators';
       [formlyAttributes]="field"
     >
       <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
-        <ng-container *ngIf="props._flatOptions; else grouplist">
-          <ng-container *ngFor="let opt of opts">
-            <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
-          </ng-container>
+        <ng-container *ngFor="let opt of opts">
+          <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
+            {{ opt.label }}
+          </option>
+          <ng-template #optgroup>
+            <optgroup [label]="opt.label">
+              <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
+                {{ child.label }}
+              </option>
+            </optgroup>
+          </ng-template>
         </ng-container>
-
-        <ng-template #grouplist>
-          <ng-container *ngFor="let opt of opts">
-            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
-              {{ opt.label }}
-            </option>
-            <ng-template #optgroup>
-              <optgroup [label]="opt.label">
-                <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
-                  {{ child.label }}
-                </option>
-              </optgroup>
-            </ng-template>
-          </ng-container>
-        </ng-template>
       </ng-container>
     </select>
 
@@ -49,33 +52,25 @@ import { take } from 'rxjs/operators';
       >
         <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
         <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
-          <ng-container *ngIf="props._flatOptions; else grouplist">
-            <ng-container *ngFor="let opt of opts">
-              <option [ngValue]="opt.value" [disabled]="opt.disabled">{{ opt.label }}</option>
-            </ng-container>
+          <ng-container *ngFor="let opt of opts">
+            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
+              {{ opt.label }}
+            </option>
+            <ng-template #optgroup>
+              <optgroup [label]="opt.label">
+                <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
+                  {{ child.label }}
+                </option>
+              </optgroup>
+            </ng-template>
           </ng-container>
-
-          <ng-template #grouplist>
-            <ng-container *ngFor="let opt of opts">
-              <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
-                {{ opt.label }}
-              </option>
-              <ng-template #optgroup>
-                <optgroup [label]="opt.label">
-                  <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
-                    {{ child.label }}
-                  </option>
-                </optgroup>
-              </ng-template>
-            </ng-container>
-          </ng-template>
         </ng-container>
       </select>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   override defaultOptions = {
     props: {
       compareWith(o1: any, o2: any) {

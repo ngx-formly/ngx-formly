@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { FieldWrapper } from '@ngx-formly/core';
+import { IonItem, IonLabel } from '@ionic/angular';
+import { FieldWrapper, FormlyFieldConfig, FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
+
+export interface FormlyFieldProps extends CoreFormlyFieldProps {
+  hideRequiredMarker?: boolean;
+  itemLines?: IonItem['lines'];
+  labelPosition?: IonLabel['position'];
+}
 
 @Component({
   selector: 'formly-wrapper-ion-form-field',
@@ -22,4 +29,4 @@ import { FieldWrapper } from '@ngx-formly/core';
     </ion-item>
   `,
 })
-export class FormlyWrapperFormField extends FieldWrapper {}
+export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

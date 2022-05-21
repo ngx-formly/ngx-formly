@@ -1,6 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+
+interface InputProps extends FormlyFieldProps {}
+
+export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
+  type: 'input' | Type<FormlyFieldInput>;
+}
 
 @Component({
   selector: 'formly-field-mat-input',
@@ -35,7 +41,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldInput extends FieldType<FieldTypeConfig> {
+export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {
   get type() {
     return this.props.type || 'text';
   }

@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FieldWrapper } from '@ngx-formly/core';
+import { FieldWrapper, FormlyFieldConfig, FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
+
+export interface FormlyFieldProps extends CoreFormlyFieldProps {
+  hideRequiredMarker?: boolean;
+  hideLabel?: boolean;
+}
 
 @Component({
   selector: 'formly-wrapper-nz-form-field',
@@ -19,7 +24,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     </nz-form-item>
   `,
 })
-export class FormlyWrapperFormField extends FieldWrapper {
+export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {
   get errorState() {
     return this.showError ? 'error' : '';
   }

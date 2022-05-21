@@ -1,2 +1,2 @@
 export { FormlyMatNativeSelectModule } from './native-select.module';
-export { FormlyFieldNativeSelect } from './native-select.type';
+export { FormlyFieldNativeSelect, FormlyNativeSelectFieldConfig } from './native-select.type';

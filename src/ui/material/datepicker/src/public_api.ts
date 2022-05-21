@@ -1,2 +1,2 @@
 export { FormlyMatDatepickerModule } from './datepicker.module';
-export { FormlyFieldDatepicker } from './datepicker.type';
+export { FormlyFieldDatepicker, FormlyDatepickerFieldConfig } from './datepicker.type';

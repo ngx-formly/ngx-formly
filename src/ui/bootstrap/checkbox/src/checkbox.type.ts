@@ -1,5 +1,15 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
+
+interface CheckboxProps extends FormlyFieldProps {
+  formCheck?: 'default' | 'inline' | 'switch' | 'inline-switch' | 'nolabel';
+  indeterminate?: boolean;
+}
+
+export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxProps> {
+  type: 'checkbox' | Type<FormlyFieldCheckbox>;
+}
 
 @Component({
   selector: 'formly-field-checkbox',
@@ -28,12 +38,12 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
+export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {
   override defaultOptions = {
     props: {
       indeterminate: true,
       hideLabel: true,
-      formCheck: 'default', // 'default' | 'inline' | 'switch' | 'inline-switch' | 'nolabel'
+      formCheck: 'default' as const,
     },
   };
 }

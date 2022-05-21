@@ -6,11 +6,21 @@ import {
   AfterViewChecked,
   OnDestroy,
   AfterViewInit,
+  Type,
 } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
+
+interface CheckboxProps extends FormlyFieldProps {
+  indeterminate?: boolean;
+  labelPosition?: 'before' | 'after';
+}
+
+export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxProps> {
+  type: 'checkbox' | Type<FormlyFieldCheckbox>;
+}
 
 @Component({
   selector: 'formly-field-mat-checkbox',
@@ -22,7 +32,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
       [tabIndex]="props.tabindex"
       [indeterminate]="props.indeterminate && formControl.value == null"
       [color]="props.color"
-      [labelPosition]="props.align || props.labelPosition"
+      [labelPosition]="props.labelPosition"
     >
       {{ props.label }}
       <span
@@ -36,7 +46,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldCheckbox
-  extends FieldType<FieldTypeConfig>
+  extends FieldType<FieldTypeConfig<CheckboxProps>>
   implements AfterViewInit, AfterViewChecked, OnDestroy
 {
   @ViewChild(MatCheckbox, { static: true }) checkbox!: MatCheckbox;
@@ -46,7 +56,6 @@ export class FormlyFieldCheckbox
       indeterminate: true,
       floatLabel: 'always' as const,
       hideLabel: true,
-      align: 'start', // start or end
       color: 'accent' as const, // workaround for https://github.com/angular/components/issues/18465
     },
   };

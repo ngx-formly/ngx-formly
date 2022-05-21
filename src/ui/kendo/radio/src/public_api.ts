@@ -1,2 +1,2 @@
 export { FormlyRadioModule } from './radio.module';
-export { FormlyFieldRadio } from './radio.type';
+export { FormlyFieldRadio, FormlyRadioFieldConfig } from './radio.type';

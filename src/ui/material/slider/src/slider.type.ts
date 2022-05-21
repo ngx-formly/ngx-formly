@@ -1,7 +1,22 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
-import { MatSlider } from '@angular/material/slider';
+import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { MatSlider, MatSliderChange } from '@angular/material/slider';
+
+interface SliderProps extends FormlyFieldProps {
+  displayWith?: (value: number) => string | number;
+  invert?: boolean;
+  thumbLabel?: boolean;
+  tickInterval?: number;
+  valueText?: string;
+  vertical?: boolean;
+  input?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
+  change?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
+}
+
+export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> {
+  type: 'slider' | Type<FormlyFieldSlider>;
+}
 
 @Component({
   selector: 'formly-field-mat-slider',
@@ -29,7 +44,7 @@ import { MatSlider } from '@angular/material/slider';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSlider extends FieldType<FieldTypeConfig> {
+export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
   @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
   override defaultOptions = {
     props: {

@@ -1,9 +1,16 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
+
+interface ToggleProps extends FormlyFieldProps {}
+
+export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> {
+  type: 'toggle' | Type<FormlyFieldToggle>;
+}
 
 @Component({
   selector: 'formly-field-ion-toggle',
   template: ` <ion-toggle [formControl]="formControl" [ionFormlyAttributes]="field"> </ion-toggle> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldToggle extends FieldType<FieldTypeConfig> {}
+export class FormlyFieldToggle extends FieldType<FieldTypeConfig<ToggleProps>> {}
