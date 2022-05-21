@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-beta.0](https://github.com/ngx-formly/ngx-formly/compare/v5.12.2...v6.0.0-beta.0) (2022-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **bootstrap:** To customize style of bootstrap types rely on `formly-wrapper-form-field` instead of the following selectors:
+  - `formly-wrapper-addons`
+  - `formly-field-checkbox`
+  - `formly-field-input`
+  - `formly-field-multicheckbox`
+  - `formly-field-radio`
+  - `formly-field-select`
+  - `formly-field-textarea`
+
+### Features
+
+* add typings for Formly UI types ([#3303](https://github.com/ngx-formly/ngx-formly/issues/3303)) ([8f9d9aa](https://github.com/ngx-formly/ngx-formly/commit/8f9d9aacdf1bead2eba3d0ae6c998df6ff48c237)), closes [#3242](https://github.com/ngx-formly/ngx-formly/issues/3242)
+* **bootstrap:** support floating labels ([7c4c64c](https://github.com/ngx-formly/ngx-formly/commit/7c4c64c6f86749957784c82d453fdf54a1997c86)), closes [#3265](https://github.com/ngx-formly/ngx-formly/issues/3265)
+* **core:** add preset module to enable form config re-use ([#3256](https://github.com/ngx-formly/ngx-formly/issues/3256)) ([597f5fa](https://github.com/ngx-formly/ngx-formly/commit/597f5faf6c574eff4c8edd1371ae93ac317a6cc7)), closes [#3208](https://github.com/ngx-formly/ngx-formly/issues/3208)
+* **core:** allow passing component to the field definition ([#3239](https://github.com/ngx-formly/ngx-formly/issues/3239)) ([d6bff72](https://github.com/ngx-formly/ngx-formly/commit/d6bff72edabdd2f21ab3521deb295c0d242a86f8)), closes [#2077](https://github.com/ngx-formly/ngx-formly/issues/2077)
+* **core:** allow passing wrapper component to the field definition ([#3240](https://github.com/ngx-formly/ngx-formly/issues/3240)) ([b56e4be](https://github.com/ngx-formly/ngx-formly/commit/b56e4bed6da6ded556d89b7b05c23149bc3cc9af)), closes [#2077](https://github.com/ngx-formly/ngx-formly/issues/2077)
+* **core:** deprecate `expressionProperties` in favor of `expressions` ([4df05ce](https://github.com/ngx-formly/ngx-formly/commit/4df05ce846d6c4159d298430bf61489f939e252e)), closes [#2853](https://github.com/ngx-formly/ngx-formly/issues/2853)
+* **core:** deprecate `templateOptions` in favor of `props` ([6e9d949](https://github.com/ngx-formly/ngx-formly/commit/6e9d9498fbe9546e6945ba378cccd355091c3a0a)), closes [#2853](https://github.com/ngx-formly/ngx-formly/issues/2853)
+* **json-schema:** rely on minItems to pre-populate array default value ([#3263](https://github.com/ngx-formly/ngx-formly/issues/3263)) ([4943c78](https://github.com/ngx-formly/ngx-formly/commit/4943c7825494fc6582a2e3532e7d44a462889294)), closes [#3246](https://github.com/ngx-formly/ngx-formly/issues/3246)
+
+
+### Bug Fixes
+
+* **core:** remove additionalProps from FormlyFieldProps interface ([#3295](https://github.com/ngx-formly/ngx-formly/issues/3295)) ([05891df](https://github.com/ngx-formly/ngx-formly/commit/05891dff4e4589d48c17d89dfc003241e77e4618)), closes [#3242](https://github.com/ngx-formly/ngx-formly/issues/3242)
+* **material:** detect changes of datepicker opened property ([#3275](https://github.com/ngx-formly/ngx-formly/issues/3275)) ([30f45fd](https://github.com/ngx-formly/ngx-formly/commit/30f45fda734e28f7488e9f7a23bbf10a0cc319ad)), closes [#3257](https://github.com/ngx-formly/ngx-formly/issues/3257)
+
 ## [6.0.0-next.9](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-next.8...v6.0.0-next.9) (2022-03-13)
 
 
