@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
-import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 
 interface CheckboxProps extends FormlyFieldProps {
   formCheck?: 'default' | 'inline' | 'switch' | 'inline-switch' | 'nolabel';
@@ -14,27 +14,29 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
 @Component({
   selector: 'formly-field-checkbox',
   template: `
-    <div
-      class="form-check"
-      [ngClass]="{
-        'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',
-        'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch'
-      }"
-    >
-      <input
-        type="checkbox"
-        [class.is-invalid]="showError"
-        class="form-check-input"
-        [class.position-static]="props.formCheck === 'nolabel'"
-        [indeterminate]="props.indeterminate && formControl.value == null"
-        [formControl]="formControl"
-        [formlyAttributes]="field"
-      />
-      <label *ngIf="props.formCheck !== 'nolabel'" [for]="id" class="form-check-label">
-        {{ props.label }}
-        <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
-      </label>
-    </div>
+    <ng-template #fieldTypeTemplate>
+      <div
+        class="form-check"
+        [ngClass]="{
+          'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',
+          'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch'
+        }"
+      >
+        <input
+          type="checkbox"
+          [class.is-invalid]="showError"
+          class="form-check-input"
+          [class.position-static]="props.formCheck === 'nolabel'"
+          [indeterminate]="props.indeterminate && formControl.value == null"
+          [formControl]="formControl"
+          [formlyAttributes]="field"
+        />
+        <label *ngIf="props.formCheck !== 'nolabel'" [for]="id" class="form-check-label">
+          {{ props.label }}
+          <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
+        </label>
+      </div>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

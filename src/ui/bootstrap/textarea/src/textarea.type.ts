@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
-import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 
 interface TextAreaProps extends FormlyFieldProps {
   cols?: number;
@@ -14,15 +14,17 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
 @Component({
   selector: 'formly-field-textarea',
   template: `
-    <textarea
-      [formControl]="formControl"
-      [cols]="props.cols"
-      [rows]="props.rows"
-      class="form-control"
-      [class.is-invalid]="showError"
-      [formlyAttributes]="field"
-    >
-    </textarea>
+    <ng-template #fieldTypeTemplate>
+      <textarea
+        [formControl]="formControl"
+        [cols]="props.cols"
+        [rows]="props.rows"
+        class="form-control"
+        [class.is-invalid]="showError"
+        [formlyAttributes]="field"
+      >
+      </textarea>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
