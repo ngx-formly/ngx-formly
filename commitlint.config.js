@@ -11,6 +11,7 @@ module.exports = {
         'core',
         'testing',
         'select',
+        'preset',
         'schematics',
         'json-schema',
         'material',

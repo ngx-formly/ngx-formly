@@ -48,6 +48,15 @@ export interface ValidationMessageOption {
   message: string | ((error: any, field: FormlyFieldConfig) => string | Observable<string>);
 }
 
+export interface PresetOption {
+  name: string;
+  config: FormlyFieldConfig | FormlyFieldConfigPresetProvider;
+}
+
+export interface FormlyFieldConfigPresetProvider {
+  getConfiguration: () => FormlyFieldConfig;
+}
+
 export interface ConfigOption {
   types?: TypeOption[];
   wrappers?: WrapperOption[];
@@ -90,4 +99,5 @@ export interface ConfigOption {
      */
     renderFormlyFieldElement?: boolean;
   };
+  presets?: PresetOption[];
 }
