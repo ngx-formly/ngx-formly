@@ -1,2 +1,2 @@
 export { FormlyNzSelectModule } from './select.module';
-export { FormlyFieldSelect } from './select.type';
+export { FormlyFieldSelect, FormlySelectFieldConfig } from './select.type';

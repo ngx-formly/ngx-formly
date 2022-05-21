@@ -1,13 +1,20 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
 
 export interface FormlySelectOption {
   label: string;
   disabled?: boolean;
   value?: any;
   group?: FormlySelectOption[];
+}
+
+export interface FormlyFieldSelectProps extends FormlyFieldProps {
+  groupProp?: string | ((option: any) => string);
+  labelProp?: string | ((option: any) => any);
+  valueProp?: string | ((option: any) => boolean);
+  disabledProp?: string | ((option: any) => string);
 }
 
 type ITransformOption = {
@@ -46,10 +53,6 @@ export class FormlySelectOptionsPipe implements PipeTransform {
         opts.push(o);
       }
     });
-
-    if (field?.props) {
-      field.props._flatOptions = !Object.keys(groups).length;
-    }
 
     return opts;
   }

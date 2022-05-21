@@ -1,6 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { action } from '@nativescript/core/ui/dialogs';
+import { FormlyFieldProps } from '@ngx-formly/nativescript/form-field';
+import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+
+interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {}
+
+export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
+  type: 'select' | Type<FormlyFieldSelect>;
+}
 
 @Component({
   selector: 'formly-field-ns-select',
@@ -11,7 +19,7 @@ import { action } from '@nativescript/core/ui/dialogs';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldSelect extends FieldType<FieldTypeConfig> {
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   tap(options: any[]) {
     action({ title: this.props.label, actions: options.map((o) => o.label) }).then((selectedAction) =>
       this.formControl.patchValue(options.find((o) => o.label === selectedAction).value),

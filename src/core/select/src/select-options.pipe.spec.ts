@@ -20,17 +20,6 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     });
   });
 
-  it('should add a flag for flat options', () => {
-    const field: any = { props: {} };
-    pipe.transform([{ label: '1', value: '1' }], field).subscribe(() => {
-      expect(field.props._flatOptions).toBeTrue();
-    });
-
-    pipe.transform([{ label: '1', value: '1', group: '1' }], field).subscribe(() => {
-      expect(field.props._flatOptions).toBeFalse();
-    });
-  });
-
   it('already grouped structure, so nothing to process', () => {
     const field = {};
     const options = [

@@ -6,9 +6,39 @@ import {
   OnDestroy,
   TemplateRef,
   ChangeDetectorRef,
+  Type,
 } from '@angular/core';
-import { FieldTypeConfig, FormlyConfig, ɵobserve as observe } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { FieldTypeConfig, FormlyConfig, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { ComponentType } from '@angular/cdk/portal';
+import { MatCalendarCellClassFunction, MatDatepicker } from '@angular/material/datepicker';
+
+interface DatepickerProps extends FormlyFieldProps {
+  datepickerOptions?: Partial<{
+    touchUi: boolean;
+    opened: boolean;
+    disabled: boolean;
+    startView: 'month' | 'year' | 'multi-year';
+    datepickerTogglePosition: 'suffix' | 'prefix';
+    calendarHeaderComponent: ComponentType<any>;
+    filter: (date: any | null) => boolean;
+    min: any;
+    max: any;
+    dateInput: (field: FieldTypeConfig<DatepickerProps>, event: any) => void;
+    dateChange: (field: FieldTypeConfig<DatepickerProps>, event: any) => void;
+
+    monthSelected: (field: FieldTypeConfig<DatepickerProps>, event: any, picker: MatDatepicker<any>) => void;
+    yearSelected: (field: FieldTypeConfig<DatepickerProps>, event: any, picker: MatDatepicker<any>) => void;
+
+    dateClass: MatCalendarCellClassFunction<any>;
+    panelClass: string | string[];
+    startAt: any | null;
+  }>;
+}
+
+export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<DatepickerProps> {
+  type: 'datepicker' | Type<FormlyFieldDatepicker>;
+}
 
 @Component({
   selector: 'formly-field-mat-datepicker',
@@ -57,14 +87,17 @@ import { FieldType } from '@ngx-formly/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig> implements AfterViewInit, OnDestroy {
+export class FormlyFieldDatepicker
+  extends FieldType<FieldTypeConfig<DatepickerProps>>
+  implements AfterViewInit, OnDestroy
+{
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   override defaultOptions = {
     props: {
       datepickerOptions: {
-        startView: 'month',
-        datepickerTogglePosition: 'suffix',
+        startView: 'month' as const,
+        datepickerTogglePosition: 'suffix' as const,
         disabled: false,
         opened: false,
         dateInput: () => {},

@@ -1,2 +1,2 @@
 export { FormlyMatSliderModule } from './slider.module';
-export { FormlyFieldSlider } from './slider.type';
+export { FormlyFieldSlider, FormlySliderFieldConfig } from './slider.type';

@@ -5,10 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NativeScriptFormsModule } from '@nativescript/angular';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
-import { FormlyFieldText } from './text-field.type';
+import { FormlyFieldInput } from './text-field.type';
 
 @NgModule({
-  declarations: [FormlyFieldText],
+  declarations: [FormlyFieldInput],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -19,7 +19,7 @@ import { FormlyFieldText } from './text-field.type';
       types: [
         {
           name: 'text-field',
-          component: FormlyFieldText,
+          component: FormlyFieldInput,
           wrappers: ['form-field'],
         },
         { name: 'input', extends: 'text-field' },

@@ -1,7 +1,15 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material/form-field';
+import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+
+interface ToggleProps extends FormlyFieldProps {
+  labelPosition?: 'before' | 'after';
+}
+
+export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> {
+  type: 'toggle' | Type<FormlyFieldToggle>;
+}
 
 @Component({
   selector: 'formly-field-mat-toggle',
@@ -20,7 +28,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldToggle extends FieldType<FieldTypeConfig> {
+export class FormlyFieldToggle extends FieldType<FieldTypeConfig<ToggleProps>> {
   @ViewChild(MatSlideToggle, { static: true }) slideToggle!: MatSlideToggle;
   override defaultOptions = {
     props: {

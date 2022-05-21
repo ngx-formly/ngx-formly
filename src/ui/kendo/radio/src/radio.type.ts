@@ -1,6 +1,13 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/kendo/form-field';
+import { FormlyFieldProps } from '@ngx-formly/kendo/form-field';
+
+interface RadioProps extends FormlyFieldProps {}
+
+export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
+  type: 'radio' | Type<FormlyFieldRadio>;
+}
 
 @Component({
   selector: 'formly-field-kendo-radio',
@@ -26,4 +33,4 @@ import { FieldType } from '@ngx-formly/kendo/form-field';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./radio.type.scss'],
 })
-export class FormlyFieldRadio extends FieldType<FieldTypeConfig> {}
+export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {}

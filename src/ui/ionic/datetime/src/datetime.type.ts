@@ -1,6 +1,26 @@
-import { Component, ChangeDetectionStrategy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, ViewEncapsulation, Type } from '@angular/core';
 import { IonDatetime } from '@ionic/angular';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
+
+interface DatetimeProps extends FormlyFieldProps {
+  presentation?: 'date' | 'date-time' | 'month' | 'month-year' | 'time' | 'time-date' | 'year';
+  locale?: any;
+  cancelText?: string;
+  doneText?: string;
+  dayValues?: number | number[] | string | undefined;
+  hourValues?: number | number[] | string | undefined;
+  minuteValues?: number | number[] | string | undefined;
+  monthValues?: number | number[] | string | undefined;
+  yearValues?: number | number[] | string | undefined;
+  minDate?: string | undefined;
+  maxDate?: string | undefined;
+  displayFormat?: string;
+}
+
+export interface FormlyDatetimeFieldConfig extends FormlyFieldConfig<DatetimeProps> {
+  type: 'datetime' | Type<FormlyFieldDatetime>;
+}
 
 @Component({
   selector: 'formly-field-ion-datetime',
@@ -43,13 +63,13 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   styleUrls: ['./dattime.type.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FormlyFieldDatetime extends FieldType<FieldTypeConfig> {
+export class FormlyFieldDatetime extends FieldType<FieldTypeConfig<DatetimeProps>> {
   @ViewChild(IonDatetime) datetime!: IonDatetime;
   isOpen = false;
 
   override defaultOptions = {
     props: {
-      presentation: 'date', // date | time | time-date
+      presentation: 'month-year' as const,
     },
   };
 
@@ -59,10 +79,17 @@ export class FormlyFieldDatetime extends FieldType<FieldTypeConfig> {
     }
 
     switch (this.props.presentation) {
+      case 'date-time':
       case 'time-date':
         return 'short';
       case 'time':
         return 'shortTime';
+      case 'month':
+        return 'MMMM';
+      case 'month-year':
+        return 'MMMM, y';
+      case 'year':
+        return 'y';
       case 'date':
         return 'mediumDate';
     }

@@ -1,6 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
-import { FieldTypeConfig } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/kendo/form-field';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/kendo/form-field';
+
+interface CheckboxProps extends FormlyFieldProps {}
+
+export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxProps> {
+  type: 'checkbox' | Type<FormlyFieldCheckbox>;
+}
 
 @Component({
   selector: 'formly-field-kendo-checkbox',
@@ -15,7 +21,7 @@ import { FieldType } from '@ngx-formly/kendo/form-field';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./checkbox.type.scss'],
 })
-export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig> {
+export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {
   override defaultOptions = {
     props: {
       hideLabel: true,
