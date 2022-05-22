@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-beta.1](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-beta.0...v6.0.0-beta.1) (2022-05-22)
+
+
+### Bug Fixes
+
+* **schematics:** use v6.0.0-beta ([47f08f5](https://github.com/ngx-formly/ngx-formly/commit/47f08f5e617091a8fd2689142350db86ba1a2944))
+
 ## [6.0.0-beta.0](https://github.com/ngx-formly/ngx-formly/compare/v5.12.2...v6.0.0-beta.0) (2022-05-21)
 
 
