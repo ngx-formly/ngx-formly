@@ -181,6 +181,14 @@ UPGRADE FROM 5.0 to 6.0
 
   - Reset form value: In case you rely on `form.reset()` instead of `options.resetModel()`, please note that if you call `reset` without an explicit value, its value reverts to its default value instead of `null`. 
 
+  - Formly root field: An extra `formly-field` is now part of `formly-form` component which which allows managing the root field using `field-group` type, so that gives you more control over Formly internal structure. To adjust the style of Formly root field you may need to update the css selector into:
+  
+  ```patch
+  - formly-form > formly-field {
+  + formly-form > formly-field * > formly-field {
+  }
+  ```
+
 @ngx-formly/core/json-schema
 ----------------------------
 
