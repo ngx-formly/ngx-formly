@@ -105,7 +105,7 @@ UPGRADE FROM 5.0 to 6.0
   }),
   ```
 
-- The `resetFieldOnHide` option is enabled by default, which removes the field value from the model on hide.
+- The `resetOnHide` option is enabled by default, which removes the field value from the model on hide.
 
   To disable this feature for a specific field use `resetOnHide`:
   ```patch
