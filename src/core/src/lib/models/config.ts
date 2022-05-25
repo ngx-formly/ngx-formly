@@ -88,7 +88,7 @@ export interface ConfigOption {
     /**
      * When `true`, reset the value of a hidden field.
      *
-     * Defaults to `false`.
+     * Defaults to `true`.
      */
     resetFieldOnHide?: boolean;
 
