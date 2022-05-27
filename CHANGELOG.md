@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.12.3"></a>
+## [5.12.3](https://github.com/ngx-formly/ngx-formly/compare/v5.12.2...v5.12.3) (2022-05-27)
+
+
+### Bug Fixes
+
+* **bootstrap:** updates dirty state before modelChange in multicheckbox ([1ea4463](https://github.com/ngx-formly/ngx-formly/commit/1ea4463)), closes [#3302](https://github.com/ngx-formly/ngx-formly/issues/3302)
+* **core:** keep display: none for hidden fields when lazyRender is true ([cc10cb9](https://github.com/ngx-formly/ngx-formly/commit/cc10cb9)), closes [#3313](https://github.com/ngx-formly/ngx-formly/issues/3313)
+* **material:** add null check for datepicker errors property ([9fcabef](https://github.com/ngx-formly/ngx-formly/commit/9fcabef)), closes [#3315](https://github.com/ngx-formly/ngx-formly/issues/3315)
+
+
+
 <a name="5.12.2"></a>
 ## [5.12.2](https://github.com/ngx-formly/ngx-formly/compare/v5.12.1...v5.12.2) (2022-05-19)
 
