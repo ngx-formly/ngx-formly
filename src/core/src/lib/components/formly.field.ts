@@ -173,11 +173,12 @@ export class FormlyField implements OnInit, OnChanges, DoCheck, AfterContentInit
     this.hostObservers.forEach(unsubscribe => unsubscribe());
     this.hostObservers = [
       wrapProperty(this.field, 'hide', ({ firstChange, currentValue }) => {
+        if (!firstChange || (firstChange && currentValue)) {
+          this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
+        }
+
         if (!this.formlyConfig.extras.lazyRender) {
           firstChange && this.renderField(this.containerRef, this.field);
-          if (!firstChange || (firstChange && currentValue)) {
-            this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
-          }
         } else {
           if (currentValue) {
             this.containerRef.clear();

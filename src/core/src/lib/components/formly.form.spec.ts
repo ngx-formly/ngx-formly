@@ -279,10 +279,12 @@ describe('FormlyForm Component', () => {
     const fixture = createTestComponent('<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>');
     expect(fixture.debugElement.query(By.css('input'))).toBeNull();
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('class')).toBeNull();
+    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual(`display: none;`);
 
     app.fields[0].hide = false;
     expect(fixture.debugElement.query(By.css('input'))).not.toBeNull();
     expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('class')).toEqual('foo');
+    expect(getFormlyFieldElement(fixture.nativeElement).getAttribute('style')).toEqual('');
   });
 
   describe('modelChange output', () => {
