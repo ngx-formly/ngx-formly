@@ -13,6 +13,7 @@ import {
   ExtensionOption,
   FormlyFieldConfigPresetProvider,
 } from '../models';
+import { FieldWrapper } from '../templates/field.wrapper';
 
 export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
 declare const ngDevMode: any;
@@ -172,7 +173,7 @@ export class FormlyConfig {
     }
   }
 
-  getWrapper(name: FormlyFieldConfig['wrappers'][0]): WrapperOption {
+  getWrapper(name: string | Type<FieldWrapper>): WrapperOption {
     if (name instanceof Type) {
       return { component: name, name: name.prototype.constructor.name };
     }
