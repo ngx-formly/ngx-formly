@@ -126,7 +126,7 @@ export class FormlyFieldDatepicker
     // temporary fix for https://github.com/angular/components/issues/16761
     if (this.config.getValidatorMessage('matDatepickerParse')) {
       this.fieldErrorsObserver = observe<any>(this.field, ['formControl', 'errors'], ({ currentValue }) => {
-        if (currentValue.required && currentValue.matDatepickerParse) {
+        if (currentValue && currentValue.required && currentValue.matDatepickerParse) {
           const errors = Object.keys(currentValue)
             .sort((prop) => (prop === 'matDatepickerParse' ? -1 : 0))
             .reduce((errors, prop) => ({ ...errors, [prop]: currentValue[prop] }), {});

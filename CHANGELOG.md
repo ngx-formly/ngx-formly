@@ -204,6 +204,20 @@ All notable changes to this project will be documented in this file. See [standa
 * **material:** removed double tag closing in datepicker type ([#2327](https://github.com/ngx-formly/ngx-formly/issues/2327)) ([7969ac9](https://github.com/ngx-formly/ngx-formly/commit/7969ac913420e4b7b829c230f33e9ac44a8f4236))
 * sync v5 branch ([2acc4ea](https://github.com/ngx-formly/ngx-formly/commit/2acc4eaccb481df6f2931744a9a5cf00fbf2abd1))
 
+
+
+<a name="5.12.3"></a>
+## [5.12.3](https://github.com/ngx-formly/ngx-formly/compare/v5.12.2...v5.12.3) (2022-05-27)
+
+
+### Bug Fixes
+
+* **bootstrap:** updates dirty state before modelChange in multicheckbox ([1ea4463](https://github.com/ngx-formly/ngx-formly/commit/1ea4463)), closes [#3302](https://github.com/ngx-formly/ngx-formly/issues/3302)
+* **core:** keep display: none for hidden fields when lazyRender is true ([cc10cb9](https://github.com/ngx-formly/ngx-formly/commit/cc10cb9)), closes [#3313](https://github.com/ngx-formly/ngx-formly/issues/3313)
+* **material:** add null check for datepicker errors property ([9fcabef](https://github.com/ngx-formly/ngx-formly/commit/9fcabef)), closes [#3315](https://github.com/ngx-formly/ngx-formly/issues/3315)
+
+
+
 <a name="5.12.2"></a>
 ## [5.12.2](https://github.com/ngx-formly/ngx-formly/compare/v5.12.1...v5.12.2) (2022-05-19)
 
