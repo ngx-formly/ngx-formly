@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-beta.2](https://github.com/ngx-formly/ngx-formly/compare/v5.12.3...v6.0.0-beta.2) (2022-05-27)
+
+
+### Bug Fixes
+
+* **core:** use valid typescript syntax ([f7df8b3](https://github.com/ngx-formly/ngx-formly/commit/f7df8b39855eaa357b700a6672c77232f22ba4d8)), closes [#3314](https://github.com/ngx-formly/ngx-formly/issues/3314)
+
 ## [6.0.0-beta.1](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-beta.0...v6.0.0-beta.1) (2022-05-22)
 
 
