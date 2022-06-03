@@ -19,8 +19,10 @@ export class FormlyFormBuilder {
     }
 
     const field = { fieldGroup, model, formControl, options: this._setOptions(options) };
-    disableTreeValidityCall(formControl, () => this._buildForm(field));
-    field.options._checkField(field, true);
+    disableTreeValidityCall(formControl, () => {
+      this._buildForm(field);
+      field.options._checkField(field, true);
+    });
   }
 
   private _buildForm(field: FormlyFieldConfigCache) {
