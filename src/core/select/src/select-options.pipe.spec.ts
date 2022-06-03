@@ -8,6 +8,12 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     pipe = new FormlySelectOptionsPipe();
   });
 
+  it('passing empty options', () => {
+    pipe.transform(undefined).subscribe((options) => {
+      expect(options).toEqual([]);
+    });
+  });
+
   it('passing options as an array', () => {
     pipe.transform([{ label: '1', value: '1' }]).subscribe((options) => {
       expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
@@ -54,7 +60,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
   });
 
   describe('label & value & disabled props', () => {
-    let options;
+    let options: any;
     beforeEach(() => {
       options = [{ name: 'foo', id: '1', locked: true }];
     });
@@ -76,9 +82,9 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     it('as a function', () => {
       const field = {
         props: {
-          labelProp: (item) => item.name,
-          valueProp: (item) => item.id,
-          disabledProp: (item) => item.locked,
+          labelProp: (item: any) => item.name,
+          valueProp: (item: any) => item.id,
+          disabledProp: (item: any) => item.locked,
         },
       };
 
@@ -96,10 +102,10 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
 
       const field = {
         props: {
-          labelProp: (item) => item.name,
-          valueProp: (item) => item.id,
-          disabledProp: (item) => item.locked,
-          groupProp: (item) => item.parent,
+          labelProp: (item: any) => item.name,
+          valueProp: (item: any) => item.id,
+          disabledProp: (item: any) => item.locked,
+          groupProp: (item: any) => item.parent,
         },
       };
 
@@ -122,7 +128,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
   });
 
   describe('group options', () => {
-    let options;
+    let options: any;
     beforeEach(() => {
       options = [
         { label: '1', value: '1', parent: '1' },

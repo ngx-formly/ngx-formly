@@ -40,7 +40,7 @@ export class FormlySelectOptionsPipe implements PipeTransform {
     const opts: FormlySelectOption[] = [];
     const groups: { [id: string]: number } = {};
 
-    options.forEach((option) => {
+    options?.forEach((option) => {
       const o = this.transformOption(option, to);
       if (o.group) {
         const id = groups[o.label];
