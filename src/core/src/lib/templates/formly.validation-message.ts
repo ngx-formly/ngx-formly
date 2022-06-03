@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { FormlyConfig, ValidationMessageOption } from '../services/formly.config';
 import { FormlyFieldConfig } from '../components/formly.field.config';
-import { isObject } from '../utils';
+import { FORMLY_VALIDATORS, isObject } from '../utils';
 import { Observable, isObservable, of } from 'rxjs';
 import { merge } from 'rxjs';
 import { startWith, switchMap, filter } from 'rxjs/operators';
@@ -18,6 +18,7 @@ export class FormlyValidationMessage implements OnChanges {
   constructor(private formlyConfig: FormlyConfig) {}
 
   ngOnChanges() {
+    const EXPR_VALIDATORS = FORMLY_VALIDATORS.map(v => `templateOptions.${v}`);
     this.errorMessage$ = merge(
       this.field.formControl.statusChanges,
       (
@@ -27,7 +28,10 @@ export class FormlyValidationMessage implements OnChanges {
             filter(({ field, type, property }) => {
               return (field === this.field)
                 && (type === 'expressionChanges')
-                && (property.indexOf('validation') !== -1)
+                && (
+                  (property.indexOf('validation') !== -1)
+                  || (EXPR_VALIDATORS.indexOf(property) !== -1)
+                )
               ;
             }),
           )
