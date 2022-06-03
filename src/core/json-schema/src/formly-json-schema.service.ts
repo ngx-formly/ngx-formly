@@ -448,7 +448,7 @@ export class FormlyJsonschema {
               const control = f.parent.parent.fieldGroup[0].formControl;
               if ((control.value === -1) || forceUpdate) {
                 let value = f.parent.fieldGroup
-                  .map((f, i) => [f, i, this.isFieldValid(f, schemas[i], options)] as [FormlyFieldConfig, number, boolean])
+                  .map((f, i) => [f, i, this.isFieldValid(f, i, schemas, options)] as [FormlyFieldConfig, number, boolean])
                   .sort(([f1, i1, f1Valid], [f2, i2, f2Valid]) => {
                     if (f1Valid !== f2Valid) {
                       return f2Valid ? 1 : -1;
@@ -600,16 +600,27 @@ export class FormlyJsonschema {
     return this.toEnumOptions(<JSONSchema7> schema.items);
   }
 
-  private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
-    const model = field.model ? clone(field.model) : (field.fieldArray ? [] : {});
-    const { formControl } = (field.options as any)._buildField({
-      formControl: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
-      fieldGroup: [this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null, strict: true })],
-      model,
-      options: {},
-    });
+  private isFieldValid(root: FormlyFieldConfig, i: number, schemas: JSONSchema7[], options: IOptions): boolean {
+    if (!root['_schemasFields']) {
+      Object.defineProperty(root, '_schemasFields', { enumerable: false, writable: true, configurable: true });
+      root['_schemasFields'] = {};
+    }
 
-    return formControl.valid;
+    let field = root['_schemasFields'][i];
+    const model = root.model ? clone(root.model) : (root.fieldArray ? [] : {});
+    if (!field) {
+      field = root['_schemasFields'][i] = (root.options as any)._buildField({
+        formControl: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
+        fieldGroup: [this._toFieldConfig(schemas[i], { ...options, resetOnHide: true, ignoreDefault: true, map: null, strict: true })],
+        model,
+        options: {},
+      });
+    } else {
+      field.model = model;
+      (root.options as any)._buildField(field);
+    }
+
+    return field.formControl.valid;
   }
 
   private mergeFields(f1: FormlyFieldConfig, f2: FormlyFieldConfig) {
