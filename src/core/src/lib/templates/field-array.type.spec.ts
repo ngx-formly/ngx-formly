@@ -294,6 +294,34 @@ describe('Array Field Type', () => {
     subscription.unsubscribe();
   });
 
+  it('should validate field on add/remove', () => {
+    app.fields = [
+      {
+        key: 'foo',
+        type: 'array',
+        fieldArray: { fieldGroup: [{key: 'title', templateOptions: { required: true } }] },
+        defaultValue: [{ title: 'test' }],
+      },
+    ];
+
+    const fixture = createFormlyTestComponent();
+    const form = app.form.get('foo') as FormArray;
+
+    expect(form.valid).toEqual(true);
+
+    // add
+    fixture.nativeElement.querySelector('#add').click();
+    fixture.detectChanges();
+
+    expect(form.valid).toEqual(false);
+
+    // remove
+    fixture.nativeElement.querySelector('#remove-1').click();
+    fixture.detectChanges();
+
+    expect(form.valid).toEqual(true);
+  });
+
   it('should share formControl when field key is duplicated', () => {
     app.fields = [
       {
