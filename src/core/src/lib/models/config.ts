@@ -69,10 +69,10 @@ export interface ConfigOption {
 
     /**
      * Defines the option which formly rely on to check field expression properties.
-     * - `modelChange`: perform a check when the value of the form control changes (Will be set by default in the next major version).
+     * - `modelChange`: perform a check when the value of the form control changes.
      * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.
      *
-     * Defaults to `changeDetectionCheck`.
+     * Defaults to `modelChange`.
      */
     checkExpressionOn?: 'modelChange' | 'changeDetectionCheck';
 
