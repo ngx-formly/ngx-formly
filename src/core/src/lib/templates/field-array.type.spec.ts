@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldArrayType } from './field-array.type';
 import { FormlyInputModule, createFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
@@ -7,7 +8,7 @@ import { renderComponent as renderFormComponent } from '../components/formly.for
 
 const renderComponent = (field: FormlyFieldConfig, config = {}) => {
   return createFieldComponent(field, {
-    imports: [FormlyInputModule],
+    imports: [FormlyInputModule, CommonModule],
     declarations: [ArrayTypeComponent],
     config: {
       types: [
@@ -221,6 +222,34 @@ describe('Array Field Type', () => {
 
     expect(spy).not.toHaveBeenCalled();
     subscription.unsubscribe();
+  });
+
+  it('should validate field on add/remove', () => {
+    const { detectChanges, field, query } = renderComponent({
+      fieldGroup: [
+        {
+          key: 'foo',
+          type: 'array',
+          fieldArray: { fieldGroup: [{ key: 'title', props: { required: true } }] },
+          defaultValue: [{ title: 'test' }],
+        },
+      ],
+    });
+    const form = field.form.get('foo') as FormArray;
+
+    expect(form.valid).toEqual(true);
+
+    // add
+    query('#add').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(form.valid).toEqual(false);
+
+    // remove
+    query('#remove-1').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(form.valid).toEqual(true);
   });
 
   it('should share formControl when field key is duplicated', () => {

@@ -213,6 +213,23 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 
+<a name="5.12.4"></a>
+## [5.12.4](https://github.com/ngx-formly/ngx-formly/compare/v5.12.3...v5.12.4) (2022-06-03)
+
+
+### Bug Fixes
+
+* **core:** detect validation message changes in expressionProperties ([#3330](https://github.com/ngx-formly/ngx-formly/issues/3330)) ([c7692d9](https://github.com/ngx-formly/ngx-formly/commit/c7692d9)), closes [#3317](https://github.com/ngx-formly/ngx-formly/issues/3317)
+* **core:** trigger validation in ArrayType on field update ([#3328](https://github.com/ngx-formly/ngx-formly/issues/3328)) ([90ef367](https://github.com/ngx-formly/ngx-formly/commit/90ef367)), closes [#3327](https://github.com/ngx-formly/ngx-formly/issues/3327)
+
+
+### Performance Improvements
+
+* **core:** improve initial build time ([#3333](https://github.com/ngx-formly/ngx-formly/issues/3333)) ([8d8ac6c](https://github.com/ngx-formly/ngx-formly/commit/8d8ac6c))
+* **json-schema:** improve oneOf initial build time ([#3334](https://github.com/ngx-formly/ngx-formly/issues/3334)) ([8a684b2](https://github.com/ngx-formly/ngx-formly/commit/8a684b2))
+
+
+
 <a name="5.12.3"></a>
 ## [5.12.3](https://github.com/ngx-formly/ngx-formly/compare/v5.12.2...v5.12.3) (2022-05-27)
 

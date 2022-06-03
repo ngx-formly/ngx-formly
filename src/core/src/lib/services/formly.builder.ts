@@ -24,10 +24,12 @@ export class FormlyFormBuilder {
 
     if (!field.parent) {
       this._setOptions(field);
-      disableTreeValidityCall(field.form, () => this._build(field));
-      const options = (field as FormlyFieldConfigCache).options;
-      options.checkExpressions?.(field, true);
-      options.detectChanges?.(field);
+      disableTreeValidityCall(field.form, () => {
+        this._build(field);
+        const options = (field as FormlyFieldConfigCache).options;
+        options.checkExpressions?.(field, true);
+        options.detectChanges?.(field);
+      });
     } else {
       this._build(field);
     }

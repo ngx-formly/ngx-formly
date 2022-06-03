@@ -509,7 +509,7 @@ export class FormlyJsonschema {
                   let value = f.parent.fieldGroup
                     .map(
                       (f, i) =>
-                        [f, i, this.isFieldValid(f, schemas[i], options)] as [FormlyFieldConfig, number, boolean],
+                        [f, i, this.isFieldValid(f, i, schemas, options)] as [FormlyFieldConfig, number, boolean],
                     )
                     .sort(([f1, , f1Valid], [f2, , f2Valid]) => {
                       if (f1Valid !== f2Valid) {
@@ -665,18 +665,40 @@ export class FormlyJsonschema {
     return this.toEnumOptions(<JSONSchema7>schema.items);
   }
 
-  private isFieldValid(field: FormlyFieldConfig, schema: JSONSchema7, options: IOptions): boolean {
-    const model = field.model ? clone(field.model) : field.fieldArray ? [] : {};
-    const { form } = field.options.build({
-      form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
-      fieldGroup: [
-        this._toFieldConfig(schema, { ...options, resetOnHide: true, ignoreDefault: true, map: null, strict: true }),
-      ],
-      model,
-      options: {},
-    });
+  private isFieldValid(
+    root: FormlyFieldConfig & { _schemasFields?: { [key: number]: FormlyFieldConfig } },
+    i: number,
+    schemas: JSONSchema7[],
+    options: IOptions,
+  ): boolean {
+    if (!root._schemasFields) {
+      Object.defineProperty(root, '_schemasFields', { enumerable: false, writable: true, configurable: true });
+      root._schemasFields = {};
+    }
 
-    return form.valid;
+    let field = root._schemasFields[i];
+    const model = root.model ? clone(root.model) : root.fieldArray ? [] : {};
+    if (!field) {
+      field = root._schemasFields[i] = root.options.build({
+        form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
+        fieldGroup: [
+          this._toFieldConfig(schemas[i], {
+            ...options,
+            resetOnHide: true,
+            ignoreDefault: true,
+            map: null,
+            strict: true,
+          }),
+        ],
+        model,
+        options: {},
+      });
+    } else {
+      (field as any).model = model;
+      root.options.build(field);
+    }
+
+    return field.form.valid;
   }
 
   private mergeFields(f1: any, f2: any) {
