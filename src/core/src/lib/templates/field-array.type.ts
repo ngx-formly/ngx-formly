@@ -5,9 +5,9 @@ import { clone, assignFieldValue, getFieldValue, hasKey } from '../utils';
 import { FormlyFieldConfig, FormlyExtension } from '../models';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
-export interface FieldArrayTypeConfig extends FormlyFieldConfig {
+export interface FieldArrayTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
   formControl: FormArray;
-  props: NonNullable<Required<FormlyFieldConfig>['props']>;
+  props: NonNullable<T>;
 }
 
 @Directive()
