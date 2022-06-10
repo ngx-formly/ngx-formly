@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test-utils';
 
 import { By } from '@angular/platform-browser';
@@ -169,18 +169,20 @@ describe('FormlyAttributes Component', () => {
   });
 
   describe('focus the element', () => {
-    it(`should focus the element when focus is set to "true" and then blurred when it's set to "false"`, () => {
+    it(`should focus the element when focus is set to "true" and then blurred when it's set to "false"`, fakeAsync(() => {
       const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
       const elm = getFormlyAttributesElement(fixture.nativeElement);
 
       fixture.componentInstance.field.focus = true;
+      tick();
       fixture.detectChanges();
       expect(document.activeElement === elm).toBeTruthy();
 
       fixture.componentInstance.field.focus = false;
+      tick();
       fixture.detectChanges();
       expect(document.activeElement === elm).toBeFalsy();
-    });
+    }));
 
     it('should change field focus when the element is focused or blurred', () => {
       const fixture = createTestComponent('<input type="text" [formlyAttributes]="field">');
@@ -211,7 +213,7 @@ describe('FormlyAttributes Component', () => {
       expect(inputs[0].id).toEqual('foo');
     });
 
-    it(`should focus the first element when mutliple formlyAttributes is present`, () => {
+    it(`should focus the first element when mutliple formlyAttributes is present`, fakeAsync(() => {
       const fixture = createTestComponent(`
         <input type="text" [formlyAttributes]="field">
         <input type="text" [formlyAttributes]="field">
@@ -220,9 +222,10 @@ describe('FormlyAttributes Component', () => {
       const elm = getFormlyAttributesElement(fixture.nativeElement);
 
       fixture.componentInstance.field.focus = true;
+      tick();
       fixture.detectChanges();
       expect(document.activeElement === elm).toBeTruthy();
-    });
+    }));
   });
 });
 
