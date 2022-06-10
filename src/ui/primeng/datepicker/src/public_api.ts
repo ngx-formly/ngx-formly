@@ -1,7 +1,7 @@
-import { FormlyFieldDatepickerModule } from './datepicker.module';
+import { FormlyDatepickerModule } from './datepicker.module';
 export { FormlyDatepickerFieldConfig } from './datepicker.type';
 
-/** @deprecated use FormlyFieldDatepickerModule */
-const FormlyDatePickerModule = FormlyFieldDatepickerModule;
+/** @deprecated use FormlyDatepickerModule */
+const FormlyDatePickerModule = FormlyDatepickerModule;
 
-export { FormlyFieldDatepickerModule, FormlyDatePickerModule };
+export { FormlyDatepickerModule, FormlyDatePickerModule };
