@@ -5,17 +5,18 @@ import { CommonModule, debugFields } from '../common';
 
 import { AppComponent } from './app.component';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
-import { DatepickerExampleConfig } from './datepicker';
 import { InputExampleConfig } from '../common/input';
 import { CheckboxExampleConfig } from '../common/checkbox';
 import { RadioExampleConfig } from '../common/radio';
 import { TextareaExampleConfig } from '../common/textarea';
 import { SelectExampleConfig } from './select';
+import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
 
 @NgModule({
   imports: [
     CommonModule,
     FormlyPrimeNGModule,
+    DatepickerAppModule,
     RouterModule.forChild([
       {
         path: '',
@@ -31,8 +32,8 @@ import { SelectExampleConfig } from './select';
                 TextareaExampleConfig,
                 CheckboxExampleConfig,
                 RadioExampleConfig,
-                DatepickerExampleConfig,
                 SelectExampleConfig,
+                DatepickerExampleConfig,
               ],
             },
           },

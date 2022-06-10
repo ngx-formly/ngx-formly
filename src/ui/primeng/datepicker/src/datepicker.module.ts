@@ -25,4 +25,4 @@ import { FormlyFieldDatepicker } from './datepicker.type';
     }),
   ],
 })
-export class FormlyFieldDatepickerModule {}
+export class FormlyDatepickerModule {}
