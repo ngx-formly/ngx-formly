@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-beta.3](https://github.com/ngx-formly/ngx-formly/compare/v5.12.4...v6.0.0-beta.3) (2022-06-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **primeng:** `datepicker` type has been removed from `FormlyPrimeNGModule`, use `FormlyDatepickerModule` instead.
+
+```ts
+import { FormlyDatepickerModule } from '@ngx-formly/primeng/datepicker';
+
+@NgModule({
+  imports: [
+      ...
+      FormlyDatepickerModule,
+  ],
+})
+export class AppModule {}
+```
+
+### Bug Fixes
+
+* **core:** fixed FieldArrayTypeConfig props declaration ([#3342](https://github.com/ngx-formly/ngx-formly/issues/3342)) ([7f02170](https://github.com/ngx-formly/ngx-formly/commit/7f02170bb1bbb527f8fa386f5379404da6d0af60)), closes [#3341](https://github.com/ngx-formly/ngx-formly/issues/3341)
+* **core:** handle passing undefined to select options pipe ([#3326](https://github.com/ngx-formly/ngx-formly/issues/3326)) ([2299818](https://github.com/ngx-formly/ngx-formly/commit/22998189e1416dbc30b2be7d03f8f208aa149f34))
+* **primeng:** remove datepicker from main module ([fb623be](https://github.com/ngx-formly/ngx-formly/commit/fb623be83ae7032b769c93e3f3032eef11201041)), closes [#3339](https://github.com/ngx-formly/ngx-formly/issues/3339)
+
 ## [6.0.0-beta.2](https://github.com/ngx-formly/ngx-formly/compare/v5.12.3...v6.0.0-beta.2) (2022-05-27)
 
 
