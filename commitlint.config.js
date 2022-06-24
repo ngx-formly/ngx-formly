@@ -16,6 +16,7 @@ module.exports = {
         'json-schema',
         'material',
         'bootstrap',
+        'nebular',
         'ionic',
         'primeng',
         'kendo',

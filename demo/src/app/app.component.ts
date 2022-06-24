@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
         { path: '/ui/primeng', title: 'PrimeNG' },
         { path: '/ui/kendo', title: 'Kendo' },
         { path: '/ui/ng-zorro-antd', title: 'Ng-Zorro-Antd' },
+        { path: '/ui/nebular', title: 'Nebular' },
       ],
     },
     {

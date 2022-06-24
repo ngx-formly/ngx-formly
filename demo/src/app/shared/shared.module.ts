@@ -13,6 +13,7 @@ import { StackblitzButtonModule } from './stackblitz';
 import { ExampleViewerComponent } from './example-viewer/example-viewer.component';
 import { ExamplesRouterViewerComponent } from './examples-router-viewer/examples-router-viewer.component';
 import { CopierService } from './copier/copier.service';
+import { NbLayoutModule, NbThemeModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -24,6 +25,8 @@ import { CopierService } from './copier/copier.service';
     MatButtonModule,
     StackblitzButtonModule,
     FormlyModule,
+    NbThemeModule.forRoot({ name: 'default' }),
+    NbLayoutModule,
   ],
   exports: [
     CommonModule,
