@@ -17,7 +17,7 @@ import {
 } from '@ngx-formly/core';
 import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { FloatLabelType, MatFormFieldAppearance } from '@angular/material/form-field/form-field';
+import { FloatLabelType, MatFormFieldAppearance } from '@angular/material/form-field';
 import { ThemePalette } from '@angular/material/core';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig<FormlyFieldProps> {
