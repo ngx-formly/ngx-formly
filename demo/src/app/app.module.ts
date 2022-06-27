@@ -15,7 +15,6 @@ import { HomeComponent } from './home.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-
     SharedModule,
     LoadingBarRouterModule,
     MatMenuModule,

@@ -65,6 +65,7 @@
     "@ionic/angular": "^6.0.2",
     "@nativescript/angular": "^13.0.1",
     "@nativescript/core": "^8.1.5",
+    "@nebular/theme": "^9.0.3",
     "@nguniversal/express-engine": "^13.0.1",
     "@ngx-loading-bar/core": "^6.0.1",
     "@ngx-loading-bar/router": "^6.0.1",
@@ -188,6 +189,10 @@
     },
     {
       "path": "./dist/@ngx-formly/ng-zorro-antd/fesm2020/ngx-formly-ng-zorro-antd-*.mjs",
+      "maxSize": "4 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/nebular/fesm2020/ngx-formly-nebular-*.mjs",
       "maxSize": "4 kB"
     }
   ]

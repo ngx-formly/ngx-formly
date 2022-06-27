@@ -415,6 +415,44 @@
           }
         }
       }
+    },
+    "@ngx-formly/nebular": {
+      "projectType": "library",
+      "root": "src/ui/nebular",
+      "sourceRoot": "src/ui/nebular/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "src/ui/nebular/tsconfig.lib.json",
+            "project": "src/ui/nebular/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/nebular/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "src/ui/nebular/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-formly/nebular/src/test.ts",
+            "tsConfig": "projects/ngx-formly/nebular/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-formly/nebular/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/ngx-formly/nebular/**/*.ts", "projects/ngx-formly/nebular/**/*.html"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "app",

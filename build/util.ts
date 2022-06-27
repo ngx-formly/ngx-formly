@@ -7,6 +7,7 @@ export const PACKAGES = [
   'schematics',
 
   // UI
+  'nebular',
   'bootstrap',
   'material',
   'ionic',

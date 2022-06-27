@@ -52,6 +52,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://formly.dev/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
 | [NG-ZORRO](http://ng.ant.design) |     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ng-zorro-antd)     |
 | [NativeScript](https://www.nativescript.org)      | ||
+| [Nebular](https://akveo.github.io/nebular)        | [Demo](http://formly.dev/ui/nebular)  ||
 
 **Which Version to use?**
 
