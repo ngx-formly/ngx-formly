@@ -22,6 +22,10 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
           component: FormlyFieldSelect,
           wrappers: ['form-field'],
         },
+        {
+          name: 'enum',
+          extends: 'select',
+        },
       ],
     }),
   ],

@@ -5,6 +5,7 @@ import { FormlyFieldProps, NebularCommonOptions } from '@ngx-formly/nebular/form
 interface CheckboxProps extends FormlyFieldProps, Pick<NebularCommonOptions, 'status'> {
   indeterminate?: boolean;
   checkboxMessage?: string;
+  checkChanged?: (checked: boolean) => void;
 }
 
 export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxProps> {
@@ -19,6 +20,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
       [disabled]="props.disabled"
       [indeterminate]="props.indeterminate && formControl.value == null"
       [status]="showError ? 'danger' : props.status"
+      (checkedChange)="onCheckedChange($event)"
     >
       {{ props.label }}
       <span class="required" *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
@@ -46,5 +48,11 @@ export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps
 
   get checkboxMessage(): string {
     return this.props.checkboxMessage;
+  }
+
+  onCheckedChange(checked: boolean) {
+    if (this.props.checkChanged) {
+      this.props.checkChanged(checked);
+    }
   }
 }
