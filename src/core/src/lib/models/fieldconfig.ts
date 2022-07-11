@@ -243,7 +243,7 @@ export interface FormlyFieldProps {
   keypress?: FormlyAttributeEvent;
 }
 
-export type FormlyHookFn = (field?: FormlyFieldConfig) => void;
+export type FormlyHookFn = (field: FormlyFieldConfig) => void;
 
 export interface FormlyHookConfig {
   onInit?: FormlyHookFn;

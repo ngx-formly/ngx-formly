@@ -413,14 +413,14 @@ describe('FieldExpressionExtension', () => {
           },
         });
 
-        field.hooks.onInit();
+        field.hooks.onInit(undefined);
         expect(field.props.label).toEqual('test');
 
-        field.hooks.onDestroy();
+        field.hooks.onDestroy(undefined);
         stream$.next('test2');
         expect(field.props.label).toEqual('test');
 
-        field.hooks.onInit();
+        field.hooks.onInit(undefined);
         expect(field.props.label).toEqual('test2');
       });
 
@@ -432,7 +432,7 @@ describe('FieldExpressionExtension', () => {
           },
         });
 
-        field.hooks.onInit();
+        field.hooks.onInit(undefined);
         expect(field.formControl.value).toEqual('test');
       });
 
