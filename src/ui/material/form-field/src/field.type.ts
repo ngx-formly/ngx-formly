@@ -97,8 +97,9 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
       this.formField._control = control;
 
       // temporary fix for https://github.com/angular/material2/issues/6728
-      if (control?.ngControl?.valueAccessor?.hasOwnProperty('_formField')) {
-        (control.ngControl.valueAccessor as any)['_formField'] = this.formField;
+      const ngControl = control?.ngControl as any;
+      if (ngControl?.valueAccessor?.hasOwnProperty('_formField')) {
+        ngControl.valueAccessor['_formField'] = this.formField;
       }
 
       ['prefix', 'suffix'].forEach((type) =>
