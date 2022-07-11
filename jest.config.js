@@ -1,10 +1,12 @@
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const { pathsToModuleNameMapper } = require('ts-jest');
 
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/src/'],
   testMatch: ['**/?(*.)+(spec|test).ts'],
   setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/jestSetup.ts'],
+  globalSetup: 'jest-preset-angular/global-setup',
   coverageReporters: ['html'],
   testPathIgnorePatterns: [
     '/node_modules/',

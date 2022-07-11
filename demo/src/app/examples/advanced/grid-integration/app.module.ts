@@ -14,7 +14,7 @@ import { GridFormlyCellComponent } from './grid-formly-cell.component';
     CommonModule,
     ReactiveFormsModule,
     FormlyBootstrapModule,
-    AgGridModule.withComponents([GridFormlyCellComponent]),
+    AgGridModule,
     FormlyBootstrapModule,
     FormlyModule.forRoot({
       types: [
