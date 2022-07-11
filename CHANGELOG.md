@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-rc.0](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-beta.3...v6.0.0-rc.0) (2022-07-11)
+
+
+### Features
+
+* **kendo:** update peerDependencies to Angular v13 ([735b8e5](https://github.com/ngx-formly/ngx-formly/commit/735b8e57829080501b24c22bee65ddf84f797f83))
+
+
+### Bug Fixes
+
+* **core:** add Angular 14 compatibility ([e1b9141](https://github.com/ngx-formly/ngx-formly/commit/e1b9141c28c54ec58b8e2337d54a9ee9dd4e1077)), closes [#3340](https://github.com/ngx-formly/ngx-formly/issues/3340)
+* **core:** sync fieldGroup length on FieldArrayType remove ([8da376c](https://github.com/ngx-formly/ngx-formly/commit/8da376c8433b1542de9393c1f66cdfc9f2c2707a)), closes [#3353](https://github.com/ngx-formly/ngx-formly/issues/3353)
+* **material:** remove usage of form-field deep import path ([#3359](https://github.com/ngx-formly/ngx-formly/issues/3359)) ([f0a7acf](https://github.com/ngx-formly/ngx-formly/commit/f0a7acfc48321404d909b0760029000c487d4b5d))
+
 ## [6.0.0-beta.3](https://github.com/ngx-formly/ngx-formly/compare/v5.12.4...v6.0.0-beta.3) (2022-06-10)
 
 
