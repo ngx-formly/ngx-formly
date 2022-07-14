@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-rc.1](https://github.com/ngx-formly/ngx-formly/compare/v5.12.6...v6.0.0-rc.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* **core:** set field arg required in expressions ([#3382](https://github.com/ngx-formly/ngx-formly/issues/3382)) ([476a231](https://github.com/ngx-formly/ngx-formly/commit/476a2311a3ccd99610f33cc9a138609195c6c8f2)), closes [#3340](https://github.com/ngx-formly/ngx-formly/issues/3340)
+
 ## [6.0.0-rc.0](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-beta.3...v6.0.0-rc.0) (2022-07-11)
 
 

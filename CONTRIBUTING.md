@@ -65,8 +65,8 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 ### Development
 
-1. run `yarn`
-2. run `npm run demo` or `yarn demo`
+1. run `npm install`
+2. run `npm run demo`
 3. write tests & code in TS goodness :-)
 4. run `git add .`
 5. run `npm run commit` and follow the prompt (this ensures that your commit message follows [our conventions](#commit)).
