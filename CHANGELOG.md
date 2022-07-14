@@ -252,6 +252,26 @@ export class AppModule {}
 
 
 
+<a name="5.12.6"></a>
+## [5.12.6](https://github.com/ngx-formly/ngx-formly/compare/v5.12.5...v5.12.6) (2022-07-14)
+
+
+### Bug Fixes
+
+* **core:** update form validity of nested key field ([#3383](https://github.com/ngx-formly/ngx-formly/issues/3383)) ([3c1e4da](https://github.com/ngx-formly/ngx-formly/commit/3c1e4da)), closes [#3380](https://github.com/ngx-formly/ngx-formly/issues/3380)
+
+
+
+<a name="5.12.5"></a>
+## [5.12.5](https://github.com/ngx-formly/ngx-formly/compare/v5.12.4...v5.12.5) (2022-06-10)
+
+
+### Bug Fixes
+
+* **core:** detect changes when focusing a repeatable field ([#3347](https://github.com/ngx-formly/ngx-formly/issues/3347)) ([5f600c2](https://github.com/ngx-formly/ngx-formly/commit/5f600c2)), closes [#3344](https://github.com/ngx-formly/ngx-formly/issues/3344)
+
+
+
 <a name="5.12.4"></a>
 ## [5.12.4](https://github.com/ngx-formly/ngx-formly/compare/v5.12.3...v5.12.4) (2022-06-03)
 

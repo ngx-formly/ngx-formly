@@ -802,4 +802,20 @@ describe('FormlyForm Component', () => {
     expect(detectChanges).not.toThrowError(/ExpressionChangedAfterItHasBeenCheckedError/);
     expect(form.valid).toBeFalse();
   });
+
+  it('should update validity of all created nested FormGroup', () => {
+    const { form, detectChanges } = renderComponent({
+      fields: [
+        {
+          key: 'bar.foo.c1.c2.c3', // nested key + required causes bug
+          templateOptions: {
+            required: true,
+          },
+        },
+      ],
+    });
+
+    detectChanges();
+    expect(form.valid).toEqual(false);
+  });
 });
