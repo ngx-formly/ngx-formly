@@ -119,7 +119,7 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
   expressions?: {
-    [property: string]: string | ((field?: FormlyFieldConfig) => any) | Observable<any>;
+    [property: string]: string | ((field: FormlyFieldConfig) => any) | Observable<any>;
   };
 
   /**
