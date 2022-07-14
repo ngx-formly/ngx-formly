@@ -1689,6 +1689,23 @@ describe('FormlyForm Component', () => {
 
     expect(control.valueChanges['observers'].length).toEqual(0);
   });
+
+  it('should update validity of all created nested FormGroup', () => {
+    app = {
+      form: new FormGroup({}),
+      fields: [{
+        key: 'bar.foo.c1.c2.c3', // nested key + required causes bug
+        type: 'text',
+        templateOptions: {
+          required: true,
+        },
+      }],
+    };
+
+    const fixture = TestBed.createComponent(TestFormComponent);
+    fixture.detectChanges();
+    expect(app.form.valid).toEqual(false);
+  });
 });
 
 @Component({

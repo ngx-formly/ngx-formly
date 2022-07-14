@@ -1,7 +1,7 @@
 import { FormlyExtension, FormlyConfig } from '../../services/formly.config';
 import { FormlyFieldConfigCache } from '../../components/formly.field.config';
 import { FormGroup, FormControl, AbstractControlOptions, Validators, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
-import { getFieldValue, defineHiddenProp } from '../../utils';
+import { getFieldValue, defineHiddenProp, getKeyPath } from '../../utils';
 import { registerControl, findControl, updateValidity } from './utils';
 import { of } from 'rxjs';
 
@@ -101,6 +101,15 @@ export class FieldFormExtension implements FormlyExtension {
 
       if (markForCheck) {
         updateValidity(c, true);
+
+        // update validity of `FormGroup` instance created by field with nested key.
+        let parent = c.parent;
+        for (let i = 1; i < getKeyPath(field).length; i++) {
+          if (parent) {
+            updateValidity(parent, true);
+            parent = parent.parent;
+          }
+        }
       }
     }
 
