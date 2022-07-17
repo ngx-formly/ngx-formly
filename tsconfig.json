@@ -31,6 +31,7 @@
     "demo/src/assets/stackblitz/**/*.ts",
     "demo/src/assets/stackblitz/**/*.ts",
     "src/schematics/src/*/files/**/*",
+    "cypress.config.ts",
     "index.ts",
     "dist/**/*",
     "cypress/**/*"
