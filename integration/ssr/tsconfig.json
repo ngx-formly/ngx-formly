@@ -2,7 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "module": "esnext"
+    "module": "esnext",
+    "paths": {
+      "@ngx-formly/*": ["dist/@ngx-formly/*"]
+    }
   },
   "exclude": ["test.ts", "**/*.spec.ts"]
 }
