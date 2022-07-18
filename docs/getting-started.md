@@ -6,7 +6,7 @@
 
 Follow these steps to get started with Ngx Formly. Also check out our [demos](https://formly.dev/examples) for further examples.
 
-1. Install Formly packages:
+### 1. Install Formly packages:
 
   - Installing with `ng add` (recommended):
     ```bash
@@ -30,27 +30,27 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
   Once installed, `FormlyModule` will be imported in the `AppModule`:
 
-  ```patch
-  import { AppComponent } from './app.component';
-  + import { ReactiveFormsModule } from '@angular/forms';
-  + import { FormlyModule } from '@ngx-formly/core';
-  + import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+```patch
+import { AppComponent } from './app.component';
++ import { ReactiveFormsModule } from '@angular/forms';
++ import { FormlyModule } from '@ngx-formly/core';
++ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
-  @NgModule({
-    imports: [
-      BrowserModule
-  +   ReactiveFormsModule,
-  +   FormlyModule.forRoot(),
-  +   FormlyBootstrapModule
-    ],
-    ...
-  })
-  export class AppModule { }
-  ```
+@NgModule({
+  imports: [
+    BrowserModule
++   ReactiveFormsModule,
++   FormlyModule.forRoot(),
++   FormlyBootstrapModule
+  ],
+  ...
+})
+export class AppModule { }
+```
 
   The `forRoot()` call is required at the application's root level. The `forRoot()` method accepts a config argument where you can pass extra config, register custom field types, wrappers, extensions and validation.
 
-2. add `<formly-form>` inside the `form` tag to your `AppComponent` template:
+### 2. add `<formly-form>` inside the `form` tag to your `AppComponent` template:
 
   ```html
   <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
@@ -67,7 +67,7 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
   For more details check [Properties and Options](./guide/properties-options).
 
-3. Configure our defined form:
+### 3. Configure our defined form:
 
   ```ts
   import {Component} from '@angular/core';
@@ -113,6 +113,6 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
   From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
 
-<hr>
+<hr />
 
 To lean more, check out the [Formly @eggheadio course 🔥](https://egghead.io/playlists/configuration-based-reactive-angular-forms-with-ngx-formly-465f) by Juri Strumpflohner ([Twitter](https://twitter.com/juristr) - [Blog](https://juristr.com/blog)).

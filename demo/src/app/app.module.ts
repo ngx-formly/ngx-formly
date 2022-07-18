@@ -9,6 +9,7 @@ import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 import { filter, tap } from 'rxjs/operators';
 import { HomeComponent } from './home.component';
+import { APP_BASE_HREF } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -26,6 +27,7 @@ import { HomeComponent } from './home.component';
       { path: 'examples', loadChildren: () => import('./examples/examples.module').then((m) => m.ExamplesModule) },
     ]),
   ],
+  providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {
@@ -33,7 +35,12 @@ export class AppModule {
     router.events
       .pipe(
         filter((evt) => evt instanceof NavigationEnd),
-        tap(() => (document.querySelector('.mat-sidenav-content').scrollTop = 0)),
+        tap(() => {
+          const sidenav = document.querySelector('.mat-sidenav-content');
+          if (sidenav) {
+            sidenav.scrollTop = 0;
+          }
+        }),
       )
       .subscribe();
   }

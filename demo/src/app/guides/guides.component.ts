@@ -11,14 +11,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GuidesComponent implements OnInit {
   contents: { [id: string]: any } = {
-    'getting-started': require('!!raw-loader!!highlight-loader!markdown-loader!./introduction.md'),
-    'properties-options': require('!!raw-loader!!highlight-loader!markdown-loader!./properties-options.md'),
-    'custom-formly-field': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-field.md'),
-    'custom-formly-extension': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-extension.md'),
-    'custom-formly-wrapper': require('!!raw-loader!!highlight-loader!markdown-loader!./custom-formly-wrapper.md'),
-    validation: require('!!raw-loader!!highlight-loader!markdown-loader!./validation.md'),
-    'expression-properties': require('!!raw-loader!!highlight-loader!markdown-loader!./expression-properties.md'),
-    'formly-field-presets': require('!!raw-loader!!highlight-loader!markdown-loader!./formly-field-presets.md'),
+    'getting-started': require('!!raw-loader!!highlight-loader!markdown-loader!docs/getting-started.md'),
+    'properties-options': require('!!raw-loader!!highlight-loader!markdown-loader!docs/properties-options.md'),
+    'custom-formly-field': require('!!raw-loader!!highlight-loader!markdown-loader!docs/custom-formly-field.md'),
+    'custom-formly-extension': require('!!raw-loader!!highlight-loader!markdown-loader!docs/custom-formly-extension.md'),
+    'custom-formly-wrapper': require('!!raw-loader!!highlight-loader!markdown-loader!docs/custom-formly-wrapper.md'),
+    validation: require('!!raw-loader!!highlight-loader!markdown-loader!docs/validation.md'),
+    'expression-properties': require('!!raw-loader!!highlight-loader!markdown-loader!docs/expression-properties.md'),
+    'formly-field-presets': require('!!raw-loader!!highlight-loader!markdown-loader!docs/formly-field-presets.md'),
   };
 
   constructor(private renderer: Renderer2, private route: ActivatedRoute, private elementRef: ElementRef) {}

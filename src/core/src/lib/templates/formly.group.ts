@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType, FieldGroupTypeConfig } from './field.type';
 
+/** @ignore */
 @Component({
   selector: 'formly-group',
   template: `

@@ -1,4 +1,11 @@
-import { FormGroup, FormArray, AbstractControl, FormGroupDirective } from '@angular/forms';
+import {
+  FormGroup,
+  FormArray,
+  AbstractControl,
+  FormGroupDirective,
+  ValidatorFn,
+  AsyncValidatorFn,
+} from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { FieldWrapper } from '../templates/field.wrapper';
@@ -60,24 +67,14 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
    * Used to set validation rules for a particular field.
    * Should be an object of key - value pairs. The value can either be an expression to evaluate or a function to run.
    * Each should return a boolean value, returning true when the field is valid. See Validation for more information.
-   *
-   * {
-   *   validation?: (string | ValidatorFn)[];
-   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => boolean) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => boolean, message: ValidationMessageOption['message'] });
-   * }
    */
-  validators?: any;
+  validators?: FormlyValidation<ValidatorFn, boolean>;
 
   /**
    * Use this one for anything that needs to validate asynchronously.
    * Pretty much exactly the same as the validators api, except it must be a function that returns a promise.
-   *
-   * {
-   *   validation?: (string | AsyncValidatorFn)[];
-   *   [key: string]: ((control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean> | Observable<boolean>) | ({ expression: (control: AbstractControl, field: FormlyFieldConfig) => Promise<boolean> | Observable<boolean>, message: string });
-   * }
    */
-  asyncValidators?: any;
+  asyncValidators?: FormlyValidation<AsyncValidatorFn, Promise<boolean> | Observable<boolean>>;
 
   /**
    * Can be set instead of `type` to render custom html content.
@@ -270,4 +267,15 @@ export interface FormlyValueChangeEvent {
   type: string;
   value: any;
   [meta: string]: any;
+}
+
+interface FormlyValidation<T, R> {
+  validation?: (string | T)[] | any;
+  [key: string]: FormlyValidatorFn<R> | FormlyValidatorExpressionFn<R> | any;
+}
+type FormlyValidatorFn<T> = (control: AbstractControl, field: FormlyFieldConfig) => T;
+
+interface FormlyValidatorExpressionFn<T> {
+  expression: FormlyValidatorFn<T>;
+  message: string | ((error: any, field: FormlyFieldConfig) => string);
 }

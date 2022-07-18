@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FieldType } from './field.type';
 
+/** @ignore */
 @Component({
   selector: 'formly-template',
   template: `<div [innerHtml]="template"></div>`,

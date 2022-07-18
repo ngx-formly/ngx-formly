@@ -36,11 +36,15 @@ import { isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
+/**
+ * The `<formly-field>` component is used to render the UI widget (layout + type) of a given `field`.
+ */
 @Component({
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
+  /** The field config. */
   @Input() field: FormlyFieldConfig;
   @ViewChild('container', { read: ViewContainerRef, static: true }) viewContainerRef!: ViewContainerRef;
 
@@ -148,7 +152,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
         ref = containerRef.createEmbeddedView(inlineType.ref, { $implicit: f });
       } else {
         const { component } = this.config.getType(f.type, true);
-        ref = containerRef.createComponent<FieldWrapper>(component);
+        ref = containerRef.createComponent<FieldWrapper>(component as any);
       }
       this.attachComponentRef(ref, f);
     }

@@ -19,7 +19,7 @@ Creating a custom type is quite easy, but also very flexible. The following exam
 
 The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/ngx-formly-custom-template)
 
-1. ### Defining the Field Type class and its template:
+  ### 1. Defining the Field Type class and its template:
 
   First you have to create a component representing the field which extends `FieldType` class.
 
@@ -38,7 +38,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
 
   > We passed a `formControl` instance which is created by Formly to the `input`, to let Formly know that this is the input that you want to associate with your model.
 
-2. ### Register the custom type in `NgModule` declaration:
+  ### 2. Register the custom type in `NgModule` declaration:
 
   ```typescript
   import { InputFieldType } from './intput-field.type';
@@ -49,7 +49,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
   export class AppModule {}
   ```
 
-3. ### set an aliase for `InputFieldType` component (Optional):
+  ### 3. set an aliase for `InputFieldType` component (Optional):
 
   > Note: This step is required only for JSON powered forms (see "Method-2" below).
 
@@ -74,7 +74,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
   > 1. `name`: The name of the component type. You use this in the `type` option of a field.
   > 2. `component`: the component that Formly should create when this type is set.
 
-4. ### Use the created custom type in the form config:
+  ### 4. Use the created custom type in the form config:
   * Method 1: Pass the `InputFieldType` component to the field config.
 
     ```typescript

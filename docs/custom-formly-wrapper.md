@@ -32,7 +32,7 @@ Creating a custom wrapper is easy, the following example shows how to create a p
 
 See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.component.ts)
 
-  1. ### Defining the Custom Wrapper class and it's template:
+  ### 1. Defining the Custom Wrapper class and it's template:
 
   First you have to create a component representing the wrapper which extends `FieldWrapper` class.
 
@@ -62,7 +62,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
   > Note: `FieldWrapper` component extends `Field` therefore you can have multiple wrappers attached to one field.
   > Example you can have both a label and validator wrapper.
 
-  2. ### Register the custom type in `NgModule` declaration:
+  ### 2. Register the custom type in `NgModule` declaration:
 
   ```typescript
   import { PanelFieldWrapper } from './panel-wrapper.component';
@@ -73,7 +73,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
   export class AppModule {}
   ```
 
-  3. ### set an aliase for `PanelFieldWrapper` component (Optional):
+  ### 3. set an aliase for `PanelFieldWrapper` component (Optional):
 
   > Note: This step is required only for JSON powered form (see "Method-2" below).
 
@@ -95,7 +95,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
   > `wrappers: [ ... ]` is where define what custom wrappers we want to inject into our module to use in our `FormlyFieldConfig`
 
 
-4. ### Use the panel wrapper in the form config:
+  ### 4. Use the panel wrapper in the form config:
   * Method 1: Pass the `PanelFieldWrapper` component to the field config.
 
     ```typescript

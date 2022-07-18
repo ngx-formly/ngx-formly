@@ -1,7 +1,9 @@
+import { Type } from '@angular/core';
 import { ValidationErrors, AbstractControl } from '@angular/forms';
-import { FieldType } from './../templates/field.type';
-import { FormlyFieldConfig } from './fieldconfig';
 import { Observable } from 'rxjs';
+import { FormlyFieldConfig } from './fieldconfig';
+import { FieldType } from './../templates/field.type';
+import { FieldWrapper } from '../templates/field.wrapper';
 
 export interface FormlyExtension<F extends FormlyFieldConfig = FormlyFieldConfig> {
   priority?: number;
@@ -13,7 +15,7 @@ export interface FormlyExtension<F extends FormlyFieldConfig = FormlyFieldConfig
 
 export interface TypeOption {
   name: string;
-  component?: any;
+  component?: Type<FieldType>;
   wrappers?: string[];
   extends?: string;
   defaultOptions?: FormlyFieldConfig;
@@ -21,7 +23,7 @@ export interface TypeOption {
 
 export interface WrapperOption {
   name: string;
-  component: any;
+  component: Type<FieldWrapper>;
   types?: string[];
 }
 

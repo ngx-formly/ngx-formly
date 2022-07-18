@@ -1,5 +1,7 @@
 # Formly Expressions
 
+## 1. Dynamically Change field properties
+
 Expressions allow you to dynamically change field properties.
 For example, you can disable a form field dynamically. The value of this property can be `string` or `function`.
 You can see an example using string value [here](https://stackblitz.com/edit/angular-formly-eehxjb?file=app/app.component.ts)
@@ -39,8 +41,9 @@ Example with function value:
 
 The field will be hidden when *formState.mainModel.text* is empty
 
+:::note
 
-**ALERT**: You can use the `formState` to store information. In the example we keep the model. `formState` is a property of options. [Read more](https://formly.dev/examples/form-options/form-state)
+You can use the `formState` to store information. In the example we keep the model. `formState` is a property of options. [Read more](https://formly.dev/examples/form-options/form-state)
 
 ```typescript
 options = {
@@ -50,7 +53,9 @@ options = {
 };
 ```
 
-## Conditional Rendering
+:::
+
+## 2. Conditional Rendering
 
 The `hide` property is used to set the hide property of your field. The value of this property can be a `boolean`. To make this property conditional we'll use `expressions: { hide: ... }` where the value can  `string`, `function` or `boolean`. Below is an example of each of them.
 

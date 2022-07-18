@@ -13,6 +13,9 @@ import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe, IObserver } from '../utils';
 import { DOCUMENT } from '@angular/common';
 
+/**
+ * Allow to link the `field` HTML attributes (`id`, `name` ...) and Event attributes (`focus`, `blur` ...) to an element in the DOM.
+ */
 @Directive({
   selector: '[formlyAttributes]',
   host: {
@@ -20,6 +23,7 @@ import { DOCUMENT } from '@angular/common';
   },
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
+  /** The field config. */
   @Input('formlyAttributes') field: FormlyFieldConfig;
   @Input() id: string;
 

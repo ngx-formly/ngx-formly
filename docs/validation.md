@@ -1,11 +1,12 @@
 # Validation
 
 ## Custom Validation
+
 Formly offers different methods to implement custom validations.
 
-#### 1. Declaring validation function and message within NgModule declaration.
+### 1. Declaring validation function and message within NgModule declaration.
 
-##### CUSTOM VALIDATION MESSAGE
+#### CUSTOM VALIDATION MESSAGE
 To define a custom validation message, you need to add an object with two properties: `name` and `message`. You will include this object to the validationMessages array of the FormlyModule config:
 
 The message property could be simply a string or be defined as a function which receives the `error` and the `field` (FormlyFieldConfig) that was validated as input. The last one allows you more customization, like including the value, the  min or max value allowed, etc.
@@ -30,7 +31,7 @@ export function IpValidatorMessage(error: any, field: FormlyFieldConfig) {
 })
 ```
 
-##### CUSTOM VALIDATION FUNCTION
+#### CUSTOM VALIDATION FUNCTION
 The validation function receives the `AbstractControl` as input and it will return `null` if there is not error, and otherwise it will send an object which property is set as `true`.  The name of the property must be the same as the name set to the error message for this validation.
 
 The following code example shows a function to validate an IP. As can be seen, the object returned when there is an error has a property called 'ip' which matches with the name of the custom validation message.
@@ -56,7 +57,7 @@ export function IpValidator(control: AbstractControl): ValidationErrors {
 })
 ```
 
-##### FIELD WITH CUSTOM VALIDATION
+#### FIELD WITH CUSTOM VALIDATION
 You just need to include the name of the validate function, declared in `FormlyModule`, within the property `validators.validation`.
 ```typescript
 {
@@ -72,7 +73,9 @@ You just need to include the name of the validate function, declared in `FormlyM
 },
 ```
 
-**ALERT!** If the function is async, you need to include it within `asyncValidators.validation` property:
+:::note
+
+If the function is async, you need to include it within `asyncValidators.validation` property:
 ```typescript
 {
   key: 'ip',
@@ -87,12 +90,14 @@ You just need to include the name of the validate function, declared in `FormlyM
 },
 ```
 
-#### 2. Declaring validation function within field definition.
+:::
 
-##### CUSTOM VALIDATION MESSAGE
+### 2. Declaring validation function within field definition.
+
+#### CUSTOM VALIDATION MESSAGE
 [As the case above]
 
-##### CUSTOM VALIDATION FUNCTION
+#### CUSTOM VALIDATION FUNCTION
 
 You could implement the validation function within field definition. For instance, you could use this method if you want to use several validation functions with the same error message.
 
@@ -101,7 +106,7 @@ export function IpValidator(control: AbstractControl): ValidationErrors {
   return /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { 'ip': true };
 }
 ```
-##### FIELD WITH CUSTOM VALIDATION
+#### FIELD WITH CUSTOM VALIDATION
 You just need to include the validation function, declared wherever you want, within the property `validators.validation`.
 ```typescript
 {
@@ -118,7 +123,9 @@ You just need to include the validation function, declared wherever you want, wi
 ```
 
 
-**ALERT!** If the function is async, you may need to define it in `asyncValidators.validation` property:
+:::note
+
+If the function is async, you may need to define it in `asyncValidators.validation` property:
 ```typescript
 {
   key: 'ip',
@@ -133,9 +140,11 @@ You just need to include the validation function, declared wherever you want, wi
 },
 ```
 
-#### 3. Declaring validation function and message within field definition.
+:::
 
-##### CUSTOM VALIDATION MESSAGE and CUSTOM VALIDATION FUNCTION
+### 3. Declaring validation function and message within field definition.
+
+#### CUSTOM VALIDATION MESSAGE and CUSTOM VALIDATION FUNCTION
 The validators property of a field could accept different nested properties which match with different validators.
 The format would be:
 ```
@@ -144,7 +153,7 @@ NAME_OF_VALIDATOR: {
   message: FUNCTION | STRING
 }
 ```
-##### FIELD WITH CUSTOM VALIDATION
+#### FIELD WITH CUSTOM VALIDATION
 
 As can be seen in the following code example, you just need to give a name to the validator property (ip), and include a function within expression property and a string or a custom message function withing message property.
 ```typescript
@@ -165,7 +174,9 @@ As can be seen in the following code example, you just need to give a name to th
 },
 ```
 
-**ALERT!** If the function is async, you may need to define it in `asyncValidators` property:
+:::note
+
+If the function is async, you may need to define it in `asyncValidators` property:
 ```typescript
 {
   key: 'ip',
@@ -187,11 +198,11 @@ As can be seen in the following code example, you just need to give a name to th
   },
 },
 ```
+:::
 
+### 4. Declaring validation function in a formly type and message within NgModule declaration.
 
-#### 4. Declaring validation function in a formly type and message within NgModule declaration.
-
-##### CUSTOM VALIDATION MESSAGE
+#### CUSTOM VALIDATION MESSAGE
 Create a custom validation message as described in point 1.
 
 ```typescript
@@ -212,7 +223,7 @@ export function IpValidatorMessage(error: any, field: FormlyFieldConfig) {
 })
 ```
 
-##### CUSTOM VALIDATION FUNCTION USED ON A FORMLY TYPE
+#### CUSTOM VALIDATION FUNCTION USED ON A FORMLY TYPE
 The validation function receives the `AbstractControl` as input and it will return a boolean value, `false` if there is no error, otherwise `true`.
 
 The following code example shows a function to validate an IP. It has to return a boolean instead of a ValidationErrors object.
@@ -244,7 +255,7 @@ export function IpValidator(control: AbstractControl): boolean {
   ]
 })
 ```
-##### FIELD USING A FORMLY TYPE WITH CUSTOM VALIDATION
+#### FIELD USING A FORMLY TYPE WITH CUSTOM VALIDATION
 The formly type has to be referenced in the field
 ```typescript
 {

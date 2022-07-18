@@ -1,0 +1,123 @@
+[
+  {
+    "path": "/guide",
+    "label": "Guides",
+    "items": [
+      { "path": "/guide/getting-started", "label": "Getting Started" },
+      { "path": "/guide/properties-options", "label": "Properties and Options" },
+      { "path": "/guide/validation", "label": "Validation" },
+      { "path": "/guide/expression-properties", "label": "Formly Expressions" },
+      { "path": "/guide/custom-formly-field", "label": "Custom Type" },
+      { "path": "/guide/custom-formly-wrapper", "label": "Custom Wrapper" },
+      { "path": "/guide/custom-formly-extension", "label": "Custom Extension" },
+      { "path": "/guide/formly-field-presets", "label": "Formly Field Presets" }
+    ]
+  },
+  {
+    "path": "/ui",
+    "label": "UI",
+    "items": [
+      { "path": "/ui/bootstrap", "label": "Bootstrap" },
+      { "path": "/ui/material", "label": "Material" },
+      { "path": "/ui/ionic", "label": "Ionic" },
+      { "path": "/ui/primeng", "label": "PrimeNG" },
+      { "path": "/ui/kendo", "label": "Kendo" },
+      { "path": "/ui/ng-zorro-antd", "label": "Ng-Zorro-Antd" }
+    ]
+  },
+  {
+    "path": "/examples",
+    "label": "Examples",
+    "items": [
+      {
+        "label": "Intro",
+        "items": [{ "path": "/examples/introduction", "label": "Introduction Example" }]
+      },
+      {
+        "label": "Field Options",
+        "path": "/examples/field-options",
+        "items": [
+          { "path": "/examples/field-options/expression-properties", "label": "Expression Properties" },
+          { "path": "/examples/field-options/default-value", "label": "Default Value" },
+          { "path": "/examples/field-options/hide-fields", "label": "Hide Fields" },
+          { "path": "/examples/field-options/model-options", "label": "modelOptions" }
+        ]
+      },
+      {
+        "label": "Form Options",
+        "path": "/examples/form-options",
+        "items": [
+          { "path": "/examples/form-options/reset-model", "label": "Reset Model" },
+          { "path": "/examples/form-options/form-state", "label": "Form State" }
+        ]
+      },
+      {
+        "label": "Validation Options",
+        "path": "/examples/validation",
+        "items": [
+          { "path": "/examples/validation/built-in-validations", "label": "Built-in validations" },
+          { "path": "/examples/validation/custom-validation", "label": "Custom validation" },
+          { "path": "/examples/validation/custom-validation-parameters", "label": "Custom Validation parameters" },
+          { "path": "/examples/validation/validation-message", "label": "Validation message" },
+          { "path": "/examples/validation/unique-value-async-validation", "label": "Async validation of unique value" },
+          { "path": "/examples/validation/async-validation-update-on", "label": "Async validation and `updateOn`" },
+          { "path": "/examples/validation/matching-two-fields", "label": "Matching Two Fields" },
+          { "path": "/examples/validation/force-show-error", "label": "Force showing error state" },
+          { "path": "/examples/validation/toggle-required", "label": "Toggle required field" },
+          { "path": "/examples/validation/disable-submit-button", "label": "Disable submit button" }
+        ]
+      },
+      {
+        "label": "Bootstrap Formly",
+        "path": "/examples/bootstrap-formly",
+        "items": [
+          { "path": "/examples/bootstrap-formly/table-rows", "label": "Table Rows" },
+          { "path": "/examples/bootstrap-formly/select", "label": "Select" }
+        ]
+      },
+      {
+        "label": "Bootstrap Specific",
+        "path": "/examples/bootstrap-specific",
+        "items": [
+          { "path": "/examples/bootstrap-specific/advanced-layout", "label": "Advanced Layout" },
+          { "path": "/examples/bootstrap-specific/bootstrap-horizontal", "label": "Bootstrap Horizontal" },
+          { "path": "/examples/bootstrap-specific/input-add-ons", "label": "Input add-ons" }
+        ]
+      },
+      {
+        "label": "Advanced",
+        "path": "/examples/advanced",
+        "items": [
+          { "path": "/examples/advanced/i18n", "label": "i18n ngx-translate" },
+          { "path": "/examples/advanced/i18n-alternative", "label": "i18n ngx-translate (alternative approach)" },
+          { "path": "/examples/advanced/json-schema", "label": "Json schema" },
+          { "path": "/examples/advanced/repeating-section", "label": "Repeating Section" },
+          { "path": "/examples/advanced/repeating-section-input", "label": "Repeating Section With Length Input" },
+          { "path": "/examples/advanced/multi-step-form", "label": "Multi-Step Form" },
+          { "path": "/examples/advanced/tabs", "label": "Tabs Form" },
+          { "path": "/examples/advanced/grid-integration", "label": "ag-grid Integration" },
+          { "path": "/examples/advanced/datatable-integration", "label": "ngx-datatable Integration" },
+          { "path": "/examples/advanced/extending-field-types", "label": "Extending Field Types" }
+        ]
+      },
+      {
+        "label": "Other",
+        "path": "/examples/other",
+        "items": [
+          { "path": "/examples/other/cascaded-select", "label": "Cascaded Select (using observable)" },
+          { "path": "/examples/other/cascaded-select-json", "label": "Cascaded Select JSON powered" },
+          { "path": "/examples/other/observable-select", "label": "Bind Observable to Select" },
+          { "path": "/examples/other/advanced-layout-flex", "label": "Advanced Layout (Flex)" },
+          { "path": "/examples/other/nested-formly-forms", "label": "Nested Forms (fieldGroup wrapper)" },
+          { "path": "/examples/other/material-prefix-suffix", "label": "Material Field Prefix/Suffix" },
+          { "path": "/examples/other/material-formfield-hint-align", "label": "Material Field Hint Alignment" },
+          { "path": "/examples/other/hide-fields-with-animations", "label": "Hide Fields with `@angular/animations`" },
+          { "path": "/examples/other/button", "label": "Button Type" },
+          { "path": "/examples/other/json-powered", "label": "JSON powered" },
+          { "path": "/examples/other/input-file", "label": "File input" },
+          { "path": "/examples/other/presets", "label": "Presets" }
+        ]
+      }
+    ]
+  }
+]

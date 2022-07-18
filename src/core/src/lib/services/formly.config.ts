@@ -15,11 +15,14 @@ import {
 } from '../models';
 import { FieldWrapper } from '../templates/field.wrapper';
 
+/**
+ * An InjectionToken for registering additional formly config options (types, wrappers ...).
+ */
 export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
 declare const ngDevMode: any;
 
 /**
- * Maintains list of formly field directive types. This can be used to register new field templates.
+ * Maintains list of formly config options. This can be used to register new field type.
  */
 @Injectable({ providedIn: 'root' })
 export class FormlyConfig {
@@ -27,6 +30,7 @@ export class FormlyConfig {
   validators: { [name: string]: ValidatorOption } = {};
   wrappers: { [name: string]: WrapperOption } = {};
   messages: { [name: string]: ValidationMessageOption['message'] } = {};
+
   extras: NonNullable<ConfigOption['extras']> = {
     checkExpressionOn: 'modelChange',
     lazyRender: true,
@@ -71,6 +75,10 @@ export class FormlyConfig {
     }
   }
 
+  /**
+   * Allows you to specify a custom type which you can use in your field configuration.
+   * You can pass an object of options, or an array of objects of options.
+   */
   setType(options: TypeOption | TypeOption[]) {
     if (Array.isArray(options)) {
       options.forEach((option) => this.setType(option));
@@ -81,7 +89,7 @@ export class FormlyConfig {
 
       (['component', 'extends', 'defaultOptions', 'wrappers'] as (keyof TypeOption)[]).forEach((prop) => {
         if (options.hasOwnProperty(prop)) {
-          this.types[options.name][prop] = options[prop];
+          this.types[options.name][prop] = options[prop] as any;
         }
       });
     }
@@ -107,6 +115,7 @@ export class FormlyConfig {
     return this.types[name];
   }
 
+  /** @ignore */
   getMergedField(field: FormlyFieldConfig = {}): any {
     const type = this.getType(field.type);
     if (!type) {
@@ -141,7 +150,7 @@ export class FormlyConfig {
     }
   }
 
-  /** @internal */
+  /** @ignore @internal */
   resolveFieldTypeRef(field: FormlyFieldConfigCache = {}): ComponentRef<FieldType> {
     const type: TypeOption & { _componentRef?: ComponentRef<any> } = this.getType(field.type);
     if (!type) {
@@ -187,6 +196,7 @@ export class FormlyConfig {
     return this.wrappers[name];
   }
 
+  /** @ignore */
   setTypeWrapper(type: string, name: string) {
     if (!this.types[type]) {
       this.types[type] = <TypeOption>{};

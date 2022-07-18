@@ -21,6 +21,11 @@ import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
 
+/**
+ * The `<form-form>` component is the main container of the form,
+ * which takes care of managing the form state
+ * and delegates the rendering of each field to `<formly-field>` component.
+ */
 @Component({
   selector: 'formly-form',
   template: '<formly-field [field]="field"></formly-field>',
@@ -28,38 +33,43 @@ import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
+  /** The form instance which allow to track model value and validation status. */
   @Input()
   set form(form: FormGroup | FormArray) {
     this.field.form = form;
   }
-  get form() {
-    return this.field.form as FormGroup | FormArray;
+  get form(): FormGroup | FormArray {
+    return this.field.form;
   }
 
+  /** The model to be represented by the form. */
   @Input()
   set model(model: any) {
     this.setField({ model });
   }
-  get model() {
+  get model(): any {
     return this.field.model;
   }
 
+  /** The field configurations for building the form. */
   @Input()
   set fields(fieldGroup: FormlyFieldConfig[]) {
     this.setField({ fieldGroup });
   }
-  get fields() {
+  get fields(): FormlyFieldConfig[] {
     return this.field.fieldGroup;
   }
 
+  /** Options for the form. */
   @Input()
   set options(options: FormlyFormOptions) {
     this.setField({ options });
   }
-  get options() {
+  get options(): FormlyFormOptions {
     return this.field.options;
   }
 
+  /** Event that is emitted when the model value is changed */
   @Output() modelChange = new EventEmitter<any>();
   @ContentChildren(FormlyTemplate) set templates(templates: QueryList<FormlyTemplate>) {
     this.fieldTemplates.templates = templates;
