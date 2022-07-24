@@ -502,7 +502,7 @@ describe('FieldExpressionExtension', () => {
           });
 
         expect(build).toThrowError(
-          /\[Formly Error\] \[Expression "nested.prop"\] Cannot set property 'prop' of undefined/i,
+          /\[Formly Error\] \[Expression "nested.prop"\] (Cannot set property 'prop' of undefined|Cannot set properties of undefined \(setting 'prop'\))/i,
         );
       });
     });

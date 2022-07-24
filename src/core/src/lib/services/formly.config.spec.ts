@@ -2,13 +2,20 @@ import { FormlyConfig } from './formly.config';
 import { Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
 import { FormlyFieldInput } from '@ngx-formly/core/testing';
+import { FieldType, FieldWrapper } from '../core';
+
+@Component({ selector: 'formly-test-cmp', template: '' })
+class FieldTypeComponent extends FieldType {}
+
+@Component({ selector: 'formly-test-cmp', template: '' })
+class FieldWrapperComponent extends FieldWrapper {}
 
 describe('FormlyConfig service', () => {
   let config: FormlyConfig;
   beforeEach(() => {
     config = new FormlyConfig();
     config.addConfig({
-      wrappers: [{ name: 'layout', component: TestComponent }],
+      wrappers: [{ name: 'layout', component: FieldWrapperComponent }],
       types: [{ name: 'input' }],
       validators: [{ name: 'required', validation: Validators.required }],
       validationMessages: [{ name: 'required', message: 'This field is required.' }],
@@ -53,7 +60,7 @@ describe('FormlyConfig service', () => {
 
   describe('wrappers', () => {
     it('should add wrapper', () => {
-      config.setWrapper({ name: 'custom_wrapper', component: TestComponent });
+      config.setWrapper({ name: 'custom_wrapper', component: FieldWrapperComponent });
 
       expect(config.getWrapper('layout').name).toEqual('layout');
       expect(config.getWrapper('custom_wrapper').name).toEqual('custom_wrapper');
@@ -96,13 +103,13 @@ describe('FormlyConfig service', () => {
     it('should merge existing options when replacing a field type', () => {
       const config = new FormlyConfig();
       config.setType([
-        { name: 'input1', component: TestComponent },
+        { name: 'input1', component: FieldTypeComponent },
         { name: 'input1', wrappers: ['label'] },
       ]);
 
       expect(config.getType('input1')).toEqual({
         name: 'input1',
-        component: TestComponent,
+        component: FieldTypeComponent,
         wrappers: ['label'],
       });
     });
@@ -110,13 +117,13 @@ describe('FormlyConfig service', () => {
     it('should extends component + wrappers when not defined', () => {
       const config = new FormlyConfig();
       config.setType([
-        { name: 'custom_input1', component: TestComponent, wrappers: ['label'] },
+        { name: 'custom_input1', component: FieldTypeComponent, wrappers: ['label'] },
         { name: 'custom_input2', extends: 'custom_input1' },
       ]);
 
       expect(config.getType('custom_input2')).toEqual({
         name: 'custom_input2',
-        component: TestComponent,
+        component: FieldTypeComponent,
         wrappers: ['label'],
         extends: 'custom_input1',
       });
@@ -125,13 +132,13 @@ describe('FormlyConfig service', () => {
     it('should allow override wrappers', () => {
       const config = new FormlyConfig();
       config.setType([
-        { name: 'input', component: TestComponent, wrappers: ['label'] },
+        { name: 'input', component: FieldTypeComponent, wrappers: ['label'] },
         { name: 'input', wrappers: [] },
       ]);
 
       expect(config.getType('input')).toEqual({
         name: 'input',
-        component: TestComponent,
+        component: FieldTypeComponent,
         wrappers: [],
       });
     });
@@ -165,6 +172,3 @@ describe('FormlyConfig service', () => {
     });
   });
 });
-
-@Component({ selector: 'formly-test-cmp', template: '' })
-class TestComponent {}
