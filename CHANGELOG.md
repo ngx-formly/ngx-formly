@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-rc.2](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-rc.1...v6.0.0-rc.2) (2022-07-24)
+
+
+### Bug Fixes
+
+* **core:** detect changes of formState ([bd00fa1](https://github.com/ngx-formly/ngx-formly/commit/bd00fa13d92bd5a299cb17ef0f1487775055847e)), closes [#3388](https://github.com/ngx-formly/ngx-formly/issues/3388)
+* **nativescript:** remove usage of deprecated module ([ae3f927](https://github.com/ngx-formly/ngx-formly/commit/ae3f927c3ebe45a1ccd880545b21030d8143807d)), closes [#3385](https://github.com/ngx-formly/ngx-formly/issues/3385)
+
 ## [6.0.0-rc.1](https://github.com/ngx-formly/ngx-formly/compare/v5.12.6...v6.0.0-rc.1) (2022-07-14)
 
 
