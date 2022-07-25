@@ -222,7 +222,7 @@ export interface FormlyFieldProps {
   minlength?: number;
 
   maxLength?: number;
-  /** @deprecated use `minLength` */
+  /** @deprecated use `maxLength` */
   maxlength?: number;
 
   pattern?: string | RegExp;
