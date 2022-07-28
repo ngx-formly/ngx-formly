@@ -1,4 +1,5 @@
-import { Component, ElementRef, Renderer2, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, Renderer2, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -21,11 +22,22 @@ export class GuidesComponent implements OnInit {
     'formly-field-presets': require('!!raw-loader!!highlight-loader!markdown-loader!docs/formly-field-presets.md'),
   };
 
-  constructor(private renderer: Renderer2, private route: ActivatedRoute, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private route: ActivatedRoute,
+    private elementRef: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: string,
+  ) {}
 
   ngOnInit() {
+    console.log(window.location.origin);
+
     this.route.params.subscribe(({ id }) => {
-      this.renderer.setProperty(this.elementRef.nativeElement, 'innerHTML', this.contents[id].default);
+      let content: string = this.contents[id].default;
+      if (isPlatformBrowser(this.platformId) && window.location.origin === 'https://main.formly.dev') {
+        content = content.replace('https://formly.dev', 'https://main.formly.dev');
+      }
+      this.renderer.setProperty(this.elementRef.nativeElement, 'innerHTML', content);
     });
   }
 }
