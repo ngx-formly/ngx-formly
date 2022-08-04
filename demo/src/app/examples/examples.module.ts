@@ -168,11 +168,6 @@ import { SharedModule } from '../shared';
                   import('./advanced/repeating-section-input/config.module').then((m) => m.ConfigModule),
               },
               {
-                path: 'datatable-integration',
-                loadChildren: () =>
-                  import('./advanced/datatable-integration/config.module').then((m) => m.ConfigModule),
-              },
-              {
                 path: 'grid-integration',
                 loadChildren: () => import('./advanced/grid-integration/config.module').then((m) => m.ConfigModule),
               },
