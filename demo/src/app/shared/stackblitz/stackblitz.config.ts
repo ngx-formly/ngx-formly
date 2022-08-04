@@ -68,9 +68,6 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     'ag-grid-angular': '*',
     'ag-grid-community': '*',
   },
-  'ngx-datatable': {
-    '@swimlane/ngx-datatable': '*',
-  },
   'ngx-translate': {
     '@ngx-translate/core': '*',
     '@ngx-translate/http-loader': '*',

@@ -81,7 +81,6 @@
     "@progress/kendo-licensing": "^1.2.1",
     "@progress/kendo-theme-default": "^5.5.0",
     "@stackblitz/sdk": "^1.8.0",
-    "@swimlane/ngx-datatable": "^20.0.0",
     "ag-grid-angular": "^28.0.0",
     "ag-grid-community": "^28.0.2",
     "bootstrap": "^5.1.3",

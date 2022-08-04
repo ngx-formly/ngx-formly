@@ -10,7 +10,6 @@ interface IStackblitzThemeOption {
   includeMaterial?: boolean;
   includeAgGrid?: boolean;
   includeFontawesome?: boolean;
-  includeNgxDatable?: boolean;
   includeNgxTranslate?: boolean;
 }
 
@@ -73,10 +72,6 @@ export class StackblitzWriter {
       options.includeFontawesome = true;
     }
 
-    if (appModuleContent.indexOf('@swimlane/ngx-datatable') !== -1) {
-      options.includeNgxDatable = true;
-    }
-
     if (appModuleContent.indexOf('@ngx-translate/core') !== -1) {
       options.includeNgxTranslate = true;
     }
@@ -97,10 +92,6 @@ export class StackblitzWriter {
 
     if (options.includeAgGrid) {
       Object.assign(deps, dependencies['ag-grid']);
-    }
-
-    if (options.includeNgxDatable) {
-      Object.assign(deps, dependencies['ngx-datatable']);
     }
 
     if (options.includeNgxTranslate) {
