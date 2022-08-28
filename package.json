@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/common",
-  "version": "6.0.0-rc.2",
+  "version": "6.0.0",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
@@ -15,7 +15,7 @@
     "format:fix": "prettier --write \"**/*.{ts,json,css,scss,html}\"",
     "commit": "git-cz",
     "build": "ts-node --dir build build.ts",
-    "release": "standard-version --prerelease rc",
+    "release": "standard-version",
     "publish": "ts-node --dir build publish.ts",
     "start": "ng serve --port 4100 --open --hmr",
     "demo": "npm run start",

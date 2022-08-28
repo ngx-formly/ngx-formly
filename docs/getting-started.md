@@ -10,7 +10,7 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
   - Installing with `ng add` (recommended):
     ```bash
-    ng add @ngx-formly/schematics@next --ui-theme=bootstrap
+    ng add @ngx-formly/schematics --ui-theme=bootstrap
     ```
 
     - `ui-theme`: is an optional flag which allows choosing the UI theme to install along with the core package; choose one of the following themes:
