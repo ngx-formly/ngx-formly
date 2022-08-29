@@ -10,7 +10,7 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
   - Installing with `ng add` (recomanded):
     ```bash
-    ng add @ngx-formly/schematics --ui-theme=bootstrap
+    ng add @ngx-formly/schematics@v5 --ui-theme=bootstrap
     ```
 
     - `ui-theme`: is optional flag which allows choosing the UI theme to install along with the core package, choose one of the following themes:
@@ -20,9 +20,6 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
       - `primeng`
       - `kendo`
       - `nativescript`
-
-    **Note**: Angular 13 support of Formly schematics is only available using `next` tag (`ng add @ngx-formly/schematics@next`),
-    we suggest Installing with `npm` instead (see below) till the Formly `v6` stable release is ready.
 
   - Installing with `npm`:
     ```bash
