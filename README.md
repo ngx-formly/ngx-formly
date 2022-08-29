@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://formly.dev">
+  <a href="https://v5.formly.dev">
     <img width="200" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true">
   </a>
   <br />
@@ -30,9 +30,9 @@ Formly is a dynamic (JSON powered) form library for Angular that bring unmatched
 
 ## Docs
 
-- [Get Started](https://formly.dev/guide)
-- [Themes](https://formly.dev/ui)
-- [Examples](https://formly.dev/examples)
+- [Get Started](https://v5.formly.dev/guide)
+- [Themes](https://v5.formly.dev/ui)
+- [Examples](https://v5.formly.dev/examples)
 
 ## Resources
 
@@ -43,11 +43,11 @@ Formly is a dynamic (JSON powered) form library for Angular that bring unmatched
 
 | UI                                                |                                                              |                                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------- |
-| [Bootstrap](https://getbootstrap.com)             | [Demo](https://formly.dev/ui/bootstrap) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-bootstrap) |
-| [Material2](https://github.com/angular/material2) | [Demo](https://formly.dev/ui/material)  | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-material)  |
-| [Ionic](https://ionicframework.com)               | [Demo](https://formly.dev/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
-| [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://formly.dev/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
-| [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://formly.dev/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
+| [Bootstrap](https://getbootstrap.com)             | [Demo](https://v5.formly.dev/ui/bootstrap) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-bootstrap) |
+| [Material2](https://github.com/angular/material2) | [Demo](https://v5.formly.dev/ui/material)  | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-material)  |
+| [Ionic](https://ionicframework.com)               | [Demo](https://v5.formly.dev/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
+| [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://v5.formly.dev/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
+| [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://v5.formly.dev/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
 | [NativeScript](https://www.nativescript.org)      | ||
 | [NG-ZORRO](http://ng.ant.design) |     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ng-zorro-antd)     |
 

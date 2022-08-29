@@ -4,7 +4,7 @@
 
 # Quick Start
 
-Follow these steps to get started with Ngx Formly. Also check out our [demos](https://formly.dev/examples) for further examples.
+Follow these steps to get started with Ngx Formly. Also check out our [demos](https://v5.formly.dev/examples) for further examples.
 
 1. Install Formly packages:
 

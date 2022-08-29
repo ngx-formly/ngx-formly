@@ -258,5 +258,5 @@ The formly type has to be referenced in the field
 ```
 
 You could try the DEMO to test the several methods to create custom validators.
-- [Custom Validators](https://formly.dev/examples/validation/custom-validation)
-- [Async Validators](https://formly.dev/examples/validation/unique-value-async-validation)
+- [Custom Validators](https://v5.formly.dev/examples/validation/custom-validation)
+- [Async Validators](https://v5.formly.dev/examples/validation/unique-value-async-validation)

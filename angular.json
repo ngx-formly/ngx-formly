@@ -18,7 +18,8 @@
             "polyfills": "demo/src/polyfills.ts",
             "assets": [
               "demo/src/assets",
-              "demo/src/favicon.ico"
+              "demo/src/favicon.ico",
+              "demo/src/_redirects"
             ],
             "styles": [
               "demo/src/styles.scss"
