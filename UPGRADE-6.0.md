@@ -142,7 +142,7 @@ UPGRADE FROM 5.0 to 6.0
   + export class CustomFieldType extends FieldType<FieldTypeConfig> {}
   ```
 
-- The message validation key: `maxlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
+- The message validation key: `minlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
   - NgModule declaration:
   ```patch
   FormlyModule.forRoot({
@@ -169,10 +169,10 @@ UPGRADE FROM 5.0 to 6.0
       },
       validation: {
         messages: {
-  -       minLength: 'minLength custom message',
+  -       minlength: 'minLength custom message',
   +       minLength: 'minLength custom message',
 
-  -       maxLength: 'maxLength custom message',
+  -       maxlength: 'maxLength custom message',
   +       maxLength: 'maxLength custom message',
         },
       },
