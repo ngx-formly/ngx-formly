@@ -300,7 +300,7 @@ export class FormlyJsonschema {
                 field.fieldGroup.push({
                   ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, resetOnHide: true }),
                   expressions: {
-                    hide: (m: any) => !m || getConstValue(constSchema as JSONSchema7) !== m[property],
+                    hide: (f) => !f.model || getConstValue(constSchema as JSONSchema7) !== f.model[property],
                   },
                 });
               });
@@ -308,7 +308,7 @@ export class FormlyJsonschema {
               field.fieldGroup.push({
                 ...this._toFieldConfig(schemaDeps[property], options),
                 expressions: {
-                  hide: (m: any) => !m || isEmpty(m[property]),
+                  hide: (f) => !f.model || isEmpty(f.model[property]),
                 },
               });
             }
