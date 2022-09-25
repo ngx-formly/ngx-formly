@@ -1,18 +1,27 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Pipe({ name: 'formlySelectOptions' })
-export class FormlySelectOptionsPipe implements PipeTransform {
+export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
+  private _subscription: Subscription;
+  private _options: BehaviorSubject<any[]>;
+
   transform(options, field?: FormlyFieldConfig) {
     if (!(options instanceof Observable)) {
-      options = observableOf(options);
+      options = this.observableOf(options, field);
+    } else {
+      this.dispose();
     }
 
     return (options as Observable<any>).pipe(
       map(value => this.toOptions(value, field || {})),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.dispose();
   }
 
   private toOptions(options, field: FormlyFieldConfig) {
@@ -95,5 +104,36 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       && typeof item === 'object'
       && 'key' in item
       && 'value' in item;
+  }
+
+  private dispose() {
+    if (this._options) {
+      this._options.complete();
+      this._options = null;
+    }
+
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+      this._subscription = null;
+    }
+  }
+
+  private observableOf(options, f?: FormlyFieldConfig) {
+    this.dispose();
+    if (f && f.options && f.options.fieldChanges) {
+      this._subscription = f.options.fieldChanges.pipe(
+        filter(({ property, type, field }) => {
+          return type === 'expressionChanges'
+            && property.indexOf('templateOptions.options') === 0
+            && field === f
+            && Array.isArray(field.templateOptions.options)
+            && !!this._options;
+        }),
+        tap(() => this._options.next(f.templateOptions.options as any)),
+      ).subscribe();
+    }
+
+    this._options = new BehaviorSubject(options);
+    return this._options.asObservable();
   }
 }
