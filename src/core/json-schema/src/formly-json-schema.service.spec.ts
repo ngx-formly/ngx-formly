@@ -589,8 +589,8 @@ describe('Service: FormlyJsonschema', () => {
 
             const config = formlyJsonschema.toFieldConfig(schema).fieldGroup;
             const hideExpr = config[1].expressions.hide as any;
-            expect(hideExpr({ credit_card: null })).toBeTrue();
-            expect(hideExpr({ credit_card: 121223233 })).toBeFalse();
+            expect(hideExpr({ model: { credit_card: null } })).toBeTrue();
+            expect(hideExpr({ model: { credit_card: 121223233 } })).toBeFalse();
           });
           it('should display extended schema with oneOf', () => {
             const schema: JSONSchema7 = {
@@ -621,12 +621,12 @@ describe('Service: FormlyJsonschema', () => {
 
             const [, opt1Field, opt2Field] = formlyJsonschema.toFieldConfig(schema).fieldGroup;
             const opt1HideExpr = opt1Field.expressions.hide as any;
-            expect(opt1HideExpr({ state: true })).toBeFalse();
-            expect(opt1HideExpr({ state: false })).toBeTrue();
+            expect(opt1HideExpr({ model: { state: true } })).toBeFalse();
+            expect(opt1HideExpr({ model: { state: false } })).toBeTrue();
 
             const opt2HideExpr = opt2Field.expressions.hide as any;
-            expect(opt2HideExpr({ state: true })).toBeTrue();
-            expect(opt2HideExpr({ state: false })).toBeFalse();
+            expect(opt2HideExpr({ model: { state: true } })).toBeTrue();
+            expect(opt2HideExpr({ model: { state: false } })).toBeFalse();
           });
         });
       });
