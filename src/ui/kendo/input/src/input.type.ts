@@ -17,7 +17,6 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       [type]="props.type || 'text'"
       [formlyAttributes]="field"
       [formControl]="formControl"
-      [formControl]="formControl"
     />
     <ng-template #numberTmp>
       <kendo-numerictextbox [formlyAttributes]="field" [formControl]="formControl"> </kendo-numerictextbox>
