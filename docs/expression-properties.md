@@ -99,7 +99,6 @@ HTML
 <button (click)="toggle()">Click me</button>
 ```
 
-TS
 ```typescript
 fields: FormlyFieldConfig[] = [
   {
@@ -115,4 +114,46 @@ fields: FormlyFieldConfig[] = [
 toggle(){
   this.fields[0].hide = !this.fields[0].hide;
 }
+```
+
+## 3. Get notified about an expression changes
+
+
+Formly provide a way to get notified about the field changes through `options.fieldChanges` property which includes evaluted expressions. In order to get notified for a specific expression changes, subscribe to `options.fieldChanges` and check the emitted event.
+
+The emitted event object include the following info:
+
+| Property | Description                    |
+| -------- | ------------------------------ |
+| field    | The field instance             |
+| type     | Event type, for expression changes it should be equal to `expressionChanges` |
+| property | The evaluated expression key   |
+| value    | The evaluated expression value |
+
+Example ([Demo](https://stackblitz.com/edit/angular-yobrug?file=src/app/app.component.ts)): The following example print a console log when a the `city` field is rendered:
+
+```typescript
+{
+  key: 'city',
+  type: 'input',
+  expressions: {
+    hide: (field: FormlyFieldConfig) => {
+      // city field is rendered only when `country` is set
+      return !(field.model?.country);
+    },
+  },
+  hooks: {
+    onInit: (field) => {
+      return field.options.fieldChanges.pipe(
+        filter(e => {
+          return e.type === 'expressionChanges'
+            && e.field === field
+            && e.property === 'hide'
+            && e.value === false
+        }),
+        tap(e => console.warn('City field is shown', e)),
+      )
+    }
+  }
+},
 ```
