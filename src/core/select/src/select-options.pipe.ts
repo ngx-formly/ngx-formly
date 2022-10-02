@@ -1,6 +1,6 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
 
 export interface FormlySelectOption {
@@ -25,13 +25,22 @@ type ITransformOption = {
 };
 
 @Pipe({ name: 'formlySelectOptions' })
-export class FormlySelectOptionsPipe implements PipeTransform {
+export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
+  private _subscription: Subscription;
+  private _options: BehaviorSubject<any[]>;
+
   transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[]> {
     if (!(options instanceof Observable)) {
-      options = observableOf(options);
+      options = this.observableOf(options, field);
+    } else {
+      this.dispose();
     }
 
     return (options as Observable<any>).pipe(map((value) => this.transformOptions(value, field)));
+  }
+
+  ngOnDestroy(): void {
+    this.dispose();
   }
 
   private transformOptions(options: any[], field?: FormlyFieldConfig): FormlySelectOption[] {
@@ -89,5 +98,40 @@ export class FormlySelectOptionsPipe implements PipeTransform {
       valueProp: selectPropFn(props.valueProp || 'value'),
       disabledProp: selectPropFn(props.disabledProp || 'disabled'),
     };
+  }
+
+  private dispose() {
+    if (this._options) {
+      this._options.complete();
+      this._options = null;
+    }
+
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+      this._subscription = null;
+    }
+  }
+
+  private observableOf(options: any, f?: FormlyFieldConfig) {
+    this.dispose();
+    if (f && f.options && f.options.fieldChanges) {
+      this._subscription = f.options.fieldChanges
+        .pipe(
+          filter(({ property, type, field }) => {
+            return (
+              type === 'expressionChanges' &&
+              (property.indexOf('templateOptions.options') === 0 || property.indexOf('props.options') === 0) &&
+              field === f &&
+              Array.isArray(field.props.options) &&
+              !!this._options
+            );
+          }),
+          tap(() => this._options.next(f.props.options as any)),
+        )
+        .subscribe();
+    }
+
+    this._options = new BehaviorSubject(options);
+    return this._options.asObservable();
   }
 }

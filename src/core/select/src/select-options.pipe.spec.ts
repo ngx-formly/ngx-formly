@@ -1,5 +1,7 @@
 import { FormlySelectOptionsPipe } from './select-options.pipe';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, Subject } from 'rxjs';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyValueChangeEvent } from 'src/core/src/lib/models';
 
 describe('Pipe: FormlySelectOptionsPipe', () => {
   let pipe: FormlySelectOptionsPipe;
@@ -24,6 +26,23 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     pipe.transform(observableOf([{ label: '1', value: '1' }])).subscribe((options) => {
       expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
+  });
+
+  it('should detect field expressions changes', () => {
+    const fieldChanges = new Subject<FormlyValueChangeEvent>();
+    const field: FormlyFieldConfig = {
+      options: { fieldChanges },
+      props: {
+        options: [{ label: '1', value: '1' }],
+      },
+    };
+
+    const spy = jest.fn();
+    pipe.transform([], field).subscribe(spy);
+    fieldChanges.next({ value: [], field, type: 'expressionChanges', property: 'props.options' });
+    fieldChanges.next({ value: [], field, type: 'expressionChanges', property: 'templateOptions.options' });
+    fieldChanges.next({ value: [], field, type: 'expressionChanges', property: 'test' });
+    expect(spy).toHaveBeenCalledTimes(3);
   });
 
   it('already grouped structure, so nothing to process', () => {
@@ -158,7 +177,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     });
 
     it('as a function', () => {
-      const field = { props: { groupProp: (item) => item.parent } };
+      const field = { props: { groupProp: (item: FormlyFieldConfig) => item.parent } };
 
       pipe.transform(options, field).subscribe((options) => {
         expect(options).toEqual([
