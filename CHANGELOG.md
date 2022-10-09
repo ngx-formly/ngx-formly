@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.1](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0...v6.0.1) (2022-10-09)
+
+
+### Bug Fixes
+
+* **json-schema:** retrieve other field value from f.model ([#3441](https://github.com/ngx-formly/ngx-formly/issues/3441)) ([c282cde](https://github.com/ngx-formly/ngx-formly/commit/c282cde10f1e68667cf9b5af1ce37f07f44503de))
+* **kendo:** remove duplicate formControl directive in input type ([276487f](https://github.com/ngx-formly/ngx-formly/commit/276487fc67b6d2ee5227fb22b074ea87117a6cf2)), closes [#3435](https://github.com/ngx-formly/ngx-formly/issues/3435)
+
 ## [6.0.0](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-rc.2...v6.0.0) (2022-08-28)
 
 ## [6.0.0-rc.2](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-rc.1...v6.0.0-rc.2) (2022-07-24)
@@ -12,7 +20,7 @@ All notable changes to this project will be documented in this file. See [standa
 * **core:** detect changes of formState ([bd00fa1](https://github.com/ngx-formly/ngx-formly/commit/bd00fa13d92bd5a299cb17ef0f1487775055847e)), closes [#3388](https://github.com/ngx-formly/ngx-formly/issues/3388)
 * **nativescript:** remove usage of deprecated module ([ae3f927](https://github.com/ngx-formly/ngx-formly/commit/ae3f927c3ebe45a1ccd880545b21030d8143807d)), closes [#3385](https://github.com/ngx-formly/ngx-formly/issues/3385)
 
-## [6.0.0-rc.1](https://github.com/ngx-formly/ngx-formly/compare/v5.12.6...v6.0.0-rc.1) (2022-07-14)
+## [6.0.0-rc.1](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-rc.0...v6.0.0-rc.1) (2022-07-14)
 
 
 ### Bug Fixes
@@ -33,7 +41,7 @@ All notable changes to this project will be documented in this file. See [standa
 * **core:** sync fieldGroup length on FieldArrayType remove ([8da376c](https://github.com/ngx-formly/ngx-formly/commit/8da376c8433b1542de9393c1f66cdfc9f2c2707a)), closes [#3353](https://github.com/ngx-formly/ngx-formly/issues/3353)
 * **material:** remove usage of form-field deep import path ([#3359](https://github.com/ngx-formly/ngx-formly/issues/3359)) ([f0a7acf](https://github.com/ngx-formly/ngx-formly/commit/f0a7acfc48321404d909b0760029000c487d4b5d))
 
-## [6.0.0-beta.3](https://github.com/ngx-formly/ngx-formly/compare/v5.12.4...v6.0.0-beta.3) (2022-06-10)
+## [6.0.0-beta.3](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-beta.2...v6.0.0-beta.3) (2022-06-10)
 
 
 ### ⚠ BREAKING CHANGES
@@ -58,7 +66,7 @@ export class AppModule {}
 * **core:** handle passing undefined to select options pipe ([#3326](https://github.com/ngx-formly/ngx-formly/issues/3326)) ([2299818](https://github.com/ngx-formly/ngx-formly/commit/22998189e1416dbc30b2be7d03f8f208aa149f34))
 * **primeng:** remove datepicker from main module ([fb623be](https://github.com/ngx-formly/ngx-formly/commit/fb623be83ae7032b769c93e3f3032eef11201041)), closes [#3339](https://github.com/ngx-formly/ngx-formly/issues/3339)
 
-## [6.0.0-beta.2](https://github.com/ngx-formly/ngx-formly/compare/v5.12.3...v6.0.0-beta.2) (2022-05-27)
+## [6.0.0-beta.2](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0-beta.1...v6.0.0-beta.2) (2022-05-27)
 
 
 ### Bug Fixes
@@ -72,7 +80,7 @@ export class AppModule {}
 
 * **schematics:** use v6.0.0-beta ([47f08f5](https://github.com/ngx-formly/ngx-formly/commit/47f08f5e617091a8fd2689142350db86ba1a2944))
 
-## [6.0.0-beta.0](https://github.com/ngx-formly/ngx-formly/compare/v5.12.2...v6.0.0-beta.0) (2022-05-21)
+## [6.0.0-beta.0](https://github.com/ngx-formly/ngx-formly/compare/6.0.0-next.9...v6.0.0-beta.0) (2022-05-22)
 
 
 ### ⚠ BREAKING CHANGES
