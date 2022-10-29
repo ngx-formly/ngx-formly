@@ -19,6 +19,7 @@ export class GuidesComponent implements OnInit {
     validation: require('!!raw-loader!!highlight-loader!markdown-loader!docs/validation.md'),
     'expression-properties': require('!!raw-loader!!highlight-loader!markdown-loader!docs/expression-properties.md'),
     'formly-field-presets': require('!!raw-loader!!highlight-loader!markdown-loader!docs/formly-field-presets.md'),
+    migration: require('!!raw-loader!!highlight-loader!markdown-loader!UPGRADE-6.0.md'),
   };
 
   constructor(private renderer: Renderer2, private route: ActivatedRoute, private elementRef: ElementRef) {}

@@ -10,7 +10,8 @@
       { "path": "/guide/custom-formly-field", "label": "Custom Type" },
       { "path": "/guide/custom-formly-wrapper", "label": "Custom Wrapper" },
       { "path": "/guide/custom-formly-extension", "label": "Custom Extension" },
-      { "path": "/guide/formly-field-presets", "label": "Formly Field Presets" }
+      { "path": "/guide/formly-field-presets", "label": "Formly Field Presets" },
+      { "path": "/guide/migration", "label": "Migration from v5 to v6" }
     ]
   },
   {
