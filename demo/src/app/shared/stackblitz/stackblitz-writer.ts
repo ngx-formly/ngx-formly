@@ -57,7 +57,7 @@ export class StackblitzWriter {
     }
 
     if (
-      ['material', 'kendo', 'material'].indexOf(options.type) !== -1 ||
+      ['material', 'kendo', 'material', 'primeng'].indexOf(options.type) !== -1 ||
       options.includeMaterial ||
       exampleData.files.some((f) => this._getFilecontent(f.filecontent).indexOf('@angular/animations') !== -1)
     ) {
