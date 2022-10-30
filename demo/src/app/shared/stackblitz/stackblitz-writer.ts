@@ -129,7 +129,7 @@ export class StackblitzWriter {
     [...TEMPLATE_FILES.core, ...TEMPLATE_FILES[options.type], ...exampleData.files].forEach((data) => {
       let file = data.file;
 
-      if (file.match(/(component|module|type)/)) {
+      if (file.match(/(component|module|type|preset)/)) {
         file = 'app/' + file;
       }
 

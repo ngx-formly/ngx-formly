@@ -6,7 +6,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
-import { FormlyPresetModule } from 'src/core/preset/src/preset.module';
+import { FormlyPresetModule } from '@ngx-formly/core/preset';
 import { registerSalutationPreset, SALUTATION_OPTIONS } from './salutation.preset';
 
 @NgModule({
