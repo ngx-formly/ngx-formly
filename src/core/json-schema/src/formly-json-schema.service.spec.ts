@@ -383,6 +383,20 @@ describe('Service: FormlyJsonschema', () => {
         expect(config.defaultValue).toEqual([undefined, undefined]);
       });
 
+      it('minItems: should not set default value if array is optional', () => {
+        const numSchema: JSONSchema7 = {
+          type: 'object',
+          properties: {
+            array: {
+              type: 'array',
+              minItems: 2,
+            },
+          },
+        };
+        const config = formlyJsonschema.toFieldConfig(numSchema).fieldGroup[0];
+        expect(config.defaultValue).toEqual(undefined);
+      });
+
       it('should support maxItems', () => {
         const numSchema: JSONSchema7 = {
           type: 'array',

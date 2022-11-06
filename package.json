@@ -156,7 +156,7 @@
   "bundlesize": [
     {
       "path": "./dist/@ngx-formly/core/fesm2020/ngx-formly-core-*.mjs",
-      "maxSize": "5 kB"
+      "maxSize": "6 kB"
     },
     {
       "path": "./dist/@ngx-formly/bootstrap/fesm2020/ngx-formly-bootstrap-*.mjs",
