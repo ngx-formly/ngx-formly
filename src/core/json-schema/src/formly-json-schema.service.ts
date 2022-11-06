@@ -336,8 +336,9 @@ export class FormlyJsonschema {
       case 'array': {
         if (schema.hasOwnProperty('minItems')) {
           field.props.minItems = schema.minItems;
-          this.addValidator(field, 'minItems', (c: AbstractControl, { model }: FormlyFieldConfig) => {
-            return isEmpty(model) || model.length >= schema.minItems;
+          this.addValidator(field, 'minItems', (c: AbstractControl, f: FormlyFieldConfig) => {
+            const value = getFieldValue(f);
+            return isEmpty(value) || value.length >= schema.minItems;
           });
 
           if (!options.isOptional && schema.minItems > 0 && field.defaultValue === undefined) {
@@ -346,22 +347,22 @@ export class FormlyJsonschema {
         }
         if (schema.hasOwnProperty('maxItems')) {
           field.props.maxItems = schema.maxItems;
-          this.addValidator(
-            field,
-            'maxItems',
-            (c: AbstractControl, { model }: FormlyFieldConfig) => isEmpty(model) || model.length <= schema.maxItems,
-          );
+          this.addValidator(field, 'maxItems', (c: AbstractControl, f: FormlyFieldConfig) => {
+            const value = getFieldValue(f);
+            return isEmpty(value) || value.length <= schema.maxItems;
+          });
         }
         if (schema.hasOwnProperty('uniqueItems')) {
           field.props.uniqueItems = schema.uniqueItems;
-          this.addValidator(field, 'uniqueItems', (c: AbstractControl, { model }: FormlyFieldConfig) => {
-            if (isEmpty(model) || !schema.uniqueItems) {
+          this.addValidator(field, 'uniqueItems', (c: AbstractControl, f: FormlyFieldConfig) => {
+            const value = getFieldValue(f);
+            if (isEmpty(value) || !schema.uniqueItems) {
               return true;
             }
 
-            const uniqueItems = Array.from(new Set(model.map((v: any) => JSON.stringify(v))));
+            const uniqueItems = Array.from(new Set(value.map((v: any) => JSON.stringify(v))));
 
-            return uniqueItems.length === model.length;
+            return uniqueItems.length === value.length;
           });
         }
 
