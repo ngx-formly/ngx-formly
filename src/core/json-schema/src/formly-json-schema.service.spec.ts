@@ -366,12 +366,12 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.minItems).toBe(numSchema.minItems);
 
-        const minItemsValidator = config.validators.minItems;
-        expect(minItemsValidator).toBeDefined();
-        expect(minItemsValidator(new FormControl([1]))).toBeFalse();
-        expect(minItemsValidator(new FormControl([]))).toBeFalse();
-        expect(minItemsValidator(new FormControl([1, 2]))).toBeTrue();
-        expect(minItemsValidator(new FormControl([1, 2, 3]))).toBeTrue();
+        const minItemsValidator = (model: any) => config.validators.minItems(new FormControl(), { model });
+        expect(minItemsValidator(undefined)).toBeTrue();
+        expect(minItemsValidator([1])).toBeFalse();
+        expect(minItemsValidator([])).toBeFalse();
+        expect(minItemsValidator([1, 2])).toBeTrue();
+        expect(minItemsValidator([1, 2, 3])).toBeTrue();
       });
 
       it('minItems: should set default value', () => {
@@ -391,11 +391,11 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.maxItems).toBe(numSchema.maxItems);
 
-        const maxItemsValidator = config.validators.maxItems;
-        expect(maxItemsValidator).toBeDefined();
-        expect(maxItemsValidator(new FormControl([1, 2, 3]))).toBeFalse();
-        expect(maxItemsValidator(new FormControl([1, 2]))).toBeTrue();
-        expect(maxItemsValidator(new FormControl([]))).toBeTrue();
+        const maxItemsValidator = (model: any) => config.validators.maxItems(new FormControl(), { model });
+        expect(maxItemsValidator(undefined)).toBeTrue();
+        expect(maxItemsValidator([1, 2, 3])).toBeFalse();
+        expect(maxItemsValidator([1, 2])).toBeTrue();
+        expect(maxItemsValidator([])).toBeTrue();
       });
 
       it('should support uniqueItems', () => {
@@ -406,14 +406,13 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.uniqueItems).toBeTrue();
 
-        const uniqueItemsValidator = config.validators.uniqueItems;
-        expect(uniqueItemsValidator).toBeDefined();
-        expect(uniqueItemsValidator(new FormControl(null))).toBeTrue();
-        expect(uniqueItemsValidator(new FormControl([1, 2, 3]))).toBeTrue();
-        expect(uniqueItemsValidator(new FormControl([1, 2, 2]))).toBeFalse();
+        const uniqueItemsValidator = (model: any) => config.validators.uniqueItems(new FormControl(), { model });
+        expect(uniqueItemsValidator(undefined)).toBeTrue();
+        expect(uniqueItemsValidator([1, 2, 3])).toBeTrue();
+        expect(uniqueItemsValidator([1, 2, 2])).toBeFalse();
 
-        expect(uniqueItemsValidator(new FormControl([{ a: 2 }, { a: 1 }]))).toBeTrue();
-        expect(uniqueItemsValidator(new FormControl([{ a: 1 }, { a: 1 }]))).toBeFalse();
+        expect(uniqueItemsValidator([{ a: 2 }, { a: 1 }])).toBeTrue();
+        expect(uniqueItemsValidator([{ a: 1 }, { a: 1 }])).toBeFalse();
       });
     });
 
@@ -660,7 +659,8 @@ describe('Service: FormlyJsonschema', () => {
             enum: [1, 2, 3, 4, 5],
           };
 
-          const enumOptions = (schemaEnum) => schemaEnum.map((value) => ({ value, label: value }));
+          const enumOptions = (schemaEnum: typeof schemaStringEnum.enum) =>
+            schemaEnum.map((value) => ({ value, label: value }));
 
           // labelProp and valueProp should be a function that returns what it is given
           const config = formlyJsonschema.toFieldConfig(schemaStringEnum);
@@ -1567,7 +1567,7 @@ describe('Service: FormlyJsonschema', () => {
           expect(fooField.hide).toBeTruthy();
           expect(barField.hide).toBeFalsy();
 
-          fixture.componentInstance['model'] = { foo: 'test' };
+          (fixture.componentInstance as any)['model'] = { foo: 'test' };
           fixture.detectChanges();
 
           expect(fooField.hide).toBeFalsy();
