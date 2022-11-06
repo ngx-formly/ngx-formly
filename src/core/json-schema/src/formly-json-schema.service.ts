@@ -82,6 +82,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   strict?: boolean;
   readOnly?: boolean;
   key?: FormlyFieldConfig['key'];
+  isOptional?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -259,9 +260,15 @@ export class FormlyJsonschema {
 
         const { propDeps, schemaDeps } = this.resolveDependencies(schema);
         Object.keys(schema.properties || {}).forEach((property) => {
-          const f = this._toFieldConfig(<JSONSchema7>schema.properties[property], { ...options, key: property });
+          const isRequired = Array.isArray(schema.required) && schema.required.indexOf(property) !== -1;
+          const f = this._toFieldConfig(<JSONSchema7>schema.properties[property], {
+            ...options,
+            key: property,
+            isOptional: options.isOptional || !isRequired,
+          });
+
           field.fieldGroup.push(f);
-          if ((Array.isArray(schema.required) && schema.required.indexOf(property) !== -1) || propDeps[property]) {
+          if (isRequired || propDeps[property]) {
             f.expressions = {
               ...(f.expressions || {}),
               'props.required': (f) => {
@@ -333,7 +340,7 @@ export class FormlyJsonschema {
             return isEmpty(model) || model.length >= schema.minItems;
           });
 
-          if (schema.minItems > 0 && field.defaultValue === undefined) {
+          if (!options.isOptional && schema.minItems > 0 && field.defaultValue === undefined) {
             field.defaultValue = Array.from(new Array(schema.minItems));
           }
         }
