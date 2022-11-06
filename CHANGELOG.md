@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.2](https://github.com/ngx-formly/ngx-formly/compare/v6.0.1...v6.0.2) (2022-11-06)
+
+
+### Bug Fixes
+
+* **json-schema:** fix uniqueItems validator ([eb7c122](https://github.com/ngx-formly/ngx-formly/commit/eb7c1223107a7381a72821b03c4c0ebe941c08fa))
+* **json-schema:** ignore optional array in minItems validator ([#3485](https://github.com/ngx-formly/ngx-formly/issues/3485)) ([71a921a](https://github.com/ngx-formly/ngx-formly/commit/71a921a9434974d12776ee0eae23abd6c209105f))
+* **json-schema:** skip populate array default value for optional array ([#3486](https://github.com/ngx-formly/ngx-formly/issues/3486)) ([d63af4a](https://github.com/ngx-formly/ngx-formly/commit/d63af4a0c90f6ee5e54895554ae53280cc73a538))
+
 ### [6.0.1](https://github.com/ngx-formly/ngx-formly/compare/v6.0.0...v6.0.1) (2022-10-09)
 
 
