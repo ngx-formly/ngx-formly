@@ -4,9 +4,11 @@ UPGRADE FROM 5.0 to 6.0
 
 @ngx-formly/core
 ----------------
-- All Formly components now use `OnPush` change detection, so in order to let Angular detect changes of `templateOptions` properties either ensure a default value is set or use spread object assign instead of regular assign:
+### 1. Custom type: `OnPush` change detection:
 
-  ### Solution 1: set a default value
+All Formly components now use `OnPush` change detection, so in order to let Angular detect changes of `templateOptions` properties either ensure a default value is set or use spread object assign instead of regular assign:
+
+  #### Solution 1: set a default value
 
   ```patch
   export class CustomFieldType extends FieldType {
@@ -22,7 +24,7 @@ UPGRADE FROM 5.0 to 6.0
   }
   ```
 
-  ### Solution 2: use spread object assign
+  #### Solution 2: use spread object assign
 
   ```patch
     showLoader() {
@@ -42,8 +44,9 @@ UPGRADE FROM 5.0 to 6.0
     field.templateOptions.disabled = true;
     ```
 
+### 2. DefaultValue for `fieldGroup` and `fieldArray` type:
 
-- The defaultValue for fieldGroup and fieldArray has been changed to `undefined` instead of empty object. If you want to rely on the old behavior set the `defaultValue`:
+The defaultValue for fieldGroup and fieldArray has been changed to `undefined` instead of empty object. If you want to rely on the old behavior set the `defaultValue`:
 
   **before**:  
   If no default value is set the `defaultValue` for formlyGroup is `{}` and for fieldArray `[]`
@@ -62,7 +65,9 @@ UPGRADE FROM 5.0 to 6.0
   })
   ```
 
-- The initial value of the created FormControl has been changed from `null` to `undefined` to match the field model value.
+### 3. DefaultValue value for `FormControl`:
+
+The initial value of the created FormControl has been changed from `null` to `undefined` to match the field model value.
   
   **before**:  
   ```ts
@@ -85,7 +90,9 @@ UPGRADE FROM 5.0 to 6.0
   ]
   ```
 
-- The `checkExpressionOn` option is set to `modelChange` by default, which improves performance. To rely on the old behavior you need to pass `changeDetectionCheck` to `checkExpressionOn`:
+### 4. `checkExpressionOn` is set to `modelChange` by default:
+
+The `checkExpressionOn` option is set to `modelChange` by default, which improves performance. To rely on the old behavior you need to pass `changeDetectionCheck` to `checkExpressionOn`:
 
   ```patch
   FormlyModule.forRoot({
@@ -95,7 +102,9 @@ UPGRADE FROM 5.0 to 6.0
   }),
   ```
 
-- The `lazyRender` option is enabled by default, which removes the hidden fields from the DOM instead of using CSS to control their visibility. To rely on the old behavior you need to pass `false` to `lazyRender`:
+### 5. Lazy Render is enabled by default:
+
+The `lazyRender` option is enabled by default, which removes the hidden fields from the DOM instead of using CSS to control their visibility. To rely on the old behavior you need to pass `false` to `lazyRender`:
 
   ```patch
   FormlyModule.forRoot({
@@ -105,7 +114,9 @@ UPGRADE FROM 5.0 to 6.0
   }),
   ```
 
-- The `resetOnHide` option is enabled by default, which removes the field value from the model on hide.
+### 6. `resetOnHide` is enabled by default:
+
+The `resetOnHide` option is enabled by default, which removes the field value from the model on hide.
 
   To disable this feature for a specific field use `resetOnHide`:
   ```patch
@@ -127,9 +138,9 @@ UPGRADE FROM 5.0 to 6.0
   }),
   ```
 
-- Add support of strict template checking:
+### 7. Add support of strict template checking:
 
-  In case `strictTemplates` is enabled after the upgrade, add `FieldTypeConfig` to all custom field type that use `[formControl]` input which expect the `formControl` property to be an instance of `FormControl`.
+In case `strictTemplates` is enabled after the upgrade, add `FieldTypeConfig` to all custom field type that use `[formControl]` input which expect the `formControl` property to be an instance of `FormControl`.
  
   ```patch
   - import { FieldType } from '@ngx-formly/core';
@@ -142,7 +153,9 @@ UPGRADE FROM 5.0 to 6.0
   + export class CustomFieldType extends FieldType<FieldTypeConfig> {}
   ```
 
-- The message validation key: `minlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
+### 8. Update `minlength` and `maxlength` validation key:
+
+The message validation key: `minlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
   - NgModule declaration:
   ```patch
   FormlyModule.forRoot({
@@ -179,9 +192,13 @@ UPGRADE FROM 5.0 to 6.0
     },
   ```
 
-  - Reset form value: In case you rely on `form.reset()` instead of `options.resetModel()`, please note that if you call `reset` without an explicit value, its value reverts to its default value instead of `null`. 
+### 9. Reset form value:
 
-  - Formly root field: An extra `formly-field` is now part of `formly-form` component which which allows managing the root field using `field-group` type, so that gives you more control over Formly internal structure. To adjust the style of Formly root field you may need to update the css selector into:
+Reset form value: In case you rely on `form.reset()` instead of `options.resetModel()`, please note that if you call `reset` without an explicit value, its value reverts to its default value instead of `null`. 
+
+### 10. Formly root field:
+
+An extra `formly-field` is now part of `formly-form` component which which allows managing the root field using `field-group` type, so that gives you more control over Formly internal structure. To adjust the style of Formly root field you may need to update the css selector into:
   
   ```patch
   - formly-form > formly-field {
@@ -189,9 +206,11 @@ UPGRADE FROM 5.0 to 6.0
   }
   ```
 
-- Select Options: Passing the `{key, value}` to select option is no longer supported, use `{value, label}` instead.
+### 11. Select Option unsuported format:
 
-  ### Solution 1: migrate to {value, label}
+Select Options: Passing the `{key, value}` to select option is no longer supported, use `{value, label}` instead.
+
+  #### Solution 1: migrate to {value, label}
 
   ```patch
   {
@@ -205,7 +224,7 @@ UPGRADE FROM 5.0 to 6.0
   }
   ```
 
-  ### Solution 2: use `labelProp` and `valueProp`:
+  #### Solution 2: use `labelProp` and `valueProp`:
 
   ```patch
   {
