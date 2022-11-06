@@ -7,6 +7,7 @@ module.exports = {
       'always',
       [
         'demo',
+        'upgrade',
         'guides',
         'core',
         'testing',

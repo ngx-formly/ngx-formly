@@ -189,6 +189,37 @@ UPGRADE FROM 5.0 to 6.0
   }
   ```
 
+- Select Options: Passing the `{key, value}` to select option is no longer supported, use `{value, label}` instead.
+
+  ### Solution 1: migrate to {value, label}
+
+  ```patch
+  {
+    type: 'select',
+    props: {
+      options: [
+  -      { key: '1', value: 'label 1' },
+  +      { value: '2', label: 'label 2' },
+      ],
+    }
+  }
+  ```
+
+  ### Solution 2: use `labelProp` and `valueProp`:
+
+  ```patch
+  {
+    type: 'select',
+    props: {
+  +   labelProp: 'value',
+  +   valueProp: 'key',
+      options: [
+        { key: '1', value: 'label 1' },
+      ],
+    }
+  }
+  ```
+
 @ngx-formly/core/json-schema
 ----------------------------
 
