@@ -329,11 +329,9 @@ export class FormlyJsonschema {
       case 'array': {
         if (schema.hasOwnProperty('minItems')) {
           field.props.minItems = schema.minItems;
-          this.addValidator(
-            field,
-            'minItems',
-            ({ value }: AbstractControl) => isEmpty(value) || value.length >= schema.minItems,
-          );
+          this.addValidator(field, 'minItems', (c: AbstractControl, { model }: FormlyFieldConfig) => {
+            return isEmpty(model) || model.length >= schema.minItems;
+          });
 
           if (schema.minItems > 0 && field.defaultValue === undefined) {
             field.defaultValue = Array.from(new Array(schema.minItems));
@@ -344,19 +342,19 @@ export class FormlyJsonschema {
           this.addValidator(
             field,
             'maxItems',
-            ({ value }: AbstractControl) => isEmpty(value) || value.length <= schema.maxItems,
+            (c: AbstractControl, { model }: FormlyFieldConfig) => isEmpty(model) || model.length <= schema.maxItems,
           );
         }
         if (schema.hasOwnProperty('uniqueItems')) {
           field.props.uniqueItems = schema.uniqueItems;
-          this.addValidator(field, 'uniqueItems', ({ value }: AbstractControl) => {
-            if (isEmpty(value) || !schema.uniqueItems) {
+          this.addValidator(field, 'uniqueItems', (c: AbstractControl, { model }: FormlyFieldConfig) => {
+            if (isEmpty(model) || !schema.uniqueItems) {
               return true;
             }
 
-            const uniqueItems = Array.from(new Set(value.map((v: any) => JSON.stringify(v))));
+            const uniqueItems = Array.from(new Set(model.map((v: any) => JSON.stringify(v))));
 
-            return uniqueItems.length === value.length;
+            return uniqueItems.length === model.length;
           });
         }
 
