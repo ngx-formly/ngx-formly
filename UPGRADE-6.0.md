@@ -156,7 +156,8 @@ In case `strictTemplates` is enabled after the upgrade, add `FieldTypeConfig` to
 ### 8. Update `minlength` and `maxlength` validation key:
 
 The message validation key: `minlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
-  - NgModule declaration:
+
+  #### NgModule declaration:
   ```patch
   FormlyModule.forRoot({
     validationMessages: [
@@ -169,7 +170,7 @@ The message validation key: `minlength` and `maxlength` has been changed from lo
   })
   ```
 
-  - Field Config declaration (if using `validation.messages`):
+  #### Field Config declaration (if using `validation.messages`):
   ```patch
   fields: FormlyFieldConfig[] = [
     {
