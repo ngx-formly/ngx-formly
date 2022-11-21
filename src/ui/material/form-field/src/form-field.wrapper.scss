@@ -1,3 +1,6 @@
-formly-wrapper-mat-form-field .mat-form-field {
-  width: 100%;
+formly-wrapper-mat-form-field {
+  .mat-mdc-form-field,
+  .mat-form-field {
+    width: 100%;
+  }
 }

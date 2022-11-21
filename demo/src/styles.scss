@@ -10,13 +10,13 @@ html {
 *::after {
   box-sizing: inherit;
 }
-@import '~bootstrap/scss/bootstrap-grid';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/root';
-@import '~bootstrap/scss/forms';
-@import '~bootstrap/scss/buttons';
-@import '~bootstrap/scss/card';
-@import '~bootstrap/scss/alert';
+@import 'bootstrap/scss/bootstrap-grid';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/alert';
 
 legend {
   margin-bottom: 20px;
@@ -25,7 +25,7 @@ legend {
 }
 
 // highlight.js
-@import '~highlight.js/styles/github.css';
+@import 'highlight.js/styles/github.css';
 
 // material
 
@@ -63,8 +63,8 @@ pre {
 @import './markdown.css';
 
 // ag-grid
-@import '~ag-grid-community/dist/styles/ag-grid.css';
-@import '~ag-grid-community/dist/styles/ag-theme-balham.css';
+@import 'ag-grid-community/dist/styles/ag-grid.css';
+@import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 footer {
   font-size: 85%;

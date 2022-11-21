@@ -17,7 +17,7 @@
     "build": "ts-node --dir build build.ts",
     "release": "standard-version",
     "publish": "ts-node --dir build publish.ts",
-    "start": "ng serve --port 4100 --open --hmr",
+    "start": "ng serve app --port 4100 --open --hmr",
     "demo": "npm run start",
     "test": "ngcc --properties main && jest",
     "test:watch": "ngcc --properties main && jest --watch",

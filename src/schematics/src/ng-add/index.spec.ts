@@ -1,6 +1,6 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { join } from 'path';
-import { getFileContent } from '@schematics/angular/utility/test';
+import { getFileContent } from '@schematics/angular/utility/test/get-file-content';
 import { createWorkspace, getTestProjectPath } from '../../utils/testing';
 import { Schema } from './schema';
 
