@@ -1,7 +1,7 @@
 import { FormlyExtension, FormlyFieldConfigCache } from '../../models';
 import {
-  FormGroup,
-  FormControl,
+  UntypedFormGroup,
+  UntypedFormControl,
   AbstractControlOptions,
   Validators,
   ValidatorFn,
@@ -58,10 +58,13 @@ export class FieldFormExtension implements FormlyExtension {
       const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
 
       if (field.fieldGroup) {
-        control = new FormGroup({}, controlOptions);
+        control = new UntypedFormGroup({}, controlOptions);
       } else {
         const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
-        control = new FormControl({ value, disabled: false }, { ...controlOptions, initialValueIsDefault: true });
+        control = new UntypedFormControl(
+          { value, disabled: false },
+          { ...controlOptions, initialValueIsDefault: true },
+        );
       }
     }
 
@@ -78,7 +81,7 @@ export class FieldFormExtension implements FormlyExtension {
     if (hasKey(field) || !field.parent || (!hasKey(field) && !field.fieldGroup)) {
       const { formControl: c } = field;
       if (c) {
-        if (hasKey(field) && c instanceof FormControl) {
+        if (hasKey(field) && c instanceof UntypedFormControl) {
           if (disabled && c.enabled) {
             c.disable({ emitEvent: false, onlySelf: true });
             markForCheck = true;

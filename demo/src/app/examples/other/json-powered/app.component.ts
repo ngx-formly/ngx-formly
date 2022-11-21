@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { UserService } from './user.service';
 
@@ -8,7 +8,7 @@ import { UserService } from './user.service';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   options: FormlyFormOptions = {};
   model: any;
   fields: FormlyFieldConfig[];

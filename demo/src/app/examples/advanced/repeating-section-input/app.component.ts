@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { startWith, tap, filter } from 'rxjs/operators';
 
@@ -8,7 +8,7 @@ import { startWith, tap, filter } from 'rxjs/operators';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: any = {
     investmentsCount: 3,
     investments: [],

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, ValidationErrors, AbstractControl } from '@angular/forms';
+import { UntypedFormGroup, ValidationErrors, AbstractControl } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
 export function ipValidator(control: AbstractControl): ValidationErrors {
@@ -11,7 +11,7 @@ export function ipValidator(control: AbstractControl): ValidationErrors {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};
 

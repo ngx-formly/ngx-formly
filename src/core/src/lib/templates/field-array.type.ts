@@ -1,12 +1,12 @@
 import { Directive } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { UntypedFormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, assignFieldValue, getFieldValue, hasKey } from '../utils';
 import { FormlyFieldConfig, FormlyExtension } from '../models';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
 export interface FieldArrayTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
-  formControl: FormArray;
+  formControl: UntypedFormArray;
   props: NonNullable<T>;
 }
 
@@ -18,7 +18,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
   onPopulate(field: F) {
     if (!field.formControl && hasKey(field)) {
       const control = findControl(field);
-      registerControl(field, control ? control : new FormArray([], { updateOn: field.modelOptions.updateOn }));
+      registerControl(field, control ? control : new UntypedFormArray([], { updateOn: field.modelOptions.updateOn }));
     }
 
     field.fieldGroup = field.fieldGroup || [];

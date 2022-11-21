@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
@@ -10,7 +10,7 @@ export class AppComponent {
   @ViewChild('hintStart', { static: true }) hintStart!: TemplateRef<any>;
   @ViewChild('hintEnd', { static: true }) hintEnd!: TemplateRef<any>;
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};
 

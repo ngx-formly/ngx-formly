@@ -14,7 +14,7 @@ import { evalExpression, evalStringExpression } from './utils';
 import { isObservable, Observable, Subscription } from 'rxjs';
 import { FormlyExtension } from '../../models';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
-import { FormArray } from '@angular/forms';
+import { UntypedFormArray } from '@angular/forms';
 
 export class FieldExpressionExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
@@ -216,7 +216,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           assignFieldValue(field, undefined);
           field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
           field.options.fieldChanges.next({ value: undefined, field, type: 'valueChanges' });
-          if (field.fieldGroup && field.formControl instanceof FormArray) {
+          if (field.fieldGroup && field.formControl instanceof UntypedFormArray) {
             field.fieldGroup.length = 0;
           }
         }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   model: any;
   options: FormlyFormOptions;
   fields: FormlyFieldConfig[];
@@ -41,7 +41,7 @@ export class AppComponent {
       .pipe(
         tap(({ schema, model }) => {
           this.type = type;
-          this.form = new FormGroup({});
+          this.form = new UntypedFormGroup({});
           this.options = {};
           this.fields = [this.formlyJsonschema.toFieldConfig(schema)];
           this.model = model;

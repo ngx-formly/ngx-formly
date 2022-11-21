@@ -30,7 +30,11 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "stylePreprocessorOptions": {
+              "includePaths": ["./node_modules"]
+            },
+            "allowedCommonJsDependencies": ["highlight-loader", "json-formatter-js"]
           },
           "configurations": {
             "production": {
@@ -417,11 +421,10 @@
       }
     }
   },
-  "defaultProject": "app",
   "cli": {
     "analytics": false,
     "packageManager": "npm",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "schematics": {
     "@schematics/angular:component": {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldValue as getFieldValue,
@@ -686,7 +686,7 @@ export class FormlyJsonschema {
     const model = root.model ? clone(root.model) : root.fieldArray ? [] : {};
     if (!field) {
       field = root._schemasFields[i] = root.options.build({
-        form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
+        form: Array.isArray(model) ? new UntypedFormArray([]) : new UntypedFormGroup({}),
         fieldGroup: [
           this._toFieldConfig(schemas[i], {
             ...options,

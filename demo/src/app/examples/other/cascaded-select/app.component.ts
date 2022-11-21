@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ interface Model {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: Partial<Model> = { sport: '1' };
   fields: FormlyFieldConfig[] = [
     {

@@ -16,7 +16,7 @@ import {
   EmbeddedViewRef,
   Optional,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
 import { FormlyFieldConfig, FormlyFieldConfigCache, FormlyHookConfig } from '../models';
 import {
@@ -302,7 +302,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
       const sub = valueChanges.subscribe((value) => {
         // workaround for https://github.com/angular/angular/issues/13792
-        if (control._fields?.length > 1 && control instanceof FormControl) {
+        if (control._fields?.length > 1 && control instanceof UntypedFormControl) {
           control.patchValue(value, { emitEvent: false, onlySelf: true });
         }
 
