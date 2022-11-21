@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';

@@ -4,7 +4,7 @@ import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 
 import { FormlyFieldCheckbox } from './checkbox.type';
 

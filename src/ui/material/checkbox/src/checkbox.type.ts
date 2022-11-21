@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
 
 interface CheckboxProps extends FormlyFieldProps {

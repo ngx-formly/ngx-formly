@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
+import { MAT_LEGACY_INPUT_VALUE_ACCESSOR as MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/legacy-input';
 
 interface TextAreaProps extends FormlyFieldProps {
   autosize?: boolean;

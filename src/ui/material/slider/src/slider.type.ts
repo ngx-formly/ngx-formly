@@ -1,7 +1,10 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MatSlider, MatSliderChange } from '@angular/material/slider';
+import {
+  MatLegacySlider as MatSlider,
+  MatLegacySliderChange as MatSliderChange,
+} from '@angular/material/legacy-slider';
 
 interface SliderProps extends FormlyFieldProps {
   displayWith?: (value: number) => string | number;

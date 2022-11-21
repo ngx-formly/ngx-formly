@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChildren, QueryList, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 
 interface MultiCheckboxProps extends FormlyFieldProps {

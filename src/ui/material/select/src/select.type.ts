@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';

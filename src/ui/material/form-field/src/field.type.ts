@@ -1,7 +1,10 @@
 import { OnDestroy, TemplateRef, ViewChild, Type, Directive, ViewChildren, QueryList } from '@angular/core';
 import { FieldType as CoreFieldType, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
-import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
+import {
+  MatLegacyFormField as MatFormField,
+  MatLegacyFormFieldControl as MatFormFieldControl,
+} from '@angular/material/legacy-form-field';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormlyFieldProps } from './form-field.wrapper';
 

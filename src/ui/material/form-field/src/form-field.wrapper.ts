@@ -15,9 +15,12 @@ import {
   FormlyFieldProps as CoreFormlyFieldProps,
   FieldWrapper,
 } from '@ngx-formly/core';
-import { MatFormField } from '@angular/material/form-field';
+import { MatLegacyFormField as MatFormField } from '@angular/material/legacy-form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { FloatLabelType, MatFormFieldAppearance } from '@angular/material/form-field';
+import {
+  LegacyFloatLabelType,
+  MatLegacyFormFieldAppearance as MatFormFieldAppearance,
+} from '@angular/material/legacy-form-field';
 import { ThemePalette } from '@angular/material/core';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig<FormlyFieldProps> {
@@ -30,7 +33,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   hideLabel?: boolean;
   hideRequiredMarker?: boolean;
   hideFieldUnderline?: boolean;
-  floatLabel?: FloatLabelType;
+  floatLabel?: LegacyFloatLabelType;
   appearance?: MatFormFieldAppearance;
   color?: ThemePalette;
   hintStart?: TemplateRef<any> | string;
