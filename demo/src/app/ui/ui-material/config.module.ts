@@ -8,6 +8,7 @@ import { ToggleAppModule, ToggleExampleConfig } from './toggle';
 import { SliderAppModule, SliderExampleConfig } from './slider';
 import { AutocompleteAppModule, AutocompleteExampleConfig } from './autocomplete';
 import { FormlyMaterialModule } from '@ngx-formly/material';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -36,5 +37,6 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
       },
     ]),
   ],
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }],
 })
 export class ConfigModule {}

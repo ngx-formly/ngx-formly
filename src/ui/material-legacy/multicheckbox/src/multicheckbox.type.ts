@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChildren, QueryList, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
-import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material-legacy/form-field';
 
 interface MultiCheckboxProps extends FormlyFieldProps {
   labelPosition?: 'before' | 'after';

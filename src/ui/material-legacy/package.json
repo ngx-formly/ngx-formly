@@ -1,5 +1,5 @@
 {
-  "name": "@ngx-formly/material",
+  "name": "@ngx-formly/material-legacy",
   "version": "0.0.0-FORMLY-VERSION",
   "license": "MIT",
   "dependencies": {

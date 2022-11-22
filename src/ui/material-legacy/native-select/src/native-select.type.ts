@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
-import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material-legacy/form-field';
 
 interface NativeSelectProps extends FormlyFieldProps, FormlyFieldSelectProps {}
 

@@ -20,6 +20,7 @@
     "items": [
       { "path": "/ui/bootstrap", "label": "Bootstrap" },
       { "path": "/ui/material", "label": "Material" },
+      { "path": "/ui/material-legacy", "label": "Material Legacy" },
       { "path": "/ui/ionic", "label": "Ionic" },
       { "path": "/ui/primeng", "label": "PrimeNG" },
       { "path": "/ui/kendo", "label": "Kendo" },

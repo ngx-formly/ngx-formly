@@ -9,7 +9,7 @@ import {
   Type,
 } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material-legacy/form-field';
 import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 import { FocusMonitor } from '@angular/cdk/a11y';
 

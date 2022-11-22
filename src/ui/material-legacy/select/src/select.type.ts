@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material-legacy/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {

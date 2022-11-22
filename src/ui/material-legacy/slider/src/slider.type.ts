@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material-legacy/form-field';
 import {
   MatLegacySlider as MatSlider,
   MatLegacySliderChange as MatSliderChange,

@@ -26,10 +26,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
       { path: 'examples', loadChildren: () => import('./examples/examples.module').then((m) => m.ExamplesModule) },
     ]),
   ],
-  providers: [
-    { provide: APP_BASE_HREF, useValue: '/' },
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-  ],
+  providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {

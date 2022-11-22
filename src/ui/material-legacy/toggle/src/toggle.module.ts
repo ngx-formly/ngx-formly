@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
-import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
+import { FormlyMatFormFieldModule } from '@ngx-formly/material-legacy/form-field';
 
 import { FormlyFieldToggle } from './toggle.type';
 

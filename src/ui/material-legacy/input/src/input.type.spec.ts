@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyMatInputModule } from '@ngx-formly/material/input';
+import { FormlyMatInputModule } from '@ngx-formly/material-legacy/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {

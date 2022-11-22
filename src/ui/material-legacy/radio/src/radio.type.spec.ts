@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyMatRadioModule } from '@ngx-formly/material/radio';
+import { FormlyMatRadioModule } from '@ngx-formly/material-legacy/radio';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {

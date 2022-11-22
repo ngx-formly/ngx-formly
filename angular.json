@@ -342,6 +342,32 @@
         }
       }
     },
+    "@ngx-formly/material-legacy": {
+      "root": "src/ui/material-legacy",
+      "sourceRoot": "src/ui/material-legacy/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "src/ui/material-legacy/tsconfig.lib.json",
+            "project": "src/ui/material-legacy/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/material-legacy/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/material-legacy/**/*.ts", "src/ui/material-legacy/**/*.html"]
+          }
+        }
+      }
+    },
     "@ngx-formly/primeng": {
       "root": "src/ui/primeng",
       "sourceRoot": "src/ui/primeng/src",

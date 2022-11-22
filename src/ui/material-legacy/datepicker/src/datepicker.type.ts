@@ -9,7 +9,7 @@ import {
   Type,
 } from '@angular/core';
 import { FieldTypeConfig, FormlyConfig, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
-import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/material-legacy/form-field';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatCalendarCellClassFunction, MatDatepicker } from '@angular/material/datepicker';
 
