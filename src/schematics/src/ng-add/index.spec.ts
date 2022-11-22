@@ -1,6 +1,6 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { join } from 'path';
-import { getFileContent } from '@schematics/angular/utility/test';
+import { getFileContent } from '@schematics/angular/utility/test/get-file-content';
 import { createWorkspace, getTestProjectPath } from '../../utils/testing';
 import { Schema } from './schema';
 
@@ -21,7 +21,7 @@ describe('ng-add-schematic', () => {
       .runSchematicAsync('ng-add', {}, appTree)
       .toPromise();
     const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-
+    
     expect(packageJson.dependencies['@angular/forms']).toBeDefined();
     expect(packageJson.dependencies['@ngx-formly/core']).toBeDefined();
   });
