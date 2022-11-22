@@ -113,7 +113,9 @@ export class FormlyWrapperFormField
   ngAfterViewInit() {
     // temporary fix for https://github.com/angular/material2/issues/7891
     if (this.formField.appearance !== 'outline' && this.props.hideFieldUnderline === true) {
-      const underlineElement = this.formField._elementRef.nativeElement.querySelector('.mat-form-field-underline');
+      const underlineElement = this.formField._elementRef.nativeElement.querySelector(
+        '.mat-mdc-mdc-form-field-underline',
+      );
       underlineElement && this.renderer.removeChild(underlineElement.parentNode, underlineElement);
     }
   }

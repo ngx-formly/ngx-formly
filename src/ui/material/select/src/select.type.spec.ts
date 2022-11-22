@@ -1,4 +1,4 @@
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, flush, tick } from '@angular/core/testing';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
@@ -28,7 +28,7 @@ describe('ui-material: Formly Field Select Component', () => {
 
     expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
 
-    query('.mat-select-trigger').triggerEventHandler('click', {});
+    query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
     detectChanges();
 
     expect(queryAll('mat-option')).toHaveLength(3);
@@ -49,7 +49,7 @@ describe('ui-material: Formly Field Select Component', () => {
 
     expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
 
-    query('.mat-select-trigger').triggerEventHandler('click', {});
+    query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
     detectChanges();
 
     expect(queryAll('mat-option')).toHaveLength(3);
@@ -71,7 +71,7 @@ describe('ui-material: Formly Field Select Component', () => {
     });
 
     expect(field.formControl.value).toBeUndefined();
-    query('.mat-select-trigger').triggerEventHandler('click', {});
+    query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
     detectChanges();
 
     const selectAllOption = queryAll('mat-option')[1];
@@ -97,7 +97,7 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      query('.mat-select-trigger').triggerEventHandler('click', {});
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
       expect(queryAll('mat-option')).toHaveLength(3);
@@ -118,7 +118,7 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      query('.mat-select-trigger').triggerEventHandler('click', {});
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
       expect(queryAll('mat-option')).toHaveLength(3);
@@ -141,7 +141,7 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      query('.mat-select-trigger').triggerEventHandler('click', {});
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
       expect(queryAll('mat-option')).toHaveLength(1 + 3);
@@ -162,7 +162,7 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      query('.mat-select-trigger').triggerEventHandler('click', {});
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
       const selectAllOption = queryAll('mat-option')[0];
@@ -198,7 +198,7 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      query('.mat-select-trigger').triggerEventHandler('click', {});
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
       const selectAllOption = queryAll('mat-option')[0];
@@ -232,7 +232,7 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      query('.mat-select-trigger').triggerEventHandler('click', {});
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
       const selectAllOption = queryAll('mat-option')[0].nativeElement;
@@ -261,11 +261,12 @@ describe('ui-material: Formly Field Select Component', () => {
       tick(51);
       detectChanges();
 
-      query('.mat-select-trigger').triggerEventHandler('click', {});
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
       const selectAllOption = queryAll('mat-option')[0].nativeElement;
       expect(selectAllOption.innerHTML).toContain('Click me!!');
+      flush();
     }));
 
     it('should correctly use custom aria-labelledby', () => {
@@ -280,7 +281,7 @@ describe('ui-material: Formly Field Select Component', () => {
         },
       });
 
-      const { attributes } = query('.mat-select');
+      const { attributes } = query('.mat-mdc-select');
       expect(attributes['aria-labelledby']).toBe('TEST_LABEL');
     });
   });
