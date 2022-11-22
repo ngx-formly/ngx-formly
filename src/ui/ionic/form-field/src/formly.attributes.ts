@@ -1,4 +1,5 @@
-import { Directive, Input } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Directive, ElementRef, Inject, Input, Renderer2 } from '@angular/core';
 import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
 
 @Directive({
@@ -12,4 +13,7 @@ import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-
 })
 export class IonFormlyAttributes extends FormlyAttributes {
   @Input('ionFormlyAttributes') override field: FormlyFieldConfig;
+  constructor(renderer: Renderer2, elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
+    super(renderer, elementRef, _document);
+  }
 }
