@@ -15,12 +15,9 @@ import {
   FormlyFieldProps as CoreFormlyFieldProps,
   FieldWrapper,
 } from '@ngx-formly/core';
-import { MatLegacyFormField as MatFormField } from '@angular/material/legacy-form-field';
+import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import {
-  LegacyFloatLabelType,
-  MatLegacyFormFieldAppearance as MatFormFieldAppearance,
-} from '@angular/material/legacy-form-field';
+import { FloatLabelType, MatFormFieldAppearance } from '@angular/material/form-field';
 import { ThemePalette } from '@angular/material/core';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig<FormlyFieldProps> {
@@ -33,7 +30,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   hideLabel?: boolean;
   hideRequiredMarker?: boolean;
   hideFieldUnderline?: boolean;
-  floatLabel?: LegacyFloatLabelType;
+  floatLabel?: FloatLabelType;
   appearance?: MatFormFieldAppearance;
   color?: ThemePalette;
   hintStart?: TemplateRef<any> | string;
@@ -61,13 +58,13 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
         >
       </mat-label>
 
-      <ng-container matPrefix *ngIf="props.prefix">
+      <div matPrefix *ngIf="props.prefix">
         <ng-container [ngTemplateOutlet]="props.prefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-container>
+      </div>
 
-      <ng-container matSuffix *ngIf="props.suffix">
+      <div matSuffix *ngIf="props.suffix">
         <ng-container [ngTemplateOutlet]="props.suffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-container>
+      </div>
 
       <mat-error>
         <formly-validation-message [field]="field"></formly-validation-message>

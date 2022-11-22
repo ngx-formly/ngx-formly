@@ -4,7 +4,7 @@ import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatInputModule } from '@angular/material/input';
 
 import { FormlyFieldInput } from './input.type';
 

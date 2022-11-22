@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
 import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { FormlyFieldRadio } from './radio.type';
 

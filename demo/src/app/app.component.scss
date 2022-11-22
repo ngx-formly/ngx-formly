@@ -12,19 +12,24 @@
     margin: 0 4px 3px 0;
   }
 
-  &.navbar-small .mat-button {
+  &.navbar-small .mat-mdc-button {
     padding: 0 8px;
     min-width: unset;
   }
 }
-
+mat-toolbar {
+  button[mat-button],
+  a[mat-button] {
+    color: white !important;
+  }
+}
 ::ng-deep .mat-drawer-container {
   background-color: #fff;
 }
 
 ::ng-deep .mat-sidenav {
   min-width: 250px;
-  padding-top: 8px;
+  padding: 8px;
 
   .mat-drawer-inner-container {
     a {
@@ -47,8 +52,18 @@
       top: 0;
       background: white;
       z-index: 1;
+      width: 100%;
+      .mdc-button__label {
+        width: 100%;
+      }
     }
 
+    .menu-subitem {
+      width: 100%;
+      .mdc-button__label {
+        width: 100%;
+      }
+    }
     .menu-subitem,
     .menu-subheader {
       padding-left: 30px;

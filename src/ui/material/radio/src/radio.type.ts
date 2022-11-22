@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MatLegacyRadioGroup as MatRadioGroup } from '@angular/material/legacy-radio';
+import { MatRadioGroup } from '@angular/material/radio';
 import { ɵobserve as observe } from '@ngx-formly/core';
 
 interface RadioProps extends FormlyFieldProps {

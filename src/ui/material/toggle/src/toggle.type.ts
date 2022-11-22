@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 interface ToggleProps extends FormlyFieldProps {
   labelPosition?: 'before' | 'after';

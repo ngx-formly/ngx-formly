@@ -67,6 +67,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
         [for]="picker"
       ></mat-datepicker-toggle>
     </ng-template>
+
     <mat-datepicker
       #picker
       [color]="props.color"

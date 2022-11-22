@@ -37,8 +37,8 @@ legend {
 //  If you specify typography styles for the components you use elsewhere, you should delete this line.
 //  If you don't need the default component typographies but still want the hierarchy styles,
 //  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
-@include mat.all-legacy-component-typographies();
+//    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
+/*@include mat.all-legacy-component-typographies();
 @include mat.legacy-core();
 
 // Define a theme.
@@ -49,7 +49,33 @@ $theme: mat.define-light-theme($matPrimary, $matAccent);
 
 // Include all theme styles for the components.
 @include mat.all-legacy-component-themes($theme);
-@include example-viewer-theme($theme);
+*/
+
+@include mat.core();
+
+$mat-primary: mat.define-palette(mat.$blue-grey-palette, 900);
+$mat-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+$mat-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $mat-primary,
+      accent: $mat-accent,
+    ),
+    typography: mat.define-typography-config(),
+  )
+);
+
+@include mat.all-component-themes($mat-theme);
+@include example-viewer-theme($mat-theme);
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+a:-webkit-any-link.mdc-button {
+  text-decoration: none !important;
+}
 
 pre {
   display: block;

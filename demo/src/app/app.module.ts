@@ -3,20 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
-
+import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 import { filter, tap } from 'rxjs/operators';
 import { HomeComponent } from './home.component';
 import { APP_BASE_HREF } from '@angular/common';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-
     SharedModule,
     LoadingBarRouterModule,
     MatMenuModule,
@@ -27,7 +26,10 @@ import { APP_BASE_HREF } from '@angular/common';
       { path: 'examples', loadChildren: () => import('./examples/examples.module').then((m) => m.ExamplesModule) },
     ]),
   ],
-  providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/' },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

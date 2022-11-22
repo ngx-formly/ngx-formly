@@ -8,7 +8,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model: any = { Slider: 50 };
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
@@ -16,10 +16,11 @@ export class AppComponent {
       type: 'slider',
       props: {
         label: 'Slider label',
-        // placeholder: 'Slider Placeholder',
-        // thumbLabel: true,
-        description: 'Slider Description',
+        placeholder: 'Slider Placeholder',
+        thumbLabel: false,
         required: true,
+        min: 0,
+        max: 100,
       },
     },
   ];

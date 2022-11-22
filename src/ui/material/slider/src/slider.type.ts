@@ -1,20 +1,22 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
+//import { FieldType, FormlyFieldProps } from '@ngx-formly/core';
 import {
-  MatLegacySlider as MatSlider,
-  MatLegacySliderChange as MatSliderChange,
-} from '@angular/material/legacy-slider';
+  MatSlider,
+  //MatSliderChange,
+  MatSliderThumb,
+} from '@angular/material/slider';
 
 interface SliderProps extends FormlyFieldProps {
-  displayWith?: (value: number) => string | number;
+  displayWith?: (value: number) => string;
   invert?: boolean;
   thumbLabel?: boolean;
   tickInterval?: number;
   valueText?: string;
   vertical?: boolean;
-  input?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
-  change?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
+  //input?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
+  //change?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
 }
 
 export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> {
@@ -24,41 +26,50 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
 @Component({
   selector: 'formly-field-mat-slider',
   template: `
+    <!-- TODO: The 'invert' property no longer exists -->
+    <!-- TODO: The 'tickInterval' property no longer exists -->
+    <!-- TODO: The 'valueText' property no longer exists -->
+    <!-- TODO: The 'vertical' property no longer exists -->
     <mat-slider
+      *ngIf="formControl"
       [id]="id"
       [style.width]="'100%'"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
       [tabIndex]="props.tabindex"
       [color]="props.color"
-      [displayWith]="props.displayWith"
-      [invert]="props.invert"
+      [displayWith]="displayWith"
       [max]="props.max"
       [min]="props.min"
       [step]="props.step"
-      [thumbLabel]="props.thumbLabel"
-      [tickInterval]="props.tickInterval"
-      [valueText]="props.valueText"
-      [vertical]="props.vertical"
-      (input)="props.input && props.input(field, $event)"
-      (change)="props.change && props.change(field, $event)"
+      [discrete]="props.thumbLabel"
+      #ngSlider
     >
+      <input matSliderThumb [formControl]="formControl" [formlyAttributes]="field" #ngThumb />
     </mat-slider>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
-  @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
+  @ViewChild(MatSlider, { static: false }) slider!: MatSlider;
+  @ViewChild(MatSliderThumb, { static: false }) matSliderThumb!: MatSliderThumb;
   override defaultOptions = {
     props: {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
       thumbLabel: false,
+      displayWith: (value: number) => String(value),
     },
   };
 
+  displayWith(value: number) {
+    if (this.props?.displayWith) {
+      return this.props.displayWith(value);
+    } else {
+      return String(value);
+    }
+  }
+
   override onContainerClick(event: MouseEvent): void {
-    this.slider.focus();
+    this.matSliderThumb.focus();
     super.onContainerClick(event);
   }
 }
