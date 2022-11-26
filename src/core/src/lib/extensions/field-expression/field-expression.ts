@@ -11,7 +11,7 @@ import {
   hasKey,
 } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
-import { isObservable, Observable, Subscription } from 'rxjs';
+import { isObservable, Observable, tap } from 'rxjs';
 import { FormlyExtension } from '../../models';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 import { FormArray } from '@angular/forms';
@@ -43,25 +43,8 @@ export class FieldExpressionExtension implements FormlyExtension {
       if (typeof expr === 'string' || isFunction(expr)) {
         field._expressions[key] = this.parseExpressions(field, key, expr);
       } else if (expr instanceof Observable) {
-        const subscribe = () =>
-          (expr as Observable<any>).subscribe((v) => {
-            this.evalExpr(field, key, v);
-          });
-
-        let subscription: Subscription = null;
-        const onInit = field.hooks.onInit;
-        field.hooks.onInit = () => {
-          if (subscription === null) {
-            subscription = subscribe();
-          }
-          return onInit?.(field);
-        };
-
-        const onDestroy = field.hooks.onDestroy;
-        field.hooks.onDestroy = () => {
-          onDestroy?.(field);
-          subscription.unsubscribe();
-          subscription = null;
+        field._expressions[key] = {
+          value$: (expr as Observable<any>).pipe(tap((v) => this.evalExpr(field, key, v))),
         };
       }
     };
@@ -176,7 +159,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     let fieldChanged = false;
     if (field._expressions) {
       for (const key of Object.keys(field._expressions)) {
-        field._expressions[key].callback(ignoreCache) && (fieldChanged = true);
+        field._expressions[key].callback?.(ignoreCache) && (fieldChanged = true);
       }
     }
     field.fieldGroup?.forEach((f) => this.checkExpressions(f, ignoreCache) && (fieldChanged = true));

@@ -12,7 +12,7 @@ import {
 import { tick, fakeAsync } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyExtension, FormlyFieldConfigCache } from '../models';
-import { timer } from 'rxjs';
+import { BehaviorSubject, timer } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 
 const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
@@ -356,6 +356,21 @@ describe('FormlyField Component', () => {
         2,
       ),
     );
+  });
+
+  it('should update observable expressions on render', () => {
+    const stream$ = new BehaviorSubject('test');
+    const { field, fixture } = renderComponent({
+      expressions: {
+        'props.label': stream$,
+      },
+    });
+
+    expect(field.props.label).toEqual('test');
+
+    fixture.destroy();
+    stream$.next('test2');
+    expect(field.props.label).toEqual('test');
   });
 
   it('should update template options of OnPush FieldType #2191', async () => {
