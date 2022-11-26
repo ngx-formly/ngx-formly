@@ -2,7 +2,7 @@ import { Directive } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, assignFieldValue, getFieldValue, hasKey } from '../utils';
-import { FormlyFieldConfig, FormlyExtension } from '../models';
+import { FormlyFieldConfig, FormlyExtension, FormlyFieldConfigCache } from '../models';
 import { registerControl, unregisterControl, findControl } from '../extensions/field-form/utils';
 
 export interface FieldArrayTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
@@ -63,7 +63,8 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
   }
 
   private _build() {
-    this.options.build(this.field);
+    const fields = (this.field as FormlyFieldConfigCache).formControl._fields ?? [this.field];
+    fields.forEach((f) => this.options.build(f));
     this.options.fieldChanges.next({
       field: this.field,
       value: getFieldValue(this.field),

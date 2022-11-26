@@ -252,6 +252,37 @@ describe('Array Field Type', () => {
     expect(form.valid).toEqual(true);
   });
 
+  it('should update connected fields on add/remove', () => {
+    const { detectChanges, field, query } = renderComponent({
+      fieldGroup: [
+        {
+          key: 'foo',
+          type: 'array',
+          fieldArray: { key: 'title' },
+        },
+        {
+          key: 'foo',
+          type: 'array',
+          fieldArray: { key: 'title' },
+        },
+      ],
+    });
+
+    // add
+    query('#add').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(field.fieldGroup[0].fieldGroup.length).toEqual(1);
+    expect(field.fieldGroup[1].fieldGroup.length).toEqual(1);
+
+    // remove
+    query('#remove-0').triggerEventHandler('click', {});
+    detectChanges();
+
+    expect(field.fieldGroup[0].fieldGroup.length).toEqual(0);
+    expect(field.fieldGroup[1].fieldGroup.length).toEqual(0);
+  });
+
   it('should share formControl when field key is duplicated', () => {
     const {
       field: { fieldGroup },
