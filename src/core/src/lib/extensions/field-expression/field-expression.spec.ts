@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { Subject, of, BehaviorSubject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
 
@@ -264,8 +264,9 @@ describe('FieldExpressionExtension', () => {
         },
       });
 
-      field.hooks.onInit(field);
+      const subscription = field._expressions['props.label'].value$.subscribe();
       expect(field.props.label).toEqual('test');
+      subscription.unsubscribe();
     });
 
     describe('model expression', () => {
@@ -404,26 +405,6 @@ describe('FieldExpressionExtension', () => {
         expect(field.fieldGroup[0].props.disabled).toBeTrue();
       });
 
-      it('should update field on re-render', () => {
-        const stream$ = new BehaviorSubject('test');
-        const field = buildField({
-          key: 'text',
-          expressions: {
-            'props.label': stream$,
-          },
-        });
-
-        field.hooks.onInit(undefined);
-        expect(field.props.label).toEqual('test');
-
-        field.hooks.onDestroy(undefined);
-        stream$.next('test2');
-        expect(field.props.label).toEqual('test');
-
-        field.hooks.onInit(undefined);
-        expect(field.props.label).toEqual('test2');
-      });
-
       it('should change model through observable', () => {
         const field = buildField({
           key: 'text',
@@ -432,8 +413,9 @@ describe('FieldExpressionExtension', () => {
           },
         });
 
-        field.hooks.onInit(undefined);
+        const subscription = field._expressions['model.text'].value$.subscribe();
         expect(field.formControl.value).toEqual('test');
+        subscription.unsubscribe();
       });
 
       describe('model changes', () => {

@@ -9,10 +9,10 @@
   "scripts": {
     "postinstall": "ngcc",
     "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 8 --sortOrder desc > CONTRIBUTORS.md",
-    "lint": "eslint --ext .ts,.html src/ demo/",
-    "lint:fix": "eslint --ext .ts,.html src/ demo/ --fix",
-    "format": "prettier --list-different \"**/*.{ts,json,css,scss,html}\"",
-    "format:fix": "prettier --write \"**/*.{ts,json,css,scss,html}\"",
+    "lint": "eslint --ext .ts,.html src/ demo/ --cache",
+    "lint:fix": "eslint --ext .ts,.html src/ demo/ --fix --cache",
+    "format": "prettier --list-different \"**/*.{ts,json,css,scss,html}\" --cache",
+    "format:fix": "prettier --write \"**/*.{ts,json,css,scss,html}\" --cache",
     "commit": "git-cz",
     "build": "ts-node --dir build build.ts",
     "release": "standard-version",
@@ -151,7 +151,7 @@
   },
   "lint-staged": {
     "*.{ts,html}": "eslint --cache --fix",
-    "*.{ts,json,css,scss,html}": "prettier --write"
+    "*.{ts,json,css,scss,html}": "prettier --cache --write"
   },
   "bundlesize": [
     {

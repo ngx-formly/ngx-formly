@@ -1,5 +1,6 @@
 import { ComponentRef, ElementRef, EmbeddedViewRef, Injector, ViewContainerRef } from '@angular/core';
 import { AsyncValidatorFn, ValidatorFn, FormArray, FormGroup, AbstractControl } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { FormlyExtension } from './config';
 import { FormlyFieldConfig, FormlyFormOptions } from './fieldconfig';
@@ -15,8 +16,10 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   _elementRefs?: ElementRef[];
   _expressions?: {
     [property: string]: {
-      callback: (ingoreCache: boolean) => boolean;
+      callback?: (ingoreCache: boolean) => boolean;
       paths?: string[];
+      subscription?: Subscription | null;
+      value$?: Observable<any>;
     };
   };
   _hide?: boolean;

@@ -32,7 +32,7 @@ import {
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
-import { isObservable } from 'rxjs';
+import { isObservable, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
@@ -269,6 +269,27 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       observeDeep(field, ['props'], () => field.options.detectChanges(field)),
       observeDeep(field.options, ['formState'], () => field.options.detectChanges(field)),
     ];
+    for (const key of Object.keys(field._expressions)) {
+      const expressionObserver = observe<FormlyFieldConfigCache['_expressions']['key']>(
+        field,
+        ['_expressions', key],
+        ({ currentValue, previousValue }) => {
+          if (previousValue?.subscription) {
+            previousValue.subscription.unsubscribe();
+            previousValue.subscription = null;
+          }
+          if (isObservable(currentValue.value$)) {
+            currentValue.subscription = currentValue.value$.subscribe();
+          }
+        },
+      );
+      subscribes.push(() => {
+        if (field._expressions[key]?.subscription) {
+          field._expressions[key].subscription.unsubscribe();
+        }
+        expressionObserver.unsubscribe();
+      });
+    }
 
     for (const path of [['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
       const fieldObserver = observe(
