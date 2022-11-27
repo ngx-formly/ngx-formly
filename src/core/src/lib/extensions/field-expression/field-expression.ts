@@ -44,7 +44,12 @@ export class FieldExpressionExtension implements FormlyExtension {
         field._expressions[key] = this.parseExpressions(field, key, expr);
       } else if (expr instanceof Observable) {
         field._expressions[key] = {
-          value$: (expr as Observable<any>).pipe(tap((v) => this.evalExpr(field, key, v))),
+          value$: (expr as Observable<any>).pipe(
+            tap((v) => {
+              this.evalExpr(field, key, v);
+              field.options.detectChanges(field);
+            }),
+          ),
         };
       }
     };

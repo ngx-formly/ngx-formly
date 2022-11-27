@@ -373,6 +373,20 @@ describe('FormlyField Component', () => {
     expect(field.props.label).toEqual('test');
   });
 
+  it('should detect observable expressions changes', fakeAsync(() => {
+    const timer$ = timer(100);
+    const { query, detectChanges } = renderComponent({
+      type: 'on-push',
+      expressions: {
+        'props.ticker': timer$,
+      },
+    });
+
+    tick(150);
+    detectChanges();
+    expect(query('.props').nativeElement.textContent).toContain('ticker');
+  }));
+
   it('should update template options of OnPush FieldType #2191', async () => {
     const { field, query } = renderComponent({ type: 'on-populate' });
 
