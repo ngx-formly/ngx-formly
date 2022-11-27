@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 
@@ -14,7 +15,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     <div class="p-field-radiobutton" *ngFor="let option of props.options | formlySelectOptions: field | async">
       <p-radioButton
         [name]="field.name || id"
-        [formControl]="formControl"
+        [formControl]="option.disabled ? disabledControl : formControl"
         [label]="option.label"
         [value]="option.value"
       >
@@ -23,4 +24,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {}
+export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
+  get disabledControl() {
+    return new FormControl({ value: this.formControl.value, disabled: true });
+  }
+}

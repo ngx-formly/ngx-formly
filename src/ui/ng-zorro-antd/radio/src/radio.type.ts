@@ -16,6 +16,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
         nz-radio
         *ngFor="let option of props.options | formlySelectOptions: field | async"
         [nzValue]="option.value"
+        [nzDisabled]="option.disabled"
       >
         {{ option.label }}
       </label>
