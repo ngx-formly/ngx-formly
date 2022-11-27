@@ -9,8 +9,8 @@
   "scripts": {
     "postinstall": "ngcc",
     "contrib:generate": "githubcontrib --owner ngx-formly --repo ngx-formly --cols 8 --sortOrder desc > CONTRIBUTORS.md",
-    "lint": "eslint --ext .ts,.html src/ demo/ --cache",
-    "lint:fix": "eslint --ext .ts,.html src/ demo/ --fix --cache",
+    "lint": "eslint --ext .ts,.html src/ demo/ --cache --cache-location=node_modules/.cache/.eslintcache",
+    "lint:fix": "eslint --ext .ts,.html src/ demo/ --fix --cache --cache-location=node_modules/.cache/.eslintcache",
     "format": "prettier --list-different \"**/*.{ts,json,css,scss,html}\" --cache",
     "format:fix": "prettier --write \"**/*.{ts,json,css,scss,html}\" --cache",
     "commit": "git-cz",
@@ -150,7 +150,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,html}": "eslint --cache --fix",
+    "*.{ts,html}": "eslint --cache --fix --cache-location=node_modules/.cache/.eslintcache",
     "*.{ts,json,css,scss,html}": "prettier --cache --write"
   },
   "bundlesize": [

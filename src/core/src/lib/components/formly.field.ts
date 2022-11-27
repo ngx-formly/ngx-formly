@@ -32,7 +32,7 @@ import {
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
-import { isObservable, Subscription } from 'rxjs';
+import { isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
