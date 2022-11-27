@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, Type } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/kendo/form-field';
 import { FormlyFieldProps } from '@ngx-formly/kendo/form-field';
@@ -20,9 +21,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
         [id]="id + '_' + i"
         [name]="field.name || id"
         [value]="option.value"
-        [formControl]="formControl"
+        [formControl]="option.disabled ? disabledControl : formControl"
         [formlyAttributes]="field"
-        [attr.disabled]="option.disabled || formControl.disabled ? true : null"
       />
       <label class="k-radio-label" [for]="id + '_' + i">
         {{ option.label }}
@@ -33,4 +33,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./radio.type.scss'],
 })
-export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {}
+export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
+  get disabledControl() {
+    return new FormControl({ value: this.formControl.value, disabled: true });
+  }
+}

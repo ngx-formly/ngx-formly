@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
+import { FormControl } from '@angular/forms';
 
 interface RadioProps extends FormlyFieldProps {
   formCheck?: 'default' | 'inline';
@@ -27,9 +28,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
           [class.is-invalid]="showError"
           [attr.value]="option.value"
           [value]="option.value"
-          [formControl]="formControl"
+          [formControl]="option.disabled ? disabledControl : formControl"
           [formlyAttributes]="field"
-          [attr.disabled]="option.disabled || formControl.disabled ? true : null"
         />
         <label class="form-check-label" [for]="id + '_' + i">
           {{ option.label }}
@@ -45,4 +45,8 @@ export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
       formCheck: 'default' as const,
     },
   };
+
+  get disabledControl() {
+    return new FormControl({ value: this.formControl.value, disabled: true });
+  }
 }
