@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.3](https://github.com/ngx-formly/ngx-formly/compare/v6.0.2...v6.0.3) (2022-11-29)
+
+
+### Bug Fixes
+
+* **core:** detect changes of connected fields in array type ([#3507](https://github.com/ngx-formly/ngx-formly/issues/3507)) ([734b79d](https://github.com/ngx-formly/ngx-formly/commit/734b79de2cedeeb367f0de01f7ca64a9a4d612cc)), closes [#3409](https://github.com/ngx-formly/ngx-formly/issues/3409)
+* **core:** detect changes of observable expressions ([#3508](https://github.com/ngx-formly/ngx-formly/issues/3508)) ([4246126](https://github.com/ngx-formly/ngx-formly/commit/4246126d1f172c88e989ea6ba18f3f77d89518f4)), closes [#3444](https://github.com/ngx-formly/ngx-formly/issues/3444)
+* **core:** improve handling expression updates ([5418152](https://github.com/ngx-formly/ngx-formly/commit/5418152d3605876ffd7e96f6a6100895eecf31f9)), closes [#3505](https://github.com/ngx-formly/ngx-formly/issues/3505)
+* **core:** support disabled radio option in Angular v15 ([#3509](https://github.com/ngx-formly/ngx-formly/issues/3509)) ([70099ca](https://github.com/ngx-formly/ngx-formly/commit/70099ca64bce6bc75433bdffb8ee2de40cc2476e)), closes [#3504](https://github.com/ngx-formly/ngx-formly/issues/3504)
+
 ### [6.0.2](https://github.com/ngx-formly/ngx-formly/compare/v6.0.1...v6.0.2) (2022-11-06)
 
 
