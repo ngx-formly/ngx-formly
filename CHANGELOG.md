@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.4](https://github.com/ngx-formly/ngx-formly/compare/v6.0.3...v6.0.4) (2022-11-30)
+
+
+### Bug Fixes
+
+* **core:** handle component destroy error ([8e93d4c](https://github.com/ngx-formly/ngx-formly/commit/8e93d4cb8c152560e397caf0192595988dda2372))
+* **core:** import error in rxjs v6 ([7f2cd96](https://github.com/ngx-formly/ngx-formly/commit/7f2cd96ad4b78ad5bb6099c6b21d287563a1e013)), closes [#3513](https://github.com/ngx-formly/ngx-formly/issues/3513)
+
 ### [6.0.3](https://github.com/ngx-formly/ngx-formly/compare/v6.0.2...v6.0.3) (2022-11-29)
 
 
