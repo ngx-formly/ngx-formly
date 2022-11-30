@@ -11,7 +11,8 @@ import {
   hasKey,
 } from '../../utils';
 import { evalExpression, evalStringExpression } from './utils';
-import { isObservable, Observable, tap } from 'rxjs';
+import { isObservable, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../models';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 import { FormArray } from '@angular/forms';
