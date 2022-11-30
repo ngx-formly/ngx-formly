@@ -168,7 +168,11 @@ export class FormlyConfig {
 
     const componentRef = _viewContainerRef.createComponent<FieldType>(type.component, { injector: _injector });
     defineHiddenProp(type, '_componentRef', componentRef);
-    componentRef.destroy();
+    try {
+      componentRef.destroy();
+    } catch (e) {
+      console.error(`An error occurred while destroying the Formly component type "${field.type}"`, e);
+    }
 
     return type._componentRef;
   }
