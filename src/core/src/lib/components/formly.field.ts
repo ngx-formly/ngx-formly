@@ -42,6 +42,7 @@ import { FormlyFieldTemplates } from './formly.template';
 @Component({
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
+  styleUrls: ['./formly.field.scss'],
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   /** The field config. */
