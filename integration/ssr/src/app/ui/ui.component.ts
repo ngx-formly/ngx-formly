@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyConfig, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 @Component({
-  selector: 'app-ui',
+  selector: 'formly-app-ui',
   template: `
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>

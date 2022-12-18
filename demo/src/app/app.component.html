@@ -8,8 +8,10 @@
       #homeLink="routerLinkActive"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <img alt="Home" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true" />
-      FORMLY
+      <span class="d-flex align-items-center">
+        <img alt="Home" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true" />
+        FORMLY
+      </span>
     </a>
 
     <ng-container *ngIf="isSmallDevice$ | async; else mainMenu">
@@ -28,8 +30,10 @@
 
       <ng-container *ngTemplateOutlet="version"></ng-container>
       <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-        <img alt="GitHub" src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
-        GitHub
+        <span class="d-flex align-items-center">
+          <img alt="GitHub" src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
+          GitHub
+        </span>
       </a>
     </ng-template>
   </mat-toolbar>
