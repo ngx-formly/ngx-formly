@@ -14,7 +14,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   template: `
     <p-dropdown
       [placeholder]="props.placeholder"
-      [options]="props.options | formlySelectOptions: field | async"
+      [options]="props.options | formlySelectOptions : field | async"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [showClear]="!props.required"

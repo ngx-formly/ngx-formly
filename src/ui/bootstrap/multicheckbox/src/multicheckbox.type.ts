@@ -15,7 +15,7 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
   template: `
     <ng-template #fieldTypeTemplate>
       <div
-        *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index"
+        *ngFor="let option of props.options | formlySelectOptions : field | async; let i = index"
         class="form-check"
         [ngClass]="{
           'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',

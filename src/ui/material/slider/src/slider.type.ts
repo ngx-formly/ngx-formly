@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, ViewChild, Type, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MatSlider } from '@angular/material/slider';
+import { MatSlider, MatSliderChange } from '@angular/material/slider';
 
 interface SliderProps extends FormlyFieldProps {
   displayWith?: (value: number) => string | number;
@@ -10,8 +10,8 @@ interface SliderProps extends FormlyFieldProps {
   tickInterval?: number;
   valueText?: string;
   vertical?: boolean;
-  input?: (field: FormlyFieldConfig<SliderProps>, $event: any) => void;
-  change?: (field: FormlyFieldConfig<SliderProps>, $event: any) => void;
+  input?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
+  change?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
 }
 
 export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> {
@@ -34,21 +34,18 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
       [min]="props.min"
       [step]="props.step"
       [thumbLabel]="props.thumbLabel"
-      [discrete]="props.thumbLabel"
       [tickInterval]="props.tickInterval"
       [valueText]="props.valueText"
       [vertical]="props.vertical"
       (input)="props.input && props.input(field, $event)"
       (change)="props.change && props.change(field, $event)"
     >
-      <input #sliderThumb matSliderThumb [formControl]="formControl" [formlyAttributes]="field" />
     </mat-slider>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
-  @ViewChild(MatSlider, { static: true }) slider: MatSlider;
-  @ViewChild('sliderThumb', { static: false }) sliderThumb: ElementRef<HTMLInputElement>;
+  @ViewChild(MatSlider, { static: true }) slider!: MatSlider;
   override defaultOptions = {
     props: {
       hideFieldUnderline: true,
@@ -58,8 +55,7 @@ export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
   };
 
   override onContainerClick(event: MouseEvent): void {
-    this.slider?.focus();
-    this.sliderThumb?.nativeElement.focus();
+    this.slider.focus?.();
     super.onContainerClick(event);
   }
 

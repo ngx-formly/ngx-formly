@@ -13,7 +13,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-kendo-radio',
   template: `
-    <ng-container *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index">
+    <ng-container *ngFor="let option of props.options | formlySelectOptions : field | async; let i = index">
       <input
         type="radio"
         #radioInput

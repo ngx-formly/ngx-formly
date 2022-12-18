@@ -16,7 +16,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   template: `
     <ng-template #fieldTypeTemplate>
       <div
-        *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index"
+        *ngFor="let option of props.options | formlySelectOptions : field | async; let i = index"
         class="form-check"
         [class.form-check-inline]="props.formCheck === 'inline'"
       >

@@ -11,7 +11,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-ns-radio',
   template: `
-    <ng-container *ngFor="let option of props.options | formlySelectOptions: field | async">
+    <ng-container *ngFor="let option of props.options | formlySelectOptions : field | async">
       <GridLayout class="input-field input-sides" rows="auto, auto" columns="*,*">
         <Label class="label" [text]="option.label"></Label>
         <Switch col="1" class="switch input" [checked]="formControl.value === option.value" (tap)="tap(option.value)">

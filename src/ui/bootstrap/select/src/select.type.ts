@@ -27,7 +27,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
       >
-        <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
+        <ng-container *ngIf="props.options | formlySelectOptions : field | async as opts">
           <ng-container *ngFor="let opt of opts">
             <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
               {{ opt.label }}
@@ -52,7 +52,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
           [formlyAttributes]="field"
         >
           <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
-          <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
+          <ng-container *ngIf="props.options | formlySelectOptions : field | async as opts">
             <ng-container *ngFor="let opt of opts">
               <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
                 {{ opt.label }}

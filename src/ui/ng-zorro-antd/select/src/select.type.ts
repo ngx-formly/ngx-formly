@@ -22,7 +22,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [nzMode]="props.multiple ? 'multiple' : 'default'"
       (ngModelChange)="props.change && props.change(field, $event)"
     >
-      <ng-container *ngFor="let item of props.options | formlySelectOptions: field | async">
+      <ng-container *ngFor="let item of props.options | formlySelectOptions : field | async">
         <nz-option-group *ngIf="item.group" [nzLabel]="item.label">
           <nz-option
             *ngFor="let child of item.group"

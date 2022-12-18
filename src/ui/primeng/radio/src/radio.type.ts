@@ -12,7 +12,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-primeng-radio',
   template: `
-    <div class="p-field-radiobutton" *ngFor="let option of props.options | formlySelectOptions: field | async">
+    <div class="p-field-radiobutton" *ngFor="let option of props.options | formlySelectOptions : field | async">
       <p-radioButton
         [name]="field.name || id"
         [formControl]="option.disabled ? disabledControl : formControl"
