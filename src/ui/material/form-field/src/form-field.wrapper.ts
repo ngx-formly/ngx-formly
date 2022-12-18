@@ -45,7 +45,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       [hideRequiredMarker]="true"
       [floatLabel]="props.floatLabel"
       [appearance]="props.appearance"
-      [color]="props.color"
+      [color]="props.color ?? 'primary'"
     >
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="props.label && props.hideLabel !== true">

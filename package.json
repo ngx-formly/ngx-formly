@@ -164,7 +164,7 @@
     },
     {
       "path": "./dist/@ngx-formly/material/fesm2020/ngx-formly-material-*.mjs",
-      "maxSize": "4 kB"
+      "maxSize": "7 kB"
     },
     {
       "path": "./dist/@ngx-formly/ionic/fesm2020/ngx-formly-ionic-*.mjs",
