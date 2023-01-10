@@ -78,7 +78,7 @@
     "@progress/kendo-angular-popup": "^5.0.0",
     "@progress/kendo-angular-treeview": "^7.1.0",
     "@progress/kendo-drawing": "^1.16.1",
-    "@progress/kendo-licensing": "^1.2.1",
+    "@progress/kendo-licensing": "^1.3.0",
     "@progress/kendo-theme-default": "^5.5.0",
     "@stackblitz/sdk": "^1.8.0",
     "ag-grid-angular": "^28.0.0",
