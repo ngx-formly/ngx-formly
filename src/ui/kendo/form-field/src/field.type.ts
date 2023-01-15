@@ -6,7 +6,9 @@ import { FormFieldComponent } from '@progress/kendo-angular-inputs';
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> extends CoreFieldType<F> {
   @ViewChildren(NgControl) private set formControls(formControls: QueryList<NgControl>) {
-    this.formField['control'] = formControls.first;
+    if (this.formField) {
+      this.formField['control'] = formControls.first;
+    }
   }
 
   private get formField(): FormFieldComponent {
