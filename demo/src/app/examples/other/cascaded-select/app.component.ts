@@ -52,7 +52,8 @@ export class AppComponent {
           field.props.options = sportControl.valueChanges.pipe(
             startWith(sportControl.value),
             distinctUntilChanged(),
-            map((sportId) => {
+            map(() => {
+              const sportId = sportControl.value;
               const options = teams.filter((team) => team.sportId === sportId);
               if (!options.find((option) => sportId === option.id)) {
                 field.formControl.setValue(null);
@@ -90,7 +91,8 @@ export class AppComponent {
           field.props.options = teamControl.valueChanges.pipe(
             startWith(teamControl.value),
             distinctUntilChanged(),
-            map((teamId) => {
+            map(() => {
+              const teamId = teamControl.value;
               const options = players.filter((team) => team.teamId === teamId);
               if (!options.find((option) => teamId === option.id)) {
                 field.formControl.setValue(null);
