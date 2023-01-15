@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.1.0](https://github.com/ngx-formly/ngx-formly/compare/v6.0.4...v6.1.0) (2023-01-15)
+
+
+### Features
+
+* add Angular v15 support ([#3510](https://github.com/ngx-formly/ngx-formly/issues/3510)) ([6b131b1](https://github.com/ngx-formly/ngx-formly/commit/6b131b15cc243152634a5dc376eed6007004dc64))
+
+
+### Bug Fixes
+
+* **core:** hide empty formly-field element ([4713038](https://github.com/ngx-formly/ngx-formly/commit/471303890c9691eef61f5585d60da31f454349cc)), closes [#3516](https://github.com/ngx-formly/ngx-formly/issues/3516)
+* **kendo:** take account of passing custom wrapper ([bcce565](https://github.com/ngx-formly/ngx-formly/commit/bcce565ba8fdbe6fd19e69a5e6cd19c5b233d56a)), closes [#3553](https://github.com/ngx-formly/ngx-formly/issues/3553)
+* **material:** make slider compatible with v15 ([2466a5e](https://github.com/ngx-formly/ngx-formly/commit/2466a5e7b9ed6dd72849de1138bc3708c98fce59)), closes [#3503](https://github.com/ngx-formly/ngx-formly/issues/3503)
+* **material:** set default color for mat-form-field ([78b9a90](https://github.com/ngx-formly/ngx-formly/commit/78b9a909227b9ab27d42ebca20de78aa28e6ba96)), closes [#3532](https://github.com/ngx-formly/ngx-formly/issues/3532)
+
 ### [6.0.4](https://github.com/ngx-formly/ngx-formly/compare/v6.0.3...v6.0.4) (2022-11-30)
 
 
