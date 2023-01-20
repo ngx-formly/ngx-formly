@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { Component, ChangeDetectionStrategy, Type, ViewChild } from '@angular/core';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+import { ɵobserve as observe } from '@ngx-formly/core';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   multiple?: boolean;
@@ -64,6 +65,13 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
+  @ViewChild(MatSelect, { static: true }) set select(select: any) {
+    observe(select, ['_parentFormField', '_textField'], ({ currentValue }) => {
+      if (currentValue) {
+        select._preferredOverlayOrigin = select._parentFormField.getConnectedOverlayOrigin();
+      }
+    });
+  }
   override defaultOptions = {
     props: {
       compareWith(o1: any, o2: any) {

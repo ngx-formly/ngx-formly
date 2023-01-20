@@ -101,6 +101,9 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
       if (ngControl?.valueAccessor?.hasOwnProperty('_formField')) {
         ngControl.valueAccessor['_formField'] = this.formField;
       }
+      if (ngControl?.valueAccessor?.hasOwnProperty('_parentFormField')) {
+        ngControl.valueAccessor['_parentFormField'] = this.formField;
+      }
 
       ['prefix', 'suffix'].forEach((type) =>
         observe<TemplateRef<any>>(
