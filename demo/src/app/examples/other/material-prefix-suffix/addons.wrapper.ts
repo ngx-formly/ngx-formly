@@ -35,10 +35,12 @@ export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.matPrefix) {
+      // Note: for text use `textPrefix` property (only in Angular Material >= 15)
       this.props.prefix = this.matPrefix;
     }
 
     if (this.matSuffix) {
+      // Note: for text use `textSuffix` property (only in Angular Material >= 15)
       this.props.suffix = this.matSuffix;
     }
   }
