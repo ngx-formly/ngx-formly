@@ -17,7 +17,9 @@ import { FormlyFieldSlider } from './slider.type';
       [max]="props.max"
       [min]="props.min"
       [step]="props.step"
-      [thumbLabel]="props.thumbLabel"
+      [discrete]="props.thumbLabel || props.discrete"
+      [showTickMarks]="props.showTickMarks"
+      [step]="props.step"
       [tickInterval]="props.tickInterval"
       [valueText]="props.valueText"
       [vertical]="props.vertical"
@@ -36,6 +38,18 @@ export class FormlyFieldMDCSlider extends FormlyFieldSlider {
       set: () => {},
       get: () => this.sliderThumb,
     });
+
+    const visualThumb = {
+      _hostElement: {
+        classList: {
+          add: () => {},
+          remove: () => {},
+        },
+      },
+    };
+
+    // workarround for "ERROR TypeError: visualThumb is undefined" when `discrete` is set to `true`
+    (slider as any)._thumbs = { first: visualThumb, last: visualThumb };
   }
 
   override onContainerClick(event: MouseEvent): void {

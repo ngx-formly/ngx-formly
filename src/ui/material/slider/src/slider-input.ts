@@ -338,6 +338,7 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
 
     if (!this.disabled) {
       this._handleValueCorrection(event);
+      this.dragStart.emit({ source: this, parent: this._slider, value: this.value });
     }
   }
 
@@ -378,10 +379,7 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
 
     const impreciseValue = fixedPercentage * (this._slider.max - this._slider.min) + this._slider.min;
     const value = Math.round(impreciseValue / step) * step;
-
     const prevValue = this.value;
-    const dragEvent = { source: this, parent: this._slider, value: value };
-    this._isActive ? this.dragStart.emit(dragEvent) : this.dragEnd.emit(dragEvent);
 
     if (value === prevValue) {
       // Because we prevented UI updates, if it turns out that the race
@@ -411,11 +409,11 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
     }
   }
 
-  _onPointerUp(event: PointerEvent): void {
-    this._isActive = false;
-    this._updateWidthInactive();
-    if (!this.disabled) {
-      this._handleValueCorrection(event);
+  _onPointerUp(): void {
+    if (this._isActive) {
+      this._isActive = false;
+      this.dragEnd.emit({ source: this, parent: this._slider, value: this.value });
+      setTimeout(() => this._updateWidthInactive());
     }
   }
 
