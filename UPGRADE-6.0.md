@@ -153,6 +153,10 @@ In case `strictTemplates` is enabled after the upgrade, add `FieldTypeConfig` to
   + export class CustomFieldType extends FieldType<FieldTypeConfig> {}
   ```
 
+For `FormGroup` or `FormArray`, you may use:
+- FieldGroupTypeConfig: expect `formControl` property to be instance of `FormGroup`.
+- FieldArrayTypeConfig: expect `formControl` property to be instance of `FormArray`.
+
 ### 8. Update `minlength` and `maxlength` validation key:
 
 The message validation key: `minlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
