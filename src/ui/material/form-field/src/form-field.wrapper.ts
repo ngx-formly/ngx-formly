@@ -32,6 +32,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   hideFieldUnderline?: boolean;
   floatLabel?: FloatLabelType;
   appearance?: MatFormFieldAppearance;
+  subscriptSizing?: 'fixed' | 'dynamic';
   color?: ThemePalette;
   hintStart?: TemplateRef<any> | string;
   hintEnd?: TemplateRef<any> | string;
@@ -45,6 +46,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       [hideRequiredMarker]="true"
       [floatLabel]="props.floatLabel"
       [appearance]="props.appearance"
+      [subscriptSizing]="props.subscriptSizing"
       [color]="props.color ?? 'primary'"
     >
       <ng-container #fieldComponent></ng-container>
