@@ -34,6 +34,16 @@ describe('Array Field Type', () => {
     expect(queryAll('formly-array > formly-field')).toHaveLength(2);
   });
 
+  it('should ignore invalid model value', () => {
+    const { queryAll } = renderComponent({
+      key: 'foo',
+      type: 'array',
+      defaultValue: '123456',
+    });
+
+    expect(queryAll('formly-array > formly-field')).toHaveLength(0);
+  });
+
   it('should support passing a function to fieldArray', () => {
     const { query, field } = renderComponent({
       key: 'foo',
