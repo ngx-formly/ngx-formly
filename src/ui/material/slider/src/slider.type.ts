@@ -6,12 +6,16 @@ import { MatSlider, MatSliderChange } from '@angular/material/slider';
 interface SliderProps extends FormlyFieldProps {
   displayWith?: (value: number) => string | number;
   invert?: boolean;
-  thumbLabel?: boolean;
   tickInterval?: number;
   valueText?: string;
   vertical?: boolean;
   input?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
   change?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
+
+  /** @deprecated Use `discrete` instead. */
+  thumbLabel?: boolean;
+  discrete?: boolean;
+  showTickMarks?: boolean;
 }
 
 export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> {
@@ -33,7 +37,7 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
       [max]="props.max"
       [min]="props.min"
       [step]="props.step"
-      [thumbLabel]="props.thumbLabel"
+      [thumbLabel]="props.thumbLabel || props.discrete"
       [tickInterval]="props.tickInterval"
       [valueText]="props.valueText"
       [vertical]="props.vertical"
