@@ -27,6 +27,8 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig<FormlyFieldProps> {
 export interface FormlyFieldProps extends CoreFormlyFieldProps {
   prefix?: TemplateRef<any>;
   suffix?: TemplateRef<any>;
+  textPrefix?: TemplateRef<any>;
+  textSuffix?: TemplateRef<any>;
   hideLabel?: boolean;
   hideRequiredMarker?: boolean;
   hideFieldUnderline?: boolean;
@@ -60,8 +62,16 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
         >
       </mat-label>
 
+      <ng-containe matTextPrefix *ngIf="props.textPrefix">
+        <ng-container [ngTemplateOutlet]="props.textPrefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
+      </ng-containe>
+
       <ng-containe matPrefix *ngIf="props.prefix">
         <ng-container [ngTemplateOutlet]="props.prefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
+      </ng-containe>
+
+      <ng-containe matTextSuffix *ngIf="props.textSuffix">
+        <ng-container [ngTemplateOutlet]="props.textSuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       </ng-containe>
 
       <ng-containe matSuffix *ngIf="props.suffix">

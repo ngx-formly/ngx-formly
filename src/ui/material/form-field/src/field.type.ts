@@ -15,9 +15,19 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
       this.props.prefix = prefix;
     }
   }
+  @ViewChild('matTextPrefix') set matTextPrefix(textPrefix: TemplateRef<any>) {
+    if (textPrefix) {
+      this.props.textPrefix = textPrefix;
+    }
+  }
   @ViewChild('matSuffix') set matSuffix(suffix: TemplateRef<any>) {
     if (suffix) {
       this.props.suffix = suffix;
+    }
+  }
+  @ViewChild('matTextSuffix') set matTextSuffix(textSuffix: TemplateRef<any>) {
+    if (textSuffix) {
+      this.props.textSuffix = textSuffix;
     }
   }
 
@@ -105,7 +115,7 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
         ngControl.valueAccessor['_parentFormField'] = this.formField;
       }
 
-      ['prefix', 'suffix'].forEach((type) =>
+      ['prefix', 'suffix', 'textPrefix', 'textSuffix'].forEach((type) =>
         observe<TemplateRef<any>>(
           this.field,
           ['props', type],
