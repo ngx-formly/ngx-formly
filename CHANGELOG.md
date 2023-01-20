@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.1](https://github.com/ngx-formly/ngx-formly/compare/v6.1.0...v6.1.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* **core:** ensure the model is a valid array for FieldArrayType ([f1add09](https://github.com/ngx-formly/ngx-formly/commit/f1add094250af2b0f179b7a13c0d10a16fd0928b)), closes [#3561](https://github.com/ngx-formly/ngx-formly/issues/3561)
+* **material:** add subscriptSizing support for FormField ([8e6114a](https://github.com/ngx-formly/ngx-formly/commit/8e6114af040d58206d45c3de89ca76004f4d7c39)), closes [#3559](https://github.com/ngx-formly/ngx-formly/issues/3559)
+* **material:** add support of text prefix / suffix ([2779cd2](https://github.com/ngx-formly/ngx-formly/commit/2779cd2adb6a70d487ff43d1b6772f4f8f04739b)), closes [#3556](https://github.com/ngx-formly/ngx-formly/issues/3556)
+* **material:** fix select overlay position ([611a02f](https://github.com/ngx-formly/ngx-formly/commit/611a02fe61df9ed207284106ddfd0f9282440403)), closes [#3563](https://github.com/ngx-formly/ngx-formly/issues/3563)
+* **material:** support thumb label in slider type ([8239de2](https://github.com/ngx-formly/ngx-formly/commit/8239de28f613fbe28464ad29131e805021f5677d)), closes [#3560](https://github.com/ngx-formly/ngx-formly/issues/3560)
+
 ## [6.1.0](https://github.com/ngx-formly/ngx-formly/compare/v6.0.4...v6.1.0) (2023-01-15)
 
 
