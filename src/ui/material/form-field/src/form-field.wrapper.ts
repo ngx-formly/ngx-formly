@@ -62,21 +62,21 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
         >
       </mat-label>
 
-      <ng-containe matTextPrefix *ngIf="props.textPrefix">
+      <ng-container matTextPrefix *ngIf="props.textPrefix">
         <ng-container [ngTemplateOutlet]="props.textPrefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-containe>
+      </ng-container>
 
-      <ng-containe matPrefix *ngIf="props.prefix">
+      <ng-container matPrefix *ngIf="props.prefix">
         <ng-container [ngTemplateOutlet]="props.prefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-containe>
+      </ng-container>
 
-      <ng-containe matTextSuffix *ngIf="props.textSuffix">
+      <ng-container matTextSuffix *ngIf="props.textSuffix">
         <ng-container [ngTemplateOutlet]="props.textSuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-containe>
+      </ng-container>
 
-      <ng-containe matSuffix *ngIf="props.suffix">
+      <ng-container matSuffix *ngIf="props.suffix">
         <ng-container [ngTemplateOutlet]="props.suffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-containe>
+      </ng-container>
 
       <mat-error>
         <formly-validation-message [field]="field"></formly-validation-message>
