@@ -228,10 +228,13 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
     @Inject(MatSlider) protected _slider: _MatSlider,
   ) {
     this._hostElement = _elementRef.nativeElement;
+    this._onPointerDown = this._onPointerDown.bind(this);
+    this._onPointerMove = this._onPointerMove.bind(this);
+    this._onPointerUp = this._onPointerUp.bind(this);
     this._ngZone.runOutsideAngular(() => {
-      this._hostElement.addEventListener('pointerdown', this._onPointerDown.bind(this));
-      this._hostElement.addEventListener('pointermove', this._onPointerMove.bind(this));
-      this._hostElement.addEventListener('pointerup', this._onPointerUp.bind(this));
+      this._hostElement.addEventListener('pointerdown', this._onPointerDown);
+      this._hostElement.addEventListener('pointermove', this._onPointerMove);
+      this._hostElement.addEventListener('pointerup', this._onPointerUp.bind);
     });
   }
 
