@@ -114,7 +114,8 @@
           { "path": "/examples/other/button", "label": "Button Type" },
           { "path": "/examples/other/json-powered", "label": "JSON powered" },
           { "path": "/examples/other/input-file", "label": "File input" },
-          { "path": "/examples/other/presets", "label": "Presets" }
+          { "path": "/examples/other/presets", "label": "Presets" },
+          { "path": "/examples/other/presets-fieldgroup", "label": "Fieldgroup Presets" }
         ]
       }
     ]
