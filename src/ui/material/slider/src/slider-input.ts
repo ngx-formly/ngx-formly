@@ -41,6 +41,7 @@ export const MAT_SLIDER_THUMB_VALUE_ACCESSOR: any = {
  * If one is used, the selector `matSliderThumb` must be used, and the outcome will be a normal
  * slider. If two are used, the selectors `matSliderStartThumb` and `matSliderEndThumb` must be
  * used, and the outcome will be a range slider with two slider thumbs.
+ * @ignore
  */
 @Directive({
   // eslint-disable-next-line

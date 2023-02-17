@@ -25,7 +25,10 @@ export const enum _MatThumb {
  */
 export const MAT_SLIDER_THUMB = new InjectionToken<{}>('_MatSliderThumb');
 
-/** Represents a drag event emitted by the MatSlider component. */
+/**
+ * Represents a drag event emitted by the MatSlider component.
+ * @ignore
+ */
 export interface MatSliderDragEvent {
   /** The MatSliderThumb that was interacted with. */
   source: _MatSliderThumb;
@@ -37,6 +40,7 @@ export interface MatSliderDragEvent {
   value: number;
 }
 
+/** @ignore */
 export interface _MatSlider {
   /** Gets the slider thumb input of the given thumb position. */
   _getInput(thumbPosition: _MatThumb): _MatSliderThumb | undefined;
@@ -108,6 +112,7 @@ export interface _MatSlider {
   _setTransition: (withAnimation: boolean) => void;
 }
 
+/** @ignore */
 export interface _MatSliderThumb {
   /** The minimum value that the slider can have. */
   min: number;
