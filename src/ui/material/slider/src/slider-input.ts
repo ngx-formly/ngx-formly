@@ -41,6 +41,7 @@ export const MAT_SLIDER_THUMB_VALUE_ACCESSOR: any = {
  * If one is used, the selector `matSliderThumb` must be used, and the outcome will be a normal
  * slider. If two are used, the selectors `matSliderStartThumb` and `matSliderEndThumb` must be
  * used, and the outcome will be a range slider with two slider thumbs.
+ * @ignore
  */
 @Directive({
   // eslint-disable-next-line
@@ -228,10 +229,13 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
     @Inject(MatSlider) protected _slider: _MatSlider,
   ) {
     this._hostElement = _elementRef.nativeElement;
+    this._onPointerDown = this._onPointerDown.bind(this);
+    this._onPointerMove = this._onPointerMove.bind(this);
+    this._onPointerUp = this._onPointerUp.bind(this);
     this._ngZone.runOutsideAngular(() => {
-      this._hostElement.addEventListener('pointerdown', this._onPointerDown.bind(this));
-      this._hostElement.addEventListener('pointermove', this._onPointerMove.bind(this));
-      this._hostElement.addEventListener('pointerup', this._onPointerUp.bind(this));
+      this._hostElement.addEventListener('pointerdown', this._onPointerDown);
+      this._hostElement.addEventListener('pointermove', this._onPointerMove);
+      this._hostElement.addEventListener('pointerup', this._onPointerUp.bind);
     });
   }
 

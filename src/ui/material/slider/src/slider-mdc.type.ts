@@ -3,6 +3,9 @@ import { MatSlider } from '@angular/material/slider';
 import { MAT_SLIDER_THUMB, _MatSlider, _MatSliderThumb } from './slider-interface';
 import { FormlyFieldSlider } from './slider.type';
 
+/**
+ * @ignore
+ */
 @Component({
   selector: 'formly-field-mat-slider',
   template: `
