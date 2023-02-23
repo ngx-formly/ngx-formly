@@ -1,0 +1,67 @@
+<kendo-treelist kendoTreeListExpandable
+                [data]="rootData"
+                [idField]="props.idField"
+                [fetchChildren]="fetchChildren"
+                [hasChildren]="hasChildren"
+                (add)="addHandler($event)"
+                (edit)="editHandler($event)"
+                (remove)="removeHandler($event)"
+                (save)="saveHandler($event)"
+                (cancel)="cancelHandler($event)"
+                [height]="props.height">
+  <ng-template kendoTreeListToolbarTemplate>
+    <button kendoTreeListAddCommand type="button">Add new</button>
+  </ng-template>
+
+  <kendo-treelist-column *ngFor="let f of field | treegridFieldGroup; let i = index"
+                         [field]="f.key | treegridKey"
+                         [title]="f.props.label"
+                         [width]="f.props.width"  [expandable]="i==0">
+    <ng-template kendoTreeListEditTemplate
+                 let-dataItem="dataItem"
+                 let-column="column"
+                 let-formGroup="formGroup">
+
+   
+      <formly-field *ngIf="getRowIndex(dataItem)>=0" [field]="field.fieldGroup[getRowIndex(dataItem)].fieldGroup[i]"></formly-field>
+
+
+    </ng-template>
+    <!--<ng-template kendoTreeListCellTemplate
+                 let-dataItem="dataItem"
+                 let-column="column"
+                 let-formGroup="formGroup">
+      <formly-field *ngIf="getRowIndex(dataItem)>=0" [field]="field.fieldGroup[getRowIndex(dataItem)].fieldGroup[i]"></formly-field>
+
+    </ng-template>-->
+  </kendo-treelist-column>
+  <kendo-treelist-command-column [width]="140">
+    <ng-template kendoTreeListCellTemplate let-isNew="isNew" let-formGroup="formGroup" let-cellContext="cellContext">
+      <!-- "Add Child" command directive, will not be visible in edit mode -->
+      <button [kendoTreeListAddCommand]="cellContext"
+              icon="filter-add-expression" title="Add Child">
+      </button>
+
+      <!-- "Edit" command directive, will not be visible in edit mode -->
+      <button [kendoTreeListEditCommand]="cellContext"
+              icon="edit" title="Edit" [primary]="true">
+      </button>
+
+      <!-- "Remove" command directive, will not be visible in edit mode -->
+      <button [kendoTreeListRemoveCommand]="cellContext"
+              icon="delete" title="Remove">
+      </button>
+
+      <!-- "Save" command directive, will be visible only in edit mode -->
+      <button [kendoTreeListSaveCommand]="cellContext"
+              icon="save" title="{{ isNew ? 'Add' : 'Update' }}">
+      </button>
+
+      <!-- "Cancel" command directive, will be visible only in edit mode -->
+      <button [kendoTreeListCancelCommand]="cellContext"
+              icon="cancel" title="{{ isNew ? 'Discard changes' : 'Cancel' }}">
+      </button>
+    </ng-template>
+  </kendo-treelist-command-column>
+</kendo-treelist>
+

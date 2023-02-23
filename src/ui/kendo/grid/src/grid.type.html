@@ -1,0 +1,31 @@
+<kendo-grid #grid [data]="model" >
+  <ng-template *ngIf="!readOnly && !isEditMode" kendoGridToolbarTemplate>
+    <button kendoGridEditCommand (click)="onEdit()" class="k-button k-primary" [icon]="props.iconEdit" [title]="props.titleEdit">{{props.textEdit}}</button>
+  </ng-template>
+  <ng-template *ngIf="isEditMode" kendoGridToolbarTemplate>
+    <button kendoGridAddCommand (click)="onAdd()" class="k-button" [icon]="props.iconAdd" [title]="props.titleAdd">{{props.textAdd}}</button>
+    <button kendoGridSaveCommand (click)="onSave()" class="k-button" [icon]="props.iconSave" [title]="props.titleSave">{{props.textSave}}</button>
+    <button kendoGridCancelCommand (click)="onCancel()" class="k-button" [icon]="props.iconCancel" [title]="props.titleCancel">{{props.textCancel}}</button>
+  </ng-template>
+  <kendo-grid-column *ngFor="let f of field | gridFieldGroup ; let i = index"
+                     [field]="f.key | gridKey"
+                     [title]="f.props.label"
+                     [width]="f.props.width">
+    <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-rowIndex="rowIndex">
+      <formly-field [field]="field.fieldGroup[rowIndex].fieldGroup[i]"></formly-field>
+    </ng-template>
+    <ng-template *ngIf="f.props.displayExpression" kendoGridCellTemplate let-column="column" let-formGroup="formGroup" let-rowIndex="rowIndex">
+      {{field.fieldGroup[rowIndex].fieldGroup[i].model | gridDisplay:f }}
+    </ng-template>
+    <ng-template *ngIf="!f.props.displayExpression" kendoGridCellTemplate let-column="column" let-formGroup="formGroup" let-rowIndex="rowIndex">
+      <formly-field [field]="field.fieldGroup[rowIndex].fieldGroup[i]"></formly-field>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column *ngIf="isEditMode" title="Command" >
+    <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+      <button kendoGridRemoveCommand (click)="remove(rowIndex)" class="k-button" [icon]="props.iconRemove" [title]="props.titleRemove">{{props.textRemove}}</button>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-messages [noRecords]="props.noRecordsMessage">
+  </kendo-grid-messages>
+</kendo-grid>
