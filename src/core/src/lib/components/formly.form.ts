@@ -45,6 +45,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   /** The model to be represented by the form. */
   @Input()
   set model(model: any) {
+    if (this.config.extras.immutable && this._modelChangeValue === model) {
+      return;
+    }
+
     this.setField({ model });
   }
   get model(): any {
