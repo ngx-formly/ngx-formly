@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.2](https://github.com/ngx-formly/ngx-formly/compare/v6.1.1...v6.1.2) (2023-03-06)
+
+
+### Bug Fixes
+
+* **core:** allow Observable in validator message ([2d6ddfa](https://github.com/ngx-formly/ngx-formly/commit/2d6ddfada830a300311c876e6ada272aec83180c)), closes [#3601](https://github.com/ngx-formly/ngx-formly/issues/3601)
+* **core:** handle unchanged emitted model immutable mode ([601ddd3](https://github.com/ngx-formly/ngx-formly/commit/601ddd310535c3a808172461866c7db97db3d40a)), closes [#3584](https://github.com/ngx-formly/ngx-formly/issues/3584)
+* **demo:** unsubscribe subscriptions to avoid memory leaks ([7876c1e](https://github.com/ngx-formly/ngx-formly/commit/7876c1eaef6735642bf075cd7ea0418bdbcce8ac))
+* **kendo:** update peer dependencies ([501b3fe](https://github.com/ngx-formly/ngx-formly/commit/501b3fea1c07554e25abd3da6cfbbcf1e96cc2f7))
+* **kendo:** update peer dependencies ([#3592](https://github.com/ngx-formly/ngx-formly/issues/3592)) ([ecbbe55](https://github.com/ngx-formly/ngx-formly/commit/ecbbe556dad20b87704f1c2758d9cb363060229f)), closes [#3571](https://github.com/ngx-formly/ngx-formly/issues/3571)
+* **material:** fix typo "ng-containe" -> "ng-container" ([e262fbf](https://github.com/ngx-formly/ngx-formly/commit/e262fbfd85598410db1126b2003570f7c5127516))
+* **material:** update assign DisplayWith in Slider type ([e76e243](https://github.com/ngx-formly/ngx-formly/commit/e76e243cdda4d38e97e577fbd98615a86e0eda65)), closes [#3574](https://github.com/ngx-formly/ngx-formly/issues/3574)
+* **material:** use same reference for adding and removing event listener ([22c2ec1](https://github.com/ngx-formly/ngx-formly/commit/22c2ec1ad973be69ad83e716570cf753e72393d6))
+
 ### [6.1.1](https://github.com/ngx-formly/ngx-formly/compare/v6.1.0...v6.1.1) (2023-01-20)
 
 
