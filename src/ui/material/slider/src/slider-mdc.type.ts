@@ -15,7 +15,7 @@ import { FormlyFieldSlider } from './slider.type';
       [formlyAttributes]="field"
       [tabIndex]="props.tabindex"
       [color]="props.color"
-      [displayWith]="displayWith"
+      [displayWith]="props.displayWith"
       [invert]="props.invert"
       [max]="props.max"
       [min]="props.min"

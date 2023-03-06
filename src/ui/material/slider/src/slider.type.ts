@@ -32,7 +32,7 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
       [formlyAttributes]="field"
       [tabIndex]="props.tabindex"
       [color]="props.color"
-      [displayWith]="displayWith"
+      [displayWith]="props.displayWith"
       [invert]="props.invert"
       [max]="props.max"
       [min]="props.min"
@@ -61,13 +61,5 @@ export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
   override onContainerClick(event: MouseEvent): void {
     this.slider.focus?.();
     super.onContainerClick(event);
-  }
-
-  displayWith(value: number) {
-    if (this.props?.displayWith) {
-      return String(this.props.displayWith(value));
-    } else {
-      return String(value);
-    }
   }
 }
