@@ -277,5 +277,5 @@ type FormlyValidatorFn<T> = (control: AbstractControl, field: FormlyFieldConfig)
 
 interface FormlyValidatorExpressionFn<T> {
   expression: FormlyValidatorFn<T>;
-  message: string | ((error: any, field: FormlyFieldConfig) => string);
+  message: string | ((error: any, field: FormlyFieldConfig) => string | Observable<string>);
 }
