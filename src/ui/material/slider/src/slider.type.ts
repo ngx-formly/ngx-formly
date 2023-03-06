@@ -55,6 +55,7 @@ export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
       thumbLabel: false,
+      displayWith: (value: number) => value,
     },
   };
 

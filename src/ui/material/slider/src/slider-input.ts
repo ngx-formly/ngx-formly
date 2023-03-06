@@ -235,7 +235,7 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
     this._ngZone.runOutsideAngular(() => {
       this._hostElement.addEventListener('pointerdown', this._onPointerDown);
       this._hostElement.addEventListener('pointermove', this._onPointerMove);
-      this._hostElement.addEventListener('pointerup', this._onPointerUp.bind);
+      this._hostElement.addEventListener('pointerup', this._onPointerUp);
     });
   }
 
@@ -296,6 +296,7 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
   }
 
   _onChange(): void {
+    this.valueChange.emit(this.value);
     // only used to handle the edge case where user
     // mousedown on the slider then uses arrow keys.
     if (this._isActive) {
@@ -304,7 +305,6 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
   }
 
   _onInput(): void {
-    this.valueChange.emit(this.value);
     this._onChangeFn(this.value);
     // handles arrowing and updating the value when
     // a step is defined.
