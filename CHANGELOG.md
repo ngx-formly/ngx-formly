@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.3](https://github.com/ngx-formly/ngx-formly/compare/v6.1.2...v6.1.3) (2023-03-06)
+
+
+### Bug Fixes
+
+* **material:** add DisplayWith to Slider default value ([6ec558c](https://github.com/ngx-formly/ngx-formly/commit/6ec558cb7ae85908460f833a4d0b0957467dc4c1))
+
 ### [6.1.2](https://github.com/ngx-formly/ngx-formly/compare/v6.1.1...v6.1.2) (2023-03-06)
 
 
