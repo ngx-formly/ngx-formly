@@ -12,9 +12,9 @@ export interface FormlySelectOption {
 
 export interface FormlyFieldSelectProps extends FormlyFieldProps {
   groupProp?: string | ((option: any) => string);
-  labelProp?: string | ((option: any) => any);
-  valueProp?: string | ((option: any) => boolean);
-  disabledProp?: string | ((option: any) => string);
+  labelProp?: string | ((option: any) => string);
+  valueProp?: string | ((option: any) => any);
+  disabledProp?: string | ((option: any) => boolean);
 }
 
 type ITransformOption = {
