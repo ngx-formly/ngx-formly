@@ -20,7 +20,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [data]="props.options | formlySelectOptions : field | async"
       [textField]="'label'"
       [valueField]="'value'"
-      [valuePrimitive]="props.primitive??true"
+      [valuePrimitive]="props.primitive ?? true"
       (valueChange)="props.change && props.change(field, $event)"
     >
     </kendo-dropdownlist>
