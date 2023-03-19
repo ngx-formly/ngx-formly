@@ -159,7 +159,7 @@ For `FormGroup` or `FormArray`, you may use:
 
 ### 8. Update `minlength` and `maxlength` validation key:
 
-The message validation key: `minlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
+The message validation key: `minlength` and `maxlength` has been changed from lowercase into camelCase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
 
   #### NgModule declaration:
   ```patch
