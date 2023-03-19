@@ -11,6 +11,7 @@ interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   disableOptionCentering?: boolean;
   typeaheadDebounceInterval?: number;
   compareWith?: (o1: any, o2: any) => boolean;
+  optionsClass?: string;
 }
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
@@ -53,11 +54,22 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         </ng-container>
         <ng-container *ngFor="let item of selectOptions">
           <mat-optgroup *ngIf="item.group" [label]="item.label">
-            <mat-option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
+            <mat-option
+              *ngFor="let child of item.group"
+              [value]="child.value"
+              [disabled]="child.disabled"
+              [class]="props.optionsClass"
+            >
               {{ child.label }}
             </mat-option>
           </mat-optgroup>
-          <mat-option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</mat-option>
+          <mat-option
+            *ngIf="!item.group"
+            [value]="item.value"
+            [disabled]="item.disabled"
+            [class]="props.optionsClass"
+            >{{ item.label }}</mat-option
+          >
         </ng-container>
       </ng-container>
     </mat-select>

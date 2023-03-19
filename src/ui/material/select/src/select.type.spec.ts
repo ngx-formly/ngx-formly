@@ -123,6 +123,35 @@ describe('ui-material: Formly Field Select Component', () => {
 
       expect(queryAll('mat-option')).toHaveLength(3);
     });
+
+    it('mat-options should have specified custom class', () => {
+      const optionsClass = 'my-custom-class';
+
+      const { query, queryAll, detectChanges } = renderComponent({
+        key: 'sportId',
+        type: 'select',
+        props: {
+          optionsClass,
+          options: [
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: { test: 'A' }, name: 'Not Soccer or Basketball' },
+          ],
+          valueProp: 'id',
+          labelProp: 'name',
+        },
+      });
+
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
+
+      const matOptions = queryAll('mat-option');
+
+      matOptions.forEach((option) => {
+        const nativeElement = option.nativeElement;
+        expect(nativeElement.className).toInclude(optionsClass);
+      });
+    });
   });
 
   describe('multi select', () => {
