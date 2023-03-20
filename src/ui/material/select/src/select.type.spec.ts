@@ -123,6 +123,31 @@ describe('ui-material: Formly Field Select Component', () => {
 
       expect(queryAll('mat-option')).toHaveLength(3);
     });
+
+    it('panelClass should be used to add class to select overlay div', () => {
+      const panelClass = 'my-custom-panel-class';
+
+      const { query, queryAll, detectChanges } = renderComponent({
+        key: 'sportId',
+        type: 'select',
+        props: {
+          panelClass,
+          options: [
+            { id: '1', name: 'Soccer' },
+            { id: '2', name: 'Basketball' },
+            { id: { test: 'A' }, name: 'Not Soccer or Basketball' },
+          ],
+          valueProp: 'id',
+          labelProp: 'name',
+        },
+      });
+
+      query('.mat-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
+
+      const panel = queryAll('div').find((x) => !!x.classes[panelClass]);
+      expect(panel).not.toBeNull();
+    });
   });
 
   describe('multi select', () => {
