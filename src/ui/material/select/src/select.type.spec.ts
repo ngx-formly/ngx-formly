@@ -124,7 +124,7 @@ describe('ui-material: Formly Field Select Component', () => {
       expect(queryAll('mat-option')).toHaveLength(3);
     });
 
-    it('mat-options should have specified custom class', () => {
+    it('panelClass should be used to add class to select overlay div', () => {
       const panelClass = 'my-custom-panel-class';
 
       const { query, queryAll, detectChanges } = renderComponent({
