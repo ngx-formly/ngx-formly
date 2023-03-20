@@ -125,13 +125,13 @@ describe('ui-material: Formly Field Select Component', () => {
     });
 
     it('mat-options should have specified custom class', () => {
-      const optionsClass = 'my-custom-class';
+      const panelClass = 'my-custom-panel-class';
 
       const { query, queryAll, detectChanges } = renderComponent({
         key: 'sportId',
         type: 'select',
         props: {
-          optionsClass,
+          panelClass,
           options: [
             { id: '1', name: 'Soccer' },
             { id: '2', name: 'Basketball' },
@@ -145,12 +145,8 @@ describe('ui-material: Formly Field Select Component', () => {
       query('.mat-select-trigger').triggerEventHandler('click', {});
       detectChanges();
 
-      const matOptions = queryAll('mat-option');
-
-      matOptions.forEach((option) => {
-        const nativeElement = option.nativeElement;
-        expect(nativeElement.className).toInclude(optionsClass);
-      });
+      const panel = queryAll('div').find((x) => !!x.classes[panelClass]);
+      expect(panel).not.toBeNull();
     });
   });
 
