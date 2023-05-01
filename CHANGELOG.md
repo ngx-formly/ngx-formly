@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.1.4](https://github.com/ngx-formly/ngx-formly/compare/v6.1.3...v6.1.4) (2023-05-01)
+
+
+### Bug Fixes
+
+* **core:** ensure disabled prop is working for field without key ([#3665](https://github.com/ngx-formly/ngx-formly/issues/3665)) ([1dd5c6e](https://github.com/ngx-formly/ngx-formly/commit/1dd5c6e52a32553d615427cf340084f60923eb12)), closes [#3657](https://github.com/ngx-formly/ngx-formly/issues/3657)
+* **core:** ensure observe prop is defined before calling defineProperty ([#3666](https://github.com/ngx-formly/ngx-formly/issues/3666)) ([d8cafc8](https://github.com/ngx-formly/ngx-formly/commit/d8cafc853d540ac5600eac2ece20728df9a570ed)), closes [#3631](https://github.com/ngx-formly/ngx-formly/issues/3631)
+* **core:** select options pipe has wrong return types ([0ff64bc](https://github.com/ngx-formly/ngx-formly/commit/0ff64bc6fb2e7548d8afc0829e3992308d0dc072))
+* **material:** add panelClass to mat-select props ([#3634](https://github.com/ngx-formly/ngx-formly/issues/3634)) ([9b28fc0](https://github.com/ngx-formly/ngx-formly/commit/9b28fc0739a46a549513b3c5d828066ccbecc6d8))
+
 ### [6.1.3](https://github.com/ngx-formly/ngx-formly/compare/v6.1.2...v6.1.3) (2023-03-06)
 
 
