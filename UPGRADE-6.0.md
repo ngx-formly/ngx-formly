@@ -56,7 +56,7 @@ The defaultValue for fieldGroup and fieldArray has been changed to `undefined` i
   FormlyModule.forRoot({
     types: [
       {
-        extends: 'formly-group',
+        name: 'formly-group',
         defaultOptions: {
           defaultValue: {}
         }
