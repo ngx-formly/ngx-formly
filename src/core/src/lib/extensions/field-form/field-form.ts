@@ -61,7 +61,10 @@ export class FieldFormExtension implements FormlyExtension {
         control = new FormGroup({}, controlOptions);
       } else {
         const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
-        control = new FormControl({ value, disabled: false }, { ...controlOptions, initialValueIsDefault: true });
+        control = new FormControl(
+          { value, disabled: !!field.props.disabled },
+          { ...controlOptions, initialValueIsDefault: true },
+        );
       }
     }
 

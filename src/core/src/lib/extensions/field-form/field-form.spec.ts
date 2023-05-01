@@ -210,6 +210,15 @@ describe('FieldFormExtension', () => {
   });
 
   describe('props disabled state', () => {
+    it('should disable field without key', () => {
+      const field = buildField({
+        props: { disabled: true },
+      });
+
+      const control = field.formControl;
+      expect(control.disabled).toBeTrue();
+    });
+
     it('should disable sub-fields when parent is disabled', () => {
       const field = buildField({
         key: 'address',
