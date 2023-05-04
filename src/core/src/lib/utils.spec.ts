@@ -317,6 +317,18 @@ describe('observeDeep', () => {
 
     expect(spy).toHaveBeenCalledTimes(0);
   });
+
+  it('should not throw when unsubscribing from falsy source', () => {
+    const spy = jest.fn();
+
+    const unsubUndefined = observeDeep(undefined, ['address'], spy);
+    expect(() => unsubUndefined()).not.toThrow();
+
+    const unsubNull = observeDeep(null, ['address'], spy);
+    expect(() => unsubNull()).not.toThrow();
+
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
 });
 
 describe('observe', () => {

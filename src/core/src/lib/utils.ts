@@ -225,7 +225,7 @@ interface IObserveTarget<T> {
   };
 }
 
-export function observeDeep(source: any, paths: string[], setFn: () => void): () => void {
+export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[], setFn: () => void): () => void {
   let observers: Function[] = [];
 
   const unsubscribe = () => {
@@ -250,6 +250,10 @@ export function observeDeep(source: any, paths: string[], setFn: () => void): ()
 }
 
 export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: IObserveFn<T>): IObserver<T> {
+  if (!isObject(o)) {
+    o = {};
+  }
+
   if (!o._observers) {
     defineHiddenProp(o, '_observers', {});
   }
