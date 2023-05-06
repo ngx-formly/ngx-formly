@@ -260,7 +260,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     this.componentRefs = [];
   }
 
-  private fieldChanges(field: FormlyFieldConfigCache) {
+  private fieldChanges(field: FormlyFieldConfigCache | undefined) {
     this.valueChangesUnsubscribe();
     if (!field) {
       return () => {};
