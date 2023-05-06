@@ -134,6 +134,11 @@ describe('FieldFormExtension', () => {
     expect(field.formControl).toBe(fooControl);
   });
 
+  it('should ignore fieldArray', () => {
+    const field = buildField({ key: 'test', fieldArray: { key: 'test' } });
+    expect(field.formControl).toBeUndefined();
+  });
+
   it('should override existing formcontrol when key is empty', () => {
     const field = buildField({
       fieldGroup: [],
