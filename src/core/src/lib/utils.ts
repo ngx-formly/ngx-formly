@@ -225,7 +225,7 @@ interface IObserveTarget<T> {
   };
 }
 
-export function observeDeep(source: any, paths: string[], setFn: () => void): () => void {
+export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[], setFn: () => void): () => void {
   let observers: Function[] = [];
 
   const unsubscribe = () => {
