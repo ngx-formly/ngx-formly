@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.5](https://github.com/ngx-formly/ngx-formly/compare/v6.1.4...v6.1.5) (2023-05-06)
+
+
+### Bug Fixes
+
+* **core:** delegate FormArray creation to FieldArrayType only ([7d02313](https://github.com/ngx-formly/ngx-formly/commit/7d023132012b3626a63e3a25b827097e75b9d22b)), closes [#3576](https://github.com/ngx-formly/ngx-formly/issues/3576)
+* **core:** supports nested model assign in expressions ([74b3b69](https://github.com/ngx-formly/ngx-formly/commit/74b3b692b25de07bf453177e3aab8b2b39901fa3)), closes [#3667](https://github.com/ngx-formly/ngx-formly/issues/3667) [#3664](https://github.com/ngx-formly/ngx-formly/issues/3664)
+* **schematics:** add module import to root module ([ea959be](https://github.com/ngx-formly/ngx-formly/commit/ea959be90f4c72cb200e020e0811af2ceff7ca23)), closes [#3638](https://github.com/ngx-formly/ngx-formly/issues/3638)
+
 ## [6.1.4](https://github.com/ngx-formly/ngx-formly/compare/v6.1.3...v6.1.4) (2023-05-01)
 
 
