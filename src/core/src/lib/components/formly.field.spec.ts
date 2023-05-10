@@ -395,20 +395,46 @@ describe('FormlyField Component', () => {
     field.props.setInstanceId('123456');
     expect(query('formly-on-populate-component').componentInstance.instanceId).toEqual('123456');
   });
-  it('should take account of formState update', () => {
-    const { field, query, detectChanges } = renderComponent({
-      key: 'push',
-      type: 'on-push',
-      props: {},
-      options: { formState: { foo: true } },
+
+  describe('formState update', () => {
+    it('should take account of formState update', () => {
+      const { field, query, detectChanges } = renderComponent({
+        key: 'push',
+        type: 'on-push',
+        props: {},
+        options: { formState: { foo: true } },
+      });
+
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
+
+      field.options.formState.foo = false;
+      detectChanges();
+
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
     });
 
-    expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
+    it('should apply formState update to all multi fields', () => {
+      const options = { formState: { foo: true } };
+      const { field, query, detectChanges } = renderComponent({
+        options,
+        fieldGroup: [
+          {
+            key: 'push',
+            type: 'on-push',
+          },
+          {
+            key: 'test',
+          },
+        ],
+      });
 
-    field.options.formState.foo = false;
-    detectChanges();
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
 
-    expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
+      field.options.formState.foo = false;
+      detectChanges();
+
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
+    });
   });
 
   describe('valueChanges', () => {
