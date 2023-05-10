@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.6](https://github.com/ngx-formly/ngx-formly/compare/v6.1.5...v6.1.6) (2023-05-10)
+
+
+### Bug Fixes
+
+* **core:** ensure formState changes on all fields ([db584f8](https://github.com/ngx-formly/ngx-formly/commit/db584f841833d5737fba8f44c3e878835e6ae273)), closes [#3680](https://github.com/ngx-formly/ngx-formly/issues/3680)
+
 ### [6.1.5](https://github.com/ngx-formly/ngx-formly/compare/v6.1.4...v6.1.5) (2023-05-06)
 
 

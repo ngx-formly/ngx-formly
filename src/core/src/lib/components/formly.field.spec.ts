@@ -413,7 +413,7 @@ describe('FormlyField Component', () => {
       expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
     });
 
-    it('should apply formState update to all multi fields', () => {
+    it('should apply formState update to all fields', () => {
       const options = { formState: { foo: true } };
       const { field, query, detectChanges } = renderComponent({
         options,
