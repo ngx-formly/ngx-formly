@@ -74,6 +74,8 @@ export class FormlyFieldCheckbox
   ngAfterViewInit() {
     if (this.checkbox) {
       this.focusMonitor.monitor(this.checkbox._inputElement, true).subscribe((focusOrigin) => {
+        this.field.focus = !!focusOrigin;
+        this.stateChanges.next();
         if (focusOrigin) {
           this.props.focus && this.props.focus(this.field);
         } else {
