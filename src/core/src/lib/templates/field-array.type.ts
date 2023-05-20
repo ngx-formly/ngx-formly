@@ -16,7 +16,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
   implements FormlyExtension<F>
 {
   onPopulate(field: F) {
-    if (!field.formControl && hasKey(field)) {
+    if (hasKey(field)) {
       const control = findControl(field);
       registerControl(field, control ? control : new FormArray([], { updateOn: field.modelOptions.updateOn }));
     }
