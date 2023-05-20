@@ -250,6 +250,12 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private resetRefs(field: FormlyFieldConfigCache) {
     if (field) {
+      if (field._localFields) {
+        field._localFields = [];
+      } else {
+        defineHiddenProp(this.field, '_localFields', []);
+      }
+
       if (field._componentRefs) {
         field._componentRefs = field._componentRefs.filter((ref) => this.componentRefs.indexOf(ref) === -1);
       } else {
@@ -345,6 +351,15 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       subscribes.push(() => sub.unsubscribe());
     }
 
-    return () => subscribes.forEach((subscribe) => subscribe());
+    let templateFieldsSubs: (() => void)[] = [];
+    observe(field, ['_localFields'], ({ currentValue }) => {
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs = (currentValue || []).map((f: FormlyFieldConfigCache) => this.fieldChanges(f));
+    });
+
+    return () => {
+      subscribes.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+    };
   }
 }

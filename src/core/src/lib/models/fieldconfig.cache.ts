@@ -13,6 +13,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   options?: FormlyFormOptionsCache;
   shareFormControl?: boolean;
   index?: number;
+  _localFields?: FormlyFieldConfigCache[];
   _elementRefs?: ElementRef[];
   _expressions?: {
     [property: string]: {
