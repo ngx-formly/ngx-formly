@@ -15,6 +15,7 @@ export interface FormlyNativeSelectFieldConfig extends FormlyFieldConfig<NativeS
     <select
       matNativeControl
       [id]="id"
+      [name]="field.name"
       [readonly]="props.readonly"
       [required]="required"
       [errorStateMatcher]="errorStateMatcher"
