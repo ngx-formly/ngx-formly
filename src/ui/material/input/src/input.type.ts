@@ -15,6 +15,7 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       *ngIf="type !== 'number'; else numberTmp"
       matInput
       [id]="id"
+      [name]="field.name"
       [type]="type || 'text'"
       [readonly]="props.readonly"
       [required]="required"
@@ -28,6 +29,7 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       <input
         matInput
         [id]="id"
+        [name]="field.name"
         type="number"
         [readonly]="props.readonly"
         [required]="required"

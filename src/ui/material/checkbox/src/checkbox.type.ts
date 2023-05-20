@@ -28,6 +28,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     <mat-checkbox
       [formControl]="formControl"
       [id]="id"
+      [name]="field.name"
       [formlyAttributes]="field"
       [tabIndex]="props.tabindex"
       [indeterminate]="props.indeterminate && formControl.value == null"

@@ -19,6 +19,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
     <textarea
       matInput
       [id]="id"
+      [name]="field.name"
       [readonly]="props.readonly"
       [required]="required"
       [formControl]="formControl"
