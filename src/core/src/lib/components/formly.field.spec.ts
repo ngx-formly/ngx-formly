@@ -25,6 +25,7 @@ const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
       FormlyParentComponent,
       FormlyChildComponent,
       FormlyOnPopulateType,
+      FormlyGroupLocalControlType,
     ],
     config: {
       types: [
@@ -588,6 +589,20 @@ describe('FormlyField Component', () => {
       expect(inputs[0].nativeElement.value).toEqual('First');
       expect(inputs[1].nativeElement.value).toEqual('First');
     });
+
+    it('should emit valueChanges on local field changes', () => {
+      const { field } = renderComponent({
+        type: FormlyGroupLocalControlType,
+        fieldGroup: [{ key: 'title' }],
+      });
+
+      const [spy, subscription] = createFieldChangesSpy(field);
+
+      field.get('title').formControl.setValue('First value');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(field.model).toEqual({ title: 'First value' });
+      subscription.unsubscribe();
+    });
   });
 
   it('should detect formControl status changes', () => {
@@ -697,3 +712,8 @@ export class FormlyChildComponent extends FieldType {
     super();
   }
 }
+
+@Component({
+  template: `<input type="text" [formControl]="formControl.get('title')" />`,
+})
+export class FormlyGroupLocalControlType extends FieldType {}
