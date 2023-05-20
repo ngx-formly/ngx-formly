@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.7](https://github.com/ngx-formly/ngx-formly/compare/v6.1.6...v6.1.7) (2023-05-20)
+
+
+### Bug Fixes
+
+* **core:** call register control on fieldArray update ([eff1e61](https://github.com/ngx-formly/ngx-formly/commit/eff1e6124f44b5626457a09c3169916195f261e1)), closes [#3693](https://github.com/ngx-formly/ngx-formly/issues/3693)
+* **core:** detect valueChanges of local field controls ([7c90ae4](https://github.com/ngx-formly/ngx-formly/commit/7c90ae4141a91759dc2b1e664b8c7b0e0467a2b8)), closes [#3455](https://github.com/ngx-formly/ngx-formly/issues/3455) [#3527](https://github.com/ngx-formly/ngx-formly/issues/3527) [#3524](https://github.com/ngx-formly/ngx-formly/issues/3524) [#3549](https://github.com/ngx-formly/ngx-formly/issues/3549) [#1222](https://github.com/ngx-formly/ngx-formly/issues/1222)
+* **material:** add missing name attribute ([7c6ece1](https://github.com/ngx-formly/ngx-formly/commit/7c6ece1ae6a47993edf2cebf0b3b2260fe61a41f)), closes [#3684](https://github.com/ngx-formly/ngx-formly/issues/3684)
+* **material:** update focus state after interacting with checkboxes ([9c5d187](https://github.com/ngx-formly/ngx-formly/commit/9c5d187bee98ee85f5c7237db95fb24513e5b9bd)), closes [#3691](https://github.com/ngx-formly/ngx-formly/issues/3691)
+
 ### [6.1.6](https://github.com/ngx-formly/ngx-formly/compare/v6.1.5...v6.1.6) (2023-05-10)
 
 
