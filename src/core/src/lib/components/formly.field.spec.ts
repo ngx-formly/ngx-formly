@@ -9,7 +9,7 @@ import {
   FormlyFieldInput,
   FormlyWrapperFormField,
 } from '@ngx-formly/core/testing';
-import { tick, fakeAsync } from '@angular/core/testing';
+import { tick, fakeAsync, TestBed } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyExtension, FormlyFieldConfigCache } from '../models';
 import { BehaviorSubject, timer } from 'rxjs';
@@ -63,6 +63,17 @@ describe('FormlyField Component', () => {
     const { query } = renderComponent({ className: 'foo-class' });
 
     expect(query('formly-field').attributes.class).toEqual('foo-class');
+  });
+
+  it('should allow construct component type', async () => {
+    await TestBed.configureTestingModule({
+      declarations: [FormlyOnPushComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(FormlyOnPushComponent);
+    const detectChanges = () => fixture.detectChanges();
+    expect(detectChanges).not.toThrowError();
   });
 
   describe('host attrs', () => {

@@ -16,37 +16,39 @@ export interface FieldGroupTypeConfig<T = FormlyFieldConfig['props']> extends Fo
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
   @ViewChildren(NgControl) set controls(controls: QueryList<NgControl>) {
     const f = this.field as FormlyFieldConfigCache;
-    f._localFields = controls
-      .map((c) => (c.control as FormlyFieldConfigCache['formControl'])._fields || [])
-      .flat()
-      .filter((f: FormlyFieldConfig) => f.formControl !== this.field.formControl);
+    if (f) {
+      f._localFields = controls
+        .map((c) => (c.control as FormlyFieldConfigCache['formControl'])._fields || [])
+        .flat()
+        .filter((f: FormlyFieldConfig) => f.formControl !== this.field.formControl);
+    }
   }
 
   @Input() field: F;
   defaultOptions?: Partial<F>;
 
   get model() {
-    return this.field.model;
+    return this.field?.model;
   }
 
   get form() {
-    return this.field.form;
+    return this.field?.form;
   }
 
   get options() {
-    return this.field.options;
+    return this.field?.options;
   }
 
   get key() {
-    return this.field.key;
+    return this.field?.key;
   }
 
   get formControl() {
-    return this.field.formControl as NonNullable<F['formControl']>;
+    return this.field?.formControl as NonNullable<F['formControl']>;
   }
 
   get props() {
-    return (this.field.props || {}) as NonNullable<F['props']>;
+    return (this.field?.props || {}) as NonNullable<F['props']>;
   }
 
   /** @deprecated Use `props` instead. */
@@ -59,10 +61,10 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   get id(): string {
-    return this.field.id;
+    return this.field?.id;
   }
 
   get formState() {
-    return this.options.formState || {};
+    return this.options?.formState || {};
   }
 }
