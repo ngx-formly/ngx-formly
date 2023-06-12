@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.8](https://github.com/ngx-formly/ngx-formly/compare/v6.1.7...v6.1.8) (2023-06-12)
+
+
+### Bug Fixes
+
+* **core:** allow createComponent type in testing ([cf22bed](https://github.com/ngx-formly/ngx-formly/commit/cf22bed3b208c6b4ee53b8f291b2703b3334ba28)), closes [#3700](https://github.com/ngx-formly/ngx-formly/issues/3700)
+* **core:** detect changes when field is focused ([9861d6f](https://github.com/ngx-formly/ngx-formly/commit/9861d6ff9863da28a74a4c777f6cbccea464cb0c))
+* **core:** set a default value to FieldType::field property ([817431a](https://github.com/ngx-formly/ngx-formly/commit/817431a6aec311c690d77dc81a8df57095d4dbe8)), closes [#3700](https://github.com/ngx-formly/ngx-formly/issues/3700)
+
 ### [6.1.7](https://github.com/ngx-formly/ngx-formly/compare/v6.1.6...v6.1.7) (2023-05-20)
 
 
