@@ -294,8 +294,18 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   }
 
   return {
-    setValue(value: T) {
-      state.value = value;
+    setValue(currentValue: T) {
+      if (currentValue === state.value) {
+        return;
+      }
+
+      const previousValue = state.value;
+      state.value = currentValue;
+      state.onChange.forEach((changeFn) => {
+        if (changeFn !== setFn) {
+          changeFn({ previousValue, currentValue, firstChange: false });
+        }
+      });
     },
     unsubscribe() {
       state.onChange = state.onChange.filter((changeFn) => changeFn !== setFn);

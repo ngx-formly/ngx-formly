@@ -300,7 +300,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       });
     }
 
-    for (const path of [['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
+    for (const path of [['focus'], ['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
       const fieldObserver = observe(
         field,
         path,
