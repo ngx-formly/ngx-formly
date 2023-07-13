@@ -30,6 +30,8 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
           [indeterminate]="props.indeterminate && formControl.value == null"
           [formControl]="formControl"
           [formlyAttributes]="field"
+          [attr.aria-describedby]="id + '-formly-validation-error'"
+          [attr.aria-invalid]="showError"
         />
         <label *ngIf="props.formCheck !== 'nolabel'" [for]="id" class="form-check-label">
           {{ props.label }}
