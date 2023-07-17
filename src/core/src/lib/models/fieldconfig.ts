@@ -117,6 +117,7 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
    */
   expressions?: {
     [property: string]: string | ((field: FormlyFieldConfig) => any) | Observable<any>;
+    [property: `${string}$`]: ((field: FormlyFieldConfig) => Observable<any>) | Observable<any>;
   };
 
   /**

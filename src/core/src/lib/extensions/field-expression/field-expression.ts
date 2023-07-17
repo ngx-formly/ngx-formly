@@ -1,4 +1,4 @@
-import { FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../models';
+import { FormlyValueChangeEvent, FormlyFieldConfigCache, FormlyFieldConfig } from '../../models';
 import {
   isObject,
   isNil,
@@ -41,6 +41,13 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     const evalExpr = (key: string, expr: any) => {
+      if (key.endsWith('$')) {
+        if (isFunction(expr)) {
+          expr = expr(field);
+        }
+        key = key.substring(0, key.length - 1);
+      }
+
       if (typeof expr === 'string' || isFunction(expr)) {
         field._expressions[key] = this.parseExpressions(field, key, expr);
       } else if (expr instanceof Observable) {

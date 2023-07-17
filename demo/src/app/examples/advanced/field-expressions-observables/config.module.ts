@@ -15,11 +15,8 @@ import { AppComponent } from './app.component';
         data: {
           examples: [
             {
-              title: 'Extending Field Types',
-              description: `
-              This example demonstrates how to use the <code>extending</code> option when defining field types in the formly module. <br/>
-              The <code>password</code> field type is simply a normal <code>input</code> type with a predefined type and label.
-            `,
+              title: 'Expression Properties using Observables',
+              description: `Expression Properties also allows you to bind Observables to update fields when a value is emitted.`,
               component: AppComponent,
               files: [
                 {
