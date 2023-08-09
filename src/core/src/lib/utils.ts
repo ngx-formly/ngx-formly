@@ -319,6 +319,10 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
 export function getField(f: FormlyFieldConfig, key: FormlyFieldConfig['key']): FormlyFieldConfig {
   key = (Array.isArray(key) ? key.join('.') : key) as string;
   if (!f.fieldGroup) {
+    if (f.fieldArray && typeof f.fieldArray === 'object') {
+      return getField(f.fieldArray, key);
+    }
+
     return undefined;
   }
 

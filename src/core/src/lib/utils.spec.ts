@@ -494,6 +494,13 @@ describe('getField', () => {
     expect(childField.key).toEqual('child1');
   });
 
+  it('should find the child in field array', () => {
+    const field = { fieldArray: { fieldGroup: [{ key: 'child1' }] } };
+    const childField = getField(field, 'child1');
+
+    expect(childField.key).toEqual('child1');
+  });
+
   it('should return undefined when field does not exist', () => {
     expect(getField({}, ['parent', 'child1'])).toBeUndefined();
   });
