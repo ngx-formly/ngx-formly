@@ -225,7 +225,7 @@ interface IObserveTarget<T> {
   };
 }
 
-export function observeDeep(source: any, paths: string[], setFn: () => void): () => void {
+export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[], setFn: () => void): () => void {
   let observers: Function[] = [];
 
   const unsubscribe = () => {
@@ -276,7 +276,7 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   if (state.onChange.indexOf(setFn) === -1) {
     state.onChange.push(setFn);
     setFn({ currentValue: state.value, firstChange: true });
-    if (state.onChange.length >= 1) {
+    if (state.onChange.length >= 1 && isObject(target)) {
       const { enumerable } = Object.getOwnPropertyDescriptor(target, key) || { enumerable: true };
       Object.defineProperty(target, key, {
         enumerable,
@@ -294,8 +294,18 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   }
 
   return {
-    setValue(value: T) {
-      state.value = value;
+    setValue(currentValue: T) {
+      if (currentValue === state.value) {
+        return;
+      }
+
+      const previousValue = state.value;
+      state.value = currentValue;
+      state.onChange.forEach((changeFn) => {
+        if (changeFn !== setFn) {
+          changeFn({ previousValue, currentValue, firstChange: false });
+        }
+      });
     },
     unsubscribe() {
       state.onChange = state.onChange.filter((changeFn) => changeFn !== setFn);

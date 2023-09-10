@@ -46,6 +46,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
     <input
       matInput
       [id]="id"
+      [name]="field.name"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [matDatepicker]="picker"

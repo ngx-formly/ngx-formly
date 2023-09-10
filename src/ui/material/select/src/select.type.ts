@@ -11,6 +11,7 @@ interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   disableOptionCentering?: boolean;
   typeaheadDebounceInterval?: number;
   compareWith?: (o1: any, o2: any) => boolean;
+  panelClass?: string;
 }
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
@@ -43,6 +44,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [aria-labelledby]="_getAriaLabelledby()"
       [disableOptionCentering]="props.disableOptionCentering"
       [typeaheadDebounceInterval]="props.typeaheadDebounceInterval"
+      [panelClass]="props.panelClass"
     >
       <ng-container *ngIf="props.options | formlySelectOptions : field | async as selectOptions">
         <ng-container

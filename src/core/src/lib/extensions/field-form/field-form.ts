@@ -54,6 +54,10 @@ export class FieldFormExtension implements FormlyExtension {
 
   private addFormControl(field: FormlyFieldConfigCache) {
     let control = findControl(field);
+    if (field.fieldArray) {
+      return;
+    }
+
     if (!control) {
       const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
 
@@ -61,7 +65,10 @@ export class FieldFormExtension implements FormlyExtension {
         control = new FormGroup({}, controlOptions);
       } else {
         const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
-        control = new FormControl({ value, disabled: false }, { ...controlOptions, initialValueIsDefault: true });
+        control = new FormControl(
+          { value, disabled: !!field.props.disabled },
+          { ...controlOptions, initialValueIsDefault: true },
+        );
       }
     }
 

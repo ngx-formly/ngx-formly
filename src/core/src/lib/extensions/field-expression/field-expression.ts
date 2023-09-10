@@ -226,30 +226,35 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
-    try {
-      let target: any = field;
-      const paths = this._evalExpressionPath(field, prop);
-      const lastIndex = paths.length - 1;
-      for (let i = 0; i < lastIndex; i++) {
-        target = target[paths[i]];
-      }
-
-      target[paths[lastIndex]] = value;
-    } catch (error: any) {
-      error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
-      throw error;
-    }
-
-    if (['templateOptions.disabled', 'props.disabled'].includes(prop) && hasKey(field)) {
-      this.changeDisabledState(field, value);
-    }
-
     if (prop.indexOf('model.') === 0) {
       const key = prop.replace(/^model\./, ''),
-        control = field?.key === key ? field.formControl : field.form.get(key);
+        parent = field.fieldGroup ? field : field.parent;
 
+      let control = field?.key === key ? field.formControl : field.form.get(key);
+      if (!control && field.get(key)) {
+        control = field.get(key).formControl;
+      }
+      assignFieldValue({ key, parent, model: field.model }, value);
       if (control && !(isNil(control.value) && isNil(value)) && control.value !== value) {
         control.patchValue(value);
+      }
+    } else {
+      try {
+        let target: any = field;
+        const paths = this._evalExpressionPath(field, prop);
+        const lastIndex = paths.length - 1;
+        for (let i = 0; i < lastIndex; i++) {
+          target = target[paths[i]];
+        }
+
+        target[paths[lastIndex]] = value;
+      } catch (error: any) {
+        error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
+        throw error;
+      }
+
+      if (['templateOptions.disabled', 'props.disabled'].includes(prop) && hasKey(field)) {
+        this.changeDisabledState(field, value);
       }
     }
 

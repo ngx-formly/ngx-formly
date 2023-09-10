@@ -418,38 +418,52 @@ describe('FieldExpressionExtension', () => {
         subscription.unsubscribe();
       });
 
-      describe('model changes', () => {
-        it('should emit formControl value changes', () => {
-          const {
-            fieldGroup: fields,
-            options,
-            model,
-          } = buildField({
-            fieldGroup: [
-              {
-                key: 'text',
-                type: 'input',
-                expressions: {
-                  'model.text2': 'model.text',
-                },
-              },
-              {
-                key: 'text2',
-                type: 'input',
-              },
-            ],
+      it('should throw error when assign to an undefined prop', () => {
+        const build = () =>
+          buildField({
+            key: 'text',
+            expressions: {
+              'nested.prop': '"ddd"',
+            },
           });
 
-          expect(fields[1].formControl.value).toBeUndefined();
-          const spy = jest.fn();
-          fields[1].formControl.valueChanges.subscribe(spy);
-          expect(spy).not.toHaveBeenCalled();
+        expect(build).toThrowError(
+          /\[Formly Error\] \[Expression "nested.prop"\] (Cannot set property 'prop' of undefined|Cannot set properties of undefined \(setting 'prop'\))/i,
+        );
+      });
+    });
 
-          model.text = 'test';
-          options.build();
-
-          expect(spy).toHaveBeenCalledWith('test');
+    describe('model changes', () => {
+      it('should emit formControl value changes', () => {
+        const {
+          fieldGroup: fields,
+          options,
+          model,
+        } = buildField({
+          fieldGroup: [
+            {
+              key: 'text',
+              type: 'input',
+              expressions: {
+                'model.text2': 'model.text',
+              },
+            },
+            {
+              key: 'text2',
+              type: 'input',
+            },
+          ],
         });
+
+        expect(fields[1].formControl.value).toBeUndefined();
+        const spy = jest.fn();
+        fields[1].formControl.valueChanges.subscribe(spy);
+        expect(spy).not.toHaveBeenCalled();
+
+        model.text = 'test';
+        options.build();
+
+        expect(spy).toHaveBeenCalledWith('test');
       });
 
       it('should supports array notation in expression property', () => {
@@ -474,18 +488,27 @@ describe('FieldExpressionExtension', () => {
         expect(field.model).toEqual([1, 2, 3]);
       });
 
-      it('should throw error when assign to an undefined prop', () => {
-        const build = () =>
-          buildField({
-            key: 'text',
-            expressions: {
-              'nested.prop': '"ddd"',
+      it('should supports nested model assign in expression property', () => {
+        const field = buildField({
+          fieldGroup: [
+            {
+              key: 'group1',
+              fieldGroup: [
+                {
+                  key: 'child1',
+                  expressions: { 'model.child2': '2' },
+                },
+              ],
+              expressions: { 'model.child1': '1' },
             },
-          });
+          ],
+          expressions: { 'model.group2.child1': '1' },
+        });
 
-        expect(build).toThrowError(
-          /\[Formly Error\] \[Expression "nested.prop"\] (Cannot set property 'prop' of undefined|Cannot set properties of undefined \(setting 'prop'\))/i,
-        );
+        expect(field.model).toEqual({
+          group1: { child1: 1, child2: 2 },
+          group2: { child1: 1 },
+        });
       });
     });
 

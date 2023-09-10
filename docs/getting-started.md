@@ -115,4 +115,4 @@ export class AppModule { }
 
 <hr />
 
-To lean more, check out the [Formly @eggheadio course 🔥](https://egghead.io/playlists/configuration-based-reactive-angular-forms-with-ngx-formly-465f) by Juri Strumpflohner ([Twitter](https://twitter.com/juristr) - [Blog](https://juristr.com/blog)).
+To learn more, check out the [Formly @eggheadio course 🔥](https://egghead.io/playlists/configuration-based-reactive-angular-forms-with-ngx-formly-465f) by Juri Strumpflohner ([Twitter](https://twitter.com/juristr) - [Blog](https://juristr.com/blog)).

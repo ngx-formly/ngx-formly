@@ -250,6 +250,12 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private resetRefs(field: FormlyFieldConfigCache) {
     if (field) {
+      if (field._localFields) {
+        field._localFields = [];
+      } else {
+        defineHiddenProp(this.field, '_localFields', []);
+      }
+
       if (field._componentRefs) {
         field._componentRefs = field._componentRefs.filter((ref) => this.componentRefs.indexOf(ref) === -1);
       } else {
@@ -260,17 +266,19 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     this.componentRefs = [];
   }
 
-  private fieldChanges(field: FormlyFieldConfigCache) {
+  private fieldChanges(field: FormlyFieldConfigCache | undefined) {
     this.valueChangesUnsubscribe();
     if (!field) {
       return () => {};
     }
 
-    const subscribes = [
-      observeDeep(field, ['props'], () => field.options.detectChanges(field)),
-      observeDeep(field.options, ['formState'], () => field.options.detectChanges(field)),
-    ];
-    for (const key of Object.keys(field._expressions)) {
+    const subscribes = [observeDeep(field, ['props'], () => field.options.detectChanges(field))];
+
+    if (field.options) {
+      subscribes.push(observeDeep(field.options, ['formState'], () => field.options.detectChanges(field)));
+    }
+
+    for (const key of Object.keys(field._expressions || {})) {
       const expressionObserver = observe<FormlyFieldConfigCache['_expressions']['key']>(
         field,
         ['_expressions', key],
@@ -292,7 +300,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       });
     }
 
-    for (const path of [['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
+    for (const path of [['focus'], ['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
       const fieldObserver = observe(
         field,
         path,
@@ -343,6 +351,15 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       subscribes.push(() => sub.unsubscribe());
     }
 
-    return () => subscribes.forEach((subscribe) => subscribe());
+    let templateFieldsSubs: (() => void)[] = [];
+    observe(field, ['_localFields'], ({ currentValue }) => {
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs = (currentValue || []).map((f: FormlyFieldConfigCache) => this.fieldChanges(f));
+    });
+
+    return () => {
+      subscribes.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+    };
   }
 }

@@ -16,6 +16,7 @@ export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> 
   template: `
     <mat-slide-toggle
       [id]="id"
+      [name]="field.name"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [color]="props.color"

@@ -3,7 +3,9 @@ import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/kendo/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
-interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {}
+interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
+  primitive?: boolean;
+}
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
   type: 'select' | Type<FormlyFieldSelect>;
@@ -18,7 +20,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [data]="props.options | formlySelectOptions : field | async"
       [textField]="'label'"
       [valueField]="'value'"
-      [valuePrimitive]="true"
+      [valuePrimitive]="props.primitive ?? true"
       (valueChange)="props.change && props.change(field, $event)"
     >
     </kendo-dropdownlist>

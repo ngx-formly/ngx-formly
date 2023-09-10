@@ -14,12 +14,13 @@ describe('ui-material: Checkbox Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'checkbox',
+      name: 'custom_name',
     });
 
     expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
 
     const { attributes } = query('mat-checkbox');
-    expect(attributes).toMatchObject({ id: 'formly_1_checkbox_name_0' });
+    expect(attributes).toMatchObject({ id: 'formly_1_checkbox_name_0', name: 'custom_name' });
     expect(query('input[type="checkbox"]').properties).toMatchObject({
       indeterminate: true,
     });
