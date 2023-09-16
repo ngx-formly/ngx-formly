@@ -243,7 +243,7 @@ export interface FormlyFieldProps {
 export type FormlyHookFn = (field: FormlyFieldConfig) => void;
 
 export interface FormlyHookConfig {
-  onInit?: FormlyHookFn;
+  onInit?: FormlyHookFn | ((field: FormlyFieldConfig) => Observable<any>);
   onChanges?: FormlyHookFn;
   afterContentInit?: FormlyHookFn;
   afterViewInit?: FormlyHookFn;
