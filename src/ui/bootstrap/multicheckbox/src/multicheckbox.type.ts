@@ -21,6 +21,8 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
           'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',
           'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch'
         }"
+        [attr.aria-describedby]="id + '-formly-validation-error'"
+        [attr.aria-invalid]="showError"
       >
         <input
           type="checkbox"

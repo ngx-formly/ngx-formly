@@ -22,6 +22,8 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
         class="form-control"
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
+        [attr.aria-describedby]="id + '-formly-validation-error'"
+        [attr.aria-invalid]="showError"
       >
       </textarea>
     </ng-template>

@@ -138,5 +138,27 @@ describe('ui-bootstrap: Select Type', () => {
 
       expect(queryAll('select option')).toHaveLength(3);
     });
+
+    it('should set aria-invalid on select to true on invalid', () => {
+      const { query } = renderComponent({
+        key: 'name',
+        type: 'select',
+        validation: { show: true },
+        props: { required: true },
+      });
+
+      expect(query('select').nativeElement.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('should set aria-invalid on enum to true on invalid', () => {
+      const { query } = renderComponent({
+        key: 'name',
+        type: 'enum',
+        validation: { show: true },
+        props: { required: true },
+      });
+
+      expect(query('select').nativeElement.getAttribute('aria-invalid')).toBe('true');
+    });
   });
 });

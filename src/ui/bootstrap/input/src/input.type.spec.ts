@@ -96,6 +96,17 @@ describe('ui-bootstrap: Input Type', () => {
     expect(classes['is-invalid']).toBeTrue();
   });
 
+  it('should set aria-invalid to true on invalid', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'input',
+      validation: { show: true },
+      props: { required: true },
+    });
+
+    expect(query('input[type="text"]').nativeElement.getAttribute('aria-invalid')).toBe('true');
+  });
+
   it('should bind control value on change', () => {
     const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({

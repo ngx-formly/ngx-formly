@@ -26,6 +26,8 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [compareWith]="props.compareWith"
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
+        [attr.aria-describedby]="id + '-formly-validation-error'"
+        [attr.aria-invalid]="showError"
       >
         <ng-container *ngIf="props.options | formlySelectOptions : field | async as opts">
           <ng-container *ngFor="let opt of opts">
@@ -50,6 +52,8 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
           [compareWith]="props.compareWith"
           [class.is-invalid]="showError"
           [formlyAttributes]="field"
+          [attr.aria-describedby]="id + '-formly-validation-error'"
+          [attr.aria-invalid]="showError"
         >
           <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
           <ng-container *ngIf="props.options | formlySelectOptions : field | async as opts">

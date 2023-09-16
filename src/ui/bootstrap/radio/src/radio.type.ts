@@ -30,6 +30,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
           [value]="option.value"
           [formControl]="option.disabled ? disabledControl : formControl"
           [formlyAttributes]="field"
+          [attr.aria-describedby]="id + '-formly-validation-error'"
+          [attr.aria-invalid]="showError"
         />
         <label class="form-check-label" [for]="id + '_' + i">
           {{ option.label }}
