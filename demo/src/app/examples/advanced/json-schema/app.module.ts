@@ -77,6 +77,7 @@ export function typeValidationMessage({ schemaType }: any) {
         { name: 'maxItems', message: maxItemsValidationMessage },
         { name: 'uniqueItems', message: 'should NOT have duplicate items' },
         { name: 'const', message: constValidationMessage },
+        { name: 'enum', message: `must be equal to one of the allowed values` },
       ],
       types: [
         { name: 'null', component: NullTypeComponent, wrappers: ['form-field'] },

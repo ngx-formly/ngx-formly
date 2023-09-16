@@ -797,6 +797,20 @@ describe('Service: FormlyJsonschema', () => {
             expect(props.multiple).toBeTrue();
           });
         });
+
+        it('should add enum validator', () => {
+          const schema: JSONSchema7 = {
+            type: 'integer',
+            enum: [1, 2, 3],
+          };
+          const config = formlyJsonschema.toFieldConfig(schema);
+
+          const enumValidators = config.validators.enum;
+          expect(enumValidators).toBeDefined();
+          expect(enumValidators(new FormControl(4))).toBeFalse();
+          expect(enumValidators(new FormControl(5))).toBeFalse();
+          expect(enumValidators(new FormControl(1))).toBeTrue();
+        });
       });
 
       it('should support const as hidden', () => {

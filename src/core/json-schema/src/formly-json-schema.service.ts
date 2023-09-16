@@ -411,9 +411,25 @@ export class FormlyJsonschema {
     }
 
     if (this.isEnum(schema)) {
-      field.props.multiple = field.type === 'array';
+      const enumOptions = this.toEnumOptions(schema);
+      const multiple = field.type === 'array';
+
       field.type = 'enum';
-      field.props.options = this.toEnumOptions(schema);
+      field.props.multiple = multiple;
+      field.props.options = enumOptions;
+
+      const enumValues = enumOptions.map((o) => o.value);
+      this.addValidator(field, 'enum', ({ value }: AbstractControl) => {
+        if (value === undefined) {
+          return true;
+        }
+
+        if (multiple) {
+          return Array.isArray(value) ? value.every((o) => enumValues.includes(o)) : false;
+        }
+
+        return enumValues.includes(value);
+      });
     }
 
     if (schema.oneOf && !field.type) {
