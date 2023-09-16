@@ -360,7 +360,24 @@ export class FormlyJsonschema {
               return true;
             }
 
-            const uniqueItems = Array.from(new Set(value.map((v: any) => JSON.stringify(v))));
+            const uniqueItems = Array.from(
+              new Set(
+                value.map((v: any) =>
+                  JSON.stringify(v, (k, o) => {
+                    if (isObject(o)) {
+                      return Object.keys(v)
+                        .sort()
+                        .reduce((obj: any, key) => {
+                          obj[key] = v[key];
+                          return obj;
+                        }, {});
+                    }
+
+                    return o;
+                  }),
+                ),
+              ),
+            );
 
             return uniqueItems.length === value.length;
           });

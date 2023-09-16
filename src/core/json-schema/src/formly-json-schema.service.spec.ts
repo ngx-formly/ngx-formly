@@ -424,7 +424,12 @@ describe('Service: FormlyJsonschema', () => {
         expect(uniqueItemsValidator(undefined)).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 3])).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 2])).toBeFalse();
-
+        expect(
+          uniqueItemsValidator([
+            { a: 2, b: 1 },
+            { b: 1, a: 2 },
+          ]),
+        ).toBeFalse();
         expect(uniqueItemsValidator([{ a: 2 }, { a: 1 }])).toBeTrue();
         expect(uniqueItemsValidator([{ a: 1 }, { a: 1 }])).toBeFalse();
       });
