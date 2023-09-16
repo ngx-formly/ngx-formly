@@ -305,7 +305,10 @@ export class FormlyJsonschema {
               oneOfSchema.forEach((oneOfSchemaItem) => {
                 const { [property]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
-                  ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, resetOnHide: true }),
+                  ...this._toFieldConfig(
+                    { ...oneOfSchemaItem, properties },
+                    { ...options, shareFormControl: false, resetOnHide: true },
+                  ),
                   expressions: {
                     hide: (f) => !f.model || getConstValue(constSchema as JSONSchema7) !== f.model[property],
                   },
