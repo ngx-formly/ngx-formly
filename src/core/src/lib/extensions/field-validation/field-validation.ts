@@ -36,6 +36,14 @@ export class FieldValidationExtension implements FormlyExtension {
     FORMLY_VALIDATORS.forEach((opt) =>
       observe(field, ['props', opt], ({ currentValue, firstChange }) => {
         VALIDATORS = VALIDATORS.filter((o) => o !== opt);
+        if (opt === 'required' && currentValue != null && typeof currentValue !== 'boolean') {
+          console.warn(
+            `Formly: Invalid prop 'required' of type '${typeof currentValue}', expected 'boolean' (Field:${
+              field.key
+            }).`,
+          );
+        }
+
         if (currentValue != null && currentValue !== false) {
           VALIDATORS.push(opt);
         }
