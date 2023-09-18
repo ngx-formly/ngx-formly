@@ -203,7 +203,7 @@ Reset form value: In case you rely on `form.reset()` instead of `options.resetMo
 
 ### 10. Formly root field:
 
-An extra `formly-field` is now part of `formly-form` component which which allows managing the root field using `field-group` type, so that gives you more control over Formly internal structure. To adjust the style of Formly root field you may need to update the css selector into:
+An extra `formly-field` is now part of `formly-form` component which allows managing the root field using `field-group` type, so that gives you more control over Formly internal structure. To adjust the style of Formly root field you may need to update the css selector into:
   
   ```patch
   - formly-form > formly-field {
