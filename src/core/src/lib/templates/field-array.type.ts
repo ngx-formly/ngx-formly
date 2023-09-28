@@ -32,10 +32,11 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     }
 
     for (let i = field.fieldGroup.length; i < length; i++) {
-      const f = {
-        ...clone(typeof field.fieldArray === 'function' ? field.fieldArray(field) : field.fieldArray),
-        key: `${i}`,
-      };
+      const f = { ...clone(typeof field.fieldArray === 'function' ? field.fieldArray(field) : field.fieldArray) };
+      if (f.key !== null) {
+        f.key = `${i}`;
+      }
+
       field.fieldGroup.push(f);
     }
   }
@@ -65,6 +66,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
   private _build() {
     const fields = (this.field as FormlyFieldConfigCache).formControl._fields ?? [this.field];
     fields.forEach((f) => this.options.build(f));
+    this.field.options.detectChanges(this.field);
     this.options.fieldChanges.next({
       field: this.field,
       value: getFieldValue(this.field),

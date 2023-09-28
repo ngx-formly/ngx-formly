@@ -1300,6 +1300,34 @@ describe('Service: FormlyJsonschema', () => {
           expect(foo2Field.hide).toBeFalse();
         });
 
+        it('should support oneOf with array mixed type', () => {
+          const { field, setInputs } = renderComponent({
+            model: [{ foo: [2] }],
+            schema: {
+              type: 'array',
+              items: {
+                oneOf: [
+                  { type: 'string' },
+                  {
+                    type: 'array',
+                    items: { type: 'string' },
+                  },
+                ],
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [foo1Field, foo2Field],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          expect(foo1Field.hide).toBeTrue();
+          expect(foo2Field.hide).toBeFalse();
+        });
+
         it('should support oneOf for a non-object type', () => {
           const { field } = renderComponent({
             model: { foo: 2 },

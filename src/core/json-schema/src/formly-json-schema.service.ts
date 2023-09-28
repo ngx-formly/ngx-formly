@@ -394,30 +394,42 @@ export class FormlyJsonschema {
         // TODO: remove isEnum check once adding an option to skip extension
         if (!this.isEnum(schema)) {
           field.fieldArray = (root: FormlyFieldConfig) => {
-            if (!Array.isArray(schema.items)) {
-              // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-              const f = schema.items ? this._toFieldConfig(<JSONSchema7>schema.items, options) : {};
-              if (f.props) {
-                f.props.required = true;
+            const items = schema.items as JSONSchema7 | JSONSchema7[];
+            if (!Array.isArray(items)) {
+              if (!items) {
+                return {};
               }
+
+              const isMultiSchema = items.oneOf || items.anyOf;
+
+              // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
+              const f = this._toFieldConfig(
+                items,
+                isMultiSchema ? { ...options, key: `${root.fieldGroup.length}` } : options,
+              );
+
+              if (isMultiSchema && !f.key) {
+                f.key = null;
+              }
+
+              f.props.required = true;
 
               return f;
             }
 
             const length = root.fieldGroup ? root.fieldGroup.length : 0;
-            const itemSchema = schema.items[length] ? schema.items[length] : schema.additionalItems;
+            const itemSchema = items[length] ? items[length] : schema.additionalItems;
             const f = itemSchema ? this._toFieldConfig(<JSONSchema7>itemSchema, options) : {};
             if (f.props) {
               f.props.required = true;
             }
-            if (schema.items[length]) {
+            if (items[length]) {
               f.props.removable = false;
             }
 
             return f;
           };
         }
-
         break;
       }
     }
