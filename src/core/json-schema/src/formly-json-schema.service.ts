@@ -192,7 +192,7 @@ export class FormlyJsonschema {
     switch (field.type) {
       case 'number':
       case 'integer': {
-        field.parsers = [(v: string | number) => (isEmpty(v) ? undefined : Number(v))];
+        field.parsers = [(v: string | number) => (isEmpty(v) ? v : Number(v))];
         if (schema.hasOwnProperty('minimum')) {
           field.props.min = schema.minimum;
         }
