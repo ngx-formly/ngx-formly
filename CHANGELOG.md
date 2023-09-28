@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.2.0](https://github.com/ngx-formly/ngx-formly/compare/v6.1.8...v6.2.0) (2023-09-28)
+
+
+### Features
+
+* **bootstrap:** added aria tags for input validation ([#3737](https://github.com/ngx-formly/ngx-formly/issues/3737)) ([#3740](https://github.com/ngx-formly/ngx-formly/issues/3740)) ([c4f7074](https://github.com/ngx-formly/ngx-formly/commit/c4f70748d59c2ccc62a3ae7cd1a78880e2f60a30))
+* **json-schema:** add enum validator ([087f35c](https://github.com/ngx-formly/ngx-formly/commit/087f35c4307de19cfc750717e519ed3545d5adb7)), closes [#3723](https://github.com/ngx-formly/ngx-formly/issues/3723) [#3714](https://github.com/ngx-formly/ngx-formly/issues/3714)
+* **kendo:** add primitive option in props ([#3620](https://github.com/ngx-formly/ngx-formly/issues/3620)) ([a0b4d7d](https://github.com/ngx-formly/ngx-formly/commit/a0b4d7de4a1367f790bd30d112c80e50d6b7bef9))
+* **ng-zorro-antd:** description support for ng-zorro-antd ([#3782](https://github.com/ngx-formly/ngx-formly/issues/3782)) ([a4b2d45](https://github.com/ngx-formly/ngx-formly/commit/a4b2d45e30322cfb21dc97f9f162b58cb18d5a5e)), closes [#3639](https://github.com/ngx-formly/ngx-formly/issues/3639)
+
+
+### Bug Fixes
+
+* **core:** add warning when passing invalid type for required prop ([0bf7676](https://github.com/ngx-formly/ngx-formly/commit/0bf7676bed0844b7f5d505dff38540a03e3a25fe)), closes [#3756](https://github.com/ngx-formly/ngx-formly/issues/3756)
+* **core:** update onInit hook type definition ([0b7c553](https://github.com/ngx-formly/ngx-formly/commit/0b7c5533b086aab65eb6992483b370321c2ffc61)), closes [#3722](https://github.com/ngx-formly/ngx-formly/issues/3722)
+* **json-schema:** allow scientific notation in number type ([4d67c3e](https://github.com/ngx-formly/ngx-formly/commit/4d67c3e378d992770bebbac5cc0249ddf9b6f275)), closes [#3757](https://github.com/ngx-formly/ngx-formly/issues/3757)
+* **json-schema:** fix uniqueItems validator for object ([c8b59b3](https://github.com/ngx-formly/ngx-formly/commit/c8b59b36bbcb8a1c9f367355f609d4f8a85026af)), closes [#3764](https://github.com/ngx-formly/ngx-formly/issues/3764)
+* **json-schema:** support dependencies for oneOf with mixed type ([a9d8676](https://github.com/ngx-formly/ngx-formly/commit/a9d86760b5ba2e3dedf7d0a88f6587537a59b115)), closes [#3749](https://github.com/ngx-formly/ngx-formly/issues/3749)
+* **json-schema:** support oneOf with array mixed type ([bcf930b](https://github.com/ngx-formly/ngx-formly/commit/bcf930b8f810b5dcff5607f5b58805186b0298e8)), closes [#3769](https://github.com/ngx-formly/ngx-formly/issues/3769) [#3785](https://github.com/ngx-formly/ngx-formly/issues/3785)
+* **material:** use correct CSS class for form field required marker ([#3763](https://github.com/ngx-formly/ngx-formly/issues/3763)) ([8ac1683](https://github.com/ngx-formly/ngx-formly/commit/8ac1683909f43d56d398f7d4b23d79da7d15c0ce))
+
 ### [6.1.8](https://github.com/ngx-formly/ngx-formly/compare/v6.1.7...v6.1.8) (2023-06-12)
 
 
