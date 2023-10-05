@@ -97,19 +97,26 @@ export class FieldFormExtension implements FormlyExtension {
           }
         }
 
-        if (null === c.validator || null === c.asyncValidator) {
+        if (null === c.validator) {
           c.setValidators(() => {
             const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
 
             return v ? v(c) : null;
           });
-          c.setAsyncValidators(() => {
-            const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
-
-            return v ? v(c) : of(null);
-          });
 
           markForCheck = true;
+        }
+
+        if (null === c.asyncValidator) {
+          const asyncValidatorsList = this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators');
+
+          if (asyncValidatorsList.length) {
+            c.setAsyncValidators(() => {
+              const v = Validators.composeAsync(asyncValidatorsList);
+              return v ? v(c) : of(null);
+            });
+            markForCheck = true;
+          }
         }
 
         if (markForCheck) {
