@@ -1,6 +1,7 @@
 import { Input, Directive, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, NgControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
+import { FieldWrapper } from './field.wrapper';
 
 export interface FieldTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
   formControl: FormControl;
@@ -14,7 +15,7 @@ export interface FieldGroupTypeConfig<T = FormlyFieldConfig['props']> extends Fo
 
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
-  @ViewChildren(NgControl) set controls(controls: QueryList<NgControl>) {
+  @ViewChildren(NgControl) set _formlyControls(controls: QueryList<NgControl>) {
     const f = this.field as FormlyFieldConfigCache;
     f._localFields = controls
       .map((c) => (c.control as FormlyFieldConfigCache['formControl'])._fields || [])

@@ -604,6 +604,7 @@ describe('FormlyField Component', () => {
     it('should emit valueChanges on local field changes', () => {
       const { field } = renderComponent({
         type: FormlyGroupLocalControlType,
+        wrappers: ['form-field'],
         fieldGroup: [{ key: 'title' }],
       });
 

@@ -161,6 +161,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private triggerHook(name: keyof FormlyHookConfig, changes?: SimpleChanges) {
     if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
+      this.valueChangesUnsubscribe();
       this.valueChangesUnsubscribe = this.fieldChanges(this.field);
     }
 
@@ -267,7 +268,6 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
   }
 
   private fieldChanges(field: FormlyFieldConfigCache | undefined) {
-    this.valueChangesUnsubscribe();
     if (!field) {
       return () => {};
     }
