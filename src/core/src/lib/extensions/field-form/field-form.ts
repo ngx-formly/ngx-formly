@@ -98,21 +98,24 @@ export class FieldFormExtension implements FormlyExtension {
         }
 
         if (null === c.validator) {
-          c.setValidators(() => {
-            const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
+          const validatorsList = this.mergeValidators<ValidatorFn>(field, '_validators', true);
 
-            return v ? v(c) : null;
-          });
+          if (validatorsList.length) {
+            c.setValidators(() => {
+              const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
 
-          markForCheck = true;
+              return v ? v(c) : null;
+            });
+            markForCheck = true;
+          }
         }
 
         if (null === c.asyncValidator) {
-          const asyncValidatorsList = this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators');
+          const asyncValidatorsList = this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators', true);
 
           if (asyncValidatorsList.length) {
             c.setAsyncValidators(() => {
-              const v = Validators.composeAsync(asyncValidatorsList);
+              const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
               return v ? v(c) : of(null);
             });
             markForCheck = true;
@@ -137,12 +140,16 @@ export class FieldFormExtension implements FormlyExtension {
     return markForCheck;
   }
 
-  private mergeValidators<T>(field: FormlyFieldConfigCache, type: '_validators' | '_asyncValidators'): T[] {
+  private mergeValidators<T>(
+    field: FormlyFieldConfigCache,
+    type: '_validators' | '_asyncValidators',
+    includeHiddenFields = false,
+  ): T[] {
     const validators: any = [];
     const c = field.formControl;
     if (c?._fields?.length > 1) {
       c._fields
-        .filter((f: FormlyFieldConfigCache) => !f._hide)
+        .filter((f: FormlyFieldConfigCache) => includeHiddenFields || !f._hide)
         .forEach((f: FormlyFieldConfigCache) => validators.push(...f[type]));
     } else if (field[type]) {
       validators.push(...field[type]);
@@ -151,7 +158,7 @@ export class FieldFormExtension implements FormlyExtension {
     if (field.fieldGroup) {
       field.fieldGroup
         .filter((f) => f?.fieldGroup && !hasKey(f))
-        .forEach((f) => validators.push(...this.mergeValidators(f, type)));
+        .forEach((f) => validators.push(...this.mergeValidators(f, type, includeHiddenFields)));
     }
 
     return validators;
