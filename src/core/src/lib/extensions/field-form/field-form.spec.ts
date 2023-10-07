@@ -158,11 +158,27 @@ describe('FieldFormExtension', () => {
       formControl,
       props: { required: true },
       form: new FormGroup({ test: formControl }),
+      asyncValidators: {
+        custom: () => new Promise(null),
+      },
     });
 
     expect(formControl.setValidators).toHaveBeenCalledTimes(1);
     expect(formControl.setAsyncValidators).toHaveBeenCalledTimes(1);
     expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not call "setAsyncValidators" when no asyncValidator is present in field', () => {
+    const formControl = new FormControl();
+    jest.spyOn(formControl, 'setAsyncValidators');
+    buildField({
+      key: 'test',
+      formControl,
+      props: { required: true },
+      form: new FormGroup({ test: formControl }),
+    });
+
+    expect(formControl.setAsyncValidators).not.toHaveBeenCalled();
   });
 
   it('should updateValueAndValidity of detached field', () => {
