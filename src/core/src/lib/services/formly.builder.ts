@@ -24,15 +24,16 @@ export class FormlyFormBuilder {
 
     if (!field.parent) {
       this._setOptions(field);
-      disableTreeValidityCall(field.form, () => {
-        this._build(field);
+    }
+
+    disableTreeValidityCall(field.form, () => {
+      this._build(field);
+      if (!field.parent) {
         const options = (field as FormlyFieldConfigCache).options;
         options.checkExpressions?.(field, true);
         options.detectChanges?.(field);
-      });
-    } else {
-      this._build(field);
-    }
+      }
+    });
   }
 
   private _build(field: FormlyFieldConfigCache) {
