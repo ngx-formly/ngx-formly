@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.2.1](https://github.com/ngx-formly/ngx-formly/compare/v6.2.0...v6.2.1) (2023-10-08)
+
+
+### Bug Fixes
+
+* **core:** disable detect local fields inside wrappers ([22b21d8](https://github.com/ngx-formly/ngx-formly/commit/22b21d8ce8487f77b99f37837567eca8cfcae548)), closes [#3572](https://github.com/ngx-formly/ngx-formly/issues/3572)
+
+### Performance Improvements
+
+* **core:** disable update TreeValidity during the build step ([3f65fb4](https://github.com/ngx-formly/ngx-formly/commit/3f65fb482e0d9eb89d573e2d54cc650b1fd9eddf)), closes [#3791](https://github.com/ngx-formly/ngx-formly/issues/3791)
+* **core:** remove detectChanges call in asyn validator ([b0b9a09](https://github.com/ngx-formly/ngx-formly/commit/b0b9a09d3554c554c2e8eb873abd109e04021190)), closes [#3791](https://github.com/ngx-formly/ngx-formly/issues/3791)
+* **core:** set the asyncValidators when async validators are present ([#3792](https://github.com/ngx-formly/ngx-formly/issues/3792)) ([d825cff](https://github.com/ngx-formly/ngx-formly/commit/d825cff8f7b836591c267d1382284b9545e30194)), closes [#3791](https://github.com/ngx-formly/ngx-formly/issues/3791)
+
 ## [6.2.0](https://github.com/ngx-formly/ngx-formly/compare/v6.1.8...v6.2.0) (2023-09-28)
 
 
