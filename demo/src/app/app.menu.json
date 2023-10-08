@@ -12,7 +12,8 @@
       { "path": "/guide/custom-formly-extension", "label": "Custom Extension" },
       { "path": "/guide/formly-field-presets", "label": "Formly Field Presets" },
       { "path": "/guide/json-schema", "label": "JSON Schema" },
-      { "path": "/guide/migration", "label": "Migration from v5 to v6" }
+      { "path": "/guide/migration", "label": "Migration from v5 to v6" },
+      { "path": "/guide/faq", "label": "FAQ" }
     ]
   },
   {

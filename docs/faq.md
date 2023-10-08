@@ -1,0 +1,97 @@
+# FAQ
+
+## Rendering Dynamic HTML template using ngx-formly at runtime
+
+it's not possible due to Angular limitation on that part (require to use Angular compiler in browser),
+so instead use one of the following solutions:
+
+1- create a [Custom component type](./guide/custom-formly-field)
+
+2- use `expressions`:
+
+```
+{
+  expressions: {
+    template: field => `<div>${field.model.label}</div>`
+  }
+}
+```
+
+3- use inline type:
+
+```patch
+@Component({
+  selector: 'app',
+  template: `
+    <formly-form [form]="form" [fields]="fields" [model]="model">
++     <ng-template formlyTemplate="custom-inline-type" let-field>
++        Hello {{ field.props.name }}
++     </ng-template>
+    </formly-form>
+  `,
+})
+export class AppComponent {
+  ...
+  fields: FormlyFieldConfig[] = [
+    {
++     type: 'custom-inline-type',
++     props: {
+        name: 'World !!!',
+      }
+    }
+  ];
+}
+```
+
+## How to access to the parent field model value:
+
+To access into the main model you have to use:
+- `formState`
+- or use the `this.model` defined on your main component, see https://stackblitz.com/edit/angular-formly-6nvp4q
+- or `field.parent.model` to get the parent model value
+
+## What is `hooks` in Formly
+
+The `hooks` are callbacks that give you the opportunity to interact with the field instance when an event happens in the field's life cycle.
+The most relevant `hooks` are:
+
+- `onInit`: Called once, after the after field has been initialized;
+- `afterViewInit`: Called after Angular initializes the component's views and child views.
+- `onDestroy`: Called before Angular destroys the field component.
+
+### Usage
+
+```ts
+fields: FormlyFieldConfig[] = [
+  {
+    type: 'input',
+    hooks: {
+      onInit: (field) => {
+        const { form, model, options } = field;
+        ...
+      },
+    },
+  }
+];
+```
+
+## What does `templateOptions` and `props` in Formly:
+
+`templateOptions` is an alias to `props`, which allows passing extra option to the field ui template. For example we can use it to pass a custom label/placeholder or set the input field as required.
+
+
+### Usage
+
+The following example will mark the field as `required`` and set label to `Name`
+
+```ts
+fields: FormlyFieldConfig[] = [
+  {
+    type: 'input',
+    props: {
+      label: 'Name',
+      required: true
+    },
+  }
+];
+```
