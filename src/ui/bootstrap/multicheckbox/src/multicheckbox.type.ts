@@ -3,7 +3,7 @@ import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 
 interface MultiCheckboxProps extends FormlyFieldProps {
-  formCheck: 'default' | 'inline' | 'switch' | 'inline-switch';
+  formCheck?: 'default' | 'inline' | 'switch' | 'inline-switch';
 }
 
 export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiCheckboxProps> {
