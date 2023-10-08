@@ -82,7 +82,7 @@ fields: FormlyFieldConfig[] = [
 
 ### Usage
 
-The following example will mark the field as `required`` and set label to `Name`
+The following example will mark the field as `required` and set label to `Name`
 
 ```ts
 fields: FormlyFieldConfig[] = [

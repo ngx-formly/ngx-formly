@@ -2,11 +2,36 @@
 
 ## How to use:
 
-TBD
+In order to use JSON Schema, Formly provide `FormlyJsonschema` service that let you convert JSON Schema to Formly Field Config.
+
+### Usage
+
+1. import `FormlyJsonschema` service
+
+```ts
+import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
+
+export class AppComponent {
+  ...
+
+  constructor(private formlyJsonschema: FormlyJsonschema) {}
+}
+```
+
+2. pass `schema` to `FormlyJsonschema::toFieldConfig` function
+
+```ts
+import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
+
+export class AppComponent {
+  ...
+  fields: FormlyFieldConfig[] = [this.formlyJsonschema.toFieldConfig(schema)];
+}
+```
 
 ## Demo
 
-see https://formly.dev/docs/examples/advanced/json-schema
+See [JSON Schema Examples](https://formly.dev/docs/examples/advanced/json-schema).
 
 ## Customize JSON Schema output
 
