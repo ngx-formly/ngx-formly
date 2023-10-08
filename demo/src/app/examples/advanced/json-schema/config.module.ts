@@ -15,9 +15,12 @@ import { AppComponent } from './app.component';
         data: {
           examples: [
             {
-              title: 'Json Schema',
+              title: 'JSON Schema',
               description: `
-              Credits: The json-schema implementation is inspired by <a target="_blank" href="https://github.com/rjsf-team/react-jsonschema-form">react-jsonschema-form</a>
+              <strong>To customize JSON Schema output</strong>, please check <a target="_parent" href="https://formly.dev/docs/guide/json-schema#customize-json-schema-output">JSON Schema Guide</a>
+
+              </br></br>
+              <small class="text-muted">Credits: The JSON Schema implementation is inspired by <a target="_blank" href="https://github.com/rjsf-team/react-jsonschema-form">react-jsonschema-form</a></small>
             `,
               component: AppComponent,
               debug: false,
