@@ -8,10 +8,12 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
+  OnChanges,
 } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { getExampleFiles } from './utils';
 
 export interface ExampleType {
   title: string;
@@ -27,7 +29,7 @@ export interface ExampleType {
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
 })
-export class ExampleViewerComponent implements OnInit, OnDestroy {
+export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() type: string;
   @Input() exampleData: ExampleType;
   @Input() set debugFields(fields: FormlyFieldConfig[]) {
@@ -36,6 +38,7 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
     }
   }
 
+  exampleFiles: { file: string; content: string }[] = [];
   _debugFields: any;
   _prevModel: any;
 
@@ -68,6 +71,12 @@ export class ExampleViewerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.exampleData.component);
     this.demoComponentRef = this.demoRef.createComponent(componentFactory);
+  }
+
+  ngOnChanges() {
+    if (this.exampleData) {
+      this.exampleFiles = getExampleFiles(this.type, this.exampleData).exampleFiles;
+    }
   }
 
   ngOnDestroy() {

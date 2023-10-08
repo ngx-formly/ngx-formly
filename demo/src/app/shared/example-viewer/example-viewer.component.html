@@ -38,7 +38,7 @@
 
   <div class="docs-example-viewer-source" *ngIf="showSource">
     <mat-tab-group>
-      <mat-tab *ngFor="let f of exampleData.files" [label]="f.file">
+      <mat-tab *ngFor="let f of exampleFiles" [label]="f.file">
         <div class="docs-example-source-wrapper">
           <button
             mat-icon-button
