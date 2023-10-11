@@ -26,6 +26,7 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
           type="checkbox"
           [id]="id + '_' + i"
           class="form-check-input"
+          [class.is-invalid]="showError"
           [value]="option.value"
           [checked]="isChecked(option)"
           [formlyAttributes]="field"
