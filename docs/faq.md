@@ -79,7 +79,6 @@ fields: FormlyFieldConfig[] = [
 
 `templateOptions` is an alias to `props`, which allows passing extra option to the field ui template. For example we can use it to pass a custom label/placeholder or set the input field as required.
 
-
 ### Usage
 
 The following example will mark the field as `required` and set label to `Name`
@@ -117,4 +116,46 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
   ],
 })
 export class AppModule { }
+```
+
+## Formly standalone components support
+
+Standalone components support will be added in the next major version (`v7`) of Formly.
+In the meantime, you can use the following solution: https://github.com/ngx-formly/ngx-formly/issues/3721#issuecomment-1602401526.
+
+## How to add `className` to `formly-field` component:
+
+If you want to apply a custom style for a specific field, use `className` property:
+
+```ts
+{
+  className: 'custom-class',
+  key: 'name',
+  ...
+}
+```
+
+Result:
+
+```html
+<formly-field class="custom-class">...<formly-field>
+```
+
+## How to apply style to a child element of field ?
+
+use `className` which will be added to the `formly-field` component and then target the child element using `css`:
+
+```ts
+{
+  className: 'my-custom-style',
+  key: 'name',
+  ...
+}
+```
+
+`style.scss`:
+
+```scss
+.my-custom-style .mat-form-field {
+}
 ```
