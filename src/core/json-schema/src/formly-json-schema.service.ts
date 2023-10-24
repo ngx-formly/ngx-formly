@@ -409,7 +409,7 @@ export class FormlyJsonschema {
                 isMultiSchema ? { ...options, key: `${root.fieldGroup.length}` } : options,
               );
 
-              if (isMultiSchema && !f.key) {
+              if (isMultiSchema && !hasKey(f)) {
                 f.key = null;
               }
 

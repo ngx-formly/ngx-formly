@@ -57,7 +57,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
     const field = this.field.fieldGroup[i];
     this.field.fieldGroup.splice(i, 1);
-    this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
+    this.field.fieldGroup.forEach((f, key) => this.updateArrayElementKey(f, `${key}`));
     unregisterControl(field, true);
     this._build();
     markAsDirty && this.formControl.markAsDirty();
@@ -72,5 +72,20 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
       value: getFieldValue(this.field),
       type: 'valueChanges',
     });
+  }
+
+  private updateArrayElementKey(f: FormlyFieldConfig, newKey: string) {
+    if (hasKey(f)) {
+      f.key = newKey;
+      return;
+    }
+
+    if (!f.fieldGroup?.length) {
+      return;
+    }
+
+    for (let i = 0; i < f.fieldGroup.length; i++) {
+      this.updateArrayElementKey(f.fieldGroup[i], newKey);
+    }
   }
 }
