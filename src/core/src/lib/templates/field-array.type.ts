@@ -52,12 +52,27 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     markAsDirty && this.formControl.markAsDirty();
   }
 
+  updateArrayElementKey(f: FormlyFieldConfig, newKey: string) {
+    if (f.key) {
+      f.key = newKey;
+      return;
+    }
+
+    if (!f.fieldGroup?.length) {
+      return;
+    }
+
+    for (let i = 0; i < f.fieldGroup.length; i++) {
+      this.updateArrayElementKey(f.fieldGroup[i], newKey);
+    }
+  }
+
   remove(i: number, { markAsDirty } = { markAsDirty: true }) {
     this.model.splice(i, 1);
 
     const field = this.field.fieldGroup[i];
     this.field.fieldGroup.splice(i, 1);
-    this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
+    this.field.fieldGroup.forEach((f, key) => this.updateArrayElementKey(f, `${key}`));
     unregisterControl(field, true);
     this._build();
     markAsDirty && this.formControl.markAsDirty();
