@@ -48,7 +48,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           value$: (expr as Observable<any>).pipe(
             tap((v) => {
               this.evalExpr(field, key, v);
-              field.options.detectChanges(field);
+              field.options._detectChanges(field);
             }),
           ),
         };
@@ -89,9 +89,6 @@ export class FieldExpressionExtension implements FormlyExtension {
         options._hiddenFieldsForCheck = [];
         if (fieldChanged) {
           this.checkExpressions(field);
-          if (field.options && field.options.detectChanges) {
-            field.options.detectChanges(field);
-          }
         }
         checkLocked = false;
       };

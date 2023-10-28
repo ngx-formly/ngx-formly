@@ -12,6 +12,7 @@ import {
   getField,
   markFieldForCheck,
   hasKey,
+  observe,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -90,13 +91,17 @@ export class CoreExtension implements FormlyExtension {
       options.detectChanges(f);
     };
 
-    options.detectChanges = (f: FormlyFieldConfigCache) => {
+    options._detectChanges = (f: FormlyFieldConfigCache) => {
       if (f._componentRefs) {
-        f.options.checkExpressions(f);
         markFieldForCheck(f);
       }
 
-      f.fieldGroup?.forEach((f) => f && options.detectChanges(f));
+      f.fieldGroup?.forEach((f) => f && options._detectChanges(f));
+    };
+
+    options.detectChanges = (f: FormlyFieldConfigCache) => {
+      f.options.checkExpressions?.(f);
+      options._detectChanges(f);
     };
 
     options.resetModel = (model?: any) => {
@@ -106,11 +111,9 @@ export class CoreExtension implements FormlyExtension {
         Object.assign(field.model, model || {});
       }
 
+      observe(options, ['parentForm', 'submitted']).setValue(false, false);
       options.build(field);
       field.form.reset(field.model);
-      if (options.parentForm && options.parentForm.control === field.formControl) {
-        (options.parentForm as { submitted: boolean }).submitted = false;
-      }
     };
 
     options.updateInitialValue = (model?: any) => (options._initialModel = clone(model ?? field.model));

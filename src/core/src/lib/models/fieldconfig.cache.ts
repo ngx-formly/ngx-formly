@@ -40,6 +40,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _injector?: Injector;
   _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
   _initialModel?: any;
+  _detectChanges?: (field: FormlyFieldConfig) => void;
 
   /** @deprecated */
   _buildForm?: () => void;

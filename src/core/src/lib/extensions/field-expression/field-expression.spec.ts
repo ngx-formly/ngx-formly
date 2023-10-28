@@ -510,6 +510,23 @@ describe('FieldExpressionExtension', () => {
           group2: { child1: 1 },
         });
       });
+
+      it('should avoid extra expressions calls', () => {
+        const spy = jest.fn();
+        const field = buildField({
+          key: 'text',
+          _componentRefs: [],
+          expressions: { hide: spy },
+        });
+
+        // 2 calls during the build step
+        expect(spy).toHaveBeenCalledTimes(2);
+
+        // 2 calls for resetModel
+        spy.mockReset();
+        field.options.resetModel({ test: '123' });
+        expect(spy).toHaveBeenCalledTimes(2);
+      });
     });
 
     it('should check expression when detecting new field changes', () => {

@@ -31,7 +31,7 @@ export class FormlyFormBuilder {
       if (!field.parent) {
         const options = (field as FormlyFieldConfigCache).options;
         options.checkExpressions?.(field, true);
-        options.detectChanges?.(field);
+        options._detectChanges?.(field);
       }
     });
   }
@@ -79,7 +79,6 @@ export class FormlyFormBuilder {
       defineHiddenProp(options, 'parentForm', this.parentForm);
       observe(options, ['parentForm', 'submitted'], ({ firstChange }) => {
         if (!firstChange) {
-          options.checkExpressions(field);
           options.detectChanges(field);
         }
       });

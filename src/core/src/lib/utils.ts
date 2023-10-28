@@ -212,7 +212,7 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
 
 type IObserveFn<T> = (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void;
 export interface IObserver<T> {
-  setValue: (value: T) => void;
+  setValue: (value: T, emitEvent?: boolean) => void;
   unsubscribe: Function;
 }
 interface IObserveTarget<T> {
@@ -249,7 +249,7 @@ export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[],
   };
 }
 
-export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: IObserveFn<T>): IObserver<T> {
+export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn?: IObserveFn<T>): IObserver<T> {
   if (!o._observers) {
     defineHiddenProp(o, '_observers', {});
   }
@@ -273,7 +273,7 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
     state.value = target[key];
   }
 
-  if (state.onChange.indexOf(setFn) === -1) {
+  if (setFn && state.onChange.indexOf(setFn) === -1) {
     state.onChange.push(setFn);
     setFn({ currentValue: state.value, firstChange: true });
     if (state.onChange.length >= 1 && isObject(target)) {
@@ -294,7 +294,7 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   }
 
   return {
-    setValue(currentValue: T) {
+    setValue(currentValue: T, emitEvent = true) {
       if (currentValue === state.value) {
         return;
       }
@@ -302,7 +302,7 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
       const previousValue = state.value;
       state.value = currentValue;
       state.onChange.forEach((changeFn) => {
-        if (changeFn !== setFn) {
+        if (changeFn !== setFn && emitEvent) {
           changeFn({ previousValue, currentValue, firstChange: false });
         }
       });

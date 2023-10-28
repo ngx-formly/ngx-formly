@@ -63,7 +63,6 @@ describe('ui-bootstrap: MultiCheckbox Type', () => {
     queryAll('input[type="checkbox"]').forEach((x) => {
       x.triggerEventHandler('change', ɵCustomEvent({ checked: true }));
       detectChanges();
-      console.log(field.form);
     });
 
     expect(field.formControl.value).toEqual({ '1': true, '2': true, '3': true });

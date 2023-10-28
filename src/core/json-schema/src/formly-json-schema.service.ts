@@ -88,6 +88,7 @@ interface IOptions extends FormlyJsonschemaOptions {
 @Injectable({ providedIn: 'root' })
 export class FormlyJsonschema {
   toFieldConfig(schema: JSONSchema7, options?: FormlyJsonschemaOptions): FormlyFieldConfig {
+    schema = clone(schema);
     return this._toFieldConfig(schema, { schema, ...(options || {}) });
   }
 
@@ -725,18 +726,18 @@ export class FormlyJsonschema {
     schemas: JSONSchema7[],
     options: IOptions,
   ): boolean {
-    if (!root._schemasFields) {
-      Object.defineProperty(root, '_schemasFields', { enumerable: false, writable: true, configurable: true });
-      root._schemasFields = {};
+    const schema = schemas[i] as JSONSchema7 & { _field?: FormlyFieldConfig };
+    if (!schema._field) {
+      Object.defineProperty(schema, '_field', { enumerable: false, writable: true, configurable: true });
     }
 
-    let field = root._schemasFields[i];
+    let field = schema._field;
     const model = root.model ? clone(root.model) : root.fieldArray ? [] : {};
     if (!field) {
-      field = root._schemasFields[i] = root.options.build({
+      field = schema._field = root.options.build({
         form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
         fieldGroup: [
-          this._toFieldConfig(schemas[i], {
+          this._toFieldConfig(schema, {
             ...options,
             resetOnHide: true,
             ignoreDefault: true,

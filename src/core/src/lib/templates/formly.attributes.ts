@@ -125,7 +125,8 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       );
     }
 
-    this.uiAttributes.forEach((attr) => {
+    for (let i = 0; i < this.uiAttributes.length; i++) {
+      const attr = this.uiAttributes[i];
       const value = this.props[attr];
       if (
         this.uiAttributesCache[attr] !== value &&
@@ -138,7 +139,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
           this.removeAttribute(attr);
         }
       }
-    });
+    }
   }
 
   ngOnDestroy() {
