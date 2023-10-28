@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.2.2](https://github.com/ngx-formly/ngx-formly/compare/v6.2.1...v6.2.2) (2023-10-28)
+
+
+### Bug Fixes
+
+* **bootstrap:** update multicheckbox aria attr in input tag ([#3793](https://github.com/ngx-formly/ngx-formly/issues/3793)) ([c78462a](https://github.com/ngx-formly/ngx-formly/commit/c78462ac30cfc4c52b9f6d85bf732bbb76215205))
+* **core:** fix array remove for array of oneOf ([88449e0](https://github.com/ngx-formly/ngx-formly/commit/88449e005f297ea914140c77cbea9f3e710eb15f)), closes [#3794](https://github.com/ngx-formly/ngx-formly/issues/3794)
+
+### Performance Improvements
+
+* **core:** optimize execution time of field expressions ([6acf797](https://github.com/ngx-formly/ngx-formly/commit/6acf797)), closes [#3799](https://github.com/ngx-formly/ngx-formly/issues/3799)
+
 ### [6.2.1](https://github.com/ngx-formly/ngx-formly/compare/v6.2.0...v6.2.1) (2023-10-08)
 
 
