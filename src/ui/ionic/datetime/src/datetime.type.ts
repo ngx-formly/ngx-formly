@@ -70,6 +70,7 @@ export class FormlyFieldDatetime extends FieldType<FieldTypeConfig<DatetimeProps
   override defaultOptions = {
     props: {
       presentation: 'month-year' as const,
+      legacyLabel: true,
     },
   };
 

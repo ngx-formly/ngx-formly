@@ -11,7 +11,13 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
 @Component({
   selector: 'formly-field-ion-textarea',
   template: `
-    <ion-textarea [formControl]="formControl" [ionFormlyAttributes]="field" [cols]="props.cols" [rows]="props.rows">
+    <ion-textarea
+      [formControl]="formControl"
+      [ionFormlyAttributes]="field"
+      [cols]="props.cols"
+      [rows]="props.rows"
+      [label]="props.label"
+    >
     </ion-textarea>
   `,
   styles: [':host { display: inherit; }'],

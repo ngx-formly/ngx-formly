@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormlyModule } from '@ngx-formly/core';
 import { IonicModule } from '@ionic/angular';
@@ -24,5 +24,6 @@ import { FormlyFieldTextArea } from './textarea.type';
       ],
     }),
   ],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class FormlyTextAreaModule {}

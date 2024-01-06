@@ -11,7 +11,13 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
 @Component({
   selector: 'formly-field-ion-range',
   template: `
-    <ion-range [min]="props.min" [max]="props.max" [formControl]="formControl" [ionFormlyAttributes]="field">
+    <ion-range
+      [min]="props.min"
+      [max]="props.max"
+      [formControl]="formControl"
+      [ionFormlyAttributes]="field"
+      [label]="props.label"
+    >
       <ion-label slot="start">{{ props.min }}</ion-label>
       <ion-label slot="end">{{ props.max }}</ion-label>
     </ion-range>
