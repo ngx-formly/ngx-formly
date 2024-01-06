@@ -1,10 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonRadio, IonicModule } from '@ionic/angular';
 import { FormlyWrapperFormField } from './form-field.wrapper';
 import { IonFormlyAttributes } from './formly.attributes';
+
+export function formFieldLegacyExtension(field: FormlyFieldConfig) {
+  if (field.props?.hasOwnProperty('legacyLabel')) {
+    return;
+  }
+
+  field.props = {
+    legacyLabel: !IonRadio.prototype.hasOwnProperty('legacy'),
+    ...(field.props || {}),
+  };
+}
 
 @NgModule({
   declarations: [FormlyWrapperFormField, IonFormlyAttributes],
@@ -21,6 +32,7 @@ import { IonFormlyAttributes } from './formly.attributes';
           component: FormlyWrapperFormField,
         },
       ],
+      extensions: [{ name: 'form-field-legacy', extension: { postPopulate: formFieldLegacyExtension } }],
     }),
   ],
 })

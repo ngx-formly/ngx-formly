@@ -10,7 +10,11 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
 
 @Component({
   selector: 'formly-field-ion-checkbox',
-  template: ` <ion-checkbox [formControl]="formControl" [ionFormlyAttributes]="field"> </ion-checkbox> `,
+  template: `
+    <ion-checkbox [formControl]="formControl" [ionFormlyAttributes]="field">
+      {{ props.label }}
+    </ion-checkbox>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {}

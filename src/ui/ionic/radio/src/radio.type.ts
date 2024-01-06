@@ -18,8 +18,10 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
           *ngFor="let option of props.options | formlySelectOptions : field | async"
           [disabled]="option.disabled || formControl.disabled"
         >
-          <ion-label>{{ option.label }}</ion-label>
-          <ion-radio [value]="option.value"></ion-radio>
+          <ion-label *ngIf="props.legacyLabel">{{ option.label }}</ion-label>
+          <ion-radio [value]="option.value">
+            {{ option.label }}
+          </ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>

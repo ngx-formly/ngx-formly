@@ -30,6 +30,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [interface]="props.interface"
         [okText]="props.okText"
         [cancelText]="props.cancelText"
+        [label]="props.label"
       >
         <ion-select-option *ngFor="let option of selectOptions" [value]="option.value" [disabled]="option.disabled">
           {{ option.label }}

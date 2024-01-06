@@ -6,13 +6,14 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   hideRequiredMarker?: boolean;
   itemLines?: IonItem['lines'];
   labelPosition?: IonLabel['position'];
+  legacyLabel?: boolean;
 }
 
 @Component({
   selector: 'formly-wrapper-ion-form-field',
   template: `
     <ion-item [lines]="props.itemLines">
-      <ion-label [position]="props.labelPosition">
+      <ion-label [position]="props.labelPosition" *ngIf="props.legacyLabel">
         {{ props.label }}
         <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
       </ion-label>
