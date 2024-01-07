@@ -369,10 +369,10 @@ export class FormlyJsonschema {
                 value.map((v: any) =>
                   JSON.stringify(v, (k, o) => {
                     if (isObject(o)) {
-                      return Object.keys(v)
+                      return Object.keys(o)
                         .sort()
                         .reduce((obj: any, key) => {
-                          obj[key] = v[key];
+                          obj[key] = o[key];
                           return obj;
                         }, {});
                     }

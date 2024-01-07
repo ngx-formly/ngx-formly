@@ -430,6 +430,8 @@ describe('Service: FormlyJsonschema', () => {
             { b: 1, a: 2 },
           ]),
         ).toBeFalse();
+
+        expect(uniqueItemsValidator([{ foo: { a: 2, b: 1 } }, { foo: { b: 1, a: 2 } }])).toBeFalse();
         expect(uniqueItemsValidator([{ a: 2 }, { a: 1 }])).toBeTrue();
         expect(uniqueItemsValidator([{ a: 1 }, { a: 1 }])).toBeFalse();
       });
