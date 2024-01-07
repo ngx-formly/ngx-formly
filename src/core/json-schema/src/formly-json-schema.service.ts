@@ -732,7 +732,10 @@ export class FormlyJsonschema {
     }
 
     let field = schema._field;
-    const model = root.model ? clone(root.model) : root.fieldArray ? [] : {};
+    let model = root.model ? clone(root.model) : root.fieldArray ? [] : {};
+    if (root.model && hasKey(root)) {
+      model = { [Array.isArray(root.key) ? root.key.join('.') : root.key]: getFieldValue(root) };
+    }
     if (!field) {
       field = schema._field = root.options.build({
         form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),

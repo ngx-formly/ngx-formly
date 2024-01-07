@@ -1302,6 +1302,29 @@ describe('Service: FormlyJsonschema', () => {
           expect(foo2Field.hide).toBeFalse();
         });
 
+        // https://github.com/ngx-formly/ngx-formly/issues/3805
+        it('should support oneOf within array (validate the second item)', () => {
+          const { field } = renderComponent({
+            model: ['n', 'Heading 2'],
+            schema: {
+              type: 'array',
+              items: {
+                oneOf: [{ enum: ['Heading 1', 'Heading 2'] }, { type: 'string' }],
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [field1, field2],
+            },
+          ] = field.fieldGroup[1].fieldGroup[0].fieldGroup;
+
+          expect(field1.hide).toBeFalse();
+          expect(field2.hide).toBeTrue();
+        });
+
         it('should support oneOf with array mixed type', () => {
           const { field, setInputs } = renderComponent({
             model: [{ foo: [2] }],

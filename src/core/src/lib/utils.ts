@@ -28,7 +28,7 @@ export function getFieldId(formId: string, field: FormlyFieldConfig, index: stri
 }
 
 export function hasKey(field: FormlyFieldConfig) {
-  return !isNil(field.key) && field.key !== '';
+  return !isNil(field.key) && field.key !== '' && (!Array.isArray(field.key) || field.key.length > 0);
 }
 
 export function getKeyPath(field: FormlyFieldConfigCache): string[] {
