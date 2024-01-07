@@ -33,8 +33,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
       [cdkAutosizeMinRows]="props.autosizeMinRows"
       [cdkAutosizeMaxRows]="props.autosizeMaxRows"
       [class.cdk-textarea-autosize]="props.autosize"
-    >
-    </textarea>
+    ></textarea>
   `,
   providers: [
     // fix for https://github.com/ngx-formly/ngx-formly/issues/1688
