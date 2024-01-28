@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.3.0](https://github.com/ngx-formly/ngx-formly/compare/v6.2.2...v6.3.0) (2024-01-28)
+
+
+### Features
+
+* **ionic:** add ionic 7 support ([#3845](https://github.com/ngx-formly/ngx-formly/issues/3845)) ([55512fb](https://github.com/ngx-formly/ngx-formly/commit/55512fbcc916888acbae1d9af8c0b7c8187805d8)), closes [#3643](https://github.com/ngx-formly/ngx-formly/issues/3643)
+
+
+### Bug Fixes
+
+* **core:** handle clone of Uint8Array instance ([0566430](https://github.com/ngx-formly/ngx-formly/commit/056643006075dc4c8b67e51e0e09b4333fecb180)), closes [#3850](https://github.com/ngx-formly/ngx-formly/issues/3850)
+* **json-schema:** handled nested key for uniqueItems ([0f67d89](https://github.com/ngx-formly/ngx-formly/commit/0f67d899f894b82db340b0af3608aff9296eec38)), closes [#3842](https://github.com/ngx-formly/ngx-formly/issues/3842)
+* **json-schema:** pass a valid model value for oneOf in array type ([d597c00](https://github.com/ngx-formly/ngx-formly/commit/d597c0051d4fe6fa6ba0f9685226ab4ba215891d)), closes [#3805](https://github.com/ngx-formly/ngx-formly/issues/3805)
+* **material:** ensure textarea is working with Angular v17 hydration ([e61880e](https://github.com/ngx-formly/ngx-formly/commit/e61880e43f7307d22dd8814e84ed1bd93e6b0664)), closes [#3824](https://github.com/ngx-formly/ngx-formly/issues/3824)
+* **primeng:** add missing appendTo property to select type ([c07e6d6](https://github.com/ngx-formly/ngx-formly/commit/c07e6d67389fc8cec8790b8f9e55f1c8e623e9ca)), closes [#3809](https://github.com/ngx-formly/ngx-formly/issues/3809)
+
 ### [6.2.2](https://github.com/ngx-formly/ngx-formly/compare/v6.2.1...v6.2.2) (2023-10-28)
 
 
