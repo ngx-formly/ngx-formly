@@ -169,6 +169,18 @@ export function clone(value: any): any {
     return new Map(value);
   }
 
+  if (value instanceof Uint8Array) {
+    return new Uint8Array(value);
+  }
+
+  if (value instanceof Uint16Array) {
+    return new Uint16Array(value);
+  }
+
+  if (value instanceof Uint32Array) {
+    return new Uint32Array(value);
+  }
+
   // https://github.com/moment/moment/blob/master/moment.js#L252
   if (value._isAMomentObject && isFunction(value.clone)) {
     return value.clone();

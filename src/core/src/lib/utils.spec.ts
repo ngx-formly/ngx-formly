@@ -206,6 +206,11 @@ describe('clone', () => {
     expect(clone(map)).not.toBe(map);
   });
 
+  it('Uint8Array', () => {
+    const array = new Uint8Array();
+    expect(clone(array)).not.toBe(array);
+  });
+
   it('Object with methods', () => {
     class Foo {
       constructor(public foo = '') {}
