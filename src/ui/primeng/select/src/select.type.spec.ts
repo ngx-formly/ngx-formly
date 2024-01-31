@@ -69,4 +69,31 @@ describe('ui-primeng: Select Type', () => {
     expect(field.formControl.value).toEqual(2);
     expect(changeSpy).toHaveBeenCalledOnce();
   });
+
+  it('should filter results on search', () => {
+    const { query, queryAll, fixture } = renderComponent({
+      key: 'name',
+      type: 'enum',
+      props: {
+        label: 'Select',
+        filter: true,
+        options: [
+          { value: 1, label: 'apple label' },
+          { value: 2, label: 'apple-pie label' },
+          { value: 3, label: 'pie label' },
+        ],
+      },
+    });
+
+    expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
+    const inputQuery = 'p-dropdown input.p-dropdown-filter';
+
+    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
+    expect(queryAll('p-dropdownItem')).toHaveLength(3);
+
+    query(inputQuery).triggerEventHandler('input', { target: { value: 'pie' } });
+    fixture.detectChanges();
+    expect(queryAll('p-dropdownItem')).toHaveLength(2);
+    expect(queryAll('p-dropdownItem>li')[0].nativeElement.textContent).toEqual('apple-pie label');
+  });
 });
