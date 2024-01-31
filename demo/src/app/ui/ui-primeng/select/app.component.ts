@@ -16,6 +16,7 @@ export class AppComponent {
       type: 'select',
       props: {
         label: 'Select',
+        filter: true,
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
