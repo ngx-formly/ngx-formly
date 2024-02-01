@@ -181,6 +181,11 @@ import { SharedModule } from '../shared';
                 loadChildren: () =>
                   import('./advanced/extending-field-types/config.module').then((m) => m.ConfigModule),
               },
+              {
+                path: 'field-expressions-observables',
+                loadChildren: () =>
+                  import('./advanced/field-expressions-observables/config.module').then((m) => m.ConfigModule),
+              },
             ],
           },
 
