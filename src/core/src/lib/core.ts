@@ -6,6 +6,7 @@ export {
   FormlyFieldProps,
   ConfigOption,
   FormlyExtension,
+  PresetOption,
 } from './models';
 export { FormlyField } from './components/formly.field';
 export { FormlyAttributes as ɵFormlyAttributes } from './templates/formly.attributes';
