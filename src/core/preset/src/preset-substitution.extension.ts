@@ -1,4 +1,4 @@
-import { FormlyConfig, FormlyExtension, FormlyFieldConfig, ɵreverseDeepMerge } from '@ngx-formly/core';
+import { FormlyConfig, FormlyExtension, FormlyFieldConfig, ɵreverseDeepMergeWithArrays } from '@ngx-formly/core';
 export class PresetSubstitutionExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
@@ -11,9 +11,9 @@ export class PresetSubstitutionExtension implements FormlyExtension {
 
     const { type: _, ...fieldConfigWithoutType } = field;
     if (preset) {
-      const merged = ɵreverseDeepMerge(
+      const merged = ɵreverseDeepMergeWithArrays(
         fieldConfigWithoutType,
-        'getConfiguration' in preset ? preset.getConfiguration() : preset,
+        'getConfiguration' in preset ? preset.getConfiguration(field) : preset,
       );
       Object.assign(field, merged);
     }
