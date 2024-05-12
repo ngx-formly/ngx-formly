@@ -65,8 +65,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
   private _build() {
     const fields = (this.field as FormlyFieldConfigCache).formControl._fields ?? [this.field];
-    fields.forEach((f) => this.options.build(f));
-    this.field.options.detectChanges(this.field);
+    fields.forEach((f) => (this.options as any).build(f));
     this.options.fieldChanges.next({
       field: this.field,
       value: getFieldValue(this.field),

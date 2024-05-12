@@ -28,7 +28,9 @@ export class FormlyFormBuilder {
 
     disableTreeValidityCall(field.form, () => {
       this._build(field);
-      if (!field.parent) {
+      // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
+      if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
+        // detect changes early to avoid reset value by hidden fields
         const options = (field as FormlyFieldConfigCache).options;
         options.checkExpressions?.(field, true);
         options._detectChanges?.(field);
