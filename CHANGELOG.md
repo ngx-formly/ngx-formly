@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.1](https://github.com/ngx-formly/ngx-formly/compare/v6.3.0...v6.3.1) (2024-05-12)
+
+
+### Bug Fixes
+
+* **json-schema:** ignore resetOnHide for array typ on build ([fc8d6d1](https://github.com/ngx-formly/ngx-formly/commit/fc8d6d1627f611702dffa20322238eb915df3670)), closes [#3910](https://github.com/ngx-formly/ngx-formly/issues/3910)
+* **primeng:** select filtering prop ([#3856](https://github.com/ngx-formly/ngx-formly/issues/3856)) ([67c6783](https://github.com/ngx-formly/ngx-formly/commit/67c6783214136236f772ad1a6da425797275bbba))
+
 ## [6.3.0](https://github.com/ngx-formly/ngx-formly/compare/v6.2.2...v6.3.0) (2024-01-28)
 
 
