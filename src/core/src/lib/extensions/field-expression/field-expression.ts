@@ -185,7 +185,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   private changeHideState(field: FormlyFieldConfigCache, hide: boolean, resetOnHide: boolean) {
     if (field.fieldGroup) {
       field.fieldGroup
-        .filter((f: FormlyFieldConfigCache) => !f._expressions.hide)
+        .filter((f: FormlyFieldConfigCache) => f && !f._expressions.hide)
         .forEach((f) => this.changeHideState(f, hide, resetOnHide));
     }
 

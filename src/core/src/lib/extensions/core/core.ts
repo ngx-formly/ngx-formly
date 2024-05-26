@@ -13,6 +13,7 @@ import {
   markFieldForCheck,
   hasKey,
   observe,
+  isHiddenField,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -155,20 +156,13 @@ export class CoreExtension implements FormlyExtension {
       this.config.getMergedField(field);
     }
 
-    if (hasKey(field) && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-      const isHidden = (f: FormlyFieldConfig) => f.hide || f.expressions?.hide || f.hideExpression;
-      let setDefaultValue = !field.resetOnHide || !isHidden(field);
-      if (!isHidden(field) && field.resetOnHide) {
-        let parent = field.parent;
-        while (parent && !isHidden(parent)) {
-          parent = parent.parent;
-        }
-        setDefaultValue = !parent || !isHidden(parent);
-      }
-
-      if (setDefaultValue) {
-        assignFieldValue(field, field.defaultValue);
-      }
+    if (
+      hasKey(field) &&
+      !isUndefined(field.defaultValue) &&
+      isUndefined(getFieldValue(field)) &&
+      !isHiddenField(field)
+    ) {
+      assignFieldValue(field, field.defaultValue);
     }
 
     field.wrappers = field.wrappers || [];
