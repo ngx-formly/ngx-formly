@@ -367,3 +367,17 @@ export function markFieldForCheck(field: FormlyFieldConfigCache) {
 export function isNoopNgZone(ngZone: NgZone) {
   return ngZone.constructor.name === 'NoopNgZone';
 }
+
+export function isHiddenField(field: FormlyFieldConfig) {
+  const isHidden = (f: FormlyFieldConfig) => f.hide || f.expressions?.hide || f.hideExpression;
+  let setDefaultValue = !field.resetOnHide || !isHidden(field);
+  if (!isHidden(field) && field.resetOnHide) {
+    let parent = field.parent;
+    while (parent && !isHidden(parent)) {
+      parent = parent.parent;
+    }
+    setDefaultValue = !parent || !isHidden(parent);
+  }
+
+  return !setDefaultValue;
+}
