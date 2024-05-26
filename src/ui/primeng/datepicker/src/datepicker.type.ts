@@ -53,4 +53,10 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig<DatepickerProps>> {}
+export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig<DatepickerProps>> {
+  override defaultOptions?: Partial<FieldTypeConfig<DatepickerProps>> = {
+    props: {
+      numberOfMonths: 1,
+    },
+  };
+}
