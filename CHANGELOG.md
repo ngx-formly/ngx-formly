@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.2](https://github.com/ngx-formly/ngx-formly/compare/v6.3.1...v6.3.2) (2024-05-26)
+
+
+### Bug Fixes
+
+* **core:** detect model changes for zoneless change detection ([#3922](https://github.com/ngx-formly/ngx-formly/issues/3922)) ([7db5ae2](https://github.com/ngx-formly/ngx-formly/commit/7db5ae2c91fbef6af42227bdb195dcf5adc6f423)), closes [#3921](https://github.com/ngx-formly/ngx-formly/issues/3921)
+* **core:** ensure defaultValues is set on new nested item added to array ([#3924](https://github.com/ngx-formly/ngx-formly/issues/3924)) ([41e95db](https://github.com/ngx-formly/ngx-formly/commit/41e95db783dd29a65e9a81b61bfc8ac6cf5dd068)), closes [#3891](https://github.com/ngx-formly/ngx-formly/issues/3891)
+* **core:** override initial defaultValue on build ([#3923](https://github.com/ngx-formly/ngx-formly/issues/3923)) ([b5fb32c](https://github.com/ngx-formly/ngx-formly/commit/b5fb32cb0ce09513a4a0bf5d63b62e29ea4f7dd5)), closes [#3916](https://github.com/ngx-formly/ngx-formly/issues/3916)
+* **primeng:** set default value for datepicker numberOfMonths ([#3925](https://github.com/ngx-formly/ngx-formly/issues/3925)) ([40dd9bb](https://github.com/ngx-formly/ngx-formly/commit/40dd9bb9092f71f5ba9e14e9abcff780a8c2da36)), closes [#3897](https://github.com/ngx-formly/ngx-formly/issues/3897)
+
 ### [6.3.1](https://github.com/ngx-formly/ngx-formly/compare/v6.3.0...v6.3.1) (2024-05-12)
 
 
