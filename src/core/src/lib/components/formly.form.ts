@@ -16,10 +16,11 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { clone, hasKey } from '../utils';
+import { clone, hasKey, isNoopNgZone } from '../utils';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
+import { of } from 'rxjs';
 
 /**
  * The `<form-form>` component is the main container of the form,
@@ -122,7 +123,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     const sub = this.field.options.fieldChanges
       .pipe(
         filter(({ field, type }) => hasKey(field) && type === 'valueChanges'),
-        switchMap(() => this.ngZone.onStable.asObservable().pipe(take(1))),
+        switchMap(() => (isNoopNgZone(this.ngZone) ? of(null) : this.ngZone.onStable.asObservable().pipe(take(1)))),
       )
       .subscribe(() =>
         this.ngZone.runGuarded(() => {
