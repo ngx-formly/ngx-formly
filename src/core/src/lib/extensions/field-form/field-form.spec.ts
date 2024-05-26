@@ -94,6 +94,16 @@ describe('FieldFormExtension', () => {
       expect(field.formControl.validator).not.toBeNull();
     });
 
+    it('should update initial defaultValue on build', () => {
+      const field = buildField({
+        key: 'name',
+        defaultValue: 6,
+        form: new FormGroup({ name: new FormControl(5, { initialValueIsDefault: true }) }),
+      });
+
+      expect((field.formControl as FormControl).defaultValue).toEqual(6);
+    });
+
     it('should use the same formcontrol for fields that use the same key', () => {
       const {
         fieldGroup: [f1, f2],

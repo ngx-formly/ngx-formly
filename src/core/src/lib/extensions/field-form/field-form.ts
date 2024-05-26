@@ -70,6 +70,11 @@ export class FieldFormExtension implements FormlyExtension {
           { ...controlOptions, initialValueIsDefault: true },
         );
       }
+    } else {
+      if (control instanceof FormControl) {
+        const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
+        (control as any).defaultValue = value;
+      }
     }
 
     registerControl(field, control);
