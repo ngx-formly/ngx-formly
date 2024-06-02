@@ -55,6 +55,23 @@ function isConst(schema: JSONSchema7Definition) {
   return typeof schema === 'object' && (schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1));
 }
 
+function toNumber(value: string | number | null) {
+  if (value === '' || value === undefined) {
+    return undefined;
+  }
+
+  if (value === null) {
+    return null;
+  }
+
+  if (typeof value === 'number') {
+    return value;
+  }
+
+  const val = parseFloat(value);
+  return !isNaN(val) ? val : value;
+}
+
 function totalMatchedFields(field: FormlyFieldConfig): number {
   if (!field.fieldGroup) {
     return hasKey(field) && getFieldValue(field) !== undefined ? 1 : 0;
@@ -193,7 +210,27 @@ export class FormlyJsonschema {
     switch (field.type) {
       case 'number':
       case 'integer': {
-        field.parsers = [(v: string | number) => (isEmpty(v) ? v : Number(v))];
+        field.parsers = [
+          (v: string | number) => {
+            v = toNumber(v);
+
+            if (
+              v === null &&
+              typeof document !== 'undefined' &&
+              field.id &&
+              !document.querySelector<HTMLInputElement>(`#${field.id}`)?.validity?.badInput
+            ) {
+              v = undefined;
+            }
+
+            if (v !== field.formControl.value) {
+              field.formControl.setValue(v, { emitModelToViewChange: false });
+            }
+
+            return v;
+          },
+        ];
+
         if (schema.hasOwnProperty('minimum')) {
           field.props.min = schema.minimum;
         }
