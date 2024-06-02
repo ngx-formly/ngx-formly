@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.3](https://github.com/ngx-formly/ngx-formly/compare/v6.3.2...v6.3.3) (2024-06-02)
+
+
+### Bug Fixes
+
+* **core:** testing for NoopNgZone working in prod builds ([#3929](https://github.com/ngx-formly/ngx-formly/issues/3929)) ([b5f3bb0](https://github.com/ngx-formly/ngx-formly/commit/b5f3bb0913b5a3e25b2a96e03f653c00fb38f98a)), closes [#3928](https://github.com/ngx-formly/ngx-formly/issues/3928)
+* **ionic:** add missing input label for type: 'number' ([#3932](https://github.com/ngx-formly/ngx-formly/issues/3932)) ([6f9528c](https://github.com/ngx-formly/ngx-formly/commit/6f9528c651bc519a602ef07db8623b72e7c40a91)), closes [#3859](https://github.com/ngx-formly/ngx-formly/issues/3859)
+* **json-schema:** fix optional type number validation ([#3933](https://github.com/ngx-formly/ngx-formly/issues/3933)) ([41e20e0](https://github.com/ngx-formly/ngx-formly/commit/41e20e08f03de261d6aa26bfddf7885b77484591)), closes [#3813](https://github.com/ngx-formly/ngx-formly/issues/3813) [#3834](https://github.com/ngx-formly/ngx-formly/issues/3834)
+
 ### [6.3.2](https://github.com/ngx-formly/ngx-formly/compare/v6.3.1...v6.3.2) (2024-05-26)
 
 
