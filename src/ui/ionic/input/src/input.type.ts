@@ -19,7 +19,12 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       [ionFormlyAttributes]="field"
     ></ion-input>
     <ng-template #numberTmp>
-      <ion-input type="number" [formControl]="formControl" [ionFormlyAttributes]="field"></ion-input>
+      <ion-input
+        type="number"
+        [label]="props.label"
+        [formControl]="formControl"
+        [ionFormlyAttributes]="field"
+      ></ion-input>
     </ng-template>
   `,
   styles: [':host { display: inherit; }'],
