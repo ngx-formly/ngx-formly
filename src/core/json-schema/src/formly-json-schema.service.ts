@@ -273,6 +273,10 @@ export class FormlyJsonschema {
         break;
       }
       case 'string': {
+        if (!field.props.required && schema.minLength === 1) {
+          field.props.required = true;
+        }
+
         field.parsers = [
           (v, f: FormlyFieldConfig) => {
             if (types.indexOf('null') !== -1) {
@@ -450,8 +454,6 @@ export class FormlyJsonschema {
               if (isMultiSchema && !hasKey(f)) {
                 f.key = null;
               }
-
-              f.props.required = true;
 
               return f;
             }
