@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.4](https://github.com/ngx-formly/ngx-formly/compare/v6.3.3...v6.3.4) (2024-06-09)
+
+
+### Bug Fixes
+
+* **core:** ensure parser is called on each model update ([#3940](https://github.com/ngx-formly/ngx-formly/issues/3940)) ([3fcdb07](https://github.com/ngx-formly/ngx-formly/commit/3fcdb0706a9857a62561290b8d6a2650e607473d)), closes [#3901](https://github.com/ngx-formly/ngx-formly/issues/3901)
+* **json-schema:** fix type number validation error ([#3938](https://github.com/ngx-formly/ngx-formly/issues/3938)) ([bdd1299](https://github.com/ngx-formly/ngx-formly/commit/bdd1299923a83dc138c62769799cde36e0942543)), closes [#3937](https://github.com/ngx-formly/ngx-formly/issues/3937)
+* **json-schema:** unset required pros to array type ([#3939](https://github.com/ngx-formly/ngx-formly/issues/3939)) ([32d9fb3](https://github.com/ngx-formly/ngx-formly/commit/32d9fb3d4047fc5d5775f851bfefb0c054bf4960)), closes [#3914](https://github.com/ngx-formly/ngx-formly/issues/3914)
+
 ### [6.3.3](https://github.com/ngx-formly/ngx-formly/compare/v6.3.2...v6.3.3) (2024-06-02)
 
 
