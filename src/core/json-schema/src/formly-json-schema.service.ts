@@ -211,25 +211,26 @@ export class FormlyJsonschema {
       case 'number':
       case 'integer': {
         field.parsers = [
-          (v: string | number) => {
+          (v: string | number, f: FormlyFieldConfig) => {
             v = toNumber(v);
 
-            if (
-              v === null &&
-              typeof document !== 'undefined' &&
-              field.id &&
-              !document.querySelector<HTMLInputElement>(`#${field.id}`)?.validity?.badInput
-            ) {
-              v = undefined;
-            }
+            if (v === null && f) {
+              const input =
+                typeof document !== 'undefined' && f.id
+                  ? document.querySelector<HTMLInputElement>(`#${f.id}`)
+                  : undefined;
+              if (input && !input.validity.badInput) {
+                v = undefined;
+              }
 
-            if (v !== field.formControl.value) {
-              field.formControl.setValue(v, { emitModelToViewChange: false });
+              if (v !== f.formControl.value) {
+                f.formControl.setValue(v, { emitModelToViewChange: false });
+              }
             }
 
             return v;
           },
-        ];
+        ] as ((value: any, f?: FormlyFieldConfig) => any)[];
 
         if (schema.hasOwnProperty('minimum')) {
           field.props.min = schema.minimum;
@@ -273,16 +274,16 @@ export class FormlyJsonschema {
       }
       case 'string': {
         field.parsers = [
-          (v) => {
+          (v, f: FormlyFieldConfig) => {
             if (types.indexOf('null') !== -1) {
               v = isEmpty(v) ? null : v;
-            } else if (!field.props.required) {
+            } else if (f && !f.props.required) {
               v = v === '' ? undefined : v;
             }
 
             return v;
           },
-        ];
+        ] as ((value: any, f?: FormlyFieldConfig) => any)[];
 
         ['minLength', 'maxLength', 'pattern'].forEach((prop) => {
           if (schema.hasOwnProperty(prop)) {
