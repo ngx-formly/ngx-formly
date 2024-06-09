@@ -1999,6 +1999,31 @@ describe('Service: FormlyJsonschema', () => {
       expect(field).toBeDefined();
     });
   });
+
+  describe('FormlyJsonSchemaOptions map data', () => {
+    it('should set undefined when number type input is empty', () => {
+      const { field } = renderComponent({
+        schema: { type: 'integer' },
+      });
+
+      const parser = field.parsers[0] as any;
+
+      expect(parser(null, field)).toEqual(undefined);
+      expect(parser(null)).toEqual(null);
+    });
+
+    it('should set non required string to undefined when is empty', () => {
+      const { field } = renderComponent({
+        schema: { type: 'string' },
+      });
+
+      const parser = field.parsers[0] as any;
+
+      expect(parser('', field)).toEqual(undefined);
+      field.props.required = true;
+      expect(parser('', field)).toEqual('');
+    });
+  });
 });
 
 @Component({

@@ -336,7 +336,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           control.patchValue(value, { emitEvent: false, onlySelf: true });
         }
 
-        field.parsers?.forEach((parserFn) => (value = parserFn(value)));
+        field.parsers?.forEach((parserFn) => (value = (parserFn as any)(value, field)));
         if (value !== field.formControl.value) {
           field.formControl.setValue(value);
           return;
