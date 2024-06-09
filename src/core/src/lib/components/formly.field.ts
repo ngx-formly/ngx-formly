@@ -33,7 +33,7 @@ import {
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
 /**
@@ -312,6 +312,14 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     if (field.formControl && !field.fieldGroup) {
       const control = field.formControl;
       let valueChanges = control.valueChanges.pipe(
+        map((value) => {
+          field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
+          if (!Object.is(value, field.formControl.value)) {
+            field.formControl.setValue(value);
+          }
+
+          return value;
+        }),
         distinctUntilChanged((x, y) => {
           if (x !== y || Array.isArray(x) || isObject(x)) {
             return false;
@@ -334,12 +342,6 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
         // workaround for https://github.com/angular/angular/issues/13792
         if (control._fields?.length > 1 && control instanceof FormControl) {
           control.patchValue(value, { emitEvent: false, onlySelf: true });
-        }
-
-        field.parsers?.forEach((parserFn) => (value = (parserFn as any)(value, field)));
-        if (value !== field.formControl.value) {
-          field.formControl.setValue(value);
-          return;
         }
 
         if (hasKey(field)) {

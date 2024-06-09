@@ -2,7 +2,7 @@ import { FormlyJsonschema } from './formly-json-schema.service';
 import { JSONSchema7 } from 'json-schema';
 import { FormlyFieldConfig, FormlyFieldProps, FieldArrayType } from '@ngx-formly/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { createComponent, FormlyInputModule } from '@ngx-formly/core/testing';
+import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { Component } from '@angular/core';
 
 const renderComponent = ({ schema, model }: { schema: JSONSchema7; model?: any }) => {
@@ -2002,14 +2002,18 @@ describe('Service: FormlyJsonschema', () => {
 
   describe('FormlyJsonSchemaOptions map data', () => {
     it('should set undefined when number type input is empty', () => {
-      const { field } = renderComponent({
+      const { field, query } = renderComponent({
         schema: { type: 'integer' },
       });
 
-      const parser = field.parsers[0] as any;
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: 'eeee' }));
+      expect(field.formControl.value).toEqual('eeee');
 
-      expect(parser(null, field)).toEqual(undefined);
-      expect(parser(null)).toEqual(null);
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '' }));
+      expect(field.formControl.value).toEqual(undefined);
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '2e3' }));
+      expect(field.formControl.value).toEqual(2000);
     });
 
     it('should set non required string to undefined when is empty', () => {
