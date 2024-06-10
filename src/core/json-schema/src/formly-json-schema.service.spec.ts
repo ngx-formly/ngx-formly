@@ -874,6 +874,40 @@ describe('Service: FormlyJsonschema', () => {
         });
       });
 
+      it('should keep schema properties with definition', () => {
+        const schema: JSONSchema7 = {
+          definitions: {
+            address: {
+              properties: {
+                address1: { type: 'string', title: 'Address 1' },
+              },
+            },
+          },
+          type: 'object',
+          properties: {
+            billing_address: {
+              properties: {
+                customAddress: { type: 'string', title: 'Custom address' },
+              },
+              $ref: '#/definitions/address',
+            },
+          },
+        };
+
+        const config = formlyJsonschema.toFieldConfig(schema);
+
+        expect(config.fieldGroup[0]).toEqual({
+          key: 'billing_address',
+          type: 'object',
+          defaultValue: undefined,
+          fieldGroup: expect.any(Array),
+          props: emmptyFieldProps,
+          templateOptions: emmptyFieldProps,
+          validators: expectTypeValidator(['object']),
+        });
+        expect(config.fieldGroup[0].fieldGroup.map((f) => f.key)).toEqual(['customAddress', 'address1']);
+      });
+
       it('should use the locally defined annotations', () => {
         const schema: JSONSchema7 = {
           definitions: {
