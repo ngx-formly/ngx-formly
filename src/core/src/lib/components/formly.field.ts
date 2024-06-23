@@ -32,9 +32,10 @@ import {
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
-import { isObservable } from 'rxjs';
+import { Subscription, isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
+import { VERSION } from '@angular/common';
 
 /**
  * The `<formly-field>` component is used to render the UI widget (layout + type) of a given `field`.
@@ -49,7 +50,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
   @Input() field: FormlyFieldConfig;
   @ViewChild('container', { read: ViewContainerRef, static: true }) viewContainerRef!: ViewContainerRef;
 
-  private hostObservers: IObserver<any>[] = [];
+  private hostObservers: (IObserver<any> | Subscription)[] = [];
   private componentRefs: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[] = [];
   private hooksObservers: Function[] = [];
   private detectFieldBuild = false;
@@ -239,14 +240,25 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           this.elementRef && this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
         }
       }),
-      ...['touched', 'pristine', 'status'].map((prop) =>
-        observe<string>(
-          this.field,
-          ['formControl', prop],
-          ({ firstChange }) => !firstChange && markFieldForCheck(this.field),
-        ),
-      ),
     ];
+
+    const isSignalRequired = +VERSION.major >= 18 && +VERSION.minor >= 1;
+    if (!isSignalRequired) {
+      ['touched', 'pristine', 'status'].forEach((prop) =>
+        this.hostObservers.push(
+          observe<string>(
+            this.field,
+            ['formControl', prop],
+            ({ firstChange }) => !firstChange && markFieldForCheck(this.field),
+          ),
+        ),
+      );
+    } else if (this.field.formControl) {
+      const statusChanges = this.field.formControl.statusChanges
+        .pipe(distinctUntilChanged())
+        .subscribe(() => markFieldForCheck(this.field));
+      this.hostObservers.push(statusChanges);
+    }
   }
 
   private resetRefs(field: FormlyFieldConfigCache) {
