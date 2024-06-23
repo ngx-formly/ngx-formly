@@ -109,7 +109,7 @@ export class FormlyJsonschema {
     return this._toFieldConfig(schema, { schema, ...(options || {}) });
   }
 
-  private _toFieldConfig(schema: FormlyJSONSchema7, { key, ...options }: IOptions): FormlyFieldConfig {
+  private _toFieldConfig(schema: FormlyJSONSchema7, { key, isOptional, ...options }: IOptions): FormlyFieldConfig {
     schema = this.resolveSchema(schema, options);
     const types = this.guessSchemaType(schema);
 
@@ -136,35 +136,29 @@ export class FormlyJsonschema {
       field.resetOnHide = true;
     }
 
-    if (key && options.strict) {
-      this.addValidator(field, 'type', (c: AbstractControl, f: FormlyFieldConfig) => {
-        const value = getFieldValue(f);
-        if (value != null) {
-          switch (field.type) {
-            case 'string': {
-              return typeof value === 'string';
-            }
-            case 'integer': {
-              return isInteger(value);
-            }
-            case 'number': {
-              return typeof value === 'number';
-            }
-            case 'object': {
-              return isObject(value);
-            }
-            case 'array': {
-              return Array.isArray(value);
-            }
-          }
-        }
-
-        return true;
-      });
-    }
-
     if (options.shareFormControl === false) {
       field.shareFormControl = false;
+    }
+
+    if (field.defaultValue === undefined && types.length === 1 && isOptional === false) {
+      switch (types[0]) {
+        case 'null': {
+          field.defaultValue = null;
+          break;
+        }
+        case 'string': {
+          field.defaultValue = '';
+          break;
+        }
+        case 'object': {
+          field.defaultValue = {};
+          break;
+        }
+        case 'array': {
+          field.defaultValue = schema.minItems > 0 ? Array.from(new Array(schema.minItems)) : [];
+          break;
+        }
+      }
     }
 
     if (options.ignoreDefault) {
@@ -273,10 +267,6 @@ export class FormlyJsonschema {
         break;
       }
       case 'string': {
-        if (!field.props.required && schema.minLength === 1) {
-          field.props.required = true;
-        }
-
         field.parsers = [
           (v, f: FormlyFieldConfig) => {
             if (types.indexOf('null') !== -1) {
@@ -307,7 +297,7 @@ export class FormlyJsonschema {
           const f = this._toFieldConfig(<JSONSchema7>schema.properties[property], {
             ...options,
             key: property,
-            isOptional: options.isOptional || !isRequired,
+            isOptional: isOptional || !isRequired,
           });
 
           field.fieldGroup.push(f);
@@ -386,8 +376,7 @@ export class FormlyJsonschema {
             const value = getFieldValue(f);
             return isEmpty(value) || value.length >= schema.minItems;
           });
-
-          if (!options.isOptional && schema.minItems > 0 && field.defaultValue === undefined) {
+          if (!isOptional && schema.minItems > 0 && field.defaultValue === undefined) {
             field.defaultValue = Array.from(new Array(schema.minItems));
           }
         }
@@ -448,7 +437,9 @@ export class FormlyJsonschema {
               // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
               const f = this._toFieldConfig(
                 items,
-                isMultiSchema ? { ...options, key: `${root.fieldGroup.length}` } : options,
+                isMultiSchema
+                  ? { ...options, key: `${root.fieldGroup.length}`, isOptional: false }
+                  : { ...options, isOptional: false },
               );
 
               if (isMultiSchema && !hasKey(f)) {
@@ -787,7 +778,6 @@ export class FormlyJsonschema {
             resetOnHide: true,
             ignoreDefault: true,
             map: null,
-            strict: true,
           }),
         ],
         model,

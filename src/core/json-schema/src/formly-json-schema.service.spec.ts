@@ -980,7 +980,7 @@ describe('Service: FormlyJsonschema', () => {
 
         const expectedConfig: FormlyFieldConfig = {
           type: 'array',
-          defaultValue: undefined,
+          defaultValue: [],
           props: { ...emmptyFieldProps },
           templateOptions: { ...emmptyFieldProps },
           fieldArray: expect.any(Function),
@@ -2027,24 +2027,17 @@ describe('Service: FormlyJsonschema', () => {
       field.props.required = true;
       expect(parser('', field)).toEqual('');
     });
-    it('should set non required string to undefined when is empty', () => {
+
+    it('should set default value for array type items', () => {
       const { field } = renderComponent({
-        schema: { type: 'string' },
+        model: [undefined],
+        schema: {
+          type: 'array',
+          items: { type: 'object' },
+        },
       });
 
-      const parser = field.parsers[0] as any;
-
-      expect(parser('', field)).toEqual(undefined);
-      field.props.required = true;
-      expect(parser('', field)).toEqual('');
-    });
-
-    it('should set required string when minLength is set', () => {
-      const { field } = renderComponent({
-        schema: { type: 'string', minLength: 1 },
-      });
-
-      expect(field.props.required).toBeTrue();
+      expect(field.fieldGroup[0].defaultValue).toEqual({});
     });
   });
 });
