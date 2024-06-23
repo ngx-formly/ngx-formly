@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.5](https://github.com/ngx-formly/ngx-formly/compare/v6.3.4...v6.3.5) (2024-06-23)
+
+
+### Bug Fixes
+
+* **core:** ensure validation is working in Angular v18.1 ([#3951](https://github.com/ngx-formly/ngx-formly/issues/3951)) ([bef67d3](https://github.com/ngx-formly/ngx-formly/commit/bef67d3ce2ee2bbe38339ecd4dfa63e63fda5025)), closes [#3948](https://github.com/ngx-formly/ngx-formly/issues/3948)
+* **json-schema:** apply default value for array items ([#3950](https://github.com/ngx-formly/ngx-formly/issues/3950)) ([2ebec98](https://github.com/ngx-formly/ngx-formly/commit/2ebec986bde81b84d451e74199f5ff8ed61f7117)), closes [#3914](https://github.com/ngx-formly/ngx-formly/issues/3914)
+
 ### [6.3.4](https://github.com/ngx-formly/ngx-formly/compare/v6.3.3...v6.3.4) (2024-06-09)
 
 
