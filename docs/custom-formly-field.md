@@ -41,7 +41,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
   ### 2. Register the custom type in `NgModule` declaration:
 
   ```typescript
-  import { InputFieldType } from './intput-field.type';
+  import { InputFieldType } from './input-field.type';
 
   @NgModule({
     declarations: [InputFieldType],
@@ -54,7 +54,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
   > Note: This step is required only for JSON powered forms (see "Method-2" below).
 
   ```typescript
-  import { InputFieldType } from './intput-field.type';
+  import { InputFieldType } from './input-field.type';
 
   @NgModule({
     imports: [
@@ -78,7 +78,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
   * Method 1: Pass the `InputFieldType` component to the field config.
 
     ```typescript
-    import { InputFieldType } from './intput-field.type';
+    import { InputFieldType } from './input-field.type';
 
     export class AppComponent {
       fields: FormlyFieldConfig[] = [
