@@ -5,7 +5,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { VERSION } from '@angular/cdk';
-
 import { MatCommonModule, MatRippleModule } from '@angular/material/core';
 import { FormlyFieldSlider as LegacyFormlyFieldSlider } from './slider.type';
 import { FormlyFieldMDCSlider } from './slider-mdc.type';

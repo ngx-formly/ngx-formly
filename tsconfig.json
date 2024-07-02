@@ -3,10 +3,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    // Remaing option for full strict mode
     "strictNullChecks": false,
     "noPropertyAccessFromIndexSignature": false,
-
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
@@ -20,14 +18,15 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "target": "es2017",
-    "module": "es2020",
-    "lib": ["es2020", "dom"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom"],
     "paths": {
       "@ngx-formly/*": ["src/*/src/private_api", "src/*/src/public_api", "src/ui/*/src/public_api"],
       "@assets/*": ["demo/src/assets/*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "useDefineForClassFields": false
   },
   "exclude": [
     "demo/src/assets/stackblitz/**/*.ts",

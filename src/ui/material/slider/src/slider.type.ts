@@ -1,16 +1,16 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MatSlider, MatSliderChange } from '@angular/material/slider';
+import { MatSlider } from '@angular/material/slider';
 
 interface SliderProps extends FormlyFieldProps {
-  displayWith?: (value: number) => string | number;
+  displayWith?: (value: number) => string;
   invert?: boolean;
   tickInterval?: number;
   valueText?: string;
   vertical?: boolean;
-  input?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
-  change?: (field: FormlyFieldConfig<SliderProps>, $event: MatSliderChange) => void;
+  input?: (field: FormlyFieldConfig<SliderProps>, $event: Event) => void;
+  change?: (field: FormlyFieldConfig<SliderProps>, $event: Event) => void;
 
   /** @deprecated Use `discrete` instead. */
   thumbLabel?: boolean;
@@ -55,12 +55,12 @@ export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
       hideFieldUnderline: true,
       floatLabel: 'always' as const,
       thumbLabel: false,
-      displayWith: (value: number) => value,
+      displayWith: (value: number) => value.toString(),
     },
   };
 
   override onContainerClick(event: MouseEvent): void {
-    this.slider.focus?.();
+    // this.slider.focus?.();
     super.onContainerClick(event);
   }
 }

@@ -11,7 +11,7 @@ interface DatepickerProps extends FormlyFieldProps {
   showButtonBar?: boolean;
   showOtherMonths?: boolean;
   selectOtherMonths?: boolean;
-  selectionMode?: string;
+  selectionMode?: 'single' | 'multiple' | 'range';
   numberOfMonths?: number;
   inline?: boolean;
   readonlyInput?: boolean;

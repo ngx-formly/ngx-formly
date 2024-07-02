@@ -26,7 +26,7 @@ export class AppComponent {
         text: 'JSON Only',
         btnType: 'info',
         onClick: () => {
-          this.form.get('someInput').setValue('clicked!');
+          this.form.get('someInput');
         },
         description: 'These can have labels and stuff too if you want....',
       },

@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { MatMenuModule } from '@angular/material/menu';
-
 import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 import { filter, tap } from 'rxjs/operators';
