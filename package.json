@@ -16,7 +16,7 @@
     "build": "ts-node --dir build build.ts",
     "release": "standard-version",
     "publish": "ts-node --dir build publish.ts",
-    "start": "ng serve app --port 4100 --open --hmr",
+    "start": "ng serve app --port 4200",
     "demo": "npm run start",
     "test": "ngcc --properties main && jest",
     "test:watch": "ngcc --properties main && jest --watch",
@@ -25,8 +25,7 @@
     "dev:ssr": "ng run ssr:serve-ssr",
     "serve:ssr": "node integration/ssr/dist/server/main.js",
     "build:ssr": "ng build ssr --configuration production && ng run ssr:server:production",
-    "prerender": "ng run ssr:prerender",
-    "prepare": "husky install"
+    "prerender": "ng run ssr:prerender"
   },
   "keywords": [
     "angular",
@@ -124,7 +123,6 @@
     "highlight-loader": "^0.7.4",
     "highlight.js": "^11.9.0",
     "html-loader": "^4.2.0",
-    "husky": "^8.0.3",
     "jest": "^29.7.0",
     "jest-extended": "^4.0.2",
     "jest-preset-angular": "^14.1.1",
