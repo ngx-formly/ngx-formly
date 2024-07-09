@@ -366,7 +366,7 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.minItems).toBe(numSchema.minItems);
 
-        const minItemsValidator = (model: any) => config.validators.minItems(new FormControl(), { model });
+        const minItemsValidator = (model: any) => config.validators.minItems(new FormControl(model), { model });
         expect(minItemsValidator(undefined)).toBeTrue();
         expect(minItemsValidator([1])).toBeFalse();
         expect(minItemsValidator([])).toBeFalse();
@@ -405,7 +405,7 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.maxItems).toBe(numSchema.maxItems);
 
-        const maxItemsValidator = (model: any) => config.validators.maxItems(new FormControl(), { model });
+        const maxItemsValidator = (model: any) => config.validators.maxItems(new FormControl(model), { model });
         expect(maxItemsValidator(undefined)).toBeTrue();
         expect(maxItemsValidator([1, 2, 3])).toBeFalse();
         expect(maxItemsValidator([1, 2])).toBeTrue();
@@ -420,7 +420,7 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.uniqueItems).toBeTrue();
 
-        const uniqueItemsValidator = (model: any) => config.validators.uniqueItems(new FormControl(), { model });
+        const uniqueItemsValidator = (model: any) => config.validators.uniqueItems(new FormControl(model), { model });
         expect(uniqueItemsValidator(undefined)).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 3])).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 2])).toBeFalse();
