@@ -48,6 +48,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     }
 
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
+    this.markFieldForCheck(this.field.fieldGroup[i]);
     this._build();
     markAsDirty && this.formControl.markAsDirty();
   }
@@ -85,6 +86,17 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
     for (let i = 0; i < f.fieldGroup.length; i++) {
       this.updateArrayElementKey(f.fieldGroup[i], newKey);
+    }
+  }
+
+  private markFieldForCheck(f: FormlyFieldConfig) {
+    if (!f) {
+      return;
+    }
+
+    f.fieldGroup?.forEach((c: any) => this.markFieldForCheck(c));
+    if (f.hide === false) {
+      (this.options as any)._hiddenFieldsForCheck.push(f);
     }
   }
 }
