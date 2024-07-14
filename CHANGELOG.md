@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.6](https://github.com/ngx-formly/ngx-formly/compare/v6.3.5...v6.3.6) (2024-07-14)
+
+
+### Bug Fixes
+
+* **core:** set default value when insert at custom index for fieldArray ([9080a92](https://github.com/ngx-formly/ngx-formly/commit/9080a92d0eafdf7b64831c0f2981586f3382be68)), closes [#3957](https://github.com/ngx-formly/ngx-formly/issues/3957)
+* **json-schema:** rely on value from form control for validation ([f4663a9](https://github.com/ngx-formly/ngx-formly/commit/f4663a9678786b8d3e593b53c577432b3e057c80)), closes [#3958](https://github.com/ngx-formly/ngx-formly/issues/3958)
+
 ### [6.3.5](https://github.com/ngx-formly/ngx-formly/compare/v6.3.4...v6.3.5) (2024-06-23)
 
 
