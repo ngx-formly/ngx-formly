@@ -99,7 +99,11 @@
           { "path": "/examples/advanced/multi-step-form", "label": "Multi-Step Form" },
           { "path": "/examples/advanced/tabs", "label": "Tabs Form" },
           { "path": "/examples/advanced/grid-integration", "label": "ag-grid Integration" },
-          { "path": "/examples/advanced/extending-field-types", "label": "Extending Field Types" }
+          { "path": "/examples/advanced/extending-field-types", "label": "Extending Field Types" },
+          {
+            "path": "/examples/advanced/field-expressions-observables",
+            "label": "Expression Properties using Observables"
+          }
         ]
       },
       {
