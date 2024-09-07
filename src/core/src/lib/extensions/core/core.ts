@@ -14,6 +14,7 @@ import {
   hasKey,
   observe,
   isHiddenField,
+  isSignalRequired,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -112,7 +113,9 @@ export class CoreExtension implements FormlyExtension {
         Object.assign(field.model, model || {});
       }
 
-      observe(options, ['parentForm', 'submitted']).setValue(false, false);
+      if (!isSignalRequired()) {
+        observe(options, ['parentForm', 'submitted']).setValue(false, false);
+      }
       options.build(field);
       field.form.reset(field.model);
     };

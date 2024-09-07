@@ -16,11 +16,11 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { clone, hasKey, isNoopNgZone } from '../utils';
+import { clone, hasKey, isNoopNgZone, isSignalRequired } from '../utils';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
-import { of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 /**
  * The `<form-form>` component is the main container of the form,
@@ -120,7 +120,18 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private valueChanges() {
     this.valueChangesUnsubscribe();
 
-    const sub = this.field.options.fieldChanges
+    let formEvents: Subscription | null = null;
+    if (isSignalRequired()) {
+      let submitted = this.options?.parentForm?.submitted;
+      formEvents = (this.form as any).events.subscribe(() => {
+        if (submitted !== this.options?.parentForm?.submitted) {
+          this.options.detectChanges(this.field);
+          submitted = this.options?.parentForm?.submitted;
+        }
+      });
+    }
+
+    const valueChanges = this.field.options.fieldChanges
       .pipe(
         filter(({ field, type }) => hasKey(field) && type === 'valueChanges'),
         switchMap(() => (isNoopNgZone(this.ngZone) ? of(null) : this.ngZone.onStable.asObservable().pipe(take(1)))),
@@ -134,7 +145,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         }),
       );
 
-    return () => sub.unsubscribe();
+    return () => {
+      formEvents?.unsubscribe();
+      valueChanges.unsubscribe();
+    };
   }
 
   private setField(field: FormlyFieldConfigCache) {

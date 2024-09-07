@@ -2,7 +2,7 @@ import { Injectable, Injector, Optional, ViewContainerRef } from '@angular/core'
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField } from '../utils';
+import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField, isSignalRequired } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -86,11 +86,14 @@ export class FormlyFormBuilder {
 
     if (!options.parentForm && this.parentForm) {
       defineHiddenProp(options, 'parentForm', this.parentForm);
-      observe(options, ['parentForm', 'submitted'], ({ firstChange }) => {
-        if (!firstChange) {
-          options.detectChanges(field);
-        }
-      });
+
+      if (!isSignalRequired()) {
+        observe(options, ['parentForm', 'submitted'], ({ firstChange }) => {
+          if (!firstChange) {
+            options.detectChanges(field);
+          }
+        });
+      }
     }
   }
 }

@@ -29,10 +29,11 @@ import {
   markFieldForCheck,
   hasKey,
   IObserver,
+  isSignalRequired,
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
-import { Subscription, isObservable } from 'rxjs';
+import { Observable, Subscription, isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 import { VERSION } from '@angular/common';
@@ -242,8 +243,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       }),
     ];
 
-    const isSignalRequired = +VERSION.major >= 18 && +VERSION.minor >= 1;
-    if (!isSignalRequired) {
+    if (!isSignalRequired()) {
       ['touched', 'pristine', 'status'].forEach((prop) =>
         this.hostObservers.push(
           observe<string>(
@@ -254,10 +254,10 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
         ),
       );
     } else if (this.field.formControl) {
-      const statusChanges = this.field.formControl.statusChanges
-        .pipe(distinctUntilChanged())
-        .subscribe(() => markFieldForCheck(this.field));
-      this.hostObservers.push(statusChanges);
+      const events = ((this.field.formControl as any).events as Observable<any>).subscribe(() =>
+        markFieldForCheck(this.field),
+      );
+      this.hostObservers.push(events);
     }
   }
 
