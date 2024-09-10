@@ -2,13 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.7](https://github.com/ngx-formly/ngx-formly/compare/v6.3.5...v6.3.7) (2024-09-10)
+
+
+### Bug Fixes
+
+* **core:** detect form status changes in Angular v18.1 ([84e2150](https://github.com/ngx-formly/ngx-formly/commit/84e2150b3ce6acd59c81f5dfa1012cab829376bd)), closes [#3972](https://github.com/ngx-formly/ngx-formly/issues/3972)
+* **json-schema:** ensure fieldGroup is defined for multischema ([bf41932](https://github.com/ngx-formly/ngx-formly/commit/bf419324fb60d05d318ed9e712017f9ceaee8b72)), closes [#3975](https://github.com/ngx-formly/ngx-formly/issues/3975)
+
 ### [6.3.6](https://github.com/ngx-formly/ngx-formly/compare/v6.3.5...v6.3.6) (2024-07-14)
 
 
 ### Bug Fixes
 
-* **core:** set default value when insert at custom index for fieldArray ([9080a92](https://github.com/ngx-formly/ngx-formly/commit/9080a92d0eafdf7b64831c0f2981586f3382be68)), closes [#3957](https://github.com/ngx-formly/ngx-formly/issues/3957)
-* **json-schema:** rely on value from form control for validation ([f4663a9](https://github.com/ngx-formly/ngx-formly/commit/f4663a9678786b8d3e593b53c577432b3e057c80)), closes [#3958](https://github.com/ngx-formly/ngx-formly/issues/3958)
+* **core:** set default value when insert at custom index for fieldArray ([3461ea5](https://github.com/ngx-formly/ngx-formly/commit/3461ea5724e184bd9d4b0ff80b79ca9f8be2f8b6)), closes [#3957](https://github.com/ngx-formly/ngx-formly/issues/3957)
+* **json-schema:** rely on value from form control for validation ([ab5d29d](https://github.com/ngx-formly/ngx-formly/commit/ab5d29d1cce017fd0aea0c34d73eeed2c02494e5)), closes [#3958](https://github.com/ngx-formly/ngx-formly/issues/3958)
 
 ### [6.3.5](https://github.com/ngx-formly/ngx-formly/compare/v6.3.4...v6.3.5) (2024-06-23)
 
