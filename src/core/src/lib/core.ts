@@ -6,6 +6,7 @@ export {
   FormlyFieldProps,
   ConfigOption,
   FormlyExtension,
+  FormlyFieldConfigPresetProvider,
 } from './models';
 export { FormlyField } from './components/formly.field';
 export { FormlyAttributes as ɵFormlyAttributes } from './templates/formly.attributes';
@@ -20,6 +21,7 @@ export { FieldWrapper } from './templates/field.wrapper';
 export { FormlyModule } from './core.module';
 export { defineHiddenProp as ɵdefineHiddenProp } from './utils';
 export { reverseDeepMerge as ɵreverseDeepMerge } from './utils';
+export { reverseDeepMergeWithArrays as ɵreverseDeepMergeWithArrays } from './utils';
 export { getFieldValue as ɵgetFieldValue } from './utils';
 export { clone as ɵclone } from './utils';
 export { observe as ɵobserve } from './utils';
