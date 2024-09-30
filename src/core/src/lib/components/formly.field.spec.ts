@@ -418,7 +418,6 @@ describe('FormlyField Component', () => {
       });
 
       expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
-
       field.options.formState.foo = false;
       detectChanges();
       fixture.whenStable().then(() => {
