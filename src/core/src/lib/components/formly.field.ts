@@ -286,10 +286,6 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     
     const propsObserver = observe(field, ['props'], () => field.options.detectChanges(field));
     let subscribes = [() => { propsObserver.unsubscribe(); }];
-    if (field.options) {
-        const formStateObserver = observe(field.options, ['formState'], () => field.options.detectChanges(field));
-        subscribes.push(() => { formStateObserver.unsubscribe(); });
-    }
 
     for (const key of Object.keys(field._expressions || {})) {
       const expressionObserver = observe<FormlyFieldConfigCache['_expressions']['key']>(
