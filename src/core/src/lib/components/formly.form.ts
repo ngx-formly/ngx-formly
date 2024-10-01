@@ -151,7 +151,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     
 
     return () => {
-      fieldChangesDetection.forEach((field) => field.unsubscribe());
+      fieldChangesDetection.forEach((fnc) => fnc()?.unsubscribe());
       formEvents?.unsubscribe();
       valueChanges.unsubscribe();
     };
