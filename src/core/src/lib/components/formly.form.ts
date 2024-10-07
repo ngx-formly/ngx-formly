@@ -16,7 +16,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { clone, hasKey, isNoopNgZone, isSignalRequired, observe } from '../utils';
+import { clone, hasKey, isNoopNgZone, isSignalRequired, observeDeep } from '../utils';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
@@ -143,7 +143,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           // https://github.com/ngx-formly/ngx-formly/issues/2095
           this.checkExpressionChange();
           if(this.field.options){
-            fieldChangesDetection.push(() => observe(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)));
+            fieldChangesDetection.push(observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)));
           }
           this.modelChange.emit((this._modelChangeValue = clone(this.model)));
         }),
@@ -151,7 +151,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     
 
     return () => {
-      fieldChangesDetection.forEach((fnc) => fnc()?.unsubscribe());
+      fieldChangesDetection.forEach((fnc) => fnc());
       formEvents?.unsubscribe();
       valueChanges.unsubscribe();
     };
