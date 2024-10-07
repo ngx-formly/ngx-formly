@@ -283,12 +283,9 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     if (!field) {
       return () => {};
     }
-
-    const subscribes = [observeDeep(field, ['props'], () => field.options.detectChanges(field))];
-
-    if (field.options) {
-      subscribes.push(observeDeep(field.options, ['formState'], () => field.options.detectChanges(field)));
-    }
+    
+    const propsObserver = observeDeep(field, ['props'], () => field.options.detectChanges(field));
+    let subscribes = [() => { propsObserver() }];
 
     for (const key of Object.keys(field._expressions || {})) {
       const expressionObserver = observe<FormlyFieldConfigCache['_expressions']['key']>(
@@ -377,3 +374,4 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     };
   }
 }
+
