@@ -269,6 +269,32 @@ describe('FieldExpressionExtension', () => {
       subscription.unsubscribe();
     });
 
+    it('should resolve a function that returns an observable when the key ends with a $', () => {
+      const field = buildField({
+        key: 'text',
+        expressions: {
+          'model.text$': () => of('test'),
+        },
+      });
+
+      const subscription = field._expressions['model.text'].value$.subscribe();
+      expect(field.formControl.value).toEqual('test');
+      subscription.unsubscribe();
+    });
+
+    it('should resolve an observable when the key ends with a $', () => {
+      const field = buildField({
+        key: 'text',
+        expressions: {
+          'model.text$': of('test'),
+        },
+      });
+
+      const subscription = field._expressions['model.text'].value$.subscribe();
+      expect(field.formControl.value).toEqual('test');
+      subscription.unsubscribe();
+    });
+
     describe('model expression', () => {
       it('should resolve a model expression (field key = model key)', () => {
         const field = buildField({
