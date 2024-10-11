@@ -498,13 +498,6 @@ export class FormlyJsonschema {
       ];
     }
 
-    if (schema.oneOf && !field.type) {
-      delete field.key;
-      field.fieldGroup = [
-        this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, key, shareFormControl: false }),
-      ];
-    }
-
     // map in possible formlyConfig options from the widget property
     if (schema.widget?.formlyConfig) {
       field = this.mergeFields(field, schema.widget.formlyConfig);
@@ -651,6 +644,7 @@ export class FormlyJsonschema {
 
     return {
       ...definition,
+      ...(schema.properties ? { properties: { ...schema.properties, ...definition.properties } } : {}),
       ...['title', 'description', 'default', 'widget'].reduce((annotation, p) => {
         if (schema.hasOwnProperty(p)) {
           annotation[p] = (schema as any)[p];
