@@ -94,8 +94,8 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
 
   toggleSelectAll(options: any[]) {
     const selectAllValue = this.getSelectAllValue(options);
-    this.formControl.setValue(!this.value || this.value.length !== selectAllValue.length ? selectAllValue : []);
     this.formControl.markAsDirty();
+    this.formControl.setValue(!this.value || this.value.length !== selectAllValue.length ? selectAllValue : []);
   }
 
   change($event: MatSelectChange) {

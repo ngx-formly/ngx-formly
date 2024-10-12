@@ -36,7 +36,6 @@ import { FieldType } from '../templates/field.type';
 import { Observable, Subscription, isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
-import { VERSION } from '@angular/common';
 
 /**
  * The `<formly-field>` component is used to render the UI widget (layout + type) of a given `field`.
@@ -283,9 +282,13 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     if (!field) {
       return () => {};
     }
-    
+
     const propsObserver = observeDeep(field, ['props'], () => field.options.detectChanges(field));
-    let subscribes = [() => { propsObserver() }];
+    let subscribes = [
+      () => {
+        propsObserver();
+      },
+    ];
 
     for (const key of Object.keys(field._expressions || {})) {
       const expressionObserver = observe<FormlyFieldConfigCache['_expressions']['key']>(
@@ -374,4 +377,3 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     };
   }
 }
-

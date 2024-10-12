@@ -422,7 +422,7 @@ describe('FormlyField Component', () => {
       detectChanges();
       fixture.whenStable().then(() => {
         expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
-      })
+      });
     });
 
     it('should apply formState update to all fields', () => {
@@ -446,7 +446,7 @@ describe('FormlyField Component', () => {
       detectChanges();
       fixture.whenStable().then(() => {
         expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
-      })
+      });
     });
   });
 

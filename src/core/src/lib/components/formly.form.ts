@@ -20,7 +20,7 @@ import { clone, hasKey, isNoopNgZone, isSignalRequired, observeDeep } from '../u
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
-import { Observable, of, Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
 /**
  * The `<form-form>` component is the main container of the form,
@@ -142,13 +142,14 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           // runGuarded is used to keep in sync the expression changes
           // https://github.com/ngx-formly/ngx-formly/issues/2095
           this.checkExpressionChange();
-          if(this.field.options){
-            fieldChangesDetection.push(observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)));
+          if (this.field.options) {
+            fieldChangesDetection.push(
+              observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
+            );
           }
           this.modelChange.emit((this._modelChangeValue = clone(this.model)));
         }),
       );
-    
 
     return () => {
       fieldChangesDetection.forEach((fnc) => fnc());
