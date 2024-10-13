@@ -12,6 +12,8 @@ import { FieldWrapper } from '../templates/field.wrapper';
 import { ValidationMessageOption } from '../models';
 import { Type } from '@angular/core';
 
+type ExpressionType<T = any> = string | ((field: FormlyFieldConfig) => T) | Observable<T>;
+
 export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalProperties: string]: any }> {
   /**
    * The key that relates to the model. This will link the field value to the model
@@ -116,7 +118,11 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
   expressions?: {
-    [property: string]: string | ((field: FormlyFieldConfig) => any) | Observable<any>;
+    className?: ExpressionType<string>;
+    hide?: ExpressionType<boolean>;
+    'props.disabled'?: ExpressionType<boolean>;
+    'props.required'?: ExpressionType<boolean>;
+    [property: string]: ExpressionType;
   };
 
   /**
