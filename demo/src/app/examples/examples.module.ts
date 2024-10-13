@@ -238,6 +238,10 @@ import { SharedModule } from '../shared';
                 path: 'presets',
                 loadChildren: () => import('./other/presets/config.module').then((m) => m.ConfigModule),
               },
+              {
+                path: 'presets-fieldgroup',
+                loadChildren: () => import('./other/presets-fieldgroup/config.module').then((m) => m.ConfigModule),
+              },
             ],
           },
         ],

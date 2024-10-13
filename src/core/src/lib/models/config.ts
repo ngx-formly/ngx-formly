@@ -56,7 +56,7 @@ export interface PresetOption {
 }
 
 export interface FormlyFieldConfigPresetProvider {
-  getConfiguration: () => FormlyFieldConfig;
+  getConfiguration: (field?: FormlyFieldConfig) => FormlyFieldConfig;
 }
 
 export interface ConfigOption {

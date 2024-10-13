@@ -103,6 +103,21 @@ export function getFieldValue(field: FormlyFieldConfig): any {
   return model;
 }
 
+export function reverseDeepMergeWithArrays(dest: any, ...args: any[]) {
+  args.forEach((src) => {
+    for (const srcArg in src) {
+      if (isNil(dest[srcArg]) || isBlankString(dest[srcArg])) {
+        dest[srcArg] = clone(src[srcArg]);
+      } else if (objAndSameType(dest[srcArg], src[srcArg])) {
+        reverseDeepMerge(dest[srcArg], src[srcArg]);
+      } else if (Array.isArray(dest[srcArg]) || Array.isArray(src[srcArg])) {
+        dest[srcArg] = clone(src[srcArg]);
+      }
+    }
+  });
+  return dest;
+}
+
 export function reverseDeepMerge(dest: any, ...args: any[]) {
   args.forEach((src) => {
     for (const srcArg in src) {
