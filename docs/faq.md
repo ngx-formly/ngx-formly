@@ -159,3 +159,35 @@ use `className` which will be added to the `formly-field` component and then tar
 .my-custom-style .mat-form-field {
 }
 ```
+
+## How to get the model value associated with a field instance
+
+To access the model's value you can use `field.model` which return the parent model value. Example:
+
+```typescript
+const model = { city: "test" };
+const field = { key: "city", type: "input" };
+
+...
+
+console.log(field.model)
+// output: { city: "test" }
+```
+
+When `fieldGroup` or `fieldArray` is set and the `key` is present the returned value from model is the current field value.
+in order to get the parent model value use `field.parent.model`. Example:
+
+
+```typescript
+const model = { address: { city: "test" } };
+const field = { key: "address", fieldGroup: [] };
+
+...
+
+console.log(field.model)
+// output: { city: "test" }
+
+
+console.log(field.parent.model)
+// output: { address: { city: "test" } }
+```
