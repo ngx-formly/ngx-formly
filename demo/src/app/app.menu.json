@@ -91,12 +91,12 @@
         "label": "Advanced",
         "path": "/examples/advanced",
         "items": [
-          { "path": "/examples/advanced/i18n", "label": "i18n ngx-translate" },
+          { "path": "/examples/advanced/i18n", "label": "i18n ngx-translate (Translations)" },
           { "path": "/examples/advanced/i18n-alternative", "label": "i18n ngx-translate (alternative approach)" },
           { "path": "/examples/advanced/json-schema", "label": "Json schema" },
-          { "path": "/examples/advanced/repeating-section", "label": "Repeating Section" },
+          { "path": "/examples/advanced/repeating-section", "label": "Repeating Section (Array type)" },
           { "path": "/examples/advanced/repeating-section-input", "label": "Repeating Section With Length Input" },
-          { "path": "/examples/advanced/multi-step-form", "label": "Multi-Step Form" },
+          { "path": "/examples/advanced/multi-step-form", "label": "Multi-Step Form (Stepper)" },
           { "path": "/examples/advanced/tabs", "label": "Tabs Form" },
           { "path": "/examples/advanced/grid-integration", "label": "ag-grid Integration" },
           { "path": "/examples/advanced/extending-field-types", "label": "Extending Field Types" }
@@ -116,7 +116,7 @@
           { "path": "/examples/other/hide-fields-with-animations", "label": "Hide Fields with `@angular/animations`" },
           { "path": "/examples/other/button", "label": "Button Type" },
           { "path": "/examples/other/json-powered", "label": "JSON powered" },
-          { "path": "/examples/other/input-file", "label": "File input" },
+          { "path": "/examples/other/input-file", "label": "File input (Upload)" },
           { "path": "/examples/other/presets", "label": "Presets" }
         ]
       }
