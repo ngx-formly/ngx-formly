@@ -498,10 +498,10 @@ export class FormlyJsonschema {
       ];
     }
 
-    if (schema.oneOf && !field.type) {
+    if (schema.anyOf && !field.type) {
       delete field.key;
       field.fieldGroup = [
-        this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, key, shareFormControl: false }),
+        this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.anyOf, { ...options, key, shareFormControl: false }),
       ];
     }
 

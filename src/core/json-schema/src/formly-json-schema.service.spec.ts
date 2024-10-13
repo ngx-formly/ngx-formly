@@ -1800,6 +1800,30 @@ describe('Service: FormlyJsonschema', () => {
 
           expect(field.model).toEqual({ foo: 'bar' });
         });
+
+        it('should support anyOf using mixed type', () => {
+          const { field } = renderComponent({
+            model: { foo: [] },
+            schema: {
+              type: 'object',
+              properties: {
+                foo: {
+                  anyOf: [{ type: 'object' }, { type: 'array' }],
+                },
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [foo1Field, foo2Field],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          expect(foo1Field.hide).toBeTruthy();
+          expect(foo2Field.hide).toBeFalsy();
+        });
       });
     });
 
