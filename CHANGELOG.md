@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.8](https://github.com/ngx-formly/ngx-formly/compare/v6.3.7...v6.3.8) (2024-10-13)
+
+
+### Bug Fixes
+
+* **core:** add type checking for boolean expressions ([a86fad2](https://github.com/ngx-formly/ngx-formly/commit/a86fad220bd3e39e288c4087e9c90f0dd61e6602)), closes [#3962](https://github.com/ngx-formly/ngx-formly/issues/3962)
+* **core:** mark formControl as dirty before value changes ([4fbc367](https://github.com/ngx-formly/ngx-formly/commit/4fbc36710910f03652aa5b141674aaf240dee2a6)), closes [#3996](https://github.com/ngx-formly/ngx-formly/issues/3996)
+* **core:** performance decline issue ([#3994](https://github.com/ngx-formly/ngx-formly/issues/3994)) ([585357a](https://github.com/ngx-formly/ngx-formly/commit/585357ad3bd17d6cbdcf6c55a5aaffd256428a83))
+* **json-schema:**  improve anyOf selection of primitive types ([74662f6](https://github.com/ngx-formly/ngx-formly/commit/74662f647ec9719dae7d3fe0c88490026b9a3c90)), closes [#3980](https://github.com/ngx-formly/ngx-formly/issues/3980)
+
 ### [6.3.7](https://github.com/ngx-formly/ngx-formly/compare/v6.3.5...v6.3.7) (2024-09-10)
 
 
