@@ -116,6 +116,30 @@ toggle(){
 }
 ```
 
+:::note
+
+By default, the model's value is cleared when the field becomes hidden. If you want to preserve the value of a hidden field, use one of the following solution: 
+
+To preserve for a specific field pass `false` to `resetOnHide`:
+```patch
+let fields: FormlyFieldConfig[] = [
+  {
+    key: 'text',
+    type: 'input',
++   resetOnHide: false
+  }
+]
+```
+
+To preserve for all fields pass `false` to `resetFieldOnHide`:
+```patch
+FormlyModule.forRoot({
++ extras: {
++   resetFieldOnHide: false,
++ },
+}),
+```
+
 ## 3. Get notified about an expression changes
 
 
