@@ -12,7 +12,13 @@ import { FieldWrapper } from '../templates/field.wrapper';
 import { ValidationMessageOption } from '../models';
 import { Type } from '@angular/core';
 
-type ExpressionType<T = any> = string | ((field: FormlyFieldConfig) => T) | Observable<T>;
+type FieldExpression<T = any> = string | ((field: FormlyFieldConfig) => T) | Observable<T>;
+type FieldExpressions = { [property: string]: FieldExpression } & {
+  className?: FieldExpression<string>;
+  hide?: FieldExpression<boolean>;
+  'props.disabled'?: FieldExpression<boolean>;
+  'props.required'?: FieldExpression<boolean>;
+};
 
 export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalProperties: string]: any }> {
   /**
@@ -117,13 +123,7 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
   /**
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
-  expressions?: {
-    className?: ExpressionType<string>;
-    hide?: ExpressionType<boolean>;
-    'props.disabled'?: ExpressionType<boolean>;
-    'props.required'?: ExpressionType<boolean>;
-    [property: string]: ExpressionType;
-  };
+  expressions?: FieldExpressions;
 
   /**
    * You can specify your own class that will be applied to the `formly-field` component.
