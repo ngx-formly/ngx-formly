@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.9](https://github.com/ngx-formly/ngx-formly/compare/v6.3.8...v6.3.9) (2024-10-15)
+
+
+### Bug Fixes
+
+* **core:** use union for field expression declaration ([543d9e8](https://github.com/ngx-formly/ngx-formly/commit/543d9e88750b5004d142f2f235e35c171c9f4fb3)), closes [#4001](https://github.com/ngx-formly/ngx-formly/issues/4001)
+
 ### [6.3.8](https://github.com/ngx-formly/ngx-formly/compare/v6.3.7...v6.3.8) (2024-10-13)
 
 
