@@ -265,6 +265,10 @@ describe('clone', () => {
 
     expect(value.a).toEqual('foo');
   });
+
+  it('Object with no constructor', () => {
+    expect(clone(Object.create(null))).toEqual(Object.create(null));
+  });
 });
 
 describe('observeDeep', () => {

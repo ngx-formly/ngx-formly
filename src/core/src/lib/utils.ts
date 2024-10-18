@@ -156,7 +156,7 @@ export function clone(value: any): any {
     isObservable(value) ||
     value instanceof TemplateRef ||
     /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity ||
-    ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor.name) !== -1
+    ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor?.name) !== -1
   ) {
     return value;
   }
