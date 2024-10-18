@@ -555,6 +555,32 @@ describe('Array Field Type', () => {
 
       expect(field.model).toEqual(['default', null]);
     });
+
+    it('should set default value when insert', () => {
+      const { field, query, detectChanges } = renderComponent(
+        {
+          expressions: { hide: () => false },
+          fieldGroup: [
+            {
+              key: 'foo',
+              type: 'array',
+              defaultValue: [],
+              fieldArray: { type: 'input', defaultValue: 'default' },
+            },
+          ],
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      detectChanges();
+      expect(field.model.foo).toEqual([]);
+
+      const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+      arrayType.add(0);
+      detectChanges();
+
+      expect(field.model.foo).toEqual(['default']);
+    });
   });
 
   it('should set default value for hidden fields', () => {

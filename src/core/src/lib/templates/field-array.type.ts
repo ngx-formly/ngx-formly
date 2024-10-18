@@ -96,7 +96,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
     f.fieldGroup?.forEach((c: any) => this.markFieldForCheck(c));
     if (f.hide === false) {
-      (this.options as any)._hiddenFieldsForCheck.push(f);
+      (this.options as FormlyFieldConfigCache['options'])._hiddenFieldsForCheck.push({ field: f });
     }
   }
 }

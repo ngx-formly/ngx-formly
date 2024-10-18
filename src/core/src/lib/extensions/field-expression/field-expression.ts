@@ -30,7 +30,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       defineHiddenProp(field, '_hide', !!currentValue);
       if (!firstChange || (firstChange && currentValue === true)) {
         field.props.hidden = currentValue;
-        field.options._hiddenFieldsForCheck.push(field);
+        field.options._hiddenFieldsForCheck.push({ field });
       }
     });
 
@@ -84,8 +84,8 @@ export class FieldExpressionExtension implements FormlyExtension {
         const fieldChanged = this.checkExpressions(f, ignoreCache);
         const options = field.options;
         options._hiddenFieldsForCheck
-          .sort((f) => (f.hide ? -1 : 1))
-          .forEach((f) => this.changeHideState(f, f.hide, !ignoreCache));
+          .sort((f) => (f.field.hide ? -1 : 1))
+          .forEach((f) => this.changeHideState(f.field, f.field.hide ?? f.default, !ignoreCache));
         options._hiddenFieldsForCheck = [];
         if (fieldChanged) {
           this.checkExpressions(field);

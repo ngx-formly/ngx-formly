@@ -2,7 +2,14 @@ import { Injectable, Injector, Optional, ViewContainerRef } from '@angular/core'
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField, isSignalRequired } from '../utils';
+import {
+  defineHiddenProp,
+  observe,
+  disableTreeValidityCall,
+  isHiddenField,
+  isSignalRequired,
+  isUndefined,
+} from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -36,7 +43,7 @@ export class FormlyFormBuilder {
         if (field.parent && isHiddenField(field)) {
           // when hide is used in expression set defaul value will not be set until detect hide changes
           // which causes default value not set on new item is added
-          options._hiddenFieldsForCheck?.push(field);
+          options._hiddenFieldsForCheck?.push({ field, default: false });
         }
 
         options.checkExpressions?.(field, true);
