@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.10](https://github.com/ngx-formly/ngx-formly/compare/v6.3.9...v6.3.10) (2024-10-20)
+
+
+### Bug Fixes
+
+* **core:** apply default value on add fieldArray with resetOnHide ([49aa764](https://github.com/ngx-formly/ngx-formly/commit/49aa764dd02e03fbe5f3e2545acdcf52c1a8c492)), closes [#4002](https://github.com/ngx-formly/ngx-formly/issues/4002)
+* **core:** support clone object with no constructor ([fcfe2bd](https://github.com/ngx-formly/ngx-formly/commit/fcfe2bd7251fca6a1bfb757236a3f6cb95ff06a9)), closes [#4008](https://github.com/ngx-formly/ngx-formly/issues/4008)
+
 ### [6.3.9](https://github.com/ngx-formly/ngx-formly/compare/v6.3.8...v6.3.9) (2024-10-15)
 
 
