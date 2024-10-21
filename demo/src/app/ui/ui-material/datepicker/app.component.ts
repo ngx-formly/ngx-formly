@@ -19,6 +19,7 @@ export class AppComponent {
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
+        tooltip: 'Tooltip description',
       },
     },
   ];
