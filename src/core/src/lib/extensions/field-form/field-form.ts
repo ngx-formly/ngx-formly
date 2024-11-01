@@ -80,32 +80,16 @@ export class FieldFormExtension implements FormlyExtension {
     registerControl(field, control);
   }
 
-  private setValidators(field: FormlyFieldConfigCache, disabled = false) {
-    if (disabled === false && hasKey(field) && field.props?.disabled) {
-      disabled = true;
-    }
-
+  private setValidators(field: FormlyFieldConfigCache) {
     let markForCheck = false;
-    field.fieldGroup?.forEach((f) => f && this.setValidators(f, disabled) && (markForCheck = true));
+    field.fieldGroup?.forEach((f) => f && this.setValidators(f) && (markForCheck = true));
     if (hasKey(field) || !field.parent || (!hasKey(field) && !field.fieldGroup)) {
       const { formControl: c } = field;
       if (c) {
-        if (hasKey(field) && c instanceof FormControl) {
-          if (disabled && c.enabled) {
-            c.disable({ emitEvent: false, onlySelf: true });
-            markForCheck = true;
-          }
-
-          if (!disabled && c.disabled) {
-            c.enable({ emitEvent: false, onlySelf: true });
-            markForCheck = true;
-          }
-        }
-
+        // Apply validators regardless of the control's disabled state
         if (null === c.validator && this.hasValidators(field, '_validators')) {
           c.setValidators(() => {
             const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
-
             return v ? v(c) : null;
           });
           markForCheck = true;
@@ -120,6 +104,7 @@ export class FieldFormExtension implements FormlyExtension {
         }
 
         if (markForCheck) {
+          // Update validity even for disabled controls
           updateValidity(c, true);
 
           // update validity of `FormGroup` instance created by field with nested key.
