@@ -244,6 +244,7 @@ export interface FormlyFieldProps {
   click?: FormlyAttributeEvent;
   change?: FormlyAttributeEvent;
   keypress?: FormlyAttributeEvent;
+  wheel?: FormlyAttributeEvent;
 }
 
 export type FormlyHookFn = (field: FormlyFieldConfig) => void;
