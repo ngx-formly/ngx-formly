@@ -408,48 +408,6 @@ describe('FormlyField Component', () => {
     expect(query('formly-on-populate-component').componentInstance.instanceId).toEqual('123456');
   });
 
-  describe('formState update', () => {
-    it('should take account of formState update', () => {
-      const { field, query, detectChanges, fixture } = renderComponent({
-        key: 'push',
-        type: 'on-push',
-        props: {},
-        options: { formState: { foo: true } },
-      });
-
-      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
-      field.options.formState.foo = false;
-      detectChanges();
-      fixture.whenStable().then(() => {
-        expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
-      });
-    });
-
-    it('should apply formState update to all fields', () => {
-      const options = { formState: { foo: true } };
-      const { field, query, detectChanges, fixture } = renderComponent({
-        options,
-        fieldGroup: [
-          {
-            key: 'push',
-            type: 'on-push',
-          },
-          {
-            key: 'test',
-          },
-        ],
-      });
-
-      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
-
-      field.options.formState.foo = false;
-      detectChanges();
-      fixture.whenStable().then(() => {
-        expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
-      });
-    });
-  });
-
   describe('valueChanges', () => {
     it('should emit valueChanges on control value change', () => {
       const { field } = renderComponent({

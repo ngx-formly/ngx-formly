@@ -2,6 +2,7 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { FormlyInputModule, createComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
+import { FormlyOnPushComponent } from './formly.field.spec';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -36,6 +37,7 @@ export const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => 
     inputs,
     config,
     imports: [FormlyInputModule],
+    declarations: [FormlyOnPushComponent],
     ...config,
   });
 };
@@ -698,6 +700,52 @@ describe('FormlyForm Component', () => {
 
       expect(queryAll('.inline-group')).toHaveLength(3);
       expect(query('formly-group')).toBeNull();
+    });
+  });
+
+  describe('formState update', () => {
+    it('should take account of formState update', () => {
+      const { options, query, detectChanges } = renderComponent({
+        fields: [
+          {
+            key: 'push',
+            type: FormlyOnPushComponent,
+            props: {},
+          },
+        ],
+        options: { formState: { foo: true } },
+      });
+
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
+      options.formState.foo = false;
+      detectChanges();
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
+    });
+
+    it('should apply formState update to all fields', () => {
+      const options = { formState: { foo: true } };
+      const { query, detectChanges } = renderComponent({
+        options,
+        fields: [
+          {
+            fieldGroup: [
+              {
+                key: 'push',
+                type: FormlyOnPushComponent,
+              },
+              {
+                key: 'test',
+              },
+            ],
+          },
+        ],
+      });
+
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
+
+      options.formState.foo = false;
+      detectChanges();
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
     });
   });
 

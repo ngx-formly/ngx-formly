@@ -131,7 +131,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       });
     }
 
-    let fieldChangesDetection: any[] = [];
+    let fieldChangesDetection: any[] = [
+      observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
+    ];
     const valueChanges = this.field.options.fieldChanges
       .pipe(
         filter(({ field, type }) => hasKey(field) && type === 'valueChanges'),
@@ -142,11 +144,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           // runGuarded is used to keep in sync the expression changes
           // https://github.com/ngx-formly/ngx-formly/issues/2095
           this.checkExpressionChange();
-          if (this.field.options) {
-            fieldChangesDetection.push(
-              observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
-            );
-          }
           this.modelChange.emit((this._modelChangeValue = clone(this.model)));
         }),
       );
