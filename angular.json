@@ -165,7 +165,8 @@
             "main": "integration/ssr/server.ts",
             "tsConfig": "integration/ssr/tsconfig.server.json",
             "sourceMap": true,
-            "optimization": false
+            "optimization": false,
+            "buildOptimizer": false
           },
           "configurations": {
             "production": {
@@ -175,7 +176,8 @@
                   "with": "integration/ssr/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": false
+              "optimization": false,
+              "buildOptimizer": false
             }
           },
           "defaultConfiguration": ""
@@ -433,6 +435,12 @@
     },
     "@schematics/angular:directive": {
       "prefix": "formly"
+    },
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
     }
   }
 }

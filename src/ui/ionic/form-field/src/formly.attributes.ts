@@ -9,6 +9,7 @@ import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-
     '(ionFocus)': 'onFocus($event)',
     '(ionBlur)': 'onBlur($event)',
     '(ionChange)': 'onChange($event)',
+    '(ionInput)': 'onChange($event)',
   },
 })
 export class IonFormlyAttributes extends FormlyAttributes {

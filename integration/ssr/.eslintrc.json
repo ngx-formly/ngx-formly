@@ -5,7 +5,7 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["integration/ngx-formly/ssr/tsconfig.lib.json"],
+        "project": ["integration/ssr/tsconfig.app.json"],
         "createDefaultProgram": true
       },
       "rules": {}

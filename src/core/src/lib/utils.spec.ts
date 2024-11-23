@@ -105,8 +105,8 @@ describe('FormlyUtils service', () => {
 
     it('should take account passing a non-string for type', () => {
       const customType = FormlyField;
-      let options: FormlyFieldConfig = { type: customType as any };
-      let id = getFieldId('formly_1', options, 2);
+      const options: FormlyFieldConfig = { type: customType as any };
+      const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_FormlyField__2');
     });
   });
@@ -231,7 +231,10 @@ describe('clone', () => {
       constructor(public foo = '') {}
     }
     class Bar {
-      constructor(public bar = '', public foo = new Foo(bar)) {}
+      constructor(
+        public bar = '',
+        public foo = new Foo(bar),
+      ) {}
     }
     const bar = new Bar('test');
     const clonedBar = clone(bar);

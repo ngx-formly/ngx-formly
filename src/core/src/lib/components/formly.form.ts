@@ -12,7 +12,7 @@ import {
   ContentChildren,
   QueryList,
 } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
@@ -36,10 +36,10 @@ import { of, Subscription } from 'rxjs';
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   /** The form instance which allow to track model value and validation status. */
   @Input()
-  set form(form: FormGroup | FormArray) {
+  set form(form: UntypedFormGroup | UntypedFormArray) {
     this.field.form = form;
   }
-  get form(): FormGroup | FormArray {
+  get form(): UntypedFormGroup | UntypedFormArray {
     return this.field.form;
   }
 
@@ -131,7 +131,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       });
     }
 
-    let fieldChangesDetection: any[] = [
+    const fieldChangesDetection: any[] = [
       observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
     ];
     const valueChanges = this.field.options.fieldChanges

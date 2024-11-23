@@ -52,7 +52,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private hostObservers: (IObserver<any> | Subscription)[] = [];
   private componentRefs: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[] = [];
-  private hooksObservers: Function[] = [];
+  private hooksObservers: (() => void)[] = [];
   private detectFieldBuild = false;
 
   private get containerRef() {
@@ -284,7 +284,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     }
 
     const propsObserver = observeDeep(field, ['props'], () => field.options.detectChanges(field));
-    let subscribes = [
+    const subscribes = [
       () => {
         propsObserver();
       },

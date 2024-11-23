@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
         { path: 'primeng', loadChildren: () => import('./ui/primeng.module').then((m) => m.UIPrimengModule) },
         { path: 'antd', loadChildren: () => import('./ui/antd.module').then((m) => m.UIAntdModule) },
       ],
-      { initialNavigation: 'enabled' },
+      { initialNavigation: 'enabledBlocking' },
     ),
   ],
   providers: [],

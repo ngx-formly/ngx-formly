@@ -35,7 +35,7 @@ function addFormlyToPackageJson() {
 /** Add formly module to the relative module */
 function addFormlyModuleConfig(options: Schema) {
   return async (host: Tree) => {
-    const modulePath = (await findModuleFromOptions(host, options))!;
+    const modulePath = (await findModuleFromOptions(host, options));
     addModuleImportToModule(host, modulePath, 'FormlyModule.forRoot()', '@ngx-formly/core');
     addModuleImportToModule(host, modulePath, 'ReactiveFormsModule', '@angular/forms');
   };

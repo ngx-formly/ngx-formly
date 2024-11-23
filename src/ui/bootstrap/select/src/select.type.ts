@@ -1,8 +1,6 @@
-import { Component, ChangeDetectionStrategy, ViewChild, NgZone, Type, ViewContainerRef } from '@angular/core';
-import { SelectControlValueAccessor } from '@angular/forms';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
-import { take } from 'rxjs/operators';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
@@ -29,7 +27,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [attr.aria-describedby]="id + '-formly-validation-error'"
         [attr.aria-invalid]="showError"
       >
-        <ng-container *ngIf="props.options | formlySelectOptions : field | async as opts">
+        <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
           <ng-container *ngFor="let opt of opts">
             <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
               {{ opt.label }}
@@ -56,7 +54,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
           [attr.aria-invalid]="showError"
         >
           <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
-          <ng-container *ngIf="props.options | formlySelectOptions : field | async as opts">
+          <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
             <ng-container *ngFor="let opt of opts">
               <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
                 {{ opt.label }}
@@ -84,42 +82,4 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
       },
     },
   };
-
-  // workaround for https://github.com/angular/angular/issues/10010
-  /**
-   * TODO: Check if this is still needed
-   */
-  @ViewChild(SelectControlValueAccessor) set selectAccessor(s: any) {
-    if (!s) {
-      return;
-    }
-
-    const writeValue = s.writeValue.bind(s);
-    if (s._getOptionId(s.value) === null) {
-      writeValue(s.value);
-    }
-
-    s.writeValue = (value: any) => {
-      const id = s._idCounter;
-      writeValue(value);
-      if (value === null) {
-        this.ngZone.onStable
-          .asObservable()
-          .pipe(take(1))
-          .subscribe(() => {
-            if (
-              id !== s._idCounter &&
-              s._getOptionId(value) === null &&
-              s._elementRef.nativeElement.selectedIndex !== -1
-            ) {
-              writeValue(value);
-            }
-          });
-      }
-    };
-  }
-
-  constructor(private ngZone: NgZone, hostContainerRef: ViewContainerRef) {
-    super(hostContainerRef);
-  }
 }

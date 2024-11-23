@@ -7,53 +7,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: |
-          ~/.npm
-          ./node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
-    - name: Commitlint
-      if: github.event_name == 'pull_request'
-      uses: wagoid/commitlint-github-action@v4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: npm install
 
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        registry-url: 'https://registry.npmjs.org'
+      - name: Build
+        run: npm run build
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Bundlesize
+        run: npx bundlesize
 
-    - name: Build
-      run: npm run build
+      - name: Lint & Format
+        run: |
+          npm run format
+          npm run lint
 
-    - name: Bundlesize
-      run: npx bundlesize
+      - name: Test
+        run: npm run test
 
-    - name: Lint & Format
-      run: |
-        npm run format
-        npm run lint
-
-    - name: Test
-      run: npm run test
-
-    - name: E2E Test
-      run: |
-        npm run build:ssr
-        npm run e2e:ssr
+      - name: E2E Test
+        run: |
+          npm run build:ssr
+          npm run e2e:ssr

@@ -31,6 +31,8 @@ legend {
 
 @import './app/shared/example-viewer/example-viewer-theme';
 @include mat.core();
+$typography: mat.define-typography-config();
+@include mat.typography-hierarchy($typography);
 
 // Define a theme.
 $matPrimary: mat.define-palette(mat.$blue-grey-palette, 900);
@@ -63,8 +65,8 @@ pre {
 @import './markdown.css';
 
 // ag-grid
-@import 'ag-grid-community/dist/styles/ag-grid.css';
-@import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-material.css';
 
 footer {
   font-size: 85%;

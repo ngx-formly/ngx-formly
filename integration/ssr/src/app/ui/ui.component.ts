@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyConfig, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 @Component({
@@ -11,7 +11,7 @@ import { FormlyConfig, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/
   `,
 })
 export class UIComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = Object.keys(this.config.types).map((type) => ({
