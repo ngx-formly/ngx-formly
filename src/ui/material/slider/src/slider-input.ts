@@ -21,8 +21,22 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatSlider } from '@angular/material/slider';
+import { VERSION } from '@angular/material/core';
 import { Subject } from 'rxjs';
 import { _MatThumb, MatSliderDragEvent, _MatSlider, _MatSliderThumb, MAT_SLIDER_THUMB } from './slider-interface';
+
+class Signal<T> {
+  constructor(public value: T) {}
+  set(value: T): void {
+    this.value = value;
+  }
+  update(updateFn: (value: T) => T): void {
+    this.set(updateFn(this.value));
+  }
+  asReadonly(): Signal<T> {
+    return this;
+  }
+}
 
 /**
  * Provider that allows the slider thumb to register as a ControlValueAccessor.
@@ -50,7 +64,7 @@ export const MAT_SLIDER_THUMB_VALUE_ACCESSOR: any = {
   host: {
     class: 'mdc-slider__input',
     type: 'range',
-    '[attr.aria-valuetext]': '_valuetext',
+    '[attr.aria-valuetext]': 'valuetext',
     '(change)': '_onChange()',
     '(input)': '_onInput()',
     // TODO(wagnermaciel): Consider using a global event listener instead.
@@ -175,7 +189,11 @@ export class MatSliderThumb implements _MatSliderThumb, OnDestroy, ControlValueA
   _hostElement: HTMLInputElement;
 
   /** The aria-valuetext string representation of the input's value. */
-  _valuetext: string;
+  _valuetext: any = +VERSION.major >= 18 ? new Signal('') : '';
+
+  get valuetext() {
+    return +VERSION.major >= 18 ? this._valuetext.value : this._valuetext;
+  }
 
   /** The radius of a native html slider's knob. */
   _knobRadius: number = 8;
