@@ -38,7 +38,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * Formly issue: https://github.com/ngx-formly/ngx-formly/issues/1991
    */
   private uiEvents = {
-    listeners: [] as Function[],
+    listeners: [] as (() => void)[],
     events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change'],
     callback: (eventName: string, $event: any) => {
       switch (eventName) {
@@ -62,7 +62,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     return (this.field as FormlyFieldConfigCache)?.['_elementRefs'] || [];
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    @Inject(DOCUMENT) _document: any,
+  ) {
     this.document = _document;
   }
 

@@ -10,40 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: |
-          ~/.npm
-          ./node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+      - uses: actions/setup-node@v4
+        with:
+          # Setup .npmrc file to publish to npm
+          registry-url: 'https://registry.npmjs.org'
+          node-version: 20
+          cache: 'npm'
 
-    # Setup .npmrc file to publish to npm
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        registry-url: 'https://registry.npmjs.org'
+      - name: Install Dependencies
+        run: npm install
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Build
+        run: npm run build
 
-    - name: Build
-      run: npm run build
+      - name: Test
+        run: npm run test
 
-    - name: npm publish
-      run: npm run publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: npm publish
+        run: npm run publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-    - name: Github release
-      run: npm run github-release
-      env:
-        CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Github release
+        run: npm run github-release
+        env:
+          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GITHUB_TOKEN }}

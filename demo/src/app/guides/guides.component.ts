@@ -28,7 +28,11 @@ export class GuidesComponent implements OnInit, OnDestroy {
     migration: require('!!raw-loader!!highlight-loader!markdown-loader!UPGRADE-6.0.md'),
   };
 
-  constructor(private renderer: Renderer2, private route: ActivatedRoute, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private route: ActivatedRoute,
+    private elementRef: ElementRef,
+  ) {}
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(({ id }) => {

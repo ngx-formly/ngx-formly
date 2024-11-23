@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 
-interface RadioProps extends FormlyFieldProps {}
+type RadioProps = FormlyFieldProps;
 
 export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   type: 'radio' | Type<FormlyFieldRadio>;
@@ -12,7 +12,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-primeng-radio',
   template: `
-    <div class="p-field-radiobutton" *ngFor="let option of props.options | formlySelectOptions : field | async">
+    <div class="p-field-radiobutton" *ngFor="let option of props.options | formlySelectOptions: field | async">
       <p-radioButton
         [name]="field.name || id"
         [formControl]="option.disabled ? disabledControl : formControl"
@@ -26,6 +26,6 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   get disabledControl() {
-    return new FormControl({ value: this.formControl.value, disabled: true });
+    return new UntypedFormControl({ value: this.formControl.value, disabled: true });
   }
 }

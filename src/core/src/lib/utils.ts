@@ -4,7 +4,7 @@ import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './models';
 import { ChangeDetectorRef, ComponentRef, NgZone, TemplateRef, Type, VERSION, ɵNoopNgZone } from '@angular/core';
 
-export function disableTreeValidityCall(form: any, callback: Function) {
+export function disableTreeValidityCall(form: any, callback: () => void) {
   const _updateTreeValidity = form._updateTreeValidity.bind(form);
   form._updateTreeValidity = () => {};
   callback();
@@ -225,7 +225,7 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
 type IObserveFn<T> = (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void;
 export interface IObserver<T> {
   setValue: (value: T, emitEvent?: boolean) => void;
-  unsubscribe: Function;
+  unsubscribe: () => void;
 }
 interface IObserveTarget<T> {
   [prop: string]: any;
@@ -238,7 +238,7 @@ interface IObserveTarget<T> {
 }
 
 export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[], setFn: () => void): () => void {
-  let observers: Function[] = [];
+  let observers: (() => void)[] = [];
 
   const unsubscribe = () => {
     observers.forEach((observer) => observer());

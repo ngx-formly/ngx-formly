@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { UntypedFormGroup, AbstractControl } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { of } from 'rxjs';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};
 

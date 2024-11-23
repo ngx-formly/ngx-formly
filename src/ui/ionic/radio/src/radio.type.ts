@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
-interface RadioProps extends FormlyFieldProps {}
+type RadioProps = FormlyFieldProps;
 
 export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   type: 'radio' | Type<FormlyFieldRadio>;
@@ -15,7 +15,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
       <ion-radio-group [formControl]="formControl" [ionFormlyAttributes]="field">
         <ion-list-header>{{ props.label }}</ion-list-header>
         <ion-item
-          *ngFor="let option of props.options | formlySelectOptions : field | async"
+          *ngFor="let option of props.options | formlySelectOptions: field | async"
           [disabled]="option.disabled || formControl.disabled"
         >
           <ion-label *ngIf="props.legacyLabel">{{ option.label }}</ion-label>

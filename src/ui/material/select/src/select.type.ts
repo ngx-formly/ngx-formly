@@ -46,7 +46,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [typeaheadDebounceInterval]="props.typeaheadDebounceInterval"
       [panelClass]="props.panelClass"
     >
-      <ng-container *ngIf="props.options | formlySelectOptions : field | async as selectOptions">
+      <ng-container *ngIf="props.options | formlySelectOptions: field | async as selectOptions">
         <ng-container
           *ngIf="props.multiple && props.selectAllOption"
           [ngTemplateOutlet]="selectAll"

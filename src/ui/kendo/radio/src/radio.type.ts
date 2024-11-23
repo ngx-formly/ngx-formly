@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, Type } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/kendo/form-field';
 import { FormlyFieldProps } from '@ngx-formly/kendo/form-field';
 
-interface RadioProps extends FormlyFieldProps {}
+type RadioProps = FormlyFieldProps;
 
 export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   type: 'radio' | Type<FormlyFieldRadio>;
@@ -13,7 +13,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-kendo-radio',
   template: `
-    <ng-container *ngFor="let option of props.options | formlySelectOptions : field | async; let i = index">
+    <ng-container *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index">
       <input
         type="radio"
         #radioInput
@@ -35,6 +35,6 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   get disabledControl() {
-    return new FormControl({ value: this.formControl.value, disabled: true });
+    return new UntypedFormControl({ value: this.formControl.value, disabled: true });
   }
 }

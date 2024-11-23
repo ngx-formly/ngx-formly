@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ng-zorro-antd/form-field';
 
-interface RadioProps extends FormlyFieldProps {}
+type RadioProps = FormlyFieldProps;
 
 export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   type: 'radio' | Type<FormlyFieldRadio>;
@@ -14,7 +14,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     <nz-radio-group [formControl]="formControl" (ngModelChange)="props.change && props.change(field, $event)">
       <label
         nz-radio
-        *ngFor="let option of props.options | formlySelectOptions : field | async"
+        *ngFor="let option of props.options | formlySelectOptions: field | async"
         [nzValue]="option.value"
         [nzDisabled]="option.disabled"
       >

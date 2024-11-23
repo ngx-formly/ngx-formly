@@ -6,6 +6,7 @@ import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   appendTo?: any;
   filter?: boolean;
+  filterBy?: string;
 }
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
@@ -17,12 +18,15 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   template: `
     <p-dropdown
       [placeholder]="props.placeholder"
-      [options]="props.options | formlySelectOptions : field | async"
+      [options]="props.options | formlySelectOptions: field | async"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [showClear]="!props.required"
       [appendTo]="props.appendTo"
       [filter]="props.filter"
+      [filterBy]="props.filterBy ?? 'label'"
+      [optionLabel]="'label'"
+      [optionValue]="'value'"
       (onChange)="props.change && props.change(field, $event)"
     >
     </p-dropdown>

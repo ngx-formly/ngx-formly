@@ -7,8 +7,14 @@
         "project": ["tsconfig.json", "tsconfig.spec.json"],
         "createDefaultProgram": true
       },
-      "extends": ["plugin:@angular-eslint/recommended", "plugin:@angular-eslint/template/process-inline-templates"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
       "rules": {
+        "@typescript-eslint/no-empty-interface": 0,
+        "@typescript-eslint/no-empty-function": 0,
         "@angular-eslint/component-selector": [
           "error",
           {
@@ -29,7 +35,13 @@
         "@angular-eslint/no-host-metadata-property": ["warn"],
         "@angular-eslint/directive-class-suffix": ["off"],
         "@angular-eslint/component-class-suffix": ["off"],
-        "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_"
+          }
+        ]
       }
     },
     {

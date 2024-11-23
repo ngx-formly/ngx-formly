@@ -50,7 +50,10 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   showSource = false;
   showDebug = false;
 
-  constructor(private copier: CopierService, private componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor(
+    private copier: CopierService,
+    private componentFactoryResolver: ComponentFactoryResolver,
+  ) {}
 
   get model() {
     const model = JSON.stringify(this.demoComponentRef.instance.model);

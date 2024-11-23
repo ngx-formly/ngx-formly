@@ -1,11 +1,12 @@
 import { FormlyExtension, FormlyFieldConfigCache } from '../../models';
 import {
-  FormGroup,
-  FormControl,
+  UntypedFormGroup,
+  UntypedFormControl,
   AbstractControlOptions,
   Validators,
   ValidatorFn,
   AsyncValidatorFn,
+  FormControl,
 } from '@angular/forms';
 import { getFieldValue, defineHiddenProp, hasKey, getKeyPath } from '../../utils';
 import { registerControl, findControl, updateValidity } from './utils';
@@ -62,10 +63,10 @@ export class FieldFormExtension implements FormlyExtension {
       const controlOptions: AbstractControlOptions = { updateOn: field.modelOptions.updateOn };
 
       if (field.fieldGroup) {
-        control = new FormGroup({}, controlOptions);
+        control = new UntypedFormGroup({}, controlOptions);
       } else {
         const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
-        control = new FormControl(
+        control = new UntypedFormControl(
           { value, disabled: !!field.props.disabled },
           { ...controlOptions, initialValueIsDefault: true },
         );
