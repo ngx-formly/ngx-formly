@@ -39,7 +39,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    */
   private uiEvents = {
     listeners: [] as (() => void)[],
-    events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change'],
+    events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change', 'wheel'],
     callback: (eventName: string, $event: any) => {
       switch (eventName) {
         case 'focus':
