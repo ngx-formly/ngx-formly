@@ -7,6 +7,7 @@ import { FormlySelectModule as FormlyCoreSelectModule } from '@ngx-formly/core/s
 
 import { FormlyFormFieldModule } from '@ngx-formly/kendo/form-field';
 import { FormlyFieldSelect } from './select.type';
+import { withFormlyFieldSelect } from './select.config';
 
 @NgModule({
   declarations: [FormlyFieldSelect],
@@ -17,16 +18,7 @@ import { FormlyFieldSelect } from './select.type';
 
     FormlyFormFieldModule,
     FormlyCoreSelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'select',
-          component: FormlyFieldSelect,
-          wrappers: ['form-field'],
-        },
-        { name: 'enum', extends: 'select' },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldSelect()),
   ],
 })
 export class FormlySelectModule {}

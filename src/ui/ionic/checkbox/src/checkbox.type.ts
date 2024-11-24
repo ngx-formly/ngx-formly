@@ -16,5 +16,6 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     </ion-checkbox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./checkbox.type.scss'],
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {}

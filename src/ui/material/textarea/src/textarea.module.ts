@@ -7,6 +7,7 @@ import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { FormlyFieldTextArea } from './textarea.type';
+import { withFormlyFieldTextArea } from './textarea.config';
 
 @NgModule({
   declarations: [FormlyFieldTextArea],
@@ -16,15 +17,7 @@ import { FormlyFieldTextArea } from './textarea.type';
     MatInputModule,
 
     FormlyMatFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'textarea',
-          component: FormlyFieldTextArea,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldTextArea()),
   ],
 })
 export class FormlyMatTextAreaModule {}

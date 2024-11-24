@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormlyBootstrapFormFieldModule } from '@ngx-formly/bootstrap/form-field';
 import { FormlyFieldTextArea } from './textarea.type';
+import { withFormlyFieldTextArea } from './textarea.config';
 
 @NgModule({
   declarations: [FormlyFieldTextArea],
@@ -13,15 +14,7 @@ import { FormlyFieldTextArea } from './textarea.type';
     ReactiveFormsModule,
 
     FormlyBootstrapFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'textarea',
-          component: FormlyFieldTextArea,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldTextArea()),
   ],
 })
 export class FormlyBootstrapTextAreaModule {}

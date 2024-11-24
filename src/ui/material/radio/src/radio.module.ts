@@ -8,6 +8,7 @@ import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 
 import { FormlyFieldRadio } from './radio.type';
+import { withFormlyFieldRadio } from './radio.config';
 
 @NgModule({
   declarations: [FormlyFieldRadio],
@@ -18,15 +19,7 @@ import { FormlyFieldRadio } from './radio.type';
 
     FormlyMatFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'radio',
-          component: FormlyFieldRadio,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldRadio()),
   ],
 })
 export class FormlyMatRadioModule {}

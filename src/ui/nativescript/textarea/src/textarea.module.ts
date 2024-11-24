@@ -6,6 +6,7 @@ import { NativeScriptFormsModule } from '@nativescript/angular';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
 import { FormlyFieldTextArea } from './textarea.type';
+import { withFormlyFieldTextArea } from './textarea.config';
 
 @NgModule({
   declarations: [FormlyFieldTextArea],
@@ -15,15 +16,7 @@ import { FormlyFieldTextArea } from './textarea.type';
     NativeScriptFormsModule,
 
     FormlyNsFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'textarea',
-          component: FormlyFieldTextArea,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldTextArea()),
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

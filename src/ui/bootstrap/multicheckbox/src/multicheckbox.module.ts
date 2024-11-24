@@ -6,6 +6,7 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormlyBootstrapFormFieldModule } from '@ngx-formly/bootstrap/form-field';
 
 import { FormlyFieldMultiCheckbox } from './multicheckbox.type';
+import { withFormlyFieldMultiCheckbox } from './multicheckbox.config';
 
 @NgModule({
   declarations: [FormlyFieldMultiCheckbox],
@@ -15,15 +16,7 @@ import { FormlyFieldMultiCheckbox } from './multicheckbox.type';
 
     FormlyBootstrapFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'multicheckbox',
-          component: FormlyFieldMultiCheckbox,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldMultiCheckbox()),
   ],
 })
 export class FormlyBootstrapMultiCheckboxModule {}

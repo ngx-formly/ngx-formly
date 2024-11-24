@@ -21,6 +21,7 @@ import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
 import { of, Subscription } from 'rxjs';
+import { FormlyField } from './formly.field';
 
 /**
  * The `<form-form>` component is the main container of the form,
@@ -31,7 +32,9 @@ import { of, Subscription } from 'rxjs';
   selector: 'formly-form',
   template: '<formly-field [field]="field"></formly-field>',
   providers: [FormlyFormBuilder, FormlyFieldTemplates],
+  imports: [FormlyField],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   /** The form instance which allow to track model value and validation status. */
@@ -163,3 +166,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
   }
 }
+
+@Component({
+  selector: 'formly-form',
+  template: '<formly-field [field]="field"></formly-field>',
+  providers: [FormlyFormBuilder, FormlyFieldTemplates],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+export class LegacyFormlyForm extends FormlyForm {}
