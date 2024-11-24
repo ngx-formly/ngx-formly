@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
 import { FormlyFieldDatepicker } from './datepicker.type';
+import { withFormlyFieldDatepicker } from './datepicker.config';
 
 @NgModule({
   declarations: [FormlyFieldDatepicker],
@@ -14,15 +15,7 @@ import { FormlyFieldDatepicker } from './datepicker.type';
     CalendarModule,
 
     FormlyFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'datepicker',
-          component: FormlyFieldDatepicker,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldDatepicker()),
   ],
 })
 export class FormlyDatepickerModule {}

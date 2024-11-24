@@ -2079,7 +2079,7 @@ describe('Service: FormlyJsonschema', () => {
 class ArrayTypeComponent extends FieldArrayType {}
 
 function getFieldArrayChild(config: FormlyFieldConfig) {
-  return (config.fieldArray as Function)(config);
+  return (config.fieldArray as (f: FormlyFieldConfig) => FormlyFieldConfig)(config);
 }
 
 function expectTypeValidator(schemaType: string[]) {

@@ -1,15 +1,9 @@
-import { Injectable, Injector, Optional, ViewContainerRef } from '@angular/core';
-import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
+import { Inject, Injectable, Injector, Optional, ViewContainerRef } from '@angular/core';
+import { UntypedFormGroup, UntypedFormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import {
-  defineHiddenProp,
-  observe,
-  disableTreeValidityCall,
-  isHiddenField,
-  isSignalRequired,
-  isUndefined,
-} from '../utils';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, ConfigOption } from '../models';
+import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField, isSignalRequired } from '../utils';
+import { FORMLY_CONFIG } from '../core.config';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -18,9 +12,17 @@ export class FormlyFormBuilder {
     private injector: Injector,
     @Optional() private viewContainerRef: ViewContainerRef,
     @Optional() private parentForm: FormGroupDirective,
-  ) {}
+    @Optional() @Inject(FORMLY_CONFIG) configs: ConfigOption[] = [],
+  ) {
+    configs.forEach((c) => config.addConfig(c));
+  }
 
-  buildForm(form: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+  buildForm(
+    form: UntypedFormGroup | UntypedFormArray,
+    fieldGroup: FormlyFieldConfig[] = [],
+    model: any,
+    options: FormlyFormOptions,
+  ) {
     this.build({ fieldGroup, model, form, options });
   }
 
@@ -65,7 +67,7 @@ export class FormlyFormBuilder {
   }
 
   private _setOptions(field: FormlyFieldConfigCache) {
-    field.form = field.form || new FormGroup({});
+    field.form = field.form || new UntypedFormGroup({});
     field.model = field.model || {};
     field.options = field.options || {};
     const options = field.options;

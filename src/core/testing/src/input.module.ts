@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'formly-type-input',
   template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
+  standalone: false,
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
 
@@ -18,6 +19,7 @@ export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
       <formly-validation-message [field]="field"></formly-validation-message>
     </ng-container>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper {}
 

@@ -12,7 +12,7 @@ import {
   ContentChildren,
   QueryList,
 } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
@@ -21,6 +21,7 @@ import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
 import { of, Subscription } from 'rxjs';
+import { FormlyField } from './formly.field';
 
 /**
  * The `<form-form>` component is the main container of the form,
@@ -31,15 +32,17 @@ import { of, Subscription } from 'rxjs';
   selector: 'formly-form',
   template: '<formly-field [field]="field"></formly-field>',
   providers: [FormlyFormBuilder, FormlyFieldTemplates],
+  imports: [FormlyField],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   /** The form instance which allow to track model value and validation status. */
   @Input()
-  set form(form: FormGroup | FormArray) {
+  set form(form: UntypedFormGroup | UntypedFormArray) {
     this.field.form = form;
   }
-  get form(): FormGroup | FormArray {
+  get form(): UntypedFormGroup | UntypedFormArray {
     return this.field.form;
   }
 
@@ -131,7 +134,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       });
     }
 
-    let fieldChangesDetection: any[] = [];
+    const fieldChangesDetection: any[] = [
+      observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
+    ];
     const valueChanges = this.field.options.fieldChanges
       .pipe(
         filter(({ field, type }) => hasKey(field) && type === 'valueChanges'),
@@ -142,11 +147,6 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           // runGuarded is used to keep in sync the expression changes
           // https://github.com/ngx-formly/ngx-formly/issues/2095
           this.checkExpressionChange();
-          if (this.field.options) {
-            fieldChangesDetection.push(
-              observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
-            );
-          }
           this.modelChange.emit((this._modelChangeValue = clone(this.model)));
         }),
       );
@@ -166,3 +166,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
   }
 }
+
+@Component({
+  selector: 'formly-form',
+  template: '<formly-field [field]="field"></formly-field>',
+  providers: [FormlyFormBuilder, FormlyFieldTemplates],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+export class LegacyFormlyForm extends FormlyForm {}

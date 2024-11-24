@@ -6,6 +6,7 @@ import { NativeScriptFormsModule } from '@nativescript/angular';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
 import { FormlyFieldInput } from './text-field.type';
+import { withFormlyFieldInput } from './text-field.config';
 
 @NgModule({
   declarations: [FormlyFieldInput],
@@ -15,35 +16,7 @@ import { FormlyFieldInput } from './text-field.type';
     NativeScriptFormsModule,
 
     FormlyNsFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'text-field',
-          component: FormlyFieldInput,
-          wrappers: ['form-field'],
-        },
-        { name: 'input', extends: 'text-field' },
-        { name: 'string', extends: 'input' },
-        {
-          name: 'number',
-          extends: 'input',
-          defaultOptions: {
-            props: {
-              type: 'number',
-            },
-          },
-        },
-        {
-          name: 'integer',
-          extends: 'input',
-          defaultOptions: {
-            props: {
-              type: 'number',
-            },
-          },
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldInput()),
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

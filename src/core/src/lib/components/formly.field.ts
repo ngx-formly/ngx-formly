@@ -44,6 +44,7 @@ import { FormlyFieldTemplates } from './formly.template';
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
   styleUrls: ['./formly.field.scss'],
+  standalone: true,
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   /** The field config. */
@@ -52,7 +53,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private hostObservers: (IObserver<any> | Subscription)[] = [];
   private componentRefs: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[] = [];
-  private hooksObservers: Function[] = [];
+  private hooksObservers: (() => void)[] = [];
   private detectFieldBuild = false;
 
   private get containerRef() {
@@ -284,7 +285,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     }
 
     const propsObserver = observeDeep(field, ['props'], () => field.options.detectChanges(field));
-    let subscribes = [
+    const subscribes = [
       () => {
         propsObserver();
       },
@@ -377,3 +378,11 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     };
   }
 }
+
+@Component({
+  selector: 'formly-field',
+  template: '<ng-template #container></ng-template>',
+  styleUrls: ['./formly.field.scss'],
+  standalone: false,
+})
+export class LegacyFormlyField extends FormlyField {}

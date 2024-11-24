@@ -16,5 +16,6 @@ export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> 
     </ion-toggle>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./toggle.type.scss'],
 })
 export class FormlyFieldToggle extends FieldType<FieldTypeConfig<ToggleProps>> {}

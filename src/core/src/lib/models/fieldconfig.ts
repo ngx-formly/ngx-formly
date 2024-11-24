@@ -1,6 +1,6 @@
 import {
-  FormGroup,
-  FormArray,
+  UntypedFormGroup,
+  UntypedFormArray,
   AbstractControl,
   FormGroupDirective,
   ValidatorFn,
@@ -191,7 +191,7 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
   /**
    * The parent form.
    */
-  readonly form?: FormGroup | FormArray;
+  readonly form?: UntypedFormGroup | UntypedFormArray;
 
   /**
    * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.

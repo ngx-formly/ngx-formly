@@ -109,7 +109,11 @@ export class FormlyWrapperFormField
 {
   @ViewChild(MatFormField, { static: true }) formField!: MatFormField;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, private focusMonitor: FocusMonitor) {
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private focusMonitor: FocusMonitor,
+  ) {
     super();
   }
 

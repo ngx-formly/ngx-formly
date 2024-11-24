@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormlyFormFieldModule } from '@ngx-formly/ionic/form-field';
 
 import { FormlyFieldToggle } from './toggle.type';
+import { withFormlyFieldToggle } from './toggle.config';
 
 @NgModule({
   declarations: [FormlyFieldToggle],
@@ -14,15 +15,7 @@ import { FormlyFieldToggle } from './toggle.type';
     ReactiveFormsModule,
     IonicModule,
     FormlyFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'toggle',
-          component: FormlyFieldToggle,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldToggle()),
   ],
 })
 export class FormlyToggleModule {}

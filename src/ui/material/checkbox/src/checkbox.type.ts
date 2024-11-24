@@ -62,7 +62,10 @@ export class FormlyFieldCheckbox
   };
 
   private _required!: boolean;
-  constructor(private renderer: Renderer2, private focusMonitor: FocusMonitor) {
+  constructor(
+    private renderer: Renderer2,
+    private focusMonitor: FocusMonitor,
+  ) {
     super();
   }
 

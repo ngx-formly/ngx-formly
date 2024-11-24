@@ -47,7 +47,7 @@ describe('ui-ionic: Textarea Type', () => {
 
     const inputEl = query<HTMLTextAreaElement>('ion-textarea').nativeElement;
     inputEl.value = 'foo';
-    query('ion-textarea').triggerEventHandler('ionChange', ɵCustomEvent(inputEl));
+    query('ion-textarea').triggerEventHandler('ionInput', ɵCustomEvent(inputEl));
     expect(field.formControl.value).toEqual('foo');
     expect(changeSpy).toHaveBeenCalledOnce();
   });

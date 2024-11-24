@@ -19,7 +19,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
         class="form-check"
         [ngClass]="{
           'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',
-          'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch'
+          'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch',
         }"
       >
         <input

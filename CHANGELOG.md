@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.11](https://github.com/ngx-formly/ngx-formly/compare/v6.3.10...v6.3.11) (2024-11-23)
+
+
+### Bug Fixes
+
+* **core:** detect form state updates ([bd31f53](https://github.com/ngx-formly/ngx-formly/commit/bd31f533e3a35e61a8f95485a593d13dbf659c00)), closes [#4018](https://github.com/ngx-formly/ngx-formly/issues/4018) [#4012](https://github.com/ngx-formly/ngx-formly/issues/4012)
+* **material:** detect signal usage in slider ([f81463b](https://github.com/ngx-formly/ngx-formly/commit/f81463b588381244c7af6699f56687aec609a16a)), closes [#4019](https://github.com/ngx-formly/ngx-formly/issues/4019)
+* **schematics:** remove cdk dependency ([aeb87bd](https://github.com/ngx-formly/ngx-formly/commit/aeb87bdd3c2091d16f21be2981cada1da3b7a66b))
+
 ### [6.3.10](https://github.com/ngx-formly/ngx-formly/compare/v6.3.9...v6.3.10) (2024-10-20)
 
 

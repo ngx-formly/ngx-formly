@@ -8,6 +8,7 @@ import { FormlyNzFormFieldModule } from '@ngx-formly/ng-zorro-antd/form-field';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { FormlyFieldSelect } from './select.type';
+import { withFormlyFieldSelect } from './select.config';
 
 @NgModule({
   declarations: [FormlyFieldSelect],
@@ -18,16 +19,7 @@ import { FormlyFieldSelect } from './select.type';
 
     FormlyNzFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'select',
-          component: FormlyFieldSelect,
-          wrappers: ['form-field'],
-        },
-        { name: 'enum', extends: 'select' },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldSelect()),
   ],
 })
 export class FormlyNzSelectModule {}

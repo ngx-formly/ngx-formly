@@ -81,7 +81,9 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   }
 
   const files: { [id: string]: string } = {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     'src/environments/environment.ts': require('!!raw-loader!@assets/stackblitz/environment.ts').default,
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     'src/environments/environment.prod.ts': require('!!raw-loader!@assets/stackblitz/environment.prod.ts').default,
     'package.json': JSON.stringify(
       {
