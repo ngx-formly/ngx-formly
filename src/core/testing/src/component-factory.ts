@@ -112,6 +112,7 @@ export function createFieldComponent(
   selector: 'formly-test-component',
   template: '',
   providers: [FormlyFormBuilder],
+  standalone: false,
 })
 class TestComponent {
   constructor(public builder?: FormlyFormBuilder) {}
