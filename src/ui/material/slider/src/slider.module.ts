@@ -6,6 +6,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatCommonModule, MatRippleModule } from '@angular/material/core';
 import { FormlyFieldSlider } from './slider.type';
+import { withFormlyFieldSlider } from './slider.config';
 
 @NgModule({
   declarations: [FormlyFieldSlider],
@@ -16,15 +17,7 @@ import { FormlyFieldSlider } from './slider.type';
     ReactiveFormsModule,
     MatSliderModule,
     FormlyMatFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'slider',
-          component: FormlyFieldSlider,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldSlider()),
   ],
 })
 export class FormlyMatSliderModule {}

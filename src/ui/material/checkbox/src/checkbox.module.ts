@@ -7,6 +7,7 @@ import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { FormlyFieldCheckbox } from './checkbox.type';
+import { withFormlyFieldCheckbox } from './checkbox.config';
 
 @NgModule({
   declarations: [FormlyFieldCheckbox],
@@ -17,19 +18,7 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     MatCheckboxModule,
 
     FormlyMatFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'checkbox',
-          component: FormlyFieldCheckbox,
-          wrappers: ['form-field'],
-        },
-        {
-          name: 'boolean',
-          extends: 'checkbox',
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldCheckbox()),
   ],
 })
 export class FormlyMatCheckboxModule {}

@@ -2,11 +2,11 @@ import { formatDate } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyDatePickerModule } from '@ngx-formly/primeng/datepicker';
+import { FormlyDatepickerModule } from '@ngx-formly/primeng/datepicker';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
-    imports: [FormlyDatePickerModule, BrowserAnimationsModule],
+    imports: [FormlyDatepickerModule, BrowserAnimationsModule],
   });
 };
 

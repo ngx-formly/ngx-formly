@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, ComponentRef, Type } from '@angular/core';
+import { Injectable, ComponentRef, Type } from '@angular/core';
 import { FieldType } from './../templates/field.type';
 import { reverseDeepMerge, defineHiddenProp } from './../utils';
 import {
@@ -15,10 +15,6 @@ import {
 } from '../models';
 import { FieldWrapper } from '../templates/field.wrapper';
 
-/**
- * An InjectionToken for registering additional formly config options (types, wrappers ...).
- */
-export const FORMLY_CONFIG = new InjectionToken<ConfigOption[]>('FORMLY_CONFIG');
 declare const ngDevMode: any;
 
 /**
@@ -48,7 +44,12 @@ export class FormlyConfig {
 
   private extensionsByPriority: Record<number, { [name: string]: FormlyExtension }> = {};
 
-  addConfig(config: ConfigOption) {
+  addConfig(config: ConfigOption | ConfigOption[]) {
+    if (Array.isArray(config)) {
+      config.forEach((c) => this.addConfig(c));
+      return;
+    }
+
     if (config.types) {
       config.types.forEach((type) => this.setType(type));
     }

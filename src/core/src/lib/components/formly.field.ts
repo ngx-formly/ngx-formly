@@ -44,6 +44,7 @@ import { FormlyFieldTemplates } from './formly.template';
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
   styleUrls: ['./formly.field.scss'],
+  standalone: true,
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   /** The field config. */
@@ -377,3 +378,11 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     };
   }
 }
+
+@Component({
+  selector: 'formly-field',
+  template: '<ng-template #container></ng-template>',
+  styleUrls: ['./formly.field.scss'],
+  standalone: false,
+})
+export class LegacyFormlyField extends FormlyField {}
