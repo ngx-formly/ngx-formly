@@ -11,6 +11,7 @@ import { RadioExampleConfig } from '../common/radio';
 import { TextareaExampleConfig } from '../common/textarea';
 import { SelectExampleConfig } from './select';
 import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
+import { MultiSelectExampleConfig } from './multiselect';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
                 RadioExampleConfig,
                 SelectExampleConfig,
                 DatepickerExampleConfig,
+                MultiSelectExampleConfig,
               ],
             },
           },
