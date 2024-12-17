@@ -5,10 +5,15 @@ import { FieldType } from '../templates/field.type';
 import { FormlyExtension } from './config';
 import { FormlyFieldConfig, FormlyFormOptions } from './fieldconfig';
 
-export interface FormlyFieldConfigCache extends FormlyFieldConfig {
+export declare interface FieldConfigWithErrors {
+  _fields?: FormlyFieldConfigCache[];
+  _childrenErrors?: { [id: string]: Function };
+}
+
+export declare interface FormlyFieldConfigCache extends FormlyFieldConfig {
   form?: FormGroup | FormArray;
   model?: any;
-  formControl?: AbstractControl & { _fields?: FormlyFieldConfigCache[]; _childrenErrors?: { [id: string]: Function } };
+  formControl?: AbstractControl & FieldConfigWithErrors;
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
   shareFormControl?: boolean;
@@ -34,7 +39,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   };
 }
 
-export interface FormlyFormOptionsCache extends FormlyFormOptions {
+export declare interface FormlyFormOptionsCache extends FormlyFormOptions {
   checkExpressions?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
   _viewContainerRef?: ViewContainerRef;
   _injector?: Injector;

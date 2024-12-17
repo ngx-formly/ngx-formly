@@ -146,7 +146,7 @@ export class CoreExtension implements FormlyExtension {
 
     if (
       field.type !== 'formly-template' &&
-      (field.template || field.expressions?.template || field.expressionProperties?.template)
+      (field.template || field.expressions?.['template'] || field.expressionProperties?.['template'])
     ) {
       field.type = 'formly-template';
     }

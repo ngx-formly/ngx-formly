@@ -25,7 +25,7 @@ export class FormlyFormBuilder {
   }
 
   build(field: FormlyFieldConfig) {
-    if (!this.config.extensions.core) {
+    if (!this.config.extensions['core']) {
       throw new Error('NgxFormly: missing `forRoot()` call. use `forRoot()` when registering the `FormlyModule`.');
     }
 
