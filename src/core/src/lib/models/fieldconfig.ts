@@ -20,7 +20,7 @@ type FieldExpressions = { [property: string]: FieldExpression } & {
   'props.required'?: FieldExpression<boolean>;
 };
 
-export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalProperties: string]: any }> {
+export declare interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalProperties: string]: any }> {
   /**
    * The key that relates to the model. This will link the field value to the model
    */
@@ -256,7 +256,7 @@ export interface FormlyHookConfig {
   onDestroy?: FormlyHookFn;
 }
 
-export interface FormlyFormOptions {
+export declare interface FormlyFormOptions {
   updateInitialValue?: (model?: any) => void;
   resetModel?: (model?: any) => void;
   formState?: any;

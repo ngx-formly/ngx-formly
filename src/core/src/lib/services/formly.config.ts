@@ -9,6 +9,7 @@ import {
   ValidatorOption,
   WrapperOption,
   FormlyExtension,
+  FormlyFieldComponentRef,
   ValidationMessageOption,
   ExtensionOption,
   FormlyFieldConfigPresetProvider,
@@ -152,7 +153,7 @@ export class FormlyConfig {
 
   /** @ignore @internal */
   resolveFieldTypeRef(field: FormlyFieldConfigCache = {}): ComponentRef<FieldType> {
-    const type: TypeOption & { _componentRef?: ComponentRef<any> } = this.getType(field.type);
+    const type: TypeOption & FormlyFieldComponentRef = this.getType(field.type);
     if (!type) {
       return null;
     }
