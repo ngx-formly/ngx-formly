@@ -4,6 +4,7 @@ import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormlyWrapperFormField } from './form-field.wrapper';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [FormlyWrapperFormField],
@@ -11,6 +12,7 @@ import { FormlyWrapperFormField } from './form-field.wrapper';
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatTooltipModule,
     FormlyModule.forChild({
       wrappers: [
         {
