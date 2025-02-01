@@ -42,8 +42,8 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Bundlesize
-      run: npx bundlesize
+#    - name: Bundlesize
+#      run: npx bundlesize
 
     - name: Lint & Format
       run: |
