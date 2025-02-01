@@ -235,7 +235,7 @@ export class FormlyJsonschema {
         }
 
         if (schema.hasOwnProperty('exclusiveMinimum')) {
-          field.props.exclusiveMinimum = schema.exclusiveMinimum;
+          field.props['exclusiveMinimum'] = schema.exclusiveMinimum;
           this.addValidator(
             field,
             'exclusiveMinimum',
@@ -244,7 +244,7 @@ export class FormlyJsonschema {
         }
 
         if (schema.hasOwnProperty('exclusiveMaximum')) {
-          field.props.exclusiveMaximum = schema.exclusiveMaximum;
+          field.props['exclusiveMaximum'] = schema.exclusiveMaximum;
           this.addValidator(
             field,
             'exclusiveMaximum',
@@ -371,7 +371,7 @@ export class FormlyJsonschema {
       }
       case 'array': {
         if (schema.hasOwnProperty('minItems')) {
-          field.props.minItems = schema.minItems;
+          field.props['minItems'] = schema.minItems;
           this.addValidator(field, 'minItems', ({ value }: AbstractControl) => {
             return isEmpty(value) || value.length >= schema.minItems;
           });
@@ -380,13 +380,13 @@ export class FormlyJsonschema {
           }
         }
         if (schema.hasOwnProperty('maxItems')) {
-          field.props.maxItems = schema.maxItems;
+          field.props['maxItems'] = schema.maxItems;
           this.addValidator(field, 'maxItems', ({ value }: AbstractControl) => {
             return isEmpty(value) || value.length <= schema.maxItems;
           });
         }
         if (schema.hasOwnProperty('uniqueItems')) {
-          field.props.uniqueItems = schema.uniqueItems;
+          field.props['uniqueItems'] = schema.uniqueItems;
           this.addValidator(field, 'uniqueItems', ({ value }: AbstractControl) => {
             if (isEmpty(value) || !schema.uniqueItems) {
               return true;
@@ -451,7 +451,7 @@ export class FormlyJsonschema {
               f.props.required = true;
             }
             if (items[length]) {
-              f.props.removable = false;
+              f.props['removable'] = false;
             }
 
             return f;
@@ -462,7 +462,7 @@ export class FormlyJsonschema {
     }
 
     if (schema.hasOwnProperty('const')) {
-      field.props.const = schema.const;
+      field.props['const'] = schema.const;
       this.addValidator(field, 'const', ({ value }: AbstractControl) => value === schema.const);
       if (!field.type) {
         field.defaultValue = schema.const;
@@ -474,7 +474,7 @@ export class FormlyJsonschema {
       const multiple = field.type === 'array';
 
       field.type = 'enum';
-      field.props.multiple = multiple;
+      field.props['multiple'] = multiple;
       field.props.options = enumOptions;
 
       const enumValues = enumOptions.map((o) => o.value);

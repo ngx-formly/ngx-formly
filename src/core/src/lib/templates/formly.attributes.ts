@@ -67,7 +67,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.field) {
+    if (changes['field']) {
       this.field.name && this.setAttribute('name', this.field.name);
       this.uiEvents.listeners.forEach((listener) => listener());
       this.uiEvents.events.forEach((eventName) => {
@@ -94,8 +94,8 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
         });
       }
 
-      this.detachElementRef(changes.field.previousValue);
-      this.attachElementRef(changes.field.currentValue);
+      this.detachElementRef(changes['field'].previousValue);
+      this.attachElementRef(changes['field'].currentValue);
       if (this.fieldAttrElements.length === 1) {
         !this.id && this.field.id && this.setAttribute('id', this.field.id);
         this.focusObserver = observe<boolean>(this.field, ['focus'], ({ currentValue }) => {
@@ -104,7 +104,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       }
     }
 
-    if (changes.id) {
+    if (changes['id']) {
       this.setAttribute('id', this.id);
     }
   }
