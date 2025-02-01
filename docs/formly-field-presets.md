@@ -4,9 +4,9 @@ With formly templates, wrappers and extensions, it's easy to reuse form logic th
 The `@ngx-formly/core/preset` enables you to define reusable `FormlyFieldConfig`s centrally. 
 
 ## Defining a Preset
-To define a preset, two steps are necessary:
-- Importing the `FormlyPresetModule` 
-- Providing presets to `FormlyConfig`
+You can define presets in one of two ways:
+  - use `FormlyPresetModule.forRoot`
+  - directly provide presets via the `FORMLY_CONFIG` injection token
 
 Have a look at the following example which defines a simple `firstName` preset:
 
@@ -14,9 +14,8 @@ Have a look at the following example which defines a simple `firstName` preset:
 @NgModule({
   imports: [
     ...
-    FormlyPresetModule,
-    FormlyModule.forRoot({
-      presets: [
+    FormlyModule.forRoot({}),
+    FormlyPresetModule.forRoot([
         {
           name: 'firstName',
           config: {
@@ -28,7 +27,7 @@ Have a look at the following example which defines a simple `firstName` preset:
           },
         },
       ],
-    }),
+    ),
   ],
 })
 export class AppModule {}
