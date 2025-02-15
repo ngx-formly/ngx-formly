@@ -1,27 +1,21 @@
 import 'zone.js/node';
-import '@angular/localize/init';
 
-import { ngExpressEngine } from '@nguniversal/express-engine';
-import * as express from 'express';
-import { join } from 'path';
-
-import { AppServerModule } from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
-import { existsSync } from 'fs';
+import { CommonEngine } from '@angular/ssr';
+import * as express from 'express';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import bootstrap from './src/main.server';
 
 // The Express app is exported so that it can be used by serverless Functions.
-export function app() {
+export function app(): express.Express {
   const server = express();
   const distFolder = join(process.cwd(), 'integration/ssr/dist/browser');
-  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
+  const indexHtml = existsSync(join(distFolder, 'index.original.html'))
+    ? join(distFolder, 'index.original.html')
+    : join(distFolder, 'index.html');
 
-  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-  server.engine(
-    'html',
-    ngExpressEngine({
-      bootstrap: AppServerModule,
-    }),
-  );
+  const commonEngine = new CommonEngine();
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
@@ -36,16 +30,27 @@ export function app() {
     }),
   );
 
-  // All regular routes use the Universal engine
-  server.get('*', (req, res) => {
-    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+  // All regular routes use the Angular engine
+  server.get('*', (req, res, next) => {
+    const { protocol, originalUrl, baseUrl, headers } = req;
+
+    commonEngine
+      .render({
+        bootstrap,
+        documentFilePath: indexHtml,
+        url: `${protocol}://${headers.host}${originalUrl}`,
+        publicPath: distFolder,
+        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
+      })
+      .then((html) => res.send(html))
+      .catch((err) => next(err));
   });
 
   return server;
 }
 
-function run() {
-  const port = process.env.PORT || 4000;
+function run(): void {
+  const port = process.env['PORT'] || 4000;
 
   // Start up the Node server
   const server = app();
@@ -64,4 +69,4 @@ if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();
 }
 
-export * from './src/main.server';
+export default bootstrap;
