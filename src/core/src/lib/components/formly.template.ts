@@ -1,6 +1,6 @@
 import { Directive, Injectable, Input, OnChanges, QueryList, TemplateRef } from '@angular/core';
 
-@Directive({ selector: '[formlyTemplate]' })
+@Directive({ selector: '[formlyTemplate]', standalone: false })
 export class FormlyTemplate implements OnChanges {
   @Input('formlyTemplate') name: string;
 

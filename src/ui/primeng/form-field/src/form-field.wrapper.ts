@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldWrapper, FormlyFieldConfig, FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
+import { FieldWrapper, FormlyFieldConfig,  FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
 
 export interface FormlyFieldProps extends CoreFormlyFieldProps {
   hideRequiredMarker?: boolean;
@@ -21,5 +21,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </small>
     </div>
   `,
+  standalone:false
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

@@ -24,7 +24,7 @@ type ITransformOption = {
   groupProp: (option: any) => string;
 };
 
-@Pipe({ name: 'formlySelectOptions' })
+@Pipe({ name: 'formlySelectOptions', standalone: false })
 export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   private _subscription: Subscription;
   private _options: BehaviorSubject<any[]>;

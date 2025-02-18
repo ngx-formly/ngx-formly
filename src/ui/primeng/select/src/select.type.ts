@@ -15,7 +15,8 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 @Component({
   selector: 'formly-field-primeng-select',
   template: `
-    <p-dropdown
+    <p-select
+      ngDefaultControl
       [placeholder]="props.placeholder"
       [options]="props.options | formlySelectOptions : field | async"
       [formControl]="formControl"
@@ -25,8 +26,9 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [filter]="props.filter"
       (onChange)="props.change && props.change(field, $event)"
     >
-    </p-dropdown>
+    </p-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {}

@@ -1,3 +1,4 @@
+import { _fixedSizeVirtualScrollStrategyFactory } from '@angular/cdk/scrolling';
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
@@ -11,7 +12,7 @@ interface DatepickerProps extends FormlyFieldProps {
   showButtonBar?: boolean;
   showOtherMonths?: boolean;
   selectOtherMonths?: boolean;
-  selectionMode?: string;
+  selectionMode?: 'single' | 'multiple' | 'range';
   numberOfMonths?: number;
   inline?: boolean;
   readonlyInput?: boolean;
@@ -28,7 +29,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
 @Component({
   selector: 'formly-field-primeng-datepicker',
   template: `
-    <p-calendar
+    <p-datepicker
       [defaultDate]="props.defaultDate"
       [dateFormat]="props.dateFormat"
       [hourFormat]="props.hourFormat"
@@ -49,9 +50,10 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
       [formControl]="formControl"
       [formlyAttributes]="field"
     >
-    </p-calendar>
+    </p-datepicker>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone:false,  
 })
 export class FormlyFieldDatepicker extends FieldType<FieldTypeConfig<DatepickerProps>> {
   override defaultOptions?: Partial<FieldTypeConfig<DatepickerProps>> = {

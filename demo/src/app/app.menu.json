@@ -24,7 +24,6 @@
       { "path": "/ui/material", "label": "Material" },
       { "path": "/ui/ionic", "label": "Ionic" },
       { "path": "/ui/primeng", "label": "PrimeNG" },
-      { "path": "/ui/kendo", "label": "Kendo" },
       { "path": "/ui/ng-zorro-antd", "label": "Ng-Zorro-Antd" }
     ]
   },

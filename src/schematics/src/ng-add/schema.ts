@@ -16,5 +16,5 @@ export interface Schema extends ComponentSchema {
   module?: string;
 
   /** Name of the project to target. */
-  project?: string;
+  project: string;
 }

@@ -7,13 +7,7 @@ export const PACKAGES = [
   'schematics',
 
   // UI
-  'bootstrap',
-  'material',
-  'ionic',
   'primeng',
-  'kendo',
-  'nativescript',
-  'ng-zorro-antd',
 ];
 
 export function exec(cmd: string, options: ExecSyncOptions = { stdio: 'inherit' }) {

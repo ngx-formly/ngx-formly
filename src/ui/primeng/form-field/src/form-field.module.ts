@@ -9,7 +9,6 @@ import { FormlyWrapperFormField } from './form-field.wrapper';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-
     FormlyModule.forChild({
       wrappers: [
         {
