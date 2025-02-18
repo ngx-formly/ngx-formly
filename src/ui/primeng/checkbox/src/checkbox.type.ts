@@ -14,15 +14,17 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     <div class="p-field-checkbox">
       <p-checkbox
         [binary]="true"
-        [label]="props.label"
+        [inputId]="id"
         [formControl]="formControl"
         [formlyAttributes]="field"
         (onChange)="props.change && props.change(field, $event)"
       >
       </p-checkbox>
+      <label [for]="id">{{ props.label }}</label>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {
   override defaultOptions = {

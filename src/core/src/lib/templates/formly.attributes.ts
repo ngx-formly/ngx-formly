@@ -21,6 +21,7 @@ import { DOCUMENT } from '@angular/common';
   host: {
     '(change)': 'onHostChange($event)',
   },
+  standalone:false,
 })
 export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   /** The field config. */

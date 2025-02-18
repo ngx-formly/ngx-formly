@@ -21,6 +21,7 @@ import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
 import { of, Subscription } from 'rxjs';
+import { FormlyField } from './formly.field';
 
 /**
  * The `<form-form>` component is the main container of the form,
@@ -30,6 +31,7 @@ import { of, Subscription } from 'rxjs';
 @Component({
   selector: 'formly-form',
   template: '<formly-field [field]="field"></formly-field>',
+  standalone:false,
   providers: [FormlyFormBuilder, FormlyFieldTemplates],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

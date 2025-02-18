@@ -7,6 +7,7 @@ import { FieldType } from './field.type';
   selector: 'formly-template',
   template: `<div [innerHtml]="template"></div>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone:false,
 })
 export class FormlyTemplateType extends FieldType {
   get template() {

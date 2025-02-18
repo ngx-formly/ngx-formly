@@ -5,14 +5,17 @@ import { FORMLY_VALIDATORS, isObject } from '../utils';
 import { Observable, isObservable, of } from 'rxjs';
 import { merge } from 'rxjs';
 import { startWith, switchMap, filter } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
 
 /**
  * The `<formly-validation-message>` component renders the error message of a given `field`.
  */
 @Component({
   selector: 'formly-validation-message',
+  standalone: false,
   template: '{{ errorMessage$ | async }}',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class FormlyValidationMessage implements OnChanges {
   /** The field config. */

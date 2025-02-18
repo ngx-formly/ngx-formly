@@ -14,15 +14,18 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   template: `
     <div class="p-field-radiobutton" *ngFor="let option of props.options | formlySelectOptions : field | async">
       <p-radioButton
+        ngDefaultControl
         [name]="field.name || id"
         [formControl]="option.disabled ? disabledControl : formControl"
-        [label]="option.label"
+        [inputId]="field.name || id"
         [value]="option.value"
       >
       </p-radioButton>
+      <label class="ml-2" [for]="id">{{ option.label }}</label>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   get disabledControl() {

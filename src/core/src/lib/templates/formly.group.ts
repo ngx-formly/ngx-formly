@@ -12,5 +12,6 @@ import { FieldType, FieldGroupTypeConfig } from './field.type';
     '[class]': 'field.fieldGroupClassName || ""',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyGroup extends FieldType<FieldGroupTypeConfig> {}
