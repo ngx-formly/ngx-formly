@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0-alpha.1](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-alpha.0...v7.0.0-alpha.1) (2025-02-23)
+
+
+### Features
+
+* **core:** update to angular 17 ([3c0c566](https://github.com/ngx-formly/ngx-formly/commit/3c0c566ea84a72a518b9dfe091a12b3d48a2ee82))
+* **core:** update to angular 18 ([4d68441](https://github.com/ngx-formly/ngx-formly/commit/4d68441e7dd8ed34436d0d9b9c3e24a031fabe3e)), closes [#4041](https://github.com/ngx-formly/ngx-formly/issues/4041) [#4037](https://github.com/ngx-formly/ngx-formly/issues/4037) [#4024](https://github.com/ngx-formly/ngx-formly/issues/4024)
+
 ## [7.0.0-alpha.0](https://github.com/ngx-formly/ngx-formly/compare/v6.3.11...v7.0.0-alpha.0) (2024-11-24)
 
 
