@@ -8,7 +8,7 @@
 
   formly-example-viewer {
     .docs-example-viewer-wrapper {
-      border: 1px solid rgba(mat.get-color-from-palette($foreground, secondary-text), 0.03);
+      border: 1px solid rgba(mat.m2-get-color-from-palette($foreground, secondary-text), 0.03);
       box-shadow:
         0 2px 2px rgba(0, 0, 0, 0.24),
         0 0 2px rgba(0, 0, 0, 0.12);
@@ -16,12 +16,12 @@
     }
 
     .docs-example-viewer-title {
-      color: mat.get-color-from-palette($foreground, secondary-text);
+      color: mat.m2-get-color-from-palette($foreground, secondary-text);
       background: #f2f3f2;
     }
 
     .docs-example-source-copy {
-      color: mat.get-color-from-palette($foreground, hint-text);
+      color: mat.m2-get-color-from-palette($foreground, hint-text);
       right: 8px;
 
       [dir='rtl'] & {
@@ -31,7 +31,7 @@
     }
 
     .docs-example-source {
-      border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
+      border-bottom: 1px solid mat.m2-get-color-from-palette($foreground, divider);
       overflow-x: scroll;
     }
   }

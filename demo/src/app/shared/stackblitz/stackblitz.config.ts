@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { ExampleType } from '../example-viewer/example-viewer.component';
 
 export const COPYRIGHT = `Copyright 2021 Formly. All Rights Reserved.
@@ -23,14 +24,8 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     tslib: '^2.3.1',
     '@ngx-formly/core': formlyVersion,
   },
-  bootstrap: {
-    '@ngx-formly/bootstrap': formlyVersion,
-    bootstrap: '^5.1.3',
-    '@popperjs/core': '*',
-  },
-  material: {
-    '@ngx-formly/material': formlyVersion,
-  },
+  bootstrap: { '@ngx-formly/bootstrap': formlyVersion, bootstrap: '^5.1.3', '@popperjs/core': '*' },
+  material: { '@ngx-formly/material': formlyVersion },
   kendo: {
     '@ngx-formly/kendo': formlyVersion,
     '@progress/kendo-angular-common': '^3.1.0',
@@ -53,25 +48,15 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     primeicons: '^5.0.0',
     primeng: '^13.0.0',
   },
-  ionic: {
-    '@ngx-formly/ionic': formlyVersion,
-    '@ionic/angular': '^6.0.1',
-    '@angular/router': angularVersion,
-  },
+  ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^6.0.1', '@angular/router': angularVersion },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
     '@angular/cdk': angularVersion,
     'ng-zorro-antd': '^13.0.0',
   },
   // non UI framework libraries
-  'ag-grid': {
-    'ag-grid-angular': '*',
-    'ag-grid-community': '*',
-  },
-  'ngx-translate': {
-    '@ngx-translate/core': '*',
-    '@ngx-translate/http-loader': '*',
-  },
+  'ag-grid': { 'ag-grid-angular': '*', 'ag-grid-community': '*' },
+  'ngx-translate': { '@ngx-translate/core': '*', '@ngx-translate/http-loader': '*' },
 };
 
 export const ngModule: { [id: string]: string } = {
@@ -106,8 +91,6 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-@import "~primeng/resources/themes/saga-blue/theme.css";
-@import "~primeng/resources/primeng.min.css";
 @import "~primeflex/primeflex.css";
 @import "~primeicons/primeicons.css";
       `,

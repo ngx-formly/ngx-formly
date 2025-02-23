@@ -11,6 +11,9 @@ import { RadioExampleConfig } from '../common/radio';
 import { TextareaExampleConfig } from '../common/textarea';
 import { SelectExampleConfig } from './select';
 import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 
 @NgModule({
   imports: [
@@ -42,5 +45,6 @@ import { DatepickerAppModule, DatepickerExampleConfig } from './datepicker';
     ]),
   ],
   declarations: [AppComponent],
+  providers: [provideAnimationsAsync(), providePrimeNG({ theme: { preset: Aura } })],
 })
 export class ConfigModule {}

@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/primeng/select';
-import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -26,9 +26,9 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown').componentInstance.show(true);
+    query('p-select').componentInstance.show(true);
     detectChanges();
-    expect(queryAll('p-dropdownItem')).toHaveLength(3);
+    expect(queryAll('p-selectItem')).toHaveLength(3);
   });
 
   it('should render enum type', () => {
@@ -47,9 +47,9 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown').componentInstance.show(true);
+    query('p-select').componentInstance.show(true);
     detectChanges();
-    expect(queryAll('p-dropdownItem')).toHaveLength(3);
+    expect(queryAll('p-selectItem')).toHaveLength(3);
   });
 
   it('should bind control value on change', () => {
@@ -66,9 +66,9 @@ describe('ui-primeng: Select Type', () => {
       },
     });
 
-    query('p-dropdown').componentInstance.show(true);
+    query('p-select').componentInstance.show(true);
     detectChanges();
-    queryAll('p-dropdownItem>li')[1].triggerEventHandler('click', {});
+    queryAll('p-selectItem>li')[1].triggerEventHandler('click', {});
     expect(field.formControl.value).toEqual(2);
     expect(changeSpy).toHaveBeenCalledOnce();
   });
@@ -89,14 +89,14 @@ describe('ui-primeng: Select Type', () => {
     });
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
-    query('p-dropdown').componentInstance.show(true);
+    query('p-select').componentInstance.show(true);
     detectChanges();
-    expect(queryAll('p-dropdownItem')).toHaveLength(3);
+    expect(queryAll('p-selectItem')).toHaveLength(3);
 
-    const inputQuery = 'p-dropdown input.p-dropdown-filter';
+    const inputQuery = 'p-select input.p-select-filter';
     query(inputQuery).triggerEventHandler('input', { target: { value: 'pie' } });
     detectChanges();
-    expect(queryAll('p-dropdownItem')).toHaveLength(2);
-    expect(queryAll('p-dropdownItem>li')[0].nativeElement.textContent).toEqual('apple-pie label');
+    expect(queryAll('p-selectItem')).toHaveLength(2);
+    expect(queryAll('p-selectItem>li')[0].nativeElement.textContent).toEqual('apple-pie label');
   });
 });

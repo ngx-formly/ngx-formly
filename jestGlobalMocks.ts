@@ -1,6 +1,7 @@
 // https://github.com/jsdom/jsdom/issues/1695#issuecomment-449931788
 Element.prototype.scrollIntoView = jest.fn();
 
+Object.defineProperty(window, 'origin', { value: '' });
 Object.defineProperty(window, 'CSS', { value: null });
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => ({
