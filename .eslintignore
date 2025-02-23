@@ -1,0 +1,2 @@
+src/schematics/**/*.d.ts
+demo/src/assets/stackblitz/**/*.ts

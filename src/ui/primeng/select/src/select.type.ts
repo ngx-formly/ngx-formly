@@ -2,9 +2,10 @@ import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+import { Select } from 'primeng/select';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
-  appendTo?: any;
+  appendTo?: Select['appendTo'];
   filter?: boolean;
   filterBy?: string;
 }
@@ -16,7 +17,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 @Component({
   selector: 'formly-field-primeng-select',
   template: `
-    <p-dropdown
+    <p-select
       [placeholder]="props.placeholder"
       [options]="props.options | formlySelectOptions: field | async"
       [formControl]="formControl"
@@ -29,7 +30,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [optionValue]="'value'"
       (onChange)="props.change && props.change(field, $event)"
     >
-    </p-dropdown>
+    </p-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

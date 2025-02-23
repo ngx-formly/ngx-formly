@@ -31,7 +31,7 @@ describe('ui-primeng: Date Picker Type', () => {
       props: { required: true },
     });
 
-    const { classes } = query('p-calendar');
+    const { classes } = query('p-datepicker');
     expect(classes['ng-invalid']).toBeTrue();
   });
 
@@ -46,6 +46,6 @@ describe('ui-primeng: Date Picker Type', () => {
 
     field.formControl.setValue(new Date());
     detectChanges();
-    expect(query('p-calendar').componentInstance.inputFieldValue).toBe(formatDate(Date.now(), 'yyyy/MM/dd', 'en-US'));
+    expect(query('p-datepicker').componentInstance.inputFieldValue).toBe(formatDate(Date.now(), 'yyyy/MM/dd', 'en-US'));
   });
 });
