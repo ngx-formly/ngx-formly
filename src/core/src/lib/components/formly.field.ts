@@ -348,7 +348,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
       const { updateOn, debounce } = field.modelOptions;
       if ((!updateOn || updateOn === 'change') && debounce?.default > 0) {
-        valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
+        valueChanges = valueChanges.pipe(debounceTime(debounce.default));
       }
 
       const sub = valueChanges.subscribe((value) => {
