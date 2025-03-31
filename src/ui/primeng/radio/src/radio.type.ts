@@ -23,7 +23,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
         [inputId]="id + index"
       >
       </p-radioButton>
-      <label [for]="id + index" class="ml-2">{{ props.label }}</label>
+      <label [for]="id + index" class="ml-2">{{ option.label }}</label>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
