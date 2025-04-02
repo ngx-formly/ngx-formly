@@ -46,7 +46,7 @@ To adjust the generated `FormlyFieldConfig` use one of the following options:
   "format": "date-time",
 + "widget": {
 +   "formlyConfig": {
-+     "templateOptions": { "type": "datetime-local" }
++     "props": { "type": "datetime-local" }
 +   }
 + }
 }
