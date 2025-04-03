@@ -1,9 +1,13 @@
-import { Type } from '@angular/core';
+import { ComponentRef, Type } from '@angular/core';
 import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { FormlyFieldConfig } from './fieldconfig';
 import { FieldType } from './../templates/field.type';
 import { FieldWrapper } from '../templates/field.wrapper';
+
+export declare interface FormlyFieldComponentRef {
+  _componentRef?: ComponentRef<any>;
+}
 
 export interface FormlyExtension<F extends FormlyFieldConfig = FormlyFieldConfig> {
   priority?: number;
@@ -13,7 +17,7 @@ export interface FormlyExtension<F extends FormlyFieldConfig = FormlyFieldConfig
   postPopulate?(field: F): void;
 }
 
-export interface TypeOption {
+export declare interface TypeOption {
   name: string;
   component?: Type<FieldType>;
   wrappers?: string[];

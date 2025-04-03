@@ -161,13 +161,13 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
   }
 
   private triggerHook(name: keyof FormlyHookConfig, changes?: SimpleChanges) {
-    if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
+    if (name === 'onInit' || (name === 'onChanges' && changes['field'] && !changes['field'].firstChange)) {
       this.valueChangesUnsubscribe();
       this.valueChangesUnsubscribe = this.fieldChanges(this.field);
     }
 
     if (this.field?.hooks?.[name]) {
-      if (!changes || changes.field) {
+      if (!changes || changes['field']) {
         const r = this.field.hooks[name](this.field);
         if (isObservable(r) && ['onInit', 'afterContentInit', 'afterViewInit'].indexOf(name) !== -1) {
           const sub = r.subscribe();
@@ -176,8 +176,8 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       }
     }
 
-    if (name === 'onChanges' && changes.field) {
-      this.resetRefs(changes.field.previousValue);
+    if (name === 'onChanges' && changes['field']) {
+      this.resetRefs(changes['field'].previousValue);
       this.render();
     }
   }
