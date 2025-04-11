@@ -18,6 +18,9 @@ export class AppComponent {
         label: 'Toggle label',
         description: 'Toggle Description',
         required: true,
+        tooltip: 'Toggle tooltip',
+        tooltipPosition: 'above',
+        tooltipShowDelay: 1000,
       },
     },
   ];

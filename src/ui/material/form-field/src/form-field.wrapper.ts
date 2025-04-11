@@ -19,6 +19,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { FloatLabelType, MatFormFieldAppearance } from '@angular/material/form-field';
 import { ThemePalette } from '@angular/material/core';
+import { TooltipPosition } from '@angular/material/tooltip';
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig<FormlyFieldProps> {
   _formField?: FormlyWrapperFormField;
@@ -38,6 +39,9 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   color?: ThemePalette;
   hintStart?: TemplateRef<any> | string;
   hintEnd?: TemplateRef<any> | string;
+  tooltip?: string;
+  tooltipShowDelay?: number;
+  tooltipPosition?: TooltipPosition;
 }
 
 @Component({
@@ -50,6 +54,9 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       [appearance]="props.appearance"
       [subscriptSizing]="props.subscriptSizing"
       [color]="props.color ?? 'primary'"
+      [matTooltip]="props.tooltip"
+      [matTooltipShowDelay]="props.tooltipShowDelay ?? 500"
+      [matTooltipPosition]="props.tooltipPosition"
     >
       <ng-container #fieldComponent></ng-container>
       <mat-label *ngIf="props.label && props.hideLabel !== true">
