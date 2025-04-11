@@ -5,6 +5,7 @@ import { FormlyTextAreaModule } from '@ngx-formly/primeng/textarea';
 import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
 import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
 import { FormlySelectModule } from '@ngx-formly/primeng/select';
+import { FormlyMultiSelectModule } from '@ngx-formly/primeng/multiselect';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { FormlySelectModule } from '@ngx-formly/primeng/select';
     FormlyRadioModule,
     FormlyCheckboxModule,
     FormlySelectModule,
+    FormlyMultiSelectModule,
   ],
 })
 export class FormlyPrimeNGModule {}
