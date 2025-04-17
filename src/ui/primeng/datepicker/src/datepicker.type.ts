@@ -3,20 +3,25 @@ import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core'
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 
 interface DatepickerProps extends FormlyFieldProps {
-  defaultDate?: Date;
   dateFormat?: string;
+  defaultDate?: Date;
   hourFormat?: string;
-  showTime?: boolean;
-  showIcon?: boolean;
-  showButtonBar?: boolean;
-  showOtherMonths?: boolean;
-  selectOtherMonths?: boolean;
-  selectionMode?: string;
-  numberOfMonths?: number;
   inline?: boolean;
-  readonlyInput?: boolean;
-  touchUI?: boolean;
   monthNavigator?: boolean;
+  numberOfMonths?: number;
+  readonlyInput?: boolean;
+  selectionMode?: string;
+  selectOtherMonths?: boolean;
+  showButtonBar?: boolean;
+  showClear?: boolean;
+  showIcon?: boolean;
+  showOtherMonths?: boolean;
+  showSeconds?: boolean;
+  showTime?: boolean;
+  stepHour?: number;
+  stepMinute?: number;
+  stepSecond?: number;
+  touchUI?: boolean;
   yearNavigator?: boolean;
   yearRange?: string;
 }
@@ -38,6 +43,11 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
       [showOtherMonths]="props.showOtherMonths"
       [selectOtherMonths]="props.selectOtherMonths"
       [selectionMode]="props.selectionMode || 'single'"
+      [stepMinute]="props.stepMinute"
+      [stepHour]="props.stepHour"
+      [stepSecond]="props.stepSecond"
+      [showSeconds]="props.showSeconds"
+      [showClear]="props.showClear"
       [numberOfMonths]="props.numberOfMonths"
       [inline]="props.inline"
       [readonlyInput]="props.readonlyInput"
