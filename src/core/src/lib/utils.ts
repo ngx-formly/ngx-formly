@@ -227,7 +227,7 @@ export interface IObserver<T> {
   setValue: (value: T, emitEvent?: boolean) => void;
   unsubscribe: Function;
 }
-interface IObserveTarget<T> {
+declare interface IObserveTarget<T> {
   [prop: string]: any;
   _observers?: {
     [prop: string]: {

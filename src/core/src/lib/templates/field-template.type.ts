@@ -13,7 +13,7 @@ export class FormlyTemplateType extends FieldType {
     if (this.field && this.field.template !== this.innerHtml.template) {
       this.innerHtml = {
         template: this.field.template,
-        content: this.props.safeHtml
+        content: this.props['safeHtml']
           ? this.sanitizer.bypassSecurityTrustHtml(this.field.template)
           : this.field.template,
       };
