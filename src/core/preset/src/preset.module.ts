@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { FormlyConfig, FormlyModule, FORMLY_CONFIG } from '@ngx-formly/core';
+import { Component, ModuleWithProviders, NgModule } from '@angular/core';
+import { FieldType, FormlyConfig, FormlyModule, FORMLY_CONFIG, PresetOption } from '@ngx-formly/core';
 import { registerLibraryConfigReplacementExtension } from './preset-substitution.extension';
 
 @NgModule({
@@ -13,4 +13,19 @@ import { registerLibraryConfigReplacementExtension } from './preset-substitution
     },
   ],
 })
-export class FormlyPresetModule {}
+export class FormlyPresetModule {
+  static forRoot(presets: PresetOption[]): ModuleWithProviders<FormlyPresetModule> {
+    return {
+      ngModule: FormlyPresetModule,
+      providers: [
+        {
+          provide: FORMLY_CONFIG,
+          multi: true,
+          useValue: {
+            presets,
+          },
+        },
+      ],
+    };
+  }
+}

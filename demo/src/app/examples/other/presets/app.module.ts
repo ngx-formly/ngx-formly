@@ -15,31 +15,29 @@ import { registerSalutationPreset, SALUTATION_OPTIONS } from './salutation.prese
     ReactiveFormsModule,
     MatTabsModule,
     FormlyBootstrapModule,
-    FormlyPresetModule,
-    FormlyModule.forRoot({
-      presets: [
-        {
-          name: 'firstName',
-          config: {
-            key: 'firstName',
-            type: 'input',
-            props: {
-              label: 'First Name',
-            },
+    FormlyModule.forRoot({}),
+    FormlyPresetModule.forRoot([
+      {
+        name: 'lastName',
+        config: {
+          key: 'lastName',
+          type: 'input',
+          props: {
+            label: 'Last Name',
           },
         },
-        {
-          name: 'lastName',
-          config: {
-            key: 'lastName',
-            type: 'input',
-            props: {
-              label: 'Last Name',
-            },
+      },
+      {
+        name: 'firstName',
+        config: {
+          key: 'firstName',
+          type: 'input',
+          props: {
+            label: 'First Name',
           },
         },
-      ],
-    }),
+      },
+    ]),
   ],
   declarations: [AppComponent],
   providers: [
