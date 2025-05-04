@@ -26,7 +26,7 @@ export class GuidesComponent implements OnInit, OnDestroy {
     'formly-field-presets': require('!!raw-loader!!highlight-loader!markdown-loader!docs/formly-field-presets.md'),
     'json-schema': require('!!raw-loader!!highlight-loader!markdown-loader!docs/json-schema.md'),
     faq: require('!!raw-loader!!highlight-loader!markdown-loader!docs/faq.md'),
-    migration: require('!!raw-loader!!highlight-loader!markdown-loader!UPGRADE-6.0.md'),
+    migration: require('!!raw-loader!!highlight-loader!markdown-loader!UPGRADE-7.0.md'),
   };
 
   constructor(
