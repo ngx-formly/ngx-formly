@@ -25,10 +25,13 @@ All notable changes to this project will be documented in this file. See [standa
 * **core:** support standalone components ([e5ba94a](https://github.com/ngx-formly/ngx-formly/commit/e5ba94a16420728be70654ec5a7c62e30046799e))
 * **core:** update to angular 16 ([9460610](https://github.com/ngx-formly/ngx-formly/commit/9460610ba69b19155cfbfda10fb727ec59adc5cb)), closes [#3811](https://github.com/ngx-formly/ngx-formly/issues/3811)
 
+### [6.3.12](https://github.com/ngx-formly/ngx-formly/compare/v6.3.11...v6.3.12) (2024-12-08)
+
 
 ### Bug Fixes
 
-* **testing:** mark components as standalone false ([#4021](https://github.com/ngx-formly/ngx-formly/issues/4021)) ([10db0c3](https://github.com/ngx-formly/ngx-formly/commit/10db0c3e9ae19b368a70974f4b227854a00244dc)), closes [#4020](https://github.com/ngx-formly/ngx-formly/issues/4020)
+* **core:** fix submit validation on Angular v19 ([1f2ac70](https://github.com/ngx-formly/ngx-formly/commit/1f2ac70cb576b27cb056c1d434094da2f3675176)), closes [#4027](https://github.com/ngx-formly/ngx-formly/issues/4027)
+* **primeng:** restrict primeng peer dependencies ([f9fca14](https://github.com/ngx-formly/ngx-formly/commit/f9fca14f88e1cab0acb017486d64f5ea68e17e4f)), closes [#3724](https://github.com/ngx-formly/ngx-formly/issues/3724)
 
 ### [6.3.11](https://github.com/ngx-formly/ngx-formly/compare/v6.3.10...v6.3.11) (2024-11-23)
 

@@ -383,5 +383,5 @@ export function isHiddenField(field: FormlyFieldConfig) {
 }
 
 export function isSignalRequired() {
-  return +VERSION.major >= 18 && +VERSION.minor >= 1;
+  return +VERSION.major > 18 || (+VERSION.major >= 18 && +VERSION.minor >= 1);
 }

@@ -33,5 +33,8 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Bundlesize
+        run: npx bundlesize
+
       - name: E2E Test
         run: npm run e2e:ssr

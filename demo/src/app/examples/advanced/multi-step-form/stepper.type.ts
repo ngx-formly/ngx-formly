@@ -8,7 +8,7 @@ import { FormlyField } from '@ngx-formly/core';
   selector: 'formly-field-stepper',
   template: `
     <mat-horizontal-stepper>
-      <mat-step *ngFor="let step of field.fieldGroup; let index = index; let last = last">
+      <mat-step *ngFor="let step of field.fieldGroup; let index = index; let last = last" [completed]="isValid(step)">
         <ng-template matStepLabel>{{ step.props.label }}</ng-template>
         <formly-field [field]="step"></formly-field>
 
