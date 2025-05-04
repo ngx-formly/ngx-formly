@@ -114,6 +114,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.valueChangesUnsubscribe();
+    this.config.clearRefs();
   }
 
   private checkExpressionChange() {
