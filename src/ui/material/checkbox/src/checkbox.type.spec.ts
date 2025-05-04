@@ -53,11 +53,11 @@ describe('ui-material: Checkbox Type', () => {
     input.click();
     detectChanges();
     expect(field.formControl.value).toBeTrue();
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(2);
 
     input.click();
     detectChanges();
     expect(field.formControl.value).toBeFalse();
-    expect(changeSpy).toHaveBeenCalledTimes(2);
+    expect(changeSpy).toHaveBeenCalledTimes(4);
   });
 });

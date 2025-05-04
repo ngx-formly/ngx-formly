@@ -38,34 +38,22 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
 
   > We passed a `formControl` instance which is created by Formly to the `input`, to let Formly know that this is the input that you want to associate with your model.
 
-  ### 2. Register the custom type in `NgModule` declaration:
-
-  ```typescript
-  import { InputFieldType } from './input-field.type';
-
-  @NgModule({
-    declarations: [InputFieldType],
-  })
-  export class AppModule {}
-  ```
-
-  ### 3. set an aliase for `InputFieldType` component (Optional):
+  ### 2. set an aliase for `InputFieldType` component in the App Config (Optional):
 
   > Note: This step is required only for JSON powered forms (see "Method-2" below).
 
   ```typescript
   import { InputFieldType } from './input-field.type';
 
-  @NgModule({
-    imports: [
-      FormlyModule.forRoot({
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideFormlyCore({
         types: [
           { name: 'input', component: InputFieldType },
         ],
       }),
     ],
-  })
-  export class AppModule {}
+  };
   ```
 
   > `types: [ ... ]` allows you to specify a custom type which you can use in your field configuration.
@@ -74,7 +62,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
   > 1. `name`: The name of the component type. You use this in the `type` option of a field.
   > 2. `component`: the component that Formly should create when this type is set.
 
-  ### 4. Use the created custom type in the form config:
+  ### 3. Use the created custom type in the form config:
   * Method 1: Pass the `InputFieldType` component to the field config.
 
     ```typescript
@@ -90,7 +78,7 @@ The live example can be found in stackblitz: [demo](https://stackblitz.com/edit/
     }
     ```
 
-  * Method 2: Pass the `InputFieldType` alias (defined in `FormlyModule.forRoot`) to the field config.
+  * Method 2: Pass the `InputFieldType` alias (defined in App Config) to the field config.
 
     ```typescript
     export class AppComponent {

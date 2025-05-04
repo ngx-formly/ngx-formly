@@ -18,6 +18,7 @@ import { DOCUMENT } from '@angular/common';
  */
 @Directive({
   selector: '[formlyAttributes]',
+  standalone: true,
   host: {
     '(change)': 'onHostChange($event)',
   },
@@ -223,3 +224,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     this.renderer.removeAttribute(this.elementRef.nativeElement, attr);
   }
 }
+
+@Directive({
+  selector: '[formlyAttributes]',
+  host: {
+    '(change)': 'onHostChange($event)',
+  },
+})
+export class LegacyFormlyAttributes extends FormlyAttributes {}

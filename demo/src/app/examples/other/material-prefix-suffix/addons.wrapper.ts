@@ -1,5 +1,7 @@
 import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+import { NgIf, NgStyle } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'formly-wrapper-addons',
@@ -28,6 +30,8 @@ import { FieldWrapper } from '@ngx-formly/core';
       </span>
     </ng-template>
   `,
+  standalone: true,
+  imports: [NgIf, NgStyle, MatIcon],
 })
 export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
   @ViewChild('matPrefix', { static: true }) matPrefix!: TemplateRef<any>;

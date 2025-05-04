@@ -33,7 +33,5 @@ jobs:
       - name: Test
         run: npm run test
 
-      # - name: E2E Test
-      #   run: |
-      #     npm run build:ssr
-      #     npm run e2e:ssr
+      - name: E2E Test
+        run: npm run e2e:ssr

@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
     '[class]': '"markdown github"',
     '[style.display]': '"block"',
   },
+  standalone: true,
 })
 export class GuidesComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();

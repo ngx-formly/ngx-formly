@@ -93,123 +93,92 @@
       }
     },
     "ssr": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "integration/ssr/",
       "sourceRoot": "integration/ssr/src",
-      "projectType": "application",
       "prefix": "app",
-      "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "integration/ssr/dist/browser",
+            "outputPath": "integration/ssr/dist",
             "index": "integration/ssr/src/index.html",
-            "main": "integration/ssr/src/main.ts",
-            "polyfills": "integration/ssr/src/polyfills.ts",
+            "browser": "integration/ssr/src/main.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "integration/ssr/tsconfig.app.json",
-            "assets": ["integration/ssr/src/favicon.ico", "integration/ssr/src/assets"],
-            "styles": ["integration/ssr/src/styles.css"],
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": ["integration/ssr/src/styles.scss"],
             "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "server": "integration/ssr/src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "integration/ssr/server.ts"
+            }
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "integration/ssr/src/environments/environment.ts",
-                  "with": "integration/ssr/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "2kB",
+                  "maximumError": "4kB"
                 }
-              ]
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "buildTarget": "ssr:build"
-          },
           "configurations": {
             "production": {
               "buildTarget": "ssr:build:production"
-            }
-          }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "integration/ssr/dist/server",
-            "main": "integration/ssr/server.ts",
-            "tsConfig": "integration/ssr/tsconfig.server.json",
-            "sourceMap": true,
-            "optimization": false,
-            "buildOptimizer": false
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "integration/ssr/src/environments/environment.ts",
-                  "with": "integration/ssr/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": false,
-              "buildOptimizer": false
+            },
+            "development": {
+              "buildTarget": "ssr:build:development"
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "development"
         },
-        "serve-ssr": {
-          "builder": "@angular-devkit/build-angular:ssr-dev-server",
-          "options": {
-            "browserTarget": "ssr:build",
-            "serverTarget": "ssr:server"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "ssr:build:production",
-              "serverTarget": "ssr:server:production"
-            }
-          }
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
-        "prerender": {
-          "builder": "@angular-devkit/build-angular:prerender",
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "browserTarget": "ssr:build:production",
-            "serverTarget": "ssr:server:production",
-            "routes": ["/"]
-          },
-          "configurations": {
-            "production": {}
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": ["integration/ssr/**/*.ts", "integration/ssr/**/*.html"]
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": ["src/styles.scss"],
+            "scripts": []
           }
         }
       }

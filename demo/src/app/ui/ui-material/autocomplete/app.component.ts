@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
+import { FormlyForm } from '@ngx-formly/core';
 
 const states = [
   'Alabama',
@@ -68,6 +69,8 @@ const states = [
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {
   form = new UntypedFormGroup({});

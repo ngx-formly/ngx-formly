@@ -14,7 +14,9 @@ export class FormlyFormBuilder {
     @Optional() private parentForm: FormGroupDirective,
     @Optional() @Inject(FORMLY_CONFIG) configs: ConfigOption[] = [],
   ) {
-    configs.forEach((c) => config.addConfig(c));
+    if (configs) {
+      configs.forEach((c) => config.addConfig(c));
+    }
   }
 
   buildForm(
