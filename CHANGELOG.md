@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0-next.0](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-alpha.1...v7.0.0-next.0) (2025-05-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **core:** Deprecated `FormlyFormOptions` methods has been removed: `_markForCheck`, `_buildForm` and `_markForCheck`.
+
+### Features
+
+* **core:** remove deprecated options methods ([#4086](https://github.com/ngx-formly/ngx-formly/issues/4086)) ([1cbd47c](https://github.com/ngx-formly/ngx-formly/commit/1cbd47c1fe9bf91c3bfbff7add6a8215b2bc19c8))
+
+
+### Bug Fixes
+
+* **core:** clear component refs on FormlyForm destroy ([#4085](https://github.com/ngx-formly/ngx-formly/issues/4085)) ([06ac47e](https://github.com/ngx-formly/ngx-formly/commit/06ac47e651d76c72b469803f7887f054e0a9b61a)), closes [#4081](https://github.com/ngx-formly/ngx-formly/issues/4081)
+* **core:** non-published preset provider ([#4064](https://github.com/ngx-formly/ngx-formly/issues/4064)) ([8302480](https://github.com/ngx-formly/ngx-formly/commit/830248065f739d8b0a0a2e8a008215d63e4f07aa))
+* **core:** overwrite valueChanges without losing pipes when debounce ([2ad0ec0](https://github.com/ngx-formly/ngx-formly/commit/2ad0ec08bb06894b0f22c251ed9c257c75b3c0ac))
+* **primeng:** resolved typo with label ([#4074](https://github.com/ngx-formly/ngx-formly/issues/4074)) ([9ceeb10](https://github.com/ngx-formly/ngx-formly/commit/9ceeb1041a9dcacf3f535b81bb381943f62e2232))
+
 ## [7.0.0-alpha.1](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-alpha.0...v7.0.0-alpha.1) (2025-02-23)
 
 
