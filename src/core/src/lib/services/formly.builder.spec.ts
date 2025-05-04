@@ -28,7 +28,6 @@ describe('FormlyFormBuilder service', () => {
       expect.objectContaining({
         _viewContainerRef: null,
         _injector: null,
-        _buildForm: expect.any(Function),
         build: expect.any(Function),
       }),
     );
@@ -36,9 +35,7 @@ describe('FormlyFormBuilder service', () => {
     global.console = { ...global.console, warn: jest.fn() };
     jest.spyOn(builder, 'build');
     field.options.build(field);
-    field.options._buildForm();
-    expect(console.warn).toBeCalled();
-    expect(builder.build).toHaveBeenCalledTimes(2);
+    expect(builder.build).toHaveBeenCalledOnce();
   });
 
   it('should call extension during build call', () => {

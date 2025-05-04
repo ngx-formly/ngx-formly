@@ -88,11 +88,6 @@ export class CoreExtension implements FormlyExtension {
       options._hiddenFieldsForCheck = [];
     }
 
-    options._markForCheck = (f) => {
-      console.warn(`Formly: 'options._markForCheck' is deprecated since v6.0, use 'options.detectChanges' instead.`);
-      options.detectChanges(f);
-    };
-
     options._detectChanges = (f: FormlyFieldConfigCache) => {
       if (f._componentRefs) {
         markFieldForCheck(f);

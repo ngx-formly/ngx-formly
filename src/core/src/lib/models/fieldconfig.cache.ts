@@ -44,13 +44,4 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _hiddenFieldsForCheck?: { field: FormlyFieldConfigCache; default?: boolean }[];
   _initialModel?: any;
   _detectChanges?: (field: FormlyFieldConfig) => void;
-
-  /** @deprecated */
-  _buildForm?: () => void;
-
-  /** @deprecated */
-  _checkField?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
-
-  /** @deprecated */
-  _markForCheck?: (field: FormlyFieldConfig) => void;
 }
