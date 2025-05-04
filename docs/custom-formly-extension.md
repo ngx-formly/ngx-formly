@@ -48,38 +48,26 @@ See live demo: [demo](https://stackblitz.com/edit/ngx-formly-ui-bootstrap-slzm3p
 
 :::
 
-  ### 2. Register the custom extension in `NgModule` declaration:
+  ### 2. Register the custom extension in App Config:
 
   ```typescript
-  // app.module.ts
-  import { NgModule } from '@angular/core';
-  import { BrowserModule } from '@angular/platform-browser';
-  import { ReactiveFormsModule } from '@angular/forms';
-
-  import { FormlyModule } from '@ngx-formly/core';
-  import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
-
-  import { AppComponent } from './app.component';
+  // app.config.ts
+  ...
+  import { provideFormlyCore } from '@ngx-formly/core';
   import { defaultLabelExtension } from './default-label-extension';
 
-  @NgModule({
-    imports: [
-      BrowserModule,
-      ReactiveFormsModule,
-      FormlyBootstrapModule,
-      FormlyModule.forRoot({
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideFormlyCore({
         extensions: [
           {
             name: 'default-label',
             extension: defaultLabelExtension
           }
         ]
-      })
+      }),
     ],
-    declarations: [AppComponent],
-    bootstrap: [AppComponent]
-  })
-  export class AppModule {}
+  };
   ```
 
   `extensions: [ ... ]` is where we define which extensions should be active.
@@ -105,14 +93,14 @@ See live demo: [demo](https://stackblitz.com/edit/ngx-formly-ui-bootstrap-slzm3p
   Look at the demo to see that the default label has been automatically added to the field.
 
 ## Extension priority
-When registering an extension with the `FormlyModule`, you can provide an additional `priority` property of type `number`.
+When registering an extension with the App Config, you can provide an additional `priority` property of type `number`.
 This will be used to change the order in which extensions are executed. If you have multiple extensions that change the same properties of a `FormlyFieldConfig`, you can use this to ensure they are executed in the correct order. Extensions with higher `priority` values will be executed later.
 
 If you don't provide a `priority` option, a default value of `1` will be used. <br/>
 Formly's own internal extensions have a priority of `<= -1`.
 
 ```typescript
-  FormlyModule.forRoot({
+  provideFormlyCore({
     extensions: [
       {
         name: 'default-label',

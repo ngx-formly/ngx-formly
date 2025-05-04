@@ -1,5 +1,5 @@
 import { ExampleType } from './example-viewer.component';
-import { COPYRIGHT, dependencies, ngModule, TEMPLATE_FILES } from '../stackblitz/stackblitz.config';
+import { COPYRIGHT, dependencies, ngProvider, TEMPLATE_FILES } from '../stackblitz/stackblitz.config';
 import { angularVersion } from 'src/schematics/utils/lib-versions';
 
 interface IThemeOption {
@@ -13,28 +13,44 @@ interface IThemeOption {
 }
 
 export function getExampleFiles(type: string, exampleData: ExampleType): any {
-  const appModuleContent = exampleData.files.find((f) => f.file === 'app.module.ts').filecontent.default;
+  let appConfig = exampleData.files.find((f) => f.file === 'app.config.ts');
+  if (!appConfig) {
+    appConfig = {
+      file: 'app.config.ts',
+      content: require('!!highlight-loader?raw=true&lang=typescript!@assets/stackblitz/app.config.ts'),
+      filecontent: require('!!raw-loader!@assets/stackblitz/app.config.ts'),
+    };
+    exampleData = {
+      ...exampleData,
+      files: [...exampleData.files, appConfig],
+    };
+  }
+  const appConfigContent = appConfig.filecontent.default;
   exampleData.deps = exampleData.deps || [];
 
   const options: IThemeOption = { type };
 
   if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng', 'ng-zorro-antd'].indexOf(options.type) === -1) {
-    if (appModuleContent.indexOf('@ngx-formly/bootstrap') !== -1) {
+    if (appConfigContent.indexOf('@ngx-formly/bootstrap') !== -1) {
       options.type = 'bootstrap';
-    } else if (appModuleContent.indexOf('@ngx-formly/material') !== -1) {
+    } else if (appConfigContent.indexOf('@ngx-formly/material') !== -1) {
       options.type = 'material';
-    } else if (appModuleContent.indexOf('@ngx-formly/kendo') !== -1) {
+    } else if (appConfigContent.indexOf('@ngx-formly/kendo') !== -1) {
       options.type = 'kendo';
-    } else if (appModuleContent.indexOf('@ngx-formly/ionic') !== -1) {
+    } else if (appConfigContent.indexOf('@ngx-formly/ionic') !== -1) {
       options.type = 'ionic';
-    } else if (appModuleContent.indexOf('@ngx-formly/primeng') !== -1) {
+    } else if (appConfigContent.indexOf('@ngx-formly/primeng') !== -1) {
       options.type = 'primeng';
-    } else if (appModuleContent.indexOf('@ngx-formly/ng-zorro-antd') !== -1) {
+    } else if (appConfigContent.indexOf('@ngx-formly/ng-zorro-antd') !== -1) {
       options.type = 'ng-zorro-antd';
     }
   }
 
-  if ('material' === options.type || appModuleContent.indexOf('@angular/material') !== -1) {
+  if (!options.type) {
+    options.type = 'bootstrap';
+  }
+
+  if ('material' === options.type || appConfigContent.indexOf('@angular/material') !== -1) {
     options.includeMaterial = true;
   }
 
@@ -46,7 +62,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
     options.useAnimation = true;
   }
 
-  if (appModuleContent.indexOf('ag-grid-angular') !== -1) {
+  if (appConfigContent.indexOf('ag-grid-angular') !== -1) {
     options.includeAgGrid = true;
   }
 
@@ -54,7 +70,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
     options.includeFontawesome = true;
   }
 
-  if (appModuleContent.indexOf('@ngx-translate/core') !== -1) {
+  if (appConfigContent.indexOf('@ngx-translate/core') !== -1) {
     options.includeNgxTranslate = true;
   }
 
@@ -81,10 +97,6 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   }
 
   const files: { [id: string]: string } = {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    'src/environments/environment.ts': require('!!raw-loader!@assets/stackblitz/environment.ts').default,
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    'src/environments/environment.prod.ts': require('!!raw-loader!@assets/stackblitz/environment.prod.ts').default,
     'package.json': JSON.stringify(
       {
         name: 'formly-example-app',
@@ -98,9 +110,9 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
         },
         dependencies: deps,
         devDependencies: {
-          '@angular-devkit/build-angular': '~14.0.0',
-          '@angular/cli': '~14.0.0',
-          '@angular/compiler-cli': '~14.0.0',
+          '@angular-devkit/build-angular': angularVersion,
+          '@angular/cli': angularVersion,
+          '@angular/compiler-cli': angularVersion,
           '@types/node': '^12.11.1',
           typescript: '~4.7.4',
         },
@@ -111,10 +123,10 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   };
 
   const exampleFiles: { [id: string]: string }[] = [];
-  [...TEMPLATE_FILES.core, ...TEMPLATE_FILES[options.type], ...exampleData.files].forEach((data) => {
+  [...TEMPLATE_FILES.core, ...(TEMPLATE_FILES[options.type] || []), ...exampleData.files].forEach((data) => {
     let file = data.file;
 
-    if (file.match(/(component|module|type|service|preset|wrapper|extension)/)) {
+    if (file.match(/(component|module|type|service|preset|wrapper|extension|config)/)) {
       file = 'app/' + file;
     }
 
@@ -134,9 +146,9 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   return { exampleFiles, files, dependencies: deps };
 }
 
-function _replaceExamplePlaceholderNames(filename: string, filecontent: any, options: IThemeOption): string {
-  filecontent = _getFilecontent(filecontent);
-  if (filename === 'app.module.ts') {
+function _replaceExamplePlaceholderNames(filename: string, _filecontent: any, options: IThemeOption): string {
+  let filecontent = _getFilecontent(_filecontent);
+  if (filename === 'app.config.ts') {
     if (options.type === 'ionic') {
       filecontent = filecontent.replace(
         `'@angular/common';`,
@@ -145,40 +157,41 @@ function _replaceExamplePlaceholderNames(filename: string, filecontent: any, opt
       filecontent = filecontent.replace(`FormlyModule.forRoot`, `IonicModule.forRoot(),\n    FormlyModule.forRoot`);
     }
 
-    if (filecontent.indexOf(`@ngx-formly/${options.type}'`) === -1) {
+    if (options.type && filecontent.indexOf(`@ngx-formly/${options.type}`) === -1) {
       if (filecontent.indexOf('hljs') !== -1) {
         filecontent = filecontent.replace(
           `<span class="hljs-string">&#x27;@ngx-formly/core&#x27;</span>`,
-          `<span class="hljs-string">&#x27;@ngx-formly/core&#x27;</span>;\n<span class="hljs-keyword">import</span> { <span class="hljs-title class_">${
-            ngModule[options.type]
+          `<span class="hljs-string">&#x27;@ngx-formly/core&#x27;</span>\n<span class="hljs-keyword">import</span> { <span class="hljs-title class_">${
+            ngProvider[options.type]
           }</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ngx-formly/${
             options.type
-          }'</span>;`,
+          }'</span>`,
         );
         filecontent = filecontent.replace(
           `<span class="hljs-title class_">ReactiveFormsModule</span>,`,
           `<span class="hljs-title class_">ReactiveFormsModule</span>,\n    <span class="hljs-title class_">${
-            ngModule[options.type]
+            ngProvider[options.type]
           }</span>,`,
+        );
+        filecontent = filecontent.replace(
+          `// UI_CONFIG`,
+          `...<span class="hljs-title function_">${ngProvider[options.type]}</span>(),`,
         );
       } else {
         filecontent = filecontent.replace(
           `'@ngx-formly/core';`,
-          `'@ngx-formly/core';\nimport { ${ngModule[options.type]} } from '@ngx-formly/${options.type}';`,
+          `'@ngx-formly/core';\nimport { ${ngProvider[options.type]} } from '@ngx-formly/${options.type}';`,
         );
-        filecontent = filecontent.replace(
-          `FormlyModule.forRoot`,
-          `${ngModule[options.type]},\n    FormlyModule.forRoot`,
-        );
+        filecontent = filecontent.replace(`// UI_CONFIG`, `...${ngProvider[options.type]}(),`);
       }
     }
 
     if (options.useAnimation) {
-      filecontent = filecontent.replace('@angular/common', '@angular/platform-browser/animations');
-      filecontent = filecontent.replace(/CommonModule/g, 'BrowserAnimationsModule');
-    } else {
-      filecontent = filecontent.replace('@angular/common', '@angular/platform-browser');
-      filecontent = filecontent.replace(/CommonModule/g, 'BrowserModule');
+      filecontent = filecontent.replace(
+        `'@angular/core';`,
+        `'@angular/core';\nimport { provideAnimationsAsync } from '@angular/platform-browser/animations/async';`,
+      );
+      filecontent = filecontent.replace('provideFormlyCore(', 'provideAnimationsAsync(),\n    provideFormlyCore(');
     }
 
     if (filecontent.indexOf(`bootstrap: [AppComponent]`) === -1) {
@@ -197,6 +210,7 @@ function _replaceExamplePlaceholderNames(filename: string, filecontent: any, opt
     }
   }
 
+  filecontent = filecontent.replace(/formly-app-example/g, 'app-root');
   if (filename === 'index.html' && options.includeFontawesome) {
     filecontent = `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">\n${filecontent}`;
   }
@@ -218,7 +232,7 @@ function _appendCopyright(filename: string, content: string) {
   return content;
 }
 
-function _getFilecontent(content: any) {
+function _getFilecontent(content: any): string {
   if (typeof content === 'string') {
     return content;
   }

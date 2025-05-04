@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup, AbstractControl } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { UntypedFormGroup, AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [NgFor, ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {
   form = new UntypedFormGroup({});

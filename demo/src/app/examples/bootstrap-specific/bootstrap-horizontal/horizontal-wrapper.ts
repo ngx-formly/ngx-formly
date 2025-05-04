@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+import { NgIf } from '@angular/common';
+import { FormlyValidationMessage } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-horizontal-wrapper',
@@ -18,5 +20,7 @@ import { FieldWrapper } from '@ngx-formly/core';
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [NgIf, FormlyValidationMessage],
 })
 export class FormlyHorizontalWrapper extends FieldWrapper {}

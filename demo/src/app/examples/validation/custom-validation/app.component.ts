@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup, ValidationErrors, AbstractControl } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { UntypedFormGroup, ValidationErrors, AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
 export function ipValidator(control: AbstractControl): ValidationErrors {
   return !control.value || /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { ip: true };
@@ -9,6 +9,8 @@ export function ipValidator(control: AbstractControl): ValidationErrors {
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {
   form = new UntypedFormGroup({});

@@ -21,11 +21,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "github-release": "conventional-github-releaser -p angular --draft",
-    "e2e:ssr": "node integration/ssr/dist/server/main.js & pid=$!; cypress run; kill -9 $pid",
-    "dev:ssr": "ng run ssr:serve-ssr",
-    "serve:ssr": "node integration/ssr/dist/server/main.js",
-    "build:ssr": "ng build ssr --configuration production && ng run ssr:server:production",
-    "prerender": "ng run ssr:prerender",
+    "e2e:ssr": "ng run ssr:serve:production & pid=$!; cypress run; kill -9 $pid",
+    "serve:ssr": "ng run ssr:serve:production",
+    "build:ssr": "ng build ssr --configuration production",
     "prepare": "husky install"
   },
   "keywords": [

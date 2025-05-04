@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { ExampleViewerComponent } from '../example-viewer/example-viewer.component';
 
 @Component({
   selector: 'formly-examples-viewer',
@@ -7,23 +9,16 @@ import { ActivatedRoute } from '@angular/router';
     <ng-container *ngIf="router.data | async as data">
       <formly-example-viewer
         *ngFor="let exampleData of data.examples"
-        [type]="type"
+        [type]="data.type"
         [debugFields]="data.debugFields"
         [exampleData]="exampleData"
       >
       </formly-example-viewer>
     </ng-container>
   `,
+  standalone: true,
+  imports: [NgIf, NgFor, ExampleViewerComponent, AsyncPipe],
 })
 export class ExamplesRouterViewerComponent {
-  type;
-
-  constructor(public router: ActivatedRoute) {
-    let r = router;
-    while (!r.routeConfig.path) {
-      r = r.parent;
-    }
-
-    this.type = r.routeConfig.path;
-  }
+  constructor(public router: ActivatedRoute) {}
 }

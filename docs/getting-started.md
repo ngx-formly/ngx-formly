@@ -28,27 +28,19 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
     ```
     - replace `bootstrap` with one of the following available themes: `material`, `ionic`, `primeng`, `kendo`, `nativescript`.
 
-  Once installed, `FormlyModule` will be imported in the `AppModule`:
+  Once installed, import the config in the `app.config.ts`:
 
 ```patch
-import { AppComponent } from './app.component';
-+ import { ReactiveFormsModule } from '@angular/forms';
-+ import { FormlyModule } from '@ngx-formly/core';
-+ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+import { ApplicationConfig } from '@angular/core';
++ import { provideFormlyCore } from '@ngx-formly/core'
++ import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
 
-@NgModule({
-  imports: [
-    BrowserModule
-+   ReactiveFormsModule,
-+   FormlyModule.forRoot(),
-+   FormlyBootstrapModule
+export const appConfig: ApplicationConfig = {
+  providers: [
++   provideFormlyCore(withFormlyBootstrap()),
   ],
-  ...
-})
-export class AppModule { }
+};
 ```
-
-  The `forRoot()` call is required at the application's root level. The `forRoot()` method accepts a config argument where you can pass extra config, register custom field types, wrappers, extensions and validation.
 
 ### 2. add `<formly-form>` inside the `form` tag to your `AppComponent` template:
 
@@ -70,9 +62,9 @@ export class AppModule { }
 ### 3. Configure our defined form:
 
   ```ts
-  import {Component} from '@angular/core';
-  import {FormGroup} from '@angular/forms';
-  import {FormlyFieldConfig} from '@ngx-formly/core';
+  import { Component } from '@angular/core';
+  import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+  import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
   @Component({
     selector: 'app',
@@ -82,6 +74,7 @@ export class AppModule { }
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
     `,
+    imports: [ReactiveFormsModule, FormlyForm],
   })
   export class AppComponent {
     form = new FormGroup({});

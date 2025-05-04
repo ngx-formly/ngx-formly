@@ -1,5 +1,5 @@
-import { AppModule as SliderAppModule } from './app.module';
 import { AppComponent as SliderAppComponent } from './app.component';
+import { appConfig as SliderAppConfig } from './app.config';
 
 const SliderExampleConfig = {
   title: 'Slider type',
@@ -17,11 +17,11 @@ const SliderExampleConfig = {
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
     {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
+      file: 'app.config.ts',
+      content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
+      filecontent: require('!!raw-loader!./app.config.ts'),
     },
   ],
 };
 
-export { SliderAppModule, SliderAppComponent, SliderExampleConfig };
+export { SliderAppConfig, SliderAppComponent, SliderExampleConfig };

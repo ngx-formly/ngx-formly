@@ -1,5 +1,5 @@
-import { AppModule as DatepickerAppModule } from './app.module';
 import { AppComponent as DatepickerAppComponent } from './app.component';
+import { appConfig as DatepickerAppConfig } from './app.config';
 
 const DatepickerExampleConfig = {
   title: 'Datepicker type',
@@ -17,11 +17,11 @@ const DatepickerExampleConfig = {
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
     {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
+      file: 'app.config.ts',
+      content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
+      filecontent: require('!!raw-loader!./app.config.ts'),
     },
   ],
 };
 
-export { DatepickerAppModule, DatepickerAppComponent, DatepickerExampleConfig };
+export { DatepickerAppConfig, DatepickerAppComponent, DatepickerExampleConfig };

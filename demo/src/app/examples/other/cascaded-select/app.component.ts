@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { FormlyForm } from '@ngx-formly/core';
 
 interface Model {
   readonly player: string;
@@ -12,6 +13,8 @@ interface Model {
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {
   form = new UntypedFormGroup({});

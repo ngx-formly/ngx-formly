@@ -1,17 +1,43 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Location } from '@angular/common';
+import { Location, NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import APP_MENU from './app.menu.json';
 
 import { Subject } from 'rxjs';
+import { NgxLoadingBar } from '@ngx-loading-bar/core';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatAnchor, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 
 @Component({
   selector: 'formly-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    NgxLoadingBar,
+    MatToolbar,
+    MatAnchor,
+    RouterLink,
+    RouterLinkActive,
+    NgTemplateOutlet,
+    MatButton,
+    MatIcon,
+    NgFor,
+    MatSidenavContainer,
+    MatSidenav,
+    RouterOutlet,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    AsyncPipe,
+  ],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();

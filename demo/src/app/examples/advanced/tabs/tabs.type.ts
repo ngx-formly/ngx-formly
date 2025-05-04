@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { NgFor, NgIf } from '@angular/common';
+import { FormlyField } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-tabs',
@@ -16,6 +19,8 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
       </mat-tab>
     </mat-tab-group>
   `,
+  standalone: true,
+  imports: [MatTabGroup, NgFor, MatTab, FormlyField, NgIf],
 })
 export class FormlyFieldTabs extends FieldType {
   isValid(field: FormlyFieldConfig): boolean {
