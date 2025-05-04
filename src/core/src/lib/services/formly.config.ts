@@ -1,6 +1,6 @@
 import { Injectable, ComponentRef, Type } from '@angular/core';
 import { FieldType } from './../templates/field.type';
-import { reverseDeepMerge, defineHiddenProp } from './../utils';
+import { reverseDeepMerge } from './../utils';
 import {
   FormlyFieldConfig,
   FormlyFieldConfigCache,
@@ -41,8 +41,8 @@ export class FormlyConfig {
   };
   extensions: { [name: string]: FormlyExtension } = {};
   presets: { [name: string]: FormlyFieldConfig | FormlyFieldConfigPresetProvider } = {};
-
   private extensionsByPriority: Record<number, { [name: string]: FormlyExtension }> = {};
+  private componentRefs: Record<string, ComponentRef<FieldType>> = {};
 
   addConfig(config: ConfigOption | ConfigOption[]) {
     if (Array.isArray(config)) {
@@ -153,29 +153,35 @@ export class FormlyConfig {
 
   /** @ignore @internal */
   resolveFieldTypeRef(field: FormlyFieldConfigCache = {}): ComponentRef<FieldType> {
-    const type: TypeOption & { _componentRef?: ComponentRef<any> } = this.getType(field.type);
+    const type: TypeOption = this.getType(field.type);
     if (!type) {
       return null;
     }
 
-    if (!type.component || type._componentRef) {
-      return type._componentRef;
-    }
-
-    const { _viewContainerRef, _injector } = field.options;
-    if (!_viewContainerRef || !_injector) {
+    if (!type.component) {
       return null;
     }
 
-    const componentRef = _viewContainerRef.createComponent<FieldType>(type.component, { injector: _injector });
-    defineHiddenProp(type, '_componentRef', componentRef);
-    try {
-      componentRef.destroy();
-    } catch (e) {
-      console.error(`An error occurred while destroying the Formly component type "${field.type}"`, e);
+    if (!this.componentRefs[type.name]) {
+      const { _viewContainerRef, _injector } = field.options;
+      if (!_viewContainerRef || !_injector) {
+        return null;
+      }
+
+      const componentRef = _viewContainerRef.createComponent<FieldType>(type.component, { injector: _injector });
+      this.componentRefs[type.name] = componentRef;
+      try {
+        componentRef.destroy();
+      } catch (e) {
+        console.error(`An error occurred while destroying the Formly component type "${field.type}"`, e);
+      }
     }
 
-    return type._componentRef;
+    return this.componentRefs[type.name];
+  }
+  /** @ignore @internal */
+  clearRefs() {
+    this.componentRefs = {};
   }
 
   setWrapper(options: WrapperOption) {
