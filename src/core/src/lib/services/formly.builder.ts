@@ -83,11 +83,6 @@ export class FormlyFormBuilder {
     }
 
     if (!options.build) {
-      options._buildForm = () => {
-        console.warn(`Formly: 'options._buildForm' is deprecated since v6.0, use 'options.build' instead.`);
-        this.build(field);
-      };
-
       options.build = (f: FormlyFieldConfig = field) => {
         this.build(f);
 
