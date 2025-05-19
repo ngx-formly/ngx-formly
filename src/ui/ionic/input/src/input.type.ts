@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
+
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
@@ -15,6 +16,7 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       *ngIf="props.type !== 'number'; else numberTmp"
       [type]="props.type || 'text'"
       [label]="props.label"
+      [labelPlacement]="props.labelPosition"
       [formControl]="formControl"
       [ionFormlyAttributes]="field"
     ></ion-input>

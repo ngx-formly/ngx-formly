@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
@@ -16,6 +17,17 @@ export class AppComponent {
       type: 'range',
       props: {
         label: 'Range',
+        placeholder: 'Placeholder',
+        description: 'Description',
+        required: true,
+      },
+    },
+    {
+      key: 'Range-Stacked',
+      type: 'range',
+      props: {
+        label: 'Range (custom label position)',
+        labelPosition: 'stacked',
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
