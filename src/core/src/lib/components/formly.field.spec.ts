@@ -679,7 +679,10 @@ export class FormlyParentComponent extends FieldType {
   template: ` <ng-content></ng-content> `,
 })
 export class FormlyChildComponent extends FieldType {
-  constructor(@Optional() public parent: ParentService, @Optional() public wrapper: FormlyWrapperFormFieldAsync) {
+  constructor(
+    @Optional() public parent: ParentService,
+    @Optional() public wrapper: FormlyWrapperFormFieldAsync,
+  ) {
     super();
   }
 }

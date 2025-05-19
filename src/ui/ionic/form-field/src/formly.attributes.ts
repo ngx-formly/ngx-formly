@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Directive, ElementRef, Inject, Input, Renderer2 } from '@angular/core';
-import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
 
 @Directive({
   // eslint-disable-next-line
@@ -9,6 +9,7 @@ import { ɵFormlyAttributes as FormlyAttributes, FormlyFieldConfig } from '@ngx-
     '(ionFocus)': 'onFocus($event)',
     '(ionBlur)': 'onBlur($event)',
     '(ionChange)': 'onChange($event)',
+    '(ionInput)': 'onChange($event)',
   },
 })
 export class IonFormlyAttributes extends FormlyAttributes {

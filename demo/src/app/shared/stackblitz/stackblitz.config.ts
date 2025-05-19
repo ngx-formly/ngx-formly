@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { ExampleType } from '../example-viewer/example-viewer.component';
 
-export const COPYRIGHT = `Copyright 2021 Formly. All Rights Reserved.
+export const COPYRIGHT = `Copyright 2025 Formly. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
     can be found in the LICENSE file at https://github.com/ngx-formly/ngx-formly/blob/main/LICENSE`;
 
-export const angularVersion = '^14.0.0';
-export const formlyVersion = '^6.0.0';
+export const angularVersion = '^19.0.0';
+export const formlyVersion = '^7.0.0-next';
 
 export const dependencies: { [id: string]: { [id: string]: string } } = {
   core: {
@@ -14,23 +15,15 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/core': angularVersion,
     '@angular/forms': angularVersion,
     '@angular/platform-browser': angularVersion,
-    '@angular/platform-browser-dynamic': angularVersion,
     '@angular/animations': angularVersion,
     '@angular/router': angularVersion,
-    'core-js': '^3.19.1',
-    rxjs: '^7.0.0',
-    'zone.js': '~0.11.4',
+    rxjs: '^7.8.0',
+    'zone.js': '~0.15.0',
     tslib: '^2.3.1',
     '@ngx-formly/core': formlyVersion,
   },
-  bootstrap: {
-    '@ngx-formly/bootstrap': formlyVersion,
-    bootstrap: '^5.1.3',
-    '@popperjs/core': '*',
-  },
-  material: {
-    '@ngx-formly/material': formlyVersion,
-  },
+  bootstrap: { '@ngx-formly/bootstrap': formlyVersion, bootstrap: '^5.1.3', '@popperjs/core': '*' },
+  material: { '@ngx-formly/material': formlyVersion },
   kendo: {
     '@ngx-formly/kendo': formlyVersion,
     '@progress/kendo-angular-common': '^3.1.0',
@@ -49,38 +42,28 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@ngx-formly/primeng': formlyVersion,
     '@angular/router': angularVersion,
     '@angular/cdk': angularVersion,
-    primeflex: '3.1.0',
-    primeicons: '^5.0.0',
-    primeng: '^13.0.0',
+    primeflex: '^3.2.0',
+    primeicons: '^7.0.0',
+    primeng: '^19.0.0',
   },
-  ionic: {
-    '@ngx-formly/ionic': formlyVersion,
-    '@ionic/angular': '^6.0.1',
-    '@angular/router': angularVersion,
-  },
+  ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^6.0.1', '@angular/router': angularVersion },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
     '@angular/cdk': angularVersion,
-    'ng-zorro-antd': '^13.0.0',
+    'ng-zorro-antd': '^19.0.0',
   },
   // non UI framework libraries
-  'ag-grid': {
-    'ag-grid-angular': '*',
-    'ag-grid-community': '*',
-  },
-  'ngx-translate': {
-    '@ngx-translate/core': '*',
-    '@ngx-translate/http-loader': '*',
-  },
+  'ag-grid': { 'ag-grid-angular': '*', 'ag-grid-community': '*' },
+  'ngx-translate': { '@ngx-translate/core': '*', '@ngx-translate/http-loader': '*' },
 };
 
-export const ngModule: { [id: string]: string } = {
-  bootstrap: 'FormlyBootstrapModule',
-  material: 'FormlyMaterialModule',
-  kendo: 'FormlyKendoModule',
-  primeng: 'FormlyPrimeNGModule',
-  ionic: 'FormlyIonicModule',
-  'ng-zorro-antd': 'FormlyNgZorroAntdModule',
+export const ngProvider: { [id: string]: string } = {
+  bootstrap: 'withFormlyBootstrap',
+  material: 'withFormlyMaterial',
+  kendo: 'withFormlyFormlyKendo',
+  primeng: 'withFormlyFormlyPrimeNG',
+  ionic: 'withFormlyFormlyIonic',
+  'ng-zorro-antd': 'withFormlyFormlyNgZorroAntd',
 };
 
 export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
@@ -106,8 +89,6 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-@import "~primeng/resources/themes/saga-blue/theme.css";
-@import "~primeng/resources/primeng.min.css";
 @import "~primeflex/primeflex.css";
 @import "~primeicons/primeicons.css";
       `,

@@ -2,11 +2,11 @@ import { formatDate } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyDatePickerModule } from '@ngx-formly/primeng/datepicker';
+import { FormlyDatepickerModule } from '@ngx-formly/primeng/datepicker';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
-    imports: [FormlyDatePickerModule, BrowserAnimationsModule],
+    imports: [FormlyDatepickerModule, BrowserAnimationsModule],
   });
 };
 
@@ -31,7 +31,7 @@ describe('ui-primeng: Date Picker Type', () => {
       props: { required: true },
     });
 
-    const { classes } = query('p-calendar');
+    const { classes } = query('p-datepicker');
     expect(classes['ng-invalid']).toBeTrue();
   });
 
@@ -46,6 +46,6 @@ describe('ui-primeng: Date Picker Type', () => {
 
     field.formControl.setValue(new Date());
     detectChanges();
-    expect(query('p-calendar').componentInstance.inputFieldValue).toBe(formatDate(Date.now(), 'yyyy/MM/dd', 'en-US'));
+    expect(query('p-datepicker').componentInstance.inputFieldValue).toBe(formatDate(Date.now(), 'yyyy/MM/dd', 'en-US'));
   });
 });

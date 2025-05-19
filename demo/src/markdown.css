@@ -8,8 +8,9 @@ pre[class*='language-'] {
 }
 
 .markdown {
-  font-family: 'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Lucida Grande', 'Lucida Sans Unicode',
-    'Lucida Sans', 'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif;
+  font-family:
+    'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans',
+    'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif;
   padding: 20px;
 }
 .markdown a {
@@ -168,7 +169,8 @@ pre[class*='language-'] {
  */
 .github {
   padding: 20px;
-  font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Segoe UI',
+  font-family:
+    'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Segoe UI',
     AppleSDGothicNeo-Medium, 'Malgun Gothic', Arial, freesans, sans-serif;
   font-size: 15px;
   background: #ffffff;

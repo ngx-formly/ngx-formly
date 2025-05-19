@@ -54,7 +54,7 @@ export function createComponent<T>({
 
   type FixtureUtils = T & {
     fixture: ComponentFixture<T>;
-    detectChanges: typeof fixture['detectChanges'];
+    detectChanges: (typeof fixture)['detectChanges'];
     setInputs: (inputs: Partial<T>) => void;
     query: <E extends Element = Element>(selector: string) => IFormlyDebugElement<E>;
     queryAll: <E extends Element = Element>(selector: string) => IFormlyDebugElement<E>[];
@@ -112,6 +112,7 @@ export function createFieldComponent(
   selector: 'formly-test-component',
   template: '',
   providers: [FormlyFormBuilder],
+  standalone: false,
 })
 class TestComponent {
   constructor(public builder?: FormlyFormBuilder) {}

@@ -18,6 +18,7 @@ import { DOCUMENT } from '@angular/common';
  */
 @Directive({
   selector: '[formlyAttributes]',
+  standalone: true,
   host: {
     '(change)': 'onHostChange($event)',
   },
@@ -38,8 +39,8 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
    * Formly issue: https://github.com/ngx-formly/ngx-formly/issues/1991
    */
   private uiEvents = {
-    listeners: [] as Function[],
-    events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change'],
+    listeners: [] as (() => void)[],
+    events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change', 'wheel'],
     callback: (eventName: string, $event: any) => {
       switch (eventName) {
         case 'focus':
@@ -62,7 +63,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     return (this.field as FormlyFieldConfigCache)?.['_elementRefs'] || [];
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    @Inject(DOCUMENT) _document: any,
+  ) {
     this.document = _document;
   }
 
@@ -219,3 +224,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     this.renderer.removeAttribute(this.elementRef.nativeElement, attr);
   }
 }
+
+@Directive({
+  selector: '[formlyAttributes]',
+  host: {
+    '(change)': 'onHostChange($event)',
+  },
+})
+export class LegacyFormlyAttributes extends FormlyAttributes {}

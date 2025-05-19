@@ -99,7 +99,7 @@ describe('ui-ionic: Input Type', () => {
 
     const inputEl = query<HTMLInputElement>('ion-input').nativeElement;
     inputEl.value = 'foo';
-    query('ion-input').triggerEventHandler('ionChange', ɵCustomEvent(inputEl));
+    query('ion-input').triggerEventHandler('ionInput', ɵCustomEvent(inputEl));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
     expect(changeSpy).toHaveBeenCalledOnce();

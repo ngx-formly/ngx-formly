@@ -276,7 +276,7 @@ describe('FieldFormExtension', () => {
     });
 
     it('should enable previously disabled control', () => {
-      let { form } = buildField({
+      const { form } = buildField({
         fieldGroup: [
           {
             key: 'foo',

@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
+import { FormlyForm } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [

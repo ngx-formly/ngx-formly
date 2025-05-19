@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
       <div [innerHtml]="contnent.default"></div>
     </div>
   `,
+  standalone: true,
 })
 export class HomeComponent {
   contnent = require('!!raw-loader!!highlight-loader!markdown-loader!./../../../README.md');

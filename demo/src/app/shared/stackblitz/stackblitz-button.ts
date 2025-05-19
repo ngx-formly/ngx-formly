@@ -1,14 +1,16 @@
 import { Component, Input, NgModule } from '@angular/core';
 import { StackblitzWriter } from './stackblitz-writer';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
+import { MatIconModule, MatIcon } from '@angular/material/icon';
+import { MatTooltipModule, MatTooltip } from '@angular/material/tooltip';
 import { ExampleType } from '../example-viewer/example-viewer.component';
 
 @Component({
   selector: 'formly-stackblitz-button',
   templateUrl: './stackblitz-button.html',
   providers: [StackblitzWriter],
+  standalone: true,
+  imports: [MatIconButton, MatTooltip, MatIcon],
 })
 export class StackblitzButtonComponent {
   @Input() type: string;
@@ -22,9 +24,8 @@ export class StackblitzButtonComponent {
 }
 
 @NgModule({
-  imports: [MatTooltipModule, MatButtonModule, MatIconModule],
+  imports: [MatTooltipModule, MatButtonModule, MatIconModule, StackblitzButtonComponent],
   exports: [StackblitzButtonComponent],
-  declarations: [StackblitzButtonComponent],
   providers: [StackblitzWriter],
 })
 export class StackblitzButtonModule {}

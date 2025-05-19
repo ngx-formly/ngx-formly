@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
+import { NgIf, NgFor } from '@angular/common';
+import { FormlyField, FormlyValidationMessage } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-object-type',
@@ -13,5 +15,7 @@ import { FieldType } from '@ngx-formly/core';
       <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
     </div>
   `,
+  standalone: true,
+  imports: [NgIf, FormlyField, FormlyValidationMessage, NgFor],
 })
 export class ObjectTypeComponent extends FieldType {}

@@ -160,6 +160,7 @@ describe('FormlyAttributes Component', () => {
           keydown: jest.fn(),
           click: jest.fn(),
           keypress: jest.fn(),
+          wheel: jest.fn(),
         },
       });
 
@@ -175,6 +176,7 @@ describe('FormlyAttributes Component', () => {
       expectEventCall('keydown');
       expectEventCall('click');
       expectEventCall('keypress');
+      expectEventCall('wheel');
     });
   });
 

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FieldArrayType } from '@ngx-formly/core';
 import { FirstDataRenderedEvent, GridOptions, ColDef } from 'ag-grid-community';
 import { GridFormlyCellComponent } from './grid-formly-cell.component';
+import { NgStyle } from '@angular/common';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'formly-field-grid',
@@ -17,6 +19,8 @@ import { GridFormlyCellComponent } from './grid-formly-cell.component';
       </ag-grid-angular>
     </div>
   `,
+  standalone: true,
+  imports: [NgStyle, AgGridAngular],
 })
 export class GridTypeComponent extends FieldArrayType implements OnInit {
   gridOptions: GridOptions;

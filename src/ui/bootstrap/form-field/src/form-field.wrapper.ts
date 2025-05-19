@@ -17,7 +17,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </label>
     </ng-template>
 
-    <div class="mb-3" [class.form-floating]="props.labelPosition === 'floating'" [class.has-error]="showError">
+    <div [class.form-floating]="props.labelPosition === 'floating'" [class.has-error]="showError">
       <ng-container *ngIf="props.labelPosition !== 'floating'">
         <ng-container [ngTemplateOutlet]="labelTemplate"></ng-container>
       </ng-container>
@@ -39,5 +39,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       <small *ngIf="props.description" class="form-text text-muted">{{ props.description }}</small>
     </div>
   `,
+  styleUrls: ['./form-field.wrapper.scss'],
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

@@ -110,7 +110,10 @@ export class FormlyFieldDatepicker
   };
   private fieldErrorsObserver!: ReturnType<typeof observe>;
 
-  constructor(private config: FormlyConfig, private cdRef: ChangeDetectorRef) {
+  constructor(
+    private config: FormlyConfig,
+    private cdRef: ChangeDetectorRef,
+  ) {
     super();
   }
 

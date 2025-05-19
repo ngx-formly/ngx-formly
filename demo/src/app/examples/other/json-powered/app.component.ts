@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { UserService } from './user.service';
 
 import { takeUntil } from 'rxjs/operators';
@@ -9,10 +9,12 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent implements OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   options: FormlyFormOptions = {};
   model: any;
   fields: FormlyFieldConfig[];

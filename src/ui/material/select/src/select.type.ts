@@ -1,9 +1,8 @@
 import { Component, ChangeDetectionStrategy, Type, ViewChild } from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldTypeConfig, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
-import { ɵobserve as observe } from '@ngx-formly/core';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   multiple?: boolean;
@@ -46,7 +45,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [typeaheadDebounceInterval]="props.typeaheadDebounceInterval"
       [panelClass]="props.panelClass"
     >
-      <ng-container *ngIf="props.options | formlySelectOptions : field | async as selectOptions">
+      <ng-container *ngIf="props.options | formlySelectOptions: field | async as selectOptions">
         <ng-container
           *ngIf="props.multiple && props.selectAllOption"
           [ngTemplateOutlet]="selectAll"

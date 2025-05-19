@@ -1,4 +1,5 @@
-export { FormlyForm } from './components/formly.form';
+export { provideFormlyCore, provideFormlyConfig, FORMLY_CONFIG } from './core.config';
+export { LegacyFormlyForm, FormlyForm } from './components/formly.form';
 export {
   FormlyFieldConfig,
   FormlyTemplateOptions,
@@ -7,12 +8,12 @@ export {
   ConfigOption,
   FormlyExtension,
 } from './models';
-export { FormlyField } from './components/formly.field';
-export { FormlyAttributes as ɵFormlyAttributes } from './templates/formly.attributes';
+export { LegacyFormlyField, FormlyField } from './components/formly.field';
+export { LegacyFormlyAttributes, FormlyAttributes } from './templates/formly.attributes';
 export { FormlyGroup as ɵFormlyGroup } from './templates/formly.group';
 export { FormlyTemplate as ɵFormlyTemplate } from './components/formly.template';
-export { FormlyValidationMessage as ɵFormlyValidationMessage } from './templates/formly.validation-message';
-export { FORMLY_CONFIG, FormlyConfig } from './services/formly.config';
+export { LegacyFormlyValidationMessage, FormlyValidationMessage } from './templates/formly.validation-message';
+export { FormlyConfig } from './services/formly.config';
 export { FormlyFormBuilder } from './services/formly.builder';
 export { FieldType, FieldTypeConfig, FieldGroupTypeConfig } from './templates/field.type';
 export { FieldArrayType, FieldArrayTypeConfig } from './templates/field-array.type';

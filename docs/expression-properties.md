@@ -133,11 +133,11 @@ let fields: FormlyFieldConfig[] = [
 
 To preserve for all fields pass `false` to `resetFieldOnHide`:
 ```patch
-FormlyModule.forRoot({
+provideFormlyCore({
 + extras: {
 +   resetFieldOnHide: false,
 + },
-}),
+})
 ```
 
 :::

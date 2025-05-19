@@ -1,5 +1,5 @@
-import { AppModule as DatetimeAppModule } from './app.module';
 import { AppComponent as DatetimeAppComponent } from './app.component';
+import { appConfig as DatetimeAppConfig } from './app.config';
 
 const DatetimeExampleConfig = {
   title: 'Datetime type',
@@ -17,11 +17,11 @@ const DatetimeExampleConfig = {
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
     {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
+      file: 'app.config.ts',
+      content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
+      filecontent: require('!!raw-loader!./app.config.ts'),
     },
   ],
 };
 
-export { DatetimeAppModule, DatetimeAppComponent, DatetimeExampleConfig };
+export { DatetimeAppConfig, DatetimeAppComponent, DatetimeExampleConfig };

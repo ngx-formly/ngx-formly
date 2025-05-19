@@ -1,15 +1,14 @@
 import { Input, Directive, QueryList, ViewChildren } from '@angular/core';
-import { FormControl, NgControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, NgControl, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
-import { FieldWrapper } from './field.wrapper';
 
 export interface FieldTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
-  formControl: FormControl;
+  formControl: UntypedFormControl;
   props: NonNullable<T>;
 }
 
 export interface FieldGroupTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
-  formControl: FormGroup;
+  formControl: UntypedFormGroup;
   props: NonNullable<T>;
 }
 

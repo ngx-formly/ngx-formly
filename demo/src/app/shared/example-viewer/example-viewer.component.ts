@@ -12,8 +12,14 @@ import {
 } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { getExampleFiles } from './utils';
+import { NgIf, NgFor } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { StackblitzButtonComponent } from '../stackblitz/stackblitz-button';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
 
 export interface ExampleType {
   title: string;
@@ -28,6 +34,18 @@ export interface ExampleType {
   selector: 'formly-example-viewer',
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    FormlyForm,
+    StackblitzButtonComponent,
+    MatTabGroup,
+    NgFor,
+    MatTab,
+  ],
 })
 export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() type: string;
@@ -50,7 +68,10 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   showSource = false;
   showDebug = false;
 
-  constructor(private copier: CopierService, private componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor(
+    private copier: CopierService,
+    private componentFactoryResolver: ComponentFactoryResolver,
+  ) {}
 
   get model() {
     const model = JSON.stringify(this.demoComponentRef.instance.model);

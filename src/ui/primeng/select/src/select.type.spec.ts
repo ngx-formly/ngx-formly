@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/primeng/select';
-import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -11,7 +11,7 @@ const renderComponent = (field: FormlyFieldConfig) => {
 
 describe('ui-primeng: Select Type', () => {
   it('should render select type', () => {
-    const { query, queryAll } = renderComponent({
+    const { query, queryAll, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
       props: {
@@ -26,12 +26,13 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
-    expect(queryAll('p-dropdownItem')).toHaveLength(3);
+    query('p-select').componentInstance.show(true);
+    detectChanges();
+    expect(queryAll('p-selectItem')).toHaveLength(3);
   });
 
   it('should render enum type', () => {
-    const { query, queryAll } = renderComponent({
+    const { query, queryAll, detectChanges } = renderComponent({
       key: 'name',
       type: 'enum',
       props: {
@@ -46,13 +47,14 @@ describe('ui-primeng: Select Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
-    expect(queryAll('p-dropdownItem')).toHaveLength(3);
+    query('p-select').componentInstance.show(true);
+    detectChanges();
+    expect(queryAll('p-selectItem')).toHaveLength(3);
   });
 
   it('should bind control value on change', () => {
     const changeSpy = jest.fn();
-    const { query, queryAll, field } = renderComponent({
+    const { query, queryAll, detectChanges, field } = renderComponent({
       key: 'name',
       type: 'select',
       props: {
@@ -64,14 +66,15 @@ describe('ui-primeng: Select Type', () => {
       },
     });
 
-    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
-    queryAll('p-dropdownItem>li')[1].triggerEventHandler('click', {});
+    query('p-select').componentInstance.show(true);
+    detectChanges();
+    queryAll('p-selectItem>li')[1].triggerEventHandler('click', {});
     expect(field.formControl.value).toEqual(2);
     expect(changeSpy).toHaveBeenCalledOnce();
   });
 
   it('should filter results on search', () => {
-    const { query, queryAll, fixture } = renderComponent({
+    const { query, queryAll, detectChanges } = renderComponent({
       key: 'name',
       type: 'enum',
       props: {
@@ -86,14 +89,14 @@ describe('ui-primeng: Select Type', () => {
     });
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
-    const inputQuery = 'p-dropdown input.p-dropdown-filter';
+    query('p-select').componentInstance.show(true);
+    detectChanges();
+    expect(queryAll('p-selectItem')).toHaveLength(3);
 
-    query('p-dropdown div').triggerEventHandler('click', ɵCustomEvent({ isSameNode: () => false }));
-    expect(queryAll('p-dropdownItem')).toHaveLength(3);
-
+    const inputQuery = 'p-select input.p-select-filter';
     query(inputQuery).triggerEventHandler('input', { target: { value: 'pie' } });
-    fixture.detectChanges();
-    expect(queryAll('p-dropdownItem')).toHaveLength(2);
-    expect(queryAll('p-dropdownItem>li')[0].nativeElement.textContent).toEqual('apple-pie label');
+    detectChanges();
+    expect(queryAll('p-selectItem')).toHaveLength(2);
+    expect(queryAll('p-selectItem>li')[0].nativeElement.textContent).toEqual('apple-pie label');
   });
 });

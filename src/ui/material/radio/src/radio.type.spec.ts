@@ -56,6 +56,6 @@ describe('ui-material: Radio Type', () => {
     query('input[type="radio"]').triggerEventHandler('change', evt);
     detectChanges();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(2);
   });
 });

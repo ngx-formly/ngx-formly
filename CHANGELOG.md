@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0-next.0](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-alpha.1...v7.0.0-next.0) (2025-05-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **core:** Deprecated `FormlyFormOptions` methods has been removed: `_markForCheck`, `_buildForm` and `_markForCheck`.
+
+### Features
+
+* **core:** remove deprecated options methods ([#4086](https://github.com/ngx-formly/ngx-formly/issues/4086)) ([1cbd47c](https://github.com/ngx-formly/ngx-formly/commit/1cbd47c1fe9bf91c3bfbff7add6a8215b2bc19c8))
+
+
+### Bug Fixes
+
+* **core:** clear component refs on FormlyForm destroy ([#4085](https://github.com/ngx-formly/ngx-formly/issues/4085)) ([06ac47e](https://github.com/ngx-formly/ngx-formly/commit/06ac47e651d76c72b469803f7887f054e0a9b61a)), closes [#4081](https://github.com/ngx-formly/ngx-formly/issues/4081)
+* **core:** non-published preset provider ([#4064](https://github.com/ngx-formly/ngx-formly/issues/4064)) ([8302480](https://github.com/ngx-formly/ngx-formly/commit/830248065f739d8b0a0a2e8a008215d63e4f07aa))
+* **core:** overwrite valueChanges without losing pipes when debounce ([2ad0ec0](https://github.com/ngx-formly/ngx-formly/commit/2ad0ec08bb06894b0f22c251ed9c257c75b3c0ac))
+* **primeng:** resolved typo with label ([#4074](https://github.com/ngx-formly/ngx-formly/issues/4074)) ([9ceeb10](https://github.com/ngx-formly/ngx-formly/commit/9ceeb1041a9dcacf3f535b81bb381943f62e2232))
+
+## [7.0.0-alpha.1](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-alpha.0...v7.0.0-alpha.1) (2025-02-23)
+
+
+### Features
+
+* **core:** update to angular 17 ([3c0c566](https://github.com/ngx-formly/ngx-formly/commit/3c0c566ea84a72a518b9dfe091a12b3d48a2ee82))
+* **core:** update to angular 18 ([4d68441](https://github.com/ngx-formly/ngx-formly/commit/4d68441e7dd8ed34436d0d9b9c3e24a031fabe3e)), closes [#4041](https://github.com/ngx-formly/ngx-formly/issues/4041) [#4037](https://github.com/ngx-formly/ngx-formly/issues/4037) [#4024](https://github.com/ngx-formly/ngx-formly/issues/4024)
+
+## [7.0.0-alpha.0](https://github.com/ngx-formly/ngx-formly/compare/v6.3.11...v7.0.0-alpha.0) (2024-11-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **bootstrap:** `formly-wrapper-form-field` selector has the following margin `margin-bottom: 1rem;`.
+* **core:** The library now requires Angular 16
+
+### Features
+
+* **bootstrap:** remove usage of !important in wrapper styling ([77239cb](https://github.com/ngx-formly/ngx-formly/commit/77239cb3aedd454016d41ba8b72ff25a532850ae)), closes [#3658](https://github.com/ngx-formly/ngx-formly/issues/3658)
+* **core:** support input wheel event ([#4017](https://github.com/ngx-formly/ngx-formly/issues/4017)) ([3047c69](https://github.com/ngx-formly/ngx-formly/commit/3047c69cededbac900c9b8ecc2204f1175154dbc))
+* **core:** support standalone components ([e5ba94a](https://github.com/ngx-formly/ngx-formly/commit/e5ba94a16420728be70654ec5a7c62e30046799e))
+* **core:** update to angular 16 ([9460610](https://github.com/ngx-formly/ngx-formly/commit/9460610ba69b19155cfbfda10fb727ec59adc5cb)), closes [#3811](https://github.com/ngx-formly/ngx-formly/issues/3811)
+
 ### [6.3.12](https://github.com/ngx-formly/ngx-formly/compare/v6.3.11...v6.3.12) (2024-12-08)
 
 

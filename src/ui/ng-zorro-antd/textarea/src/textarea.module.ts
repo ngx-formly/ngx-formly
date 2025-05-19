@@ -7,6 +7,7 @@ import { FormlyNzFormFieldModule } from '@ngx-formly/ng-zorro-antd/form-field';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { FormlyFieldTextArea } from './textarea.type';
+import { withFormlyFieldTextArea } from './textarea.config';
 
 @NgModule({
   declarations: [FormlyFieldTextArea],
@@ -16,15 +17,7 @@ import { FormlyFieldTextArea } from './textarea.type';
     NzInputModule,
 
     FormlyNzFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'textarea',
-          component: FormlyFieldTextArea,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldTextArea()),
   ],
 })
 export class FormlyNzTextAreaModule {}

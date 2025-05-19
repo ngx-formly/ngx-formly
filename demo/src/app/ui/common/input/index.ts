@@ -1,4 +1,3 @@
-import { AppModule as InputAppModule } from './app.module';
 import { AppComponent as InputAppComponent } from './app.component';
 
 const InputExampleConfig = {
@@ -16,12 +15,7 @@ const InputExampleConfig = {
       content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
-    {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
-    },
   ],
 };
 
-export { InputAppModule, InputAppComponent, InputExampleConfig };
+export { InputAppComponent, InputExampleConfig };

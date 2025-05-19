@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
-import { FieldTypeConfig } from '@ngx-formly/core';
+import { FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
+import { MatInput } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'formly-autocomplete-type',
@@ -21,6 +26,17 @@ import { startWith, switchMap } from 'rxjs/operators';
       </mat-option>
     </mat-autocomplete>
   `,
+  standalone: true,
+  imports: [
+    MatInput,
+    MatAutocompleteTrigger,
+    ReactiveFormsModule,
+    FormlyAttributes,
+    MatAutocomplete,
+    NgFor,
+    MatOption,
+    AsyncPipe,
+  ],
 })
 export class AutocompleteTypeComponent extends FieldType<FieldTypeConfig> implements OnInit {
   filter: Observable<any>;

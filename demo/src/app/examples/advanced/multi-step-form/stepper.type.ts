@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
+import { MatStepper, MatStep, MatStepLabel, MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
+import { NgFor, NgIf } from '@angular/common';
+import { FormlyField } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-stepper',
@@ -21,6 +24,8 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
       </mat-step>
     </mat-horizontal-stepper>
   `,
+  standalone: true,
+  imports: [MatStepper, NgFor, MatStep, MatStepLabel, FormlyField, NgIf, MatStepperPrevious, MatStepperNext],
 })
 export class FormlyFieldStepper extends FieldType {
   isValid(field: FormlyFieldConfig): boolean {
