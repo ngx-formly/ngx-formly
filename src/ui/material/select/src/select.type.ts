@@ -45,22 +45,25 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [typeaheadDebounceInterval]="props.typeaheadDebounceInterval"
       [panelClass]="props.panelClass"
     >
-      <ng-container *ngIf="props.options | formlySelectOptions: field | async as selectOptions">
-        <ng-container
-          *ngIf="props.multiple && props.selectAllOption"
-          [ngTemplateOutlet]="selectAll"
-          [ngTemplateOutletContext]="{ selectOptions: selectOptions }"
-        >
-        </ng-container>
-        <ng-container *ngFor="let item of selectOptions">
-          <mat-optgroup *ngIf="item.group" [label]="item.label">
-            <mat-option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
-              {{ child.label }}
-            </mat-option>
-          </mat-optgroup>
-          <mat-option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</mat-option>
-        </ng-container>
-      </ng-container>
+      @if (props.options | formlySelectOptions: field | async; as selectOptions) {
+        @if (props.multiple && props.selectAllOption) {
+          <ng-container [ngTemplateOutlet]="selectAll" [ngTemplateOutletContext]="{ selectOptions: selectOptions }">
+          </ng-container>
+        }
+        @for (item of selectOptions; track $index) {
+          @if (item.group) {
+            <mat-optgroup [label]="item.label">
+              @for (child of item.group; track $index) {
+                <mat-option [value]="child.value" [disabled]="child.disabled">
+                  {{ child.label }}
+                </mat-option>
+              }
+            </mat-optgroup>
+          } @else {
+            <mat-option [value]="item.value" [disabled]="item.disabled">{{ item.label }}</mat-option>
+          }
+        }
+      }
     </mat-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -36,12 +36,9 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
       [labelPosition]="props.labelPosition"
     >
       {{ props.label }}
-      <span
-        *ngIf="props.required && props.hideRequiredMarker !== true"
-        aria-hidden="true"
-        class="mat-form-field-required-marker mat-mdc-form-field-required-marker"
-        >*</span
-      >
+      @if (props.required && props.hideRequiredMarker !== true) {
+        <span aria-hidden="true" class="mat-form-field-required-marker mat-mdc-form-field-required-marker">*</span>
+      }
     </mat-checkbox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

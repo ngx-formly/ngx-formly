@@ -20,16 +20,17 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
       [required]="required"
       [tabindex]="props.tabindex"
     >
-      <mat-radio-button
-        *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index"
-        [id]="id + '_' + i"
-        [color]="props.color"
-        [labelPosition]="props.labelPosition"
-        [disabled]="option.disabled"
-        [value]="option.value"
-      >
-        {{ option.label }}
-      </mat-radio-button>
+      @for (option of props.options | formlySelectOptions: field | async; track $index; let i = $index) {
+        <mat-radio-button
+          [id]="id + '_' + i"
+          [color]="props.color"
+          [labelPosition]="props.labelPosition"
+          [disabled]="option.disabled"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </mat-radio-button>
+      }
     </mat-radio-group>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
