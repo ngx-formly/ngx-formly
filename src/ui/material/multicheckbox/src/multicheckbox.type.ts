@@ -14,7 +14,7 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
 @Component({
   selector: 'formly-field-mat-multicheckbox',
   template: `
-    <ng-container *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index">
+    @for (option of props.options | formlySelectOptions: field | async; track $index; let i = $index) {
       <mat-checkbox
         [id]="id + '_' + i"
         [formlyAttributes]="field"
@@ -27,7 +27,7 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
       >
         {{ option.label }}
       </mat-checkbox>
-    </ng-container>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

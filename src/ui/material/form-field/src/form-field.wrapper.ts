@@ -52,52 +52,72 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       [color]="props.color ?? 'primary'"
     >
       <ng-container #fieldComponent></ng-container>
-      <mat-label *ngIf="props.label && props.hideLabel !== true">
-        {{ props.label }}
-        <span
-          *ngIf="props.required && props.hideRequiredMarker !== true"
-          aria-hidden="true"
-          class="mat-form-field-required-marker mat-mdc-form-field-required-marker"
-          >*</span
-        >
-      </mat-label>
+      @if (props.label && props.hideLabel !== true) {
+        <mat-label>
+          {{ props.label }}
+          @if (props.required && props.hideRequiredMarker !== true) {
+            <span aria-hidden="true" class="mat-form-field-required-marker mat-mdc-form-field-required-marker">*</span>
+          }
+        </mat-label>
+      }
 
-      <ng-container matTextPrefix *ngIf="props.textPrefix">
-        <ng-container [ngTemplateOutlet]="props.textPrefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-container>
+      @if (props.textPrefix) {
+        <ng-container
+          matTextPrefix
+          [ngTemplateOutlet]="props.textPrefix"
+          [ngTemplateOutletContext]="{ field: field }"
+        ></ng-container>
+      }
 
-      <ng-container matPrefix *ngIf="props.prefix">
-        <ng-container [ngTemplateOutlet]="props.prefix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-container>
+      @if (props.prefix) {
+        <ng-container
+          matPrefix
+          [ngTemplateOutlet]="props.prefix"
+          [ngTemplateOutletContext]="{ field: field }"
+        ></ng-container>
+      }
 
-      <ng-container matTextSuffix *ngIf="props.textSuffix">
-        <ng-container [ngTemplateOutlet]="props.textSuffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-container>
+      @if (props.textSuffix) {
+        <ng-container
+          matTextSuffix
+          [ngTemplateOutlet]="props.textSuffix"
+          [ngTemplateOutletContext]="{ field: field }"
+        ></ng-container>
+      }
 
-      <ng-container matSuffix *ngIf="props.suffix">
-        <ng-container [ngTemplateOutlet]="props.suffix" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-container>
+      @if (props.suffix) {
+        <ng-container
+          matSuffix
+          [ngTemplateOutlet]="props.suffix"
+          [ngTemplateOutletContext]="{ field: field }"
+        ></ng-container>
+      }
 
       <mat-error>
         <formly-validation-message [field]="field"></formly-validation-message>
       </mat-error>
 
-      <mat-hint *ngIf="props.description || props.hintStart as hint">
-        <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hint }">
-        </ng-container>
-      </mat-hint>
+      @if (props.description || props.hintStart; as hint) {
+        <mat-hint>
+          <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hint }">
+          </ng-container>
+        </mat-hint>
+      }
 
-      <mat-hint *ngIf="props.hintEnd as hintEnd" align="end">
-        <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hintEnd }">
-        </ng-container>
-      </mat-hint>
+      @if (props.hintEnd; as hintEnd) {
+        <mat-hint align="end">
+          <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hintEnd }">
+          </ng-container>
+        </mat-hint>
+      }
     </mat-form-field>
 
     <ng-template #stringOrTemplate let-content="content">
-      <ng-container *ngIf="!content.createEmbeddedView; else template">{{ content }}</ng-container>
-      <ng-template #template>
+      @if (!content.createEmbeddedView) {
+        {{ content }}
+      } @else {
         <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{ field: field }"></ng-container>
-      </ng-template>
+      }
     </ng-template>
   `,
   styleUrls: ['./form-field.wrapper.scss'],

@@ -15,9 +15,9 @@ export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
   template: `
     <label [attr.for]="id">{{ props.label }}</label>
     <ng-template #fieldComponent></ng-template>
-    <ng-container *ngIf="showError">
+    @if (showError) {
       <formly-validation-message [field]="field"></formly-validation-message>
-    </ng-container>
+    }
   `,
   standalone: false,
 })
