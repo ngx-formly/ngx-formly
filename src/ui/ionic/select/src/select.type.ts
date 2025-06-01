@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
+
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   compareWith?: ((currentValue: any, compareValue: any) => boolean) | null | string | undefined;
@@ -31,6 +32,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [okText]="props.okText"
         [cancelText]="props.cancelText"
         [label]="props.label"
+        [labelPlacement]="props.labelPosition"
       >
         <ion-select-option *ngFor="let option of selectOptions" [value]="option.value" [disabled]="option.disabled">
           {{ option.label }}
