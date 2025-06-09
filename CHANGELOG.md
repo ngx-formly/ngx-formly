@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-next.0...v7.0.0) (2025-06-09)
+
+
+### Features
+
+* **ionic:** implement ionic labelPlacement prop ([#4090](https://github.com/ngx-formly/ngx-formly/issues/4090)) ([55cf088](https://github.com/ngx-formly/ngx-formly/commit/55cf0880222869a27c52a364b7123ef4e4dd04b6)), closes [#4089](https://github.com/ngx-formly/ngx-formly/issues/4089)
+
 ## [7.0.0-next.0](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-alpha.1...v7.0.0-next.0) (2025-05-04)
 
 
