@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - ISSUE-PUBLIC-TAG
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          # Setup .npmrc file to publish to npm
+          registry-url: 'https://registry.npmjs.org'
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: npm publish
+        run: npm run publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

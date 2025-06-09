@@ -1,7 +1,5 @@
 import { PACKAGES, exec } from './util';
 
 PACKAGES.forEach((name) => {
-  const pkgPath = `${__dirname}/../dist/@ngx-formly/${name}`;
-
-  exec(`cd ${pkgPath} && npm publish --access public`);
+  exec(`npm dist-tag add @ngx-formly/${name}@7.0.0 latest`);
 });
