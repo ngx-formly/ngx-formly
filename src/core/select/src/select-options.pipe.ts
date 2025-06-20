@@ -15,6 +15,7 @@ export interface FormlyFieldSelectProps extends FormlyFieldProps {
   labelProp?: string | ((option: any) => string);
   valueProp?: string | ((option: any) => any);
   disabledProp?: string | ((option: any) => boolean);
+  mapProp?: ((option: any) => FormlySelectOption | any);
 }
 
 type ITransformOption = {
@@ -22,6 +23,7 @@ type ITransformOption = {
   valueProp: (option: any) => any;
   disabledProp: (option: any) => boolean;
   groupProp: (option: any) => string;
+  mapProp?: ((option: any) => FormlySelectOption | any)
 };
 
 @Pipe({ name: 'formlySelectOptions', standalone: true })
@@ -29,7 +31,7 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   private _subscription: Subscription;
   private _options: BehaviorSubject<any[]>;
 
-  transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[]> {
+  transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[] | any[]> {
     if (!(options instanceof Observable)) {
       options = this.observableOf(options, field);
     } else {
@@ -43,23 +45,29 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
     this.dispose();
   }
 
-  private transformOptions(options: any[], field?: FormlyFieldConfig): FormlySelectOption[] {
+  private transformOptions(options: any[], field?: FormlyFieldConfig): FormlySelectOption[] | any[] {
     const to = this.transformSelectProps(field);
 
-    const opts: FormlySelectOption[] = [];
+    const opts: FormlySelectOption[] | any[] = [];
     const groups: { [id: string]: number } = {};
 
     options?.forEach((option) => {
-      const o = this.transformOption(option, to);
-      if (o.group) {
-        const id = groups[o.label];
-        if (id === undefined) {
-          groups[o.label] = opts.push(o) - 1;
+      if (to.mapProp) {
+        const mapped = to.mapProp(option);
+        opts.push(mapped);
+      }
+      else {
+        const o = this.transformOption(option, to);
+        if (o.group) {
+          const id = groups[o.label];
+          if (id === undefined) {
+            groups[o.label] = opts.push(o) - 1;
+          } else {
+            o.group.forEach((o) => opts[id].group.push(o));
+          }
         } else {
-          o.group.forEach((o) => opts[id].group.push(o));
+          opts.push(o);
         }
-      } else {
-        opts.push(o);
       }
     });
 
@@ -97,6 +105,7 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
       labelProp: selectPropFn(props.labelProp || 'label'),
       valueProp: selectPropFn(props.valueProp || 'value'),
       disabledProp: selectPropFn(props.disabledProp || 'disabled'),
+      mapProp: props.mapProp,
     };
   }
 
