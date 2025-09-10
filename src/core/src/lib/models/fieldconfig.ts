@@ -222,6 +222,7 @@ export interface FormlyFieldProps {
   hidden?: boolean;
   max?: number;
   min?: number;
+  multiple?: boolean;
 
   minLength?: number;
   /** @deprecated use `minLength` */
