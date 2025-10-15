@@ -36,6 +36,7 @@ export class AppComponent implements OnDestroy {
     'anyOf',
     'oneOf',
     'select_alternatives',
+    'if_then_else',
   ];
 
   constructor(

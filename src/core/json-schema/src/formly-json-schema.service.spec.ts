@@ -650,6 +650,141 @@ describe('Service: FormlyJsonschema', () => {
           });
         });
       });
+
+      describe('if/then/else', () => {
+        it('should display conditional fields based on if/then', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              status: { type: 'string', enum: ['FLAG_CONTROLLED', 'ENABLED', 'DISABLED'] },
+            },
+            required: ['status'],
+            if: { properties: { status: { const: 'FLAG_CONTROLLED' } } },
+            then: {
+              properties: {
+                flags: { type: 'string' },
+              },
+              required: ['flags'],
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          expect(config.fieldGroup.length).toBe(2); // status field + conditional group
+
+          const conditionalGroup = config.fieldGroup[1];
+          expect(conditionalGroup.fieldGroup).toBeDefined();
+          expect(conditionalGroup.fieldGroup.length).toBe(1);
+          expect(conditionalGroup.fieldGroup[0].key).toBe('flags');
+          expect(conditionalGroup.expressions.hide).toBeDefined();
+
+          const hideExpr = conditionalGroup.expressions.hide as any;
+          expect(hideExpr({ model: { status: 'FLAG_CONTROLLED' } })).toBeFalse();
+          expect(hideExpr({ model: { status: 'ENABLED' } })).toBeTrue();
+          expect(hideExpr({ model: { status: 'DISABLED' } })).toBeTrue();
+        });
+
+        it('should display conditional fields based on if/else', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              type: { type: 'string', enum: ['A', 'B'] },
+            },
+            required: ['type'],
+            if: { properties: { type: { const: 'A' } } },
+            else: {
+              properties: {
+                optionB: { type: 'string' },
+              },
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          expect(config.fieldGroup.length).toBe(2); // type field + conditional group
+
+          const conditionalGroup = config.fieldGroup[1];
+          expect(conditionalGroup.fieldGroup).toBeDefined();
+          expect(conditionalGroup.fieldGroup.length).toBe(1);
+          expect(conditionalGroup.fieldGroup[0].key).toBe('optionB');
+
+          const hideExpr = conditionalGroup.expressions.hide as any;
+          expect(hideExpr({ model: { type: 'A' } })).toBeTrue(); // else is hidden when if is true
+          expect(hideExpr({ model: { type: 'B' } })).toBeFalse(); // else is shown when if is false
+        });
+
+        it('should handle multiple conditional properties in then', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              enabled: { type: 'boolean' },
+            },
+            if: { properties: { enabled: { const: true } } },
+            then: {
+              properties: {
+                option1: { type: 'string' },
+                option2: { type: 'number' },
+              },
+              required: ['option1'],
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          const conditionalGroup = config.fieldGroup[1];
+          expect(conditionalGroup.fieldGroup.length).toBe(2);
+          expect(conditionalGroup.fieldGroup[0].key).toBe('option1');
+          expect(conditionalGroup.fieldGroup[1].key).toBe('option2');
+        });
+
+        it('should handle if/then/else together (different fields for each branch)', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              street_address: { type: 'string' },
+              country: {
+                type: 'string',
+                default: 'United States of America',
+                enum: ['United States of America', 'Canada', 'Other'],
+              },
+            },
+            if: { properties: { country: { const: 'United States of America' } } },
+            then: {
+              properties: {
+                zipcode: { type: 'string', pattern: '[0-9]{5}(-[0-9]{4})?' },
+              },
+            },
+            else: {
+              properties: {
+                postal_code: { type: 'string', pattern: '[A-Z][0-9][A-Z] [0-9][A-Z][0-9]' },
+              },
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          // Should have: street_address, country, then-group, else-group
+          expect(config.fieldGroup.length).toBe(4);
+
+          const thenGroup = config.fieldGroup[2];
+          expect(thenGroup.fieldGroup).toBeDefined();
+          expect(thenGroup.fieldGroup.length).toBe(1);
+          expect(thenGroup.fieldGroup[0].key).toBe('zipcode');
+
+          const elseGroup = config.fieldGroup[3];
+          expect(elseGroup.fieldGroup).toBeDefined();
+          expect(elseGroup.fieldGroup.length).toBe(1);
+          expect(elseGroup.fieldGroup[0].key).toBe('postal_code');
+
+          // Test then condition (zipcode shown when USA, hidden otherwise)
+          const thenHideExpr = thenGroup.expressions.hide as any;
+          expect(thenHideExpr({ model: { country: 'United States of America' } })).toBeFalse();
+          expect(thenHideExpr({ model: { country: 'Canada' } })).toBeTrue();
+          expect(thenHideExpr({ model: { country: 'Other' } })).toBeTrue();
+
+          // Test else condition (postal_code hidden when USA, shown otherwise)
+          const elseHideExpr = elseGroup.expressions.hide as any;
+          expect(elseHideExpr({ model: { country: 'United States of America' } })).toBeTrue();
+          expect(elseHideExpr({ model: { country: 'Canada' } })).toBeFalse();
+          expect(elseHideExpr({ model: { country: 'Other' } })).toBeFalse();
+        });
+      });
     });
 
     // https://json-schema.org/latest/json-schema-validation.html#general
