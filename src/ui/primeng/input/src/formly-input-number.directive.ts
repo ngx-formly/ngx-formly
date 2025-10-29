@@ -2,14 +2,21 @@ import { DestroyRef, Directive, ElementRef, inject, Input, OnInit } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { EMPTY } from 'rxjs';
+import { EMPTY, distinctUntilChanged } from 'rxjs';
 
 /**
- * Fix PrimeNG p-inputNumber marking control dirty on blur without user input.
- * Import only in your PrimeNG input-number Formly type.
+ * Directive to fix PrimeNG p-inputNumber marking control dirty on blur without user input.
+ *
+ * @description
+ * PrimeNG's InputNumber component internally normalizes values on blur (e.g., undefined → null),
+ * which triggers change events even when the user hasn't interacted with the field.
+ * This directive tracks actual user interaction and prevents the control from being
+ * incorrectly marked as dirty.
+ *
+ * @see https://github.com/ngx-formly/ngx-formly/issues/4142
  */
 @Directive({
-  selector: 'p-inputnumber[formControlName], p-inputnumber[formControl], p-inputnumber[formlyAttributes]',
+  selector: 'p-inputnumber[formlyAttributes]',
   standalone: true,
 })
 export class FormlyInputNumberDirective implements OnInit {
@@ -28,7 +35,9 @@ export class FormlyInputNumberDirective implements OnInit {
 
   ngOnInit(): void {
     this.control = this.formlyAttributes?.formControl;
-    if (!this.control) return;
+    if (!this.control) {
+      return;
+    }
 
     this.initLastValue();
     this.subscribeToChanges();
@@ -36,20 +45,17 @@ export class FormlyInputNumberDirective implements OnInit {
   }
 
   private initLastValue(): void {
-    this.lastValue = this.toNumber(this.control.value);
+    this.lastValue = this.toNumber(this.control?.value);
   }
 
   private subscribeToChanges(): void {
-    this.changes$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((newValue: unknown) => {
+    this.changes$.pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef)).subscribe((newValue: unknown) => {
       const newNumericValue = this.toNumber(newValue);
       const isSameValue = this.areEqual(this.lastValue, newNumericValue);
 
       if (isSameValue && this.control.dirty && !this.userInteracted) {
         this.control.markAsPristine();
-      }
-
-      if (this.control.pristine && !isSameValue && this.userInteracted) {
-        this.control.markAsDirty();
+        console.log('Control marked as pristine due to no user interaction');
       }
 
       this.lastValue = newNumericValue;
@@ -58,14 +64,20 @@ export class FormlyInputNumberDirective implements OnInit {
 
   private registerListeners(): void {
     const inputEl = this.el.nativeElement as HTMLInputElement;
+
     const markAsInteracted = () => (this.userInteracted = true);
 
+    const resetInteraction = () => {
+      this.lastValue = this.toNumber(this.control?.value);
+      this.userInteracted = false;
+    };
+
     inputEl.addEventListener('input', markAsInteracted);
-    inputEl.addEventListener('focus', markAsInteracted);
+    inputEl.addEventListener('focus', resetInteraction);
 
     this.destroyRef.onDestroy(() => {
       inputEl.removeEventListener('input', markAsInteracted);
-      inputEl.removeEventListener('focus', markAsInteracted);
+      inputEl.removeEventListener('focus', resetInteraction);
     });
   }
 
@@ -79,14 +91,6 @@ export class FormlyInputNumberDirective implements OnInit {
   }
 
   private areEqual(a: number | null, b: number | null): boolean {
-    if (a === b) {
-      return true;
-    }
-
-    if (a == null && b == null) {
-      return true;
-    }
-
-    return a === b;
+    return a === b || (a == null && b == null);
   }
 }
