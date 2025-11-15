@@ -6,7 +6,9 @@ interface DatepickerProps extends FormlyFieldProps {
   defaultDate?: Date;
   dateFormat?: string;
   hourFormat?: string;
+  showClear?: boolean;
   showTime?: boolean;
+  showSeconds?: boolean;
   showIcon?: boolean;
   showButtonBar?: boolean;
   showOtherMonths?: boolean;
@@ -19,6 +21,10 @@ interface DatepickerProps extends FormlyFieldProps {
   monthNavigator?: boolean;
   yearNavigator?: boolean;
   yearRange?: string;
+  stepSecond?: number;
+  stepHour?: number;
+  stepMinute?: number;
+  appendTo?: string;
 }
 
 export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<DatepickerProps> {
@@ -29,6 +35,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
   selector: 'formly-field-primeng-datepicker',
   template: `
     <p-datepicker
+      [appendTo]="props.appendTo"
       [defaultDate]="props.defaultDate"
       [dateFormat]="props.dateFormat"
       [hourFormat]="props.hourFormat"
@@ -38,6 +45,11 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
       [showOtherMonths]="props.showOtherMonths"
       [selectOtherMonths]="props.selectOtherMonths"
       [selectionMode]="props.selectionMode || 'single'"
+      [stepMinute]="props.stepMinute"
+      [stepHour]="props.stepHour"
+      [stepSecond]="props.stepSecond"
+      [showSeconds]="props.showSeconds"
+      [showClear]="props.showClear"
       [numberOfMonths]="props.numberOfMonths"
       [inline]="props.inline"
       [readonlyInput]="props.readonlyInput"
