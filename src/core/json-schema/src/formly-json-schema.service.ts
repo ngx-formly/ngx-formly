@@ -213,7 +213,7 @@ export class FormlyJsonschema {
                 typeof document !== 'undefined' && f.id
                   ? document.querySelector<HTMLInputElement>(`#${f.id}`)
                   : undefined;
-              if (input && !input.validity?.badInput) {
+              if (input && input.validity && !input.validity.badInput) {
                 v = undefined;
               }
 
