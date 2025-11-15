@@ -55,7 +55,6 @@ export class FormlyInputNumberDirective implements OnInit {
 
       if (isSameValue && this.control.dirty && !this.userInteracted) {
         this.control.markAsPristine();
-        console.log('Control marked as pristine due to no user interaction');
       }
 
       this.lastValue = newNumericValue;
