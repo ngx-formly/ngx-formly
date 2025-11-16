@@ -114,7 +114,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
 
     <ng-template #stringOrTemplate let-content="content">
       @if (!content.createEmbeddedView) {
-        {{ content }}
+        <ng-container>{{ content }}</ng-container>
       } @else {
         <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       }
