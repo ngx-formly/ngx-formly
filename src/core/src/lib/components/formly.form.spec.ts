@@ -1,8 +1,17 @@
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormlyInputModule, createComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import {
+  FieldType,
+  FieldTypeConfig,
+  FormlyFieldConfig,
+  FormlyFormOptions,
+  FormlyModule,
+  provideFormlyConfig,
+  provideFormlyCore,
+} from '@ngx-formly/core';
+import { FormGroup, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyOnPushComponent } from './formly.field.spec';
+import { Component } from '@angular/core';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -866,4 +875,53 @@ describe('FormlyForm Component', () => {
     detectChanges();
     expect(form.valid).toEqual(false);
   });
+
+  it('should merge config when using provideFormlyConfig', async () => {
+    TestBed.configureTestingModule({
+      imports: [StandaloneAppComponent],
+      providers: [
+        provideFormlyCore({
+          types: [{ name: 'input', component: FormlyFieldInput }],
+        }),
+      ],
+    });
+
+    const fixture = TestBed.createComponent(StandaloneAppComponent);
+    fixture.detectChanges();
+    expect(!!fixture.elementRef.nativeElement.querySelector('input')).toBeTrue();
+  });
 });
+
+// reproduction for https://github.com/ngx-formly/ngx-formly/issues/4107
+@Component({
+  selector: 'formly-app-root',
+  template: `<formly-app-child />`,
+  imports: [StandaloneChildComponent],
+  standalone: true,
+})
+export class StandaloneAppComponent {}
+
+@Component({
+  selector: 'formly-app-child',
+  template: `
+    <form [formGroup]="form">
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  `,
+  providers: [provideFormlyConfig([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, FormlyModule],
+})
+export class StandaloneChildComponent {
+  form = new FormGroup({});
+  model = {};
+  fields: FormlyFieldConfig[] = [{ type: 'input' }];
+}
+
+@Component({
+  selector: 'formly-type-input',
+  template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
+  standalone: true,
+})
+export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
