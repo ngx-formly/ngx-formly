@@ -26,4 +26,4 @@ This release add support of standalone components, for usage of standalone compo
 | ----------------- | ------------------ |
 | `_markForCheck`   | `detectChanges`    |
 | `_buildForm`      | `build`            |
-| `_markForCheck`   | `checkExpressions` |
+| `_checkField`     | `checkExpressions` |
