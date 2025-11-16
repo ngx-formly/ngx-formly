@@ -9,12 +9,12 @@ import { FormlyGroup } from './templates/formly.group';
 import { LegacyFormlyValidationMessage } from './templates/formly.validation-message';
 import { FormlyTemplateType } from './templates/field-template.type';
 import { ConfigOption } from './models';
-import { FormlyTemplate } from './components/formly.template';
+import { LegacyFormlyTemplate } from './components/formly.template';
 import { FORMLY_CONFIG, withDefaultConfig } from './core.config';
 
 @NgModule({
   declarations: [
-    FormlyTemplate,
+    LegacyFormlyTemplate,
     LegacyFormlyForm,
     LegacyFormlyField,
     LegacyFormlyAttributes,
@@ -23,7 +23,7 @@ import { FORMLY_CONFIG, withDefaultConfig } from './core.config';
     FormlyTemplateType,
   ],
   exports: [
-    FormlyTemplate,
+    LegacyFormlyTemplate,
     LegacyFormlyForm,
     LegacyFormlyField,
     LegacyFormlyAttributes,

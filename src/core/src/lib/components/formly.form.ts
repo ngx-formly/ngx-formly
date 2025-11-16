@@ -19,7 +19,7 @@ import { FormlyConfig } from '../services/formly.config';
 import { clone, hasKey, isNoopNgZone, isSignalRequired, observeDeep } from '../utils';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
-import { FormlyFieldTemplates, FormlyTemplate } from './formly.template';
+import { FormlyFieldTemplates, FormlyTemplate, LegacyFormlyTemplate } from './formly.template';
 import { of, Subscription } from 'rxjs';
 import { FormlyField } from './formly.field';
 
@@ -91,7 +91,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     private builder: FormlyFormBuilder,
     private config: FormlyConfig,
     private ngZone: NgZone,
-    private fieldTemplates: FormlyFieldTemplates,
+    protected fieldTemplates: FormlyFieldTemplates,
   ) {}
 
   ngDoCheck() {
@@ -175,4 +175,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class LegacyFormlyForm extends FormlyForm {}
+export class LegacyFormlyForm extends FormlyForm {
+  @ContentChildren(LegacyFormlyTemplate) override set templates(templates: QueryList<FormlyTemplate>) {
+    this.fieldTemplates.templates = templates;
+  }
+}
