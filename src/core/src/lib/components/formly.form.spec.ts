@@ -893,13 +893,6 @@ describe('FormlyForm Component', () => {
 });
 
 // reproduction for https://github.com/ngx-formly/ngx-formly/issues/4107
-@Component({
-  selector: 'formly-app-root',
-  template: `<formly-app-child />`,
-  imports: [StandaloneChildComponent],
-  standalone: true,
-})
-export class StandaloneAppComponent {}
 
 @Component({
   selector: 'formly-app-child',
@@ -918,6 +911,14 @@ export class StandaloneChildComponent {
   model = {};
   fields: FormlyFieldConfig[] = [{ type: 'input' }];
 }
+
+@Component({
+  selector: 'formly-app-root',
+  template: `<formly-app-child />`,
+  imports: [StandaloneChildComponent],
+  standalone: true,
+})
+export class StandaloneAppComponent {}
 
 @Component({
   selector: 'formly-type-input',

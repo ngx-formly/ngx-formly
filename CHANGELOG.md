@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.1](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0...v7.0.1) (2025-11-16)
+
+
+### Bug Fixes
+
+* **core:** export FormlyTemplate for standalone use ([#4149](https://github.com/ngx-formly/ngx-formly/issues/4149)) ([6c34e32](https://github.com/ngx-formly/ngx-formly/commit/6c34e325c23d4f4d171337f5b2e10db1bf72898b)), closes [#4124](https://github.com/ngx-formly/ngx-formly/issues/4124)
+* **core:** merge config when using provideFormlyConfig ([#4152](https://github.com/ngx-formly/ngx-formly/issues/4152)) ([13ab294](https://github.com/ngx-formly/ngx-formly/commit/13ab294452bba2cd9f2feb0d019ccf5f988bd03d)), closes [#4107](https://github.com/ngx-formly/ngx-formly/issues/4107) [#4111](https://github.com/ngx-formly/ngx-formly/issues/4111) [#4110](https://github.com/ngx-formly/ngx-formly/issues/4110)
+* **material:** remove extra whitespace for hint text ([#4150](https://github.com/ngx-formly/ngx-formly/issues/4150)) ([4154dae](https://github.com/ngx-formly/ngx-formly/commit/4154dae982a58bec1ab7dbda9df62f5114ef062e)), closes [#4106](https://github.com/ngx-formly/ngx-formly/issues/4106)
+* optional chain for validity.badInput ([#4134](https://github.com/ngx-formly/ngx-formly/issues/4134)) ([34e50a9](https://github.com/ngx-formly/ngx-formly/commit/34e50a9e13498d7446dadf2481d2e0c2fa50d682)), closes [#4131](https://github.com/ngx-formly/ngx-formly/issues/4131)
+* **preset:** clear preset tag after merge ([#4151](https://github.com/ngx-formly/ngx-formly/issues/4151)) ([2d6f5cd](https://github.com/ngx-formly/ngx-formly/commit/2d6f5cdc4f887b4b1b46df6e9bedc7a4af560ae1)), closes [#4110](https://github.com/ngx-formly/ngx-formly/issues/4110)
+* **primeng:** add config options to datepicker ([#4143](https://github.com/ngx-formly/ngx-formly/issues/4143)) ([#4144](https://github.com/ngx-formly/ngx-formly/issues/4144)) ([6cf8f15](https://github.com/ngx-formly/ngx-formly/commit/6cf8f158ab461111df7f792f14b5a862d6e87562))
+
 ## [7.0.0](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0-next.0...v7.0.0) (2025-06-09)
 
 
