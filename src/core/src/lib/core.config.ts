@@ -1,4 +1,4 @@
-import { InjectionToken, Provider } from '@angular/core';
+import { inject, InjectionToken, Provider } from '@angular/core';
 import { FieldExpressionExtension } from './extensions';
 import { CoreExtension } from './extensions/core/core';
 import { FieldFormExtension } from './extensions/field-form/field-form';
@@ -36,5 +36,20 @@ export const provideFormlyCore = (configs: ConfigOption | ConfigOption[] = []): 
 };
 
 export const provideFormlyConfig = (configs: ConfigOption | ConfigOption[] = []): Provider => {
-  return [{ provide: FORMLY_CONFIG, multi: true, useValue: configs }];
+  return {
+    provide: FORMLY_CONFIG,
+    multi: true,
+    useFactory: () => {
+      const currentConfig: Array<ConfigOption | ConfigOption[]> = inject(FORMLY_CONFIG, {
+        skipSelf: true,
+        optional: true,
+      });
+      if (currentConfig) {
+        currentConfig.push(configs);
+        return currentConfig;
+      }
+
+      return configs;
+    },
+  };
 };

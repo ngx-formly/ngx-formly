@@ -10,7 +10,7 @@ import { LegacyFormlyValidationMessage } from './templates/formly.validation-mes
 import { FormlyTemplateType } from './templates/field-template.type';
 import { ConfigOption } from './models';
 import { LegacyFormlyTemplate } from './components/formly.template';
-import { FORMLY_CONFIG, withDefaultConfig } from './core.config';
+import { FORMLY_CONFIG, provideFormlyConfig, withDefaultConfig } from './core.config';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,7 @@ export class FormlyModule {
       ngModule: FormlyModule,
       providers: [
         { provide: FORMLY_CONFIG, multi: true, useFactory: withDefaultConfig, deps: [FormlyConfig] },
-        { provide: FORMLY_CONFIG, useValue: config, multi: true },
+        provideFormlyConfig(config),
         FormlyConfig,
         FormlyFormBuilder,
       ],
@@ -50,7 +50,7 @@ export class FormlyModule {
       ngModule: FormlyModule,
       providers: [
         { provide: FORMLY_CONFIG, multi: true, useFactory: withDefaultConfig, deps: [FormlyConfig] },
-        { provide: FORMLY_CONFIG, useValue: config, multi: true },
+        provideFormlyConfig(config),
         FormlyFormBuilder,
       ],
     };
