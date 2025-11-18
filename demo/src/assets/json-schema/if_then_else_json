@@ -1,0 +1,59 @@
+{
+  "schema": {
+    "title": "if/then/else",
+    "type": "object",
+    "properties": {
+      "street_address": {
+        "type": "string",
+        "title": "Street Address"
+      },
+      "country": {
+        "type": "string",
+        "title": "Country",
+        "default": "United States of America",
+        "enum": [
+          "United States of America",
+          "Canada",
+          "Other"
+        ]
+      }
+    },
+    "if": {
+      "properties": {
+        "country": {
+          "const": "United States of America"
+        }
+      }
+    },
+    "then": {
+      "properties": {
+        "zipcode": {
+          "type": "string",
+          "title": "ZIP Code",
+          "pattern": "[0-9]{5}(-[0-9]{4})?"
+        },
+        "state": {
+          "title": "State",
+          "type": "string"
+        }
+      }
+    },
+    "else": {
+      "properties": {
+        "postal_code": {
+          "title": "Postal Code",
+          "type": "string",
+          "pattern": "[A-Z][0-9][A-Z] [0-9][A-Z][0-9]"
+        },
+        "province": {
+          "title": "Province",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "model": {
+    "street_address": "123 Main St",
+    "country": "United States of America"
+  }
+}

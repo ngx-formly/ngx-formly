@@ -116,6 +116,11 @@ export const appRoutes: Routes = [
               content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/select_alternatives_json'),
               filecontent: require('!!raw-loader!@assets/json-schema/select_alternatives_json'),
             },
+            {
+              file: 'assets/json-schema/if_then_else.json',
+              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/if_then_else_json'),
+              filecontent: require('!!raw-loader!@assets/json-schema/if_then_else_json'),
+            },
           ],
         },
       ],
