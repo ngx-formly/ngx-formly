@@ -525,8 +525,22 @@ export function parseExpression(expression: string, argNames: string[]): any {
   }
 }
 
+/**
+ * Uses CSP-safe implementation
+ */
 export function evalStringExpression(expression: string, argNames: string[]): any {
   return parseExpression(expression, argNames);
+}
+
+/**
+ * Legacy implementation
+ */
+export function evalStringExpressionLegacy(expression: string, argNames: string[]): any {
+  try {
+    return Function(...argNames, `return ${expression};`) as any;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export function evalExpression(

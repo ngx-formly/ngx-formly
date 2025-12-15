@@ -100,6 +100,14 @@ export interface ConfigOption {
      * Defaults to `true`.
      */
     renderFormlyFieldElement?: boolean;
+
+    /**
+     * When evaluating Formly Expressions, whether to parse the expression using
+     * new CSP-safe implementation (true) or legacy implementation (false)
+     *
+     * Defaults to `true`.
+     */
+    cspSafeExpressionEval?: boolean;
   };
   presets?: PresetOption[];
 }
