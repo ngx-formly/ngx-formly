@@ -7,6 +7,7 @@ export {
   FormlyFieldProps,
   ConfigOption,
   FormlyExtension,
+  FormlyFieldConfigPresetProvider,
 } from './models';
 export { LegacyFormlyField, FormlyField } from './components/formly.field';
 export { LegacyFormlyAttributes, FormlyAttributes } from './templates/formly.attributes';
