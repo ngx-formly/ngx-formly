@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.1.0](https://github.com/ngx-formly/ngx-formly/compare/v7.0.1...v7.1.0) (2026-01-31)
+
+
+### Features
+
+* **core:** export FormlyFieldConfigPresetProvider via public_api ([#4161](https://github.com/ngx-formly/ngx-formly/issues/4161)) ([3976e09](https://github.com/ngx-formly/ngx-formly/commit/3976e0931d27f7267d92edecbed2292f93b9c4c8))
+* **core:** extend formly json schema service to support if/then/else ([#4140](https://github.com/ngx-formly/ngx-formly/issues/4140)) ([f534999](https://github.com/ngx-formly/ngx-formly/commit/f534999bdceb0b56c155446ae00b24a61b4a98bb))
+* **core:** support CSP-safe expression evaluation ([#4141](https://github.com/ngx-formly/ngx-formly/issues/4141)) ([ef839c1](https://github.com/ngx-formly/ngx-formly/commit/ef839c151a0d9672a200dc26547f9f128a693c92))
+
+
+### Bug Fixes
+
+* **core:** prevent cloning of Promise objects ([3238bfb](https://github.com/ngx-formly/ngx-formly/commit/3238bfb6d6252e2951acb46cfe791c52a9a2fcc7)), closes [#4159](https://github.com/ngx-formly/ngx-formly/issues/4159)
+
 ### [7.0.1](https://github.com/ngx-formly/ngx-formly/compare/v7.0.0...v7.0.1) (2025-11-16)
 
 
