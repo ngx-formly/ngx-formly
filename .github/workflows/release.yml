@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,10 +20,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          # Setup .npmrc file to publish to npm
-          registry-url: 'https://registry.npmjs.org'
           node-version: 20
+          registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
+
+      - name: Update npm
+        run: npm install -g npm@latest
 
       - name: Install Dependencies
         run: npm install
@@ -32,8 +38,6 @@ jobs:
 
       - name: npm publish
         run: npm run publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Github release
         run: npm run github-release
