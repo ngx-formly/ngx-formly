@@ -21,7 +21,7 @@ export function createBuilder({ extensions, onInit }: IBuilderOption = {}) {
       { name: 'core', extension: new CoreExtension(config) },
       { name: 'validation', extension: new FieldValidationExtension(config) },
       { name: 'form', extension: new FieldFormExtension() },
-      { name: 'expression', extension: new FieldExpressionExtension() },
+      { name: 'expression', extension: new FieldExpressionExtension(config) },
     ].filter(({ name }) => !extensions || extensions.includes(name)),
   });
   onInit && onInit(config);

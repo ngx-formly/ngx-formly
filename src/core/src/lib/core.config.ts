@@ -23,7 +23,7 @@ export function withDefaultConfig(config: FormlyConfig): ConfigOption {
       { name: 'core', extension: new CoreExtension(config), priority: -250 },
       { name: 'field-validation', extension: new FieldValidationExtension(config), priority: -200 },
       { name: 'field-form', extension: new FieldFormExtension(), priority: -150 },
-      { name: 'field-expression', extension: new FieldExpressionExtension(), priority: -100 },
+      { name: 'field-expression', extension: new FieldExpressionExtension(config), priority: -100 },
     ],
   };
 }

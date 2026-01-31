@@ -10,7 +10,8 @@ import {
   assignFieldValue,
   hasKey,
 } from '../../utils';
-import { evalExpression, evalStringExpression } from './utils';
+import { evalExpression, evalStringExpression, evalStringExpressionLegacy } from './utils';
+import { FormlyConfig } from '../../services/formly.config';
 import { isObservable, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../models';
@@ -18,6 +19,8 @@ import { unregisterControl, registerControl, updateValidity } from '../field-for
 import { UntypedFormArray } from '@angular/forms';
 
 export class FieldExpressionExtension implements FormlyExtension {
+  constructor(private config: FormlyConfig) {}
+
   onPopulate(field: FormlyFieldConfigCache) {
     if (field._expressions) {
       return;
@@ -114,7 +117,12 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     expr = expr || (() => false);
     if (typeof expr === 'string') {
-      expr = evalStringExpression(expr, ['model', 'formState', 'field']);
+      const exprString = expr;
+      if (this.config.extras.cspSafeExpressionEval) {
+        expr = evalStringExpression(exprString, ['model', 'formState', 'field']);
+      } else {
+        expr = evalStringExpressionLegacy(exprString, ['model', 'formState', 'field']);
+      }
     }
 
     let currentValue: any;
