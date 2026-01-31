@@ -1,4 +1,4 @@
-export { provideFormlyCore, provideFormlyConfig, FORMLY_CONFIG } from './core.config';
+export { provideFormlyCore, provideFormlyConfig, FORMLY_CONFIG, withFormlyFieldExpression } from './core.config';
 export { LegacyFormlyForm, FormlyForm } from './components/formly.form';
 export {
   FormlyFieldConfig,

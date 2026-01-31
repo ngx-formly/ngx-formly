@@ -32,7 +32,6 @@ export class FormlyConfig {
     lazyRender: true,
     resetFieldOnHide: true,
     renderFormlyFieldElement: true,
-    cspSafeExpressionEval: true,
     showError(field: FieldType) {
       return (
         field.formControl?.invalid &&

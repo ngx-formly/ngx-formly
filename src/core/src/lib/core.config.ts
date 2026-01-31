@@ -1,5 +1,6 @@
 import { inject, InjectionToken, Provider } from '@angular/core';
-import { FieldExpressionExtension } from './extensions';
+import { FieldExpressionExtension } from './extensions/field-expression/field-expression';
+import { FieldExpressionExtension as FieldExpressionLegacyExtension } from './extensions/field-expression-legacy/field-expression';
 import { CoreExtension } from './extensions/core/core';
 import { FieldFormExtension } from './extensions/field-form/field-form';
 import { FieldValidationExtension } from './extensions/field-validation/field-validation';
@@ -23,7 +24,23 @@ export function withDefaultConfig(config: FormlyConfig): ConfigOption {
       { name: 'core', extension: new CoreExtension(config), priority: -250 },
       { name: 'field-validation', extension: new FieldValidationExtension(config), priority: -200 },
       { name: 'field-form', extension: new FieldFormExtension(), priority: -150 },
-      { name: 'field-expression', extension: new FieldExpressionExtension(config), priority: -100 },
+      {
+        name: 'field-expression',
+        extension: new FieldExpressionLegacyExtension(),
+        priority: -100,
+      },
+    ],
+  };
+}
+
+export function withFormlyFieldExpression(): ConfigOption {
+  return {
+    extensions: [
+      {
+        name: 'field-expression',
+        extension: new FieldExpressionExtension(),
+        priority: -100,
+      },
     ],
   };
 }

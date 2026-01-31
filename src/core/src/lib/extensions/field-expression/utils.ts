@@ -504,6 +504,9 @@ class ExpressionParser {
   }
 }
 
+/**
+ * Uses CSP-safe implementation
+ */
 export function parseExpression(expression: string, argNames: string[]): any {
   try {
     const tokenizer = new Tokenizer(expression);
@@ -522,35 +525,5 @@ export function parseExpression(expression: string, argNames: string[]): any {
   } catch (error) {
     console.error('Expression parse error:', error);
     return undefined;
-  }
-}
-
-/**
- * Uses CSP-safe implementation
- */
-export function evalStringExpression(expression: string, argNames: string[]): any {
-  return parseExpression(expression, argNames);
-}
-
-/**
- * Legacy implementation
- */
-export function evalStringExpressionLegacy(expression: string, argNames: string[]): any {
-  try {
-    return Function(...argNames, `return ${expression};`) as any;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export function evalExpression(
-  expression: string | ((...value: any[]) => any) | boolean,
-  thisArg: any,
-  argVal: any[],
-): any {
-  if (typeof expression === 'function') {
-    return expression.apply(thisArg, argVal);
-  } else {
-    return expression ? true : false;
   }
 }

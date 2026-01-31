@@ -183,3 +183,15 @@ Example ([Demo](https://stackblitz.com/edit/angular-yobrug?file=src/app/app.comp
   }
 },
 ```
+
+## 4. Expression Evaluation
+
+By default, Formly evaluates string expressions using `new Function()`. For better performance and to support environments with a strict Content Security Policy (CSP), it is recommended to use `withFormlyFieldExpression()` in the Formly configuration:
+
+```patch
+provideFormlyCore(
++ withFormlyFieldExpression(),
+)
+```
+
+The `withFormlyFieldExpression()` implementation parses and evaluates expressions without using `eval()` or `new Function()`.

@@ -163,3 +163,13 @@ console.log(field.model)
 console.log(field.parent.model)
 // output: { address: { city: "test" } }
 ```
+
+## How to configure expression evaluation?
+
+By default, Formly evaluates string expressions using `new Function()`, which may be blocked by a strict Content Security Policy (CSP). To use a CSP-safe implementation, use `withFormlyFieldExpression()` in the Formly configuration:
+
+```patch
+provideFormlyCore(
++ withFormlyFieldExpression(),
+)
+```

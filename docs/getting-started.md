@@ -32,12 +32,15 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
 ```patch
 import { ApplicationConfig } from '@angular/core';
-+ import { provideFormlyCore } from '@ngx-formly/core'
++ import { provideFormlyCore, withFormlyFieldExpression } from '@ngx-formly/core'
 + import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-+   provideFormlyCore(withFormlyBootstrap()),
++   provideFormlyCore(
++     withFormlyFieldExpression(),
++     withFormlyBootstrap(),
++   ),
   ],
 };
 ```

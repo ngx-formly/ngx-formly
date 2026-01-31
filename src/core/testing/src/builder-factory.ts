@@ -2,7 +2,7 @@ import { FormlyConfig, FormlyFormBuilder } from '@ngx-formly/core';
 import { CoreExtension } from '../../src/lib/extensions/core/core';
 import { FieldValidationExtension } from '../../src/lib/extensions/field-validation/field-validation';
 import { FieldFormExtension } from '../../src/lib/extensions/field-form/field-form';
-import { FieldExpressionExtension } from '../../src/lib/extensions';
+import { FieldExpressionExtension } from '../../src/lib/extensions/field-expression/field-expression';
 import { mockComponent } from './utils';
 
 interface IBuilderOption {
@@ -21,7 +21,7 @@ export function createBuilder({ extensions, onInit }: IBuilderOption = {}) {
       { name: 'core', extension: new CoreExtension(config) },
       { name: 'validation', extension: new FieldValidationExtension(config) },
       { name: 'form', extension: new FieldFormExtension() },
-      { name: 'expression', extension: new FieldExpressionExtension(config) },
+      { name: 'expression', extension: new FieldExpressionExtension() },
     ].filter(({ name }) => !extensions || extensions.includes(name)),
   });
   onInit && onInit(config);
