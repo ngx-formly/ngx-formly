@@ -100,6 +100,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   readOnly?: boolean;
   key?: FormlyFieldConfig['key'];
   isOptional?: boolean;
+  conditionalSchemas?: JSONSchema7[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -367,6 +368,50 @@ export class FormlyJsonschema {
         if (schema.anyOf) {
           field.fieldGroup.push(this.resolveMultiSchema('anyOf', <JSONSchema7[]>schema.anyOf, options));
         }
+
+        // Process if/then/else conditional schemas
+        if (options.conditionalSchemas) {
+          const conditionalSchemas = options.conditionalSchemas as Array<JSONSchema7 & { _ifCondition: any }>;
+          conditionalSchemas.forEach((conditionalSchema) => {
+            const condition = conditionalSchema._ifCondition;
+            if (condition && conditionalSchema.properties) {
+              // Create a field group with the conditional fields
+              const conditionalFieldGroup: FormlyFieldConfig = {
+                fieldGroup: [],
+                expressions: {
+                  hide: (f) => {
+                    if (!f.model) {
+                      return true;
+                    }
+                    const modelValue = f.model[condition.property];
+                    const matches = modelValue === condition.value;
+                    // If negate is true (for "else" case), invert the condition
+                    return condition.negate ? matches : !matches;
+                  },
+                },
+              };
+
+              // Add each property from the conditional schema to the field group
+              Object.keys(conditionalSchema.properties).forEach((property) => {
+                const propSchema = conditionalSchema.properties[property] as JSONSchema7;
+                if (!propSchema) {
+                  return;
+                }
+                const isRequired =
+                  Array.isArray(conditionalSchema.required) && conditionalSchema.required.indexOf(property) !== -1;
+                const conditionalField = this._toFieldConfig(propSchema, {
+                  ...options,
+                  key: property,
+                  isOptional: !isRequired,
+                  resetOnHide: true,
+                });
+                conditionalFieldGroup.fieldGroup.push(conditionalField);
+              });
+
+              field.fieldGroup.push(conditionalFieldGroup);
+            }
+          });
+        }
         break;
       }
       case 'array': {
@@ -523,6 +568,15 @@ export class FormlyJsonschema {
 
     if (schema && schema.allOf) {
       schema = this.resolveAllOf(schema, options);
+    }
+
+    // Process if/then/else and store conditionals in options for later processing
+    if (schema && (schema.if || schema.then || schema.else)) {
+      const conditionalSchemas = this.resolveIfThenElse(schema, options);
+      if (conditionalSchemas.length > 0) {
+        // Store conditional schemas in options for processing in _toFieldConfig
+        options.conditionalSchemas = conditionalSchemas;
+      }
     }
 
     return schema;
@@ -683,6 +737,64 @@ export class FormlyJsonschema {
     });
 
     return { propDeps, schemaDeps };
+  }
+
+  private extractIfCondition(ifSchema: JSONSchema7): { property: string; value: any } | null {
+    // Extract the property and const value from the "if" schema
+    // Supports: { "properties": { "propName": { "const": value } } }
+    if (ifSchema.properties) {
+      const propName = Object.keys(ifSchema.properties)[0];
+      if (propName) {
+        const propSchema = ifSchema.properties[propName] as JSONSchema7;
+        if (propSchema && propSchema.hasOwnProperty('const')) {
+          return { property: propName, value: propSchema.const };
+        }
+      }
+    }
+    return null;
+  }
+
+  private resolveIfThenElse(schema: JSONSchema7, options: IOptions): JSONSchema7[] {
+    // Process if/then/else and return array of conditional schemas to add to fieldGroup
+    const conditionalSchemas: JSONSchema7[] = [];
+
+    if (schema.if && typeof schema.if === 'object') {
+      const condition = this.extractIfCondition(schema.if as JSONSchema7);
+      if (condition) {
+        // Process "then" branch
+        if (schema.then && typeof schema.then === 'object') {
+          const resolvedSchema = this.resolveConditionalSchema(schema.then as JSONSchema7, options);
+          conditionalSchemas.push({
+            ...resolvedSchema,
+            _ifCondition: condition,
+          } as any);
+        }
+
+        // Process "else" branch
+        if (schema.else && typeof schema.else === 'object') {
+          const resolvedSchema = this.resolveConditionalSchema(schema.else as JSONSchema7, options);
+          conditionalSchemas.push({
+            ...resolvedSchema,
+            _ifCondition: { property: condition.property, value: condition.value, negate: true },
+          } as any);
+        }
+      }
+    }
+
+    return conditionalSchemas;
+  }
+
+  private resolveConditionalSchema(conditionalSchema: JSONSchema7, options: IOptions): JSONSchema7 {
+    // Resolve $ref and allOf if present in conditional schema
+    // Note: We don't use resolveSchema here to avoid recursive processing of nested if/then/else
+    let resolved = conditionalSchema;
+    if (conditionalSchema.$ref) {
+      resolved = this.resolveDefinition(conditionalSchema, options);
+    }
+    if (resolved.allOf) {
+      resolved = this.resolveAllOf(resolved, options);
+    }
+    return resolved;
   }
 
   private guessSchemaType(schema: JSONSchema7) {
