@@ -169,6 +169,11 @@ describe('clone', () => {
     expect(clone(v)).toBe(v);
   });
 
+  it('Promise', () => {
+    const v = Promise.resolve();
+    expect(clone(v)).toBe(v);
+  });
+
   it('FileList', () => {
     const blob = new Blob();
     const file = new File([], 'test');

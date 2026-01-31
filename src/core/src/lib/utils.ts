@@ -154,6 +154,7 @@ export function clone(value: any): any {
   if (
     !isObject(value) ||
     isObservable(value) ||
+    isPromise(value) ||
     value instanceof TemplateRef ||
     /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity ||
     ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor?.name) !== -1
