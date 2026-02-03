@@ -58,4 +58,17 @@ describe('ui-material: Radio Type', () => {
     expect(field.formControl.value).toEqual(1);
     expect(changeSpy).toHaveBeenCalledTimes(2);
   });
+
+  it('should add aria-label to mat-radio-group', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'radio',
+      props: {
+        label: 'hello world',
+        options: [{ value: 1, label: 'label 1' }],
+      },
+    });
+
+    expect(query('mat-radio-group').attributes['aria-label']).toEqual('hello world');
+  });
 });
