@@ -19,6 +19,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
       [formlyAttributes]="field"
       [required]="required"
       [tabindex]="props.tabindex"
+      [attr.aria-label]="props.label"
     >
       @for (option of props.options | formlySelectOptions: field | async; track $index; let i = $index) {
         <mat-radio-button
