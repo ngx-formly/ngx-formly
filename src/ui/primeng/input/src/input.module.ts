@@ -7,6 +7,7 @@ import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
 
 import { FormlyFieldInput } from './input.type';
 import { withFormlyFieldInput } from './input.config';
+import { FormlyInputNumberDirective } from './formly-input-number.directive';
 
 @NgModule({
   declarations: [FormlyFieldInput],
@@ -15,6 +16,7 @@ import { withFormlyFieldInput } from './input.config';
     ReactiveFormsModule,
     InputTextModule,
     FormlyFormFieldModule,
+    FormlyInputNumberDirective,
     FormlyModule.forChild(withFormlyFieldInput()),
   ],
 })
