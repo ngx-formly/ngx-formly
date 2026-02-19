@@ -15,12 +15,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": {
-              "base": "dist/app"
-            },
+            "outputPath": "demo/dist",
             "index": "demo/src/index.html",
+            "main": "demo/src/main.ts",
             "polyfills": ["demo/src/polyfills.ts"],
             "tsConfig": "demo/tsconfig.app.json",
             "assets": ["demo/src/favicon.ico", "demo/src/assets"],
@@ -33,8 +32,7 @@
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
             },
-            "allowedCommonJsDependencies": ["highlight-loader", "json-formatter-js"],
-            "browser": "demo/src/main.ts"
+            "allowedCommonJsDependencies": ["highlight-loader", "json-formatter-js"]
           },
           "configurations": {
             "production": {
