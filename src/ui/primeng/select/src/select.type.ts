@@ -33,5 +33,6 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
     </p-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {}

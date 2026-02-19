@@ -42,5 +42,6 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
     </nz-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {}

@@ -26,7 +26,6 @@ import { MatOption } from '@angular/material/core';
       </mat-option>
     </mat-autocomplete>
   `,
-  standalone: true,
   imports: [
     MatInput,
     MatAutocompleteTrigger,

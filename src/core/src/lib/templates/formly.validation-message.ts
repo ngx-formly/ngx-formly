@@ -14,7 +14,6 @@ import { AsyncPipe } from '@angular/common';
   selector: 'formly-validation-message',
   template: '{{ errorMessage$ | async }}',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [AsyncPipe],
 })
 export class FormlyValidationMessage implements OnChanges {
@@ -89,5 +88,6 @@ export class FormlyValidationMessage implements OnChanges {
   selector: 'formly-validation-message',
   template: '{{ errorMessage$ | async }}',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class LegacyFormlyValidationMessage extends FormlyValidationMessage {}

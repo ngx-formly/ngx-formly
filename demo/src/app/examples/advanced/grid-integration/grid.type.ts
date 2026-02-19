@@ -19,7 +19,6 @@ import { AgGridAngular } from 'ag-grid-angular';
       </ag-grid-angular>
     </div>
   `,
-  standalone: true,
   imports: [NgStyle, AgGridAngular],
 })
 export class GridTypeComponent extends FieldArrayType implements OnInit {

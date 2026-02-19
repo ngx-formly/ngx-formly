@@ -41,6 +41,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
     { provide: MAT_INPUT_VALUE_ACCESSOR, useExisting: FormlyFieldTextArea },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {
   override defaultOptions = {

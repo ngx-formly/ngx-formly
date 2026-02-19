@@ -18,6 +18,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   tap(options: any[]) {

@@ -21,7 +21,6 @@ import { FormlyField } from '@ngx-formly/core';
       </div>
     </div>
   `,
-  standalone: true,
   imports: [NgIf, NgFor, FormlyField],
 })
 export class RepeatTypeComponent extends FieldArrayType {}

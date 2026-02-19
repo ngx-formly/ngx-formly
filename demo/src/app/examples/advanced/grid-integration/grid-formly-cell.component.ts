@@ -5,7 +5,6 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 @Component({
   selector: 'formly-ag-grid-cell',
   template: ` <formly-field [field]="getField()"></formly-field> `,
-  standalone: true,
   imports: [FormlyField],
 })
 export class GridFormlyCellComponent implements ICellRendererAngularComp {

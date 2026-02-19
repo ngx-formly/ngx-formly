@@ -23,5 +23,6 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     </nz-radio-group>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {}

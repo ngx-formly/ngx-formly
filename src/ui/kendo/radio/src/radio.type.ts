@@ -32,6 +32,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./radio.type.scss'],
+  standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   get disabledControl() {

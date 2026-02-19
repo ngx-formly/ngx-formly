@@ -25,7 +25,6 @@ import { FormlyField, FormlyValidationMessage } from '@ngx-formly/core';
       </div>
     </div>
   `,
-  standalone: true,
   imports: [NgIf, FormlyField, FormlyValidationMessage, NgFor],
 })
 export class ArrayTypeComponent extends FieldArrayType {}

@@ -42,6 +42,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   override defaultOptions = {

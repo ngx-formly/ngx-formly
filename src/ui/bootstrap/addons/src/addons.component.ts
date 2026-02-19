@@ -20,6 +20,7 @@ interface AddonsProps extends FormlyFieldProps {
   templateUrl: './addons.component.html',
   styleUrls: ['./addons.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class FormlyWrapperAddons extends FieldWrapper<FieldTypeConfig<AddonsProps>> {
   @ViewChild('fieldTypeTemplate', { static: true }) set content(templateRef: TemplateRef<any>) {
