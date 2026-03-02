@@ -10,6 +10,13 @@ html {
 *::after {
   box-sizing: inherit;
 }
+
+// Fixes
+body {
+  @import './styles/sidenav';
+}
+
+// Bootstrap
 @import 'bootstrap/scss/bootstrap-grid';
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/root';
@@ -108,7 +115,7 @@ footer {
         font-size: smaller;
         position: absolute;
         bottom: -11px;
-        right: 0px;
+        right: 0;
       }
     }
   }
