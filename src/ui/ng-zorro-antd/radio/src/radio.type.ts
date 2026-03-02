@@ -12,14 +12,11 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   selector: 'formly-field-nz-radio',
   template: `
     <nz-radio-group [formControl]="formControl" (ngModelChange)="props.change && props.change(field, $event)">
-      <label
-        nz-radio
-        *ngFor="let option of props.options | formlySelectOptions: field | async"
-        [nzValue]="option.value"
-        [nzDisabled]="option.disabled"
-      >
-        {{ option.label }}
-      </label>
+      @for (option of props.options | formlySelectOptions: field | async; track option) {
+        <label nz-radio [nzValue]="option.value" [nzDisabled]="option.disabled">
+          {{ option.label }}
+        </label>
+      }
     </nz-radio-group>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

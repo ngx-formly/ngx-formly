@@ -1,36 +1,43 @@
 import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
-import { NgIf, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'formly-wrapper-addons',
   template: `
     <ng-template #matPrefix>
-      <span
-        *ngIf="props.addonLeft"
-        [ngStyle]="{ cursor: props.addonLeft.onClick ? 'pointer' : 'inherit' }"
-        (click)="addonLeftClick($event)"
-      >
-        <mat-icon *ngIf="props.addonLeft.icon">{{ props.addonLeft.icon }}</mat-icon>
-        <span *ngIf="props.addonLeft.text">{{ props.addonLeft.text }}</span>
-      </span>
+      @if (props.addonLeft) {
+        <span [ngStyle]="{ cursor: props.addonLeft.onClick ? 'pointer' : 'inherit' }" (click)="addonLeftClick($event)">
+          @if (props.addonLeft.icon) {
+            <mat-icon>{{ props.addonLeft.icon }}</mat-icon>
+          }
+          @if (props.addonLeft.text) {
+            <span>{{ props.addonLeft.text }}</span>
+          }
+        </span>
+      }
     </ng-template>
 
     <ng-container #fieldComponent></ng-container>
 
     <ng-template #matSuffix>
-      <span
-        *ngIf="props.addonRight"
-        [ngStyle]="{ cursor: props.addonRight.onClick ? 'pointer' : 'inherit' }"
-        (click)="addonRightClick($event)"
-      >
-        <mat-icon *ngIf="props.addonRight.icon">{{ props.addonRight.icon }}</mat-icon>
-        <span *ngIf="props.addonRight.text">{{ props.addonRight.text }}</span>
-      </span>
+      @if (props.addonRight) {
+        <span
+          [ngStyle]="{ cursor: props.addonRight.onClick ? 'pointer' : 'inherit' }"
+          (click)="addonRightClick($event)"
+        >
+          @if (props.addonRight.icon) {
+            <mat-icon>{{ props.addonRight.icon }}</mat-icon>
+          }
+          @if (props.addonRight.text) {
+            <span>{{ props.addonRight.text }}</span>
+          }
+        </span>
+      }
     </ng-template>
   `,
-  imports: [NgIf, NgStyle, MatIcon],
+  imports: [NgStyle, MatIcon],
 })
 export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
   @ViewChild('matPrefix', { static: true }) matPrefix!: TemplateRef<any>;

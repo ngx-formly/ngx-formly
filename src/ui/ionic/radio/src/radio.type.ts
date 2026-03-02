@@ -14,14 +14,13 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     <ion-list>
       <ion-list-header>{{ props.label }}</ion-list-header>
       <ion-radio-group [formControl]="formControl" [ionFormlyAttributes]="field">
-        <ion-item
-          *ngFor="let option of props.options | formlySelectOptions: field | async"
-          [disabled]="option.disabled || formControl.disabled"
-        >
-          <ion-radio [value]="option.value">
-            {{ option.label }}
-          </ion-radio>
-        </ion-item>
+        @for (option of props.options | formlySelectOptions: field | async; track option) {
+          <ion-item [disabled]="option.disabled || formControl.disabled">
+            <ion-radio [value]="option.value">
+              {{ option.label }}
+            </ion-radio>
+          </ion-item>
+        }
       </ion-radio-group>
     </ion-list>
   `,

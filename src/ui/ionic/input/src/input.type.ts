@@ -12,22 +12,22 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
 @Component({
   selector: 'formly-field-ion-input',
   template: `
-    <ion-input
-      *ngIf="props.type !== 'number'; else numberTmp"
-      [type]="props.type || 'text'"
-      [label]="props.label"
-      [labelPlacement]="props.labelPosition"
-      [formControl]="formControl"
-      [ionFormlyAttributes]="field"
-    ></ion-input>
-    <ng-template #numberTmp>
+    @if (props.type !== 'number') {
+      <ion-input
+        [type]="props.type || 'text'"
+        [label]="props.label"
+        [labelPlacement]="props.labelPosition"
+        [formControl]="formControl"
+        [ionFormlyAttributes]="field"
+      ></ion-input>
+    } @else {
       <ion-input
         type="number"
         [label]="props.label"
         [formControl]="formControl"
         [ionFormlyAttributes]="field"
       ></ion-input>
-    </ng-template>
+    }
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,

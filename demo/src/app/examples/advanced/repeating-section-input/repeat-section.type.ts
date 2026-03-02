@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { FormlyField, FieldArrayType } from '@ngx-formly/core';
-import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'formly-repeat-section',
-  template: ` <formly-field *ngFor="let field of field.fieldGroup" [field]="field"></formly-field> `,
-  imports: [NgFor, FormlyField],
+  template: `
+    @for (field of field.fieldGroup; track field) {
+      <formly-field [field]="field"></formly-field>
+    }
+  `,
+  imports: [FormlyField],
 })
 export class RepeatTypeComponent extends FieldArrayType {}

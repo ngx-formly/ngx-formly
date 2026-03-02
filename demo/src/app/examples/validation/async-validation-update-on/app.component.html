@@ -1,6 +1,8 @@
 <b>Existing usernames</b>
 <ul>
-  <li *ngFor="let u of existingUsers">{{ u }}</li>
+  @for (u of existingUsers; track u) {
+    <li>{{ u }}</li>
+  }
 </ul>
 
 <form [formGroup]="form" (ngSubmit)="submit()">
