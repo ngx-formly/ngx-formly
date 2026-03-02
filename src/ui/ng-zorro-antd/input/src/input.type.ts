@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ng-zorro-antd/form-field';
 
@@ -19,10 +19,16 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       [formlyAttributes]="field"
     />
     <ng-template #numberTmp>
-      <nz-input-number [formControl]="formControl" [formlyAttributes]="field"></nz-input-number>
+      <nz-input-number
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [nzFormatter]="nzFormatter"
+      ></nz-input-number>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {}
+export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {
+  nzFormatter = (value: number) => value?.toString() || '';
+}
