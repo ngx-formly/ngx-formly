@@ -15,6 +15,7 @@ import {
   ElementRef,
   EmbeddedViewRef,
   Optional,
+  Injector,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -78,6 +79,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     private renderer: Renderer2,
     private _elementRef: ElementRef,
     private hostContainerRef: ViewContainerRef,
+    private injector: Injector,
     @Optional() private form: FormlyFieldTemplates,
   ) {}
 
@@ -152,7 +154,11 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       const inlineType = this.form?.templates?.find((ref) => ref.name === f.type);
       let ref: ComponentRef<any> | EmbeddedViewRef<any>;
       if (inlineType) {
-        ref = containerRef.createEmbeddedView(inlineType.ref, { $implicit: f });
+        ref = containerRef.createEmbeddedView(
+          inlineType.ref,
+          { $implicit: f },
+          { injector: this.createFieldInjector() },
+        );
       } else {
         const { component } = this.config.getType(f.type, true);
         ref = containerRef.createComponent<FieldWrapper>(component as any);
@@ -181,6 +187,32 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       this.resetRefs(changes.field.previousValue);
       this.render();
     }
+  }
+
+  attachLocalField(field?: FormlyFieldConfigCache, previousField?: FormlyFieldConfigCache) {
+    const currentField = this.field as FormlyFieldConfigCache;
+    if (!currentField) {
+      return;
+    }
+
+    const localFields = (currentField._localFields || []).filter((f) => f !== field && f !== previousField);
+
+    if (field && field !== currentField) {
+      localFields.push(field);
+    }
+
+    if (currentField._localFields) {
+      currentField._localFields = localFields;
+    } else if (localFields.length > 0) {
+      defineHiddenProp(currentField, '_localFields', localFields);
+    }
+  }
+
+  private createFieldInjector() {
+    return Injector.create({
+      providers: [{ provide: FormlyField, useValue: this }],
+      parent: this.injector,
+    });
   }
 
   private attachComponentRef<T extends FieldType>(
