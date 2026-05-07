@@ -8,6 +8,8 @@ export {
   ConfigOption,
   FormlyExtension,
   FormlyFieldConfigPresetProvider,
+  FormlyAttributeEvent,
+  ValidationMessageOption,
 } from './models';
 export { LegacyFormlyField, FormlyField } from './components/formly.field';
 export { LegacyFormlyAttributes, FormlyAttributes } from './templates/formly.attributes';
