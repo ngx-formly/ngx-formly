@@ -1,5 +1,5 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, isObservable, Observable, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
 
@@ -30,7 +30,7 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   private _options: BehaviorSubject<any[]>;
 
   transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[]> {
-    if (!(options instanceof Observable)) {
+    if (!isObservable(options)) {
       options = this.observableOf(options, field);
     } else {
       this.dispose();
