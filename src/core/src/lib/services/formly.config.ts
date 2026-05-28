@@ -20,7 +20,7 @@ declare const ngDevMode: any;
 /**
  * Maintains list of formly config options. This can be used to register new field type.
  */
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class FormlyConfig {
   types: { [name: string]: TypeOption } = {};
   validators: { [name: string]: ValidatorOption } = {};
