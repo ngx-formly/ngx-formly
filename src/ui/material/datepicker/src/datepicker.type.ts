@@ -87,6 +87,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
     </mat-datepicker>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldDatepicker
   extends FieldType<FieldTypeConfig<DatepickerProps>>

@@ -36,6 +36,7 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {
   get type() {

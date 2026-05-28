@@ -31,5 +31,6 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {}

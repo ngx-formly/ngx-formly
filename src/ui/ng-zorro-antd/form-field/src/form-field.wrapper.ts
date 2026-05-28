@@ -23,6 +23,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </nz-form-control>
     </nz-form-item>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {
   get errorState() {

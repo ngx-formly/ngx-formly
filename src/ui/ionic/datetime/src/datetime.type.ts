@@ -62,6 +62,7 @@ export interface FormlyDatetimeFieldConfig extends FormlyFieldConfig<DatetimePro
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./dattime.type.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class FormlyFieldDatetime extends FieldType<FieldTypeConfig<DatetimeProps>> {
   @ViewChild(IonDatetime) datetime!: IonDatetime;

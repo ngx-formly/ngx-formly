@@ -21,5 +21,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </small>
     </div>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

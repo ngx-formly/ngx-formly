@@ -67,6 +67,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
     </mat-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   @ViewChild(MatSelect, { static: true }) set select(select: any) {

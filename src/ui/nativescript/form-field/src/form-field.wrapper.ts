@@ -20,5 +20,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </StackLayout>
     </StackLayout>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

@@ -30,7 +30,6 @@ import { MatIcon } from '@angular/material/icon';
       </span>
     </ng-template>
   `,
-  standalone: true,
   imports: [NgIf, NgStyle, MatIcon],
 })
 export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {

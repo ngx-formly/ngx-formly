@@ -242,5 +242,6 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   host: {
     '(change)': 'onHostChange($event)',
   },
+  standalone: false,
 })
 export class LegacyFormlyAttributes extends FormlyAttributes {}

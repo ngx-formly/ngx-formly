@@ -1,12 +1,14 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { InputAppComponent, InputExampleConfig } from '../common/input';
-import { TextareaAppComponent, TextareaExampleConfig } from '../common/textarea';
 import { CheckboxAppComponent, CheckboxExampleConfig } from '../common/checkbox';
+import { InputAppComponent, InputExampleConfig } from '../common/input';
 import { RadioAppComponent, RadioExampleConfig } from '../common/radio';
 import { SelectAppComponent, SelectExampleConfig } from '../common/select';
+import { TextareaAppComponent, TextareaExampleConfig } from '../common/textarea';
+import { NumberAppComponent, NumberExampleConfig } from './number';
 
 const CommonExampleConfigs = [
   InputExampleConfig,
+  NumberExampleConfig,
   TextareaExampleConfig,
   CheckboxExampleConfig,
   RadioExampleConfig,
@@ -15,6 +17,7 @@ const CommonExampleConfigs = [
 
 const CommonExampleComponents = [
   InputAppComponent,
+  NumberAppComponent,
   TextareaAppComponent,
   CheckboxAppComponent,
   RadioAppComponent,
@@ -66,4 +69,4 @@ const debugFields: FormlyFieldConfig[] = [
   },
 ];
 
-export { CommonExampleConfigs, CommonExampleComponents, debugFields };
+export { CommonExampleComponents, CommonExampleConfigs, debugFields };

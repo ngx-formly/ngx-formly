@@ -10,7 +10,6 @@ import { RouterOutlet } from '@angular/router';
   `,
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [RouterOutlet],
 })
 export class AppComponent {}

@@ -11,7 +11,6 @@ import { NgClass } from '@angular/common';
       </button>
     </div>
   `,
-  standalone: true,
   imports: [NgClass],
 })
 export class FormlyFieldButton extends FieldType {

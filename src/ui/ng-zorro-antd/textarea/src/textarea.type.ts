@@ -12,5 +12,6 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
   selector: 'formly-field-nz-textarea',
   template: ` <textarea nz-input [formControl]="formControl" [formlyAttributes]="field"></textarea> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {}

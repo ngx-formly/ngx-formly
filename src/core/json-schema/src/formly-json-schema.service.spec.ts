@@ -2254,6 +2254,7 @@ describe('Service: FormlyJsonschema', () => {
     </div>
     <button id="add" type="button" (click)="add()">Add</button>
   `,
+  standalone: false,
 })
 class ArrayTypeComponent extends FieldArrayType {}
 

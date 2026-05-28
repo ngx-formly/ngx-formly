@@ -13,7 +13,6 @@ interface Model {
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
-  standalone: true,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

@@ -938,7 +938,6 @@ describe('FormlyForm Component', () => {
     </form>
   `,
   providers: [provideFormlyConfig([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
-  standalone: true,
   imports: [FormsModule, ReactiveFormsModule, FormlyModule],
 })
 export class StandaloneChildComponent {
@@ -951,7 +950,6 @@ export class StandaloneChildComponent {
   selector: 'formly-app-root',
   template: `<formly-app-child />`,
   imports: [StandaloneChildComponent],
-  standalone: true,
 })
 export class StandaloneAppComponent {}
 

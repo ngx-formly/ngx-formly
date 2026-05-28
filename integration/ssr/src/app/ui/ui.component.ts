@@ -12,7 +12,6 @@ import { FormlyConfig, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '
   `,
   imports: [ReactiveFormsModule, FormlyForm],
   providers: [provideNativeDateAdapter()],
-  standalone: true,
 })
 export class UIComponent implements OnInit {
   form = new UntypedFormGroup({});

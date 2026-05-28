@@ -24,7 +24,6 @@ import { FormlyField } from '@ngx-formly/core';
       </mat-step>
     </mat-horizontal-stepper>
   `,
-  standalone: true,
   imports: [MatStepper, NgFor, MatStep, MatStepLabel, FormlyField, NgIf, MatStepperPrevious, MatStepperNext],
 })
 export class FormlyFieldStepper extends FieldType {

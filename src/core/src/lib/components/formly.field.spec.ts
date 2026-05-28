@@ -633,6 +633,7 @@ describe('FormlyField Component', () => {
       <ng-container #fieldComponent></ng-container>
     </div>
   `,
+  standalone: false,
 })
 class FormlyWrapperFormFieldAsync extends FieldWrapper {}
 
@@ -643,6 +644,7 @@ class FormlyWrapperFormFieldAsync extends FieldWrapper {}
     <div class="formState">{{ formState | json }}</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyOnPushComponent extends FieldType {}
 
@@ -650,6 +652,7 @@ export class FormlyOnPushComponent extends FieldType {}
   selector: 'formly-on-populate-component',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyOnPopulateType extends FieldType implements FormlyExtension {
   instanceId = Math.random().toString(36).substring(2, 5);
@@ -667,6 +670,7 @@ export class ParentService {}
   selector: 'formly-parent',
   template: ` <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field> `,
   providers: [ParentService],
+  standalone: false,
 })
 export class FormlyParentComponent extends FieldType {
   constructor(public parent: ParentService) {
@@ -677,6 +681,7 @@ export class FormlyParentComponent extends FieldType {
 @Component({
   selector: 'formly-child',
   template: ` <ng-content></ng-content> `,
+  standalone: false,
 })
 export class FormlyChildComponent extends FieldType {
   constructor(
@@ -689,5 +694,6 @@ export class FormlyChildComponent extends FieldType {
 
 @Component({
   template: `<input type="text" [formControl]="formControl.get('title')" />`,
+  standalone: false,
 })
 export class FormlyGroupLocalControlType extends FieldType {}
