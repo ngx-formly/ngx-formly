@@ -35,7 +35,7 @@ import {
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { Observable, Subscription, isObservable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, skip, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
 /**
@@ -357,6 +357,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     if (field.formControl && !field.fieldGroup) {
       const control = field.formControl;
       let valueChanges = control.valueChanges.pipe(
+        startWith(control.value),
         map((value) => {
           field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
           if (!Object.is(value, field.formControl.value)) {
@@ -372,6 +373,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
           return true;
         }),
+        skip(1),
       );
 
       if (control.value !== getFieldValue(field)) {
