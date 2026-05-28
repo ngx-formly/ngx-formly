@@ -147,7 +147,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       ) {
         this.uiAttributesCache[attr] = value;
         if (value || value === 0) {
-          this.setAttribute(attr, value === true ? attr : `${value}`);
+          this.setAttribute(attr, this.getSafeAttributeValue(attr, value));
         } else {
           this.removeAttribute(attr);
         }
@@ -226,6 +226,21 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     if (index !== -1) {
       elements.splice(index, 1);
     }
+  }
+
+  private getSafeAttributeValue(attr: string, value: any): string {
+    if (attr === 'pattern') {
+      let pattern = value instanceof RegExp ? value.source : value;
+
+      // 1. Safely escape unescaped hyphens inside character classes for 'v' flag compatibility
+      pattern = pattern.replace(/(\[[^\]]*?)(?<!\\)-(.*?\])/g, '$1\\-$2');
+
+      // 2. Cleanly strip leading ^ and trailing $ so HTML5 handles the boundaries natively
+      pattern = pattern.replace(/^^\^/, '').replace(/\$$/, '');
+
+      return pattern;
+    }
+    return value === true ? attr : `${value}`;
   }
 
   private setAttribute(attr: string, value: string) {
