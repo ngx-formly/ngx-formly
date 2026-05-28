@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
+
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
@@ -11,12 +12,20 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
 @Component({
   selector: 'formly-field-ion-range',
   template: `
-    <ion-range [min]="props.min" [max]="props.max" [formControl]="formControl" [ionFormlyAttributes]="field">
+    <ion-range
+      [min]="props.min"
+      [max]="props.max"
+      [formControl]="formControl"
+      [ionFormlyAttributes]="field"
+      [label]="props.label"
+      [labelPlacement]="props.labelPosition"
+    >
       <ion-label slot="start">{{ props.min }}</ion-label>
       <ion-label slot="end">{{ props.max }}</ion-label>
     </ion-range>
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {}

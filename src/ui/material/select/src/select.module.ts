@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { FormlyFieldSelect } from './select.type';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { withFormlyFieldSelect } from './select.config';
 
 @NgModule({
   declarations: [FormlyFieldSelect],
@@ -20,16 +21,7 @@ import { MatPseudoCheckboxModule } from '@angular/material/core';
 
     FormlyMatFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'select',
-          component: FormlyFieldSelect,
-          wrappers: ['form-field'],
-        },
-        { name: 'enum', extends: 'select' },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldSelect()),
   ],
 })
 export class FormlyMatSelectModule {}

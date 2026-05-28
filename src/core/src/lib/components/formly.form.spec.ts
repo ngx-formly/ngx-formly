@@ -1,7 +1,17 @@
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormlyInputModule, createComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import {
+  FieldType,
+  FieldTypeConfig,
+  FormlyFieldConfig,
+  FormlyFormOptions,
+  FormlyModule,
+  provideFormlyConfig,
+  provideFormlyCore,
+} from '@ngx-formly/core';
+import { FormGroup, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormlyOnPushComponent } from './formly.field.spec';
+import { Component } from '@angular/core';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -36,6 +46,7 @@ export const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => 
     inputs,
     config,
     imports: [FormlyInputModule],
+    declarations: [FormlyOnPushComponent],
     ...config,
   });
 };
@@ -699,6 +710,87 @@ describe('FormlyForm Component', () => {
       expect(queryAll('.inline-group')).toHaveLength(3);
       expect(query('formly-group')).toBeNull();
     });
+
+    it('should update the model when rendering child controls in an inline group', () => {
+      const { model, query, detectChanges } = renderComponent(
+        {
+          model: { name: 'John Doe' },
+          fields: [
+            {
+              key: 'name',
+              type: 'input',
+            },
+          ],
+        },
+        {
+          template: `
+            <form [formGroup]="form">
+              <formly-form [form]="form" [fields]="fields" [model]="model">
+                <ng-template formlyTemplate let-field>
+                  <input
+                    id="inline-input"
+                    *ngFor="let f of field.fieldGroup"
+                    [formControl]="f.formControl"
+                    [formlyAttributes]="f"
+                  />
+                </ng-template>
+              </formly-form>
+            </form>
+          `,
+        },
+      );
+
+      query<HTMLInputElement>('#inline-input').triggerEventHandler('input', ɵCustomEvent({ value: 'Jane Doe' }));
+      detectChanges();
+
+      expect(model).toEqual({ name: 'Jane Doe' });
+    });
+  });
+
+  describe('formState update', () => {
+    it('should take account of formState update', () => {
+      const { options, query, detectChanges } = renderComponent({
+        fields: [
+          {
+            key: 'push',
+            type: FormlyOnPushComponent,
+            props: {},
+          },
+        ],
+        options: { formState: { foo: true } },
+      });
+
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
+      options.formState.foo = false;
+      detectChanges();
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
+    });
+
+    it('should apply formState update to all fields', () => {
+      const options = { formState: { foo: true } };
+      const { query, detectChanges } = renderComponent({
+        options,
+        fields: [
+          {
+            fieldGroup: [
+              {
+                key: 'push',
+                type: FormlyOnPushComponent,
+              },
+              {
+                key: 'test',
+              },
+            ],
+          },
+        ],
+      });
+
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
+
+      options.formState.foo = false;
+      detectChanges();
+      expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
+    });
   });
 
   it('should check expression on submit', () => {
@@ -818,4 +910,52 @@ describe('FormlyForm Component', () => {
     detectChanges();
     expect(form.valid).toEqual(false);
   });
+
+  it('should merge config when using provideFormlyConfig', async () => {
+    TestBed.configureTestingModule({
+      imports: [StandaloneAppComponent],
+      providers: [
+        provideFormlyCore({
+          types: [{ name: 'input', component: FormlyFieldInput }],
+        }),
+      ],
+    });
+
+    const fixture = TestBed.createComponent(StandaloneAppComponent);
+    fixture.detectChanges();
+    expect(!!fixture.elementRef.nativeElement.querySelector('input')).toBeTrue();
+  });
 });
+
+// reproduction for https://github.com/ngx-formly/ngx-formly/issues/4107
+
+@Component({
+  selector: 'formly-app-child',
+  template: `
+    <form [formGroup]="form">
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  `,
+  providers: [provideFormlyConfig([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
+  imports: [FormsModule, ReactiveFormsModule, FormlyModule],
+})
+export class StandaloneChildComponent {
+  form = new FormGroup({});
+  model = {};
+  fields: FormlyFieldConfig[] = [{ type: 'input' }];
+}
+
+@Component({
+  selector: 'formly-app-root',
+  template: `<formly-app-child />`,
+  imports: [StandaloneChildComponent],
+})
+export class StandaloneAppComponent {}
+
+@Component({
+  selector: 'formly-type-input',
+  template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
+  standalone: true,
+})
+export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}

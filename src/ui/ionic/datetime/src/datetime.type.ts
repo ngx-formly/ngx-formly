@@ -27,7 +27,7 @@ export interface FormlyDatetimeFieldConfig extends FormlyFieldConfig<DatetimePro
   template: `
     <ion-item [button]="true" [detail]="false" (click)="isOpen = true">
       <ion-label>
-        {{ formControl.value ? (formControl.value | date : displayFormat()) : props.placeholder }}
+        {{ formControl.value ? (formControl.value | date: displayFormat()) : props.placeholder }}
       </ion-label>
     </ion-item>
     <ion-modal
@@ -62,6 +62,7 @@ export interface FormlyDatetimeFieldConfig extends FormlyFieldConfig<DatetimePro
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./dattime.type.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class FormlyFieldDatetime extends FieldType<FieldTypeConfig<DatetimeProps>> {
   @ViewChild(IonDatetime) datetime!: IonDatetime;

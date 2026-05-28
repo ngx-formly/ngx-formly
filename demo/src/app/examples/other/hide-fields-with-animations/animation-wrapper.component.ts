@@ -76,5 +76,6 @@ const SlideInOutAnimation = [
     </div>
   `,
   animations: [SlideInOutAnimation],
+  standalone: true,
 })
 export class AnimationWrapperComponent extends FieldWrapper {}

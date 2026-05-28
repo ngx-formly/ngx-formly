@@ -5,12 +5,15 @@ import { FieldType, FieldGroupTypeConfig } from './field.type';
 @Component({
   selector: 'formly-group',
   template: `
-    <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
+    @for (f of field.fieldGroup; track $index) {
+      <formly-field [field]="f"></formly-field>
+    }
     <ng-content></ng-content>
   `,
   host: {
     '[class]': 'field.fieldGroupClassName || ""',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyGroup extends FieldType<FieldGroupTypeConfig> {}

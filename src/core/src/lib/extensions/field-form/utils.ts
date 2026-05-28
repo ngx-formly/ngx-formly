@@ -1,5 +1,5 @@
 import { EventEmitter } from '@angular/core';
-import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { UntypedFormArray, UntypedFormGroup, AbstractControl, FormControl } from '@angular/forms';
 import { getKeyPath, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
 import { FormlyFieldConfigCache } from '../../models';
 
@@ -10,18 +10,18 @@ export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = fal
     control._fields.splice(fieldIndex, 1);
   }
 
-  const form = control.parent as FormArray | FormGroup;
+  const form = control.parent as UntypedFormArray | UntypedFormGroup;
   if (!form) {
     return;
   }
 
   const opts = { emitEvent };
-  if (form instanceof FormArray) {
+  if (form instanceof UntypedFormArray) {
     const key = form.controls.findIndex((c) => c === control);
     if (key !== -1) {
       form.removeAt(key, opts);
     }
-  } else if (form instanceof FormGroup) {
+  } else if (form instanceof UntypedFormGroup) {
     const paths = getKeyPath(field);
     const key = paths[paths.length - 1];
     if (form.get([key]) === control) {
@@ -88,15 +88,15 @@ export function registerControl(
   for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
     if (!form.get([path])) {
-      (form as FormGroup).setControl(path, new FormGroup({}), { emitEvent });
+      (form as UntypedFormGroup).setControl(path, new UntypedFormGroup({}), { emitEvent });
     }
 
-    form = <FormGroup>form.get([path]);
+    form = <UntypedFormGroup>form.get([path]);
   }
 
   const key = paths[paths.length - 1];
   if (!field._hide && form.get([key]) !== control) {
-    (form as FormGroup).setControl(key, control, { emitEvent });
+    (form as UntypedFormGroup).setControl(key, control, { emitEvent });
   }
 }
 
@@ -117,7 +117,7 @@ export function clearControl(form: FormlyFieldConfigCache['formControl']) {
   delete form?._fields;
   form.setValidators(null);
   form.setAsyncValidators(null);
-  if (form instanceof FormGroup || form instanceof FormArray) {
+  if (form instanceof UntypedFormGroup || form instanceof UntypedFormArray) {
     Object.values(form.controls).forEach((c) => clearControl(c));
   }
 }

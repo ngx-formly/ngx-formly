@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyWrapperFormField } from './form-field.wrapper';
 import { FormFieldModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
+import { withFormlyFormField } from './form-field.config';
 
 @NgModule({
   declarations: [FormlyWrapperFormField],
@@ -14,14 +15,7 @@ import { LabelModule } from '@progress/kendo-angular-label';
     FormFieldModule,
     LabelModule,
 
-    FormlyModule.forChild({
-      wrappers: [
-        {
-          name: 'form-field',
-          component: FormlyWrapperFormField,
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFormField()),
   ],
 })
 export class FormlyFormFieldModule {}

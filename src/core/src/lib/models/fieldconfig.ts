@@ -1,6 +1,6 @@
 import {
-  FormGroup,
-  FormArray,
+  UntypedFormGroup,
+  UntypedFormArray,
   AbstractControl,
   FormGroupDirective,
   ValidatorFn,
@@ -11,6 +11,14 @@ import { FieldType } from '../templates/field.type';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { ValidationMessageOption } from '../models';
 import { Type } from '@angular/core';
+
+type FieldExpression<T = any> = string | ((field: FormlyFieldConfig) => T) | Observable<T>;
+type FieldExpressions = { [property: string]: FieldExpression } & {
+  className?: FieldExpression<string>;
+  hide?: FieldExpression<boolean>;
+  'props.disabled'?: FieldExpression<boolean>;
+  'props.required'?: FieldExpression<boolean>;
+};
 
 export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalProperties: string]: any }> {
   /**
@@ -115,9 +123,7 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
   /**
    * An object where the key is a property to be set on the main field config and the value is an expression used to assign that property.
    */
-  expressions?: {
-    [property: string]: string | ((field: FormlyFieldConfig) => any) | Observable<any>;
-  };
+  expressions?: FieldExpressions;
 
   /**
    * You can specify your own class that will be applied to the `formly-field` component.
@@ -185,7 +191,7 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
   /**
    * The parent form.
    */
-  readonly form?: FormGroup | FormArray;
+  readonly form?: UntypedFormGroup | UntypedFormArray;
 
   /**
    * This is the [FormControl](https://angular.io/api/forms/FormControl) for the field.
@@ -238,12 +244,13 @@ export interface FormlyFieldProps {
   click?: FormlyAttributeEvent;
   change?: FormlyAttributeEvent;
   keypress?: FormlyAttributeEvent;
+  wheel?: FormlyAttributeEvent;
 }
 
 export type FormlyHookFn = (field: FormlyFieldConfig) => void;
 
 export interface FormlyHookConfig {
-  onInit?: FormlyHookFn;
+  onInit?: FormlyHookFn | ((field: FormlyFieldConfig) => Observable<any>);
   onChanges?: FormlyHookFn;
   afterContentInit?: FormlyHookFn;
   afterViewInit?: FormlyHookFn;

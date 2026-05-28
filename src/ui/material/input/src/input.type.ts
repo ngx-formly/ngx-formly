@@ -11,23 +11,25 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
 @Component({
   selector: 'formly-field-mat-input',
   template: `
-    <input
-      *ngIf="type !== 'number'; else numberTmp"
-      matInput
-      [id]="id"
-      [type]="type || 'text'"
-      [readonly]="props.readonly"
-      [required]="required"
-      [errorStateMatcher]="errorStateMatcher"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [tabIndex]="props.tabindex"
-      [placeholder]="props.placeholder"
-    />
-    <ng-template #numberTmp>
+    @if (type !== 'number') {
       <input
         matInput
         [id]="id"
+        [name]="field.name"
+        [type]="type || 'text'"
+        [readonly]="props.readonly"
+        [required]="required"
+        [errorStateMatcher]="errorStateMatcher"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [tabIndex]="props.tabindex"
+        [placeholder]="props.placeholder"
+      />
+    } @else {
+      <input
+        matInput
+        [id]="id"
+        [name]="field.name"
         type="number"
         [readonly]="props.readonly"
         [required]="required"
@@ -37,9 +39,10 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
         [tabIndex]="props.tabindex"
         [placeholder]="props.placeholder"
       />
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {
   get type() {

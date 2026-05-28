@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 import {
   ɵreverseDeepMerge as reverseDeepMerge,
   ɵgetFieldValue as getFieldValue,
@@ -55,6 +55,23 @@ function isConst(schema: JSONSchema7Definition) {
   return typeof schema === 'object' && (schema.hasOwnProperty('const') || (schema.enum && schema.enum.length === 1));
 }
 
+function toNumber(value: string | number | null) {
+  if (value === '' || value === undefined) {
+    return undefined;
+  }
+
+  if (value === null) {
+    return null;
+  }
+
+  if (typeof value === 'number') {
+    return value;
+  }
+
+  const val = parseFloat(value);
+  return !isNaN(val) ? val : value;
+}
+
 function totalMatchedFields(field: FormlyFieldConfig): number {
   if (!field.fieldGroup) {
     return hasKey(field) && getFieldValue(field) !== undefined ? 1 : 0;
@@ -83,15 +100,18 @@ interface IOptions extends FormlyJsonschemaOptions {
   readOnly?: boolean;
   key?: FormlyFieldConfig['key'];
   isOptional?: boolean;
+  conditionalSchemas?: JSONSchema7[];
+  skipMultiSchemaValidation?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
 export class FormlyJsonschema {
   toFieldConfig(schema: JSONSchema7, options?: FormlyJsonschemaOptions): FormlyFieldConfig {
+    schema = clone(schema);
     return this._toFieldConfig(schema, { schema, ...(options || {}) });
   }
 
-  private _toFieldConfig(schema: FormlyJSONSchema7, { key, ...options }: IOptions): FormlyFieldConfig {
+  private _toFieldConfig(schema: FormlyJSONSchema7, { key, isOptional, ...options }: IOptions): FormlyFieldConfig {
     schema = this.resolveSchema(schema, options);
     const types = this.guessSchemaType(schema);
 
@@ -118,35 +138,29 @@ export class FormlyJsonschema {
       field.resetOnHide = true;
     }
 
-    if (key && options.strict) {
-      this.addValidator(field, 'type', (c: AbstractControl, f: FormlyFieldConfig) => {
-        const value = getFieldValue(f);
-        if (value != null) {
-          switch (field.type) {
-            case 'string': {
-              return typeof value === 'string';
-            }
-            case 'integer': {
-              return isInteger(value);
-            }
-            case 'number': {
-              return typeof value === 'number';
-            }
-            case 'object': {
-              return isObject(value);
-            }
-            case 'array': {
-              return Array.isArray(value);
-            }
-          }
-        }
-
-        return true;
-      });
-    }
-
     if (options.shareFormControl === false) {
       field.shareFormControl = false;
+    }
+
+    if (field.defaultValue === undefined && types.length === 1 && isOptional === false) {
+      switch (types[0]) {
+        case 'null': {
+          field.defaultValue = null;
+          break;
+        }
+        case 'string': {
+          field.defaultValue = '';
+          break;
+        }
+        case 'object': {
+          field.defaultValue = {};
+          break;
+        }
+        case 'array': {
+          field.defaultValue = schema.minItems > 0 ? Array.from(new Array(schema.minItems)) : [];
+          break;
+        }
+      }
     }
 
     if (options.ignoreDefault) {
@@ -192,7 +206,28 @@ export class FormlyJsonschema {
     switch (field.type) {
       case 'number':
       case 'integer': {
-        field.parsers = [(v: string | number) => (isEmpty(v) ? undefined : Number(v))];
+        field.parsers = [
+          (v: string | number, f: FormlyFieldConfig) => {
+            v = toNumber(v);
+
+            if (v === null && f) {
+              const input =
+                typeof document !== 'undefined' && f.id
+                  ? document.querySelector<HTMLInputElement>(`#${f.id}`)
+                  : undefined;
+              if (input && input.validity && !input.validity.badInput) {
+                v = undefined;
+              }
+
+              if (v !== f.formControl.value) {
+                f.formControl.setValue(v, { emitModelToViewChange: false });
+              }
+            }
+
+            return v;
+          },
+        ] as ((value: any, f?: FormlyFieldConfig) => any)[];
+
         if (schema.hasOwnProperty('minimum')) {
           field.props.min = schema.minimum;
         }
@@ -235,16 +270,16 @@ export class FormlyJsonschema {
       }
       case 'string': {
         field.parsers = [
-          (v) => {
+          (v, f: FormlyFieldConfig) => {
             if (types.indexOf('null') !== -1) {
               v = isEmpty(v) ? null : v;
-            } else if (!field.props.required) {
+            } else if (f && !f.props.required) {
               v = v === '' ? undefined : v;
             }
 
             return v;
           },
-        ];
+        ] as ((value: any, f?: FormlyFieldConfig) => any)[];
 
         ['minLength', 'maxLength', 'pattern'].forEach((prop) => {
           if (schema.hasOwnProperty(prop)) {
@@ -264,7 +299,7 @@ export class FormlyJsonschema {
           const f = this._toFieldConfig(<JSONSchema7>schema.properties[property], {
             ...options,
             key: property,
-            isOptional: options.isOptional || !isRequired,
+            isOptional: isOptional || !isRequired,
           });
 
           field.fieldGroup.push(f);
@@ -305,7 +340,10 @@ export class FormlyJsonschema {
               oneOfSchema.forEach((oneOfSchemaItem) => {
                 const { [property]: constSchema, ...properties } = oneOfSchemaItem.properties;
                 field.fieldGroup.push({
-                  ...this._toFieldConfig({ ...oneOfSchemaItem, properties }, { ...options, resetOnHide: true }),
+                  ...this._toFieldConfig(
+                    { ...oneOfSchemaItem, properties },
+                    { ...options, shareFormControl: false, resetOnHide: true },
+                  ),
                   expressions: {
                     hide: (f) => !f.model || getConstValue(constSchema as JSONSchema7) !== f.model[property],
                   },
@@ -331,36 +369,93 @@ export class FormlyJsonschema {
         if (schema.anyOf) {
           field.fieldGroup.push(this.resolveMultiSchema('anyOf', <JSONSchema7[]>schema.anyOf, options));
         }
+
+        // Process if/then/else conditional schemas
+        if (options.conditionalSchemas) {
+          const conditionalSchemas = options.conditionalSchemas as Array<JSONSchema7 & { _ifCondition: any }>;
+          conditionalSchemas.forEach((conditionalSchema) => {
+            const condition = conditionalSchema._ifCondition;
+            if (condition && conditionalSchema.properties) {
+              // Create a field group with the conditional fields
+              const conditionalFieldGroup: FormlyFieldConfig = {
+                fieldGroup: [],
+                expressions: {
+                  hide: (f) => {
+                    if (!f.model) {
+                      return true;
+                    }
+                    const modelValue = f.model[condition.property];
+                    const matches = modelValue === condition.value;
+                    // If negate is true (for "else" case), invert the condition
+                    return condition.negate ? matches : !matches;
+                  },
+                },
+              };
+
+              // Add each property from the conditional schema to the field group
+              Object.keys(conditionalSchema.properties).forEach((property) => {
+                const propSchema = conditionalSchema.properties[property] as JSONSchema7;
+                if (!propSchema) {
+                  return;
+                }
+                const isRequired =
+                  Array.isArray(conditionalSchema.required) && conditionalSchema.required.indexOf(property) !== -1;
+                const conditionalField = this._toFieldConfig(propSchema, {
+                  ...options,
+                  key: property,
+                  isOptional: !isRequired,
+                  resetOnHide: true,
+                });
+                conditionalFieldGroup.fieldGroup.push(conditionalField);
+              });
+
+              field.fieldGroup.push(conditionalFieldGroup);
+            }
+          });
+        }
         break;
       }
       case 'array': {
         if (schema.hasOwnProperty('minItems')) {
           field.props.minItems = schema.minItems;
-          this.addValidator(field, 'minItems', (c: AbstractControl, f: FormlyFieldConfig) => {
-            const value = getFieldValue(f);
+          this.addValidator(field, 'minItems', ({ value }: AbstractControl) => {
             return isEmpty(value) || value.length >= schema.minItems;
           });
-
-          if (!options.isOptional && schema.minItems > 0 && field.defaultValue === undefined) {
+          if (!isOptional && schema.minItems > 0 && field.defaultValue === undefined) {
             field.defaultValue = Array.from(new Array(schema.minItems));
           }
         }
         if (schema.hasOwnProperty('maxItems')) {
           field.props.maxItems = schema.maxItems;
-          this.addValidator(field, 'maxItems', (c: AbstractControl, f: FormlyFieldConfig) => {
-            const value = getFieldValue(f);
+          this.addValidator(field, 'maxItems', ({ value }: AbstractControl) => {
             return isEmpty(value) || value.length <= schema.maxItems;
           });
         }
         if (schema.hasOwnProperty('uniqueItems')) {
           field.props.uniqueItems = schema.uniqueItems;
-          this.addValidator(field, 'uniqueItems', (c: AbstractControl, f: FormlyFieldConfig) => {
-            const value = getFieldValue(f);
+          this.addValidator(field, 'uniqueItems', ({ value }: AbstractControl) => {
             if (isEmpty(value) || !schema.uniqueItems) {
               return true;
             }
 
-            const uniqueItems = Array.from(new Set(value.map((v: any) => JSON.stringify(v))));
+            const uniqueItems = Array.from(
+              new Set(
+                value.map((v: any) =>
+                  JSON.stringify(v, (k, o) => {
+                    if (isObject(o)) {
+                      return Object.keys(o)
+                        .sort()
+                        .reduce((obj: any, key) => {
+                          obj[key] = o[key];
+                          return obj;
+                        }, {});
+                    }
+
+                    return o;
+                  }),
+                ),
+              ),
+            );
 
             return uniqueItems.length === value.length;
           });
@@ -374,30 +469,40 @@ export class FormlyJsonschema {
         // TODO: remove isEnum check once adding an option to skip extension
         if (!this.isEnum(schema)) {
           field.fieldArray = (root: FormlyFieldConfig) => {
-            if (!Array.isArray(schema.items)) {
+            const length = root.fieldGroup ? root.fieldGroup.length : 0;
+            const items = schema.items as JSONSchema7 | JSONSchema7[];
+            if (!Array.isArray(items)) {
+              if (!items) {
+                return {};
+              }
+
+              const isMultiSchema = items.oneOf || items.anyOf;
+
               // When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-              const f = schema.items ? this._toFieldConfig(<JSONSchema7>schema.items, options) : {};
-              if (f.props) {
-                f.props.required = true;
+              const f = this._toFieldConfig(
+                items,
+                isMultiSchema ? { ...options, key: `${length}`, isOptional: false } : { ...options, isOptional: false },
+              );
+
+              if (isMultiSchema && !hasKey(f)) {
+                f.key = null;
               }
 
               return f;
             }
 
-            const length = root.fieldGroup ? root.fieldGroup.length : 0;
-            const itemSchema = schema.items[length] ? schema.items[length] : schema.additionalItems;
+            const itemSchema = items[length] ? items[length] : schema.additionalItems;
             const f = itemSchema ? this._toFieldConfig(<JSONSchema7>itemSchema, options) : {};
             if (f.props) {
               f.props.required = true;
             }
-            if (schema.items[length]) {
+            if (items[length]) {
               f.props.removable = false;
             }
 
             return f;
           };
         }
-
         break;
       }
     }
@@ -411,9 +516,25 @@ export class FormlyJsonschema {
     }
 
     if (this.isEnum(schema)) {
-      field.props.multiple = field.type === 'array';
+      const enumOptions = this.toEnumOptions(schema);
+      const multiple = field.type === 'array';
+
       field.type = 'enum';
-      field.props.options = this.toEnumOptions(schema);
+      field.props.multiple = multiple;
+      field.props.options = enumOptions;
+
+      const enumValues = enumOptions.map((o) => o.value);
+      this.addValidator(field, 'enum', ({ value }: AbstractControl) => {
+        if (value === undefined) {
+          return true;
+        }
+
+        if (multiple) {
+          return Array.isArray(value) ? value.every((o) => enumValues.includes(o)) : false;
+        }
+
+        return enumValues.includes(value);
+      });
     }
 
     if (schema.oneOf && !field.type) {
@@ -423,10 +544,10 @@ export class FormlyJsonschema {
       ];
     }
 
-    if (schema.oneOf && !field.type) {
+    if (schema.anyOf && !field.type) {
       delete field.key;
       field.fieldGroup = [
-        this.resolveMultiSchema('oneOf', <JSONSchema7[]>schema.oneOf, { ...options, key, shareFormControl: false }),
+        this.resolveMultiSchema('anyOf', <JSONSchema7[]>schema.anyOf, { ...options, key, shareFormControl: false }),
       ];
     }
 
@@ -448,6 +569,15 @@ export class FormlyJsonschema {
 
     if (schema && schema.allOf) {
       schema = this.resolveAllOf(schema, options);
+    }
+
+    // Process if/then/else and store conditionals in options for later processing
+    if (schema && (schema.if || schema.then || schema.else)) {
+      const conditionalSchemas = this.resolveIfThenElse(schema, options);
+      if (conditionalSchemas.length > 0) {
+        // Store conditional schemas in options for processing in _toFieldConfig
+        options.conditionalSchemas = conditionalSchemas;
+      }
     }
 
     return schema;
@@ -491,6 +621,72 @@ export class FormlyJsonschema {
   }
 
   private resolveMultiSchema(mode: 'oneOf' | 'anyOf', schemas: JSONSchema7[], options: IOptions): FormlyFieldConfig {
+    const isRecursive = this.isRecursiveMultiSchema(schemas, options);
+    const fieldGroup = schemas.map((s, i) => {
+      const expressions: FormlyFieldConfig['expressions'] = {
+        hide: (f, forceUpdate?: boolean) => {
+          if (options.skipMultiSchemaValidation) {
+            return true;
+          }
+
+          const control = f.parent.parent.fieldGroup[0].formControl;
+          if (control.value === -1 || forceUpdate) {
+            let value = f.parent.fieldGroup
+              .map(
+                (f, i) =>
+                  [f, i, this.isFieldValid(f, i, schemas, options, isRecursive)] as [
+                    FormlyFieldConfig,
+                    number,
+                    boolean,
+                  ],
+              )
+              .sort(([f1, i1, f1Valid], [f2, i2, f2Valid]) => {
+                if (f1Valid !== f2Valid) {
+                  return f2Valid ? 1 : -1;
+                }
+
+                const schemaField1 = isRecursive ? this.getSchemaField(schemas[i1]) || f1 : f1;
+                const schemaField2 = isRecursive ? this.getSchemaField(schemas[i2]) || f2 : f2;
+                const matchedFields1 = totalMatchedFields(schemaField1);
+                const matchedFields2 = totalMatchedFields(schemaField2);
+                if (matchedFields1 === matchedFields2) {
+                  if (schemaField1.props?.disabled === schemaField2.props?.disabled) {
+                    return 0;
+                  }
+
+                  return matchedFields2 > matchedFields1 ? 1 : -1;
+                }
+
+                return matchedFields2 > matchedFields1 ? 1 : -1;
+              })
+              .map(([, i]) => i);
+
+            if (mode === 'anyOf') {
+              const definedValue = value.filter((i) => totalMatchedFields(f.parent.fieldGroup[i]));
+              value = definedValue.length > 0 ? definedValue : [value[0] || 0];
+            }
+
+            value = value.length > 0 ? value : [0];
+            control.setValue(mode === 'anyOf' ? value : value[0]);
+          }
+
+          const hide = Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
+          if (isRecursive && !hide) {
+            this.ensureMultiSchemaField(f, s, options);
+          }
+
+          return hide;
+        },
+      };
+
+      return isRecursive
+        ? this.createMultiSchemaField(s, options, expressions)
+        : {
+            ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
+            expressions,
+          };
+    });
+
     return {
       type: 'multischema',
       fieldGroup: [
@@ -506,52 +702,147 @@ export class FormlyJsonschema {
           },
         },
         {
-          fieldGroup: schemas.map((s, i) => ({
-            ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
-            expressions: {
-              hide: (f, forceUpdate?: boolean) => {
-                const control = f.parent.parent.fieldGroup[0].formControl;
-                if (control.value === -1 || forceUpdate) {
-                  let value = f.parent.fieldGroup
-                    .map(
-                      (f, i) =>
-                        [f, i, this.isFieldValid(f, i, schemas, options)] as [FormlyFieldConfig, number, boolean],
-                    )
-                    .sort(([f1, , f1Valid], [f2, , f2Valid]) => {
-                      if (f1Valid !== f2Valid) {
-                        return f2Valid ? 1 : -1;
-                      }
-
-                      const matchedFields1 = totalMatchedFields(f1);
-                      const matchedFields2 = totalMatchedFields(f2);
-                      if (matchedFields1 === matchedFields2) {
-                        if (f1.props.disabled === f2.props.disabled) {
-                          return 0;
-                        }
-
-                        return matchedFields2 > matchedFields1 ? 1 : -1;
-                      }
-
-                      return matchedFields2 > matchedFields1 ? 1 : -1;
-                    })
-                    .map(([, i]) => i);
-
-                  if (mode === 'anyOf') {
-                    const definedValue = value.filter((i) => totalMatchedFields(f.parent.fieldGroup[i]));
-                    value = definedValue.length > 0 ? definedValue : [value[0] || 0];
-                  }
-
-                  value = value.length > 0 ? value : [0];
-                  control.setValue(mode === 'anyOf' ? value : value[0]);
-                }
-
-                return Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
-              },
-            },
-          })),
+          fieldGroup,
         },
       ],
     };
+  }
+
+  private createMultiSchemaField(
+    schema: JSONSchema7,
+    options: IOptions,
+    expressions: FormlyFieldConfig['expressions'],
+  ): FormlyFieldConfig {
+    return {
+      expressions,
+      hooks: {
+        onInit: (f) => {
+          if (f.hide === false) {
+            this.ensureMultiSchemaField(f, schema, options);
+          }
+        },
+      },
+    };
+  }
+
+  private ensureMultiSchemaField(
+    field: FormlyFieldConfig & { _jsonSchemaFormlyField?: boolean },
+    schema: JSONSchema7,
+    options: IOptions,
+  ) {
+    if (field._jsonSchemaFormlyField) {
+      return;
+    }
+
+    const expressions = field.expressions;
+    const hooks = field.hooks;
+    const mutableField = field as unknown as Record<string, unknown>;
+    delete mutableField['formControl'];
+    delete mutableField['_keyPath'];
+
+    Object.keys(field).forEach((prop) => {
+      delete mutableField[prop];
+    });
+
+    Object.assign(field, this._toFieldConfig(schema, { ...options, resetOnHide: true }));
+    field.expressions = expressions;
+    field.hooks = hooks;
+
+    Object.defineProperty(field, '_jsonSchemaFormlyField', {
+      value: true,
+      configurable: true,
+    });
+
+    field.options?.build(field);
+  }
+
+  private getSchemaField(schema: JSONSchema7): FormlyFieldConfig | undefined {
+    return (schema as JSONSchema7 & { _field?: FormlyFieldConfig })._field?.fieldGroup?.[0];
+  }
+
+  private isRecursiveMultiSchema(schemas: JSONSchema7[], options: IOptions): boolean {
+    const visited = new WeakSet<object>();
+    const visit = (schema: JSONSchema7Definition): boolean => {
+      if (!schema || typeof schema !== 'object') {
+        return false;
+      }
+
+      if (visited.has(schema)) {
+        return false;
+      }
+
+      visited.add(schema);
+      if (schema.$ref) {
+        const definition = this.getDefinition(schema.$ref, options);
+        return !!definition && (definition.oneOf === schemas || definition.anyOf === schemas || visit(definition));
+      }
+
+      if (schema.oneOf === schemas || schema.anyOf === schemas) {
+        return true;
+      }
+
+      const children: JSONSchema7Definition[] = [];
+      if (schema.properties) {
+        children.push(...Object.values(schema.properties));
+      }
+
+      if (schema.items) {
+        children.push(...(Array.isArray(schema.items) ? schema.items : [schema.items]));
+      }
+
+      if (schema.additionalItems && typeof schema.additionalItems === 'object') {
+        children.push(schema.additionalItems);
+      }
+
+      if (schema.allOf) {
+        children.push(...(schema.allOf as JSONSchema7Definition[]));
+      }
+
+      if (schema.oneOf && schema.oneOf !== schemas) {
+        children.push(...(schema.oneOf as JSONSchema7Definition[]));
+      }
+
+      if (schema.anyOf && schema.anyOf !== schemas) {
+        children.push(...(schema.anyOf as JSONSchema7Definition[]));
+      }
+
+      if (schema.dependencies) {
+        Object.values(schema.dependencies).forEach((dependency) => {
+          if (dependency && !Array.isArray(dependency)) {
+            children.push(dependency);
+          }
+        });
+      }
+
+      (['not', 'if', 'then', 'else'] as (keyof JSONSchema7)[]).forEach((key) => {
+        const child = schema[key];
+        if (child && typeof child === 'object') {
+          children.push(child as JSONSchema7Definition);
+        }
+      });
+
+      return children.some(visit);
+    };
+
+    return schemas.some(visit);
+  }
+
+  private getDefinition(ref: string, options: IOptions): FormlyJSONSchema7 | null {
+    const [uri, pointer] = ref.split('#/');
+    if (uri || !pointer) {
+      return null;
+    }
+
+    let definition: JSONSchema7Definition = options.schema;
+    for (const path of pointer.split('/')) {
+      if (!definition || typeof definition !== 'object' || !definition.hasOwnProperty(path)) {
+        return null;
+      }
+
+      definition = (definition as Record<string, JSONSchema7Definition>)[path];
+    }
+
+    return typeof definition === 'object' ? (definition as FormlyJSONSchema7) : null;
   }
 
   private resolveDefinition(schema: FormlyJSONSchema7, options: IOptions): FormlyJSONSchema7 {
@@ -608,6 +899,64 @@ export class FormlyJsonschema {
     });
 
     return { propDeps, schemaDeps };
+  }
+
+  private extractIfCondition(ifSchema: JSONSchema7): { property: string; value: any } | null {
+    // Extract the property and const value from the "if" schema
+    // Supports: { "properties": { "propName": { "const": value } } }
+    if (ifSchema.properties) {
+      const propName = Object.keys(ifSchema.properties)[0];
+      if (propName) {
+        const propSchema = ifSchema.properties[propName] as JSONSchema7;
+        if (propSchema && propSchema.hasOwnProperty('const')) {
+          return { property: propName, value: propSchema.const };
+        }
+      }
+    }
+    return null;
+  }
+
+  private resolveIfThenElse(schema: JSONSchema7, options: IOptions): JSONSchema7[] {
+    // Process if/then/else and return array of conditional schemas to add to fieldGroup
+    const conditionalSchemas: JSONSchema7[] = [];
+
+    if (schema.if && typeof schema.if === 'object') {
+      const condition = this.extractIfCondition(schema.if as JSONSchema7);
+      if (condition) {
+        // Process "then" branch
+        if (schema.then && typeof schema.then === 'object') {
+          const resolvedSchema = this.resolveConditionalSchema(schema.then as JSONSchema7, options);
+          conditionalSchemas.push({
+            ...resolvedSchema,
+            _ifCondition: condition,
+          } as any);
+        }
+
+        // Process "else" branch
+        if (schema.else && typeof schema.else === 'object') {
+          const resolvedSchema = this.resolveConditionalSchema(schema.else as JSONSchema7, options);
+          conditionalSchemas.push({
+            ...resolvedSchema,
+            _ifCondition: { property: condition.property, value: condition.value, negate: true },
+          } as any);
+        }
+      }
+    }
+
+    return conditionalSchemas;
+  }
+
+  private resolveConditionalSchema(conditionalSchema: JSONSchema7, options: IOptions): JSONSchema7 {
+    // Resolve $ref and allOf if present in conditional schema
+    // Note: We don't use resolveSchema here to avoid recursive processing of nested if/then/else
+    let resolved = conditionalSchema;
+    if (conditionalSchema.$ref) {
+      resolved = this.resolveDefinition(conditionalSchema, options);
+    }
+    if (resolved.allOf) {
+      resolved = this.resolveAllOf(resolved, options);
+    }
+    return resolved;
   }
 
   private guessSchemaType(schema: JSONSchema7) {
@@ -676,24 +1025,30 @@ export class FormlyJsonschema {
     i: number,
     schemas: JSONSchema7[],
     options: IOptions,
+    skipMultiSchemaValidation = false,
   ): boolean {
-    if (!root._schemasFields) {
-      Object.defineProperty(root, '_schemasFields', { enumerable: false, writable: true, configurable: true });
-      root._schemasFields = {};
+    const schema = schemas[i] as JSONSchema7 & { _field?: FormlyFieldConfig };
+    if (!schema._field) {
+      Object.defineProperty(schema, '_field', { enumerable: false, writable: true, configurable: true });
     }
 
-    let field = root._schemasFields[i];
-    const model = root.model ? clone(root.model) : root.fieldArray ? [] : {};
+    let field = schema._field;
+    let model = root.model ? root.model : root.fieldArray ? [] : {};
+    if (root.model && hasKey(root)) {
+      model = { [Array.isArray(root.key) ? root.key.join('.') : root.key]: getFieldValue(root) };
+    }
+
+    model = clone(model);
     if (!field) {
-      field = root._schemasFields[i] = root.options.build({
-        form: Array.isArray(model) ? new FormArray([]) : new FormGroup({}),
+      field = schema._field = root.options.build({
+        form: Array.isArray(model) ? new UntypedFormArray([]) : new UntypedFormGroup({}),
         fieldGroup: [
-          this._toFieldConfig(schemas[i], {
+          this._toFieldConfig(schema, {
             ...options,
             resetOnHide: true,
             ignoreDefault: true,
+            skipMultiSchemaValidation,
             map: null,
-            strict: true,
           }),
         ],
         model,
@@ -708,7 +1063,7 @@ export class FormlyJsonschema {
   }
 
   private mergeFields(f1: any, f2: any) {
-    for (let prop in f2) {
+    for (const prop in f2) {
       const f1Prop = prop === 'templateOptions' ? 'props' : prop;
       if (isObject(f1[f1Prop]) && isObject(f2[prop])) {
         f1[f1Prop] = this.mergeFields(f1[f1Prop], f2[prop]);

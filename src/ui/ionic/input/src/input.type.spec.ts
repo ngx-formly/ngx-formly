@@ -38,7 +38,7 @@ describe('ui-ionic: Input Type', () => {
   });
 
   it('should render input[number] type', () => {
-    const { query } = renderComponent({
+    const { field, query, detectChanges } = renderComponent({
       key: 'name',
       type: 'input',
       props: { type: 'number' },
@@ -49,6 +49,12 @@ describe('ui-ionic: Input Type', () => {
       id: 'formly_1_input_name_0',
       type: 'number',
     });
+
+    const inputEl = query<HTMLInputElement>('ion-input').nativeElement;
+    inputEl.value = '1';
+    query('ion-input').triggerEventHandler('ionInput', ɵCustomEvent(inputEl));
+    detectChanges();
+    expect(field.formControl.value).toEqual(1);
   });
 
   it('should render number type', () => {
@@ -99,7 +105,7 @@ describe('ui-ionic: Input Type', () => {
 
     const inputEl = query<HTMLInputElement>('ion-input').nativeElement;
     inputEl.value = 'foo';
-    query('ion-input').triggerEventHandler('ionChange', ɵCustomEvent(inputEl));
+    query('ion-input').triggerEventHandler('ionInput', ɵCustomEvent(inputEl));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
     expect(changeSpy).toHaveBeenCalledOnce();

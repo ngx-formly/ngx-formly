@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -17,7 +17,7 @@ describe('ui-primeng: Checkbox Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    const { attributes } = query('p-checkbox');
+    const { attributes } = query('p-checkbox input');
     expect(attributes).toMatchObject({ id: 'formly_1_checkbox_name_0' });
   });
 
@@ -29,7 +29,7 @@ describe('ui-primeng: Checkbox Type', () => {
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
 
-    const { attributes } = query('p-checkbox');
+    const { attributes } = query('p-checkbox input');
     expect(attributes).toMatchObject({ id: 'formly_1_boolean_name_0' });
   });
 
@@ -41,14 +41,14 @@ describe('ui-primeng: Checkbox Type', () => {
       props: { change: changeSpy },
     });
 
-    const inputDebugEl = query<HTMLInputElement>('input[type="checkbox"]');
+    const inputElm = query<HTMLInputElement>('input[type="checkbox"]').nativeElement;
 
-    inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: true }));
+    inputElm.click();
     detectChanges();
     expect(field.formControl.value).toBeTrue();
     expect(changeSpy).toHaveBeenCalledOnce();
 
-    inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: false }));
+    inputElm.click();
     detectChanges();
     expect(field.formControl.value).toBeFalse();
     expect(changeSpy).toHaveBeenCalledTimes(2);

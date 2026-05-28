@@ -12,6 +12,10 @@ function renderComponent(field: FormlyFieldConfig) {
           name: 'test2',
           config: { getConfiguration: () => ({ key: 'test2', type: 'input' }) },
         },
+        {
+          name: 'test3',
+          config: { getConfiguration: () => ({ key: 'test3' }) },
+        },
       ],
     },
     providers: [
@@ -62,5 +66,13 @@ describe('Preset Substitution Extension', () => {
 
     expect(field.key).toEqual('test2');
     expect(field.type).toEqual('input');
+  });
+
+  it('should clear field type after merge', () => {
+    const config = { type: '#test3' };
+    const { field } = renderComponent(config);
+
+    expect(field.key).toEqual('test3');
+    expect(field.type).toBeUndefined();
   });
 });

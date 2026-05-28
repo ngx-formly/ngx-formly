@@ -7,6 +7,7 @@ import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { FormlyFieldMultiCheckbox } from './multicheckbox.type';
+import { withFormlyFieldMultiCheckbox } from './multicheckbox.config';
 
 @NgModule({
   declarations: [FormlyFieldMultiCheckbox],
@@ -18,15 +19,7 @@ import { FormlyFieldMultiCheckbox } from './multicheckbox.type';
 
     FormlyMatFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'multicheckbox',
-          component: FormlyFieldMultiCheckbox,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldMultiCheckbox()),
   ],
 })
 export class FormlyMatMultiCheckboxModule {}

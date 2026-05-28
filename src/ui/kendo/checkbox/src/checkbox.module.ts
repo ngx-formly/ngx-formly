@@ -7,6 +7,7 @@ import { LabelModule } from '@progress/kendo-angular-label';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { FormlyFieldCheckbox } from './checkbox.type';
+import { withFormlyFieldCheckbox } from './checkbox.config';
 
 @NgModule({
   declarations: [FormlyFieldCheckbox],
@@ -16,19 +17,7 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     InputsModule,
     LabelModule,
     FormlyFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'checkbox',
-          component: FormlyFieldCheckbox,
-          wrappers: ['form-field'],
-        },
-        {
-          name: 'boolean',
-          extends: 'checkbox',
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldCheckbox()),
   ],
 })
 export class FormlyCheckboxModule {}

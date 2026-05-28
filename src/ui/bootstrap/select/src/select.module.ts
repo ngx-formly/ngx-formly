@@ -6,6 +6,7 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 
 import { FormlyBootstrapFormFieldModule } from '@ngx-formly/bootstrap/form-field';
 import { FormlyFieldSelect } from './select.type';
+import { withFormlyFieldSelect } from './select.config';
 
 @NgModule({
   declarations: [FormlyFieldSelect],
@@ -15,16 +16,7 @@ import { FormlyFieldSelect } from './select.type';
 
     FormlyBootstrapFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'select',
-          component: FormlyFieldSelect,
-          wrappers: ['form-field'],
-        },
-        { name: 'enum', extends: 'select' },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldSelect()),
   ],
 })
 export class FormlyBootstrapSelectModule {}

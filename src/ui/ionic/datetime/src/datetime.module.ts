@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormlyFormFieldModule } from '@ngx-formly/ionic/form-field';
 
 import { FormlyFieldDatetime } from './datetime.type';
+import { withFormlyFieldDatetime } from './datetime.config';
 
 @NgModule({
   declarations: [FormlyFieldDatetime],
@@ -14,15 +15,7 @@ import { FormlyFieldDatetime } from './datetime.type';
     ReactiveFormsModule,
     IonicModule,
     FormlyFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'datetime',
-          component: FormlyFieldDatetime,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldDatetime()),
   ],
 })
 export class FormlyDatetimeModule {}

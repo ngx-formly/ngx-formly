@@ -1,4 +1,3 @@
-import { AppModule as CheckboxAppModule } from './app.module';
 import { AppComponent as CheckboxAppComponent } from './app.component';
 
 const CheckboxExampleConfig = {
@@ -16,12 +15,7 @@ const CheckboxExampleConfig = {
       content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
-    {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
-    },
   ],
 };
 
-export { CheckboxAppModule, CheckboxAppComponent, CheckboxExampleConfig };
+export { CheckboxAppComponent, CheckboxExampleConfig };

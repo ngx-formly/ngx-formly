@@ -1,19 +1,22 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
 import { HttpClient } from '@angular/common/http';
 import { tap, takeUntil } from 'rxjs/operators';
 
 import { Subject } from 'rxjs';
+import { NgFor, NgIf } from '@angular/common';
+import { FormlyForm } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  imports: [NgFor, NgIf, ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent implements OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
-  form: FormGroup;
+  form: UntypedFormGroup;
   model: any;
   options: FormlyFormOptions;
   fields: FormlyFieldConfig[];
@@ -32,9 +35,13 @@ export class AppComponent implements OnDestroy {
     'anyOf',
     'oneOf',
     'select_alternatives',
+    'if_then_else',
   ];
 
-  constructor(private formlyJsonschema: FormlyJsonschema, private http: HttpClient) {
+  constructor(
+    private formlyJsonschema: FormlyJsonschema,
+    private http: HttpClient,
+  ) {
     this.loadExample(this.examples[0]);
   }
 
@@ -44,7 +51,7 @@ export class AppComponent implements OnDestroy {
       .pipe(
         tap(({ schema, model }) => {
           this.type = type;
-          this.form = new FormGroup({});
+          this.form = new UntypedFormGroup({});
           this.options = {};
           this.fields = [this.formlyJsonschema.toFieldConfig(schema)];
           this.model = model;

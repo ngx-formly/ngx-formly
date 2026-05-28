@@ -17,7 +17,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </label>
     </ng-template>
 
-    <div class="mb-3" [class.form-floating]="props.labelPosition === 'floating'" [class.has-error]="showError">
+    <div [class.form-floating]="props.labelPosition === 'floating'" [class.has-error]="showError">
       <ng-container *ngIf="props.labelPosition !== 'floating'">
         <ng-container [ngTemplateOutlet]="labelTemplate"></ng-container>
       </ng-container>
@@ -29,11 +29,17 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </ng-container>
 
       <div *ngIf="showError" class="invalid-feedback" [style.display]="'block'">
-        <formly-validation-message [field]="field"></formly-validation-message>
+        <formly-validation-message
+          id="{{ id }}-formly-validation-error"
+          [field]="field"
+          role="alert"
+        ></formly-validation-message>
       </div>
 
       <small *ngIf="props.description" class="form-text text-muted">{{ props.description }}</small>
     </div>
   `,
+  styleUrls: ['./form-field.wrapper.scss'],
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

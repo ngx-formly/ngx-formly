@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'formly-field-button',
@@ -10,6 +11,7 @@ import { FieldType } from '@ngx-formly/core';
       </button>
     </div>
   `,
+  imports: [NgClass],
 })
 export class FormlyFieldButton extends FieldType {
   onClick($event: Event) {

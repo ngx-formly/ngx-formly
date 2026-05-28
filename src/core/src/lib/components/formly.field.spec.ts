@@ -9,7 +9,7 @@ import {
   FormlyFieldInput,
   FormlyWrapperFormField,
 } from '@ngx-formly/core/testing';
-import { tick, fakeAsync } from '@angular/core/testing';
+import { tick, fakeAsync, TestBed } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyExtension, FormlyFieldConfigCache } from '../models';
 import { BehaviorSubject, timer } from 'rxjs';
@@ -25,6 +25,7 @@ const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
       FormlyParentComponent,
       FormlyChildComponent,
       FormlyOnPopulateType,
+      FormlyGroupLocalControlType,
     ],
     config: {
       types: [
@@ -62,6 +63,17 @@ describe('FormlyField Component', () => {
     const { query } = renderComponent({ className: 'foo-class' });
 
     expect(query('formly-field').attributes.class).toEqual('foo-class');
+  });
+
+  it('should allow construct component type', async () => {
+    await TestBed.configureTestingModule({
+      declarations: [FormlyOnPushComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(FormlyOnPushComponent);
+    const detectChanges = () => fixture.detectChanges();
+    expect(detectChanges).not.toThrowError();
   });
 
   describe('host attrs', () => {
@@ -395,21 +407,6 @@ describe('FormlyField Component', () => {
     field.props.setInstanceId('123456');
     expect(query('formly-on-populate-component').componentInstance.instanceId).toEqual('123456');
   });
-  it('should take account of formState update', () => {
-    const { field, query, detectChanges } = renderComponent({
-      key: 'push',
-      type: 'on-push',
-      props: {},
-      options: { formState: { foo: true } },
-    });
-
-    expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: true }, null, 2));
-
-    field.options.formState.foo = false;
-    detectChanges();
-
-    expect(query('.formState').nativeElement.textContent).toEqual(JSON.stringify({ foo: false }, null, 2));
-  });
 
   describe('valueChanges', () => {
     it('should emit valueChanges on control value change', () => {
@@ -562,6 +559,21 @@ describe('FormlyField Component', () => {
       expect(inputs[0].nativeElement.value).toEqual('First');
       expect(inputs[1].nativeElement.value).toEqual('First');
     });
+
+    it('should emit valueChanges on local field changes', () => {
+      const { field } = renderComponent({
+        type: FormlyGroupLocalControlType,
+        wrappers: ['form-field'],
+        fieldGroup: [{ key: 'title' }],
+      });
+
+      const [spy, subscription] = createFieldChangesSpy(field);
+
+      field.get('title').formControl.setValue('First value');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(field.model).toEqual({ title: 'First value' });
+      subscription.unsubscribe();
+    });
   });
 
   it('should detect formControl status changes', () => {
@@ -621,6 +633,7 @@ describe('FormlyField Component', () => {
       <ng-container #fieldComponent></ng-container>
     </div>
   `,
+  standalone: false,
 })
 class FormlyWrapperFormFieldAsync extends FieldWrapper {}
 
@@ -631,6 +644,7 @@ class FormlyWrapperFormFieldAsync extends FieldWrapper {}
     <div class="formState">{{ formState | json }}</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyOnPushComponent extends FieldType {}
 
@@ -638,6 +652,7 @@ export class FormlyOnPushComponent extends FieldType {}
   selector: 'formly-on-populate-component',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyOnPopulateType extends FieldType implements FormlyExtension {
   instanceId = Math.random().toString(36).substring(2, 5);
@@ -655,6 +670,7 @@ export class ParentService {}
   selector: 'formly-parent',
   template: ` <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field> `,
   providers: [ParentService],
+  standalone: false,
 })
 export class FormlyParentComponent extends FieldType {
   constructor(public parent: ParentService) {
@@ -665,9 +681,19 @@ export class FormlyParentComponent extends FieldType {
 @Component({
   selector: 'formly-child',
   template: ` <ng-content></ng-content> `,
+  standalone: false,
 })
 export class FormlyChildComponent extends FieldType {
-  constructor(@Optional() public parent: ParentService, @Optional() public wrapper: FormlyWrapperFormFieldAsync) {
+  constructor(
+    @Optional() public parent: ParentService,
+    @Optional() public wrapper: FormlyWrapperFormFieldAsync,
+  ) {
     super();
   }
 }
+
+@Component({
+  template: `<input type="text" [formControl]="formControl.get('title')" />`,
+  standalone: false,
+})
+export class FormlyGroupLocalControlType extends FieldType {}

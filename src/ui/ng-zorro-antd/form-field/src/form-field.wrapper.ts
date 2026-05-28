@@ -15,7 +15,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
           {{ props.label }}
         </nz-form-label>
       </ng-container>
-      <nz-form-control [nzValidateStatus]="errorState" [nzErrorTip]="errorTpl">
+      <nz-form-control [nzValidateStatus]="errorState" [nzErrorTip]="errorTpl" [nzExtra]="props.description">
         <ng-container #fieldComponent></ng-container>
         <ng-template #errorTpl let-control>
           <formly-validation-message [field]="field"></formly-validation-message>
@@ -23,6 +23,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </nz-form-control>
     </nz-form-item>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {
   get errorState() {

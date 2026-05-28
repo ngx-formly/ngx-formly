@@ -16,6 +16,7 @@ export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> 
   template: `
     <mat-slide-toggle
       [id]="id"
+      [name]="field.name"
       [formControl]="formControl"
       [formlyAttributes]="field"
       [color]="props.color"
@@ -27,6 +28,7 @@ export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> 
     </mat-slide-toggle>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldToggle extends FieldType<FieldTypeConfig<ToggleProps>> {
   @ViewChild(MatSlideToggle, { static: true }) slideToggle!: MatSlideToggle;

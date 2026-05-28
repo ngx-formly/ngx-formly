@@ -56,7 +56,7 @@ The defaultValue for fieldGroup and fieldArray has been changed to `undefined` i
   FormlyModule.forRoot({
     types: [
       {
-        extends: 'formly-group',
+        name: 'formly-group',
         defaultOptions: {
           defaultValue: {}
         }
@@ -159,7 +159,7 @@ For `FormGroup` or `FormArray`, you may use:
 
 ### 8. Update `minlength` and `maxlength` validation key:
 
-The message validation key: `minlength` and `maxlength` has been changed from lowercase into snakecase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
+The message validation key: `minlength` and `maxlength` has been changed from lowercase into camelCase format in order to match the same key of `templateOptions.minLength` and `templateOptions.maxLength`:
 
   #### NgModule declaration:
   ```patch
@@ -203,7 +203,7 @@ Reset form value: In case you rely on `form.reset()` instead of `options.resetMo
 
 ### 10. Formly root field:
 
-An extra `formly-field` is now part of `formly-form` component which which allows managing the root field using `field-group` type, so that gives you more control over Formly internal structure. To adjust the style of Formly root field you may need to update the css selector into:
+An extra `formly-field` is now part of `formly-form` component which allows managing the root field using `field-group` type, so that gives you more control over Formly internal structure. To adjust the style of Formly root field you may need to update the css selector into:
   
   ```patch
   - formly-form > formly-field {

@@ -1,5 +1,5 @@
-import { AppModule as NativeSelectAppModule } from './app.module';
 import { AppComponent as NativeSelectAppComponent } from './app.component';
+import { appConfig as NativeSelectAppConfig } from './app.config';
 
 const NativeSelectExampleConfig = {
   title: 'NativeSelect type',
@@ -17,11 +17,11 @@ const NativeSelectExampleConfig = {
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
     {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
+      file: 'app.config.ts',
+      content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
+      filecontent: require('!!raw-loader!./app.config.ts'),
     },
   ],
 };
 
-export { NativeSelectAppModule, NativeSelectAppComponent, NativeSelectExampleConfig };
+export { NativeSelectAppConfig, NativeSelectAppComponent, NativeSelectExampleConfig };

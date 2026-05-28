@@ -12,10 +12,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   selector: 'formly-wrapper-ion-form-field',
   template: `
     <ion-item [lines]="props.itemLines">
-      <ion-label [position]="props.labelPosition">
-        {{ props.label }}
-        <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
-      </ion-label>
       <ng-template #fieldComponent></ng-template>
     </ion-item>
     <ion-item lines="none" *ngIf="showError">
@@ -28,5 +24,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </ion-label>
     </ion-item>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

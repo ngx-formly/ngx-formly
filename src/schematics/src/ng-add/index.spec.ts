@@ -1,6 +1,5 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { join } from 'path';
-import { getFileContent } from '@schematics/angular/utility/test/get-file-content';
 import { createWorkspace, getTestProjectPath } from '../../utils/testing';
 import { Schema } from './schema';
 
@@ -17,20 +16,16 @@ describe('ng-add-schematic', () => {
   });
 
   it('should update package.json', async () => {
-    const tree = await runner
-      .runSchematicAsync('ng-add', {}, appTree)
-      .toPromise();
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
+    const tree = await runner.runSchematic('ng-add', {}, appTree);
+    const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     expect(packageJson.dependencies['@angular/forms']).toBeDefined();
     expect(packageJson.dependencies['@ngx-formly/core']).toBeDefined();
   });
 
   it('should not add a theme by default to package.json', async () => {
-    const tree = await runner
-      .runSchematicAsync('ng-add', {}, appTree)
-      .toPromise();
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
+    const tree = await runner.runSchematic('ng-add', {}, appTree);
+    const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     // @TODO: list of themes should probably be retrieved from some config file
     ['material', 'bootstrap', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd'].forEach(theme => {
@@ -40,19 +35,15 @@ describe('ng-add-schematic', () => {
 
   it('should skip package.json update', async () => {
     const options = { skipPackageJson: true } as Schema;
-    const tree = await runner
-      .runSchematicAsync('ng-add', options, appTree)
-      .toPromise();
+    const tree = await runner.runSchematic('ng-add', options, appTree);
 
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
+    const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     expect(packageJson.dependencies['@ngx-formly/core']).toBeUndefined();
   });
 
   it('should add to root app module', async () => {
-    const tree = await runner
-      .runSchematicAsync('ng-add', {}, appTree)
-      .toPromise();
+    const tree = await runner.runSchematic('ng-add', {}, appTree);
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
@@ -74,19 +65,15 @@ describe('ng-add-schematic', () => {
   });
 
   it('should add UI theme to package.json', async () => {
-    const tree = await runner
-      .runSchematicAsync('ng-add', { uiTheme: 'bootstrap' }, appTree)
-      .toPromise();
+    const tree = await runner.runSchematic('ng-add', { uiTheme: 'bootstrap' }, appTree);
 
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
+    const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     expect(packageJson.dependencies['@ngx-formly/bootstrap']).toBeDefined();
   });
 
   it('should add UI theme to root app module', async () => {
-    const tree = await runner
-      .runSchematicAsync('ng-add', { uiTheme: 'bootstrap' }, appTree)
-      .toPromise();
+    const tree = await runner.runSchematic('ng-add', { uiTheme: 'bootstrap' }, appTree);
 
     const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
     expect(content).toMatch(
@@ -113,9 +100,7 @@ describe('ng-add-schematic', () => {
       export class FooModule { }
     `);
 
-    const tree = await runner
-      .runSchematicAsync('ng-add', { module: 'foo.module.ts' }, appTree)
-      .toPromise();
+    const tree = await runner.runSchematic('ng-add', { module: 'foo.module.ts' }, appTree);
 
     const content = tree.readContent(fooModule);
 

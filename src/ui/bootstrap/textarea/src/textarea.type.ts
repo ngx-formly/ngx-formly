@@ -22,11 +22,13 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
         class="form-control"
         [class.is-invalid]="showError"
         [formlyAttributes]="field"
-      >
-      </textarea>
+        [attr.aria-describedby]="id + '-formly-validation-error'"
+        [attr.aria-invalid]="showError"
+      ></textarea>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {
   override defaultOptions = {

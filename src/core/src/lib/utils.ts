@@ -2,9 +2,9 @@ import { FormlyFieldConfig } from './models';
 import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './models';
-import { ChangeDetectorRef, ComponentRef, TemplateRef, Type } from '@angular/core';
+import { ChangeDetectorRef, ComponentRef, NgZone, TemplateRef, Type, VERSION, ɵNoopNgZone } from '@angular/core';
 
-export function disableTreeValidityCall(form: any, callback: Function) {
+export function disableTreeValidityCall(form: any, callback: () => void) {
   const _updateTreeValidity = form._updateTreeValidity.bind(form);
   form._updateTreeValidity = () => {};
   callback();
@@ -28,7 +28,7 @@ export function getFieldId(formId: string, field: FormlyFieldConfig, index: stri
 }
 
 export function hasKey(field: FormlyFieldConfig) {
-  return !isNil(field.key) && field.key !== '';
+  return !isNil(field.key) && field.key !== '' && (!Array.isArray(field.key) || field.key.length > 0);
 }
 
 export function getKeyPath(field: FormlyFieldConfigCache): string[] {
@@ -154,9 +154,10 @@ export function clone(value: any): any {
   if (
     !isObject(value) ||
     isObservable(value) ||
+    isPromise(value) ||
     value instanceof TemplateRef ||
     /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity ||
-    ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor.name) !== -1
+    ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor?.name) !== -1
   ) {
     return value;
   }
@@ -167,6 +168,18 @@ export function clone(value: any): any {
 
   if (value instanceof Map) {
     return new Map(value);
+  }
+
+  if (value instanceof Uint8Array) {
+    return new Uint8Array(value);
+  }
+
+  if (value instanceof Uint16Array) {
+    return new Uint16Array(value);
+  }
+
+  if (value instanceof Uint32Array) {
+    return new Uint32Array(value);
   }
 
   // https://github.com/moment/moment/blob/master/moment.js#L252
@@ -212,8 +225,8 @@ export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
 
 type IObserveFn<T> = (change: { currentValue: T; previousValue?: T; firstChange: boolean }) => void;
 export interface IObserver<T> {
-  setValue: (value: T) => void;
-  unsubscribe: Function;
+  setValue: (value: T, emitEvent?: boolean) => void;
+  unsubscribe: () => void;
 }
 interface IObserveTarget<T> {
   [prop: string]: any;
@@ -225,8 +238,8 @@ interface IObserveTarget<T> {
   };
 }
 
-export function observeDeep(source: any, paths: string[], setFn: () => void): () => void {
-  let observers: Function[] = [];
+export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[], setFn: () => void): () => void {
+  let observers: (() => void)[] = [];
 
   const unsubscribe = () => {
     observers.forEach((observer) => observer());
@@ -249,7 +262,7 @@ export function observeDeep(source: any, paths: string[], setFn: () => void): ()
   };
 }
 
-export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: IObserveFn<T>): IObserver<T> {
+export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn?: IObserveFn<T>): IObserver<T> {
   if (!o._observers) {
     defineHiddenProp(o, '_observers', {});
   }
@@ -273,10 +286,10 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
     state.value = target[key];
   }
 
-  if (state.onChange.indexOf(setFn) === -1) {
+  if (setFn && state.onChange.indexOf(setFn) === -1) {
     state.onChange.push(setFn);
     setFn({ currentValue: state.value, firstChange: true });
-    if (state.onChange.length >= 1) {
+    if (state.onChange.length >= 1 && isObject(target)) {
       const { enumerable } = Object.getOwnPropertyDescriptor(target, key) || { enumerable: true };
       Object.defineProperty(target, key, {
         enumerable,
@@ -294,8 +307,18 @@ export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn: I
   }
 
   return {
-    setValue(value: T) {
-      state.value = value;
+    setValue(currentValue: T, emitEvent = true) {
+      if (currentValue === state.value) {
+        return;
+      }
+
+      const previousValue = state.value;
+      state.value = currentValue;
+      state.onChange.forEach((changeFn) => {
+        if (changeFn !== setFn && emitEvent) {
+          changeFn({ previousValue, currentValue, firstChange: false });
+        }
+      });
     },
     unsubscribe() {
       state.onChange = state.onChange.filter((changeFn) => changeFn !== setFn);
@@ -340,4 +363,26 @@ export function markFieldForCheck(field: FormlyFieldConfigCache) {
       ref.markForCheck();
     }
   });
+}
+
+export function isNoopNgZone(ngZone: NgZone) {
+  return ngZone instanceof ɵNoopNgZone;
+}
+
+export function isHiddenField(field: FormlyFieldConfig) {
+  const isHidden = (f: FormlyFieldConfig) => f.hide || f.expressions?.hide || f.hideExpression;
+  let setDefaultValue = !field.resetOnHide || !isHidden(field);
+  if (!isHidden(field) && field.resetOnHide) {
+    let parent = field.parent;
+    while (parent && !isHidden(parent)) {
+      parent = parent.parent;
+    }
+    setDefaultValue = !parent || !isHidden(parent);
+  }
+
+  return !setDefaultValue;
+}
+
+export function isSignalRequired() {
+  return +VERSION.major > 18 || (+VERSION.major >= 18 && +VERSION.minor >= 1);
 }

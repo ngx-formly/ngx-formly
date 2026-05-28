@@ -40,6 +40,20 @@ describe('ui-bootstrap: Radio Type', () => {
     expect(query('input[type="radio"]').classes['is-invalid']).toBeTrue();
   });
 
+  it('should set aria-invalid to true on invalid', () => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'radio',
+      validation: { show: true },
+      props: {
+        options: [{ value: 1, label: 'label 1' }],
+        required: true,
+      },
+    });
+
+    expect(query('input[type="radio"]').nativeElement.getAttribute('aria-invalid')).toBe('true');
+  });
+
   it('should render with custom formCheck', () => {
     const { query, field, detectChanges } = renderComponent({
       key: 'name',

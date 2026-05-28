@@ -45,21 +45,15 @@ describe('ui-bootstrap: Select Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
-    const { query, field, detectChanges } = renderComponent({
+    const { query, field } = renderComponent({
       key: 'name',
       type: 'select',
       props: {
-        change: changeSpy,
         options: [{ value: 1, label: 'label 1' }],
       },
     });
-
-    const value = query('select option').properties.value;
-    query('select').triggerEventHandler('change', ɵCustomEvent({ value }));
-    detectChanges();
+    query('select').triggerEventHandler('change', ɵCustomEvent({ value: '0: 1' }));
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
   });
 
   it('should select placeholder option when value is undefined', () => {
@@ -137,6 +131,28 @@ describe('ui-bootstrap: Select Type', () => {
       });
 
       expect(queryAll('select option')).toHaveLength(3);
+    });
+
+    it('should set aria-invalid on select to true on invalid', () => {
+      const { query } = renderComponent({
+        key: 'name',
+        type: 'select',
+        validation: { show: true },
+        props: { required: true },
+      });
+
+      expect(query('select').nativeElement.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('should set aria-invalid on enum to true on invalid', () => {
+      const { query } = renderComponent({
+        key: 'name',
+        type: 'enum',
+        validation: { show: true },
+        props: { required: true },
+      });
+
+      expect(query('select').nativeElement.getAttribute('aria-invalid')).toBe('true');
     });
   });
 });

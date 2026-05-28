@@ -1,4 +1,3 @@
-import { AppModule as RadioAppModule } from './app.module';
 import { AppComponent as RadioAppComponent } from './app.component';
 
 const RadioExampleConfig = {
@@ -16,12 +15,7 @@ const RadioExampleConfig = {
       content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
-    {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
-    },
   ],
 };
 
-export { RadioAppModule, RadioAppComponent, RadioExampleConfig };
+export { RadioAppComponent, RadioExampleConfig };

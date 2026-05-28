@@ -15,6 +15,7 @@ import {
   ElementRef,
   EmbeddedViewRef,
   Optional,
+  Injector,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -29,11 +30,12 @@ import {
   markFieldForCheck,
   hasKey,
   IObserver,
+  isSignalRequired,
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
-import { isObservable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { Observable, Subscription, isObservable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
 /**
@@ -43,15 +45,16 @@ import { FormlyFieldTemplates } from './formly.template';
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
   styleUrls: ['./formly.field.scss'],
+  standalone: true,
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
   /** The field config. */
   @Input() field: FormlyFieldConfig;
   @ViewChild('container', { read: ViewContainerRef, static: true }) viewContainerRef!: ViewContainerRef;
 
-  private hostObservers: IObserver<any>[] = [];
+  private hostObservers: (IObserver<any> | Subscription)[] = [];
   private componentRefs: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[] = [];
-  private hooksObservers: Function[] = [];
+  private hooksObservers: (() => void)[] = [];
   private detectFieldBuild = false;
 
   private get containerRef() {
@@ -76,6 +79,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     private renderer: Renderer2,
     private _elementRef: ElementRef,
     private hostContainerRef: ViewContainerRef,
+    private injector: Injector,
     @Optional() private form: FormlyFieldTemplates,
   ) {}
 
@@ -150,7 +154,11 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       const inlineType = this.form?.templates?.find((ref) => ref.name === f.type);
       let ref: ComponentRef<any> | EmbeddedViewRef<any>;
       if (inlineType) {
-        ref = containerRef.createEmbeddedView(inlineType.ref, { $implicit: f });
+        ref = containerRef.createEmbeddedView(
+          inlineType.ref,
+          { $implicit: f },
+          { injector: this.createFieldInjector() },
+        );
       } else {
         const { component } = this.config.getType(f.type, true);
         ref = containerRef.createComponent<FieldWrapper>(component as any);
@@ -161,6 +169,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private triggerHook(name: keyof FormlyHookConfig, changes?: SimpleChanges) {
     if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
+      this.valueChangesUnsubscribe();
       this.valueChangesUnsubscribe = this.fieldChanges(this.field);
     }
 
@@ -178,6 +187,32 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       this.resetRefs(changes.field.previousValue);
       this.render();
     }
+  }
+
+  attachLocalField(field?: FormlyFieldConfigCache, previousField?: FormlyFieldConfigCache) {
+    const currentField = this.field as FormlyFieldConfigCache;
+    if (!currentField) {
+      return;
+    }
+
+    const localFields = (currentField._localFields || []).filter((f) => f !== field && f !== previousField);
+
+    if (field && field !== currentField) {
+      localFields.push(field);
+    }
+
+    if (currentField._localFields) {
+      currentField._localFields = localFields;
+    } else if (localFields.length > 0) {
+      defineHiddenProp(currentField, '_localFields', localFields);
+    }
+  }
+
+  private createFieldInjector() {
+    return Injector.create({
+      providers: [{ provide: FormlyField, useValue: this }],
+      parent: this.injector,
+    });
   }
 
   private attachComponentRef<T extends FieldType>(
@@ -238,18 +273,34 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           this.elementRef && this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
         }
       }),
-      ...['touched', 'pristine', 'status'].map((prop) =>
-        observe<string>(
-          this.field,
-          ['formControl', prop],
-          ({ firstChange }) => !firstChange && markFieldForCheck(this.field),
-        ),
-      ),
     ];
+
+    if (!isSignalRequired()) {
+      ['touched', 'pristine', 'status'].forEach((prop) =>
+        this.hostObservers.push(
+          observe<string>(
+            this.field,
+            ['formControl', prop],
+            ({ firstChange }) => !firstChange && markFieldForCheck(this.field),
+          ),
+        ),
+      );
+    } else if (this.field.formControl) {
+      const events = ((this.field.formControl as any).events as Observable<any>).subscribe(() =>
+        markFieldForCheck(this.field),
+      );
+      this.hostObservers.push(events);
+    }
   }
 
   private resetRefs(field: FormlyFieldConfigCache) {
     if (field) {
+      if (field._localFields) {
+        field._localFields = [];
+      } else {
+        defineHiddenProp(this.field, '_localFields', []);
+      }
+
       if (field._componentRefs) {
         field._componentRefs = field._componentRefs.filter((ref) => this.componentRefs.indexOf(ref) === -1);
       } else {
@@ -260,15 +311,16 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     this.componentRefs = [];
   }
 
-  private fieldChanges(field: FormlyFieldConfigCache) {
-    this.valueChangesUnsubscribe();
+  private fieldChanges(field: FormlyFieldConfigCache | undefined) {
     if (!field) {
       return () => {};
     }
 
+    const propsObserver = observeDeep(field, ['props'], () => field.options.detectChanges(field));
     const subscribes = [
-      observeDeep(field, ['props'], () => field.options.detectChanges(field)),
-      observeDeep(field.options, ['formState'], () => field.options.detectChanges(field)),
+      () => {
+        propsObserver();
+      },
     ];
 
     for (const key of Object.keys(field._expressions || {})) {
@@ -293,7 +345,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       });
     }
 
-    for (const path of [['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
+    for (const path of [['focus'], ['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
       const fieldObserver = observe(
         field,
         path,
@@ -305,6 +357,14 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     if (field.formControl && !field.fieldGroup) {
       const control = field.formControl;
       let valueChanges = control.valueChanges.pipe(
+        map((value) => {
+          field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
+          if (!Object.is(value, field.formControl.value)) {
+            field.formControl.setValue(value);
+          }
+
+          return value;
+        }),
         distinctUntilChanged((x, y) => {
           if (x !== y || Array.isArray(x) || isObject(x)) {
             return false;
@@ -320,19 +380,13 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
       const { updateOn, debounce } = field.modelOptions;
       if ((!updateOn || updateOn === 'change') && debounce?.default > 0) {
-        valueChanges = control.valueChanges.pipe(debounceTime(debounce.default));
+        valueChanges = valueChanges.pipe(debounceTime(debounce.default));
       }
 
       const sub = valueChanges.subscribe((value) => {
         // workaround for https://github.com/angular/angular/issues/13792
         if (control._fields?.length > 1 && control instanceof FormControl) {
           control.patchValue(value, { emitEvent: false, onlySelf: true });
-        }
-
-        field.parsers?.forEach((parserFn) => (value = parserFn(value)));
-        if (value !== field.formControl.value) {
-          field.formControl.setValue(value);
-          return;
         }
 
         if (hasKey(field)) {
@@ -344,6 +398,23 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       subscribes.push(() => sub.unsubscribe());
     }
 
-    return () => subscribes.forEach((subscribe) => subscribe());
+    let templateFieldsSubs: (() => void)[] = [];
+    observe(field, ['_localFields'], ({ currentValue }) => {
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs = (currentValue || []).map((f: FormlyFieldConfigCache) => this.fieldChanges(f));
+    });
+
+    return () => {
+      subscribes.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+    };
   }
 }
+
+@Component({
+  selector: 'formly-field',
+  template: '<ng-template #container></ng-template>',
+  styleUrls: ['./formly.field.scss'],
+  standalone: false,
+})
+export class LegacyFormlyField extends FormlyField {}

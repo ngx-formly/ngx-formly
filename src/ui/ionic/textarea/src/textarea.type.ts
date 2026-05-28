@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
+
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
@@ -11,10 +12,18 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
 @Component({
   selector: 'formly-field-ion-textarea',
   template: `
-    <ion-textarea [formControl]="formControl" [ionFormlyAttributes]="field" [cols]="props.cols" [rows]="props.rows">
+    <ion-textarea
+      [formControl]="formControl"
+      [ionFormlyAttributes]="field"
+      [cols]="props.cols"
+      [rows]="props.rows"
+      [label]="props.label"
+      [labelPlacement]="props.labelPosition"
+    >
     </ion-textarea>
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {}

@@ -8,6 +8,7 @@ import { FormlyMatFormFieldModule } from '@ngx-formly/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { FormlyFieldNativeSelect } from './native-select.type';
+import { withFormlyFieldNativeSelect } from './native-select.config';
 
 @NgModule({
   declarations: [FormlyFieldNativeSelect],
@@ -18,15 +19,7 @@ import { FormlyFieldNativeSelect } from './native-select.type';
 
     FormlyMatFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'native-select',
-          component: FormlyFieldNativeSelect,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldNativeSelect()),
   ],
 })
 export class FormlyMatNativeSelectModule {}

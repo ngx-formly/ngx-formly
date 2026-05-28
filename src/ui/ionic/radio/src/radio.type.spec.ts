@@ -22,7 +22,7 @@ describe('ui-ionic: Radio Type', () => {
       },
     });
 
-    expect(query('formly-wrapper-ion-form-field')).toBeNull();
+    expect(query('formly-wrapper-ion-form-field')).not.toBeNull();
     expect(queryAll('ion-radio')).toHaveLength(3);
   });
 

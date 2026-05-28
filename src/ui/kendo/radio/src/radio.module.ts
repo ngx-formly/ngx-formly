@@ -7,6 +7,7 @@ import { FormlyFormFieldModule } from '@ngx-formly/kendo/form-field';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { FormlyFieldRadio } from './radio.type';
+import { withFormlyFieldRadio } from './radio.config';
 
 @NgModule({
   declarations: [FormlyFieldRadio],
@@ -18,15 +19,7 @@ import { FormlyFieldRadio } from './radio.type';
     InputsModule,
     FormlyFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'radio',
-          component: FormlyFieldRadio,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldRadio()),
   ],
 })
 export class FormlyRadioModule {}

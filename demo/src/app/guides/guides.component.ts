@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
     '[class]': '"markdown github"',
     '[style.display]': '"block"',
   },
+  standalone: true,
 })
 export class GuidesComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
@@ -23,10 +24,16 @@ export class GuidesComponent implements OnInit, OnDestroy {
     validation: require('!!raw-loader!!highlight-loader!markdown-loader!docs/validation.md'),
     'expression-properties': require('!!raw-loader!!highlight-loader!markdown-loader!docs/expression-properties.md'),
     'formly-field-presets': require('!!raw-loader!!highlight-loader!markdown-loader!docs/formly-field-presets.md'),
-    migration: require('!!raw-loader!!highlight-loader!markdown-loader!UPGRADE-6.0.md'),
+    'json-schema': require('!!raw-loader!!highlight-loader!markdown-loader!docs/json-schema.md'),
+    faq: require('!!raw-loader!!highlight-loader!markdown-loader!docs/faq.md'),
+    migration: require('!!raw-loader!!highlight-loader!markdown-loader!UPGRADE-7.0.md'),
   };
 
-  constructor(private renderer: Renderer2, private route: ActivatedRoute, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private route: ActivatedRoute,
+    private elementRef: ElementRef,
+  ) {}
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(({ id }) => {

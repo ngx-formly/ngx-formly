@@ -5,17 +5,16 @@ The `@ngx-formly/core/preset` enables you to define reusable `FormlyFieldConfig`
 
 ## Defining a Preset
 To define a preset, two steps are necessary:
-- Importing the `FormlyPresetModule` 
+- Importing the `provideFormlyPreset` 
 - Providing presets to `FormlyConfig`
 
 Have a look at the following example which defines a simple `firstName` preset:
 
 ```typescript
-@NgModule({
-  imports: [
-    ...
-    FormlyPresetModule,
-    FormlyModule.forRoot({
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideFormlyPreset(),
+    provideFormlyCore({
       presets: [
         {
           name: 'firstName',
@@ -30,9 +29,7 @@ Have a look at the following example which defines a simple `firstName` preset:
       ],
     }),
   ],
-})
-export class AppModule {}
-
+};
 ```
 
 It is also possible to define more complex presets by using a `FormlyFieldConfigPresetProvider` (which contains only a single `getConfiguration` method). This enables presets that contain dependencies and can be self-configuring.

@@ -19,6 +19,8 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
         class="form-control"
         [formlyAttributes]="field"
         [class.is-invalid]="showError"
+        [attr.aria-describedby]="id + '-formly-validation-error'"
+        [attr.aria-invalid]="showError"
       />
       <ng-template #numberTmp>
         <input
@@ -27,11 +29,14 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
           class="form-control"
           [formlyAttributes]="field"
           [class.is-invalid]="showError"
+          [attr.aria-describedby]="id + '-formly-validation-error'"
+          [attr.aria-invalid]="showError"
         />
       </ng-template>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {
   get type() {

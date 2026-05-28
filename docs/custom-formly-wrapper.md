@@ -62,40 +62,28 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
   > Note: `FieldWrapper` component extends `Field` therefore you can have multiple wrappers attached to one field.
   > Example you can have both a label and validator wrapper.
 
-  ### 2. Register the custom type in `NgModule` declaration:
-
-  ```typescript
-  import { PanelFieldWrapper } from './panel-wrapper.component';
-
-  @NgModule({
-    declarations: [PanelFieldWrapper],
-  })
-  export class AppModule {}
-  ```
-
-  ### 3. set an aliase for `PanelFieldWrapper` component (Optional):
+  ### 2. set an aliase for `PanelFieldWrapper` component in App Config (Optional):
 
   > Note: This step is required only for JSON powered form (see "Method-2" below).
 
   ```typescript
   import { PanelFieldWrapper } from './panel-wrapper.component';
-
-  @NgModule({
-    imports: [
-      FormlyModule.forRoot({
+  ...
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideFormlyCore({
         wrappers: [
           { name: 'panel', component: PanelFieldWrapper },
         ],
       }),
     ],
-  })
-  export class AppModule {}
+  };
   ```
 
-  > `wrappers: [ ... ]` is where define what custom wrappers we want to inject into our module to use in our `FormlyFieldConfig`
+  > `wrappers: [ ... ]` is where define what custom wrappers we want to inject into our config to use in our `FormlyFieldConfig`
 
 
-  ### 4. Use the panel wrapper in the form config:
+  ### 3. Use the panel wrapper in the form config:
   * Method 1: Pass the `PanelFieldWrapper` component to the field config.
 
     ```typescript
@@ -118,7 +106,7 @@ See live demo: [demo](https://stackblitz.com/angular/dleylnmrbmd?file=app%2Fapp.
     ```
     > `wrappers: [PanelFieldWrapper]` is where FormlyFieldConfig assigns the field instance to use that panel.
 
-  * Method 2: Pass the `PanelFieldWrapper` alias (defined in `FormlyModule.forRoot`) to the field config.
+  * Method 2: Pass the `PanelFieldWrapper` alias (defined in `provideFormlyCore`) to the field config.
 
     ```typescript
     fields: FormlyFieldConfig[] = [
@@ -147,12 +135,9 @@ Sometimes you always want a components with certain wrappers.
 
   ```typescript
   ... //Imports
-  @NgModule({
-    imports: [
-      CommonModule,
-      ReactiveFormsModule,
-      FormlyBootstrapModule,
-      FormlyModule.forRoot({
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideFormlyCore({
         types: [
           {
             name: 'operator',
@@ -162,11 +147,6 @@ Sometimes you always want a components with certain wrappers.
         ],
       }),
     ],
-    declarations: [
-      AppComponent,
-      OperatorComponent
-    ],
-  })
-  export class AppModule { }
+  };
   ```
-You can do this by setting the `wrappers: ['form-field']` to that type in the module
+You can do this by setting the `wrappers: ['form-field']` to that type in the config

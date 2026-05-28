@@ -5,8 +5,8 @@ import {
 
 const defaultWorkspaceOptions = {
   name: 'workspace',
-  newProjectRoot: 'projects',
   version: '6.0.0',
+  newProjectRoot: 'projects',
 };
 
 const defaultAppOptions = {
@@ -17,6 +17,7 @@ const defaultAppOptions = {
   routing: false,
   style: 'css',
   skipTests: false,
+  standalone: false,
 };
 
 // const defaultModuleOptions = {
@@ -27,8 +28,8 @@ const defaultAppOptions = {
 // };
 
 export function getTestProjectPath(
-  workspaceOptions: any = defaultWorkspaceOptions,
-  appOptions: any = defaultAppOptions,
+  workspaceOptions = defaultWorkspaceOptions,
+  appOptions = defaultAppOptions,
 ) {
   return `/${workspaceOptions.newProjectRoot}/${appOptions.name}`;
 }
@@ -40,19 +41,17 @@ export async function createWorkspace(
   appOptions = defaultAppOptions,
 ) {
   appTree = await schematicRunner
-    .runExternalSchematicAsync(
+    .runExternalSchematic(
       '@schematics/angular',
       'workspace',
       workspaceOptions,
-    )
-    .toPromise();
+    );
 
   return await schematicRunner
-    .runExternalSchematicAsync(
+    .runExternalSchematic(
       '@schematics/angular',
       'application',
       appOptions,
       appTree,
-    )
-    .toPromise();
+    );
 }

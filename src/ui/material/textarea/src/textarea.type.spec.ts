@@ -14,6 +14,7 @@ describe('ui-material: Textarea Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'textarea',
+      name: 'custom_name',
       props: {
         cols: 5,
         rows: 7,
@@ -28,6 +29,7 @@ describe('ui-material: Textarea Type', () => {
     });
     expect(attributes).toMatchObject({
       id: 'formly_1_textarea_name_0',
+      name: 'custom_name',
     });
   });
 

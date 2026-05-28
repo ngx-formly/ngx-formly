@@ -1,8 +1,9 @@
-import { Injectable, Injector, Optional, ViewContainerRef } from '@angular/core';
-import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
+import { Inject, Injectable, Injector, Optional, ViewContainerRef } from '@angular/core';
+import { UntypedFormGroup, UntypedFormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe, disableTreeValidityCall } from '../utils';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, ConfigOption } from '../models';
+import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField, isSignalRequired } from '../utils';
+import { FORMLY_CONFIG } from '../core.config';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -11,9 +12,19 @@ export class FormlyFormBuilder {
     private injector: Injector,
     @Optional() private viewContainerRef: ViewContainerRef,
     @Optional() private parentForm: FormGroupDirective,
-  ) {}
+    @Optional() @Inject(FORMLY_CONFIG) configs: ConfigOption[] = [],
+  ) {
+    if (configs) {
+      configs.forEach((c) => config.addConfig(c));
+    }
+  }
 
-  buildForm(form: FormGroup | FormArray, fieldGroup: FormlyFieldConfig[] = [], model: any, options: FormlyFormOptions) {
+  buildForm(
+    form: UntypedFormGroup | UntypedFormArray,
+    fieldGroup: FormlyFieldConfig[] = [],
+    model: any,
+    options: FormlyFormOptions,
+  ) {
     this.build({ fieldGroup, model, form, options });
   }
 
@@ -24,15 +35,25 @@ export class FormlyFormBuilder {
 
     if (!field.parent) {
       this._setOptions(field);
-      disableTreeValidityCall(field.form, () => {
-        this._build(field);
-        const options = (field as FormlyFieldConfigCache).options;
-        options.checkExpressions?.(field, true);
-        options.detectChanges?.(field);
-      });
-    } else {
-      this._build(field);
     }
+
+    disableTreeValidityCall(field.form, () => {
+      this._build(field);
+      // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
+      if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
+        // detect changes early to avoid reset value by hidden fields
+        const options = (field as FormlyFieldConfigCache).options;
+
+        if (field.parent && isHiddenField(field)) {
+          // when hide is used in expression set defaul value will not be set until detect hide changes
+          // which causes default value not set on new item is added
+          options._hiddenFieldsForCheck?.push({ field, default: false });
+        }
+
+        options.checkExpressions?.(field, true);
+        options._detectChanges?.(field);
+      }
+    });
   }
 
   private _build(field: FormlyFieldConfigCache) {
@@ -48,7 +69,7 @@ export class FormlyFormBuilder {
   }
 
   private _setOptions(field: FormlyFieldConfigCache) {
-    field.form = field.form || new FormGroup({});
+    field.form = field.form || new UntypedFormGroup({});
     field.model = field.model || {};
     field.options = field.options || {};
     const options = field.options;
@@ -62,11 +83,6 @@ export class FormlyFormBuilder {
     }
 
     if (!options.build) {
-      options._buildForm = () => {
-        console.warn(`Formly: 'options._buildForm' is deprecated since v6.0, use 'options.build' instead.`);
-        this.build(field);
-      };
-
       options.build = (f: FormlyFieldConfig = field) => {
         this.build(f);
 
@@ -76,12 +92,14 @@ export class FormlyFormBuilder {
 
     if (!options.parentForm && this.parentForm) {
       defineHiddenProp(options, 'parentForm', this.parentForm);
-      observe(options, ['parentForm', 'submitted'], ({ firstChange }) => {
-        if (!firstChange) {
-          options.checkExpressions(field);
-          options.detectChanges(field);
-        }
-      });
+
+      if (!isSignalRequired()) {
+        observe(options, ['parentForm', 'submitted'], ({ firstChange }) => {
+          if (!firstChange) {
+            options.detectChanges(field);
+          }
+        });
+      }
     }
   }
 }

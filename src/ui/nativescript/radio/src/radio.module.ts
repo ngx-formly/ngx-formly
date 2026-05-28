@@ -7,6 +7,7 @@ import { NativeScriptFormsModule } from '@nativescript/angular';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
 import { FormlyFieldRadio } from './radio.type';
+import { withFormlyFieldRadio } from './radio.config';
 
 @NgModule({
   declarations: [FormlyFieldRadio],
@@ -17,15 +18,7 @@ import { FormlyFieldRadio } from './radio.type';
 
     FormlyNsFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'radio',
-          component: FormlyFieldRadio,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldRadio()),
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

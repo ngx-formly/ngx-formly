@@ -533,6 +533,71 @@ describe('Array Field Type', () => {
       expect(field.model).toEqual([null]);
       expect(field.fieldGroup.length).toEqual(1);
     });
+
+    it('should set default value when insert at index', () => {
+      const { field, query, detectChanges } = renderComponent(
+        {
+          key: 'foo',
+          type: 'array',
+          defaultValue: [null],
+          resetOnHide: true,
+          fieldArray: { type: 'input', defaultValue: 'default', expressions: { hide: () => false } },
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      detectChanges();
+      expect(field.model).toEqual([null]);
+
+      const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+      arrayType.add(0);
+      detectChanges();
+
+      expect(field.model).toEqual(['default', null]);
+    });
+
+    it('should set default value when insert', () => {
+      const { field, query, detectChanges } = renderComponent(
+        {
+          expressions: { hide: () => false },
+          fieldGroup: [
+            {
+              key: 'foo',
+              type: 'array',
+              defaultValue: [],
+              fieldArray: { type: 'input', defaultValue: 'default' },
+            },
+          ],
+        },
+        { extras: { resetFieldOnHide: true } },
+      );
+
+      detectChanges();
+      expect(field.model.foo).toEqual([]);
+
+      const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+      arrayType.add(0);
+      detectChanges();
+
+      expect(field.model.foo).toEqual(['default']);
+    });
+  });
+
+  it('should set default value for hidden fields', () => {
+    const { field, query, detectChanges } = renderComponent({
+      key: 'foo',
+      type: 'array',
+      expressions: { hide: () => false },
+      fieldArray: {
+        defaultValue: 'test',
+        type: 'input',
+      },
+    });
+
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+    arrayType.add();
+    detectChanges();
+    expect(field.form.value).toEqual({ foo: ['test'] });
   });
 });
 
@@ -545,5 +610,6 @@ describe('Array Field Type', () => {
     </ng-container>
     <button id="add" type="button" (click)="add()">Add</button>
   `,
+  standalone: false,
 })
 class ArrayTypeComponent extends FieldArrayType {}

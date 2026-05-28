@@ -12,3 +12,10 @@
     --height: 260px;
   }
 }
+formly-field-ion-datetime {
+  display: inherit;
+
+  ion-item {
+    flex: 1;
+  }
+}

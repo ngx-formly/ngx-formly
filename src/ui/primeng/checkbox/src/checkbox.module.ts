@@ -6,6 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
 
 import { FormlyFieldCheckbox } from './checkbox.type';
+import { withFormlyFieldCheckbox } from './checkbox.config';
 
 @NgModule({
   declarations: [FormlyFieldCheckbox],
@@ -14,19 +15,7 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     ReactiveFormsModule,
     CheckboxModule,
     FormlyFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'checkbox',
-          component: FormlyFieldCheckbox,
-          wrappers: ['form-field'],
-        },
-        {
-          name: 'boolean',
-          extends: 'checkbox',
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldCheckbox()),
   ],
 })
 export class FormlyCheckboxModule {}

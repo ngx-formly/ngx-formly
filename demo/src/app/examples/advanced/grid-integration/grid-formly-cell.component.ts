@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyField, FormlyFieldConfig } from '@ngx-formly/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 
 @Component({
   selector: 'formly-ag-grid-cell',
   template: ` <formly-field [field]="getField()"></formly-field> `,
+  imports: [FormlyField],
 })
 export class GridFormlyCellComponent implements ICellRendererAngularComp {
   private params: any;

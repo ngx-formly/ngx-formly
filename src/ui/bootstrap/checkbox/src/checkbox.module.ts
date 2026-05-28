@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyBootstrapFormFieldModule } from '@ngx-formly/bootstrap/form-field';
 
 import { FormlyFieldCheckbox } from './checkbox.type';
+import { withFormlyFieldCheckbox } from './checkbox.config';
 
 @NgModule({
   declarations: [FormlyFieldCheckbox],
@@ -13,19 +14,7 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     CommonModule,
     ReactiveFormsModule,
     FormlyBootstrapFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'checkbox',
-          component: FormlyFieldCheckbox,
-          wrappers: ['form-field'],
-        },
-        {
-          name: 'boolean',
-          extends: 'checkbox',
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldCheckbox()),
   ],
 })
 export class FormlyBootstrapCheckboxModule {}

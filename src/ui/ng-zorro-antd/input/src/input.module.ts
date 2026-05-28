@@ -8,6 +8,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 import { FormlyFieldInput } from './input.type';
+import { withFormlyFieldInput } from './input.config';
 
 @NgModule({
   declarations: [FormlyFieldInput],
@@ -18,34 +19,7 @@ import { FormlyFieldInput } from './input.type';
     NzInputNumberModule,
 
     FormlyNzFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'input',
-          component: FormlyFieldInput,
-          wrappers: ['form-field'],
-        },
-        { name: 'string', extends: 'input' },
-        {
-          name: 'number',
-          extends: 'input',
-          defaultOptions: {
-            props: {
-              type: 'number',
-            },
-          },
-        },
-        {
-          name: 'integer',
-          extends: 'input',
-          defaultOptions: {
-            props: {
-              type: 'number',
-            },
-          },
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldInput()),
   ],
 })
 export class FormlyNzInputModule {}

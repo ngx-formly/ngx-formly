@@ -14,6 +14,7 @@ describe('ui-material: Input Type', () => {
     const { query } = renderComponent({
       key: 'name',
       type: 'input',
+      name: 'custom_name',
     });
 
     expect(query('formly-wrapper-mat-form-field')).not.toBeNull();
@@ -21,6 +22,7 @@ describe('ui-material: Input Type', () => {
     const { attributes } = query('input[type="text"]');
     expect(attributes).toMatchObject({
       id: 'formly_1_input_name_0',
+      name: 'custom_name',
     });
   });
 

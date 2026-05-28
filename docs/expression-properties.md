@@ -116,6 +116,32 @@ toggle(){
 }
 ```
 
+:::note
+
+By default, the model's value is cleared when the field becomes hidden. If you want to preserve the value of a hidden field, use one of the following solution: 
+
+To preserve for a specific field pass `false` to `resetOnHide`:
+```patch
+let fields: FormlyFieldConfig[] = [
+  {
+    key: 'text',
+    type: 'input',
++   resetOnHide: false
+  }
+]
+```
+
+To preserve for all fields pass `false` to `resetFieldOnHide`:
+```patch
+provideFormlyCore({
++ extras: {
++   resetFieldOnHide: false,
++ },
+})
+```
+
+:::
+
 ## 3. Get notified about an expression changes
 
 
@@ -157,3 +183,15 @@ Example ([Demo](https://stackblitz.com/edit/angular-yobrug?file=src/app/app.comp
   }
 },
 ```
+
+## 4. Expression Evaluation
+
+By default, Formly evaluates string expressions using `new Function()`. For better performance and to support environments with a strict Content Security Policy (CSP), it is recommended to use `withFormlyFieldExpression()` in the Formly configuration:
+
+```patch
+provideFormlyCore(
++ withFormlyFieldExpression(),
+)
+```
+
+The `withFormlyFieldExpression()` implementation parses and evaluates expressions without using `eval()` or `new Function()`.

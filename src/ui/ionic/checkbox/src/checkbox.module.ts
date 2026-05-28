@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormlyFormFieldModule } from '@ngx-formly/ionic/form-field';
 
 import { FormlyFieldCheckbox } from './checkbox.type';
+import { withFormlyFieldCheckbox } from './checkbox.config';
 
 @NgModule({
   declarations: [FormlyFieldCheckbox],
@@ -14,19 +15,7 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     ReactiveFormsModule,
     IonicModule,
     FormlyFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'checkbox',
-          component: FormlyFieldCheckbox,
-          wrappers: ['form-field'],
-        },
-        {
-          name: 'boolean',
-          extends: 'checkbox',
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldCheckbox()),
   ],
 })
 export class FormlyCheckboxModule {}

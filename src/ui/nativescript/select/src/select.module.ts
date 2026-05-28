@@ -7,6 +7,7 @@ import { NativeScriptFormsModule } from '@nativescript/angular';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
 import { FormlyFieldSelect } from './select.type';
+import { withFormlyFieldSelect } from './select.config';
 
 @NgModule({
   declarations: [FormlyFieldSelect],
@@ -17,16 +18,7 @@ import { FormlyFieldSelect } from './select.type';
 
     FormlyNsFormFieldModule,
     FormlySelectModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'select',
-          component: FormlyFieldSelect,
-          wrappers: ['form-field'],
-        },
-        { name: 'enum', extends: 'select' },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldSelect()),
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

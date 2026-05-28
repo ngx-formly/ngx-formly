@@ -24,6 +24,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     </label>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {
   override defaultOptions = {

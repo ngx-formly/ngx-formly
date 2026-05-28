@@ -36,6 +36,14 @@ export class FieldValidationExtension implements FormlyExtension {
     FORMLY_VALIDATORS.forEach((opt) =>
       observe(field, ['props', opt], ({ currentValue, firstChange }) => {
         VALIDATORS = VALIDATORS.filter((o) => o !== opt);
+        if (opt === 'required' && currentValue != null && typeof currentValue !== 'boolean') {
+          console.warn(
+            `Formly: Invalid prop 'required' of type '${typeof currentValue}', expected 'boolean' (Field:${
+              field.key
+            }).`,
+          );
+        }
+
         if (currentValue != null && currentValue !== false) {
           VALIDATORS.push(opt);
         }
@@ -118,22 +126,15 @@ export class FieldValidationExtension implements FormlyExtension {
     return (control: AbstractControl) => {
       const errors: any = validatorOption.validation(control, field, validatorOption.options);
       if (isPromise(errors)) {
-        return errors.then((v) => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption));
+        return errors.then((v) => this.handleResult(field, validatorName ? !!v : v, validatorOption));
       }
 
       if (isObservable(errors)) {
-        return errors.pipe(map((v) => this.handleAsyncResult(field, validatorName ? !!v : v, validatorOption)));
+        return errors.pipe(map((v) => this.handleResult(field, validatorName ? !!v : v, validatorOption)));
       }
 
       return this.handleResult(field, validatorName ? !!errors : errors, validatorOption);
     };
-  }
-
-  private handleAsyncResult(field: FormlyFieldConfigCache, errors: any, options: ValidatorOption) {
-    // workaround for https://github.com/angular/angular/issues/13200
-    field.options.detectChanges(field);
-
-    return this.handleResult(field, errors, options);
   }
 
   private handleResult(field: FormlyFieldConfigCache, errors: any, { name, options }: ValidatorOption) {

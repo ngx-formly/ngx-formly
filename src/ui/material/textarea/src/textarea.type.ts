@@ -19,6 +19,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
     <textarea
       matInput
       [id]="id"
+      [name]="field.name"
       [readonly]="props.readonly"
       [required]="required"
       [formControl]="formControl"
@@ -32,8 +33,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
       [cdkAutosizeMinRows]="props.autosizeMinRows"
       [cdkAutosizeMaxRows]="props.autosizeMaxRows"
       [class.cdk-textarea-autosize]="props.autosize"
-    >
-    </textarea>
+    ></textarea>
   `,
   providers: [
     // fix for https://github.com/ngx-formly/ngx-formly/issues/1688
@@ -41,6 +41,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
     { provide: MAT_INPUT_VALUE_ACCESSOR, useExisting: FormlyFieldTextArea },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {
   override defaultOptions = {

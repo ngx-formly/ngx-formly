@@ -2,7 +2,7 @@ import { FormlyJsonschema } from './formly-json-schema.service';
 import { JSONSchema7 } from 'json-schema';
 import { FormlyFieldConfig, FormlyFieldProps, FieldArrayType } from '@ngx-formly/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { createComponent, FormlyInputModule } from '@ngx-formly/core/testing';
+import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { Component } from '@angular/core';
 
 const renderComponent = ({ schema, model }: { schema: JSONSchema7; model?: any }) => {
@@ -366,7 +366,7 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.minItems).toBe(numSchema.minItems);
 
-        const minItemsValidator = (model: any) => config.validators.minItems(new FormControl(), { model });
+        const minItemsValidator = (model: any) => config.validators.minItems(new FormControl(model), { model });
         expect(minItemsValidator(undefined)).toBeTrue();
         expect(minItemsValidator([1])).toBeFalse();
         expect(minItemsValidator([])).toBeFalse();
@@ -405,7 +405,7 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.maxItems).toBe(numSchema.maxItems);
 
-        const maxItemsValidator = (model: any) => config.validators.maxItems(new FormControl(), { model });
+        const maxItemsValidator = (model: any) => config.validators.maxItems(new FormControl(model), { model });
         expect(maxItemsValidator(undefined)).toBeTrue();
         expect(maxItemsValidator([1, 2, 3])).toBeFalse();
         expect(maxItemsValidator([1, 2])).toBeTrue();
@@ -420,11 +420,18 @@ describe('Service: FormlyJsonschema', () => {
         const config = formlyJsonschema.toFieldConfig(numSchema);
         expect(config.props.uniqueItems).toBeTrue();
 
-        const uniqueItemsValidator = (model: any) => config.validators.uniqueItems(new FormControl(), { model });
+        const uniqueItemsValidator = (model: any) => config.validators.uniqueItems(new FormControl(model), { model });
         expect(uniqueItemsValidator(undefined)).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 3])).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 2])).toBeFalse();
+        expect(
+          uniqueItemsValidator([
+            { a: 2, b: 1 },
+            { b: 1, a: 2 },
+          ]),
+        ).toBeFalse();
 
+        expect(uniqueItemsValidator([{ foo: { a: 2, b: 1 } }, { foo: { b: 1, a: 2 } }])).toBeFalse();
         expect(uniqueItemsValidator([{ a: 2 }, { a: 1 }])).toBeTrue();
         expect(uniqueItemsValidator([{ a: 1 }, { a: 1 }])).toBeFalse();
       });
@@ -643,6 +650,141 @@ describe('Service: FormlyJsonschema', () => {
           });
         });
       });
+
+      describe('if/then/else', () => {
+        it('should display conditional fields based on if/then', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              status: { type: 'string', enum: ['FLAG_CONTROLLED', 'ENABLED', 'DISABLED'] },
+            },
+            required: ['status'],
+            if: { properties: { status: { const: 'FLAG_CONTROLLED' } } },
+            then: {
+              properties: {
+                flags: { type: 'string' },
+              },
+              required: ['flags'],
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          expect(config.fieldGroup.length).toBe(2); // status field + conditional group
+
+          const conditionalGroup = config.fieldGroup[1];
+          expect(conditionalGroup.fieldGroup).toBeDefined();
+          expect(conditionalGroup.fieldGroup.length).toBe(1);
+          expect(conditionalGroup.fieldGroup[0].key).toBe('flags');
+          expect(conditionalGroup.expressions.hide).toBeDefined();
+
+          const hideExpr = conditionalGroup.expressions.hide as any;
+          expect(hideExpr({ model: { status: 'FLAG_CONTROLLED' } })).toBeFalse();
+          expect(hideExpr({ model: { status: 'ENABLED' } })).toBeTrue();
+          expect(hideExpr({ model: { status: 'DISABLED' } })).toBeTrue();
+        });
+
+        it('should display conditional fields based on if/else', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              type: { type: 'string', enum: ['A', 'B'] },
+            },
+            required: ['type'],
+            if: { properties: { type: { const: 'A' } } },
+            else: {
+              properties: {
+                optionB: { type: 'string' },
+              },
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          expect(config.fieldGroup.length).toBe(2); // type field + conditional group
+
+          const conditionalGroup = config.fieldGroup[1];
+          expect(conditionalGroup.fieldGroup).toBeDefined();
+          expect(conditionalGroup.fieldGroup.length).toBe(1);
+          expect(conditionalGroup.fieldGroup[0].key).toBe('optionB');
+
+          const hideExpr = conditionalGroup.expressions.hide as any;
+          expect(hideExpr({ model: { type: 'A' } })).toBeTrue(); // else is hidden when if is true
+          expect(hideExpr({ model: { type: 'B' } })).toBeFalse(); // else is shown when if is false
+        });
+
+        it('should handle multiple conditional properties in then', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              enabled: { type: 'boolean' },
+            },
+            if: { properties: { enabled: { const: true } } },
+            then: {
+              properties: {
+                option1: { type: 'string' },
+                option2: { type: 'number' },
+              },
+              required: ['option1'],
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          const conditionalGroup = config.fieldGroup[1];
+          expect(conditionalGroup.fieldGroup.length).toBe(2);
+          expect(conditionalGroup.fieldGroup[0].key).toBe('option1');
+          expect(conditionalGroup.fieldGroup[1].key).toBe('option2');
+        });
+
+        it('should handle if/then/else together (different fields for each branch)', () => {
+          const schema: JSONSchema7 = {
+            type: 'object',
+            properties: {
+              street_address: { type: 'string' },
+              country: {
+                type: 'string',
+                default: 'United States of America',
+                enum: ['United States of America', 'Canada', 'Other'],
+              },
+            },
+            if: { properties: { country: { const: 'United States of America' } } },
+            then: {
+              properties: {
+                zipcode: { type: 'string', pattern: '[0-9]{5}(-[0-9]{4})?' },
+              },
+            },
+            else: {
+              properties: {
+                postal_code: { type: 'string', pattern: '[A-Z][0-9][A-Z] [0-9][A-Z][0-9]' },
+              },
+            },
+          };
+
+          const config = formlyJsonschema.toFieldConfig(schema);
+          // Should have: street_address, country, then-group, else-group
+          expect(config.fieldGroup.length).toBe(4);
+
+          const thenGroup = config.fieldGroup[2];
+          expect(thenGroup.fieldGroup).toBeDefined();
+          expect(thenGroup.fieldGroup.length).toBe(1);
+          expect(thenGroup.fieldGroup[0].key).toBe('zipcode');
+
+          const elseGroup = config.fieldGroup[3];
+          expect(elseGroup.fieldGroup).toBeDefined();
+          expect(elseGroup.fieldGroup.length).toBe(1);
+          expect(elseGroup.fieldGroup[0].key).toBe('postal_code');
+
+          // Test then condition (zipcode shown when USA, hidden otherwise)
+          const thenHideExpr = thenGroup.expressions.hide as any;
+          expect(thenHideExpr({ model: { country: 'United States of America' } })).toBeFalse();
+          expect(thenHideExpr({ model: { country: 'Canada' } })).toBeTrue();
+          expect(thenHideExpr({ model: { country: 'Other' } })).toBeTrue();
+
+          // Test else condition (postal_code hidden when USA, shown otherwise)
+          const elseHideExpr = elseGroup.expressions.hide as any;
+          expect(elseHideExpr({ model: { country: 'United States of America' } })).toBeTrue();
+          expect(elseHideExpr({ model: { country: 'Canada' } })).toBeFalse();
+          expect(elseHideExpr({ model: { country: 'Other' } })).toBeFalse();
+        });
+      });
     });
 
     // https://json-schema.org/latest/json-schema-validation.html#general
@@ -796,6 +938,20 @@ describe('Service: FormlyJsonschema', () => {
             expect(type).toEqual('enum');
             expect(props.multiple).toBeTrue();
           });
+        });
+
+        it('should add enum validator', () => {
+          const schema: JSONSchema7 = {
+            type: 'integer',
+            enum: [1, 2, 3],
+          };
+          const config = formlyJsonschema.toFieldConfig(schema);
+
+          const enumValidators = config.validators.enum;
+          expect(enumValidators).toBeDefined();
+          expect(enumValidators(new FormControl(4))).toBeFalse();
+          expect(enumValidators(new FormControl(5))).toBeFalse();
+          expect(enumValidators(new FormControl(1))).toBeTrue();
         });
       });
 
@@ -959,9 +1115,9 @@ describe('Service: FormlyJsonschema', () => {
 
         const expectedConfig: FormlyFieldConfig = {
           type: 'array',
-          defaultValue: undefined,
-          props: { ...emmptyFieldProps, required: true },
-          templateOptions: { ...emmptyFieldProps, required: true },
+          defaultValue: [],
+          props: { ...emmptyFieldProps },
+          templateOptions: { ...emmptyFieldProps },
           fieldArray: expect.any(Function),
           validators: expectTypeValidator(['array']),
         };
@@ -1281,6 +1437,57 @@ describe('Service: FormlyJsonschema', () => {
           expect(foo2Field.hide).toBeFalse();
         });
 
+        // https://github.com/ngx-formly/ngx-formly/issues/3805
+        it('should support oneOf within array (validate the second item)', () => {
+          const { field } = renderComponent({
+            model: ['n', 'Heading 2'],
+            schema: {
+              type: 'array',
+              items: {
+                oneOf: [{ enum: ['Heading 1', 'Heading 2'] }, { type: 'string' }],
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [field1, field2],
+            },
+          ] = field.fieldGroup[1].fieldGroup[0].fieldGroup;
+
+          expect(field1.hide).toBeFalse();
+          expect(field2.hide).toBeTrue();
+        });
+
+        it('should support oneOf with array mixed type', () => {
+          const { field, setInputs } = renderComponent({
+            model: [{ foo: [2] }],
+            schema: {
+              type: 'array',
+              items: {
+                oneOf: [
+                  { type: 'string' },
+                  {
+                    type: 'array',
+                    items: { type: 'string' },
+                  },
+                ],
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [foo1Field, foo2Field],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          expect(foo1Field.hide).toBeTrue();
+          expect(foo2Field.hide).toBeFalse();
+        });
+
         it('should support oneOf for a non-object type', () => {
           const { field } = renderComponent({
             model: { foo: 2 },
@@ -1372,6 +1579,50 @@ describe('Service: FormlyJsonschema', () => {
           expect(foo1Field.hide).toBeFalse();
           expect(foo2Field.hide).toBeTrue();
           expect(field.model).toEqual({ foo: 2 });
+        });
+
+        it('should support recursive oneOf schema branches', () => {
+          const { field, detectChanges } = renderComponent({
+            schema: {
+              definitions: {
+                predicate: {
+                  oneOf: [
+                    {
+                      title: 'Equals',
+                      type: 'object',
+                      properties: {
+                        value: { type: 'string' },
+                      },
+                    },
+                    {
+                      title: 'Not',
+                      type: 'object',
+                      properties: {
+                        predicate: { $ref: '#/definitions/predicate' },
+                      },
+                    },
+                  ],
+                },
+              },
+              type: 'object',
+              properties: {
+                condition: { $ref: '#/definitions/predicate' },
+              },
+            },
+          });
+
+          const [
+            conditionSelector,
+            {
+              fieldGroup: [, notField],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          conditionSelector.formControl.setValue(1);
+          detectChanges();
+
+          expect(notField.hide).toBeFalse();
+          expect(notField.fieldGroup[0].fieldGroup[0].type).toBe('multischema');
         });
 
         it('should not take account of default value for the selected oneOf', () => {
@@ -1728,6 +1979,30 @@ describe('Service: FormlyJsonschema', () => {
 
           expect(field.model).toEqual({ foo: 'bar' });
         });
+
+        it('should support anyOf using mixed type', () => {
+          const { field } = renderComponent({
+            model: { foo: [] },
+            schema: {
+              type: 'object',
+              properties: {
+                foo: {
+                  anyOf: [{ type: 'object' }, { type: 'array' }],
+                },
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [foo1Field, foo2Field],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          expect(foo1Field.hide).toBeTruthy();
+          expect(foo2Field.hide).toBeFalsy();
+        });
       });
     });
 
@@ -1927,6 +2202,47 @@ describe('Service: FormlyJsonschema', () => {
       expect(field).toBeDefined();
     });
   });
+
+  describe('FormlyJsonSchemaOptions map data', () => {
+    it('should set undefined when number type input is empty', () => {
+      const { field, query } = renderComponent({
+        schema: { type: 'integer' },
+      });
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: 'eeee' }));
+      expect(field.formControl.value).toEqual('eeee');
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '' }));
+      expect(field.formControl.value).toEqual(undefined);
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '2e3' }));
+      expect(field.formControl.value).toEqual(2000);
+    });
+
+    it('should set non required string to undefined when is empty', () => {
+      const { field } = renderComponent({
+        schema: { type: 'string' },
+      });
+
+      const parser = field.parsers[0] as any;
+
+      expect(parser('', field)).toEqual(undefined);
+      field.props.required = true;
+      expect(parser('', field)).toEqual('');
+    });
+
+    it('should set default value for array type items', () => {
+      const { field } = renderComponent({
+        model: [undefined],
+        schema: {
+          type: 'array',
+          items: { type: 'object' },
+        },
+      });
+
+      expect(field.fieldGroup[0].defaultValue).toEqual({});
+    });
+  });
 });
 
 @Component({
@@ -1938,11 +2254,12 @@ describe('Service: FormlyJsonschema', () => {
     </div>
     <button id="add" type="button" (click)="add()">Add</button>
   `,
+  standalone: false,
 })
 class ArrayTypeComponent extends FieldArrayType {}
 
 function getFieldArrayChild(config: FormlyFieldConfig) {
-  return (config.fieldArray as Function)(config);
+  return (config.fieldArray as (f: FormlyFieldConfig) => FormlyFieldConfig)(config);
 }
 
 function expectTypeValidator(schemaType: string[]) {

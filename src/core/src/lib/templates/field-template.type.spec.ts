@@ -4,6 +4,7 @@ describe('Template Field Type', () => {
   it('should render template', () => {
     const { field, query, detectChanges } = renderComponent({
       template: '<div>foo</div>',
+      props: { safeHtml: true },
     });
 
     expect(query('formly-template')).not.toBeNull();

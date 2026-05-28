@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { FormlyForm } from '@ngx-formly/core';
 
 interface Model {
   readonly player: string;
@@ -12,9 +13,10 @@ interface Model {
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: Partial<Model> = { sport: '1' };
   fields: FormlyFieldConfig[] = [
     {

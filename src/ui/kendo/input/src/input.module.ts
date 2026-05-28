@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyFormFieldModule } from '@ngx-formly/kendo/form-field';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { FormlyFieldInput } from './input.type';
+import { withFormlyFieldInput } from './input.config';
 
 @NgModule({
   declarations: [FormlyFieldInput],
@@ -13,34 +14,7 @@ import { FormlyFieldInput } from './input.type';
     ReactiveFormsModule,
     FormlyFormFieldModule,
     InputsModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'input',
-          component: FormlyFieldInput,
-          wrappers: ['form-field'],
-        },
-        { name: 'string', extends: 'input' },
-        {
-          name: 'number',
-          extends: 'input',
-          defaultOptions: {
-            props: {
-              type: 'number',
-            },
-          },
-        },
-        {
-          name: 'integer',
-          extends: 'input',
-          defaultOptions: {
-            props: {
-              type: 'number',
-            },
-          },
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldInput()),
   ],
 })
 export class FormlyInputModule {}

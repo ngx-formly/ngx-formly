@@ -105,8 +105,8 @@ describe('FormlyUtils service', () => {
 
     it('should take account passing a non-string for type', () => {
       const customType = FormlyField;
-      let options: FormlyFieldConfig = { type: customType as any };
-      let id = getFieldId('formly_1', options, 2);
+      const options: FormlyFieldConfig = { type: customType as any };
+      const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_FormlyField__2');
     });
   });
@@ -169,6 +169,11 @@ describe('clone', () => {
     expect(clone(v)).toBe(v);
   });
 
+  it('Promise', () => {
+    const v = Promise.resolve();
+    expect(clone(v)).toBe(v);
+  });
+
   it('FileList', () => {
     const blob = new Blob();
     const file = new File([], 'test');
@@ -206,6 +211,11 @@ describe('clone', () => {
     expect(clone(map)).not.toBe(map);
   });
 
+  it('Uint8Array', () => {
+    const array = new Uint8Array();
+    expect(clone(array)).not.toBe(array);
+  });
+
   it('Object with methods', () => {
     class Foo {
       constructor(public foo = '') {}
@@ -226,7 +236,10 @@ describe('clone', () => {
       constructor(public foo = '') {}
     }
     class Bar {
-      constructor(public bar = '', public foo = new Foo(bar)) {}
+      constructor(
+        public bar = '',
+        public foo = new Foo(bar),
+      ) {}
     }
     const bar = new Bar('test');
     const clonedBar = clone(bar);
@@ -259,6 +272,10 @@ describe('clone', () => {
     value.name = 'foo';
 
     expect(value.a).toEqual('foo');
+  });
+
+  it('Object with no constructor', () => {
+    expect(clone(Object.create(null))).toEqual(Object.create(null));
   });
 });
 

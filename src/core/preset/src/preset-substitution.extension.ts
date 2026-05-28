@@ -15,7 +15,7 @@ export class PresetSubstitutionExtension implements FormlyExtension {
         fieldConfigWithoutType,
         'getConfiguration' in preset ? preset.getConfiguration() : preset,
       );
-      Object.assign(field, merged);
+      Object.assign(field, { type: undefined }, merged);
     }
   }
 }

@@ -46,6 +46,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
     <input
       matInput
       [id]="id"
+      [name]="field.name"
       [errorStateMatcher]="errorStateMatcher"
       [formControl]="formControl"
       [matDatepicker]="picker"
@@ -86,6 +87,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
     </mat-datepicker>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldDatepicker
   extends FieldType<FieldTypeConfig<DatepickerProps>>
@@ -109,7 +111,10 @@ export class FormlyFieldDatepicker
   };
   private fieldErrorsObserver!: ReturnType<typeof observe>;
 
-  constructor(private config: FormlyConfig, private cdRef: ChangeDetectorRef) {
+  constructor(
+    private config: FormlyConfig,
+    private cdRef: ChangeDetectorRef,
+  ) {
     super();
   }
 

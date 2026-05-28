@@ -1,5 +1,5 @@
-import { AppModule as RangeAppModule } from './app.module';
 import { AppComponent as RangeAppComponent } from './app.component';
+import { appConfig as RangeAppConfig } from './app.config';
 
 const RangeExampleConfig = {
   title: 'Range type',
@@ -17,11 +17,11 @@ const RangeExampleConfig = {
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
     {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
+      file: 'app.config.ts',
+      content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
+      filecontent: require('!!raw-loader!./app.config.ts'),
     },
   ],
 };
 
-export { RangeAppModule, RangeAppComponent, RangeExampleConfig };
+export { RangeAppConfig, RangeAppComponent, RangeExampleConfig };

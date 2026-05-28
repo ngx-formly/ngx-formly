@@ -6,6 +6,7 @@ import { NativeScriptFormsModule } from '@nativescript/angular';
 
 import { FormlyNsFormFieldModule } from '@ngx-formly/nativescript/form-field';
 import { FormlyFieldCheckbox } from './checkbox.type';
+import { withFormlyFieldCheckbox } from './checkbox.config';
 
 @NgModule({
   declarations: [FormlyFieldCheckbox],
@@ -15,19 +16,7 @@ import { FormlyFieldCheckbox } from './checkbox.type';
     NativeScriptFormsModule,
 
     FormlyNsFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'checkbox',
-          component: FormlyFieldCheckbox,
-          wrappers: ['form-field'],
-        },
-        {
-          name: 'boolean',
-          extends: 'checkbox',
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldCheckbox()),
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

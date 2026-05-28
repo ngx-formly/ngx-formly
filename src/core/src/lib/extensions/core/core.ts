@@ -12,6 +12,9 @@ import {
   getField,
   markFieldForCheck,
   hasKey,
+  observe,
+  isHiddenField,
+  isSignalRequired,
 } from '../../utils';
 import { Subject } from 'rxjs';
 
@@ -85,18 +88,17 @@ export class CoreExtension implements FormlyExtension {
       options._hiddenFieldsForCheck = [];
     }
 
-    options._markForCheck = (f) => {
-      console.warn(`Formly: 'options._markForCheck' is deprecated since v6.0, use 'options.detectChanges' instead.`);
-      options.detectChanges(f);
-    };
-
-    options.detectChanges = (f: FormlyFieldConfigCache) => {
+    options._detectChanges = (f: FormlyFieldConfigCache) => {
       if (f._componentRefs) {
-        f.options.checkExpressions(f);
         markFieldForCheck(f);
       }
 
-      f.fieldGroup?.forEach((f) => f && options.detectChanges(f));
+      f.fieldGroup?.forEach((f) => f && options._detectChanges(f));
+    };
+
+    options.detectChanges = (f: FormlyFieldConfigCache) => {
+      f.options.checkExpressions?.(f);
+      options._detectChanges(f);
     };
 
     options.resetModel = (model?: any) => {
@@ -106,11 +108,11 @@ export class CoreExtension implements FormlyExtension {
         Object.assign(field.model, model || {});
       }
 
+      if (!isSignalRequired()) {
+        observe(options, ['parentForm', 'submitted']).setValue(false, false);
+      }
       options.build(field);
       field.form.reset(field.model);
-      if (options.parentForm && options.parentForm.control === field.formControl) {
-        (options.parentForm as { submitted: boolean }).submitted = false;
-      }
     };
 
     options.updateInitialValue = (model?: any) => (options._initialModel = clone(model ?? field.model));
@@ -152,20 +154,13 @@ export class CoreExtension implements FormlyExtension {
       this.config.getMergedField(field);
     }
 
-    if (hasKey(field) && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
-      const isHidden = (f: FormlyFieldConfig) => f.hide || f.expressions?.hide || f.hideExpression;
-      let setDefaultValue = !field.resetOnHide || !isHidden(field);
-      if (!isHidden(field) && field.resetOnHide) {
-        let parent = field.parent;
-        while (parent && !isHidden(parent)) {
-          parent = parent.parent;
-        }
-        setDefaultValue = !parent || !isHidden(parent);
-      }
-
-      if (setDefaultValue) {
-        assignFieldValue(field, field.defaultValue);
-      }
+    if (
+      hasKey(field) &&
+      !isUndefined(field.defaultValue) &&
+      isUndefined(getFieldValue(field)) &&
+      !isHiddenField(field)
+    ) {
+      assignFieldValue(field, field.defaultValue);
     }
 
     field.wrappers = field.wrappers || [];

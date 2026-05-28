@@ -38,6 +38,7 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
   errorStateMatcher: ErrorStateMatcher = { isErrorState: () => this.field && this.showError };
   stateChanges = new Subject<void>();
   _errorState = false;
+  _focused = false;
 
   ngOnDestroy() {
     delete (this.formField as any)?._control;
@@ -69,7 +70,12 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
     return type instanceof Type ? type.prototype.constructor.name : type;
   }
   get focused() {
-    return !!this.field.focus && !this.disabled;
+    const focused = !!this.field.focus && !this.disabled;
+    if (focused !== this._focused) {
+      this._focused = focused;
+      this.stateChanges.next();
+    }
+    return focused;
   }
   get disabled() {
     return !!this.props.disabled;

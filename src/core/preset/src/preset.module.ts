@@ -1,16 +1,9 @@
 import { NgModule } from '@angular/core';
-import { FormlyConfig, FormlyModule, FORMLY_CONFIG } from '@ngx-formly/core';
-import { registerLibraryConfigReplacementExtension } from './preset-substitution.extension';
+import { FormlyModule } from '@ngx-formly/core';
+import { provideFormlyPreset } from './preset.config';
 
 @NgModule({
   imports: [FormlyModule.forChild({})],
-  providers: [
-    {
-      provide: FORMLY_CONFIG,
-      useFactory: registerLibraryConfigReplacementExtension,
-      deps: [FormlyConfig],
-      multi: true,
-    },
-  ],
+  providers: [provideFormlyPreset()],
 })
 export class FormlyPresetModule {}

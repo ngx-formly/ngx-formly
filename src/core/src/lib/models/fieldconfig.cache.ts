@@ -1,18 +1,22 @@
 import { ComponentRef, ElementRef, EmbeddedViewRef, Injector, ViewContainerRef } from '@angular/core';
-import { AsyncValidatorFn, ValidatorFn, FormArray, FormGroup, AbstractControl } from '@angular/forms';
+import { AsyncValidatorFn, ValidatorFn, UntypedFormArray, UntypedFormGroup, AbstractControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { FormlyExtension } from './config';
 import { FormlyFieldConfig, FormlyFormOptions } from './fieldconfig';
 
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
-  form?: FormGroup | FormArray;
+  form?: UntypedFormGroup | UntypedFormArray;
   model?: any;
-  formControl?: AbstractControl & { _fields?: FormlyFieldConfigCache[]; _childrenErrors?: { [id: string]: Function } };
+  formControl?: AbstractControl & {
+    _fields?: FormlyFieldConfigCache[];
+    _childrenErrors?: { [id: string]: () => void };
+  };
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
   shareFormControl?: boolean;
   index?: number;
+  _localFields?: FormlyFieldConfigCache[];
   _elementRefs?: ElementRef[];
   _expressions?: {
     [property: string]: {
@@ -37,15 +41,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   checkExpressions?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
   _viewContainerRef?: ViewContainerRef;
   _injector?: Injector;
-  _hiddenFieldsForCheck?: FormlyFieldConfigCache[];
+  _hiddenFieldsForCheck?: { field: FormlyFieldConfigCache; default?: boolean }[];
   _initialModel?: any;
-
-  /** @deprecated */
-  _buildForm?: () => void;
-
-  /** @deprecated */
-  _checkField?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
-
-  /** @deprecated */
-  _markForCheck?: (field: FormlyFieldConfig) => void;
+  _detectChanges?: (field: FormlyFieldConfig) => void;
 }

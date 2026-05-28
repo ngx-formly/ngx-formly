@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { FormlyFieldDatepicker } from './datepicker.type';
+import { withFormlyFieldDatepicker } from './datepicker.config';
 
 @NgModule({
   declarations: [FormlyFieldDatepicker],
@@ -18,15 +19,7 @@ import { FormlyFieldDatepicker } from './datepicker.type';
     MatDatepickerModule,
 
     FormlyMatFormFieldModule,
-    FormlyModule.forChild({
-      types: [
-        {
-          name: 'datepicker',
-          component: FormlyFieldDatepicker,
-          wrappers: ['form-field'],
-        },
-      ],
-    }),
+    FormlyModule.forChild(withFormlyFieldDatepicker()),
   ],
 })
 export class FormlyMatDatepickerModule {}

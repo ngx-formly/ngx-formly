@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent } from '@ngx-formly/core/testing';
+import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -52,7 +52,7 @@ describe('ui-primeng: Radio Type', () => {
       },
     });
 
-    query('p-radioButton label').triggerEventHandler('click', {});
+    query('input[type="radio"]').triggerEventHandler('change', ɵCustomEvent());
     detectChanges();
     expect(field.formControl.value).toEqual(1);
   });

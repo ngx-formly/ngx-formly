@@ -19,7 +19,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
         class="form-check"
         [ngClass]="{
           'form-check-inline': props.formCheck === 'inline' || props.formCheck === 'inline-switch',
-          'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch'
+          'form-switch': props.formCheck === 'switch' || props.formCheck === 'inline-switch',
         }"
       >
         <input
@@ -30,6 +30,8 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
           [indeterminate]="props.indeterminate && formControl.value == null"
           [formControl]="formControl"
           [formlyAttributes]="field"
+          [attr.aria-describedby]="id + '-formly-validation-error'"
+          [attr.aria-invalid]="showError"
         />
         <label *ngIf="props.formCheck !== 'nolabel'" [for]="id" class="form-check-label">
           {{ props.label }}
@@ -39,6 +41,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {
   override defaultOptions = {

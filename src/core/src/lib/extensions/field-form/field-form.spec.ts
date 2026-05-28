@@ -94,6 +94,16 @@ describe('FieldFormExtension', () => {
       expect(field.formControl.validator).not.toBeNull();
     });
 
+    it('should update initial defaultValue on build', () => {
+      const field = buildField({
+        key: 'name',
+        defaultValue: 6,
+        form: new FormGroup({ name: new FormControl(5, { initialValueIsDefault: true }) }),
+      });
+
+      expect((field.formControl as FormControl).defaultValue).toEqual(6);
+    });
+
     it('should use the same formcontrol for fields that use the same key', () => {
       const {
         fieldGroup: [f1, f2],
@@ -134,6 +144,11 @@ describe('FieldFormExtension', () => {
     expect(field.formControl).toBe(fooControl);
   });
 
+  it('should ignore fieldArray', () => {
+    const field = buildField({ key: 'test', fieldArray: { key: 'test' } });
+    expect(field.formControl).toBeUndefined();
+  });
+
   it('should override existing formcontrol when key is empty', () => {
     const field = buildField({
       fieldGroup: [],
@@ -153,11 +168,27 @@ describe('FieldFormExtension', () => {
       formControl,
       props: { required: true },
       form: new FormGroup({ test: formControl }),
+      asyncValidators: {
+        custom: () => new Promise(null),
+      },
     });
 
     expect(formControl.setValidators).toHaveBeenCalledTimes(1);
     expect(formControl.setAsyncValidators).toHaveBeenCalledTimes(1);
     expect(formControl.updateValueAndValidity).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not call "setAsyncValidators" when no asyncValidator is present in field', () => {
+    const formControl = new FormControl();
+    jest.spyOn(formControl, 'setAsyncValidators');
+    buildField({
+      key: 'test',
+      formControl,
+      props: { required: true },
+      form: new FormGroup({ test: formControl }),
+    });
+
+    expect(formControl.setAsyncValidators).not.toHaveBeenCalled();
   });
 
   it('should updateValueAndValidity of detached field', () => {
@@ -210,6 +241,15 @@ describe('FieldFormExtension', () => {
   });
 
   describe('props disabled state', () => {
+    it('should disable field without key', () => {
+      const field = buildField({
+        props: { disabled: true },
+      });
+
+      const control = field.formControl;
+      expect(control.disabled).toBeTrue();
+    });
+
     it('should disable sub-fields when parent is disabled', () => {
       const field = buildField({
         key: 'address',
@@ -236,7 +276,7 @@ describe('FieldFormExtension', () => {
     });
 
     it('should enable previously disabled control', () => {
-      let { form } = buildField({
+      const { form } = buildField({
         fieldGroup: [
           {
             key: 'foo',

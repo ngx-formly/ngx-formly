@@ -1,5 +1,5 @@
-import { AppModule as ToggleAppModule } from './app.module';
 import { AppComponent as ToggleAppComponent } from './app.component';
+import { appConfig as ToggleAppConfig } from './app.config';
 
 const ToggleExampleConfig = {
   title: 'Toggle type',
@@ -17,11 +17,11 @@ const ToggleExampleConfig = {
       filecontent: require('!!raw-loader!./app.component.ts'),
     },
     {
-      file: 'app.module.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.module.ts'),
-      filecontent: require('!!raw-loader!./app.module.ts'),
+      file: 'app.config.ts',
+      content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
+      filecontent: require('!!raw-loader!./app.config.ts'),
     },
   ],
 };
 
-export { ToggleAppModule, ToggleAppComponent, ToggleExampleConfig };
+export { ToggleAppConfig, ToggleAppComponent, ToggleExampleConfig };

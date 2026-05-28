@@ -2,7 +2,7 @@ import { FormlyConfig, FormlyFormBuilder } from '@ngx-formly/core';
 import { CoreExtension } from '../../src/lib/extensions/core/core';
 import { FieldValidationExtension } from '../../src/lib/extensions/field-validation/field-validation';
 import { FieldFormExtension } from '../../src/lib/extensions/field-form/field-form';
-import { FieldExpressionExtension } from '../../src/lib/extensions';
+import { FieldExpressionExtension } from '../../src/lib/extensions/field-expression/field-expression';
 import { mockComponent } from './utils';
 
 interface IBuilderOption {
