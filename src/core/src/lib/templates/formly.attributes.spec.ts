@@ -138,6 +138,28 @@ describe('FormlyAttributes Component', () => {
     it('should not fail without props', () => {
       expect(() => renderComponent({})).not.toThrowError();
     });
+
+    it('should extract RegExp source when setting pattern attribute', () => {
+      const { query } = renderComponent({
+        props: {
+          pattern: /^(?! )[a-zA-Z0-9_ ()-]*(?<! )$/,
+        },
+      });
+
+      const inputElm = query('input');
+      expect(inputElm.attributes.pattern).toBe('(?! )[a\\-zA-Z0-9_ ()-]*(?<! )');
+    });
+
+    it('should handle pattern as a string', () => {
+      const { query } = renderComponent({
+        props: {
+          pattern: '^[0-9]{5}$',
+        },
+      });
+
+      const inputElm = query('input');
+      expect(inputElm.attributes.pattern).toBe('[0\\-9]{5}');
+    });
   });
 
   describe('props events', () => {
