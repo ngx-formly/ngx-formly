@@ -1,25 +1,24 @@
 import { Component } from '@angular/core';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
-import { NgFor, NgIf } from '@angular/common';
+
 import { FormlyField } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-tabs',
   template: `
     <mat-tab-group>
-      <mat-tab
-        *ngFor="let tab of field.fieldGroup; let i = index; let last = last"
-        [label]="tab.props.label"
-        [disabled]="i !== 0 && !isValid(field.fieldGroup[i - 1])"
-      >
-        <formly-field [field]="tab"></formly-field>
-
-        <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">Submit</button>
-      </mat-tab>
+      @for (tab of field.fieldGroup; track tab; let i = $index; let last = $last) {
+        <mat-tab [label]="tab.props.label" [disabled]="i !== 0 && !isValid(field.fieldGroup[i - 1])">
+          <formly-field [field]="tab"></formly-field>
+          @if (last) {
+            <button class="btn btn-primary" [disabled]="!form.valid" type="submit">Submit</button>
+          }
+        </mat-tab>
+      }
     </mat-tab-group>
   `,
-  imports: [MatTabGroup, NgFor, MatTab, FormlyField, NgIf],
+  imports: [MatTabGroup, MatTab, FormlyField],
 })
 export class FormlyFieldTabs extends FieldType {
   isValid(field: FormlyFieldConfig): boolean {

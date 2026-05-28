@@ -643,9 +643,11 @@ describe('FormlyField Component', () => {
 @Component({
   selector: 'formly-wrapper-form-field-async',
   template: `
-    <div *ngIf="props.render">
-      <ng-container #fieldComponent></ng-container>
-    </div>
+    @if (props.render) {
+      <div>
+        <ng-container #fieldComponent></ng-container>
+      </div>
+    }
   `,
   standalone: false,
 })
@@ -682,7 +684,11 @@ export class ParentService {}
 
 @Component({
   selector: 'formly-parent',
-  template: ` <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field> `,
+  template: `
+    @for (f of field.fieldGroup; track f) {
+      <formly-field [field]="f"></formly-field>
+    }
+  `,
   providers: [ParentService],
   standalone: false,
 })

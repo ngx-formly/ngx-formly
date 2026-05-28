@@ -15,28 +15,26 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   selector: 'formly-field-radio',
   template: `
     <ng-template #fieldTypeTemplate>
-      <div
-        *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index"
-        class="form-check"
-        [class.form-check-inline]="props.formCheck === 'inline'"
-      >
-        <input
-          type="radio"
-          [id]="id + '_' + i"
-          class="form-check-input"
-          [name]="field.name || id"
-          [class.is-invalid]="showError"
-          [attr.value]="option.value"
-          [value]="option.value"
-          [formControl]="option.disabled ? disabledControl : formControl"
-          [formlyAttributes]="field"
-          [attr.aria-describedby]="id + '-formly-validation-error'"
-          [attr.aria-invalid]="showError"
-        />
-        <label class="form-check-label" [for]="id + '_' + i">
-          {{ option.label }}
-        </label>
-      </div>
+      @for (option of props.options | formlySelectOptions: field | async; track option; let i = $index) {
+        <div class="form-check" [class.form-check-inline]="props.formCheck === 'inline'">
+          <input
+            type="radio"
+            [id]="id + '_' + i"
+            class="form-check-input"
+            [name]="field.name || id"
+            [class.is-invalid]="showError"
+            [attr.value]="option.value"
+            [value]="option.value"
+            [formControl]="option.disabled ? disabledControl : formControl"
+            [formlyAttributes]="field"
+            [attr.aria-describedby]="id + '-formly-validation-error'"
+            [attr.aria-invalid]="showError"
+          />
+          <label class="form-check-label" [for]="id + '_' + i">
+            {{ option.label }}
+          </label>
+        </div>
+      }
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

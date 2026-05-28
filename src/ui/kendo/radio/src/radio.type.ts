@@ -13,7 +13,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-kendo-radio',
   template: `
-    <ng-container *ngFor="let option of props.options | formlySelectOptions: field | async; let i = index">
+    @for (option of props.options | formlySelectOptions: field | async; track option; let i = $index) {
       <input
         type="radio"
         #radioInput
@@ -27,7 +27,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
       <label class="k-radio-label" [for]="id + '_' + i">
         {{ option.label }}
       </label>
-    </ng-container>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

@@ -11,20 +11,15 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
 @Component({
   selector: 'formly-field-nz-input',
   template: `
-    <input
-      *ngIf="props.type !== 'number'; else numberTmp"
-      nz-input
-      [formControl]="formControl"
-      [type]="props.type || 'text'"
-      [formlyAttributes]="field"
-    />
-    <ng-template #numberTmp>
+    @if (props.type !== 'number') {
+      <input nz-input [formControl]="formControl" [type]="props.type || 'text'" [formlyAttributes]="field" />
+    } @else {
       <nz-input-number
         [formControl]="formControl"
         [formlyAttributes]="field"
         [nzFormatter]="nzFormatter"
       ></nz-input-number>
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

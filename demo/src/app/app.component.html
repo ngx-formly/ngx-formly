@@ -1,4 +1,4 @@
-<ng-container *ngIf="usDefaultLayout; else routerOutlet">
+@if (usDefaultLayout) {
   <ngx-loading-bar [color]="'#fafafa'"></ngx-loading-bar>
   <mat-toolbar color="primary" class="mat-elevation-z6 app-navbar" [class.navbar-small]="isSmallDevice$ | async">
     <a
@@ -13,8 +13,7 @@
         FORMLY
       </span>
     </a>
-
-    <ng-container *ngIf="isSmallDevice$ | async; else mainMenu">
+    @if (isSmallDevice$ | async) {
       <span class="spacer" [style.flex]="'1 1 auto'"></span>
       <ng-container *ngTemplateOutlet="version"></ng-container>
       <a mat-button href="https://github.com/ngx-formly/ngx-formly">
@@ -23,11 +22,11 @@
       <button mat-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-    </ng-container>
-    <ng-template #mainMenu>
-      <a *ngFor="let link of menu" mat-button [routerLink]="link.path">{{ link.label }}</a>
+    } @else {
+      @for (link of menu; track link) {
+        <a mat-button [routerLink]="link.path">{{ link.label }}</a>
+      }
       <span class="spacer" [style.flex]="'1 1 auto'"></span>
-
       <ng-container *ngTemplateOutlet="version"></ng-container>
       <a mat-button href="https://github.com/ngx-formly/ngx-formly">
         <span class="d-flex align-items-center">
@@ -35,9 +34,8 @@
           GitHub
         </span>
       </a>
-    </ng-template>
+    }
   </mat-toolbar>
-
   <mat-sidenav-container fullscreen [style.top]="'56px'" class="mat-typography">
     <mat-sidenav
       [mode]="(isSmallDevice$ | async) ? 'over' : 'side'"
@@ -45,7 +43,7 @@
       [style.width.px]="250"
       #sidenav
     >
-      <ng-container *ngFor="let link of menu">
+      @for (link of menu; track link) {
         <a
           mat-button
           class="menu-item"
@@ -59,17 +57,15 @@
             <mat-icon>{{ routerLink.isActive ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon>
           </span>
         </a>
-        <ng-container *ngIf="routerLink.isActive">
+        @if (routerLink.isActive) {
           <ng-template [ngTemplateOutlet]="sideMenuItem" [ngTemplateOutletContext]="{ items: link.items }">
           </ng-template>
-        </ng-container>
-      </ng-container>
+        }
+      }
     </mat-sidenav>
-
     <div style="min-height: 80vh">
       <router-outlet></router-outlet>
     </div>
-
     <footer class="text-muted text-muted pt-3 pt-md-5" [class.container]="homeLink.isActive">
       <a
         mat-button
@@ -95,7 +91,6 @@
           <li><a routerLink="/ui">UI</a></li>
           <li><a routerLink="/examples">Examples</a></li>
         </ul>
-
         <!-- <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener" target="_blank">Netlify</a>.</p> -->
         <p>
           Maintained by the
@@ -111,7 +106,6 @@
             >MIT</a
           >.
         </p>
-
         <div class="bd-footer-badges">
           <a href="https://www.netlify.com" rel="noopener" target="_blank">
             <img
@@ -124,11 +118,9 @@
       </div>
     </footer>
   </mat-sidenav-container>
-</ng-container>
-
-<ng-template #routerOutlet>
+} @else {
   <router-outlet></router-outlet>
-</ng-template>
+}
 
 <ng-template #version>
   <button mat-button [matMenuTriggerFor]="menu">
@@ -143,7 +135,7 @@
 </ng-template>
 
 <ng-template #sideMenuItem let-items="items">
-  <ng-container *ngFor="let item of items">
+  @for (item of items; track item) {
     <a
       mat-button
       [disabled]="item.items"
@@ -154,9 +146,8 @@
     >
       {{ item.label }}
     </a>
-
-    <ng-container *ngIf="item.items">
+    @if (item.items) {
       <ng-template [ngTemplateOutlet]="sideMenuItem" [ngTemplateOutletContext]="{ items: item.items }"> </ng-template>
-    </ng-container>
-  </ng-container>
+    }
+  }
 </ng-template>

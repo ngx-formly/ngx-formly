@@ -10,13 +10,15 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   template: `
     <StackLayout class="form">
       <StackLayout class="input-field">
-        <Label *ngIf="props.label && props.hideLabel !== true" class="label" [text]="props.label"></Label>
+        @if (props.label && props.hideLabel !== true) {
+          <Label class="label" [text]="props.label"></Label>
+        }
         <ng-container #fieldComponent></ng-container>
         <StackLayout class="hr-light"></StackLayout>
-        <ng-container *ngIf="showError">
+        @if (showError) {
           <formly-validation-message #validationMessage [field]="field"></formly-validation-message>
           <Label class="text-danger" [text]="validationMessage.errorMessage"></Label>
-        </ng-container>
+        }
       </StackLayout>
     </StackLayout>
   `,
