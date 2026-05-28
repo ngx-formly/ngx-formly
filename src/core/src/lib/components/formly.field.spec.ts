@@ -574,6 +574,20 @@ describe('FormlyField Component', () => {
       expect(field.model).toEqual({ title: 'First value' });
       subscription.unsubscribe();
     });
+
+    it('should not emit valueChanges when disabling the form', () => {
+      const { field } = renderComponent({
+        key: 'username',
+        type: 'input',
+      });
+
+      const [spy, subscription] = createFieldChangesSpy(field);
+
+      field.formControl.disable();
+      expect(spy).not.toHaveBeenCalled();
+
+      subscription.unsubscribe();
+    });
   });
 
   it('should detect formControl status changes', () => {

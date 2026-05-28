@@ -11,6 +11,7 @@ interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   typeaheadDebounceInterval?: number;
   compareWith?: (o1: any, o2: any) => boolean;
   panelClass?: string;
+  panelWidth?: string | number | null;
 }
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
@@ -44,6 +45,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [disableOptionCentering]="props.disableOptionCentering"
       [typeaheadDebounceInterval]="props.typeaheadDebounceInterval"
       [panelClass]="props.panelClass"
+      [panelWidth]="props.panelWidth"
     >
       @if (props.options | formlySelectOptions: field | async; as selectOptions) {
         @if (props.multiple && props.selectAllOption) {

@@ -8,10 +8,12 @@ import {
   DoCheck,
   Inject,
   OnDestroy,
+  Optional,
 } from '@angular/core';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe, IObserver } from '../utils';
 import { DOCUMENT } from '@angular/common';
+import { FormlyField } from '../components/formly.field';
 
 /**
  * Allow to link the `field` HTML attributes (`id`, `name` ...) and Event attributes (`focus`, `blur` ...) to an element in the DOM.
@@ -67,6 +69,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     @Inject(DOCUMENT) _document: any,
+    @Optional() private formlyField?: FormlyField,
   ) {
     this.document = _document;
   }
@@ -99,8 +102,13 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
         });
       }
 
-      this.detachElementRef(changes.field.previousValue);
+      const previousField = changes.field.previousValue as FormlyFieldConfigCache;
+      this.detachElementRef(previousField);
       this.attachElementRef(changes.field.currentValue);
+      this.formlyField?.attachLocalField(
+        changes.field.currentValue as FormlyFieldConfigCache,
+        previousField?._elementRefs?.length ? undefined : previousField,
+      );
       if (this.fieldAttrElements.length === 1) {
         !this.id && this.field.id && this.setAttribute('id', this.field.id);
         this.focusObserver = observe<boolean>(this.field, ['focus'], ({ currentValue }) => {
@@ -139,7 +147,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
       ) {
         this.uiAttributesCache[attr] = value;
         if (value || value === 0) {
-          this.setAttribute(attr, value === true ? attr : `${value}`);
+          this.setAttribute(attr, this.getSafeAttributeValue(attr, value));
         } else {
           this.removeAttribute(attr);
         }
@@ -150,6 +158,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngOnDestroy() {
     this.uiEvents.listeners.forEach((listener) => listener());
     this.detachElementRef(this.field);
+    if (!(this.field as FormlyFieldConfigCache)?._elementRefs?.length) {
+      this.formlyField?.attachLocalField(undefined, this.field as FormlyFieldConfigCache);
+    }
     this.focusObserver?.unsubscribe();
   }
 
@@ -210,10 +221,26 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   }
 
   private detachElementRef(f: FormlyFieldConfigCache) {
-    const index = f?.['_elementRefs'] ? this.fieldAttrElements.indexOf(this.elementRef) : -1;
+    const elements = f?.['_elementRefs'] || [];
+    const index = elements.indexOf(this.elementRef);
     if (index !== -1) {
-      f['_elementRefs'].splice(index, 1);
+      elements.splice(index, 1);
     }
+  }
+
+  private getSafeAttributeValue(attr: string, value: any): string {
+    if (attr === 'pattern') {
+      let pattern = value instanceof RegExp ? value.source : value;
+
+      // 1. Safely escape unescaped hyphens inside character classes for 'v' flag compatibility
+      pattern = pattern.replace(/(\[[^\]]*?)(?<!\\)-(.*?\])/g, '$1\\-$2');
+
+      // 2. Cleanly strip leading ^ and trailing $ so HTML5 handles the boundaries natively
+      pattern = pattern.replace(/^^\^/, '').replace(/\$$/, '');
+
+      return pattern;
+    }
+    return value === true ? attr : `${value}`;
   }
 
   private setAttribute(attr: string, value: string) {
