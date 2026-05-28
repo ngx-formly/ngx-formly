@@ -1581,6 +1581,50 @@ describe('Service: FormlyJsonschema', () => {
           expect(field.model).toEqual({ foo: 2 });
         });
 
+        it('should support recursive oneOf schema branches', () => {
+          const { field, detectChanges } = renderComponent({
+            schema: {
+              definitions: {
+                predicate: {
+                  oneOf: [
+                    {
+                      title: 'Equals',
+                      type: 'object',
+                      properties: {
+                        value: { type: 'string' },
+                      },
+                    },
+                    {
+                      title: 'Not',
+                      type: 'object',
+                      properties: {
+                        predicate: { $ref: '#/definitions/predicate' },
+                      },
+                    },
+                  ],
+                },
+              },
+              type: 'object',
+              properties: {
+                condition: { $ref: '#/definitions/predicate' },
+              },
+            },
+          });
+
+          const [
+            conditionSelector,
+            {
+              fieldGroup: [, notField],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          conditionSelector.formControl.setValue(1);
+          detectChanges();
+
+          expect(notField.hide).toBeFalse();
+          expect(notField.fieldGroup[0].fieldGroup[0].type).toBe('multischema');
+        });
+
         it('should not take account of default value for the selected oneOf', () => {
           const { field } = renderComponent({
             schema: {

@@ -101,6 +101,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   key?: FormlyFieldConfig['key'];
   isOptional?: boolean;
   conditionalSchemas?: JSONSchema7[];
+  skipMultiSchemaValidation?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -620,6 +621,72 @@ export class FormlyJsonschema {
   }
 
   private resolveMultiSchema(mode: 'oneOf' | 'anyOf', schemas: JSONSchema7[], options: IOptions): FormlyFieldConfig {
+    const isRecursive = this.isRecursiveMultiSchema(schemas, options);
+    const fieldGroup = schemas.map((s, i) => {
+      const expressions: FormlyFieldConfig['expressions'] = {
+        hide: (f, forceUpdate?: boolean) => {
+          if (options.skipMultiSchemaValidation) {
+            return true;
+          }
+
+          const control = f.parent.parent.fieldGroup[0].formControl;
+          if (control.value === -1 || forceUpdate) {
+            let value = f.parent.fieldGroup
+              .map(
+                (f, i) =>
+                  [f, i, this.isFieldValid(f, i, schemas, options, isRecursive)] as [
+                    FormlyFieldConfig,
+                    number,
+                    boolean,
+                  ],
+              )
+              .sort(([f1, i1, f1Valid], [f2, i2, f2Valid]) => {
+                if (f1Valid !== f2Valid) {
+                  return f2Valid ? 1 : -1;
+                }
+
+                const schemaField1 = isRecursive ? this.getSchemaField(schemas[i1]) || f1 : f1;
+                const schemaField2 = isRecursive ? this.getSchemaField(schemas[i2]) || f2 : f2;
+                const matchedFields1 = totalMatchedFields(schemaField1);
+                const matchedFields2 = totalMatchedFields(schemaField2);
+                if (matchedFields1 === matchedFields2) {
+                  if (schemaField1.props?.disabled === schemaField2.props?.disabled) {
+                    return 0;
+                  }
+
+                  return matchedFields2 > matchedFields1 ? 1 : -1;
+                }
+
+                return matchedFields2 > matchedFields1 ? 1 : -1;
+              })
+              .map(([, i]) => i);
+
+            if (mode === 'anyOf') {
+              const definedValue = value.filter((i) => totalMatchedFields(f.parent.fieldGroup[i]));
+              value = definedValue.length > 0 ? definedValue : [value[0] || 0];
+            }
+
+            value = value.length > 0 ? value : [0];
+            control.setValue(mode === 'anyOf' ? value : value[0]);
+          }
+
+          const hide = Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
+          if (isRecursive && !hide) {
+            this.ensureMultiSchemaField(f, s, options);
+          }
+
+          return hide;
+        },
+      };
+
+      return isRecursive
+        ? this.createMultiSchemaField(s, options, expressions)
+        : {
+            ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
+            expressions,
+          };
+    });
+
     return {
       type: 'multischema',
       fieldGroup: [
@@ -635,52 +702,147 @@ export class FormlyJsonschema {
           },
         },
         {
-          fieldGroup: schemas.map((s, i) => ({
-            ...this._toFieldConfig(s, { ...options, resetOnHide: true }),
-            expressions: {
-              hide: (f, forceUpdate?: boolean) => {
-                const control = f.parent.parent.fieldGroup[0].formControl;
-                if (control.value === -1 || forceUpdate) {
-                  let value = f.parent.fieldGroup
-                    .map(
-                      (f, i) =>
-                        [f, i, this.isFieldValid(f, i, schemas, options)] as [FormlyFieldConfig, number, boolean],
-                    )
-                    .sort(([f1, , f1Valid], [f2, , f2Valid]) => {
-                      if (f1Valid !== f2Valid) {
-                        return f2Valid ? 1 : -1;
-                      }
-
-                      const matchedFields1 = totalMatchedFields(f1);
-                      const matchedFields2 = totalMatchedFields(f2);
-                      if (matchedFields1 === matchedFields2) {
-                        if (f1.props.disabled === f2.props.disabled) {
-                          return 0;
-                        }
-
-                        return matchedFields2 > matchedFields1 ? 1 : -1;
-                      }
-
-                      return matchedFields2 > matchedFields1 ? 1 : -1;
-                    })
-                    .map(([, i]) => i);
-
-                  if (mode === 'anyOf') {
-                    const definedValue = value.filter((i) => totalMatchedFields(f.parent.fieldGroup[i]));
-                    value = definedValue.length > 0 ? definedValue : [value[0] || 0];
-                  }
-
-                  value = value.length > 0 ? value : [0];
-                  control.setValue(mode === 'anyOf' ? value : value[0]);
-                }
-
-                return Array.isArray(control.value) ? control.value.indexOf(i) === -1 : control.value !== i;
-              },
-            },
-          })),
+          fieldGroup,
         },
       ],
     };
+  }
+
+  private createMultiSchemaField(
+    schema: JSONSchema7,
+    options: IOptions,
+    expressions: FormlyFieldConfig['expressions'],
+  ): FormlyFieldConfig {
+    return {
+      expressions,
+      hooks: {
+        onInit: (f) => {
+          if (f.hide === false) {
+            this.ensureMultiSchemaField(f, schema, options);
+          }
+        },
+      },
+    };
+  }
+
+  private ensureMultiSchemaField(
+    field: FormlyFieldConfig & { _jsonSchemaFormlyField?: boolean },
+    schema: JSONSchema7,
+    options: IOptions,
+  ) {
+    if (field._jsonSchemaFormlyField) {
+      return;
+    }
+
+    const expressions = field.expressions;
+    const hooks = field.hooks;
+    const mutableField = field as unknown as Record<string, unknown>;
+    delete mutableField['formControl'];
+    delete mutableField['_keyPath'];
+
+    Object.keys(field).forEach((prop) => {
+      delete mutableField[prop];
+    });
+
+    Object.assign(field, this._toFieldConfig(schema, { ...options, resetOnHide: true }));
+    field.expressions = expressions;
+    field.hooks = hooks;
+
+    Object.defineProperty(field, '_jsonSchemaFormlyField', {
+      value: true,
+      configurable: true,
+    });
+
+    field.options?.build(field);
+  }
+
+  private getSchemaField(schema: JSONSchema7): FormlyFieldConfig | undefined {
+    return (schema as JSONSchema7 & { _field?: FormlyFieldConfig })._field?.fieldGroup?.[0];
+  }
+
+  private isRecursiveMultiSchema(schemas: JSONSchema7[], options: IOptions): boolean {
+    const visited = new WeakSet<object>();
+    const visit = (schema: JSONSchema7Definition): boolean => {
+      if (!schema || typeof schema !== 'object') {
+        return false;
+      }
+
+      if (visited.has(schema)) {
+        return false;
+      }
+
+      visited.add(schema);
+      if (schema.$ref) {
+        const definition = this.getDefinition(schema.$ref, options);
+        return !!definition && (definition.oneOf === schemas || definition.anyOf === schemas || visit(definition));
+      }
+
+      if (schema.oneOf === schemas || schema.anyOf === schemas) {
+        return true;
+      }
+
+      const children: JSONSchema7Definition[] = [];
+      if (schema.properties) {
+        children.push(...Object.values(schema.properties));
+      }
+
+      if (schema.items) {
+        children.push(...(Array.isArray(schema.items) ? schema.items : [schema.items]));
+      }
+
+      if (schema.additionalItems && typeof schema.additionalItems === 'object') {
+        children.push(schema.additionalItems);
+      }
+
+      if (schema.allOf) {
+        children.push(...(schema.allOf as JSONSchema7Definition[]));
+      }
+
+      if (schema.oneOf && schema.oneOf !== schemas) {
+        children.push(...(schema.oneOf as JSONSchema7Definition[]));
+      }
+
+      if (schema.anyOf && schema.anyOf !== schemas) {
+        children.push(...(schema.anyOf as JSONSchema7Definition[]));
+      }
+
+      if (schema.dependencies) {
+        Object.values(schema.dependencies).forEach((dependency) => {
+          if (dependency && !Array.isArray(dependency)) {
+            children.push(dependency);
+          }
+        });
+      }
+
+      (['not', 'if', 'then', 'else'] as (keyof JSONSchema7)[]).forEach((key) => {
+        const child = schema[key];
+        if (child && typeof child === 'object') {
+          children.push(child as JSONSchema7Definition);
+        }
+      });
+
+      return children.some(visit);
+    };
+
+    return schemas.some(visit);
+  }
+
+  private getDefinition(ref: string, options: IOptions): FormlyJSONSchema7 | null {
+    const [uri, pointer] = ref.split('#/');
+    if (uri || !pointer) {
+      return null;
+    }
+
+    let definition: JSONSchema7Definition = options.schema;
+    for (const path of pointer.split('/')) {
+      if (!definition || typeof definition !== 'object' || !definition.hasOwnProperty(path)) {
+        return null;
+      }
+
+      definition = (definition as Record<string, JSONSchema7Definition>)[path];
+    }
+
+    return typeof definition === 'object' ? (definition as FormlyJSONSchema7) : null;
   }
 
   private resolveDefinition(schema: FormlyJSONSchema7, options: IOptions): FormlyJSONSchema7 {
@@ -863,6 +1025,7 @@ export class FormlyJsonschema {
     i: number,
     schemas: JSONSchema7[],
     options: IOptions,
+    skipMultiSchemaValidation = false,
   ): boolean {
     const schema = schemas[i] as JSONSchema7 & { _field?: FormlyFieldConfig };
     if (!schema._field) {
@@ -884,6 +1047,7 @@ export class FormlyJsonschema {
             ...options,
             resetOnHide: true,
             ignoreDefault: true,
+            skipMultiSchemaValidation,
             map: null,
           }),
         ],
