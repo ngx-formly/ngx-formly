@@ -20,7 +20,6 @@ import { FormlyValidationMessage } from '@ngx-formly/core';
       </div>
     </div>
   `,
-  standalone: true,
   imports: [NgIf, FormlyValidationMessage],
 })
 export class FormlyHorizontalWrapper extends FieldWrapper {}

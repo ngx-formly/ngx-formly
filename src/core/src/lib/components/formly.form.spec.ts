@@ -711,6 +711,41 @@ describe('FormlyForm Component', () => {
       expect(queryAll('.inline-group')).toHaveLength(3);
       expect(query('formly-group')).toBeNull();
     });
+
+    it('should update the model when rendering child controls in an inline group', () => {
+      const { model, query, detectChanges } = renderComponent(
+        {
+          model: { name: 'John Doe' },
+          fields: [
+            {
+              key: 'name',
+              type: 'input',
+            },
+          ],
+        },
+        {
+          template: `
+            <form [formGroup]="form">
+              <formly-form [form]="form" [fields]="fields" [model]="model">
+                <ng-template formlyTemplate let-field>
+                  <input
+                    id="inline-input"
+                    *ngFor="let f of field.fieldGroup"
+                    [formControl]="f.formControl"
+                    [formlyAttributes]="f"
+                  />
+                </ng-template>
+              </formly-form>
+            </form>
+          `,
+        },
+      );
+
+      query<HTMLInputElement>('#inline-input').triggerEventHandler('input', ɵCustomEvent({ value: 'Jane Doe' }));
+      detectChanges();
+
+      expect(model).toEqual({ name: 'Jane Doe' });
+    });
   });
 
   describe('formState update', () => {
@@ -919,7 +954,6 @@ describe('FormlyForm Component', () => {
     </form>
   `,
   providers: [provideFormlyConfig([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
-  standalone: true,
   imports: [FormsModule, ReactiveFormsModule, FormlyModule],
 })
 export class StandaloneChildComponent {
@@ -932,7 +966,6 @@ export class StandaloneChildComponent {
   selector: 'formly-app-root',
   template: `<formly-app-child />`,
   imports: [StandaloneChildComponent],
-  standalone: true,
 })
 export class StandaloneAppComponent {}
 

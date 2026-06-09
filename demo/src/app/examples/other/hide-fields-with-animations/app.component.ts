@@ -13,7 +13,6 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
       }
     `,
   ],
-  standalone: true,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

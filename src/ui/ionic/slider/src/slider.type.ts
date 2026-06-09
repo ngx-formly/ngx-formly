@@ -26,5 +26,6 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {}

@@ -6,7 +6,6 @@ import { RouterOutlet } from '@angular/router';
   template: `<div class="p-fluid"><router-outlet></router-outlet></div>`,
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [RouterOutlet],
 })
 export class AppComponent {}

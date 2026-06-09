@@ -42,6 +42,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     </mat-checkbox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldCheckbox
   extends FieldType<FieldTypeConfig<CheckboxProps>>

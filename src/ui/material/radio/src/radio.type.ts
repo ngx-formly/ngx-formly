@@ -35,6 +35,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     </mat-radio-group>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> implements AfterViewInit, OnDestroy {
   @ViewChild(MatRadioGroup, { static: true }) radioGroup!: MatRadioGroup;

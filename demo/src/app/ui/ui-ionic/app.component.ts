@@ -6,7 +6,6 @@ import { ExamplesRouterViewerComponent } from '../../shared/examples-router-view
   template: ` <formly-examples-viewer></formly-examples-viewer> `,
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [ExamplesRouterViewerComponent],
 })
 export class AppComponent {}

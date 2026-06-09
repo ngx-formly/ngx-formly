@@ -1,5 +1,5 @@
 import { FormlySelectOptionsPipe } from './select-options.pipe';
-import { of as observableOf, Subject } from 'rxjs';
+import { firstValueFrom, isObservable, Observable, of as observableOf, Subject } from 'rxjs';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyValueChangeEvent } from 'src/core/src/lib/models';
 
@@ -26,6 +26,22 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     pipe.transform(observableOf([{ label: '1', value: '1' }])).subscribe((options) => {
       expect(options).toEqual([{ label: '1', value: '1', disabled: false }]);
     });
+  });
+
+  it('passing options as an observable that is not an Observable instance', async () => {
+    const source = observableOf([{ label: '1', value: '1' }]);
+    const crossInstanceObservable = {
+      lift: source.lift.bind(source),
+      pipe: source.pipe.bind(source),
+      subscribe: source.subscribe.bind(source),
+    };
+
+    expect(crossInstanceObservable instanceof Observable).toBe(false);
+    expect(isObservable(crossInstanceObservable)).toBe(true);
+
+    await expect(firstValueFrom(pipe.transform(crossInstanceObservable))).resolves.toEqual([
+      { label: '1', value: '1', disabled: false },
+    ]);
   });
 
   it('should detect field expressions changes', () => {

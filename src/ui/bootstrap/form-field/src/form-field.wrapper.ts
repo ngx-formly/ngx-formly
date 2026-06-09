@@ -40,5 +40,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
     </div>
   `,
   styleUrls: ['./form-field.wrapper.scss'],
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

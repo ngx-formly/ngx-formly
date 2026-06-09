@@ -20,6 +20,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   tap(id: any) {

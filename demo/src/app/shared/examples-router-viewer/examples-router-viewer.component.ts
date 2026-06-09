@@ -16,7 +16,6 @@ import { ExampleViewerComponent } from '../example-viewer/example-viewer.compone
       </formly-example-viewer>
     </ng-container>
   `,
-  standalone: true,
   imports: [NgIf, NgFor, ExampleViewerComponent, AsyncPipe],
 })
 export class ExamplesRouterViewerComponent {

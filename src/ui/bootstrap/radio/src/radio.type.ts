@@ -40,6 +40,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   override defaultOptions = {

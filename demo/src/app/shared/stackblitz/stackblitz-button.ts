@@ -9,7 +9,6 @@ import { ExampleType } from '../example-viewer/example-viewer.component';
   selector: 'formly-stackblitz-button',
   templateUrl: './stackblitz-button.html',
   providers: [StackblitzWriter],
-  standalone: true,
   imports: [MatIconButton, MatTooltip, MatIcon],
 })
 export class StackblitzButtonComponent {

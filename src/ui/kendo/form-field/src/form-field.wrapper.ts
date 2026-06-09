@@ -30,6 +30,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </kendo-formerror>
     </kendo-formfield>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> implements OnInit {
   @ViewChild(FormFieldComponent, { static: true }) formfield!: FormFieldComponent;

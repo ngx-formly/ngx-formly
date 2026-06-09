@@ -17,17 +17,15 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/app",
+            "outputPath": "demo/dist",
             "index": "demo/src/index.html",
             "main": "demo/src/main.ts",
-            "polyfills": "demo/src/polyfills.ts",
+            "polyfills": ["demo/src/polyfills.ts"],
             "tsConfig": "demo/tsconfig.app.json",
             "assets": ["demo/src/favicon.ico", "demo/src/assets"],
             "styles": ["demo/src/styles.scss"],
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
@@ -43,8 +41,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "demo/src/environments/environment.ts",

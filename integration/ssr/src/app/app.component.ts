@@ -5,7 +5,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-root',
-  standalone: true,
   imports: [RouterOutlet, RouterLink, NgFor],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

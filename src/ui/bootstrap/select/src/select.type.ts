@@ -73,6 +73,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   override defaultOptions = {

@@ -122,6 +122,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   `,
   styleUrls: ['./form-field.wrapper.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class FormlyWrapperFormField
   extends FieldWrapper<MatFormlyFieldConfig>

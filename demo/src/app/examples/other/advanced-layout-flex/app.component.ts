@@ -7,7 +7,6 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

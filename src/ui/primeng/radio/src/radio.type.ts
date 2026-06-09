@@ -27,6 +27,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
   get disabledControl() {

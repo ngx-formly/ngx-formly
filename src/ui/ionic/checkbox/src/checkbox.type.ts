@@ -17,5 +17,6 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./checkbox.type.scss'],
+  standalone: false,
 })
 export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {}

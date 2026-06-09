@@ -33,6 +33,7 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
   host: {
     '[id]': 'id',
   },
+  standalone: false,
 })
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig<MultiCheckboxProps>> {
   @ViewChildren(MatCheckbox) checkboxes!: QueryList<MatCheckbox>;

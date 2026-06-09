@@ -17,5 +17,6 @@ export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> 
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./toggle.type.scss'],
+  standalone: false,
 })
 export class FormlyFieldToggle extends FieldType<FieldTypeConfig<ToggleProps>> {}

@@ -19,7 +19,6 @@ import { FormlyField } from '@ngx-formly/core';
       </mat-tab>
     </mat-tab-group>
   `,
-  standalone: true,
   imports: [MatTabGroup, NgFor, MatTab, FormlyField, NgIf],
 })
 export class FormlyFieldTabs extends FieldType {

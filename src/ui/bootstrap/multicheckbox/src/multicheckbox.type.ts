@@ -42,6 +42,7 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig<MultiCheckboxProps>> {
   override defaultOptions = {

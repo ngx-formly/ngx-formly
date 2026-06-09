@@ -26,5 +26,6 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
     </kendo-dropdownlist>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {}

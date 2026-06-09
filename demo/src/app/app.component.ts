@@ -18,7 +18,6 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
   selector: 'formly-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     NgxLoadingBar,

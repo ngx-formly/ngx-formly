@@ -38,6 +38,7 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
     </mat-slider>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldSlider extends FieldType<FieldTypeConfig<SliderProps>> {
   override defaultOptions = {

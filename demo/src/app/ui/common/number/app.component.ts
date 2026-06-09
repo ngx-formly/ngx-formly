@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
@@ -13,10 +13,10 @@ export class AppComponent {
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
-      key: 'Toggle',
-      type: 'toggle',
+      key: 'Number',
+      type: 'number',
       props: {
-        label: 'Toggle',
+        label: 'Number',
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,

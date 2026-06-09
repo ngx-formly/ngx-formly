@@ -45,5 +45,6 @@ export interface FormlyNativeSelectFieldConfig extends FormlyFieldConfig<NativeS
     </select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldNativeSelect extends FieldType<FieldTypeConfig<NativeSelectProps>> {}

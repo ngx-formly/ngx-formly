@@ -6,7 +6,6 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
-  standalone: true,
   imports: [ReactiveFormsModule, FormlyForm],
   providers: [provideNativeDateAdapter()],
 })

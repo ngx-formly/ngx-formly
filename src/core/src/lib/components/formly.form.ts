@@ -34,7 +34,6 @@ import { FormlyField } from './formly.field';
   providers: [FormlyFormBuilder, FormlyFieldTemplates],
   imports: [FormlyField],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
 export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   /** The form instance which allow to track model value and validation status. */

@@ -24,5 +24,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </ion-label>
     </ion-item>
   `,
+  standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

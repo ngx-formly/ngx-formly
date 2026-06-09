@@ -11,6 +11,7 @@ import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
     '(ionChange)': 'onChange($event)',
     '(ionInput)': 'onChange($event)',
   },
+  standalone: false,
 })
 export class IonFormlyAttributes extends FormlyAttributes {
   @Input('ionFormlyAttributes') override field: FormlyFieldConfig;

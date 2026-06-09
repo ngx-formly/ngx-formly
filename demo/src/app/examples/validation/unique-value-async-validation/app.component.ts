@@ -7,7 +7,6 @@ import { NgFor } from '@angular/common';
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
-  standalone: true,
   imports: [NgFor, ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

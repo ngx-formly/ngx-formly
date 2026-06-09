@@ -34,7 +34,6 @@ export interface ExampleType {
   selector: 'formly-example-viewer',
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatIconButton,

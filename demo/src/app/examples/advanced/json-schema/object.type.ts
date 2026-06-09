@@ -15,7 +15,6 @@ import { FormlyField, FormlyValidationMessage } from '@ngx-formly/core';
       <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
     </div>
   `,
-  standalone: true,
   imports: [NgIf, FormlyField, FormlyValidationMessage, NgFor],
 })
 export class ObjectTypeComponent extends FieldType {}

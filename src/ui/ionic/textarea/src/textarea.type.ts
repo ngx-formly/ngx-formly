@@ -24,5 +24,6 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormlyFieldTextArea extends FieldType<FieldTypeConfig<TextAreaProps>> {}

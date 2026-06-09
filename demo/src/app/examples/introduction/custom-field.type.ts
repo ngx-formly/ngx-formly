@@ -5,7 +5,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'formly-field-custom-input',
   template: ` <input [type]="type" [formControl]="formControl" [formlyAttributes]="field" /> `,
-  standalone: true,
   imports: [ReactiveFormsModule, FormlyAttributes],
 })
 export class CustomFieldType extends FieldType<FieldTypeConfig> {
