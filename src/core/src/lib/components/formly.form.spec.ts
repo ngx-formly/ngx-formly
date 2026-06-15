@@ -939,8 +939,7 @@ describe('FormlyForm Component', () => {
 
     const fixture = TestBed.createComponent(StandaloneComponent);
     expect(fixture.componentInstance.config.getValidatorMessage('required')).toEqual('Required');
-    expect(() => fixture.detectChanges()).toThrowError();
-  });
+    expect(() => fixture.detectChanges()).toThrowError(/The type "input" could not be found/);
 });
 
 // reproduction for https://github.com/ngx-formly/ngx-formly/issues/4107
