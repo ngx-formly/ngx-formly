@@ -1,4 +1,5 @@
 import { describe, expect, it, jest } from '@jest/globals';
+import 'jest-extended';
 import { of } from 'rxjs';
 import { FormlyField } from './core';
 import { FormlyFieldConfig } from './models';
@@ -229,7 +230,7 @@ describe('clone', () => {
     expect(clonedFoo).toEqual(foo);
     expect(clonedFoo).not.toBe(foo);
     // method of the base class have been copied
-    expect(clonedFoo.method).toBeFunction();
+    expect(typeof clonedFoo.method).toBe('function');
     expect(clonedFoo.method()).toEqual(foo.method());
   });
   it('Deep object', () => {
