@@ -1,8 +1,9 @@
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyNzSelectModule } from '@ngx-formly/ng-zorro-antd/select';
-import { createFieldComponent } from '@ngx-formly/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { describe, expect, it, jest } from '@jest/globals';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { createFieldComponent } from '@ngx-formly/core/testing';
+import { FormlyNzSelectModule } from '@ngx-formly/ng-zorro-antd/select';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -73,6 +74,6 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     fixture.detectChanges();
     tick(500);
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   }));
 });

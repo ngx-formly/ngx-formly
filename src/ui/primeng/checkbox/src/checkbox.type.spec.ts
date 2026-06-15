@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
@@ -45,12 +46,12 @@ describe('ui-primeng: Checkbox Type', () => {
 
     inputElm.click();
     detectChanges();
-    expect(field.formControl.value).toBeTrue();
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(field.formControl.value).toBe(true);
+    expect(changeSpy).toHaveBeenCalledTimes(1);
 
     inputElm.click();
     detectChanges();
-    expect(field.formControl.value).toBeFalse();
+    expect(field.formControl.value).toBe(false);
     expect(changeSpy).toHaveBeenCalledTimes(2);
   });
 });

@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FieldArrayType } from './field-array.type';
-import { FormlyInputModule, createFieldComponent, createFieldChangesSpy } from '@ngx-formly/core/testing';
+import { Component } from '@angular/core';
 import { FormArray } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyInputModule, createFieldChangesSpy, createFieldComponent } from '@ngx-formly/core/testing';
 import { renderComponent as renderFormComponent } from '../components/formly.form.spec';
+import { FieldArrayType } from './field-array.type';
 
 const renderComponent = (field: FormlyFieldConfig, config = {}) => {
   return createFieldComponent(field, {
@@ -361,15 +361,15 @@ describe('Array Field Type', () => {
     });
 
     const { formControl } = field;
-    expect(formControl.dirty).toBeFalse();
+    expect(formControl.dirty).toBe(false);
     query('#add').triggerEventHandler('click', {});
     detectChanges();
-    expect(formControl.dirty).toBeTrue();
+    expect(formControl.dirty).toBe(true);
 
     formControl.markAsPristine();
     query('#remove-0').triggerEventHandler('click', {});
     detectChanges();
-    expect(formControl.dirty).toBeTrue();
+    expect(formControl.dirty).toBe(true);
   });
 
   it('should not mark the form dirty on Add/Remove', () => {
@@ -378,19 +378,19 @@ describe('Array Field Type', () => {
       type: 'array',
     });
 
-    expect(field.form.dirty).toBeFalse();
+    expect(field.form.dirty).toBe(false);
 
     const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
 
     arrayType.add(null, null, { markAsDirty: false });
     detectChanges();
-    expect(field.form.dirty).toBeFalse();
+    expect(field.form.dirty).toBe(false);
 
     field.form.markAsPristine();
 
     arrayType.remove(0, { markAsDirty: false });
     detectChanges();
-    expect(field.form.dirty).toBeFalse();
+    expect(field.form.dirty).toBe(false);
   });
 
   it('should not change the form control instance when chinging the field position', () => {
@@ -429,14 +429,14 @@ describe('Array Field Type', () => {
       model,
       options,
     } = field;
-    expect(cityField.hide).toBeTrue();
+    expect(cityField.hide).toBe(true);
     expect(cityField.className).toEqual('test');
 
     model[0] = 'custom';
     options.checkExpressions(cityField);
     detectChanges();
 
-    expect(cityField.hide).toBeFalse();
+    expect(cityField.hide).toBe(false);
     expect(cityField.className).toEqual('custom');
   });
 

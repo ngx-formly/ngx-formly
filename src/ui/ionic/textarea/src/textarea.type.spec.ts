@@ -34,7 +34,7 @@ describe('ui-ionic: Textarea Type', () => {
       props: { required: true },
     });
 
-    expect(query('ion-textarea').classes['ng-invalid']).toBeTrue();
+    expect(query('ion-textarea').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -49,6 +49,6 @@ describe('ui-ionic: Textarea Type', () => {
     inputEl.value = 'foo';
     query('ion-textarea').triggerEventHandler('ionInput', ɵCustomEvent(inputEl));
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

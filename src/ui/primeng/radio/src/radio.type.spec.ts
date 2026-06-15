@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
@@ -37,7 +38,7 @@ describe('ui-primeng: Radio Type', () => {
       },
     });
 
-    expect(query('p-radioButton').classes['ng-invalid']).toBeTrue();
+    expect(query('p-radioButton').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {

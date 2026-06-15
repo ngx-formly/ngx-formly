@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
+import { createBuilder } from '@ngx-formly/core/testing';
 import { Subject, of } from 'rxjs';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
-import { createBuilder } from '@ngx-formly/core/testing';
 
 function buildField({ model, options, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
@@ -27,14 +27,14 @@ describe('FieldExpressionExtension', () => {
         },
       });
 
-      expect(field.hide).toBeTrue();
-      expect(field.props.hidden).toBeTrue();
+      expect(field.hide).toBe(true);
+      expect(field.props.hidden).toBe(true);
 
       field.model.visibilityToggle = 'test';
       field.options.checkExpressions(field);
 
-      expect(field.hide).toBeFalse();
-      expect(field.props.hidden).toBeFalse();
+      expect(field.hide).toBe(false);
+      expect(field.props.hidden).toBe(false);
     });
 
     it('should evaluate function expression', () => {
@@ -43,7 +43,7 @@ describe('FieldExpressionExtension', () => {
         expressions: { hide: () => true },
       });
 
-      expect(field.hide).toBeTrue();
+      expect(field.hide).toBe(true);
     });
 
     it('should evaluate boolean expression', () => {
@@ -52,7 +52,7 @@ describe('FieldExpressionExtension', () => {
         hideExpression: true,
       });
 
-      expect(field.hide).toBeTrue();
+      expect(field.hide).toBe(true);
     });
 
     it('should provide model, formState and field args', () => {
@@ -124,9 +124,9 @@ describe('FieldExpressionExtension', () => {
         const { options, fieldGroup: fields, form } = field;
 
         options.checkExpressions(field);
-        expect(fields[0].hide).toBeFalse();
+        expect(fields[0].hide).toBe(false);
         expect(fields[0].formControl).toBe(form.get('key1'));
-        expect(fields[1].hide).toBeTrue();
+        expect(fields[1].hide).toBe(true);
         expect(fields[1].formControl).toBe(form.get('key1'));
       });
 
@@ -173,16 +173,16 @@ describe('FieldExpressionExtension', () => {
         field.model.type = false;
         field.options.checkExpressions(field.parent);
 
-        expect(f1.hide).toBeFalse();
+        expect(f1.hide).toBe(false);
         expect(f1.formControl).toBe(form.get('key1'));
-        expect(f2.hide).toBeTrue();
+        expect(f2.hide).toBe(true);
         expect(f2.formControl).not.toBe(form.get('key1'));
 
         field.model.type = true;
         field.options.checkExpressions(field.parent);
-        expect(f1.hide).toBeTrue();
+        expect(f1.hide).toBe(true);
         expect(f1.formControl).not.toBe(form.get('key1'));
-        expect(f2.hide).toBeFalse();
+        expect(f2.hide).toBe(false);
         expect(f2.formControl).toBe(form.get('key1'));
       });
     });
@@ -198,8 +198,8 @@ describe('FieldExpressionExtension', () => {
         ],
       });
 
-      expect(field.hide).toBeFalse();
-      expect(field.fieldGroup[0].hide).toBeTrue();
+      expect(field.hide).toBe(false);
+      expect(field.fieldGroup[0].hide).toBe(true);
     });
 
     it('should ignore validation of hidden fields (same key)', () => {
@@ -210,7 +210,7 @@ describe('FieldExpressionExtension', () => {
       field.fieldGroup[0].hide = false;
 
       field.options.checkExpressions(field);
-      expect(field.form.valid).toBeFalse();
+      expect(field.form.valid).toBe(false);
     });
   });
 
@@ -340,12 +340,12 @@ describe('FieldExpressionExtension', () => {
           },
         });
 
-        expect(field.props.disabled).toBeFalse();
+        expect(field.props.disabled).toBe(false);
 
         field.model.disableToggle = 'test';
         field.options.checkExpressions(field);
 
-        expect(field.props.disabled).toBeTrue();
+        expect(field.props.disabled).toBe(true);
       });
 
       it('should take account of parent disabled state', () => {
@@ -368,21 +368,21 @@ describe('FieldExpressionExtension', () => {
           ],
         });
 
-        expect(field.props.disabled).toBeTrue();
-        expect(field.fieldGroup[0].props.disabled).toBeTrue();
+        expect(field.props.disabled).toBe(true);
+        expect(field.fieldGroup[0].props.disabled).toBe(true);
         expect(field.fieldGroup[1].props.label).toEqual('Street');
 
         disabled.address = false;
         field.options.checkExpressions(field);
 
-        expect(field.props.disabled).toBeFalse();
-        expect(field.fieldGroup[0].props.disabled).toBeFalse();
+        expect(field.props.disabled).toBe(false);
+        expect(field.fieldGroup[0].props.disabled).toBe(false);
 
         disabled.city = true;
         field.options.checkExpressions(field);
 
-        expect(field.props.disabled).toBeFalse();
-        expect(field.fieldGroup[0].props.disabled).toBeTrue();
+        expect(field.props.disabled).toBe(false);
+        expect(field.fieldGroup[0].props.disabled).toBe(true);
       });
 
       it('should update disabled state of hidden fields', () => {
@@ -395,14 +395,14 @@ describe('FieldExpressionExtension', () => {
           fieldGroup: [{ key: 'child', hide: true }],
         });
 
-        expect(field.props.disabled).toBeFalse();
-        expect(field.fieldGroup[0].props.disabled).toBeFalse();
+        expect(field.props.disabled).toBe(false);
+        expect(field.fieldGroup[0].props.disabled).toBe(false);
 
         field.model.disableToggle = true;
         field.options.checkExpressions(field.parent);
 
-        expect(field.props.disabled).toBeTrue();
-        expect(field.fieldGroup[0].props.disabled).toBeTrue();
+        expect(field.props.disabled).toBe(true);
+        expect(field.fieldGroup[0].props.disabled).toBe(true);
       });
 
       it('should change model through observable', () => {

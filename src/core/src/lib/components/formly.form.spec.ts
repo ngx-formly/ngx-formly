@@ -1,5 +1,7 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormlyInputModule, createComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { describe, expect, it, jest } from '@jest/globals';
 import {
   FieldType,
   FieldTypeConfig,
@@ -9,9 +11,9 @@ import {
   provideFormlyConfig,
   provideFormlyCore,
 } from '@ngx-formly/core';
-import { FormGroup, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
+import 'jest-extended';
 import { FormlyOnPushComponent } from './formly.field.spec';
-import { Component } from '@angular/core';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -320,8 +322,8 @@ describe('FormlyForm Component', () => {
       expect(barControl).not.toBeNull();
     });
 
-    it('should detect changes before emitting `modelChange`', fakeAsync(() => {
-      const { fields } = renderComponent({
+    it('should detect changes before emitting `modelChange`', async () => {
+      const { fields, fixture } = renderComponent({
         fields: [
           {
             key: 'foo',
@@ -336,9 +338,9 @@ describe('FormlyForm Component', () => {
         ],
       });
 
-      tick();
-      expect(fields[0].hide).toBeTrue();
-    }));
+      await fixture.whenStable();
+      expect(fields[0].hide).toBe(true);
+    });
 
     it('should reset field before eval expressions', () => {
       const { form, model, fields } = renderComponent(
@@ -807,12 +809,12 @@ describe('FormlyForm Component', () => {
       { extras: { checkExpressionOn: 'modelChange' } },
     );
 
-    expect(fields[0].hide).toBeFalse();
+    expect(fields[0].hide).toBe(false);
 
     query('form').triggerEventHandler('submit', {});
     detectChanges();
 
-    expect(fields[0].hide).toBeTrue();
+    expect(fields[0].hide).toBe(true);
   });
 
   it('should keep in sync UI on checkExpressionChange', () => {
@@ -836,7 +838,7 @@ describe('FormlyForm Component', () => {
     fixture.autoDetectChanges();
 
     const control = form.get('city');
-    expect(control.disabled).toBeTrue();
+    expect(control.disabled).toBe(true);
     expect(input.attributes.disabled).toEqual('disabled');
   });
 
@@ -892,7 +894,7 @@ describe('FormlyForm Component', () => {
     options.build(fields[0]);
     // NG0100: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value for 'disabled': 'false'. Current value: 'true'
     expect(detectChanges).not.toThrowError(/ExpressionChangedAfterItHasBeenCheckedError/);
-    expect(form.valid).toBeFalse();
+    expect(form.valid).toBe(false);
   });
 
   it('should update validity of all created nested FormGroup', () => {
@@ -923,7 +925,7 @@ describe('FormlyForm Component', () => {
 
     const fixture = TestBed.createComponent(StandaloneAppComponent);
     fixture.detectChanges();
-    expect(!!fixture.elementRef.nativeElement.querySelector('input')).toBeTrue();
+    expect(!!fixture.elementRef.nativeElement.querySelector('input')).toBe(true);
   });
 });
 
@@ -955,7 +957,17 @@ export class StandaloneAppComponent {}
 
 @Component({
   selector: 'formly-type-input',
-  template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
+  template: ` <input type="text" [formControl]="control" [formlyAttributes]="fieldConfig" /> `,
   standalone: true,
+  imports: [ReactiveFormsModule, FormlyModule],
 })
-export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
+export class FormlyFieldInput extends FieldType<FieldTypeConfig> {
+  // Explicitly typed getters bypass the complex base-class type traversal
+  get control(): FormControl {
+    return this.formControl as FormControl;
+  }
+
+  get fieldConfig() {
+    return this.field;
+  }
+}

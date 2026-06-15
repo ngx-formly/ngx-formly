@@ -1,7 +1,8 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { describe, expect, it, jest } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyNzRadioModule } from '@ngx-formly/ng-zorro-antd/radio';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -39,7 +40,7 @@ describe('ui-ng-zorro-antd: Radio Type', () => {
       },
     });
 
-    expect(query('nz-radio-group').classes['ng-invalid']).toBeTrue();
+    expect(query('nz-radio-group').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -56,6 +57,6 @@ describe('ui-ng-zorro-antd: Radio Type', () => {
     (query('label[nz-radio]').nativeElement as HTMLElement).click();
     detectChanges();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });
