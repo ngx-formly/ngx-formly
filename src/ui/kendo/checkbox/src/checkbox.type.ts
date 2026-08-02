@@ -14,7 +14,9 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     <input type="checkbox" kendoCheckBox [formControl]="formControl" [formlyAttributes]="field" />
     <label [for]="id" class="k-checkbox-label">
       {{ props.label }}
-      <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
+      @if (props.required && props.hideRequiredMarker !== true) {
+        <span aria-hidden="true" class="k-required">*</span>
+      }
     </label>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

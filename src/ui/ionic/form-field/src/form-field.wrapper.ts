@@ -14,15 +14,17 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
     <ion-item [lines]="props.itemLines">
       <ng-template #fieldComponent></ng-template>
     </ion-item>
-    <ion-item lines="none" *ngIf="showError">
-      <ion-label>
-        <ion-text color="danger">
-          <p>
-            <formly-validation-message [field]="field"></formly-validation-message>
-          </p>
-        </ion-text>
-      </ion-label>
-    </ion-item>
+    @if (showError) {
+      <ion-item lines="none">
+        <ion-label>
+          <ion-text color="danger">
+            <p>
+              <formly-validation-message [field]="field"></formly-validation-message>
+            </p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+    }
   `,
   standalone: false,
 })

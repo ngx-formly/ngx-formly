@@ -11,13 +11,13 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-ns-radio',
   template: `
-    <ng-container *ngFor="let option of props.options | formlySelectOptions: field | async">
+    @for (option of props.options | formlySelectOptions: field | async; track option) {
       <GridLayout class="input-field input-sides" rows="auto, auto" columns="*,*">
         <Label class="label" [text]="option.label"></Label>
         <Switch col="1" class="switch input" [checked]="formControl.value === option.value" (tap)="tap(option.value)">
         </Switch>
       </GridLayout>
-    </ng-container>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

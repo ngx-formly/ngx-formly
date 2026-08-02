@@ -1,16 +1,17 @@
 <div class="docs-example-viewer-wrapper">
   <div class="docs-example-viewer-title">
     <div class="docs-example-viewer-title-spacer">{{ exampleData.title }}</div>
-    <button
-      *ngIf="exampleData.debug && _debugFields"
-      mat-icon-button
-      type="button"
-      (click)="toggleDebugView()"
-      [matTooltip]="'Debug'"
-      aria-label="Debug example source"
-    >
-      <mat-icon>bug_report</mat-icon>
-    </button>
+    @if (exampleData.debug && _debugFields) {
+      <button
+        mat-icon-button
+        type="button"
+        (click)="toggleDebugView()"
+        [matTooltip]="'Debug'"
+        aria-label="Debug example source"
+      >
+        <mat-icon>bug_report</mat-icon>
+      </button>
+    }
     <formly-stackblitz-button [type]="type" [example]="exampleData"></formly-stackblitz-button>
     <button
       mat-icon-button
@@ -36,39 +37,49 @@
     </button>
   </div>
 
-  <div class="docs-example-viewer-source" *ngIf="showSource">
-    <mat-tab-group>
-      <mat-tab *ngFor="let f of exampleFiles" [label]="f.file">
-        <div class="docs-example-source-wrapper">
-          <button
-            mat-icon-button
-            type="button"
-            class="docs-example-source-copy"
-            title="Copy example source"
-            aria-label="Copy example source to clipboard"
-            (click)="copySource(textContent)"
-          >
-            <mat-icon>file_copy</mat-icon>
-          </button>
-          <pre class="docs-example-source" [innerHtml]="f.content" #textContent></pre>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+  @if (showSource) {
+    <div class="docs-example-viewer-source">
+      <mat-tab-group>
+        @for (f of exampleFiles; track f) {
+          <mat-tab [label]="f.file">
+            <div class="docs-example-source-wrapper">
+              <button
+                mat-icon-button
+                type="button"
+                class="docs-example-source-copy"
+                title="Copy example source"
+                aria-label="Copy example source to clipboard"
+                (click)="copySource(textContent)"
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre class="docs-example-source" [innerHtml]="f.content" #textContent></pre>
+            </div>
+          </mat-tab>
+        }
+      </mat-tab-group>
+    </div>
+  }
 
-  <div *ngIf="showDebug && _debugFields" style="padding: 10px 100px; background: white">
-    <formly-form [model]="demoComponentRef.instance.fields[0]" [fields]="_debugFields"></formly-form>
-  </div>
+  @if (showDebug && _debugFields) {
+    <div style="padding: 10px 100px; background: white">
+      <formly-form [model]="demoComponentRef.instance.fields[0]" [fields]="_debugFields"></formly-form>
+    </div>
+  }
 
   <div class="docs-example-viewer-body">
-    <div class="alert alert-info" *ngIf="exampleData.description" [innerHtml]="exampleData.description"></div>
+    @if (exampleData.description) {
+      <div class="alert alert-info" [innerHtml]="exampleData.description"></div>
+    }
 
     <ng-template #demo></ng-template>
 
-    <div *ngIf="(!exampleData.debug || showDebug) && demoComponentRef">
-      <h3>Form Data</h3>
-      <pre [style.display]="'none'">{{ model }}</pre>
-      <pre #modelPreview></pre>
-    </div>
+    @if ((!exampleData.debug || showDebug) && demoComponentRef) {
+      <div>
+        <h3>Form Data</h3>
+        <pre [style.display]="'none'">{{ model }}</pre>
+        <pre #modelPreview></pre>
+      </div>
+    }
   </div>
 </div>

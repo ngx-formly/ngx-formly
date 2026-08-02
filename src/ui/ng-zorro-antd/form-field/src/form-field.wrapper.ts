@@ -10,11 +10,11 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   selector: 'formly-wrapper-nz-form-field',
   template: `
     <nz-form-item>
-      <ng-container *ngIf="props.label && props.hideLabel !== true">
+      @if (props.label && props.hideLabel !== true) {
         <nz-form-label [nzRequired]="props.required && props.hideRequiredMarker !== true" [nzFor]="id">
           {{ props.label }}
         </nz-form-label>
-      </ng-container>
+      }
       <nz-form-control [nzValidateStatus]="errorState" [nzErrorTip]="errorTpl" [nzExtra]="props.description">
         <ng-container #fieldComponent></ng-container>
         <ng-template #errorTpl let-control>
