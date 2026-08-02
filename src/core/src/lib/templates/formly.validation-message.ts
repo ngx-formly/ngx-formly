@@ -15,7 +15,6 @@ import { FORMLY_VALIDATORS, isObject } from '../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [AsyncPipe],
-  standalone: true,
 })
 export class FormlyValidationMessage implements OnChanges {
   /** The field config. */
