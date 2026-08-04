@@ -11,16 +11,11 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
 @Component({
   selector: 'formly-field-kendo-input',
   template: `
-    <input
-      *ngIf="props.type !== 'number'; else numberTmp"
-      kendoTextBox
-      [type]="props.type || 'text'"
-      [formlyAttributes]="field"
-      [formControl]="formControl"
-    />
-    <ng-template #numberTmp>
+    @if (props.type !== 'number') {
+      <input kendoTextBox [type]="props.type || 'text'" [formlyAttributes]="field" [formControl]="formControl" />
+    } @else {
       <kendo-numerictextbox [formlyAttributes]="field" [formControl]="formControl"> </kendo-numerictextbox>
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

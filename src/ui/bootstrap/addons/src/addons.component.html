@@ -1,23 +1,29 @@
 <ng-template #fieldTypeTemplate>
   <div class="input-group" [class.has-validation]="showError">
-    <div
-      class="input-group-text"
-      *ngIf="props.addonLeft"
-      [class.input-group-btn]="props.addonLeft.onClick"
-      (click)="addonLeftClick($event)"
-    >
-      <i [ngClass]="props.addonLeft.class" *ngIf="props.addonLeft.class"></i>
-      <span *ngIf="props.addonLeft.text">{{ props.addonLeft.text }}</span>
-    </div>
+    @if (props.addonLeft) {
+      <div class="input-group-text" [class.input-group-btn]="props.addonLeft.onClick" (click)="addonLeftClick($event)">
+        @if (props.addonLeft.class) {
+          <i [ngClass]="props.addonLeft.class"></i>
+        }
+        @if (props.addonLeft.text) {
+          <span>{{ props.addonLeft.text }}</span>
+        }
+      </div>
+    }
     <ng-container #fieldComponent></ng-container>
-    <div
-      class="input-group-text"
-      *ngIf="props.addonRight"
-      [class.input-group-btn]="props.addonRight.onClick"
-      (click)="addonRightClick($event)"
-    >
-      <i [ngClass]="props.addonRight.class" *ngIf="props.addonRight.class"></i>
-      <span *ngIf="props.addonRight.text">{{ props.addonRight.text }}</span>
-    </div>
+    @if (props.addonRight) {
+      <div
+        class="input-group-text"
+        [class.input-group-btn]="props.addonRight.onClick"
+        (click)="addonRightClick($event)"
+      >
+        @if (props.addonRight.class) {
+          <i [ngClass]="props.addonRight.class"></i>
+        }
+        @if (props.addonRight.text) {
+          <span>{{ props.addonRight.text }}</span>
+        }
+      </div>
+    }
   </div>
 </ng-template>

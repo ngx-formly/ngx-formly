@@ -14,7 +14,7 @@ import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { getExampleFiles } from './utils';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
@@ -34,17 +34,7 @@ export interface ExampleType {
   selector: 'formly-example-viewer',
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
-  imports: [
-    NgIf,
-    MatIconButton,
-    MatTooltip,
-    MatIcon,
-    FormlyForm,
-    StackblitzButtonComponent,
-    MatTabGroup,
-    NgFor,
-    MatTab,
-  ],
+  imports: [MatIconButton, MatTooltip, MatIcon, FormlyForm, StackblitzButtonComponent, MatTabGroup, MatTab],
 })
 export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() type: string;

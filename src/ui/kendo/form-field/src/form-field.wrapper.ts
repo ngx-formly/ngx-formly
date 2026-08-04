@@ -17,17 +17,25 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   selector: 'formly-wrapper-kendo-form-field',
   template: `
     <kendo-formfield [orientation]="props.orientation">
-      <label *ngIf="props.label && props.hideLabel !== true" [for]="id">
-        {{ props.label }}
-        <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true" class="k-required">*</span>
-      </label>
+      @if (props.label && props.hideLabel !== true) {
+        <label [for]="id">
+          {{ props.label }}
+          @if (props.required && props.hideRequiredMarker !== true) {
+            <span aria-hidden="true" class="k-required">*</span>
+          }
+        </label>
+      }
 
       <ng-container #fieldComponent></ng-container>
 
-      <kendo-formhint *ngIf="props.description">{{ props.description }}</kendo-formhint>
-      <kendo-formerror *ngIf="showError">
-        <formly-validation-message [field]="field"></formly-validation-message>
-      </kendo-formerror>
+      @if (props.description) {
+        <kendo-formhint>{{ props.description }}</kendo-formhint>
+      }
+      @if (showError) {
+        <kendo-formerror>
+          <formly-validation-message [field]="field"></formly-validation-message>
+        </kendo-formerror>
+      }
     </kendo-formfield>
   `,
   standalone: false,

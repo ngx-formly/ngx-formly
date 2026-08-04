@@ -22,23 +22,18 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [nzMode]="props.multiple ? 'multiple' : 'default'"
       (ngModelChange)="props.change && props.change(field, $event)"
     >
-      <ng-container *ngFor="let item of props.options | formlySelectOptions: field | async">
-        <nz-option-group *ngIf="item.group" [nzLabel]="item.label">
-          <nz-option
-            *ngFor="let child of item.group"
-            [nzValue]="child.value"
-            [nzDisabled]="child.disabled"
-            [nzLabel]="child.label"
-          >
-          </nz-option>
-        </nz-option-group>
-        <nz-option
-          *ngIf="!item.group"
-          [nzValue]="item.value"
-          [nzDisabled]="item.disabled"
-          [nzLabel]="item.label"
-        ></nz-option>
-      </ng-container>
+      @for (item of props.options | formlySelectOptions: field | async; track item) {
+        @if (item.group) {
+          <nz-option-group [nzLabel]="item.label">
+            @for (child of item.group; track child) {
+              <nz-option [nzValue]="child.value" [nzDisabled]="child.disabled" [nzLabel]="child.label"> </nz-option>
+            }
+          </nz-option-group>
+        }
+        @if (!item.group) {
+          <nz-option [nzValue]="item.value" [nzDisabled]="item.disabled" [nzLabel]="item.label"></nz-option>
+        }
+      }
     </nz-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

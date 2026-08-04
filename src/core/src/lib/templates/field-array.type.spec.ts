@@ -604,10 +604,10 @@ describe('Array Field Type', () => {
 @Component({
   selector: 'formly-array',
   template: `
-    <ng-container *ngFor="let field of field.fieldGroup; let i = index">
+    @for (field of field.fieldGroup; track field; let i = $index) {
       <formly-field [field]="field"></formly-field>
       <button [id]="'remove-' + i" type="button" (click)="remove(i)">Remove</button>
-    </ng-container>
+    }
     <button id="add" type="button" (click)="add()">Add</button>
   `,
   standalone: false,

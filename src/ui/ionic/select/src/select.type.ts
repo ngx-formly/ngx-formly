@@ -20,7 +20,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   selector: 'formly-field-ion-select',
   template: `
     <!-- ng-container used as a workaround for https://github.com/ionic-team/ionic/issues/19324 -->
-    <ng-container *ngIf="props.options | formlySelectOptions: field | async; let selectOptions">
+    @if (props.options | formlySelectOptions: field | async; as selectOptions) {
       <ion-select
         [style.align-self]="props.labelPosition === 'floating' ? 'stretch' : ''"
         [style.max-width.%]="props.labelPosition === 'floating' ? 100 : ''"
@@ -34,11 +34,13 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [label]="props.label"
         [labelPlacement]="props.labelPosition"
       >
-        <ion-select-option *ngFor="let option of selectOptions" [value]="option.value" [disabled]="option.disabled">
-          {{ option.label }}
-        </ion-select-option>
+        @for (option of selectOptions; track option) {
+          <ion-select-option [value]="option.value" [disabled]="option.disabled">
+            {{ option.label }}
+          </ion-select-option>
+        }
       </ion-select>
-    </ng-container>
+    }
   `,
   styles: [':host { display: inherit; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,8 @@
 <ul>
-  <li *ngFor="let link of links">
-    <a [routerLink]="link">{{ link }}</a>
-  </li>
+  @for (link of links; track link) {
+    <li>
+      <a [routerLink]="link">{{ link }}</a>
+    </li>
+  }
 </ul>
 <router-outlet></router-outlet>

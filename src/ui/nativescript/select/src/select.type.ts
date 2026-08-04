@@ -13,9 +13,9 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 @Component({
   selector: 'formly-field-ns-select',
   template: `
-    <ng-container *ngIf="props.options | formlySelectOptions: field | async as options">
+    @if (props.options | formlySelectOptions: field | async; as options) {
       <Button (tap)="tap(options)" [text]="selectedItem(options)"></Button>
-    </ng-container>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

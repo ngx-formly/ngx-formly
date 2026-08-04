@@ -1,11 +1,10 @@
-import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
-import { FormlyConfig } from '../services/formly.config';
-import { FormlyFieldConfig } from '../models';
-import { FORMLY_VALIDATORS, isObject } from '../utils';
-import { Observable, isObservable, of } from 'rxjs';
-import { merge } from 'rxjs';
-import { startWith, switchMap, filter } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { Observable, isObservable, merge, of } from 'rxjs';
+import { filter, startWith, switchMap } from 'rxjs/operators';
+import { FormlyFieldConfig } from '../models';
+import { FormlyConfig } from '../services/formly.config';
+import { FORMLY_VALIDATORS, isObject } from '../utils';
 
 /**
  * The `<formly-validation-message>` component renders the error message of a given `field`.
@@ -15,6 +14,7 @@ import { AsyncPipe } from '@angular/common';
   template: '{{ errorMessage$ | async }}',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe],
+  standalone: true,
 })
 export class FormlyValidationMessage implements OnChanges {
   /** The field config. */

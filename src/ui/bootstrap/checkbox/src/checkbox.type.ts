@@ -33,10 +33,14 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
           [attr.aria-describedby]="id + '-formly-validation-error'"
           [attr.aria-invalid]="showError"
         />
-        <label *ngIf="props.formCheck !== 'nolabel'" [for]="id" class="form-check-label">
-          {{ props.label }}
-          <span *ngIf="props.required && props.hideRequiredMarker !== true" aria-hidden="true">*</span>
-        </label>
+        @if (props.formCheck !== 'nolabel') {
+          <label [for]="id" class="form-check-label">
+            {{ props.label }}
+            @if (props.required && props.hideRequiredMarker !== true) {
+              <span aria-hidden="true">*</span>
+            }
+          </label>
+        }
       </div>
     </ng-template>
   `,

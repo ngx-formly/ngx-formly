@@ -11,16 +11,11 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
 @Component({
   selector: 'formly-field-primeng-input',
   template: `
-    <input
-      *ngIf="props.type !== 'number'; else numberTmp"
-      pInputText
-      [type]="props.type || 'text'"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-    />
-    <ng-template #numberTmp>
+    @if (props.type !== 'number') {
+      <input pInputText [type]="props.type || 'text'" [formControl]="formControl" [formlyAttributes]="field" />
+    } @else {
       <input type="number" pInputText [formControl]="formControl" [formlyAttributes]="field" />
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
