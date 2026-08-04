@@ -1,7 +1,8 @@
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/primeng/select';
-import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { describe, expect, it, jest } from '@jest/globals';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { createFieldComponent } from '@ngx-formly/core/testing';
+import { FormlySelectModule } from '@ngx-formly/primeng/select';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -70,7 +71,7 @@ describe('ui-primeng: Select Type', () => {
     detectChanges();
     queryAll('p-selectItem>li')[1].triggerEventHandler('click', {});
     expect(field.formControl.value).toEqual(2);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should filter results on search', () => {

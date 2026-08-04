@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/ionic/select';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { FormlySelectModule } from '@ngx-formly/ionic/select';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -59,6 +59,6 @@ describe('ui-ionic: Select Type', () => {
     query('ion-select').triggerEventHandler('ionChange', ɵCustomEvent(radioEl));
     detectChanges();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

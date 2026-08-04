@@ -1,6 +1,6 @@
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FormlyFieldConfigCache } from '../../models';
 import { createBuilder } from '@ngx-formly/core/testing';
+import { FormlyFieldConfigCache } from '../../models';
 
 function buildField({ model, options, form, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
@@ -63,7 +63,7 @@ describe('FieldFormExtension', () => {
     it('should assign parent form to field', () => {
       const field = buildField({ key: 'title' });
 
-      expect(field.form instanceof FormGroup).toBeTrue();
+      expect(field.form instanceof FormGroup).toBe(true);
       expect(field.form).toBe(field.parent.formControl as FormGroup);
     });
 
@@ -79,7 +79,7 @@ describe('FieldFormExtension', () => {
     it('should create formControl when key exist', () => {
       const field = buildField({ key: 'title' });
 
-      expect(field.formControl instanceof FormControl).toBeTrue();
+      expect(field.formControl instanceof FormControl).toBe(true);
     });
 
     it('should add formControl for field with empty key', () => {
@@ -119,7 +119,7 @@ describe('FieldFormExtension', () => {
     it('should create FormGroup control when fieldGroup and key are set', () => {
       const field = buildField({ key: 'test', fieldGroup: [] });
 
-      expect(field.formControl instanceof FormGroup).toBeTrue();
+      expect(field.formControl instanceof FormGroup).toBe(true);
     });
 
     it('should assign parent formcontrol when key is empty', () => {
@@ -247,7 +247,7 @@ describe('FieldFormExtension', () => {
       });
 
       const control = field.formControl;
-      expect(control.disabled).toBeTrue();
+      expect(control.disabled).toBe(true);
     });
 
     it('should disable sub-fields when parent is disabled', () => {
@@ -258,9 +258,9 @@ describe('FieldFormExtension', () => {
       });
 
       const control = field.formControl;
-      expect(control.disabled).toBeTrue();
-      expect(control.get('city').disabled).toBeTrue();
-      expect(control.get('street').disabled).toBeTrue();
+      expect(control.disabled).toBe(true);
+      expect(control.get('city').disabled).toBe(true);
+      expect(control.get('street').disabled).toBe(true);
     });
 
     it('should not affect parent disabled state', () => {
@@ -270,9 +270,9 @@ describe('FieldFormExtension', () => {
       });
 
       const control = field.formControl;
-      expect(control.disabled).toBeFalse();
-      expect(control.get('city').disabled).toBeTrue();
-      expect(control.get('street').disabled).toBeFalse();
+      expect(control.disabled).toBe(false);
+      expect(control.get('city').disabled).toBe(true);
+      expect(control.get('street').disabled).toBe(false);
     });
 
     it('should enable previously disabled control', () => {

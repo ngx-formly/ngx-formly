@@ -1,6 +1,6 @@
-import { FormlyFormBuilder, FormlyConfig } from '../core';
-import { ConfigOption, FormlyFieldConfigCache } from '../models';
 import { FormGroup } from '@angular/forms';
+import { FormlyConfig, FormlyFormBuilder } from '../core';
+import { ConfigOption, FormlyFieldConfigCache } from '../models';
 
 function createBuilder(option?: ConfigOption) {
   const config = new FormlyConfig();
@@ -35,7 +35,7 @@ describe('FormlyFormBuilder service', () => {
     global.console = { ...global.console, warn: jest.fn() };
     jest.spyOn(builder, 'build');
     field.options.build(field);
-    expect(builder.build).toHaveBeenCalledOnce();
+    expect(builder.build).toHaveBeenCalledTimes(1);
   });
 
   it('should call extension during build call', () => {

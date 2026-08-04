@@ -37,7 +37,7 @@ describe('ui-ionic: Radio Type', () => {
       },
     });
 
-    expect(query('ion-radio-group').classes['ng-invalid']).toBeTrue();
+    expect(query('ion-radio-group').classes['ng-invalid']).toBe(true);
     expect(query('formly-validation-message')).not.toBeNull();
   });
 
@@ -57,6 +57,6 @@ describe('ui-ionic: Radio Type', () => {
     query('ion-radio-group').triggerEventHandler('ionChange', ɵCustomEvent(radioEl));
     detectChanges();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

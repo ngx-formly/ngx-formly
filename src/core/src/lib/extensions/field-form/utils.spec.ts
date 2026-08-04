@@ -1,6 +1,6 @@
-import { unregisterControl, registerControl } from './utils';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { registerControl, unregisterControl } from './utils';
 
 describe('registerControl', () => {
   it('FormArray', () => {
@@ -69,16 +69,16 @@ describe('registerControl', () => {
 
     registerControl(field, new FormControl());
     field.props.disabled = true;
-    expect(field.formControl.disabled).toBeTrue();
+    expect(field.formControl.disabled).toBe(true);
 
     field.props.disabled = false;
-    expect(field.formControl.disabled).toBeFalse();
+    expect(field.formControl.disabled).toBe(false);
 
     field.formControl.disable();
-    expect(field.props.disabled).toBeTrue();
+    expect(field.props.disabled).toBe(true);
 
     field.formControl.enable();
-    expect(field.props.disabled).toBeFalse();
+    expect(field.props.disabled).toBe(false);
   });
 
   it('should replace existing control with the field one', () => {

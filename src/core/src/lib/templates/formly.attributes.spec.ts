@@ -169,7 +169,7 @@ describe('FormlyAttributes Component', () => {
       });
 
       query('input').triggerEventHandler('change', ɵCustomEvent());
-      expect(field.formControl.dirty).toBeTrue();
+      expect(field.formControl.dirty).toBe(true);
     });
 
     it(`should trigger props events`, () => {
@@ -208,22 +208,22 @@ describe('FormlyAttributes Component', () => {
       const inputEl = <HTMLInputElement>query('input').nativeElement;
 
       tick();
-      expect(document.activeElement === inputEl).toBeTrue();
+      expect(document.activeElement === inputEl).toBe(true);
 
       field.focus = false;
       tick();
       detectChanges();
-      expect(document.activeElement === inputEl).toBeFalse();
+      expect(document.activeElement === inputEl).toBe(false);
     }));
 
     it('should change field focus when the element is focused or blurred', () => {
       const { query, field } = renderComponent({ focus: false });
 
       query('input').triggerEventHandler('focus', {});
-      expect(field.focus).toBeTrue();
+      expect(field.focus).toBe(true);
 
       query('input').triggerEventHandler('blur', {});
-      expect(field.focus).toBeFalse();
+      expect(field.focus).toBe(false);
     });
 
     it(`should set id to the first element only when mutliple formlyAttributes is present`, () => {
@@ -268,7 +268,7 @@ describe('FormlyAttributes Component', () => {
       field.focus = true;
       tick();
       detectChanges();
-      expect(document.activeElement === query('input').nativeElement).toBeTrue();
+      expect(document.activeElement === query('input').nativeElement).toBe(true);
     }));
   });
 });

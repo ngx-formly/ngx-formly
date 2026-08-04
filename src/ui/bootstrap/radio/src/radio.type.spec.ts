@@ -1,6 +1,6 @@
+import { FormlyBootstrapRadioModule } from '@ngx-formly/bootstrap/radio';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyBootstrapRadioModule } from '@ngx-formly/bootstrap/radio';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -37,7 +37,7 @@ describe('ui-bootstrap: Radio Type', () => {
       },
     });
 
-    expect(query('input[type="radio"]').classes['is-invalid']).toBeTrue();
+    expect(query('input[type="radio"]').classes['is-invalid']).toBe(true);
   });
 
   it('should set aria-invalid to true on invalid', () => {
@@ -92,6 +92,6 @@ describe('ui-bootstrap: Radio Type', () => {
     query('input[type="radio"]').triggerEventHandler('change', ɵCustomEvent());
     detectChanges();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });
