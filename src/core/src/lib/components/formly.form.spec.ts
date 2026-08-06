@@ -3,6 +3,8 @@ import { FormlyInputModule, createComponent, ɵCustomEvent } from '@ngx-formly/c
 import {
   FieldType,
   FieldTypeConfig,
+  FormlyAttributes,
+  FormlyConfig,
   FormlyFieldConfig,
   FormlyFormOptions,
   FormlyModule,
@@ -11,7 +13,7 @@ import {
 } from '@ngx-formly/core';
 import { FormGroup, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyOnPushComponent } from './formly.field.spec';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -925,6 +927,21 @@ describe('FormlyForm Component', () => {
     fixture.detectChanges();
     expect(!!fixture.elementRef.nativeElement.querySelector('input')).toBeTrue();
   });
+
+  it('should not merge config when using provideFormlyCore', async () => {
+    TestBed.configureTestingModule({
+      imports: [StandaloneComponent],
+      providers: [
+        provideFormlyCore({
+          types: [{ name: 'input', component: FormlyFieldInput }],
+        }),
+      ],
+    });
+
+    const fixture = TestBed.createComponent(StandaloneComponent);
+    expect(fixture.componentInstance.config.getValidatorMessage('required')).toEqual('Required');
+    expect(() => fixture.detectChanges()).toThrowError(/The type "input" could not be found/);
+  });
 });
 
 // reproduction for https://github.com/ngx-formly/ngx-formly/issues/4107
@@ -937,6 +954,7 @@ describe('FormlyForm Component', () => {
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
   `,
+  standalone: true,
   providers: [provideFormlyConfig([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
   imports: [FormsModule, ReactiveFormsModule, FormlyModule],
 })
@@ -949,13 +967,34 @@ export class StandaloneChildComponent {
 @Component({
   selector: 'formly-app-root',
   template: `<formly-app-child />`,
+  standalone: true,
   imports: [StandaloneChildComponent],
 })
 export class StandaloneAppComponent {}
 
 @Component({
+  selector: 'formly-app-standalone',
+  template: `
+    <form [formGroup]="form">
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  `,
+  providers: [provideFormlyCore([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, FormlyModule],
+})
+export class StandaloneComponent {
+  form = new FormGroup({});
+  model = {};
+  fields: FormlyFieldConfig[] = [{ type: 'input' }];
+  config = inject(FormlyConfig);
+}
+
+@Component({
   selector: 'formly-type-input',
   template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
   standalone: true,
+  imports: [FormlyAttributes, ReactiveFormsModule],
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}

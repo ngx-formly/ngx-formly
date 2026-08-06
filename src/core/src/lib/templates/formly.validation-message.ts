@@ -13,8 +13,8 @@ import { FORMLY_VALIDATORS, isObject } from '../utils';
   selector: 'formly-validation-message',
   template: '{{ errorMessage$ | async }}',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
   standalone: true,
+  imports: [AsyncPipe],
 })
 export class FormlyValidationMessage implements OnChanges {
   /** The field config. */

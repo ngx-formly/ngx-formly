@@ -32,6 +32,7 @@ import { FormlyField } from './formly.field';
   selector: 'formly-form',
   template: '<formly-field [field]="field"></formly-field>',
   providers: [FormlyFormBuilder, FormlyFieldTemplates],
+  standalone: true,
   imports: [FormlyField],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

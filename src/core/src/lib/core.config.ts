@@ -47,6 +47,7 @@ export function withFormlyFieldExpression(): ConfigOption {
 
 export const provideFormlyCore = (configs: ConfigOption | ConfigOption[] = []): Provider => {
   return [
+    FormlyConfig,
     { provide: FORMLY_CONFIG, multi: true, useFactory: withDefaultConfig, deps: [FormlyConfig] },
     provideFormlyConfig(configs),
   ];
@@ -61,11 +62,11 @@ export const provideFormlyConfig = (configs: ConfigOption | ConfigOption[] = [])
         skipSelf: true,
         optional: true,
       });
-      if (currentConfig) {
-        currentConfig.push(configs);
+      if (currentConfig && inject(FormlyConfig) === inject(FormlyConfig, { skipSelf: true, optional: true })) {
+        configs = Array.isArray(configs) ? configs : [configs];
+        currentConfig.push(...configs);
         return currentConfig;
       }
-
       return configs;
     },
   };
