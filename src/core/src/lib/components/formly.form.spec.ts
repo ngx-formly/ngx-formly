@@ -11,7 +11,7 @@ import {
   provideFormlyConfig,
   provideFormlyCore,
 } from '@ngx-formly/core';
-import { FormGroup, FormArray, FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyOnPushComponent } from './formly.field.spec';
 import { Component, inject } from '@angular/core';
 
