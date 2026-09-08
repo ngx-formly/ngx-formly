@@ -410,6 +410,160 @@ describe('Array Field Type', () => {
     expect(formArray.at(0)).toEqual(formControl);
   });
 
+  it.each([0, 1])('should preserve row identity when inserting at index %s', (index) => {
+    const { detectChanges, field, query, queryAll } = renderComponent({
+      key: 'rows',
+      type: 'array',
+      defaultValue: [{ name: 'A' }, { name: 'B' }],
+      fieldArray: { fieldGroup: [{ key: 'name', type: 'input' }] },
+    });
+    const formArray = field.formControl as FormArray;
+    const originalFields = [...field.fieldGroup];
+    const originalControls = [...formArray.controls];
+    const originalInputs = queryAll('input').map(({ nativeElement }) => nativeElement);
+    originalControls[1].get('name').markAsTouched();
+
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+    arrayType.add(index, { name: 'New' });
+    detectChanges();
+
+    const expected = [{ name: 'A' }, { name: 'B' }];
+    expected.splice(index, 0, { name: 'New' });
+    expect(field.model).toEqual(expected);
+    expect(field.fieldGroup.map(({ key }) => key)).toEqual(['0', '1', '2']);
+    expect(formArray.value).toEqual(expected);
+    expect(queryAll<HTMLInputElement>('input').map(({ nativeElement }) => nativeElement.value)).toEqual(
+      expected.map(({ name }) => name),
+    );
+
+    originalFields.forEach((originalField, i) => {
+      const shiftedIndex = i < index ? i : i + 1;
+      expect(field.fieldGroup[shiftedIndex] === originalField).toBeTrue();
+      expect(formArray.at(shiftedIndex)).toBe(originalControls[i]);
+      expect(queryAll('input')[shiftedIndex].nativeElement).toBe(originalInputs[i]);
+    });
+    expect(formArray.at(2).get('name').touched).toBeTrue();
+    expect(formArray.at(index).pristine).toBeTrue();
+    expect(formArray.at(index).untouched).toBeTrue();
+    expect(formArray.dirty).toBeTrue();
+
+    originalControls[1].get('name').setValue('Updated B');
+    detectChanges();
+    expect(field.model[2]).toEqual({ name: 'Updated B' });
+    expect(field.model[index]).toEqual({ name: 'New' });
+
+    arrayType.remove(index);
+    detectChanges();
+    expect(field.model).toEqual([{ name: 'A' }, { name: 'Updated B' }]);
+    expect(formArray.value).toEqual(field.model);
+    originalControls.forEach((control, i) => expect(formArray.at(i)).toBe(control));
+  });
+
+  it('should preserve connected fields when inserting at an index', () => {
+    const { detectChanges, field, queryAll } = renderComponent({
+      model: { rows: [{ name: 'A' }, { name: 'B' }] },
+      fieldGroup: [0, 1].map(() => ({
+        key: 'rows',
+        type: 'array',
+        fieldArray: { fieldGroup: [{ key: 'name', type: 'input' }] },
+      })),
+    });
+    const originalFields = field.fieldGroup.map((f) => [...f.fieldGroup]);
+    const formArray = field.fieldGroup[0].formControl as FormArray;
+    const originalControls = [...formArray.controls];
+    const arrayType = queryAll('formly-array')[1].componentInstance as ArrayTypeComponent;
+
+    arrayType.add(0, { name: 'New' });
+    detectChanges();
+
+    field.fieldGroup.forEach((f, index) => {
+      expect(f.formControl).toBe(formArray);
+      expect(f.fieldGroup.map(({ key }) => key)).toEqual(['0', '1', '2']);
+      originalFields[index].forEach((originalField, i) => {
+        expect(f.fieldGroup[i + 1] === originalField).toBeTrue();
+        expect(f.fieldGroup[i + 1].formControl).toBe(originalControls[i]);
+      });
+      expect(f.fieldGroup[0].formControl).toBe(formArray.at(0));
+    });
+    expect(formArray.value).toEqual([{ name: 'New' }, { name: 'A' }, { name: 'B' }]);
+    expect(queryAll<HTMLInputElement>('input').map(({ nativeElement }) => nativeElement.value)).toEqual([
+      'New',
+      'A',
+      'B',
+      'New',
+      'A',
+      'B',
+    ]);
+  });
+
+  it('should insert a keyless fieldArray with defaults without marking the form dirty', () => {
+    const { detectChanges, field, query } = renderComponent({
+      key: 'rows',
+      type: 'array',
+      defaultValue: [{ name: 'A' }],
+      fieldArray: (f) => ({
+        key: null,
+        fieldGroup: [
+          { key: `${f.fieldGroup.length}`, fieldGroup: [{ key: 'name', type: 'input', defaultValue: 'New' }] },
+        ],
+      }),
+    });
+    const formArray = field.formControl as FormArray;
+    const originalControl = formArray.at(0);
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+    const [spy, subscription] = createFieldChangesSpy(field);
+
+    arrayType.add(0, undefined, { markAsDirty: false });
+    detectChanges();
+
+    expect(field.model).toEqual([{ name: 'New' }, { name: 'A' }]);
+    expect(formArray.value).toEqual(field.model);
+    expect(formArray.at(1)).toBe(originalControl);
+    expect(field.fieldGroup.map((f) => f.fieldGroup[0].key)).toEqual(['0', '1']);
+    expect(field.form.pristine).toBeTrue();
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({ value: field.model, field, type: 'valueChanges' });
+    subscription.unsubscribe();
+  });
+
+  it('should preserve controls when inserting into an array field without a key', () => {
+    const { detectChanges, field, query } = renderComponent({
+      model: ['A', 'B'],
+      type: 'array',
+      fieldArray: { type: 'input' },
+    });
+    const originalControl = field.formControl.get('0');
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+
+    arrayType.add(0, 'New');
+    detectChanges();
+
+    expect(field.model).toEqual(['New', 'A', 'B']);
+    expect(field.formControl.value).toEqual({ 0: 'New', 1: 'A', 2: 'B' });
+    expect(field.formControl.get('1')).toBe(originalControl);
+  });
+
+  it.each([
+    [-1, ['A', 'New', 'B']],
+    [-10, ['New', 'A', 'B']],
+    [10, ['A', 'B', 'New']],
+  ])('should follow splice semantics when inserting at index %s', (index: number, expected: string[]) => {
+    const { field, query, detectChanges } = renderComponent({
+      key: 'rows',
+      type: 'array',
+      defaultValue: ['A', 'B'],
+      fieldArray: { type: 'input' },
+    });
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+
+    arrayType.add(index, 'New');
+    detectChanges();
+
+    expect(field.model).toEqual(expected);
+    expect(field.formControl.value).toEqual(expected);
+    expect(field.fieldGroup.map(({ key }) => key)).toEqual(['0', '1', '2']);
+  });
+
   it('should apply expressions within field arrays', () => {
     const { detectChanges, field } = renderComponent({
       key: 'address',

@@ -35,6 +35,10 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 - [Themes](https://formly.dev/ui)
 - [Examples](https://formly.dev/examples)
 
+In [repeating sections](https://formly.dev/examples/advanced/repeating-section), use
+`add()` to append a row or `add(index, initialModel)` to insert one at a specific
+position. Existing rows keep their fields, form controls, and validation state.
+
 ## Resources
 
 - [How to auto-generate advanced forms using Formly](https://symflower.com/en/company/blog/2022/how-to-auto-generate-forms-with-formly)

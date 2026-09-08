@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { UntypedFormArray } from '@angular/forms';
+import { UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 import { FieldType } from './field.type';
 import { clone, assignFieldValue, getFieldValue, hasKey } from '../utils';
 import { FormlyFieldConfig, FormlyExtension, FormlyFieldConfigCache } from '../models';
@@ -32,12 +32,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     }
 
     for (let i = field.fieldGroup.length; i < length; i++) {
-      const f = { ...clone(typeof field.fieldArray === 'function' ? field.fieldArray(field) : field.fieldArray) };
-      if (f.key !== null) {
-        f.key = `${i}`;
-      }
-
-      field.fieldGroup.push(f);
+      this.addArrayElement(field, i);
     }
   }
 
@@ -48,8 +43,28 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
       assignFieldValue(this.field, []);
     }
 
+    i = Math.trunc(i) || 0;
+    i = i < 0 ? Math.max(this.model.length + i, 0) : Math.min(i, this.model.length);
     this.model.splice(i, 0, initialModel ? clone(initialModel) : undefined);
-    this.markFieldForCheck(this.field.fieldGroup[i]);
+    const fields = (this.field as FormlyFieldConfigCache).formControl._fields ?? [this.field];
+    fields.forEach((field) => {
+      this.addArrayElement(field, i);
+      field.fieldGroup.forEach((f, key) => this.updateArrayElementKey(f, `${key}`));
+    });
+
+    // Existing fields retain their controls and register them at their new keys.
+    // Clear the shifted positions so the new field cannot reuse an existing control.
+    const formControl = this.formControl;
+    if (formControl instanceof UntypedFormArray) {
+      for (let key = formControl.length - 1; key >= i; key--) {
+        formControl.removeAt(key, { emitEvent: false });
+      }
+    } else {
+      for (let key = this.field.fieldGroup.length - 2; key >= i; key--) {
+        (formControl as UntypedFormGroup).removeControl(`${key}`, { emitEvent: false });
+      }
+    }
+
     this._build();
   }
 
@@ -74,6 +89,15 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     });
   }
 
+  private addArrayElement(field: FormlyFieldConfig, index: number) {
+    const f = { ...clone(typeof field.fieldArray === 'function' ? field.fieldArray(field) : field.fieldArray) };
+    if (f.key !== null) {
+      f.key = `${index}`;
+    }
+
+    field.fieldGroup.splice(index, 0, f);
+  }
+
   private updateArrayElementKey(f: FormlyFieldConfig, newKey: string) {
     if (hasKey(f)) {
       f.key = newKey;
@@ -86,17 +110,6 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
     for (let i = 0; i < f.fieldGroup.length; i++) {
       this.updateArrayElementKey(f.fieldGroup[i], newKey);
-    }
-  }
-
-  private markFieldForCheck(f: FormlyFieldConfig) {
-    if (!f) {
-      return;
-    }
-
-    f.fieldGroup?.forEach((c: any) => this.markFieldForCheck(c));
-    if (f.hide === false) {
-      (this.options as FormlyFieldConfigCache['options'])._hiddenFieldsForCheck.push({ field: f });
     }
   }
 }
