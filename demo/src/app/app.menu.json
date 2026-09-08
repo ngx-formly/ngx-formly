@@ -25,7 +25,8 @@
       { "path": "/ui/ionic", "label": "Ionic" },
       { "path": "/ui/primeng", "label": "PrimeNG" },
       { "path": "/ui/kendo", "label": "Kendo" },
-      { "path": "/ui/ng-zorro-antd", "label": "Ng-Zorro-Antd" }
+      { "path": "/ui/ng-zorro-antd", "label": "Ng-Zorro-Antd" },
+      { "path": "/ui/optimus-ui", "label": "Optimus-ui" }
     ]
   },
   {

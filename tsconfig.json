@@ -22,7 +22,502 @@
     "lib": ["es2020", "dom"],
     "paths": {
       "@ngx-formly/*": ["src/*/src/private_api", "src/*/src/public_api", "src/ui/*/src/public_api"],
-      "@assets/*": ["demo/src/assets/*"]
+      "@assets/*": ["demo/src/assets/*"],
+      "@openng/optimus-ui": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui.d.ts"],
+      "@openng/optimus-ui/accordion": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-accordion.d.ts"],
+      "@openng/optimus-ui/animateonscroll": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-animateonscroll.d.ts"
+      ],
+      "@openng/optimus-ui/api": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-api.d.ts"],
+      "@openng/optimus-ui/autocomplete": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-autocomplete.d.ts"],
+      "@openng/optimus-ui/autofocus": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-autofocus.d.ts"],
+      "@openng/optimus-ui/avatar": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-avatar.d.ts"],
+      "@openng/optimus-ui/avatargroup": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-avatargroup.d.ts"],
+      "@openng/optimus-ui/badge": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-badge.d.ts"],
+      "@openng/optimus-ui/base": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-base.d.ts"],
+      "@openng/optimus-ui/basecomponent": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-basecomponent.d.ts"
+      ],
+      "@openng/optimus-ui/baseeditableholder": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-baseeditableholder.d.ts"
+      ],
+      "@openng/optimus-ui/baseinput": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-baseinput.d.ts"],
+      "@openng/optimus-ui/basemodelholder": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-basemodelholder.d.ts"
+      ],
+      "@openng/optimus-ui/bind": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-bind.d.ts"],
+      "@openng/optimus-ui/blockui": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-blockui.d.ts"],
+      "@openng/optimus-ui/breadcrumb": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-breadcrumb.d.ts"],
+      "@openng/optimus-ui/button": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-button.d.ts"],
+      "@openng/optimus-ui/buttongroup": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-buttongroup.d.ts"],
+      "@openng/optimus-ui/card": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-card.d.ts"],
+      "@openng/optimus-ui/carousel": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-carousel.d.ts"],
+      "@openng/optimus-ui/cascadeselect": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-cascadeselect.d.ts"
+      ],
+      "@openng/optimus-ui/chart": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-chart.d.ts"],
+      "@openng/optimus-ui/checkbox": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-checkbox.d.ts"],
+      "@openng/optimus-ui/chip": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-chip.d.ts"],
+      "@openng/optimus-ui/classnames": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-classnames.d.ts"],
+      "@openng/optimus-ui/colorpicker": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-colorpicker.d.ts"],
+      "@openng/optimus-ui/config": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-config.d.ts"],
+      "@openng/optimus-ui/confirmdialog": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-confirmdialog.d.ts"
+      ],
+      "@openng/optimus-ui/confirmpopup": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-confirmpopup.d.ts"],
+      "@openng/optimus-ui/contextmenu": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-contextmenu.d.ts"],
+      "@openng/optimus-ui/dataview": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-dataview.d.ts"],
+      "@openng/optimus-ui/datepicker": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-datepicker.d.ts"],
+      "@openng/optimus-ui/dialog": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-dialog.d.ts"],
+      "@openng/optimus-ui/divider": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-divider.d.ts"],
+      "@openng/optimus-ui/dock": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-dock.d.ts"],
+      "@openng/optimus-ui/dom": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-dom.d.ts"],
+      "@openng/optimus-ui/dragdrop": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-dragdrop.d.ts"],
+      "@openng/optimus-ui/drawer": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-drawer.d.ts"],
+      "@openng/optimus-ui/dynamicdialog": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-dynamicdialog.d.ts"
+      ],
+      "@openng/optimus-ui/editor": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-editor.d.ts"],
+      "@openng/optimus-ui/fieldset": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-fieldset.d.ts"],
+      "@openng/optimus-ui/fileupload": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-fileupload.d.ts"],
+      "@openng/optimus-ui/floatlabel": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-floatlabel.d.ts"],
+      "@openng/optimus-ui/fluid": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-fluid.d.ts"],
+      "@openng/optimus-ui/focustrap": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-focustrap.d.ts"],
+      "@openng/optimus-ui/galleria": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-galleria.d.ts"],
+      "@openng/optimus-ui/iconfield": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-iconfield.d.ts"],
+      "@openng/optimus-ui/icons": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons.d.ts"],
+      "@openng/optimus-ui/icons/angledoubledown": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angledoubledown.d.ts"
+      ],
+      "@openng/optimus-ui/icons/angledoubleleft": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angledoubleleft.d.ts"
+      ],
+      "@openng/optimus-ui/icons/angledoubleright": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angledoubleright.d.ts"
+      ],
+      "@openng/optimus-ui/icons/angledoubleup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angledoubleup.d.ts"
+      ],
+      "@openng/optimus-ui/icons/angledown": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angledown.d.ts"
+      ],
+      "@openng/optimus-ui/icons/angleleft": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angleleft.d.ts"
+      ],
+      "@openng/optimus-ui/icons/angleright": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angleright.d.ts"
+      ],
+      "@openng/optimus-ui/icons/angleup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-angleup.d.ts"
+      ],
+      "@openng/optimus-ui/icons/arrowdown": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-arrowdown.d.ts"
+      ],
+      "@openng/optimus-ui/icons/arrowdownleft": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-arrowdownleft.d.ts"
+      ],
+      "@openng/optimus-ui/icons/arrowdownright": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-arrowdownright.d.ts"
+      ],
+      "@openng/optimus-ui/icons/arrowleft": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-arrowleft.d.ts"
+      ],
+      "@openng/optimus-ui/icons/arrowright": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-arrowright.d.ts"
+      ],
+      "@openng/optimus-ui/icons/arrowup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-arrowup.d.ts"
+      ],
+      "@openng/optimus-ui/icons/ban": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-ban.d.ts"],
+      "@openng/optimus-ui/icons/bars": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-bars.d.ts"],
+      "@openng/optimus-ui/icons/baseicon": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-baseicon.d.ts"
+      ],
+      "@openng/optimus-ui/icons/blank": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-blank.d.ts"],
+      "@openng/optimus-ui/icons/calendar": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-calendar.d.ts"
+      ],
+      "@openng/optimus-ui/icons/caretleft": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-caretleft.d.ts"
+      ],
+      "@openng/optimus-ui/icons/caretright": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-caretright.d.ts"
+      ],
+      "@openng/optimus-ui/icons/check": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-check.d.ts"],
+      "@openng/optimus-ui/icons/chevrondown": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-chevrondown.d.ts"
+      ],
+      "@openng/optimus-ui/icons/chevronleft": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-chevronleft.d.ts"
+      ],
+      "@openng/optimus-ui/icons/chevronright": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-chevronright.d.ts"
+      ],
+      "@openng/optimus-ui/icons/chevronup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-chevronup.d.ts"
+      ],
+      "@openng/optimus-ui/icons/exclamationtriangle": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-exclamationtriangle.d.ts"
+      ],
+      "@openng/optimus-ui/icons/eye": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-eye.d.ts"],
+      "@openng/optimus-ui/icons/eyeslash": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-eyeslash.d.ts"
+      ],
+      "@openng/optimus-ui/icons/filter": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-filter.d.ts"],
+      "@openng/optimus-ui/icons/filterfill": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-filterfill.d.ts"
+      ],
+      "@openng/optimus-ui/icons/filterslash": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-filterslash.d.ts"
+      ],
+      "@openng/optimus-ui/icons/home": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-home.d.ts"],
+      "@openng/optimus-ui/icons/infocircle": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-infocircle.d.ts"
+      ],
+      "@openng/optimus-ui/icons/minus": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-minus.d.ts"],
+      "@openng/optimus-ui/icons/pencil": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-pencil.d.ts"],
+      "@openng/optimus-ui/icons/plus": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-plus.d.ts"],
+      "@openng/optimus-ui/icons/refresh": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-refresh.d.ts"
+      ],
+      "@openng/optimus-ui/icons/search": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-search.d.ts"],
+      "@openng/optimus-ui/icons/searchminus": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-searchminus.d.ts"
+      ],
+      "@openng/optimus-ui/icons/searchplus": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-searchplus.d.ts"
+      ],
+      "@openng/optimus-ui/icons/sortalt": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-sortalt.d.ts"
+      ],
+      "@openng/optimus-ui/icons/sortamountdown": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-sortamountdown.d.ts"
+      ],
+      "@openng/optimus-ui/icons/sortamountupalt": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-sortamountupalt.d.ts"
+      ],
+      "@openng/optimus-ui/icons/spinner": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-spinner.d.ts"
+      ],
+      "@openng/optimus-ui/icons/star": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-star.d.ts"],
+      "@openng/optimus-ui/icons/starfill": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-starfill.d.ts"
+      ],
+      "@openng/optimus-ui/icons/thlarge": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-thlarge.d.ts"
+      ],
+      "@openng/optimus-ui/icons/times": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-times.d.ts"],
+      "@openng/optimus-ui/icons/timescircle": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-timescircle.d.ts"
+      ],
+      "@openng/optimus-ui/icons/trash": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-trash.d.ts"],
+      "@openng/optimus-ui/icons/undo": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-undo.d.ts"],
+      "@openng/optimus-ui/icons/upload": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-upload.d.ts"],
+      "@openng/optimus-ui/icons/windowmaximize": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-windowmaximize.d.ts"
+      ],
+      "@openng/optimus-ui/icons/windowminimize": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-icons-windowminimize.d.ts"
+      ],
+      "@openng/optimus-ui/iftalabel": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-iftalabel.d.ts"],
+      "@openng/optimus-ui/image": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-image.d.ts"],
+      "@openng/optimus-ui/imagecompare": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-imagecompare.d.ts"],
+      "@openng/optimus-ui/inplace": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-inplace.d.ts"],
+      "@openng/optimus-ui/inputgroup": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-inputgroup.d.ts"],
+      "@openng/optimus-ui/inputgroupaddon": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-inputgroupaddon.d.ts"
+      ],
+      "@openng/optimus-ui/inputicon": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-inputicon.d.ts"],
+      "@openng/optimus-ui/inputmask": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-inputmask.d.ts"],
+      "@openng/optimus-ui/inputnumber": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-inputnumber.d.ts"],
+      "@openng/optimus-ui/inputotp": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-inputotp.d.ts"],
+      "@openng/optimus-ui/inputtext": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-inputtext.d.ts"],
+      "@openng/optimus-ui/keyfilter": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-keyfilter.d.ts"],
+      "@openng/optimus-ui/knob": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-knob.d.ts"],
+      "@openng/optimus-ui/listbox": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-listbox.d.ts"],
+      "@openng/optimus-ui/megamenu": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-megamenu.d.ts"],
+      "@openng/optimus-ui/menu": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-menu.d.ts"],
+      "@openng/optimus-ui/menubar": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-menubar.d.ts"],
+      "@openng/optimus-ui/message": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-message.d.ts"],
+      "@openng/optimus-ui/metergroup": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-metergroup.d.ts"],
+      "@openng/optimus-ui/motion": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-motion.d.ts"],
+      "@openng/optimus-ui/multiselect": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-multiselect.d.ts"],
+      "@openng/optimus-ui/orderlist": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-orderlist.d.ts"],
+      "@openng/optimus-ui/organizationchart": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-organizationchart.d.ts"
+      ],
+      "@openng/optimus-ui/overlay": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-overlay.d.ts"],
+      "@openng/optimus-ui/overlaybadge": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-overlaybadge.d.ts"],
+      "@openng/optimus-ui/paginator": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-paginator.d.ts"],
+      "@openng/optimus-ui/panel": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-panel.d.ts"],
+      "@openng/optimus-ui/panelmenu": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-panelmenu.d.ts"],
+      "@openng/optimus-ui/passthrough": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-passthrough.d.ts"],
+      "@openng/optimus-ui/password": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-password.d.ts"],
+      "@openng/optimus-ui/picklist": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-picklist.d.ts"],
+      "@openng/optimus-ui/popover": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-popover.d.ts"],
+      "@openng/optimus-ui/progressbar": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-progressbar.d.ts"],
+      "@openng/optimus-ui/progressspinner": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-progressspinner.d.ts"
+      ],
+      "@openng/optimus-ui/radiobutton": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-radiobutton.d.ts"],
+      "@openng/optimus-ui/rating": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-rating.d.ts"],
+      "@openng/optimus-ui/ripple": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-ripple.d.ts"],
+      "@openng/optimus-ui/scroller": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-scroller.d.ts"],
+      "@openng/optimus-ui/scrollpanel": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-scrollpanel.d.ts"],
+      "@openng/optimus-ui/scrolltop": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-scrolltop.d.ts"],
+      "@openng/optimus-ui/select": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-select.d.ts"],
+      "@openng/optimus-ui/selectbutton": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-selectbutton.d.ts"],
+      "@openng/optimus-ui/skeleton": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-skeleton.d.ts"],
+      "@openng/optimus-ui/slider": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-slider.d.ts"],
+      "@openng/optimus-ui/speeddial": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-speeddial.d.ts"],
+      "@openng/optimus-ui/splitbutton": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-splitbutton.d.ts"],
+      "@openng/optimus-ui/splitter": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-splitter.d.ts"],
+      "@openng/optimus-ui/stepper": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-stepper.d.ts"],
+      "@openng/optimus-ui/steps": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-steps.d.ts"],
+      "@openng/optimus-ui/styleclass": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-styleclass.d.ts"],
+      "@openng/optimus-ui/table": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-table.d.ts"],
+      "@openng/optimus-ui/tabs": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-tabs.d.ts"],
+      "@openng/optimus-ui/tag": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-tag.d.ts"],
+      "@openng/optimus-ui/terminal": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-terminal.d.ts"],
+      "@openng/optimus-ui/textarea": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-textarea.d.ts"],
+      "@openng/optimus-ui/tieredmenu": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-tieredmenu.d.ts"],
+      "@openng/optimus-ui/timeline": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-timeline.d.ts"],
+      "@openng/optimus-ui/toast": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-toast.d.ts"],
+      "@openng/optimus-ui/togglebutton": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-togglebutton.d.ts"],
+      "@openng/optimus-ui/toggleswitch": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-toggleswitch.d.ts"],
+      "@openng/optimus-ui/toolbar": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-toolbar.d.ts"],
+      "@openng/optimus-ui/tooltip": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-tooltip.d.ts"],
+      "@openng/optimus-ui/tree": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-tree.d.ts"],
+      "@openng/optimus-ui/treeselect": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-treeselect.d.ts"],
+      "@openng/optimus-ui/treetable": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-treetable.d.ts"],
+      "@openng/optimus-ui/ts-helpers": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-ts-helpers.d.ts"],
+      "@openng/optimus-ui/types/accordion": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-accordion.d.ts"
+      ],
+      "@openng/optimus-ui/types/autocomplete": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-autocomplete.d.ts"
+      ],
+      "@openng/optimus-ui/types/avatar": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-avatar.d.ts"],
+      "@openng/optimus-ui/types/avatargroup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-avatargroup.d.ts"
+      ],
+      "@openng/optimus-ui/types/badge": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-badge.d.ts"],
+      "@openng/optimus-ui/types/blockui": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-blockui.d.ts"
+      ],
+      "@openng/optimus-ui/types/breadcrumb": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-breadcrumb.d.ts"
+      ],
+      "@openng/optimus-ui/types/button": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-button.d.ts"],
+      "@openng/optimus-ui/types/card": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-card.d.ts"],
+      "@openng/optimus-ui/types/carousel": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-carousel.d.ts"
+      ],
+      "@openng/optimus-ui/types/cascadeselect": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-cascadeselect.d.ts"
+      ],
+      "@openng/optimus-ui/types/chart": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-chart.d.ts"],
+      "@openng/optimus-ui/types/checkbox": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-checkbox.d.ts"
+      ],
+      "@openng/optimus-ui/types/chip": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-chip.d.ts"],
+      "@openng/optimus-ui/types/colorpicker": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-colorpicker.d.ts"
+      ],
+      "@openng/optimus-ui/types/confirmdialog": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-confirmdialog.d.ts"
+      ],
+      "@openng/optimus-ui/types/confirmpopup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-confirmpopup.d.ts"
+      ],
+      "@openng/optimus-ui/types/contextmenu": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-contextmenu.d.ts"
+      ],
+      "@openng/optimus-ui/types/dataview": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-dataview.d.ts"
+      ],
+      "@openng/optimus-ui/types/datepicker": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-datepicker.d.ts"
+      ],
+      "@openng/optimus-ui/types/dialog": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-dialog.d.ts"],
+      "@openng/optimus-ui/types/divider": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-divider.d.ts"
+      ],
+      "@openng/optimus-ui/types/dock": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-dock.d.ts"],
+      "@openng/optimus-ui/types/drawer": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-drawer.d.ts"],
+      "@openng/optimus-ui/types/editor": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-editor.d.ts"],
+      "@openng/optimus-ui/types/fieldset": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-fieldset.d.ts"
+      ],
+      "@openng/optimus-ui/types/fileupload": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-fileupload.d.ts"
+      ],
+      "@openng/optimus-ui/types/floatlabel": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-floatlabel.d.ts"
+      ],
+      "@openng/optimus-ui/types/fluid": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-fluid.d.ts"],
+      "@openng/optimus-ui/types/galleria": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-galleria.d.ts"
+      ],
+      "@openng/optimus-ui/types/iconfield": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-iconfield.d.ts"
+      ],
+      "@openng/optimus-ui/types/iftalabel": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-iftalabel.d.ts"
+      ],
+      "@openng/optimus-ui/types/image": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-image.d.ts"],
+      "@openng/optimus-ui/types/imagecompare": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-imagecompare.d.ts"
+      ],
+      "@openng/optimus-ui/types/inplace": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inplace.d.ts"
+      ],
+      "@openng/optimus-ui/types/inputgroup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inputgroup.d.ts"
+      ],
+      "@openng/optimus-ui/types/inputgroupaddon": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inputgroupaddon.d.ts"
+      ],
+      "@openng/optimus-ui/types/inputicon": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inputicon.d.ts"
+      ],
+      "@openng/optimus-ui/types/inputmask": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inputmask.d.ts"
+      ],
+      "@openng/optimus-ui/types/inputnumber": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inputnumber.d.ts"
+      ],
+      "@openng/optimus-ui/types/inputotp": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inputotp.d.ts"
+      ],
+      "@openng/optimus-ui/types/inputtext": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-inputtext.d.ts"
+      ],
+      "@openng/optimus-ui/types/knob": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-knob.d.ts"],
+      "@openng/optimus-ui/types/listbox": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-listbox.d.ts"
+      ],
+      "@openng/optimus-ui/types/megamenu": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-megamenu.d.ts"
+      ],
+      "@openng/optimus-ui/types/menu": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-menu.d.ts"],
+      "@openng/optimus-ui/types/menubar": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-menubar.d.ts"
+      ],
+      "@openng/optimus-ui/types/message": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-message.d.ts"
+      ],
+      "@openng/optimus-ui/types/metergroup": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-metergroup.d.ts"
+      ],
+      "@openng/optimus-ui/types/motion": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-motion.d.ts"],
+      "@openng/optimus-ui/types/multiselect": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-multiselect.d.ts"
+      ],
+      "@openng/optimus-ui/types/orderlist": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-orderlist.d.ts"
+      ],
+      "@openng/optimus-ui/types/organizationchart": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-organizationchart.d.ts"
+      ],
+      "@openng/optimus-ui/types/overlay": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-overlay.d.ts"
+      ],
+      "@openng/optimus-ui/types/overlaybadge": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-overlaybadge.d.ts"
+      ],
+      "@openng/optimus-ui/types/paginator": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-paginator.d.ts"
+      ],
+      "@openng/optimus-ui/types/panel": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-panel.d.ts"],
+      "@openng/optimus-ui/types/panelmenu": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-panelmenu.d.ts"
+      ],
+      "@openng/optimus-ui/types/password": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-password.d.ts"
+      ],
+      "@openng/optimus-ui/types/picklist": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-picklist.d.ts"
+      ],
+      "@openng/optimus-ui/types/popover": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-popover.d.ts"
+      ],
+      "@openng/optimus-ui/types/progressbar": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-progressbar.d.ts"
+      ],
+      "@openng/optimus-ui/types/progressspinner": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-progressspinner.d.ts"
+      ],
+      "@openng/optimus-ui/types/radiobutton": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-radiobutton.d.ts"
+      ],
+      "@openng/optimus-ui/types/rating": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-rating.d.ts"],
+      "@openng/optimus-ui/types/scroller": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-scroller.d.ts"
+      ],
+      "@openng/optimus-ui/types/scrollpanel": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-scrollpanel.d.ts"
+      ],
+      "@openng/optimus-ui/types/scrolltop": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-scrolltop.d.ts"
+      ],
+      "@openng/optimus-ui/types/select": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-select.d.ts"],
+      "@openng/optimus-ui/types/selectbutton": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-selectbutton.d.ts"
+      ],
+      "@openng/optimus-ui/types/skeleton": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-skeleton.d.ts"
+      ],
+      "@openng/optimus-ui/types/slider": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-slider.d.ts"],
+      "@openng/optimus-ui/types/speeddial": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-speeddial.d.ts"
+      ],
+      "@openng/optimus-ui/types/splitbutton": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-splitbutton.d.ts"
+      ],
+      "@openng/optimus-ui/types/splitter": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-splitter.d.ts"
+      ],
+      "@openng/optimus-ui/types/stepper": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-stepper.d.ts"
+      ],
+      "@openng/optimus-ui/types/table": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-table.d.ts"],
+      "@openng/optimus-ui/types/tabs": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-tabs.d.ts"],
+      "@openng/optimus-ui/types/tag": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-tag.d.ts"],
+      "@openng/optimus-ui/types/terminal": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-terminal.d.ts"
+      ],
+      "@openng/optimus-ui/types/textarea": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-textarea.d.ts"
+      ],
+      "@openng/optimus-ui/types/tieredmenu": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-tieredmenu.d.ts"
+      ],
+      "@openng/optimus-ui/types/timeline": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-timeline.d.ts"
+      ],
+      "@openng/optimus-ui/types/toast": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-toast.d.ts"],
+      "@openng/optimus-ui/types/togglebutton": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-togglebutton.d.ts"
+      ],
+      "@openng/optimus-ui/types/toggleswitch": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-toggleswitch.d.ts"
+      ],
+      "@openng/optimus-ui/types/toolbar": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-toolbar.d.ts"
+      ],
+      "@openng/optimus-ui/types/tooltip": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-tooltip.d.ts"
+      ],
+      "@openng/optimus-ui/types/tree": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-tree.d.ts"],
+      "@openng/optimus-ui/types/treeselect": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-treeselect.d.ts"
+      ],
+      "@openng/optimus-ui/types/treetable": [
+        "node_modules/@openng/optimus-ui/types/openng-optimus-ui-types-treetable.d.ts"
+      ],
+      "@openng/optimus-ui/usestyle": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-usestyle.d.ts"],
+      "@openng/optimus-ui/utils": ["node_modules/@openng/optimus-ui/types/openng-optimus-ui-utils.d.ts"]
     },
     "skipLibCheck": true,
     "useDefineForClassFields": false

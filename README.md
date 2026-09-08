@@ -49,6 +49,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 | [Material2](https://github.com/angular/material2) | [Demo](https://formly.dev/ui/material)  | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-material)  |
 | [Ionic](https://ionicframework.com)               | [Demo](https://formly.dev/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
 | [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://formly.dev/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
+| [Optimus-ui](https://optimus.openng.org)      | ||
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://formly.dev/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
 | [NG-ZORRO](http://ng.ant.design) | [Demo](https://formly.dev/ui/ng-zorro-antd) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ng-zorro-antd)     |
 | [NativeScript](https://www.nativescript.org)      | ||

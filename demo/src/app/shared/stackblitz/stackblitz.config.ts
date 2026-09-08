@@ -52,6 +52,11 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/cdk': angularVersion,
     'ng-zorro-antd': '^19.0.0',
   },
+  'optimus-ui': {
+    '@ngx-formly/optimus-ui': formlyVersion,
+    '@angular/router': angularVersion,
+    '@openng/optimus-ui': '^1.0.0',
+  },
   // non UI framework libraries
   'ag-grid': { 'ag-grid-angular': '*', 'ag-grid-community': '*' },
   'ngx-translate': { '@ngx-translate/core': '*', '@ngx-translate/http-loader': '*' },
@@ -64,6 +69,7 @@ export const ngProvider: { [id: string]: string } = {
   primeng: 'withFormlyFormlyPrimeNG',
   ionic: 'withFormlyFormlyIonic',
   'ng-zorro-antd': 'withFormlyFormlyNgZorroAntd',
+  'optimus-ui': 'withFormlyOptimusUI',
 };
 
 export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {

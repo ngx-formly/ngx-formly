@@ -386,6 +386,32 @@
           }
         }
       }
+    },
+    "@ngx-formly/optimus-ui": {
+      "root": "src/ui/optimus-ui",
+      "sourceRoot": "src/ui/optimus-ui/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "src/ui/optimus-ui/tsconfig.lib.json",
+            "project": "src/ui/optimus-ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/ui/optimus-ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/ui/optimus-ui/**/*.ts", "src/ui/optimus-ui/**/*.html"]
+          }
+        }
+      }
     }
   },
   "cli": {

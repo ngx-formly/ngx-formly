@@ -4,7 +4,7 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json", "tsconfig.spec.json"],
+        "project": ["tsconfig.json", "tsconfig.spec.json", "cypress/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
