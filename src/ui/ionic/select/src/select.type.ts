@@ -32,7 +32,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [okText]="props.okText"
         [cancelText]="props.cancelText"
         [label]="props.label"
-        [labelPlacement]="props.labelPosition"
+        [labelPlacement]="props.labelPosition ?? 'start'"
       >
         @for (option of selectOptions; track option) {
           <ion-select-option [value]="option.value" [disabled]="option.disabled">

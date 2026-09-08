@@ -1,5 +1,5 @@
 import { provideFormlyCore } from '@ngx-formly/core';
-import { ExamplesRouterViewerComponent } from '../../shared';
+import { AppComponent } from './app.component';
 import { CommonExampleConfigs, debugFields } from '../common';
 
 import { Routes } from '@angular/router';
@@ -11,7 +11,7 @@ import { withFormlyIonic } from '@ngx-formly/ionic';
 export const appRoutes: Routes = [
   {
     path: '',
-    component: ExamplesRouterViewerComponent,
+    component: AppComponent,
     providers: [
       provideFormlyCore([...withFormlyIonic()]),
       DatetimeAppConfig.providers,
