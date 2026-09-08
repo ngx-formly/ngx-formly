@@ -80,7 +80,7 @@ PrimeNG datepicker fields no longer accept `monthNavigator`, `yearNavigator`, or
 `yearRange`, which PrimeNG 20 removed. Replace `@primeng/themes` imports with
 `@primeuix/themes` when configuring a PrimeNG theme.
 
-See the [changelog](CHANGELOG.md) for the full list of changes.
+See the [v8 upgrade guide](UPGRADE-8.0.md) for migration steps and the [changelog](CHANGELOG.md) for the full list of changes.
 
 ## Core Team
 
