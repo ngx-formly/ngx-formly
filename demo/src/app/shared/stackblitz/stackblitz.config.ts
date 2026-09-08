@@ -5,8 +5,8 @@ export const COPYRIGHT = `Copyright 2025 Formly. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
     can be found in the LICENSE file at https://github.com/ngx-formly/ngx-formly/blob/main/LICENSE`;
 
-export const angularVersion = '^19.0.0';
-export const formlyVersion = '^7.0.0';
+export const angularVersion = '^20.0.0';
+export const formlyVersion = '^8.0.0';
 
 export const dependencies: { [id: string]: { [id: string]: string } } = {
   core: {
@@ -14,6 +14,7 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/compiler': angularVersion,
     '@angular/core': angularVersion,
     '@angular/forms': angularVersion,
+    '@angular/localize': angularVersion,
     '@angular/platform-browser': angularVersion,
     '@angular/animations': angularVersion,
     '@angular/router': angularVersion,
@@ -26,14 +27,14 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
   material: { '@ngx-formly/material': formlyVersion },
   kendo: {
     '@ngx-formly/kendo': formlyVersion,
-    '@progress/kendo-angular-common': '^3.1.0',
-    '@progress/kendo-angular-dropdowns': '^7.0.2',
-    '@progress/kendo-angular-inputs': '^9.0.3',
-    '@progress/kendo-angular-intl': '^4.0.1',
-    '@progress/kendo-angular-l10n': '^4.0.0',
-    '@progress/kendo-angular-label': '^4.0.0',
-    '@progress/kendo-angular-popup': '^5.0.0',
-    '@progress/kendo-angular-treeview': '^7.1.0',
+    '@progress/kendo-angular-common': '^19.3.0',
+    '@progress/kendo-angular-dropdowns': '^19.3.0',
+    '@progress/kendo-angular-inputs': '^19.3.0',
+    '@progress/kendo-angular-intl': '^19.3.0',
+    '@progress/kendo-angular-l10n': '^19.3.0',
+    '@progress/kendo-angular-label': '^19.3.0',
+    '@progress/kendo-angular-popup': '^19.3.0',
+    '@progress/kendo-angular-treeview': '^19.3.0',
     '@progress/kendo-drawing': '^1.16.1',
     '@progress/kendo-licensing': '^1.2.1',
     '@progress/kendo-theme-default': '^5.5.0',
@@ -44,13 +45,14 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/cdk': angularVersion,
     primeflex: '^3.2.0',
     primeicons: '^7.0.0',
-    primeng: '^19.0.0',
+    primeng: '^20.4.0',
+    '@primeuix/themes': '^1.2.5',
   },
-  ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^6.0.1', '@angular/router': angularVersion },
+  ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^8.0.0', '@angular/router': angularVersion },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
     '@angular/cdk': angularVersion,
-    'ng-zorro-antd': '^19.0.0',
+    'ng-zorro-antd': '^20.4.4',
   },
   // non UI framework libraries
   'ag-grid': { 'ag-grid-angular': '*', 'ag-grid-community': '*' },

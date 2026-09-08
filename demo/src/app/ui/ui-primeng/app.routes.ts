@@ -12,7 +12,7 @@ import { DatepickerAppConfig, DatepickerExampleConfig } from './datepicker';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { Routes } from '@angular/router';
-import Aura from '@primeng/themes/aura';
+import Aura from '@primeuix/themes/aura';
 import { provideFormlyCore } from '@ngx-formly/core';
 
 export const appRoutes: Routes = [

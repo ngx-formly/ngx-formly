@@ -18,9 +18,6 @@ interface DatepickerProps extends FormlyFieldProps {
   inline?: boolean;
   readonlyInput?: boolean;
   touchUI?: boolean;
-  monthNavigator?: boolean;
-  yearNavigator?: boolean;
-  yearRange?: string;
   stepSecond?: number;
   stepHour?: number;
   stepMinute?: number;
@@ -54,9 +51,6 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
       [inline]="props.inline"
       [readonlyInput]="props.readonlyInput"
       [touchUI]="props.touchUI"
-      [monthNavigator]="props.monthNavigator"
-      [yearNavigator]="props.yearNavigator"
-      [yearRange]="props.yearRange"
       [placeholder]="props.placeholder"
       [formControl]="formControl"
       [formlyAttributes]="field"

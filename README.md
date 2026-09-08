@@ -57,6 +57,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 | Angular version | Formly version         |
 | --------------- | ---------------------- |
+| Angular >= 20   | `@ngx-formly/core@9.x` |
 | Angular >= 19   | `@ngx-formly/core@8.x` |
 | Angular >= 18   | `@ngx-formly/core@7.x` |
 | Angular >= 13   | `@ngx-formly/core@6.x` |
@@ -66,12 +67,18 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 | Angular >= 4    | `@ngx-formly/core@2.x` |
 | Angular >= 2    | `ng-formly@1.x`        |
 
-#### Upgrading to v8
+#### Upgrading to v9
 
-Formly v8 requires Angular 19 or newer. Upgrade Angular first, then update all
-`@ngx-formly/*` packages used by your application together to v8.
-The Material, PrimeNG, and NG-ZORRO integrations require version 19 or newer of
-their respective UI libraries. Applications staying on Angular 18 should use Formly v7.
+Formly v9 requires Angular 20 or newer. Upgrade Angular first, then update all
+`@ngx-formly/*` packages used by your application together to v9.
+The Material, PrimeNG, and NG-ZORRO integrations require version 20 or newer of
+their respective UI libraries. Kendo requires version 19.1 or newer, and NativeScript
+requires `@nativescript/angular` 20 or newer. Applications staying on Angular 19 should
+use Formly v8; applications staying on Angular 18 should use Formly v7.
+
+PrimeNG datepicker fields no longer accept `monthNavigator`, `yearNavigator`, or
+`yearRange`, which PrimeNG 20 removed. Replace `@primeng/themes` imports with
+`@primeuix/themes` when configuring a PrimeNG theme.
 
 See the [changelog](CHANGELOG.md) for the full list of changes.
 
