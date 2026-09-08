@@ -124,11 +124,12 @@
 
 <ng-template #version>
   <button mat-button [matMenuTriggerFor]="menu">
-    v8
+    v9
     <mat-icon>arrow_drop_down</mat-icon>
   </button>
   <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-    <a disabled mat-menu-item>v8 (latest)</a>
+    <a disabled mat-menu-item>v9 (latest)</a>
+    <a disabled mat-menu-item title="Documentation archive is not available yet">v8</a>
     <a disabled mat-menu-item title="Documentation archive is not available yet">v7</a>
     <a href="https://v6.formly.dev/" mat-menu-item>v6</a>
     <a href="https://v5.formly.dev/" mat-menu-item>v5</a>
