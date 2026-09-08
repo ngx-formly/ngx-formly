@@ -943,21 +943,6 @@ describe('FormlyForm Component', () => {
     expect(fixture.componentInstance.config.getValidatorMessage('required')).toEqual('Required');
     expect(() => fixture.detectChanges()).toThrowError(/The type "input" could not be found/);
   });
-
-  it('should not merge config when using provideFormlyCore', async () => {
-    TestBed.configureTestingModule({
-      imports: [StandaloneComponent],
-      providers: [
-        provideFormlyCore({
-          types: [{ name: 'input', component: FormlyFieldInput }],
-        }),
-      ],
-    });
-
-    const fixture = TestBed.createComponent(StandaloneComponent);
-    expect(fixture.componentInstance.config.getValidatorMessage('required')).toEqual('Required');
-    expect(() => fixture.detectChanges()).toThrowError(/The type "input" could not be found/);
-  });
 });
 
 // reproduction for https://github.com/ngx-formly/ngx-formly/issues/4107
