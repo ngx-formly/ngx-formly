@@ -33,6 +33,8 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
   template: `
     <p-datepicker
       [fluid]="true"
+      [inputId]="id"
+      [id]="id + '-container'"
       [appendTo]="props.appendTo"
       [defaultDate]="props.defaultDate"
       [dateFormat]="props.dateFormat"

@@ -1,4 +1,4 @@
-import { AppComponent as NativeSelectAppComponent } from './app.component';
+import { AppComponent as NativeSelectAppComponent } from '../../common/native-select/app.component';
 import { appConfig as NativeSelectAppConfig } from './app.config';
 
 const NativeSelectExampleConfig = {
@@ -8,13 +8,13 @@ const NativeSelectExampleConfig = {
   files: [
     {
       file: 'app.component.html',
-      content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-      filecontent: require('!!raw-loader!./app.component.html'),
+      content: require('!!highlight-loader?raw=true&lang=html!../../common/native-select/app.component.html'),
+      filecontent: require('!!raw-loader!../../common/native-select/app.component.html'),
     },
     {
       file: 'app.component.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-      filecontent: require('!!raw-loader!./app.component.ts'),
+      content: require('!!highlight-loader?raw=true&lang=typescript!../../common/native-select/app.component.ts'),
+      filecontent: require('!!raw-loader!../../common/native-select/app.component.ts'),
     },
     {
       file: 'app.config.ts',

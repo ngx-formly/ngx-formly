@@ -47,7 +47,7 @@ describe('ui-ng-zorro-antd: Input Type', () => {
       props: { type: 'number' },
     });
 
-    const { attributes } = query('nz-input-number');
+    const { attributes } = query('nz-input-number input');
     expect(attributes).toMatchObject({
       id: 'formly_1_input_name_0',
     });
@@ -59,7 +59,7 @@ describe('ui-ng-zorro-antd: Input Type', () => {
       type: 'number',
     });
 
-    const { attributes } = query('nz-input-number');
+    const { attributes } = query('nz-input-number input');
     expect(attributes).toMatchObject({
       id: 'formly_1_number_name_0',
     });
@@ -71,7 +71,7 @@ describe('ui-ng-zorro-antd: Input Type', () => {
       type: 'integer',
     });
 
-    const { attributes } = query('nz-input-number');
+    const { attributes } = query('nz-input-number input');
     expect(attributes).toMatchObject({
       id: 'formly_1_integer_name_0',
     });

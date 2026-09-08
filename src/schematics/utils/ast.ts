@@ -12,7 +12,7 @@ import { getWorkspace } from '@schematics/angular/utility/workspace';
 import {Schema as ComponentOptions} from '@schematics/angular/component/schema';
 import {Path} from '@angular-devkit/core';
 import {JsonValue} from '@angular-devkit/core';
-import {ProjectDefinition} from '@angular-devkit/core/src/workspace';
+import {workspaces} from '@angular-devkit/core';
 import {addImportToModule} from '@schematics/angular/utility/ast-utils';
 import {InsertChange} from '@schematics/angular/utility/change';
 
@@ -51,7 +51,7 @@ export function parseSourceFile(host: Tree, path: string): ts.SourceFile {
 }
 
 /** Import and add module to root app module. */
-export function addModuleImportToRootModule(host: Tree, moduleName: string, src: string, project: ProjectDefinition) {
+export function addModuleImportToRootModule(host: Tree, moduleName: string, src: string, project: workspaces.ProjectDefinition) {
   const modulePath = getAppModulePath(host, getProjectMainFile(project));
   addModuleImportToModule(host, modulePath, moduleName, src);
 }
@@ -111,7 +111,7 @@ export async function findModuleFromOptions(
   return internalFindModule(host, options);
 }
 
-export function getProjectMainFile(project: ProjectDefinition): Path {
+export function getProjectMainFile(project: workspaces.ProjectDefinition): Path {
   const buildOptions = getProjectTargetOptions(project, 'build');
 
   if (!buildOptions.main) {
@@ -125,7 +125,7 @@ export function getProjectMainFile(project: ProjectDefinition): Path {
 }
 
 export function getProjectTargetOptions(
-  project: ProjectDefinition,
+  project: workspaces.ProjectDefinition,
   buildTarget: string,
 ): Record<string, JsonValue | undefined> {
   const options = project.targets?.get(buildTarget)?.options;

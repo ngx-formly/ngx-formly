@@ -23,10 +23,17 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     tslib: '^2.3.1',
     '@ngx-formly/core': formlyVersion,
   },
-  bootstrap: { '@ngx-formly/bootstrap': formlyVersion, bootstrap: '^5.1.3', '@popperjs/core': '*' },
+  bootstrap: {
+    '@ngx-formly/bootstrap': formlyVersion,
+    bootstrap: '^5.3.6',
+    '@ng-bootstrap/ng-bootstrap': '^19.0.1',
+    '@angular/cdk': angularVersion,
+    '@popperjs/core': '*',
+  },
   material: { '@ngx-formly/material': formlyVersion },
   kendo: {
     '@ngx-formly/kendo': formlyVersion,
+    '@progress/kendo-angular-dateinputs': '^19.3.0',
     '@progress/kendo-angular-common': '^19.3.0',
     '@progress/kendo-angular-dropdowns': '^19.3.0',
     '@progress/kendo-angular-inputs': '^19.3.0',
@@ -37,7 +44,7 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@progress/kendo-angular-treeview': '^19.3.0',
     '@progress/kendo-drawing': '^1.16.1',
     '@progress/kendo-licensing': '^1.2.1',
-    '@progress/kendo-theme-default': '^5.5.0',
+    '@progress/kendo-theme-default': '^10.2.0',
   },
   primeng: {
     '@ngx-formly/primeng': formlyVersion,
@@ -62,10 +69,10 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
 export const ngProvider: { [id: string]: string } = {
   bootstrap: 'withFormlyBootstrap',
   material: 'withFormlyMaterial',
-  kendo: 'withFormlyFormlyKendo',
-  primeng: 'withFormlyFormlyPrimeNG',
-  ionic: 'withFormlyFormlyIonic',
-  'ng-zorro-antd': 'withFormlyFormlyNgZorroAntd',
+  kendo: 'withFormlyKendo',
+  primeng: 'withFormlyPrimeNG',
+  ionic: 'withFormlyIonic',
+  'ng-zorro-antd': 'withFormlyNgZorroAntd',
 };
 
 export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
@@ -91,8 +98,8 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-@import "~primeflex/primeflex.css";
-@import "~primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
       `,
       },
     },
@@ -102,15 +109,15 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-@import "~@ionic/angular/css/core.css";
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
 
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/flex-utils.css";
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/flex-utils.css";
       `,
       },
     },
@@ -120,7 +127,7 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
       file: 'styles.scss',
       filecontent: {
         default: `
-@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import "ng-zorro-antd/ng-zorro-antd.min.css";
       `,
       },
     },

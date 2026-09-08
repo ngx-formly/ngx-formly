@@ -20,6 +20,10 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       }
       <ng-container #fieldComponent></ng-container>
 
+      @if (props.description) {
+        <small class="block text-color-secondary">{{ props.description }}</small>
+      }
+
       @if (showError) {
         <small class="p-error">
           <formly-validation-message class="ui-message-text" [field]="field"></formly-validation-message>

@@ -1,3 +1,4 @@
+import { fakeAsync, tick } from '@angular/core/testing';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/primeng/select';
 import { createFieldComponent } from '@ngx-formly/core/testing';
@@ -10,6 +11,36 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-primeng: Select Type', () => {
+  it('should select multiple values and disable unavailable options', fakeAsync(() => {
+    const changeSpy = jest.fn();
+    const { query, queryAll, detectChanges, field } = renderComponent({
+      key: 'name',
+      type: 'select',
+      props: {
+        label: 'Select Multiple',
+        multiple: true,
+        change: changeSpy,
+        options: [
+          { value: 1, label: 'One' },
+          { value: 2, label: 'Two' },
+          { value: 3, label: 'Unavailable', disabled: true },
+        ],
+      },
+    });
+    query('p-multiselect').componentInstance.show(true);
+    tick();
+    detectChanges();
+    const items = queryAll('li[pMultiSelectItem]');
+    expect(items).toHaveLength(3);
+    expect(items[2].componentInstance.disabled).toBe(true);
+    queryAll('li[pMultiSelectItem]')[0].triggerEventHandler('click', new MouseEvent('click'));
+    detectChanges();
+    queryAll('li[pMultiSelectItem]')[1].triggerEventHandler('click', new MouseEvent('click'));
+    expect(field.formControl.value).toEqual([1, 2]);
+    expect(changeSpy).toHaveBeenCalledTimes(2);
+    tick(300);
+  }));
+
   it('should render select type', () => {
     const { query, queryAll, detectChanges } = renderComponent({
       key: 'name',
@@ -68,7 +99,7 @@ describe('ui-primeng: Select Type', () => {
 
     query('p-select').componentInstance.show(true);
     detectChanges();
-    queryAll('p-selectItem>li')[1].triggerEventHandler('click', {});
+    queryAll('p-selectItem>li')[1].triggerEventHandler('click', new MouseEvent('click'));
     expect(field.formControl.value).toEqual(2);
     expect(changeSpy).toHaveBeenCalledOnce();
   });

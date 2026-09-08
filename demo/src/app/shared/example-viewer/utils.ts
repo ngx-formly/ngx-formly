@@ -55,7 +55,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   }
 
   if (
-    ['material', 'kendo', 'material', 'primeng'].indexOf(options.type) !== -1 ||
+    ['material', 'kendo', 'primeng', 'ng-zorro-antd'].indexOf(options.type) !== -1 ||
     options.includeMaterial ||
     exampleData.files.some((f) => _getFilecontent(f.filecontent).indexOf('@angular/animations') !== -1)
   ) {

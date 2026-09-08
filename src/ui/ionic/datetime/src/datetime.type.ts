@@ -25,9 +25,23 @@ export interface FormlyDatetimeFieldConfig extends FormlyFieldConfig<DatetimePro
 @Component({
   selector: 'formly-field-ion-datetime',
   template: `
-    <ion-item [button]="true" [detail]="false" (click)="isOpen = true">
+    <ion-item
+      [button]="true"
+      [detail]="false"
+      [disabled]="formControl.disabled"
+      [attr.aria-label]="props.label"
+      aria-haspopup="dialog"
+      [attr.aria-expanded]="isOpen"
+      (click)="isOpen = true"
+    >
       <ion-label>
-        {{ formControl.value ? (formControl.value | date: displayFormat()) : props.placeholder }}
+        @if (!props.hideLabel) {
+          {{ props.label }}
+          @if (props.required && !props.hideRequiredMarker) {
+            <span aria-hidden="true">*</span>
+          }
+        }
+        <p>{{ formControl.value ? (formControl.value | date: displayFormat()) : props.placeholder }}</p>
       </ion-label>
     </ion-item>
     <ion-modal
