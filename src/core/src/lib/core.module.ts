@@ -12,6 +12,13 @@ import { ConfigOption } from './models';
 import { LegacyFormlyTemplate } from './components/formly.template';
 import { FORMLY_CONFIG, provideFormlyConfig, withDefaultConfig } from './core.config';
 
+/**
+ * Registers Formly components and configuration for NgModule-based applications.
+ *
+ * `forRoot()` provides the shared `FormlyConfig` at the application root, while
+ * `forChild()` adds feature configuration using the inherited service. This follows
+ * Angular's [root/child module registration convention](https://frontendatlas.com/angular/trivia/angular-forroot-forchild).
+ */
 @NgModule({
   declarations: [
     LegacyFormlyTemplate,
