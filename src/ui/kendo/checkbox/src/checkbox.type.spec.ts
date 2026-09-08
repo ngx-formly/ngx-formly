@@ -60,7 +60,7 @@ describe('ui-kendo: Checkbox Type', () => {
     });
 
     const { classes } = query('input[type="checkbox"]');
-    expect(classes['ng-invalid']).toBeTrue();
+    expect(classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -75,12 +75,12 @@ describe('ui-kendo: Checkbox Type', () => {
 
     inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: true }));
     detectChanges();
-    expect(field.formControl.value).toBeTrue();
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(field.formControl.value).toBe(true);
+    expect(changeSpy).toHaveBeenCalledTimes(1);
 
     inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: false }));
     detectChanges();
-    expect(field.formControl.value).toBeFalse();
+    expect(field.formControl.value).toBe(false);
     expect(changeSpy).toHaveBeenCalledTimes(2);
   });
 });

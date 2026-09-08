@@ -1,10 +1,8 @@
-import { fakeAsync, tick } from '@angular/core/testing';
-import { createFieldComponent } from '@ngx-formly/core/testing';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { of } from 'rxjs';
-import { timeout } from 'rxjs/operators';
-import { FormlyMatSelectModule } from '@ngx-formly/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { createFieldComponent } from '@ngx-formly/core/testing';
+import { FormlyMatSelectModule } from '@ngx-formly/material/select';
+import { of } from 'rxjs';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -78,7 +76,7 @@ describe('ui-material: Formly Field Select Component', () => {
     selectAllOption.triggerEventHandler('click', {});
     detectChanges();
     expect(field.formControl.value).toEqual(2);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 
   describe('render select options', () => {

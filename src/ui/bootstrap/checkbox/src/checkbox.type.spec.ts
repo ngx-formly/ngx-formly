@@ -1,6 +1,6 @@
+import { FormlyBootstrapCheckboxModule } from '@ngx-formly/bootstrap/checkbox';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyBootstrapCheckboxModule } from '@ngx-formly/bootstrap/checkbox';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -66,12 +66,12 @@ describe('ui-bootstrap: Checkbox Type', () => {
 
     inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: true }));
     detectChanges();
-    expect(changeSpy).toHaveBeenCalledOnce();
-    expect(field.formControl.value).toBeTrue();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
+    expect(field.formControl.value).toBe(true);
 
     inputDebugEl.triggerEventHandler('change', ɵCustomEvent({ checked: false }));
     detectChanges();
     expect(changeSpy).toHaveBeenCalledTimes(2);
-    expect(field.formControl.value).toBeFalse();
+    expect(field.formControl.value).toBe(false);
   });
 });

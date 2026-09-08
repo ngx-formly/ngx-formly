@@ -31,7 +31,7 @@ describe('ui-kendo: Textarea Type', () => {
       props: { required: true },
     });
 
-    expect(query('textarea').classes['ng-invalid']).toBeTrue();
+    expect(query('textarea').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -45,6 +45,6 @@ describe('ui-kendo: Textarea Type', () => {
     ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));
     detectChanges();
     // expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

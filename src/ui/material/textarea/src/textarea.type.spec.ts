@@ -1,7 +1,7 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyMatTextAreaModule } from '@ngx-formly/material/textarea';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -41,7 +41,7 @@ describe('ui-material: Textarea Type', () => {
       props: { required: true },
     });
 
-    expect(query('textarea').classes['ng-invalid']).toBeTrue();
+    expect(query('textarea').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -55,6 +55,6 @@ describe('ui-material: Textarea Type', () => {
     ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

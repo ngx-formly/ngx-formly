@@ -90,7 +90,7 @@ describe('ui-kendo: Input Type', () => {
     });
 
     const { classes } = query('input[type="text"]');
-    expect(classes['ng-invalid']).toBeTrue();
+    expect(classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -106,6 +106,6 @@ describe('ui-kendo: Input Type', () => {
     );
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

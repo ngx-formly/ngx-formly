@@ -1,8 +1,8 @@
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyNzSelectModule } from '@ngx-formly/ng-zorro-antd/select';
-import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { describe, expect, it, jest } from '@jest/globals';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { createFieldComponent } from '@ngx-formly/core/testing';
+import { FormlyNzSelectModule } from '@ngx-formly/ng-zorro-antd/select';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -11,7 +11,7 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-ng-zorro-antd: Select Type', () => {
-  it('should render select type', fakeAsync(() => {
+  it('should render select type', async () => {
     const { query, queryAll, fixture } = renderComponent({
       key: 'name',
       type: 'select',
@@ -27,12 +27,12 @@ describe('ui-ng-zorro-antd: Select Type', () => {
     expect(query('formly-wrapper-nz-form-field')).not.toBeNull();
     (query('nz-select').nativeElement as HTMLElement).click();
     fixture.autoDetectChanges();
-    tick(500);
+    await fixture.whenStable();
 
     expect(queryAll('nz-option-item')).toHaveLength(3);
-  }));
+  });
 
-  it('should render enum type', fakeAsync(() => {
+  it('should render enum type', async () => {
     const { query, queryAll, fixture } = renderComponent({
       key: 'name',
       type: 'enum',
@@ -49,12 +49,12 @@ describe('ui-ng-zorro-antd: Select Type', () => {
 
     (query('nz-select').nativeElement as HTMLElement).click();
     fixture.autoDetectChanges();
-    tick(500);
+    await fixture.whenStable();
 
     expect(queryAll('nz-option-item')).toHaveLength(3);
-  }));
+  });
 
-  it('should bind control value on change', fakeAsync(() => {
+  it('should bind control value on change', async () => {
     const changeSpy = jest.fn();
     const { query, field, fixture } = renderComponent({
       key: 'name',
@@ -67,12 +67,12 @@ describe('ui-ng-zorro-antd: Select Type', () => {
 
     (query('nz-select').nativeElement as HTMLElement).click();
     fixture.autoDetectChanges();
-    tick(500);
+    await fixture.whenStable();
 
     (query('nz-option-item').nativeElement as HTMLElement).click();
     fixture.detectChanges();
-    tick(500);
+    await fixture.whenStable();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
-  }));
+    expect(changeSpy).toHaveBeenCalledTimes(1);
+  });
 });

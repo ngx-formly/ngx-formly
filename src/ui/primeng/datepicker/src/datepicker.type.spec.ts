@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { describe, expect, it } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyDatepickerModule } from '@ngx-formly/primeng/datepicker';
@@ -32,7 +33,7 @@ describe('ui-primeng: Date Picker Type', () => {
     });
 
     const { classes } = query('p-datepicker');
-    expect(classes['ng-invalid']).toBeTrue();
+    expect(classes['ng-invalid']).toBe(true);
   });
 
   it('should render control value on correct date format', () => {

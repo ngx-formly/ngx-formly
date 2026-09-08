@@ -1,7 +1,8 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { describe, expect, it, jest } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyNzTextAreaModule } from '@ngx-formly/ng-zorro-antd/textarea';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -35,7 +36,7 @@ describe('ui-ng-zorro-antd: Textarea Type', () => {
       props: { required: true },
     });
 
-    expect(query('textarea').classes['ng-invalid']).toBeTrue();
+    expect(query('textarea').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -49,6 +50,6 @@ describe('ui-ng-zorro-antd: Textarea Type', () => {
     ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

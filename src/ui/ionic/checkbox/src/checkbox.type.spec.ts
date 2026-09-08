@@ -48,7 +48,7 @@ describe('ui-ionic: Checkbox Type', () => {
     inputDebugEl.nativeElement.checked = true;
     inputDebugEl.triggerEventHandler('ionChange', ɵCustomEvent(inputDebugEl.nativeElement));
     detectChanges();
-    expect(field.formControl.value).toBeTrue();
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(field.formControl.value).toBe(true);
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

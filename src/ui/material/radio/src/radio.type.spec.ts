@@ -1,7 +1,7 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyMatRadioModule } from '@ngx-formly/material/radio';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -38,7 +38,7 @@ describe('ui-material: Radio Type', () => {
       },
     });
 
-    expect(query('mat-radio-group').classes['ng-invalid']).toBeTrue();
+    expect(query('mat-radio-group').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {

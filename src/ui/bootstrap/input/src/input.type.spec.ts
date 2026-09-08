@@ -1,6 +1,6 @@
+import { FormlyBootstrapInputModule } from '@ngx-formly/bootstrap/input';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyBootstrapInputModule } from '@ngx-formly/bootstrap/input';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -93,7 +93,7 @@ describe('ui-bootstrap: Input Type', () => {
     });
 
     const { classes } = query('input[type="text"]');
-    expect(classes['is-invalid']).toBeTrue();
+    expect(classes['is-invalid']).toBe(true);
   });
 
   it('should set aria-invalid to true on invalid', () => {
@@ -120,6 +120,6 @@ describe('ui-bootstrap: Input Type', () => {
     );
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

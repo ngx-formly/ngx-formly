@@ -1,7 +1,7 @@
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/kendo/select';
-import { createFieldComponent } from '@ngx-formly/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { createFieldComponent } from '@ngx-formly/core/testing';
+import { FormlySelectModule } from '@ngx-formly/kendo/select';
 import { POPUP_CONTAINER } from '@progress/kendo-angular-popup';
 
 const renderComponent = (field: FormlyFieldConfig) => {
@@ -72,6 +72,6 @@ describe('ui-kendo: Select Type', () => {
     query<HTMLElement>('kendo-dropdownlist').nativeElement.click();
     document.querySelector<HTMLLIElement>('.k-list-item').click();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });
