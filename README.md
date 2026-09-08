@@ -73,7 +73,7 @@ Formly v8 requires Angular 19 or newer. Upgrade Angular first, then update all
 The Material, PrimeNG, and NG-ZORRO integrations require version 19 or newer of
 their respective UI libraries. Applications staying on Angular 18 should use Formly v7.
 
-See the [changelog](CHANGELOG.md) for the full list of changes.
+See the [v8 upgrade guide](UPGRADE-8.0.md) for migration steps and the [changelog](CHANGELOG.md) for the full list of changes.
 
 ## Core Team
 
