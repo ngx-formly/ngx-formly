@@ -24,6 +24,7 @@ import { FormlyField } from '@ngx-formly/core';
       }
       <div style="margin:30px 0;">
         <button class="btn btn-primary" type="button" (click)="add()">{{ props.addText }}</button>
+        <button class="btn btn-outline-primary ms-2" type="button" (click)="add(0)">Add at beginning</button>
       </div>
     </div>
   `,
