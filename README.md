@@ -57,6 +57,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 | Angular version | Formly version         |
 | --------------- | ---------------------- |
+| Angular >= 19   | `@ngx-formly/core@8.x` |
 | Angular >= 18   | `@ngx-formly/core@7.x` |
 | Angular >= 13   | `@ngx-formly/core@6.x` |
 | Angular >= 7    | `@ngx-formly/core@5.x` |
@@ -64,6 +65,15 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 | Angular >= 5    | `@ngx-formly/core@3.x` |
 | Angular >= 4    | `@ngx-formly/core@2.x` |
 | Angular >= 2    | `ng-formly@1.x`        |
+
+#### Upgrading to v8
+
+Formly v8 requires Angular 19 or newer. Upgrade Angular first, then update all
+`@ngx-formly/*` packages used by your application together to v8.
+The Material, PrimeNG, and NG-ZORRO integrations require version 19 or newer of
+their respective UI libraries. Applications staying on Angular 18 should use Formly v7.
+
+See the [changelog](CHANGELOG.md) for the full list of changes.
 
 ## Core Team
 
