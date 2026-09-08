@@ -21,7 +21,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "github-release": "conventional-github-releaser -p angular --draft",
-    "e2e:ssr": "ng run ssr:serve:production & pid=$!; trap 'kill $pid' EXIT; cypress run",
+    "e2e:ssr": "ng build ssr --configuration production && (PORT=4200 node integration/ssr/dist/server/server.mjs & pid=$!; trap 'kill $pid' EXIT; cypress run)",
     "prepare": "husky install"
   },
   "keywords": [
