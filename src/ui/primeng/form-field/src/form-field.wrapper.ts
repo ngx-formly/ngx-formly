@@ -9,7 +9,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
 @Component({
   selector: 'formly-wrapper-primeng-form-field',
   template: `
-    <div class="p-field">
+    <div class="p-field field">
       @if (props.label && props.hideLabel !== true) {
         <label [for]="id">
           {{ props.label }}
@@ -27,6 +27,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       }
     </div>
   `,
+  styles: ['.p-error { color: var(--p-red-500); }'],
   standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

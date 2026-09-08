@@ -13,7 +13,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   selector: 'formly-field-primeng-radio',
   template: `
     @for (option of props.options | formlySelectOptions: field | async; track option; let index = $index) {
-      <div class="p-field-radiobutton">
+      <div class="p-field-radiobutton field-radiobutton">
         <p-radioButton
           [name]="field.name || id"
           [formControl]="option.disabled ? disabledControl : formControl"

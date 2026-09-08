@@ -12,9 +12,9 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
   selector: 'formly-field-primeng-input',
   template: `
     @if (props.type !== 'number') {
-      <input pInputText [type]="props.type || 'text'" [formControl]="formControl" [formlyAttributes]="field" />
+      <input pInputText fluid [type]="props.type || 'text'" [formControl]="formControl" [formlyAttributes]="field" />
     } @else {
-      <input type="number" pInputText [formControl]="formControl" [formlyAttributes]="field" />
+      <input type="number" pInputText fluid [formControl]="formControl" [formlyAttributes]="field" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

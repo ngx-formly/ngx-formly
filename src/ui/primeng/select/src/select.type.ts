@@ -18,6 +18,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   selector: 'formly-field-primeng-select',
   template: `
     <p-select
+      [fluid]="true"
       [placeholder]="props.placeholder"
       [options]="props.options | formlySelectOptions: field | async"
       [formControl]="formControl"

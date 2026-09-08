@@ -32,6 +32,7 @@ export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<Datepicke
   selector: 'formly-field-primeng-datepicker',
   template: `
     <p-datepicker
+      [fluid]="true"
       [appendTo]="props.appendTo"
       [defaultDate]="props.defaultDate"
       [dateFormat]="props.dateFormat"

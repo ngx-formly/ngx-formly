@@ -9,10 +9,7 @@ import { RadioExampleConfig } from '../common/radio';
 import { TextareaExampleConfig } from '../common/textarea';
 import { SelectAppConfig, SelectExampleConfig } from './select';
 import { DatepickerAppConfig, DatepickerExampleConfig } from './datepicker';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePrimeNG } from 'primeng/config';
 import { Routes } from '@angular/router';
-import Aura from '@primeuix/themes/aura';
 import { provideFormlyCore } from '@ngx-formly/core';
 
 export const appRoutes: Routes = [
@@ -24,8 +21,6 @@ export const appRoutes: Routes = [
         path: '',
         component: ExamplesRouterViewerComponent,
         providers: [
-          provideAnimationsAsync(),
-          providePrimeNG({ theme: { preset: Aura } }),
           provideFormlyCore([...withFormlyPrimeNG()]),
           SelectAppConfig.providers,
           DatepickerAppConfig.providers,
