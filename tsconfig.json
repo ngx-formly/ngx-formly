@@ -1,10 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strictNullChecks": false,
-    "noPropertyAccessFromIndexSignature": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -12,17 +10,20 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
-    "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
-    "lib": ["es2020", "dom"],
+    "module": "preserve",
+    "lib": ["ES2022", "DOM"],
     "paths": {
-      "@ngx-formly/*": ["src/*/src/private_api", "src/*/src/public_api", "src/ui/*/src/public_api"],
-      "@assets/*": ["demo/src/assets/*"]
+      "@ngx-formly/*": ["./src/*/src/private_api", "./src/*/src/public_api", "./src/ui/*/src/public_api"],
+      "@assets/*": ["./demo/src/assets/*"],
+      "demo/*": ["./demo/*"],
+      "src/*": ["./src/*"],
+      "docs/*": ["./docs/*"],
+      "UPGRADE-*.md": ["./UPGRADE-*.md"]
     },
     "skipLibCheck": true,
     "useDefineForClassFields": false
@@ -39,6 +40,7 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
     "strictTemplates": true
   }
 }
