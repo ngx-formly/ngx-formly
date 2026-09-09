@@ -6,7 +6,7 @@ export const COPYRIGHT = `Copyright 2025 Formly. All Rights Reserved.
     can be found in the LICENSE file at https://github.com/ngx-formly/ngx-formly/blob/main/LICENSE`;
 
 export const angularVersion = '^20.0.0';
-export const formlyVersion = '^8.0.0';
+export const formlyVersion = '^9.0.0';
 
 export const dependencies: { [id: string]: { [id: string]: string } } = {
   core: {
