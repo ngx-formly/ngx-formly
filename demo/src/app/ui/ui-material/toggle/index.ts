@@ -1,4 +1,4 @@
-import { AppComponent as ToggleAppComponent } from './app.component';
+import { AppComponent as ToggleAppComponent } from '../../common/toggle/app.component';
 import { appConfig as ToggleAppConfig } from './app.config';
 
 const ToggleExampleConfig = {
@@ -8,13 +8,13 @@ const ToggleExampleConfig = {
   files: [
     {
       file: 'app.component.html',
-      content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-      filecontent: require('!!raw-loader!./app.component.html'),
+      content: require('!!highlight-loader?raw=true&lang=html!../../common/toggle/app.component.html'),
+      filecontent: require('!!raw-loader!../../common/toggle/app.component.html'),
     },
     {
       file: 'app.component.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-      filecontent: require('!!raw-loader!./app.component.ts'),
+      content: require('!!highlight-loader?raw=true&lang=typescript!../../common/toggle/app.component.ts'),
+      filecontent: require('!!raw-loader!../../common/toggle/app.component.ts'),
     },
     {
       file: 'app.config.ts',

@@ -48,9 +48,9 @@ describe('ui-kendo: Input Type', () => {
       props: { type: 'number' },
     });
 
-    const { attributes } = query('kendo-numerictextbox');
+    const { attributes } = query('kendo-numerictextbox input');
     expect(attributes).toMatchObject({
-      class: 'k-input k-numerictextbox ng-untouched ng-pristine ng-valid k-input-md k-rounded-md k-input-solid',
+      class: 'k-input-inner',
       id: 'formly_1_input_name_0',
     });
   });
@@ -61,9 +61,9 @@ describe('ui-kendo: Input Type', () => {
       type: 'number',
     });
 
-    const { attributes } = query('kendo-numerictextbox');
+    const { attributes } = query('kendo-numerictextbox input');
     expect(attributes).toMatchObject({
-      class: 'k-input k-numerictextbox ng-untouched ng-pristine ng-valid k-input-md k-rounded-md k-input-solid',
+      class: 'k-input-inner',
       id: 'formly_1_number_name_0',
     });
   });
@@ -74,9 +74,9 @@ describe('ui-kendo: Input Type', () => {
       type: 'integer',
     });
 
-    const { attributes } = query('kendo-numerictextbox');
+    const { attributes } = query('kendo-numerictextbox input');
     expect(attributes).toMatchObject({
-      class: 'k-input k-numerictextbox ng-untouched ng-pristine ng-valid k-input-md k-rounded-md k-input-solid',
+      class: 'k-input-inner',
       id: 'formly_1_integer_name_0',
     });
   });

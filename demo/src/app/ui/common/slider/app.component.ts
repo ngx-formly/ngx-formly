@@ -9,16 +9,18 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
       key: 'Slider',
       type: 'slider',
+      defaultValue: 0,
       props: {
         label: 'Slider label',
-        // placeholder: 'Slider Placeholder',
-        // thumbLabel: true,
+        min: 0,
+        max: 100,
+        step: 1,
         description: 'Slider Description',
         required: true,
       },

@@ -1,6 +1,18 @@
 /// <reference types="cypress" />
 
 describe('Server side rendering', () => {
+  ['material', 'bootstrap', 'kendo', 'primeng', 'antd'].forEach((ui) => {
+    it(`should hydrate ${ui} inputs`, () => {
+      cy.visit(`/${ui}`);
+      cy.get('formly-app-ui [ngh]').should('not.exist');
+      cy.get('input[placeholder="input placeholder"]')
+        .should('be.enabled')
+        .type('Angular 20')
+        .should('have.value', 'Angular 20')
+        .and('have.class', 'ng-dirty');
+    });
+  });
+
   it('should render material ui', () => {
     cy.request('/material')
       .its('body')

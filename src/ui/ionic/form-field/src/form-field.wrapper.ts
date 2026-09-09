@@ -3,6 +3,7 @@ import { IonItem, IonLabel } from '@ionic/angular';
 import { FieldWrapper, FormlyFieldConfig, FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
 
 export interface FormlyFieldProps extends CoreFormlyFieldProps {
+  hideLabel?: boolean;
   hideRequiredMarker?: boolean;
   itemLines?: IonItem['lines'];
   labelPosition?: IonLabel['position'];
@@ -14,6 +15,9 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
     <ion-item [lines]="props.itemLines">
       <ng-template #fieldComponent></ng-template>
     </ion-item>
+    @if (props.description) {
+      <ion-note class="ion-margin-start">{{ props.description }}</ion-note>
+    }
     @if (showError) {
       <ion-item lines="none">
         <ion-label>

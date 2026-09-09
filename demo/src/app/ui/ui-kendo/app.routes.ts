@@ -1,16 +1,15 @@
-import { provideFormlyCore } from '@ngx-formly/core';
+import { Routes } from '@angular/router';
 import { ExamplesRouterViewerComponent } from '../../shared';
 import { CommonExampleConfigs, debugFields } from '../common';
-
-import { Routes } from '@angular/router';
-import { withFormlyKendo } from '@ngx-formly/kendo';
+import { appConfig } from './app.config';
+import { additionalExamples } from './additional-examples';
 import { AppComponent } from './app.component';
 
 export const appRoutes: Routes = [
   {
     path: '',
     component: AppComponent,
-    providers: [provideFormlyCore(withFormlyKendo())],
+    providers: appConfig.providers,
     children: [
       {
         path: '',
@@ -18,7 +17,7 @@ export const appRoutes: Routes = [
         data: {
           debugFields,
           type: 'kendo',
-          examples: [...CommonExampleConfigs],
+          examples: [...CommonExampleConfigs, ...additionalExamples],
         },
       },
     ],

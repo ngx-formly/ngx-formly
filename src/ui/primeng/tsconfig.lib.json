@@ -7,8 +7,8 @@
     "inlineSources": true,
     "types": [],
     "paths": {
-      "@ngx-formly/core": ["dist/@ngx-formly/core"],
-      "@ngx-formly/core/*": ["dist/@ngx-formly/core/*"]
+      "@ngx-formly/core": ["../../../dist/@ngx-formly/core"],
+      "@ngx-formly/core/*": ["../../../dist/@ngx-formly/core/*"]
     }
   },
   "exclude": ["src/test.ts", "**/*.spec.ts"]

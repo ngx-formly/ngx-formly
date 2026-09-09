@@ -18,7 +18,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
       [cols]="props.cols"
       [rows]="props.rows"
       [label]="props.label"
-      [labelPlacement]="props.labelPosition"
+      [labelPlacement]="props.labelPosition ?? 'start'"
     >
     </ion-textarea>
   `,

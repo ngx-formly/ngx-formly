@@ -7,6 +7,6 @@
   },
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "@angular/material": ">=19.0.0"
+    "@angular/material": ">=20.0.0"
   }
 }

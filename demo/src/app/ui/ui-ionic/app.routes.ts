@@ -1,27 +1,18 @@
-import { provideFormlyCore } from '@ngx-formly/core';
-import { ExamplesRouterViewerComponent } from '../../shared';
-import { CommonExampleConfigs, debugFields } from '../common';
-
 import { Routes } from '@angular/router';
-import { DatetimeAppConfig, DatetimeExampleConfig } from './datetime';
-import { RangeAppConfig, RangeExampleConfig } from './range';
-import { ToggleAppConfig, ToggleExampleConfig } from './toggle';
-import { withFormlyIonic } from '@ngx-formly/ionic';
+import { CommonExampleConfigs, debugFields } from '../common';
+import { appConfig } from './app.config';
+import { additionalExamples } from './additional-examples';
+import { AppComponent } from './app.component';
 
 export const appRoutes: Routes = [
   {
     path: '',
-    component: ExamplesRouterViewerComponent,
-    providers: [
-      provideFormlyCore([...withFormlyIonic()]),
-      DatetimeAppConfig.providers,
-      RangeAppConfig.providers,
-      ToggleAppConfig.providers,
-    ],
+    component: AppComponent,
+    providers: appConfig.providers,
     data: {
       debugFields,
       type: 'ionic',
-      examples: [...CommonExampleConfigs, DatetimeExampleConfig, RangeExampleConfig, ToggleExampleConfig],
+      examples: [...CommonExampleConfigs, ...additionalExamples],
     },
   },
 ];

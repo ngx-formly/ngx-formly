@@ -1,26 +1,15 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["ES2022"],
     "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noEmitOnError": false,
-    "skipDefaultLibCheck": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "noEmitOnError": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "target": "es6",
-    "types": [
-      "node", "jest"
-    ]
+    "target": "ES2022",
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*",
-    "utils/**/*"
-  ],
-  "exclude": [
-    "src/*/files/**/*"
-  ]
+  "include": ["src/**/*", "utils/**/*"],
+  "exclude": ["src/*/files/**/*", "**/*.spec.ts"]
 }
