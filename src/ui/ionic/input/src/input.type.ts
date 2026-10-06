@@ -16,7 +16,7 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       <ion-input
         [type]="props.type || 'text'"
         [label]="props.label"
-        [labelPlacement]="props.labelPosition"
+        [labelPlacement]="props.labelPosition ?? 'start'"
         [formControl]="formControl"
         [ionFormlyAttributes]="field"
       ></ion-input>
@@ -24,6 +24,7 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       <ion-input
         type="number"
         [label]="props.label"
+        [labelPlacement]="props.labelPosition ?? 'start'"
         [formControl]="formControl"
         [ionFormlyAttributes]="field"
       ></ion-input>

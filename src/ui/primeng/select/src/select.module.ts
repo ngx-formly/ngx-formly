@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { SelectModule } from 'primeng/select';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { FormlySelectModule as FormlyCoreSelectModule } from '@ngx-formly/core/select';
 
 import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
@@ -15,6 +16,7 @@ import { withFormlyFieldSelect } from './select.config';
     CommonModule,
     ReactiveFormsModule,
     SelectModule,
+    MultiSelectModule,
 
     FormlyFormFieldModule,
     FormlyCoreSelectModule,

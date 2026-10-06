@@ -18,7 +18,7 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
       [formControl]="formControl"
       [ionFormlyAttributes]="field"
       [label]="props.label"
-      [labelPlacement]="props.labelPosition"
+      [labelPlacement]="props.labelPosition ?? 'start'"
     >
       <ion-label slot="start">{{ props.min }}</ion-label>
       <ion-label slot="end">{{ props.max }}</ion-label>

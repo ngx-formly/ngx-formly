@@ -1,27 +1,31 @@
 import { Component } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
   imports: [ReactiveFormsModule, FormlyForm],
-  providers: [provideNativeDateAdapter()],
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
-      key: 'Datepicker',
-      type: 'datepicker',
+      key: 'NativeSelect',
+      type: 'native-select',
       props: {
-        label: 'Datepicker',
+        label: 'Native select',
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
+        options: [
+          { value: 1, label: 'Option 1' },
+          { value: 2, label: 'Option 2' },
+          { value: 3, label: 'Option 3' },
+          { value: 4, label: 'Option 4' },
+        ],
       },
     },
   ];

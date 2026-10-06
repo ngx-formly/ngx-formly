@@ -10,7 +10,7 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
 
 @Component({
   selector: 'formly-field-primeng-textarea',
-  template: ` <textarea [formControl]="formControl" [formlyAttributes]="field" pTextarea></textarea> `,
+  template: ` <textarea [formControl]="formControl" [formlyAttributes]="field" pTextarea fluid></textarea> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })

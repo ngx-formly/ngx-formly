@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: '.node-version'
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
 
@@ -28,7 +28,7 @@ jobs:
         run: npm install -g npm@11
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build

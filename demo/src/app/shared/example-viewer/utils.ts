@@ -55,7 +55,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   }
 
   if (
-    ['material', 'kendo', 'material', 'primeng'].indexOf(options.type) !== -1 ||
+    ['material', 'kendo', 'primeng', 'ng-zorro-antd'].indexOf(options.type) !== -1 ||
     options.includeMaterial ||
     exampleData.files.some((f) => _getFilecontent(f.filecontent).indexOf('@angular/animations') !== -1)
   ) {
@@ -110,11 +110,11 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
         },
         dependencies: deps,
         devDependencies: {
-          '@angular-devkit/build-angular': angularVersion,
+          '@angular/build': angularVersion,
           '@angular/cli': angularVersion,
           '@angular/compiler-cli': angularVersion,
-          '@types/node': '^12.11.1',
-          typescript: '~4.7.4',
+          '@types/node': '^22.0.0',
+          typescript: '~5.9.3',
         },
       },
       null,

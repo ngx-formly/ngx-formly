@@ -9,10 +9,10 @@ import {
   Inject,
   OnDestroy,
   Optional,
+  DOCUMENT,
 } from '@angular/core';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { defineHiddenProp, FORMLY_VALIDATORS, observe, IObserver } from '../utils';
-import { DOCUMENT } from '@angular/common';
 import { FormlyField } from '../components/formly.field';
 
 /**

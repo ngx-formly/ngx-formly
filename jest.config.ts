@@ -3,7 +3,7 @@ import { pathsToModuleNameMapper } from 'ts-jest';
 export default {
   testEnvironment: '@happy-dom/jest-environment',
   preset: 'jest-preset-angular',
-  roots: ['<rootDir>/src/'],
+  roots: ['<rootDir>/src/', '<rootDir>/demo/src/app/ui/'],
   testMatch: ['**/?(*.)+(spec|test).ts'],
   setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/jestSetup.ts'],
   coverageReporters: ['html'],

@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, Inject, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Inject, Input, Renderer2, DOCUMENT } from '@angular/core';
 import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
 
 @Directive({
