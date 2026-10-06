@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "typeRoots": ["../node_modules/@types"],
-    "lib": ["es2017", "dom"]
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "types": ["cypress", "node"],
+    "lib": ["ES2022", "DOM"]
   },
-  "include": ["../node_modules/cypress"]
+  "include": ["**/*.ts", "../cypress.config.ts"]
 }

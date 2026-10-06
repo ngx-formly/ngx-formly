@@ -1,4 +1,4 @@
-import { AppComponent as SliderAppComponent } from './app.component';
+import { AppComponent as SliderAppComponent } from '../../common/slider/app.component';
 import { appConfig as SliderAppConfig } from './app.config';
 
 const SliderExampleConfig = {
@@ -8,13 +8,13 @@ const SliderExampleConfig = {
   files: [
     {
       file: 'app.component.html',
-      content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-      filecontent: require('!!raw-loader!./app.component.html'),
+      content: require('!!highlight-loader?raw=true&lang=html!../../common/slider/app.component.html'),
+      filecontent: require('!!raw-loader!../../common/slider/app.component.html'),
     },
     {
       file: 'app.component.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-      filecontent: require('!!raw-loader!./app.component.ts'),
+      content: require('!!highlight-loader?raw=true&lang=typescript!../../common/slider/app.component.ts'),
+      filecontent: require('!!raw-loader!../../common/slider/app.component.ts'),
     },
     {
       file: 'app.config.ts',

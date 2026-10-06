@@ -21,6 +21,8 @@ export class AppComponent {
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
+        min: 0,
+        max: 100,
       },
     },
     {
@@ -32,6 +34,8 @@ export class AppComponent {
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
+        min: 0,
+        max: 100,
       },
     },
   ];

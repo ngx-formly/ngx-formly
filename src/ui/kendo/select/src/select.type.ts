@@ -5,6 +5,7 @@ import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   primitive?: boolean;
+  multiple?: boolean;
 }
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
@@ -14,18 +15,39 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 @Component({
   selector: 'formly-field-kendo-select',
   template: `
-    <kendo-dropdownlist
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [data]="props.options | formlySelectOptions: field | async"
-      [textField]="'label'"
-      [valueField]="'value'"
-      [valuePrimitive]="props.primitive ?? true"
-      (valueChange)="props.change && props.change(field, $event)"
-    >
-    </kendo-dropdownlist>
+    @if (props.multiple) {
+      <kendo-multiselect
+        [focusableId]="id"
+        [id]="id + '-container'"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [data]="props.options | formlySelectOptions: field | async"
+        [placeholder]="props.placeholder"
+        textField="label"
+        valueField="value"
+        [valuePrimitive]="props.primitive ?? true"
+        [itemDisabled]="itemDisabled"
+        (valueChange)="props.change && props.change(field, $event)"
+      />
+    } @else {
+      <kendo-dropdownlist
+        [id]="id"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [data]="props.options | formlySelectOptions: field | async"
+        [textField]="'label'"
+        [valueField]="'value'"
+        [valuePrimitive]="props.primitive ?? true"
+        [defaultItem]="props.placeholder ? { label: props.placeholder, value: null } : undefined"
+        [itemDisabled]="itemDisabled"
+        (valueChange)="props.change && props.change(field, $event)"
+      >
+      </kendo-dropdownlist>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {}
+export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
+  itemDisabled = ({ dataItem }: { dataItem: { disabled?: boolean } }) => !!dataItem.disabled;
+}

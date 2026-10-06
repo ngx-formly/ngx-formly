@@ -1,26 +1,18 @@
+import { Routes } from '@angular/router';
 import { ExamplesRouterViewerComponent } from '../../shared';
 import { CommonExampleConfigs, debugFields } from '../common';
-
-import { Routes } from '@angular/router';
-import { provideFormlyCore } from '@ngx-formly/core';
-import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
+import { appConfig } from './app.config';
+import { additionalExamples } from './additional-examples';
 
 export const appRoutes: Routes = [
   {
     path: '',
     component: ExamplesRouterViewerComponent,
-    providers: [
-      provideFormlyCore([
-        ...withFormlyBootstrap(),
-        {
-          validationMessages: [{ name: 'required', message: 'This field is required' }],
-        },
-      ]),
-    ],
+    providers: appConfig.providers,
     data: {
       debugFields,
       type: 'bootstrap',
-      examples: [...CommonExampleConfigs],
+      examples: [...CommonExampleConfigs, ...additionalExamples],
     },
   },
 ];

@@ -9,23 +9,17 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
-      key: 'NativeSelect',
-      type: 'native-select',
+      key: 'Datepicker',
+      type: 'datepicker',
       props: {
-        label: 'Native select',
+        label: 'Datepicker',
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
-        options: [
-          { value: 1, label: 'Option 1' },
-          { value: 2, label: 'Option 2' },
-          { value: 3, label: 'Option 3' },
-          { value: 4, label: 'Option 4' },
-        ],
       },
     },
   ];

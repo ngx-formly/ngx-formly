@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0](https://github.com/ngx-formly/ngx-formly/compare/v7.1.0...v8.0.0) (2026-09-08)
+
+### ⚠ BREAKING CHANGES
+
+* **core:** Angular 19 or newer is now required. Upgrade Angular before updating all `@ngx-formly/*` packages together to v8. Applications on Angular 18 should remain on Formly v7.
+* **material, primeng, ng-zorro-antd:** The integrations now require version 19 or newer of their respective UI libraries.
+
+### Features
+
+* **core:** enable map function on transform option ([#3628](https://github.com/ngx-formly/ngx-formly/issues/3628)) ([050d0a9](https://github.com/ngx-formly/ngx-formly/commit/050d0a985a1f0aee9cc290034ceaffd81379f9d1))
+* **core:** enhance pattern attribute handling in FormlyAttributes ([#4185](https://github.com/ngx-formly/ngx-formly/issues/4185)) ([655cb88](https://github.com/ngx-formly/ngx-formly/commit/655cb8812134ad99287ed4c60d8791e3fe8de09f)), closes [#4158](https://github.com/ngx-formly/ngx-formly/issues/4158)
+* **core:** export FormlyAttributeEvent, ValidationMessageOption via public_api ([#4095](https://github.com/ngx-formly/ngx-formly/issues/4095)) ([#4182](https://github.com/ngx-formly/ngx-formly/issues/4182)) ([7319487](https://github.com/ngx-formly/ngx-formly/commit/7319487e394907e0c89e46cfcae43b60c147fba7))
+* **material:** add panelWidth prop to select type ([#4186](https://github.com/ngx-formly/ngx-formly/issues/4186)) ([18a72a0](https://github.com/ngx-formly/ngx-formly/commit/18a72a0f35dfbbf7ca2a5b1c2438943830fa85df))
+* support distinct formly configurations per injection scope ([#4177](https://github.com/ngx-formly/ngx-formly/issues/4177)) ([a849539](https://github.com/ngx-formly/ngx-formly/commit/a8495395f3083bb85ba4983726a607440cab0f8b))
+
+### Bug Fixes
+
+* **core:** detect select option observables with isObservable ([#4184](https://github.com/ngx-formly/ngx-formly/issues/4184)) ([1a71999](https://github.com/ngx-formly/ngx-formly/commit/1a71999e08ed10f7a098412f1ae75ba223f5176e))
+* **core:** prevent valueChanges emission when form is disabled ([#4187](https://github.com/ngx-formly/ngx-formly/issues/4187)) ([7043d23](https://github.com/ngx-formly/ngx-formly/commit/7043d23822814463e10c9afcfcbb2550fc754603))
+* **core:** update model from inline template controls ([#4181](https://github.com/ngx-formly/ngx-formly/issues/4181)) ([ee44b7a](https://github.com/ngx-formly/ngx-formly/commit/ee44b7a2caa688590a22d687befb360ca5f55eee))
+* **json-schema:** pass anyOf mode for root-level anyOf ([#4176](https://github.com/ngx-formly/ngx-formly/issues/4176)) ([#4183](https://github.com/ngx-formly/ngx-formly/issues/4183)) ([344bd3a](https://github.com/ngx-formly/ngx-formly/commit/344bd3a063b97b97ceb00dc60132534b9d8b4da1))
+* **json-schema:** support recursive multischema branches ([#4179](https://github.com/ngx-formly/ngx-formly/issues/4179)) ([042304f](https://github.com/ngx-formly/ngx-formly/commit/042304fce1f5ea8a22a6ce0eada6f5995ff3423b)), closes [ngx-formly/ngx-formly#3989](https://github.com/ngx-formly/ngx-formly/issues/3989)
+* **material:** add aria-label for mat-radio-group ([#4162](https://github.com/ngx-formly/ngx-formly/issues/4162)) ([09f891c](https://github.com/ngx-formly/ngx-formly/commit/09f891c9b7473cea365b7bcf2d1cad2de1a1846a))
+* **primeng:** use pTextarea instead of deprecated pInputTextarea ([#4175](https://github.com/ngx-formly/ngx-formly/issues/4175)) ([3be5630](https://github.com/ngx-formly/ngx-formly/commit/3be5630a9408cdfbf41eafe07cdaddbe37256259))
+
 ## [7.1.0](https://github.com/ngx-formly/ngx-formly/compare/v7.0.1...v7.1.0) (2026-01-31)
 
 

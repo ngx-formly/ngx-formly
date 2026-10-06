@@ -14,7 +14,13 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
     @if (props.type !== 'number') {
       <input kendoTextBox [type]="props.type || 'text'" [formlyAttributes]="field" [formControl]="formControl" />
     } @else {
-      <kendo-numerictextbox [formlyAttributes]="field" [formControl]="formControl"> </kendo-numerictextbox>
+      <kendo-numerictextbox
+        [focusableId]="id"
+        [id]="id + '-container'"
+        [formlyAttributes]="field"
+        [formControl]="formControl"
+      >
+      </kendo-numerictextbox>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

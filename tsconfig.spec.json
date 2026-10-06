@@ -1,9 +1,22 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "outDir": "./out-tsc/spec",
     "module": "CommonJS",
+    "moduleResolution": "node",
     "types": ["jest", "node"],
-    "noImplicitAny": false,
-    "esModuleInterop": true
-  }
+    "noImplicitAny": false
+  },
+  "files": ["jestSetup.ts"],
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.d.ts",
+    "demo/src/**/*.spec.ts",
+    "demo/src/**/*.test.ts",
+    "demo/src/**/*.d.ts",
+    "integration/ssr/src/**/*.spec.ts",
+    "integration/ssr/src/**/*.test.ts",
+    "integration/ssr/src/**/*.d.ts"
+  ]
 }

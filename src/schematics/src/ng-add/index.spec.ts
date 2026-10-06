@@ -45,7 +45,7 @@ describe('ng-add-schematic', () => {
   it('should add to root app module', async () => {
     const tree = await runner.runSchematic('ng-add', {}, appTree);
 
-    const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
+    const content = tree.readContent(`${projectPath}/src/app/app-module.ts`);
     expect(content).toMatch(
       // eslint-disable-next-line:trailing-comma
       /import { FormlyModule } from '@ngx-formly\/core';/
@@ -75,7 +75,7 @@ describe('ng-add-schematic', () => {
   it('should add UI theme to root app module', async () => {
     const tree = await runner.runSchematic('ng-add', { uiTheme: 'bootstrap' }, appTree);
 
-    const content = tree.readContent(`${projectPath}/src/app/app.module.ts`);
+    const content = tree.readContent(`${projectPath}/src/app/app-module.ts`);
     expect(content).toMatch(
       // eslint-disable-next-line:trailing-comma
       /import { FormlyBootstrapModule } from '@ngx-formly\/bootstrap';/

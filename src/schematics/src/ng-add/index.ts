@@ -1,7 +1,6 @@
 import { chain, noop, Rule, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-import { findModuleFromOptions } from '../../utils/ast';
-import { addModuleImportToModule } from '@angular/cdk/schematics';
+import { addModuleImportToModule, findModuleFromOptions } from '../../utils/ast';
 import { angularVersion, ngxFormlyVersion } from '../../utils/lib-versions';
 import { addPackageToPackageJson } from '../../utils/package';
 import { Schema } from './schema';

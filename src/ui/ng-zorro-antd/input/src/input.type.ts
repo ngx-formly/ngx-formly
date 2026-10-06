@@ -15,6 +15,9 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
       <input nz-input [formControl]="formControl" [type]="props.type || 'text'" [formlyAttributes]="field" />
     } @else {
       <nz-input-number
+        [nzId]="id"
+        [id]="id + '-container'"
+        [nzPlaceHolder]="props.placeholder"
         [formControl]="formControl"
         [formlyAttributes]="field"
         [nzFormatter]="nzFormatter"

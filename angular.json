@@ -105,7 +105,7 @@
             "outputPath": "integration/ssr/dist",
             "index": "integration/ssr/src/index.html",
             "browser": "integration/ssr/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": ["zone.js", "@angular/localize/init"],
             "tsConfig": "integration/ssr/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -396,16 +396,36 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "formly",
-      "style": "scss"
+      "style": "scss",
+      "type": "component"
     },
     "@schematics/angular:directive": {
-      "prefix": "formly"
+      "prefix": "formly",
+      "type": "directive"
     },
     "@angular-eslint/schematics:application": {
       "setParserOptionsProject": true
     },
     "@angular-eslint/schematics:library": {
       "setParserOptionsProject": true
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
   }
 }

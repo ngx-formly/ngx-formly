@@ -8,6 +8,7 @@ interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   appendTo?: Select['appendTo'];
   filter?: boolean;
   filterBy?: string;
+  multiple?: boolean;
 }
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
@@ -17,20 +18,44 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 @Component({
   selector: 'formly-field-primeng-select',
   template: `
-    <p-select
-      [placeholder]="props.placeholder"
-      [options]="props.options | formlySelectOptions: field | async"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [showClear]="!props.required"
-      [appendTo]="props.appendTo"
-      [filter]="props.filter"
-      [filterBy]="props.filterBy ?? 'label'"
-      [optionLabel]="'label'"
-      [optionValue]="'value'"
-      (onChange)="props.change && props.change(field, $event)"
-    >
-    </p-select>
+    @if (props.multiple) {
+      <p-multiselect
+        [fluid]="true"
+        [inputId]="id"
+        [id]="id + '-container'"
+        [placeholder]="props.placeholder"
+        [options]="props.options | formlySelectOptions: field | async"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [showClear]="!props.required"
+        [appendTo]="props.appendTo"
+        [filter]="props.filter ?? false"
+        [filterBy]="props.filterBy ?? 'label'"
+        optionLabel="label"
+        optionValue="value"
+        optionDisabled="disabled"
+        (onChange)="props.change && props.change(field, $event)"
+      />
+    } @else {
+      <p-select
+        [fluid]="true"
+        [inputId]="id"
+        [id]="id + '-container'"
+        [placeholder]="props.placeholder"
+        [options]="props.options | formlySelectOptions: field | async"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [showClear]="!props.required"
+        [appendTo]="props.appendTo"
+        [filter]="props.filter"
+        [filterBy]="props.filterBy ?? 'label'"
+        [optionLabel]="'label'"
+        [optionValue]="'value'"
+        optionDisabled="disabled"
+        (onChange)="props.change && props.change(field, $event)"
+      >
+      </p-select>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormlyNzFormFieldModule } from '@ngx-formly/ng-zorro-antd/form-field';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 
 import { FormlyFieldInput } from './input.type';
 import { withFormlyFieldInput } from './input.config';
@@ -16,7 +16,7 @@ import { withFormlyFieldInput } from './input.config';
     CommonModule,
     ReactiveFormsModule,
     NzInputModule,
-    NzInputNumberModule,
+    NzInputNumberLegacyModule,
 
     FormlyNzFormFieldModule,
     FormlyModule.forChild(withFormlyFieldInput()),
