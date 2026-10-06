@@ -1,6 +1,6 @@
+import { FormlyBootstrapMultiCheckboxModule } from '@ngx-formly/bootstrap/multicheckbox';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyBootstrapMultiCheckboxModule } from '@ngx-formly/bootstrap/multicheckbox';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -37,7 +37,7 @@ describe('ui-bootstrap: MultiCheckbox Type', () => {
       },
     });
 
-    expect(query('input[type="checkbox"]').classes['is-invalid']).toBeTrue();
+    expect(query('input[type="checkbox"]').classes['is-invalid']).toBe(true);
     expect(query('input[type="checkbox"]').nativeElement.getAttribute('aria-invalid')).toBe('true');
   });
 

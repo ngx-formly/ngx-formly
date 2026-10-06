@@ -1,7 +1,7 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyMatCheckboxModule } from '@ngx-formly/material/checkbox';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -52,12 +52,12 @@ describe('ui-material: Checkbox Type', () => {
     const input = query('input[type="checkbox"]').nativeElement as HTMLInputElement;
     input.click();
     detectChanges();
-    expect(field.formControl.value).toBeTrue();
+    expect(field.formControl.value).toBe(true);
     expect(changeSpy).toHaveBeenCalledTimes(2);
 
     input.click();
     detectChanges();
-    expect(field.formControl.value).toBeFalse();
+    expect(field.formControl.value).toBe(false);
     expect(changeSpy).toHaveBeenCalledTimes(4);
   });
 });

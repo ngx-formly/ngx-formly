@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyTextAreaModule } from '@ngx-formly/primeng/textarea';
@@ -30,7 +31,7 @@ describe('ui-primeng: Textarea Type', () => {
       props: { required: true },
     });
 
-    expect(query('textarea').classes['ng-invalid']).toBeTrue();
+    expect(query('textarea').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -44,6 +45,6 @@ describe('ui-primeng: Textarea Type', () => {
     ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

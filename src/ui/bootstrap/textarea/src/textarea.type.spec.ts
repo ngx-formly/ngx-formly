@@ -1,6 +1,6 @@
+import { FormlyBootstrapTextAreaModule } from '@ngx-formly/bootstrap/textarea';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
-import { FormlyBootstrapTextAreaModule } from '@ngx-formly/bootstrap/textarea';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -39,7 +39,7 @@ describe('ui-bootstrap: Textarea Type', () => {
       props: { required: true },
     });
 
-    expect(query('textarea').classes['is-invalid']).toBeTrue();
+    expect(query('textarea').classes['is-invalid']).toBe(true);
   });
 
   it('should set aria-invalid to true on invalid', () => {
@@ -64,6 +64,6 @@ describe('ui-bootstrap: Textarea Type', () => {
     ['input', 'change'].forEach((type) => query('textarea').triggerEventHandler(type, ɵCustomEvent({ value: 'foo' })));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

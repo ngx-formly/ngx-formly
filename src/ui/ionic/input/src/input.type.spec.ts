@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyInputModule } from '@ngx-formly/ionic/input';
@@ -92,7 +93,7 @@ describe('ui-ionic: Input Type', () => {
     });
 
     const { classes } = query('ion-input');
-    expect(classes['ng-invalid']).toBeTrue();
+    expect(classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -108,6 +109,6 @@ describe('ui-ionic: Input Type', () => {
     query('ion-input').triggerEventHandler('ionInput', ɵCustomEvent(inputEl));
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

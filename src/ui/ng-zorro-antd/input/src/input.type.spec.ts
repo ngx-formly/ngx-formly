@@ -1,7 +1,7 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyNzInputModule } from '@ngx-formly/ng-zorro-antd/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -86,7 +86,7 @@ describe('ui-ng-zorro-antd: Input Type', () => {
     });
 
     const { classes } = query('input[type="text"]');
-    expect(classes['ng-invalid']).toBeTrue();
+    expect(classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -102,6 +102,6 @@ describe('ui-ng-zorro-antd: Input Type', () => {
     );
     detectChanges();
     expect(field.formControl.value).toEqual('foo');
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

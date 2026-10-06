@@ -1,7 +1,8 @@
+import { describe, expect, it } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyFieldConfigCache } from '../../models';
-import { mockComponent, createBuilder, createFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
+import { createBuilder, createFieldComponent, FormlyInputModule, mockComponent } from '@ngx-formly/core/testing';
 import { Subject } from 'rxjs';
+import { FormlyFieldConfigCache } from '../../models';
 
 function renderComponent(field: FormlyFieldConfig) {
   return createFieldComponent(field, {
@@ -79,7 +80,7 @@ describe('CoreExtension', () => {
         defaultValue: false,
       });
 
-      expect(field.model.title).toBeFalse();
+      expect(field.model.title).toBe(false);
     });
 
     it('should set the defaultValue for nested key', () => {

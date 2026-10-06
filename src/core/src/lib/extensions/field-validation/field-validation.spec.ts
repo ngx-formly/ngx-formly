@@ -1,7 +1,7 @@
-import { FormControl, Validators, ValidationErrors, FormGroup, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { createBuilder } from '@ngx-formly/core/testing';
 import { of } from 'rxjs';
 import { FormlyFieldConfigCache } from '../../models';
-import { createBuilder } from '@ngx-formly/core/testing';
 
 function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
   const builder = createBuilder({
@@ -99,10 +99,10 @@ describe('FieldValidationExtension: initialise field validators', () => {
     it(`should take account of programmatic changes`, () => {
       const field = buildField({});
       field.formControl = new FormControl(null, field._validators);
-      expect(field.formControl.valid).toBeTrue();
+      expect(field.formControl.valid).toBe(true);
 
       field.props.required = true;
-      expect(field.formControl.valid).toBeFalse();
+      expect(field.formControl.valid).toBe(false);
     });
 
     it(`should ignore fieldGroup with empty key`, () => {

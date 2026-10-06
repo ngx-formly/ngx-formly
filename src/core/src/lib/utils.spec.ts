@@ -1,19 +1,21 @@
+import { describe, expect, it, jest } from '@jest/globals';
+import 'jest-extended';
+import { of } from 'rxjs';
+import { FormlyField } from './core';
+import { FormlyFieldConfig } from './models';
 import {
-  reverseDeepMerge,
+  assignFieldValue,
   assignModelValue,
+  clone,
+  defineHiddenProp,
+  getField,
   getFieldId,
   getFieldValue,
   getKeyPath,
-  clone,
   observe,
-  assignFieldValue,
-  defineHiddenProp,
   observeDeep,
-  getField,
+  reverseDeepMerge,
 } from './utils';
-import { FormlyFieldConfig } from './models';
-import { of } from 'rxjs';
-import { FormlyField } from './core';
 
 describe('FormlyUtils service', () => {
   describe('reverseDeepMerge', () => {
@@ -31,7 +33,7 @@ describe('FormlyUtils service', () => {
 
       expect(foo['foo']).toEqual('bar');
       expect(foo['foobar']).toEqual('foobar');
-      expect(foo['date'] instanceof Date).toBeTrue();
+      expect(foo['date'] instanceof Date).toBe(true);
       expect(foo.arr).toEqual([]);
     });
   });
@@ -61,7 +63,7 @@ describe('FormlyUtils service', () => {
     it('should assign value with nested array path', () => {
       const model = {};
       assignModelValue(model, ['path', '0'], 'test');
-      expect(Array.isArray(model['path'])).toBeTrue();
+      expect(Array.isArray(model['path'])).toBe(true);
       expect(model['path'][0]).toBe('test');
     });
 
@@ -228,7 +230,7 @@ describe('clone', () => {
     expect(clonedFoo).toEqual(foo);
     expect(clonedFoo).not.toBe(foo);
     // method of the base class have been copied
-    expect(clonedFoo.method).toBeFunction();
+    expect(typeof clonedFoo.method).toBe('function');
     expect(clonedFoo.method()).toEqual(foo.method());
   });
   it('Deep object', () => {
@@ -244,10 +246,10 @@ describe('clone', () => {
     const bar = new Bar('test');
     const clonedBar = clone(bar);
     expect(clonedBar).toEqual(bar);
-    expect(clonedBar === bar).toBeFalse();
+    expect(clonedBar === bar).toBe(false);
     // properties of the base class have been deep copied
     expect(clonedBar.foo).toEqual(bar.foo);
-    expect(clonedBar.foo === bar.foo).toBeFalse();
+    expect(clonedBar.foo === bar.foo).toBe(false);
   });
 
   it('Enumerable getter', () => {
@@ -257,7 +259,7 @@ describe('clone', () => {
 
     const propDescriptor = Object.getOwnPropertyDescriptor(value, 'a');
     expect(propDescriptor.get).toBeDefined();
-    expect(propDescriptor.enumerable).toBeTrue();
+    expect(propDescriptor.enumerable).toBe(true);
   });
 
   it('should use bind of the cloned object', () => {

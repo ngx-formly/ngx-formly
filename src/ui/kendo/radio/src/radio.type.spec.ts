@@ -37,7 +37,7 @@ describe('ui-kendo: Radio Type', () => {
       },
     });
 
-    expect(query('input[type="radio"]').classes['ng-invalid']).toBeTrue();
+    expect(query('input[type="radio"]').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {
@@ -54,6 +54,6 @@ describe('ui-kendo: Radio Type', () => {
     query('input[type="radio"]').triggerEventHandler('change', ɵCustomEvent());
     detectChanges();
     expect(field.formControl.value).toEqual(1);
-    expect(changeSpy).toHaveBeenCalledOnce();
+    expect(changeSpy).toHaveBeenCalledTimes(1);
   });
 });

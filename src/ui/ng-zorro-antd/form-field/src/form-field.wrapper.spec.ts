@@ -1,7 +1,8 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { describe, expect, it } from '@jest/globals';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyNzFormFieldModule } from '@ngx-formly/ng-zorro-antd/form-field';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {

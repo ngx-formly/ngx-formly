@@ -1,8 +1,8 @@
-import { FormlyConfig } from './formly.config';
-import { Validators, FormControl } from '@angular/forms';
 import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { FormlyFieldInput } from '@ngx-formly/core/testing';
 import { FieldType, FieldWrapper } from '../core';
+import { FormlyConfig } from './formly.config';
 
 @Component({
   selector: 'formly-test-cmp',
@@ -44,7 +44,7 @@ describe('FormlyConfig service', () => {
         formControl = new FormControl(null, Validators.required),
         options = { parentForm: { submitted: true } };
 
-      expect(config.extras.showError({ options, formControl, field } as any)).toBeTrue();
+      expect(config.extras.showError({ options, formControl, field } as any)).toBe(true);
     });
 
     it('should showError when field is touched and form is invalid', () => {
@@ -54,7 +54,7 @@ describe('FormlyConfig service', () => {
 
       formControl.markAsTouched();
 
-      expect(config.extras.showError({ options, formControl, field } as any)).toBeTrue();
+      expect(config.extras.showError({ options, formControl, field } as any)).toBe(true);
     });
 
     it('should show error when option `show` is true', () => {
@@ -62,7 +62,7 @@ describe('FormlyConfig service', () => {
         formControl = new FormControl(null, Validators.required),
         options = { parentForm: { submitted: false } };
 
-      expect(config.extras.showError({ options, formControl, field } as any)).toBeTrue();
+      expect(config.extras.showError({ options, formControl, field } as any)).toBe(true);
     });
   });
 
