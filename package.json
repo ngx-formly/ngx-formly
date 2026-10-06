@@ -1,7 +1,7 @@
 {
   "name": "@ngx-formly/common",
   "version": "8.0.0",
-  "packageManager": "npm@12.2.0",
+  "packageManager": "npm@11.19.0",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
     "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
