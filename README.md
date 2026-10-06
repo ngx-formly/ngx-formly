@@ -55,17 +55,17 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 #### **Which Version to use?**
 
-| Angular version | Formly version         |
-| --------------- | ---------------------- |
-| Angular >= 20   | `@ngx-formly/core@9.x` |
-| Angular >= 19   | `@ngx-formly/core@8.x` |
-| Angular >= 18   | `@ngx-formly/core@7.x` |
-| Angular >= 13   | `@ngx-formly/core@6.x` |
-| Angular >= 7    | `@ngx-formly/core@5.x` |
-| Angular >= 6    | `@ngx-formly/core@4.x` |
-| Angular >= 5    | `@ngx-formly/core@3.x` |
-| Angular >= 4    | `@ngx-formly/core@2.x` |
-| Angular >= 2    | `ng-formly@1.x`        |
+| Angular version | Formly version       | Migration                          |
+| --------------- | -------------------- | ---------------------------------- |
+| Angular >= 20   | `@ngx-formly/core@9.x` | [Upgrade to v9](UPGRADE-9.0.md)      |
+| Angular >= 19   | `@ngx-formly/core@8.x` | [Upgrade to v8](UPGRADE-8.0.md)      |
+| Angular >= 18   | `@ngx-formly/core@7.x` | [Upgrade to v7](UPGRADE-7.0.md)      |
+| Angular >= 13   | `@ngx-formly/core@6.x` | [Upgrade to v6](UPGRADE-6.0.md)      |
+| Angular >= 7    | `@ngx-formly/core@5.x` | [Upgrade to v5](UPGRADE-5.0.md)      |
+| Angular >= 6    | `@ngx-formly/core@4.x` |                                    |
+| Angular >= 5    | `@ngx-formly/core@3.x` |                                    |
+| Angular >= 4    | `@ngx-formly/core@2.x` | [Upgrade to v2](UPGRADE-2.0.md)      |
+| Angular >= 2    | `ng-formly@1.x`       |                                    |
 
 #### Upgrading to v9
 
