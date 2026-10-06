@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   id-token: write
@@ -20,12 +20,9 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: '.node-version'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-
-      - name: Install npm
-        run: npm install -g "$(node -p "require('./package.json').packageManager")"
+          node-version-file: ".node-version"
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci

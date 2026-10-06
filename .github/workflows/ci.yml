@@ -13,11 +13,8 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: '.node-version'
-          cache: 'npm'
-
-      - name: Install npm
-        run: npm install -g "$(node -p "require('./package.json').packageManager")"
+          node-version-file: ".node-version"
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
