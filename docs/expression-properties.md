@@ -142,6 +142,20 @@ provideFormlyCore({
 
 :::
 
+### Circular hide expressions
+
+Hiding a field can clear its value, and showing it can restore its `defaultValue`. Avoid hide expressions that repeatedly toggle because of these changes. For example, a field with `defaultValue: 'Yes'` and `hide: "model.enabled && model.x === 'Yes'"` will alternate between hidden and visible when its key is `x` and `model.enabled` becomes `true`.
+
+Formly limits the number of passes used to process visibility changes. The internal limit is `Math.max(100, 2 * fieldCount)`, where `fieldCount` includes the root, nested groups, and instantiated array items at the start of the check. Fields added during the check do not increase its limit. This is a safety limit; exceeding it does not prove that the expressions contain a cycle.
+
+When the limit is reached with visibility changes still pending, Formly logs this warning and throws an error that includes the pass count:
+
+```text
+[Formly] The form may be inconsistent. Check for circular hide expressions
+```
+
+After a runtime failure, correct the expression and explicitly call `options.checkExpressions` with the root field to retry. Pending visibility changes are retained, but previously cleared values and emitted events are not rolled back. If the error occurred during initial form construction, correct the configuration and rebuild the form. The guard limits repeated checks; it cannot interrupt an expression function that never returns.
+
 ## 3. Get notified about an expression changes
 
 

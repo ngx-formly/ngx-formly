@@ -81,16 +81,29 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
 
         checkLocked = true;
-        const fieldChanged = this.checkExpressions(f, ignoreCache);
-        const options = field.options;
-        options._hiddenFieldsForCheck
-          .sort((f) => (f.field.hide ? -1 : 1))
-          .forEach((f) => this.changeHideState(f.field, f.field.hide ?? f.default, !ignoreCache));
-        options._hiddenFieldsForCheck = [];
-        if (fieldChanged) {
-          this.checkExpressions(field);
+        try {
+          // ponytail: initial-tree budget; add an override if valid dynamic forms need more passes.
+          const maxPasses = Math.max(100, 2 * this.countFields(field));
+          const options = field.options;
+          const fieldChanged = this.checkExpressions(f, ignoreCache) || options._hiddenFieldsForCheck.length > 0;
+          let passes = 0;
+          do {
+            if (passes++ === maxPasses) {
+              console.warn('[Formly] The form may be inconsistent. Check for circular hide expressions');
+              throw new Error(`[Formly Error] Expressions did not settle after ${maxPasses} passes.`);
+            }
+
+            options._hiddenFieldsForCheck
+              .sort((f) => (f.field.hide ? -1 : 1))
+              .forEach((f) => this.changeHideState(f.field, f.field.hide ?? f.default, !ignoreCache));
+            options._hiddenFieldsForCheck = [];
+            if (fieldChanged) {
+              this.checkExpressions(field);
+            }
+          } while (options._hiddenFieldsForCheck.length > 0);
+        } finally {
+          checkLocked = false;
         }
-        checkLocked = false;
       };
     }
   }
@@ -152,6 +165,10 @@ export class FieldExpressionExtension implements FormlyExtension {
 
   protected _evalStringExpression(expression: string, argNames: string[]) {
     return evalStringExpressionLegacy(expression, argNames);
+  }
+
+  private countFields(field: FormlyFieldConfigCache): number {
+    return field ? 1 + (field.fieldGroup?.reduce((count, f) => count + this.countFields(f), 0) ?? 0) : 0;
   }
 
   private checkExpressions(field: FormlyFieldConfigCache, ignoreCache = false) {
