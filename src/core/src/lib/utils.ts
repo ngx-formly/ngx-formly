@@ -7,8 +7,11 @@ import { ChangeDetectorRef, ComponentRef, NgZone, TemplateRef, Type, VERSION, ɵ
 export function disableTreeValidityCall(form: any, callback: () => void) {
   const _updateTreeValidity = form._updateTreeValidity.bind(form);
   form._updateTreeValidity = () => {};
-  callback();
-  form._updateTreeValidity = _updateTreeValidity;
+  try {
+    callback();
+  } finally {
+    form._updateTreeValidity = _updateTreeValidity;
+  }
 }
 
 export function getFieldId(formId: string, field: FormlyFieldConfig, index: string | number) {

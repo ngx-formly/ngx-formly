@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { describe, expect, it, jest } from '@jest/globals';
@@ -15,6 +15,7 @@ import {
 import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import 'jest-extended';
 import { FormlyOnPushComponent } from './formly.field.spec';
+import { config as rxjsConfig } from 'rxjs';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -402,6 +403,86 @@ describe('FormlyForm Component', () => {
   });
 
   describe('check expression', () => {
+    it('should report a zoneless hide cycle and allow an explicit retry', async () => {
+      let checks = 0;
+      const { form, fields, options, model, fixture, queryAll } = renderComponent(
+        {
+          model: { enabled: false },
+          fields: [
+            { key: 'enabled', type: 'input' },
+            {
+              key: 'x',
+              type: 'input',
+              defaultValue: 'Yes',
+              expressions: {
+                hide: ({ model }) => {
+                  // Keep this test finite if the pass limit regresses.
+                  if (++checks > 200) {
+                    throw new Error('Test expression exceeded 200 checks');
+                  }
+                  return model.enabled && model.x === 'Yes';
+                },
+              },
+            },
+          ],
+        },
+        { providers: [provideZonelessChangeDetection()] },
+      );
+      const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const onUnhandledError = rxjsConfig.onUnhandledError;
+
+      try {
+        const error = new Promise((resolve) => (rxjsConfig.onUnhandledError = resolve));
+        form.get('enabled').setValue(true);
+        expect(await error).toEqual(new Error('[Formly Error] Expressions did not settle after 100 passes.'));
+        expect(warn).toHaveBeenCalledTimes(1);
+
+        fields[1].expressions.hide = () => true;
+        options.checkExpressions(fields[1].parent);
+        await fixture.whenStable();
+
+        expect(model).toEqual({ enabled: true });
+        expect(form.get('x')).toBeNull();
+        expect(fields[1].formControl.value).toBeUndefined();
+        expect(queryAll('input')).toHaveLength(1);
+        expect(warn).toHaveBeenCalledTimes(1);
+      } finally {
+        rxjsConfig.onUnhandledError = onUnhandledError;
+        warn.mockRestore();
+      }
+    });
+
+    it('should hide and reset dependent fields in a zoneless app', async () => {
+      const modelChange = jest.fn();
+      const { form, fields, model, fixture, queryAll } = renderComponent(
+        {
+          model: { a: 'Yes', b: 'Yes', c: 'Yes', d: 'text' },
+          modelChange,
+          fields: [
+            { key: 'a', type: 'input' },
+            { key: 'b', type: 'input', expressions: { hide: "model.a !== 'Yes'" } },
+            { key: 'c', type: 'input', expressions: { hide: "model.b !== 'Yes'" } },
+            { key: 'd', type: 'input', expressions: { hide: "model.c !== 'Yes'" } },
+          ],
+        },
+        { providers: [provideZonelessChangeDetection()] },
+      );
+
+      expect(queryAll('input')).toHaveLength(4);
+
+      form.get('a').setValue('No');
+      await fixture.whenStable();
+
+      expect(model).toEqual({ a: 'No' });
+      expect(form.value).toEqual({ a: 'No' });
+      fields.slice(1).forEach((field) => {
+        expect(field.hide).toBe(true);
+        expect(field.formControl.value).toBeUndefined();
+      });
+      expect(queryAll('input')).toHaveLength(1);
+      expect(modelChange).toHaveBeenLastCalledWith({ a: 'No' });
+    });
+
     it('should check expression on valueChanges', () => {
       const { form, fields, detectChanges } = renderComponent({
         fields: [

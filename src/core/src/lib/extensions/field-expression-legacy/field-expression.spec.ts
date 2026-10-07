@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { createBuilder } from '@ngx-formly/core/testing';
 import { Subject, of } from 'rxjs';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
@@ -18,6 +18,155 @@ function buildField({ model, options, ...field }: FormlyFieldConfigCache): Forml
 }
 
 describe('FieldExpressionExtension', () => {
+  describe('expression check limit', () => {
+    let warn: jest.SpyInstance;
+
+    beforeEach(() => (warn = jest.spyOn(console, 'warn').mockImplementation(() => {})));
+    afterEach(() => warn.mockRestore());
+
+    it('should settle a long nested hide chain when checking a child', () => {
+      const fields = Array.from({ length: 151 }, (_, i) => ({
+        key: `f${i}`,
+        ...(i ? { expressions: { hide: `model.f${i - 1} !== 'Yes'` } } : {}),
+      }));
+      const field = buildField({
+        model: Object.fromEntries(fields.map(({ key }) => [key, 'Yes'])),
+        fieldGroup: [{ fieldGroup: fields }],
+      });
+
+      field.model.f0 = 'No';
+      field.options.checkExpressions(fields[1]);
+
+      expect(field.model).toEqual({ f0: 'No' });
+      field.fieldGroup[0].fieldGroup.slice(1).forEach((f) => {
+        expect(f.hide).toBe(true);
+        expect(f.formControl.parent).toBeNull();
+      });
+      expect(field.options._hiddenFieldsForCheck).toEqual([]);
+      expect(warn).not.toHaveBeenCalled();
+    });
+
+    it.each(['expression', 'defaultValue'])(
+      'should allow retrying a reset/default cycle after correcting %s',
+      (prop) => {
+        let checks = 0;
+        const field = buildField({
+          key: 'x',
+          defaultValue: 'Yes',
+          model: { enabled: false },
+          expressions: {
+            hide: ({ model }) => {
+              // Keep this test finite if the pass limit regresses.
+              if (++checks > 200) {
+                throw new Error('Test expression exceeded 200 checks');
+              }
+              return model.enabled && model.x === 'Yes';
+            },
+          },
+        });
+
+        field.model.enabled = true;
+        expect(() => field.options.checkExpressions(field)).toThrow(
+          '[Formly Error] Expressions did not settle after 100 passes.',
+        );
+        expect(warn).toHaveBeenCalledTimes(1);
+        expect(warn).toHaveBeenCalledWith('[Formly] The form may be inconsistent. Check for circular hide expressions');
+        expect(field.options._hiddenFieldsForCheck).toEqual([{ field }]);
+
+        if (prop === 'expression') {
+          field.expressions.hide = () => true;
+        } else {
+          field.defaultValue = undefined;
+        }
+        field.options.checkExpressions(field);
+
+        expect(field.hide).toBe(prop === 'expression');
+        expect(field.model).toEqual({ enabled: true });
+        expect(field.formControl.value).toBeUndefined();
+        expect(field.form.get('x')).toBe(prop === 'expression' ? null : field.formControl);
+        expect(field.options._hiddenFieldsForCheck).toEqual([]);
+        expect(warn).toHaveBeenCalledTimes(1);
+      },
+    );
+
+    it('should restore validation and allow rebuilding after an initial hide cycle', () => {
+      let checks = 0;
+      const builder = createBuilder();
+      const form = new FormGroup({}) as FormGroup & { _updateTreeValidity: () => void };
+      const root: FormlyFieldConfigCache = {
+        form,
+        fieldGroup: [
+          {
+            key: 'x',
+            expressions: {
+              hide: (field) => {
+                if (++checks > 200) {
+                  throw new Error('Test expression exceeded 200 checks');
+                }
+                return !field.hide;
+              },
+            },
+          },
+        ],
+      };
+      const updateTreeValidity = jest.spyOn(form, '_updateTreeValidity');
+
+      expect(() => builder.build(root)).toThrow('Expressions did not settle after 100 passes.');
+      expect(warn).toHaveBeenCalledTimes(1);
+      form._updateTreeValidity();
+      expect(updateTreeValidity).toHaveBeenCalled();
+
+      root.fieldGroup[0].expressions.hide = () => false;
+      builder.build(root);
+
+      expect(root.fieldGroup[0].hide).toBe(false);
+      expect(root.form.get('x')).toBe(root.fieldGroup[0].formControl);
+      expect(root.options._hiddenFieldsForCheck).toEqual([]);
+      expect(warn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should keep the initial budget when expressions add fields', () => {
+      let checks = 0;
+      const field = buildField({
+        key: 'x',
+        model: { enabled: false },
+        expressions: {
+          hide: (field) => {
+            if (++checks > 200) {
+              throw new Error('Test expression exceeded 200 checks');
+            }
+            if (field.model.enabled) {
+              field.parent.fieldGroup.push({});
+              return !field.hide;
+            }
+            return false;
+          },
+        },
+      });
+
+      field.model.enabled = true;
+      expect(() => field.options.checkExpressions(field)).toThrow('Expressions did not settle after 100 passes.');
+      expect(field.parent.fieldGroup.length).toBeGreaterThan(100);
+      expect(warn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should release the lock when the initial expression evaluation throws', () => {
+      const field = buildField({ key: 'x', expressions: { hide: () => false } });
+      field.expressions.hide = () => {
+        throw new Error('Invalid expression');
+      };
+
+      expect(() => field.options.checkExpressions(field)).toThrow('Invalid expression');
+      field.expressions.hide = () => true;
+      field.options.checkExpressions(field);
+
+      expect(field.hide).toBe(true);
+      expect(field.formControl.parent).toBeNull();
+      expect(field.options._hiddenFieldsForCheck).toEqual([]);
+      expect(warn).not.toHaveBeenCalled();
+    });
+  });
+
   describe('expressions: field visibility', () => {
     it('should evaluate string expression', () => {
       const field = buildField({
@@ -44,6 +193,30 @@ describe('FieldExpressionExtension', () => {
       });
 
       expect(field.hide).toBe(true);
+    });
+
+    it('should settle chained hide expressions in a single check', () => {
+      const field = buildField({
+        model: { a: 'Yes', b: 'Yes', c: 'Yes', d: 'Yes', e: 'text' },
+        fieldGroup: [
+          { key: 'a' },
+          { key: 'b', expressions: { hide: "model.a !== 'Yes'" } },
+          { key: 'c', expressions: { hide: "model.b !== 'Yes'" } },
+          { key: 'd', expressions: { hide: "model.c !== 'Yes'" } },
+          { key: 'e', expressions: { hide: "model.d !== 'Yes'" } },
+        ],
+      });
+
+      field.model.a = 'No';
+      field.options.checkExpressions(field.fieldGroup[1]);
+
+      expect(field.model).toEqual({ a: 'No' });
+      field.fieldGroup.slice(1).forEach((f) => {
+        expect(f.hide).toBe(true);
+        expect(f.formControl.value).toBeUndefined();
+        expect(f.formControl.parent).toBeNull();
+      });
+      expect(field.options._hiddenFieldsForCheck).toEqual([]);
     });
 
     it('should evaluate boolean expression', () => {

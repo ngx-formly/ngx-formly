@@ -8,6 +8,7 @@ import {
   assignModelValue,
   clone,
   defineHiddenProp,
+  disableTreeValidityCall,
   getField,
   getFieldId,
   getFieldValue,
@@ -18,6 +19,24 @@ import {
 } from './utils';
 
 describe('FormlyUtils service', () => {
+  it('should restore tree validation when the callback throws', () => {
+    const updateTreeValidity = jest.fn();
+    const form = { _updateTreeValidity: updateTreeValidity };
+    const error = new Error('Build failed');
+
+    expect(() =>
+      disableTreeValidityCall(form, () => {
+        form._updateTreeValidity();
+        expect(updateTreeValidity).not.toHaveBeenCalled();
+        throw error;
+      }),
+    ).toThrow(error);
+
+    form._updateTreeValidity();
+    expect(updateTreeValidity).toHaveBeenCalledTimes(1);
+    expect(updateTreeValidity.mock.contexts[0]).toBe(form);
+  });
+
   describe('reverseDeepMerge', () => {
     it('should properly reverse deep merge', () => {
       const foo = { foo: 'bar', obj: {}, arr: [] };
