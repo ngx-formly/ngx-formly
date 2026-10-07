@@ -29,6 +29,12 @@ export class AppComponent {
 }
 ```
 
+## Defaults
+
+Schema `default` values fill undefined model properties when Formly builds or rebuilds the form, including after replacing the model or calling `options.resetModel({})`. Existing values, including `null`, `false`, `0`, and empty strings, are preserved. Fields with `resetOnHide: true` receive defaults only while visible. This includes fields in the selected `oneOf` branch.
+
+If restoring a default hides another field with `resetOnHide: true`, any default restored for that field during the same rebuild is cleared.
+
 ## Demo
 
 See [JSON Schema Examples](https://formly.dev/docs/examples/advanced/json-schema).

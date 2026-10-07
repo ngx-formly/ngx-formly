@@ -41,7 +41,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   checkExpressions?: (field: FormlyFieldConfig, ingoreCache?: boolean) => void;
   _viewContainerRef?: ViewContainerRef;
   _injector?: Injector;
-  _hiddenFieldsForCheck?: { field: FormlyFieldConfigCache; default?: boolean }[];
+  _hiddenFieldsForCheck?: { field: FormlyFieldConfigCache; default?: boolean; emitEvent?: boolean }[];
   _initialModel?: any;
   _detectChanges?: (field: FormlyFieldConfig) => void;
 }

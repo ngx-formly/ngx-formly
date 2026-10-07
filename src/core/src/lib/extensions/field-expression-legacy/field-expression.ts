@@ -15,7 +15,7 @@ import { isObservable, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../models';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
-import { UntypedFormArray } from '@angular/forms';
+import { AbstractControl, UntypedFormArray } from '@angular/forms';
 
 export class FieldExpressionExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
@@ -85,6 +85,8 @@ export class FieldExpressionExtension implements FormlyExtension {
           // ponytail: initial-tree budget; add an override if valid dynamic forms need more passes.
           const maxPasses = Math.max(100, 2 * this.countFields(field));
           const options = field.options;
+          // Rebuilds preserve supplied values, but defaults may need clearing after visibility changes.
+          const restoredDefaults = ignoreCache ? new Set<AbstractControl>() : undefined;
           const fieldChanged = this.checkExpressions(f, ignoreCache) || options._hiddenFieldsForCheck.length > 0;
           let passes = 0;
           do {
@@ -95,7 +97,9 @@ export class FieldExpressionExtension implements FormlyExtension {
 
             options._hiddenFieldsForCheck
               .sort((f) => (f.field.hide ? -1 : 1))
-              .forEach((f) => this.changeHideState(f.field, f.field.hide ?? f.default, !ignoreCache));
+              .forEach((f) =>
+                this.changeHideState(f.field, f.field.hide ?? f.default, !ignoreCache, f.emitEvent, restoredDefaults),
+              );
             options._hiddenFieldsForCheck = [];
             if (fieldChanged) {
               this.checkExpressions(field);
@@ -178,8 +182,20 @@ export class FieldExpressionExtension implements FormlyExtension {
 
     let fieldChanged = false;
     if (field._expressions) {
+      const hide = field.hide;
       for (const key of Object.keys(field._expressions)) {
         field._expressions[key].callback?.(ignoreCache) && (fieldChanged = true);
+      }
+
+      if (ignoreCache && field._expressions.hide && hide === false && field.hide === false) {
+        let parent = field.parent;
+        while (parent && !parent.hide) {
+          parent = parent.parent;
+        }
+        if (!parent) {
+          // Restore defaults after rebuilding without reporting a visibility change.
+          field.options._hiddenFieldsForCheck.push({ field, emitEvent: false });
+        }
       }
     }
     field.fieldGroup?.forEach((f) => this.checkExpressions(f, ignoreCache) && (fieldChanged = true));
@@ -199,11 +215,18 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private changeHideState(field: FormlyFieldConfigCache, hide: boolean, resetOnHide: boolean) {
+  private changeHideState(
+    field: FormlyFieldConfigCache,
+    hide: boolean,
+    resetOnHide: boolean,
+    emitEvent = true,
+    restoredDefaults?: Set<AbstractControl>,
+  ) {
+    hide = field.hide || hide;
     if (field.fieldGroup) {
       field.fieldGroup
         .filter((f: FormlyFieldConfigCache) => f && !f._expressions.hide)
-        .forEach((f) => this.changeHideState(f, hide, resetOnHide));
+        .forEach((f) => this.changeHideState(f, hide, resetOnHide, emitEvent, restoredDefaults));
     }
 
     if (field.formControl && hasKey(field)) {
@@ -215,8 +238,9 @@ export class FieldExpressionExtension implements FormlyExtension {
 
       if (hide === true && (!c._fields || c._fields.every((f) => !!f._hide))) {
         unregisterControl(field, true);
-        if (resetOnHide && field.resetOnHide) {
+        if ((resetOnHide || restoredDefaults?.has(c)) && field.resetOnHide) {
           assignFieldValue(field, undefined);
+          restoredDefaults?.delete(c);
           field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
           field.options.fieldChanges.next({ value: undefined, field, type: 'valueChanges' });
           if (field.fieldGroup && field.formControl instanceof UntypedFormArray) {
@@ -226,6 +250,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       } else if (hide === false) {
         if (field.resetOnHide && !isUndefined(field.defaultValue) && isUndefined(getFieldValue(field))) {
           assignFieldValue(field, field.defaultValue);
+          restoredDefaults?.add(c);
         }
         registerControl(field, undefined, true);
         if (field.resetOnHide && field.fieldArray && field.fieldGroup?.length !== field.model?.length) {
@@ -234,7 +259,7 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
     }
 
-    if (field.options.fieldChanges) {
+    if (emitEvent && field.options.fieldChanges) {
       field.options.fieldChanges.next(<FormlyValueChangeEvent>{ field, type: 'hidden', value: hide });
     }
   }

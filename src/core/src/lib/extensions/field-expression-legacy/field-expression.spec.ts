@@ -168,6 +168,145 @@ describe('FieldExpressionExtension', () => {
   });
 
   describe('expressions: field visibility', () => {
+    it.each([
+      { expressions: { hide: '!!model.hidden' } },
+      { expressions: { hide: ({ model }: FormlyFieldConfig) => !!model.hidden } },
+      { hideExpression: '!!model.hidden' },
+    ])('should restore defaults on rebuild and reset with %p', (config) => {
+      const field = buildField({ key: 'foo', defaultValue: 'default', ...config });
+
+      field.parent.model = {};
+      field.options.build();
+      expect(field.model).toEqual({ foo: 'default' });
+      expect(field.formControl.value).toBe('default');
+
+      field.options.resetModel({});
+      expect(field.model).toEqual({ foo: 'default' });
+      expect(field.formControl.value).toBe('default');
+
+      delete field.model.foo;
+      field.options.checkExpressions(field.parent);
+      expect(field.model).toEqual({});
+
+      field.parent.model = { hidden: true };
+      field.options.build();
+      expect(field.hide).toBe(true);
+      expect(field.model).toEqual({ hidden: true });
+      expect(field.form.get('foo')).toBeNull();
+    });
+
+    it.each([null, false, 0, ''])('should preserve supplied value %p when rebuilding a visible field', (value) => {
+      const field = buildField({ key: 'foo', defaultValue: 'default', expressions: { hide: () => false } });
+
+      field.parent.model = { foo: value };
+      field.options.build();
+
+      expect(field.model).toEqual({ foo: value });
+      expect(field.formControl.value).toBe(value);
+    });
+
+    it('should clear restored defaults when a later rebuild pass hides their fields', () => {
+      const field = buildField({
+        model: { mode: 'show' },
+        fieldGroup: [
+          { key: 'mode', defaultValue: 'hide', expressions: { hide: () => false } },
+          {
+            key: 'conditional',
+            defaultValue: 'default value',
+            expressions: { hide: ({ model }) => model.mode === 'hide' },
+          },
+        ],
+      });
+      expect(field.model).toEqual({ mode: 'show', conditional: 'default value' });
+
+      field.parent.model = {};
+      field.options.build();
+
+      expect(field.model).toEqual({ mode: 'hide' });
+      expect(field.fieldGroup[1].hide).toBe(true);
+      expect(field.fieldGroup[1].formControl.value).toBeUndefined();
+      expect(field.form.get('conditional')).toBeNull();
+
+      field.options.resetModel({ mode: 'show' });
+      field.options.resetModel({});
+      expect(field.model).toEqual({ mode: 'hide' });
+      expect(field.form.value).toEqual({ mode: 'hide' });
+    });
+
+    it.each([null, false, 0, '', 'default value'])(
+      'should preserve supplied value %p when a restored default hides its group',
+      (value) => {
+        const field = buildField({
+          model: { mode: 'show' },
+          fieldGroup: [
+            { key: 'mode', defaultValue: 'hide', expressions: { hide: () => false } },
+            {
+              key: 'group',
+              expressions: { hide: (field) => field.parent.model.mode === 'hide' },
+              fieldGroup: [
+                { key: 'supplied', defaultValue: 'default value' },
+                { key: 'restored', defaultValue: 'default value' },
+                { key: 'retained', defaultValue: 'keep', resetOnHide: false },
+              ],
+            },
+          ],
+        });
+
+        field.parent.model = { group: { supplied: value } };
+        field.options.build();
+
+        expect(field.model).toEqual({ mode: 'hide', group: { supplied: value, retained: 'keep' } });
+        expect(field.fieldGroup[1].hide).toBe(true);
+        expect(field.form.get('group')).toBeNull();
+      },
+    );
+
+    it.each([false, true])('should clear a shared restored default only if every field is hidden: %p', (hideBoth) => {
+      const field = buildField({
+        model: { mode: 'show' },
+        fieldGroup: [
+          { key: 'mode', defaultValue: 'hide', expressions: { hide: () => false } },
+          {
+            key: 'shared',
+            expressions: { hide: ({ model }) => hideBoth && model.mode === 'hide' },
+          },
+          {
+            key: 'shared',
+            defaultValue: 'default value',
+            expressions: { hide: ({ model }) => model.mode === 'hide' },
+          },
+        ],
+      });
+
+      field.parent.model = {};
+      field.options.build();
+
+      expect(field.model).toEqual(hideBoth ? { mode: 'hide' } : { mode: 'hide', shared: 'default value' });
+      expect(field.form.get('shared')).toBe(hideBoth ? null : field.fieldGroup[1].formControl);
+    });
+
+    it('should restore defaults under an unchanged visible group', () => {
+      const field = buildField({
+        expressions: { hide: '!!model.hidden' },
+        fieldGroup: [
+          { key: 'foo', defaultValue: 'default' },
+          { key: 'bar', defaultValue: 'other', expressions: { hide: () => false } },
+          { key: 'hidden', defaultValue: 'hidden', expressions: { hide: () => true } },
+          { hide: true, fieldGroup: [{ key: 'secret', defaultValue: 'hidden' }] },
+        ],
+      });
+      const events = [];
+      const subscription = field.options.fieldChanges.subscribe((event) => events.push(event));
+
+      field.parent.model = {};
+      field.options.build();
+
+      expect(field.model).toEqual({ foo: 'default', bar: 'other' });
+      expect(field.formControl.value).toEqual({ foo: 'default', bar: 'other' });
+      expect(events.filter(({ type }) => type === 'hidden')).toEqual([]);
+      subscription.unsubscribe();
+    });
+
     it('should evaluate string expression', () => {
       const field = buildField({
         key: 'text',

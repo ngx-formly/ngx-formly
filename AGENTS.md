@@ -37,6 +37,10 @@ Replace the example spec or adapter with the affected one. UI library builds res
 
 `npm run demo` opens a browser. `npm run e2e:ssr` builds the SSR application, starts it on port 4200, runs Cypress, and stops the server.
 
+### Testing in a consuming application
+
+Prefer `npm link` to test local Formly changes in a consuming application. Build core first, then any affected UI adapters, and link the built packages under `dist/@ngx-formly/` from the consumer. Verify that all adapters resolve the linked core and that Angular and RxJS resolve to a single instance. Keep the consumer's manifests and lockfile unchanged, remove the temporary links after validation, and restore its pinned packages. Follow the consumer's instructions for its running development server.
+
 ## Making changes
 
 - Trace the affected flow and callers before editing. Reuse existing utilities and fix shared behavior in core; keep UI-specific behavior in the corresponding adapter.

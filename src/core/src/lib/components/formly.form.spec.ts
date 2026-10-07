@@ -15,7 +15,7 @@ import {
 import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import 'jest-extended';
 import { FormlyOnPushComponent } from './formly.field.spec';
-import { config as rxjsConfig } from 'rxjs';
+import { config as rxjsConfig, of } from 'rxjs';
 
 type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
@@ -145,6 +145,46 @@ describe('FormlyForm Component', () => {
   });
 
   describe('model input', () => {
+    it.each(['false', of(false)])('should restore defaults on model replacement with hide expression %p', (hide) => {
+      const { form, fields, options, setInputs, query } = renderComponent({
+        fields: [{ key: 'foo', type: 'input', defaultValue: 'default', expressions: { hide } }],
+      });
+      const events = [];
+      const subscription = options.fieldChanges.subscribe((event) => events.push(event));
+      const model = {};
+
+      setInputs({ model });
+
+      expect(model).toEqual({ foo: 'default' });
+      expect(form.value).toEqual({ foo: 'default' });
+      expect(query<HTMLInputElement>('input').nativeElement.value).toBe('default');
+      expect(fields[0].hide).toBe(false);
+      expect(events.filter(({ type }) => type === 'hidden')).toEqual([]);
+
+      form.get('foo').setValue(undefined);
+      options.checkExpressions(fields[0].parent);
+      expect(model).toEqual({});
+      expect(form.get('foo').value).toBeUndefined();
+      subscription.unsubscribe();
+    });
+
+    it('should not restore observable expression defaults when the new model hides their parent', () => {
+      const { setInputs, queryAll } = renderComponent({
+        fields: [
+          {
+            expressions: { hide: '!!model.hidden' },
+            fieldGroup: [{ key: 'foo', type: 'input', defaultValue: 'default', expressions: { hide: of(false) } }],
+          },
+        ],
+      });
+      const model = { hidden: true };
+
+      setInputs({ model });
+
+      expect(model).toEqual({ hidden: true });
+      expect(queryAll('input')).toHaveLength(0);
+    });
+
     it('should update the form value on model change', () => {
       const { form, setInputs } = renderComponent({
         fields: [
