@@ -23,6 +23,25 @@ const renderComponent = (field: FormlyFieldConfig, config = {}) => {
 };
 
 describe('Array Field Type', () => {
+  it('should restore array and item defaults when resetting an unchanged visible field', () => {
+    const { field, queryAll, detectChanges } = renderComponent({
+      key: 'items',
+      type: 'array',
+      defaultValue: [{}],
+      expressions: { hide: () => false },
+      fieldArray: {
+        fieldGroup: [{ key: 'foo', type: 'input', defaultValue: 'default', expressions: { hide: () => false } }],
+      },
+    });
+
+    field.options.resetModel({});
+    detectChanges();
+
+    expect(field.model).toEqual([{ foo: 'default' }]);
+    expect(field.formControl.value).toEqual([{ foo: 'default' }]);
+    expect(queryAll('input')).toHaveLength(1);
+  });
+
   it('should render fieldGroup', () => {
     const { query, queryAll } = renderComponent({
       key: 'foo',

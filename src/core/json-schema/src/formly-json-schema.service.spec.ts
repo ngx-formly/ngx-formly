@@ -1648,7 +1648,7 @@ describe('Service: FormlyJsonschema', () => {
         });
 
         it('should take account of default value', () => {
-          const { field, detectChanges } = renderComponent({
+          const { field, fixture, detectChanges } = renderComponent({
             schema: {
               type: 'object',
               oneOf: [
@@ -1667,6 +1667,14 @@ describe('Service: FormlyJsonschema', () => {
           expect(fooField.hide).toBe(false);
           expect(barField.hide).toBe(true);
           expect(field.model).toEqual({ foo: 'foo' });
+
+          (fixture.componentInstance as any).model = {};
+          detectChanges();
+
+          expect(enumField.formControl.value).toBe(0);
+          expect(field.model).toEqual({ foo: 'foo' });
+          expect(field.formControl.value).toEqual({ foo: 'foo' });
+          expect(field.formControl.get('bar')).toBeNull();
 
           enumField.formControl.setValue(1);
           detectChanges();

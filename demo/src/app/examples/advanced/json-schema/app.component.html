@@ -10,5 +10,6 @@
   <form [formGroup]="form" (ngSubmit)="submit()">
     <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
     <button type="submit" class="btn btn-primary submit-button" [disabled]="!form.valid">Submit</button>
+    <button type="button" class="btn btn-secondary" (click)="options.resetModel({})">Reset to defaults</button>
   </form>
 }
