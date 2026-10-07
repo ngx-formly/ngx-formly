@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0](https://github.com/ngx-formly/ngx-formly/compare/v8.0.0...v9.0.0) (2026-10-07)
+
+### Breaking changes
+
+* **core:** Angular 20 or newer is now required. Upgrade Angular before updating all `@ngx-formly/*` packages together to v9. Applications on Angular 19 should remain on Formly v8.
+* **material, primeng, ng-zorro-antd:** The integrations now require version 20 or newer of their respective UI libraries.
+* **kendo, nativescript:** Kendo label, dropdown, and input packages now require version 19.1 or newer. NativeScript requires `@nativescript/angular` 20 or newer.
+* **primeng:** Remove `monthNavigator`, `yearNavigator`, and `yearRange` from datepicker props. PrimeNG 20 removed these inputs.
+* **primeng, kendo, ng-zorro-antd:** PrimeNG datepickers and selects, Kendo numeric inputs, and NG-ZORRO numeric inputs now assign the field ID to the focusable input and append `-container` to the outer component ID. Update custom selectors that target the outer component. PrimeNG text inputs, textareas, datepickers, and selects now fill their available width.
+
+See the [v9 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v9.0.0/UPGRADE-9.0.md) for migration steps, including PrimeNG theme imports and custom NG-ZORRO numeric inputs. These integration updates are included in [#4196](https://github.com/ngx-formly/ngx-formly/pull/4196).
+
+### Features
+
+* **primeng, kendo:** Support `props.multiple` on select fields, using an array model value, and honor disabled options ([#4196](https://github.com/ngx-formly/ngx-formly/pull/4196)).
+* **demo:** Add shared autocomplete, datepicker, native-select, slider, and toggle examples across the UI integrations ([#4196](https://github.com/ngx-formly/ngx-formly/pull/4196)).
+
+### Bug fixes
+
+* **core:** bound chained hide expression checks ([f262a27](https://github.com/ngx-formly/ngx-formly/commit/f262a27768d69149f692da71631360284c89dfff))
+* **core:** restore defaults safely on model rebuild ([#4203](https://github.com/ngx-formly/ngx-formly/issues/4203)) ([14f4bd1](https://github.com/ngx-formly/ngx-formly/commit/14f4bd1e69f9bc3b5dd6ee4f249d9e770df6426b))
+* **ionic:** Preserve labels and required markers, and prevent opening a disabled datetime field ([#4196](https://github.com/ngx-formly/ngx-formly/pull/4196)).
+* **primeng:** Render field descriptions and correct control widths and validation-message styling ([#4196](https://github.com/ngx-formly/ngx-formly/pull/4196)).
+
+Hide-expression chains now settle within one check. Expressions that exceed the internal pass limit throw an error instead of continuing indefinitely; see [circular hide expressions](https://github.com/ngx-formly/ngx-formly/blob/v9.0.0/docs/expression-properties.md#circular-hide-expressions) for recovery guidance.
+
 ## [8.0.0](https://github.com/ngx-formly/ngx-formly/compare/v7.1.0...v8.0.0) (2026-09-08)
 
 ### ⚠ BREAKING CHANGES
