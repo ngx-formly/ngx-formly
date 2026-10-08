@@ -57,6 +57,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 | Angular version | Formly version       | Migration                          |
 | --------------- | -------------------- | ---------------------------------- |
+| Angular >= 21   | `@ngx-formly/core@10.x` | [Upgrade to v10](UPGRADE-10.0.md)    |
 | Angular >= 20   | `@ngx-formly/core@9.x` | [Upgrade to v9](UPGRADE-9.0.md)      |
 | Angular >= 19   | `@ngx-formly/core@8.x` | [Upgrade to v8](UPGRADE-8.0.md)      |
 | Angular >= 18   | `@ngx-formly/core@7.x` | [Upgrade to v7](UPGRADE-7.0.md)      |
@@ -66,6 +67,16 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 | Angular >= 5    | `@ngx-formly/core@3.x` |                                    |
 | Angular >= 4    | `@ngx-formly/core@2.x` | [Upgrade to v2](UPGRADE-2.0.md)      |
 | Angular >= 2    | `ng-formly@1.x`       |                                    |
+
+#### Upgrading to v10
+
+Formly v10 requires Angular 21 or newer. Upgrade Angular first, then update all
+`@ngx-formly/*` packages used by your application together to v10.
+The Material, PrimeNG, and NG-ZORRO integrations require version 21 or newer of
+their respective UI libraries. Kendo requires version 21.4.1 or newer, and NativeScript
+requires `@nativescript/angular` 21 or newer. Applications staying on Angular 20 should use Formly v9.
+
+See the [v10 upgrade guide](UPGRADE-10.0.md) for migration steps.
 
 #### Upgrading to v9
 

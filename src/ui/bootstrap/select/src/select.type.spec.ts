@@ -74,6 +74,32 @@ describe('ui-bootstrap: Select Type', () => {
     expect(options[selectedIndex].text).toEqual('Placeholder option');
   });
 
+  it.each([false, true])('should bind grouped options with multiple=%s', (multiple) => {
+    const { query, field } = renderComponent({
+      key: 'sportId',
+      type: 'select',
+      defaultValue: multiple ? [2] : 2,
+      props: {
+        multiple,
+        options: [
+          { label: 'Soccer', value: 1, group: 'Sports' },
+          { label: 'Basketball', value: 2, group: 'Sports' },
+          { label: 'Unavailable', value: 3, group: 'Sports', disabled: true },
+        ],
+      },
+    });
+    const select = query<HTMLSelectElement>('select').nativeElement;
+
+    expect(query('optgroup').attributes.label).toBe('Sports');
+    expect(select.options[1].selected).toBe(true);
+    expect(select.options[2].disabled).toBe(true);
+
+    select.options[1].selected = false;
+    select.options[0].selected = true;
+    select.dispatchEvent(new Event('change'));
+    expect(field.formControl.value).toEqual(multiple ? [1] : 1);
+  });
+
   it(`should call change callback after formControl update`, () => {
     const changeFnSpy = jest.fn();
     const { query, field } = renderComponent({

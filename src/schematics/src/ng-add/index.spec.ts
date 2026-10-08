@@ -20,7 +20,18 @@ describe('ng-add-schematic', () => {
     const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     expect(packageJson.dependencies['@angular/forms']).toBeDefined();
-    expect(packageJson.dependencies['@ngx-formly/core']).toBeDefined();
+    expect(packageJson.dependencies['@ngx-formly/core']).toBe('^10.0.0');
+  });
+
+  it('should add Angular 21 forms when missing', async () => {
+    const packageJson = JSON.parse(appTree.readContent('/package.json'));
+    delete packageJson.dependencies['@angular/forms'];
+    appTree.overwrite('/package.json', JSON.stringify(packageJson));
+
+    const tree = await runner.runSchematic('ng-add', {}, appTree);
+    const updatedPackageJson = JSON.parse(tree.readContent('/package.json'));
+
+    expect(updatedPackageJson.dependencies['@angular/forms']).toBe('^21.0.0');
   });
 
   it('should not add a theme by default to package.json', async () => {
@@ -64,13 +75,16 @@ describe('ng-add-schematic', () => {
     );
   });
 
-  it('should add UI theme to package.json', async () => {
-    const tree = await runner.runSchematic('ng-add', { uiTheme: 'bootstrap' }, appTree);
+  it.each(['bootstrap', 'material', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd', 'nativescript'])(
+    'should install %s with the same version as core',
+    async (uiTheme) => {
+      const tree = await runner.runSchematic('ng-add', { uiTheme }, appTree);
 
-    const packageJson = JSON.parse(tree.get('/package.json').content.toString());
+      const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
-    expect(packageJson.dependencies['@ngx-formly/bootstrap']).toBeDefined();
-  });
+      expect(packageJson.dependencies[`@ngx-formly/${uiTheme}`]).toBe(packageJson.dependencies['@ngx-formly/core']);
+    },
+  );
 
   it('should add UI theme to root app module', async () => {
     const tree = await runner.runSchematic('ng-add', { uiTheme: 'bootstrap' }, appTree);

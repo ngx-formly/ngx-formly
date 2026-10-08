@@ -73,7 +73,7 @@ describe('FormlyField Component', () => {
 
     const fixture = TestBed.createComponent(FormlyOnPushComponent);
     const detectChanges = () => fixture.detectChanges();
-    expect(detectChanges).not.toThrowError();
+    expect(detectChanges).not.toThrow();
   });
 
   describe('host attrs', () => {
@@ -216,7 +216,7 @@ describe('FormlyField Component', () => {
 
   it('should not throw error when field is null', () => {
     const render = () => renderComponent(null);
-    expect(render).not.toThrowError();
+    expect(render).not.toThrow();
   });
 
   it('should render field component with async wrapper', () => {

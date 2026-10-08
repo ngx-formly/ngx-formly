@@ -16,34 +16,36 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   selector: 'formly-field-select',
   template: `
     <ng-template #fieldTypeTemplate>
-      <select
-        *ngIf="props.multiple; else singleSelect"
-        class="form-select"
-        multiple
-        [formControl]="formControl"
-        [compareWith]="props.compareWith"
-        [class.is-invalid]="showError"
-        [formlyAttributes]="field"
-        [attr.aria-describedby]="id + '-formly-validation-error'"
-        [attr.aria-invalid]="showError"
-      >
-        <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
-          <ng-container *ngFor="let opt of opts">
-            <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
-              {{ opt.label }}
-            </option>
-            <ng-template #optgroup>
-              <optgroup [label]="opt.label">
-                <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
-                  {{ child.label }}
+      @if (props.multiple) {
+        <select
+          class="form-select"
+          multiple
+          [formControl]="formControl"
+          [compareWith]="props.compareWith"
+          [class.is-invalid]="showError"
+          [formlyAttributes]="field"
+          [attr.aria-describedby]="id + '-formly-validation-error'"
+          [attr.aria-invalid]="showError"
+        >
+          @if (props.options | formlySelectOptions: field | async; as opts) {
+            @for (opt of opts; track opt) {
+              @if (!opt.group) {
+                <option [ngValue]="opt.value" [disabled]="opt.disabled">
+                  {{ opt.label }}
                 </option>
-              </optgroup>
-            </ng-template>
-          </ng-container>
-        </ng-container>
-      </select>
-
-      <ng-template #singleSelect>
+              } @else {
+                <optgroup [label]="opt.label">
+                  @for (child of opt.group; track child) {
+                    <option [ngValue]="child.value" [disabled]="child.disabled">
+                      {{ child.label }}
+                    </option>
+                  }
+                </optgroup>
+              }
+            }
+          }
+        </select>
+      } @else {
         <select
           class="form-select"
           [formControl]="formControl"
@@ -53,23 +55,28 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
           [attr.aria-describedby]="id + '-formly-validation-error'"
           [attr.aria-invalid]="showError"
         >
-          <option *ngIf="props.placeholder" [ngValue]="undefined">{{ props.placeholder }}</option>
-          <ng-container *ngIf="props.options | formlySelectOptions: field | async as opts">
-            <ng-container *ngFor="let opt of opts">
-              <option *ngIf="!opt.group; else optgroup" [ngValue]="opt.value" [disabled]="opt.disabled">
-                {{ opt.label }}
-              </option>
-              <ng-template #optgroup>
+          @if (props.placeholder) {
+            <option [ngValue]="undefined">{{ props.placeholder }}</option>
+          }
+          @if (props.options | formlySelectOptions: field | async; as opts) {
+            @for (opt of opts; track opt) {
+              @if (!opt.group) {
+                <option [ngValue]="opt.value" [disabled]="opt.disabled">
+                  {{ opt.label }}
+                </option>
+              } @else {
                 <optgroup [label]="opt.label">
-                  <option *ngFor="let child of opt.group" [ngValue]="child.value" [disabled]="child.disabled">
-                    {{ child.label }}
-                  </option>
+                  @for (child of opt.group; track child) {
+                    <option [ngValue]="child.value" [disabled]="child.disabled">
+                      {{ child.label }}
+                    </option>
+                  }
                 </optgroup>
-              </ng-template>
-            </ng-container>
-          </ng-container>
+              }
+            }
+          }
         </select>
-      </ng-template>
+      }
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -77,6 +77,54 @@ describe('ui-ng-zorro-antd: Input Type', () => {
     });
   });
 
+  it('should bind numeric values and clear the model', () => {
+    const { query, field, detectChanges } = renderComponent({
+      key: 'amount',
+      type: 'number',
+      defaultValue: 0,
+      props: { label: 'Amount', placeholder: 'Enter amount' },
+    });
+    const input = query<HTMLInputElement>('nz-input-number input').nativeElement;
+
+    expect(input.value).toBe('0');
+    expect(input.placeholder).toBe('Enter amount');
+    expect(query('label').attributes.for).toBe(input.id);
+
+    input.value = '-12.5';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    detectChanges();
+    expect(field.formControl.value).toBe(-12.5);
+    expect(field.model.amount).toBe(-12.5);
+
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    detectChanges();
+    expect(field.formControl.value).toBeNull();
+    expect(field.model.amount).toBeNull();
+
+    field.formControl.disable();
+    detectChanges();
+    expect(input.disabled).toBe(true);
+  });
+
+  it('should preserve negative fractional values while typing', () => {
+    const { query, field, detectChanges } = renderComponent({
+      key: 'amount',
+      type: 'number',
+    });
+    const input = query<HTMLInputElement>('nz-input-number input').nativeElement;
+
+    for (const character of '-0.5') {
+      input.value += character;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      detectChanges();
+    }
+
+    expect(input.value).toBe('-0.5');
+    expect(field.formControl.value).toBe(-0.5);
+    expect(field.model.amount).toBe(-0.5);
+  });
+
   it('should add "ng-invalid" class on invalid', () => {
     const { query } = renderComponent({
       key: 'name',

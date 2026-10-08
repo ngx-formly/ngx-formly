@@ -20,13 +20,10 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
         [nzPlaceHolder]="props.placeholder"
         [formControl]="formControl"
         [formlyAttributes]="field"
-        [nzFormatter]="nzFormatter"
       ></nz-input-number>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {
-  nzFormatter = (value: number) => value?.toString() || '';
-}
+export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {}
