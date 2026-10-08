@@ -66,6 +66,9 @@ NG-ZORRO 21 removed `ng-zorro-antd/input-number-legacy`. Formly's built-in numer
 `NzInputNumberModule` from `ng-zorro-antd/input-number`. Existing Formly fields using `type: 'input'` and
 `props.type: 'number'` keep the same configuration.
 
+Formly's numeric input now uses NG-ZORRO's default formatter and no longer exposes `FormlyFieldInput.nzFormatter`.
+Custom templates that referenced this helper should remove the `[nzFormatter]="nzFormatter"` binding.
+
 If you copied the previous Formly numeric-input implementation into a custom field, update the module import:
 
 ```diff

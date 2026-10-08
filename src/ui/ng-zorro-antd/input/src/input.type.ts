@@ -26,6 +26,4 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {
-  nzFormatter = (value: number) => value?.toString() || '';
-}
+export class FormlyFieldInput extends FieldType<FieldTypeConfig<InputProps>> {}
