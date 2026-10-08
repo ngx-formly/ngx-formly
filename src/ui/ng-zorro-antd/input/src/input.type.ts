@@ -20,7 +20,6 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
         [nzPlaceHolder]="props.placeholder"
         [formControl]="formControl"
         [formlyAttributes]="field"
-        [nzFormatter]="nzFormatter"
       ></nz-input-number>
     }
   `,

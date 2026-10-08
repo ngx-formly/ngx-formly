@@ -107,6 +107,24 @@ describe('ui-ng-zorro-antd: Input Type', () => {
     expect(input.disabled).toBe(true);
   });
 
+  it('should preserve negative fractional values while typing', () => {
+    const { query, field, detectChanges } = renderComponent({
+      key: 'amount',
+      type: 'number',
+    });
+    const input = query<HTMLInputElement>('nz-input-number input').nativeElement;
+
+    for (const character of '-0.5') {
+      input.value += character;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      detectChanges();
+    }
+
+    expect(input.value).toBe('-0.5');
+    expect(field.formControl.value).toBe(-0.5);
+    expect(field.model.amount).toBe(-0.5);
+  });
+
   it('should add "ng-invalid" class on invalid', () => {
     const { query } = renderComponent({
       key: 'name',
