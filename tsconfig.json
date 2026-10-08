@@ -16,7 +16,6 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
-    "lib": ["ES2022", "DOM"],
     "paths": {
       "@ngx-formly/*": ["./src/*/src/private_api", "./src/*/src/public_api", "./src/ui/*/src/public_api"],
       "@assets/*": ["./demo/src/assets/*"],

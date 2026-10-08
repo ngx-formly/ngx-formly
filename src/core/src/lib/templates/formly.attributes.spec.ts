@@ -136,7 +136,7 @@ describe('FormlyAttributes Component', () => {
     });
 
     it('should not fail without props', () => {
-      expect(() => renderComponent({})).not.toThrowError();
+      expect(() => renderComponent({})).not.toThrow();
     });
 
     it('should extract RegExp source when setting pattern attribute', () => {

@@ -1,2 +1,2 @@
-export const angularVersion = '^20.0.0';
-export const ngxFormlyVersion = '^9.0.0';
+export const angularVersion = '^21.0.0';
+export const ngxFormlyVersion = '^10.0.0';

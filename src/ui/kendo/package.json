@@ -7,8 +7,8 @@
   },
   "peerDependencies": {
     "@ngx-formly/core": "0.0.0-FORMLY-VERSION",
-    "@progress/kendo-angular-label": ">=19.1.0",
-    "@progress/kendo-angular-dropdowns": ">=19.1.0",
-    "@progress/kendo-angular-inputs": ">=19.1.0"
+    "@progress/kendo-angular-label": ">=21.4.1",
+    "@progress/kendo-angular-dropdowns": ">=21.4.1",
+    "@progress/kendo-angular-inputs": ">=21.4.1"
   }
 }

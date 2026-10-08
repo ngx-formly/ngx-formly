@@ -7,8 +7,8 @@ describe('Server side rendering', () => {
       cy.get('formly-app-ui [ngh]').should('not.exist');
       cy.get('input[placeholder="input placeholder"]')
         .should('be.enabled')
-        .type('Angular 20')
-        .should('have.value', 'Angular 20')
+        .type('Angular 21')
+        .should('have.value', 'Angular 21')
         .and('have.class', 'ng-dirty');
     });
   });
