@@ -81,6 +81,9 @@ Applications using only the built-in Formly type do not need to add this import 
 
 ## 5. Verify the upgrade
 
+JSON Schema fields that allow both a numeric type and `null` now preserve `null` when cleared.
+If your application treated a missing property as a cleared nullable number, handle explicit `null` values too.
+
 Build your application and run its tests. Check date selection, themes, numeric inputs, labels, disabled states,
 and validation messages in each UI integration you use. Check both single- and multiple-selection forms.
 

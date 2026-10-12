@@ -208,14 +208,14 @@ export class FormlyJsonschema {
       case 'integer': {
         field.parsers = [
           (v: string | number, f: FormlyFieldConfig) => {
-            v = toNumber(v);
+            v = v === '' && types.includes('null') ? null : toNumber(v);
 
             if (v === null && f) {
               const input =
                 typeof document !== 'undefined' && f.id
                   ? document.querySelector<HTMLInputElement>(`#${f.id}`)
                   : undefined;
-              if (input && input.validity && !input.validity.badInput) {
+              if (input && input.validity && !input.validity.badInput && !types.includes('null')) {
                 v = undefined;
               }
 

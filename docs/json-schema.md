@@ -39,6 +39,12 @@ If restoring a default hides another field with `resetOnHide: true`, any default
 
 See [JSON Schema Examples](https://formly.dev/docs/examples/advanced/json-schema).
 
+## Nullable numbers
+
+Clearing a field with `type: ["number", "null"]` or `type: ["integer", "null"]` stores `null` in the model.
+An untouched property remains undefined unless the schema supplies a default. Non-nullable numeric fields
+continue to store undefined when cleared. See the nullable tab in the JSON Schema example.
+
 ## Customize JSON Schema output
 
 To adjust the generated `FormlyFieldConfig` use one of the following options:
