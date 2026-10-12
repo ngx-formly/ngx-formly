@@ -1,6 +1,8 @@
 import { FormGroup } from '@angular/forms';
 import { FormlyConfig, FormlyFormBuilder } from '../core';
 import { ConfigOption, FormlyFieldConfigCache } from '../models';
+import { createBuilder as createFormlyBuilder } from '@ngx-formly/core/testing';
+import { of } from 'rxjs';
 
 function createBuilder(option?: ConfigOption) {
   const config = new FormlyConfig();
@@ -10,6 +12,71 @@ function createBuilder(option?: ConfigOption) {
 }
 
 describe('FormlyFormBuilder service', () => {
+  it.each(['filled', undefined])('should emit one initial status for model value %p', (value) => {
+    const builder = createFormlyBuilder();
+    const form = new FormGroup({});
+    const status = jest.fn();
+    const valueChanged = jest.fn();
+    form.statusChanges.subscribe(status);
+    form.valueChanges.subscribe(valueChanged);
+    const field: FormlyFieldConfigCache = {
+      form,
+      model: { name: value },
+      fieldGroup: [{ key: 'name', props: { required: true } }],
+    };
+
+    builder.build(field);
+    expect(status).toHaveBeenCalledTimes(1);
+    expect(status).toHaveBeenCalledWith(value === undefined ? 'INVALID' : 'VALID');
+    expect(valueChanged).toHaveBeenCalledTimes(1);
+    expect(valueChanged).toHaveBeenCalledWith({ name: value });
+
+    status.mockClear();
+    builder.build(field);
+    expect(status).not.toHaveBeenCalled();
+  });
+
+  it('should notify initial status without restarting async validation', () => {
+    const builder = createFormlyBuilder();
+    const form = new FormGroup({});
+    const status = jest.fn();
+    const validate = jest.fn(() => of(null));
+    form.statusChanges.subscribe(status);
+
+    builder.build({ form, fieldGroup: [], asyncValidators: { validation: [validate] } });
+    expect(status).toHaveBeenCalledTimes(1);
+    expect(status).toHaveBeenCalledWith('VALID');
+    expect(validate).toHaveBeenCalledTimes(1);
+  });
+
+  it('should retry initial status notification after a failed build', () => {
+    let fail = true;
+    const builder = createBuilder({
+      extensions: [
+        {
+          name: 'core',
+          extension: {
+            onPopulate: () => {
+              if (fail) {
+                throw new Error('Failed build');
+              }
+            },
+          },
+        },
+      ],
+    });
+    const form = new FormGroup({});
+    const status = jest.fn();
+    form.statusChanges.subscribe(status);
+    const field: FormlyFieldConfigCache = { form };
+
+    expect(() => builder.build(field)).toThrow('Failed build');
+    expect(status).not.toHaveBeenCalled();
+    fail = false;
+    builder.build(field);
+    expect(status).toHaveBeenCalledWith('VALID');
+  });
+
   it('should throw error when core extension is not registred', () => {
     const builder = createBuilder({});
 
