@@ -209,3 +209,7 @@ provideFormlyCore(
 ```
 
 The `withFormlyFieldExpression()` implementation parses and evaluates expressions without using `eval()` or `new Function()`.
+
+It supports optional property and index access, such as `model?.address?.city` and `model?.items?.[0]?.name`.
+A missing or null value returns undefined without evaluating later index expressions. Method calls are unsupported.
+The expression properties example enables this parser and uses `!model?.text` to disable a field.

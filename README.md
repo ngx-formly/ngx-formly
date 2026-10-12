@@ -32,6 +32,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 ## Docs
 
 - [Get Started](https://formly.dev/guide)
+- [CSP-safe expressions and optional chaining](docs/expression-properties.md#4-expression-evaluation)
 - [Themes](https://formly.dev/ui)
 - [Examples](https://formly.dev/examples)
 
