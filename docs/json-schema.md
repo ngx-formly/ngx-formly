@@ -31,6 +31,10 @@ export class AppComponent {
 
 ## Defaults
 
+Required string properties without a schema `default` remain undefined. `required` does not create an empty-string
+default. To initialize a string to an empty value, set `"default": ""` explicitly. Required object and array defaults
+still initialize their structure, including array rows required by `minItems`.
+
 Schema `default` values fill undefined model properties when Formly builds or rebuilds the form, including after replacing the model or calling `options.resetModel({})`. Existing values, including `null`, `false`, `0`, and empty strings, are preserved. Fields with `resetOnHide: true` receive defaults only while visible. This includes fields in the selected `oneOf` branch.
 
 If restoring a default hides another field with `resetOnHide: true`, any default restored for that field during the same rebuild is cleared.

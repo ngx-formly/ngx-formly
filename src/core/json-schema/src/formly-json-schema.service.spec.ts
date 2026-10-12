@@ -450,6 +450,58 @@ describe('Service: FormlyJsonschema', () => {
       });
 
       describe('required keyword', () => {
+        it('should leave required strings undefined without a schema default', () => {
+          const { field } = renderComponent({
+            schema: { type: 'object', required: ['name'], properties: { name: { type: 'string' } } },
+          });
+          const [name] = field.fieldGroup;
+
+          expect(name.defaultValue).toBeUndefined();
+          expect(field.model).toEqual({});
+          expect(name.formControl.hasError('required')).toBe(true);
+        });
+
+        it('should preserve explicit empty-string defaults', () => {
+          const { field } = renderComponent({
+            schema: { type: 'object', required: ['name'], properties: { name: { type: 'string', default: '' } } },
+          });
+
+          expect(field.fieldGroup[0].defaultValue).toBe('');
+          expect(field.model).toEqual({ name: '' });
+        });
+
+        it.each(['object', 'array', 'oneOf'])(
+          'should validate required children of a present optional %s without inventing strings',
+          (container) => {
+            const object: JSONSchema7 = {
+              type: 'object',
+              required: ['name'],
+              properties: { name: { type: 'string' }, other: { type: 'string' } },
+            };
+            const schema: JSONSchema7 = {
+              type: 'object',
+              properties: {
+                optional:
+                  container === 'array'
+                    ? { type: 'array', items: object }
+                    : container === 'oneOf'
+                      ? { type: 'object', oneOf: [object] }
+                      : object,
+              },
+            };
+            const model = { optional: container === 'array' ? [{ other: 'present' }] : { other: 'present' } };
+            const { field, fixture } = renderComponent({ schema, model });
+
+            expect(field.form.valid).toBe(false);
+            expect(field.model.optional).toEqual(container === 'array' ? [{ other: 'present' }] : { other: 'present' });
+
+            field.options.resetModel({});
+            fixture.detectChanges();
+            expect(field.model).toEqual({});
+            expect(field.form.valid).toBe(true);
+          },
+        );
+
         it('root object with required property', () => {
           const { field } = renderComponent({
             schema: {

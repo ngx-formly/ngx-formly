@@ -148,10 +148,6 @@ export class FormlyJsonschema {
           field.defaultValue = null;
           break;
         }
-        case 'string': {
-          field.defaultValue = '';
-          break;
-        }
         case 'object': {
           field.defaultValue = {};
           break;
