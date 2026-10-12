@@ -16,7 +16,15 @@ export const appConfig: ApplicationConfig = {
       withFormlyFieldSlider(),
       withFormlyFieldToggle(),
       additionalTypes,
-      { validationMessages: [{ name: 'required', message: 'This field is required' }] },
+      {
+        types: [
+          {
+            name: 'select',
+            defaultOptions: { props: { interface: 'popover', interfaceOptions: { size: 'cover' } } },
+          },
+        ],
+        validationMessages: [{ name: 'required', message: 'This field is required' }],
+      },
     ]),
   ],
 };

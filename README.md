@@ -33,6 +33,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 - [Get Started](https://formly.dev/guide)
 - [Themes](https://formly.dev/ui)
+- [Ionic select interface options](docs/properties-options.md#ionic-select-interfaces)
 - [Examples](https://formly.dev/examples)
 
 ## Resources
