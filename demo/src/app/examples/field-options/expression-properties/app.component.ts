@@ -31,6 +31,18 @@ export class AppComponent {
         'props.disabled': '!model.text',
       },
     },
+    {
+      key: 'protected',
+      expressions: { 'props.disabled': (field) => !field.parent.model.text },
+      fieldGroup: [
+        {
+          key: 'value',
+          type: 'input',
+          props: { label: 'Always disabled', placeholder: 'Stays disabled when its parent becomes enabled' },
+          expressions: { 'props.disabled': () => true },
+        },
+      ],
+    },
   ];
 
   submit() {

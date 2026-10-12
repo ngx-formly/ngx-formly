@@ -47,7 +47,12 @@ export class FieldExpressionExtension implements FormlyExtension {
         field._expressions[key] = {
           value$: (expr as Observable<any>).pipe(
             tap((v) => {
-              this.evalExpr(field, key, v);
+              if (['props.disabled', 'templateOptions.disabled'].includes(key)) {
+                field._expressions[key].callback = this.parseExpressions(field, key, () => v).callback;
+                field._expressions[key].callback(true);
+              } else {
+                this.evalExpr(field, key, v);
+              }
               field.options._detectChanges(field);
             }),
           ),
@@ -113,8 +118,9 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   protected parseExpressions(field: FormlyFieldConfigCache, path: string, expr: any) {
+    const isDisabledExpression = ['props.disabled', 'templateOptions.disabled'].includes(path);
     let parentExpression: any;
-    if (field.parent && ['hide', 'props.disabled'].includes(path)) {
+    if (field.parent && (path === 'hide' || isDisabledExpression)) {
       const rootValue = (f: FormlyFieldConfigCache) => {
         return path === 'hide' ? f.hide : f.props.disabled;
       };
@@ -147,6 +153,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
           if (
             ignoreCache ||
+            (isDisabledExpression && field.props.disabled !== !!exprValue) ||
             (currentValue !== exprValue &&
               (!isObject(exprValue) ||
                 isObservable(exprValue) ||

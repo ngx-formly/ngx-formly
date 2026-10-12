@@ -644,6 +644,54 @@ describe('FieldExpressionExtension', () => {
     });
 
     describe('field disabled state', () => {
+      it.each(['props.disabled', 'templateOptions.disabled'])(
+        'should preserve a child %s expression when its parent is enabled',
+        (property) => {
+          let disabled = true;
+          const field = buildField({
+            key: 'group',
+            expressions: { [property]: () => disabled },
+            fieldGroup: [
+              { key: 'child', expressions: { [property]: () => true } },
+              { key: 'sibling', expressions: { [property]: () => false } },
+            ],
+          });
+          const [child, sibling] = field.fieldGroup;
+
+          for (const value of [false, true, false]) {
+            disabled = value;
+            field.options.checkExpressions(field.parent);
+            expect(child.props.disabled).toBe(true);
+            expect(child.formControl.disabled).toBe(true);
+            expect(sibling.props.disabled).toBe(value);
+            expect(sibling.formControl.disabled).toBe(value);
+          }
+        },
+      );
+
+      it('should preserve observable child disabled expressions when its parent is enabled', () => {
+        let disabled = true;
+        const disabled$ = new Subject<boolean>();
+        const field = buildField({
+          key: 'group',
+          expressions: { 'props.disabled': () => disabled },
+          fieldGroup: [{ key: 'child', expressions: { 'props.disabled': disabled$ } }],
+        });
+        const [child] = field.fieldGroup;
+        const subscription = (child as FormlyFieldConfigCache)._expressions['props.disabled'].value$.subscribe();
+
+        disabled$.next(true);
+        disabled = false;
+        field.options.checkExpressions(field.parent);
+        expect(child.props.disabled).toBe(true);
+        expect(child.formControl.disabled).toBe(true);
+
+        disabled$.next(false);
+        field.options.checkExpressions(field.parent);
+        expect(child.formControl.enabled).toBe(true);
+        subscription.unsubscribe();
+      });
+
       it('should update field disabled state', () => {
         const field = buildField({
           key: 'text',

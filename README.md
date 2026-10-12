@@ -22,6 +22,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 - 🔥 Automatic forms generation
 - 📝 Easy to extend with custom field types, validation, wrappers and extensions.
+- Child disabled expressions remain effective when their parent group is enabled. See [expressions](docs/expression-properties.md).
 - ⚡️ Supports multiple schemas:
     - Formly Schema (core)
     - JSON Schema

@@ -55,6 +55,12 @@ options = {
 
 :::
 
+### Disabled groups
+
+A disabled group disables its children. When the group becomes enabled, each child's disabled expression is
+reapplied, including observable expressions. A child whose expression returns `true` stays disabled.
+See the [expression properties example](https://formly.dev/docs/examples/field-options/expression-properties).
+
 ## 2. Conditional Rendering
 
 The `hide` property is used to set the hide property of your field. The value of this property can be a `boolean`. To make this property conditional we'll use `expressions: { hide: ... }` where the value can  `string`, `function` or `boolean`. Below is an example of each of them.
