@@ -1,3 +1,8 @@
+import appComponentHtmlSource from './app.component.html?raw' with { loader: 'text' };
+import appComponentTsSource from './app.component.ts?raw' with { loader: 'text' };
+import fileValueAccessorTsSource from './file-value-accessor.ts?raw' with { loader: 'text' };
+import fileTypeComponentTsSource from './file-type.component.ts?raw' with { loader: 'text' };
+import appConfigTsSource from './app.config.ts?raw' with { loader: 'text' };
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ExamplesRouterViewerComponent } from 'demo/src/app/shared';
@@ -16,28 +21,23 @@ export const appRoutes: Routes = [
           files: [
             {
               file: 'app.component.html',
-              content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-              filecontent: require('!!raw-loader!./app.component.html'),
+              filecontent: appComponentHtmlSource,
             },
             {
               file: 'app.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-              filecontent: require('!!raw-loader!./app.component.ts'),
+              filecontent: appComponentTsSource,
             },
             {
               file: 'file-value-accessor.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./file-value-accessor.ts'),
-              filecontent: require('!!raw-loader!./file-value-accessor.ts'),
+              filecontent: fileValueAccessorTsSource,
             },
             {
               file: 'file-type.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./file-type.component.ts'),
-              filecontent: require('!!raw-loader!./file-type.component.ts'),
+              filecontent: fileTypeComponentTsSource,
             },
             {
               file: 'app.config.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
-              filecontent: require('!!raw-loader!./app.config.ts'),
+              filecontent: appConfigTsSource,
             },
           ],
         },

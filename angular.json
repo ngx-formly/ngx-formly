@@ -15,11 +15,13 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "demo/dist",
+            "outputPath": {
+              "base": "demo/dist",
+              "browser": ""
+            },
             "index": "demo/src/index.html",
-            "main": "demo/src/main.ts",
             "polyfills": ["demo/src/polyfills.ts"],
             "tsConfig": "demo/tsconfig.app.json",
             "assets": ["demo/src/favicon.ico", "demo/src/assets"],
@@ -32,7 +34,8 @@
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
             },
-            "allowedCommonJsDependencies": ["highlight-loader", "json-formatter-js"]
+            "allowedCommonJsDependencies": ["json-formatter-js"],
+            "browser": "demo/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -64,7 +67,7 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "app:build"
           },
@@ -75,7 +78,7 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "app:build"
           }
@@ -100,7 +103,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "integration/ssr/dist",
             "index": "integration/ssr/src/index.html",
@@ -147,7 +150,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "ssr:build:production"
@@ -159,10 +162,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
@@ -186,7 +189,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/core/tsconfig.lib.json",
             "project": "src/core/ng-package.json"
@@ -212,7 +215,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/ui/bootstrap/tsconfig.lib.json",
             "project": "src/ui/bootstrap/ng-package.json"
@@ -238,7 +241,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/ui/ionic/tsconfig.lib.json",
             "project": "src/ui/ionic/ng-package.json"
@@ -264,7 +267,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/ui/kendo/tsconfig.lib.json",
             "project": "src/ui/kendo/ng-package.json"
@@ -290,7 +293,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/ui/material/tsconfig.lib.json",
             "project": "src/ui/material/ng-package.json"
@@ -316,7 +319,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/ui/primeng/tsconfig.lib.json",
             "project": "src/ui/primeng/ng-package.json"
@@ -342,7 +345,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/ui/ng-zorro-antd/tsconfig.lib.json",
             "project": "src/ui/ng-zorro-antd/ng-package.json"
@@ -368,7 +371,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "src/ui/nativescript/tsconfig.lib.json",
             "project": "src/ui/nativescript/ng-package.json"

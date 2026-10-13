@@ -1,3 +1,27 @@
+import appComponentHtmlSource from './app.component.html?raw' with { loader: 'text' };
+import appComponentTsSource from './app.component.ts?raw' with { loader: 'text' };
+import appConfigTsSource from './app.config.ts?raw' with { loader: 'text' };
+import arrayTypeTsSource from './array.type.ts?raw' with { loader: 'text' };
+import objectTypeTsSource from './object.type.ts?raw' with { loader: 'text' };
+import multischemaTypeTsSource from './multischema.type.ts?raw' with { loader: 'text' };
+import nullTypeTsSource from './null.type.ts?raw' with { loader: 'text' };
+import simpleJsonSource from '../../../../assets/json-schema/simple_json?raw' with { loader: 'text' };
+import nestedJsonSource from '../../../../assets/json-schema/nested_json?raw' with { loader: 'text' };
+import arraysJsonSource from '../../../../assets/json-schema/arrays_json?raw' with { loader: 'text' };
+import numbersJsonSource from '../../../../assets/json-schema/numbers_json?raw' with { loader: 'text' };
+import referencesJsonSource from '../../../../assets/json-schema/references_json?raw' with { loader: 'text' };
+import schemaDependenciesJsonSource from '../../../../assets/json-schema/schema_dependencies_json?raw' with {
+  loader: 'text',
+};
+import nullFieldJsonSource from '../../../../assets/json-schema/null_field_json?raw' with { loader: 'text' };
+import nullableJsonSource from '../../../../assets/json-schema/nullable_json?raw' with { loader: 'text' };
+import allOfJsonSource from '../../../../assets/json-schema/allOf_json?raw' with { loader: 'text' };
+import anyOfJsonSource from '../../../../assets/json-schema/anyOf_json?raw' with { loader: 'text' };
+import oneOfJsonSource from '../../../../assets/json-schema/oneOf_json?raw' with { loader: 'text' };
+import selectAlternativesJsonSource from '../../../../assets/json-schema/select_alternatives_json?raw' with {
+  loader: 'text',
+};
+import ifThenElseJsonSource from '../../../../assets/json-schema/if_then_else_json?raw' with { loader: 'text' };
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ExamplesRouterViewerComponent } from 'demo/src/app/shared';
@@ -23,103 +47,83 @@ export const appRoutes: Routes = [
           files: [
             {
               file: 'app.component.html',
-              content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-              filecontent: require('!!raw-loader!./app.component.html'),
+              filecontent: appComponentHtmlSource,
             },
             {
               file: 'app.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-              filecontent: require('!!raw-loader!./app.component.ts'),
+              filecontent: appComponentTsSource,
             },
             {
               file: 'app.config.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
-              filecontent: require('!!raw-loader!./app.config.ts'),
+              filecontent: appConfigTsSource,
             },
             {
               file: 'array.type.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./array.type.ts'),
-              filecontent: require('!!raw-loader!./array.type.ts'),
+              filecontent: arrayTypeTsSource,
             },
             {
               file: 'object.type.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./object.type.ts'),
-              filecontent: require('!!raw-loader!./object.type.ts'),
+              filecontent: objectTypeTsSource,
             },
             {
               file: 'multischema.type.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./multischema.type.ts'),
-              filecontent: require('!!raw-loader!./multischema.type.ts'),
+              filecontent: multischemaTypeTsSource,
             },
             {
               file: 'null.type.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./null.type.ts'),
-              filecontent: require('!!raw-loader!./null.type.ts'),
+              filecontent: nullTypeTsSource,
             },
             {
               file: 'assets/json-schema/simple.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/simple_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/simple_json'),
+              filecontent: simpleJsonSource,
             },
             {
               file: 'assets/json-schema/nested.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/nested_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/nested_json'),
+              filecontent: nestedJsonSource,
             },
             {
               file: 'assets/json-schema/arrays.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/arrays_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/arrays_json'),
+              filecontent: arraysJsonSource,
             },
             {
               file: 'assets/json-schema/numbers.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/numbers_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/numbers_json'),
+              filecontent: numbersJsonSource,
             },
             {
               file: 'assets/json-schema/references.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/references_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/references_json'),
+              filecontent: referencesJsonSource,
             },
             {
               file: 'assets/json-schema/schema_dependencies.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/schema_dependencies_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/schema_dependencies_json'),
+              filecontent: schemaDependenciesJsonSource,
             },
             {
               file: 'assets/json-schema/null_field.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/null_field_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/null_field_json'),
+              filecontent: nullFieldJsonSource,
             },
             {
               file: 'assets/json-schema/nullable.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/nullable_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/nullable_json'),
+              filecontent: nullableJsonSource,
             },
             {
               file: 'assets/json-schema/allOf.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/allOf_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/allOf_json'),
+              filecontent: allOfJsonSource,
             },
             {
               file: 'assets/json-schema/anyOf.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/anyOf_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/anyOf_json'),
+              filecontent: anyOfJsonSource,
             },
             {
               file: 'assets/json-schema/oneOf.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/oneOf_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/oneOf_json'),
+              filecontent: oneOfJsonSource,
             },
             {
               file: 'assets/json-schema/select_alternatives.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/select_alternatives_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/select_alternatives_json'),
+              filecontent: selectAlternativesJsonSource,
             },
             {
               file: 'assets/json-schema/if_then_else.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-schema/if_then_else_json'),
-              filecontent: require('!!raw-loader!@assets/json-schema/if_then_else_json'),
+              filecontent: ifThenElseJsonSource,
             },
           ],
         },

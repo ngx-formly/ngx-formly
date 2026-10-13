@@ -1,3 +1,10 @@
+import appComponentHtmlSource from './app.component.html?raw' with { loader: 'text' };
+import appComponentTsSource from './app.component.ts?raw' with { loader: 'text' };
+import userServiceTsSource from './user.service.ts?raw' with { loader: 'text' };
+import userJsonSource from '../../../../assets/json-powered/user_json?raw' with { loader: 'text' };
+import userFormJsonSource from '../../../../assets/json-powered/user-form_json?raw' with { loader: 'text' };
+import colorsJsonSource from '../../../../assets/json-powered/colors_json?raw' with { loader: 'text' };
+import appConfigTsSource from './app.config.ts?raw' with { loader: 'text' };
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ExamplesRouterViewerComponent } from 'demo/src/app/shared';
@@ -25,38 +32,31 @@ export const appRoutes: Routes = [
           files: [
             {
               file: 'app.component.html',
-              content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-              filecontent: require('!!raw-loader!./app.component.html'),
+              filecontent: appComponentHtmlSource,
             },
             {
               file: 'app.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-              filecontent: require('!!raw-loader!./app.component.ts'),
+              filecontent: appComponentTsSource,
             },
             {
               file: 'user.service.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./user.service.ts'),
-              filecontent: require('!!raw-loader!./user.service.ts'),
+              filecontent: userServiceTsSource,
             },
             {
               file: 'assets/json-powered/user.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user_json'),
-              filecontent: require('!!raw-loader!@assets/json-powered/user_json'),
+              filecontent: userJsonSource,
             },
             {
               file: 'assets/json-powered/user-form.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/user-form_json'),
-              filecontent: require('!!raw-loader!@assets/json-powered/user-form_json'),
+              filecontent: userFormJsonSource,
             },
             {
               file: 'assets/json-powered/colors.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/json-powered/colors_json'),
-              filecontent: require('!!raw-loader!@assets/json-powered/colors_json'),
+              filecontent: colorsJsonSource,
             },
             {
               file: 'app.config.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
-              filecontent: require('!!raw-loader!./app.config.ts'),
+              filecontent: appConfigTsSource,
             },
           ],
         },
