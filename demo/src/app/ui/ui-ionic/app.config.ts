@@ -16,7 +16,9 @@ export const appConfig: ApplicationConfig = {
       withFormlyFieldSlider(),
       withFormlyFieldToggle(),
       additionalTypes,
-      { validationMessages: [{ name: 'required', message: 'This field is required' }] },
+      {
+        validationMessages: [{ name: 'required', message: 'This field is required' }],
+      },
     ]),
   ],
 };
