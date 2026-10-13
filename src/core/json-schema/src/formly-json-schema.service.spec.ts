@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { FieldArrayType, FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
-import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createComponent, FormlyFieldInput, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { JSONSchema7 } from 'json-schema';
 import { FormlyJsonschema, FormlyJsonschemaOptions } from './formly-json-schema.service';
 
@@ -2386,6 +2387,37 @@ describe('Service: FormlyJsonschema', () => {
   });
 
   describe('FormlyJsonSchemaOptions map data', () => {
+    it.each([
+      { type: 'number', nullable: true },
+      { type: 'integer', nullable: true },
+      { type: 'number', nullable: false },
+      { type: 'integer', nullable: false },
+    ] as const)('should clear a native $type input with nullable=$nullable', ({ type, nullable }) => {
+      TestBed.overrideTemplate(
+        FormlyFieldInput,
+        '<input type="number" [formControl]="formControl" [formlyAttributes]="field" />',
+      );
+      const { field, query } = renderComponent({
+        schema: { type: 'object', properties: { value: { type: nullable ? [type, 'null'] : type } } },
+        model: { value: 12 },
+      });
+      const input = query<HTMLInputElement>('input[type="number"]').nativeElement;
+      const numericField = field.fieldGroup[0];
+
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(field.model).toStrictEqual(nullable ? { value: null } : {});
+      expect(numericField.formControl.value).toBe(nullable ? null : undefined);
+      expect(numericField.formControl.valid).toBe(true);
+
+      input.value = '0';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(field.model).toStrictEqual({ value: 0 });
+      expect(numericField.formControl.value).toBe(0);
+    });
+
     it.each(['number', 'integer'] as const)('should preserve null when clearing a nullable %s field', (type) => {
       const { field, query } = renderComponent({
         schema: { type: 'object', properties: { value: { type: [type, 'null'] } } },
