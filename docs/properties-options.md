@@ -22,6 +22,13 @@ Everything starts with the `formly-form`. General use of it will look something 
 | options | `FormlyFormOptions`    |                     | no            | Options for the form. |
 
 
+### Initial validation status
+
+The form's `statusChanges` emits its initial status after the first successful build, including when it remains
+`VALID`. This notification does not emit a value change or repeat for unchanged rebuilds. Subscribe before
+binding the form to receive it. Async validators can subsequently emit their resolved status.
+If validation expressions change the status during the initial build, a final notification corrects any earlier status.
+
 ### Outputs
 
 | Name          | Description    |
