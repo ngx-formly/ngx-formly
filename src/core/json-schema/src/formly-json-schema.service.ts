@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 import { AbstractControl, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 import {
-  ɵreverseDeepMerge as reverseDeepMerge,
-  ɵgetFieldValue as getFieldValue,
   ɵclone as clone,
+  FormlyFieldConfig,
+  ɵgetFieldValue as getFieldValue,
   ɵhasKey as hasKey,
+  ɵreverseDeepMerge as reverseDeepMerge,
 } from '@ngx-formly/core';
+import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 import { tap } from 'rxjs/operators';
 
 export interface FormlyJsonschemaOptions {
+  /**
+   * Leave required strings without a schema default undefined instead of defaulting to ''.
+   * Defaults to false. Explicit schema defaults and other types are unaffected.
+   */
+  ignoreImplicitStringDefaults?: boolean;
+
   /**
    * allows to intercept the mapping, taking the already mapped
    * formly field and the original JSONSchema source from which it
@@ -146,6 +152,12 @@ export class FormlyJsonschema {
       switch (types[0]) {
         case 'null': {
           field.defaultValue = null;
+          break;
+        }
+        case 'string': {
+          if (!options.ignoreImplicitStringDefaults) {
+            field.defaultValue = '';
+          }
           break;
         }
         case 'object': {

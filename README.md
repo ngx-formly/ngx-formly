@@ -25,7 +25,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 - ⚡️ Supports multiple schemas:
     - Formly Schema (core)
     - JSON Schema
-- Required JSON Schema strings use only explicit defaults. See [schema defaults](docs/json-schema.md#defaults).
+- JSON Schema string defaults are configurable. See [schema defaults](docs/json-schema.md#defaults).
 - 😍 A bunch of themes, out of the box!
 - 💪 Built on top of [Angular Reactive Forms](https://angular.dev/guide/forms/reactive-forms)
 - 📹 [@eggheadio course](https://egghead.io/playlists/configuration-based-reactive-angular-forms-with-ngx-formly-465f) - 20 lessons & 78 minutes

@@ -31,9 +31,17 @@ export class AppComponent {
 
 ## Defaults
 
-Required string properties without a schema `default` remain undefined. `required` does not create an empty-string
-default. To initialize a string to an empty value, set `"default": ""` explicitly. Required object and array defaults
-still initialize their structure, including array rows required by `minItems`.
+By default, required string properties without a schema `default` receive an implicit empty-string default.
+To leave these properties undefined until a value is provided, pass `ignoreImplicitStringDefaults: true`:
+
+```ts
+this.formlyJsonschema.toFieldConfig(schema, { ignoreImplicitStringDefaults: true });
+```
+
+Omitting the option or setting it to `false` preserves the existing behavior. The option also applies to nested
+schemas and array items. Explicit schema defaults, including `"default": ""`, still apply. Required object, array,
+and null defaults are unaffected, including array rows required by `minItems`. Required string validation still
+rejects missing or empty values.
 
 Schema `default` values fill undefined model properties when Formly builds or rebuilds the form, including after replacing the model or calling `options.resetModel({})`. Existing values, including `null`, `false`, `0`, and empty strings, are preserved. Fields with `resetOnHide: true` receive defaults only while visible. This includes fields in the selected `oneOf` branch.
 
@@ -42,6 +50,9 @@ If restoring a default hides another field with `resetOnHide: true`, any default
 ## Demo
 
 See [JSON Schema Examples](https://formly.dev/docs/examples/advanced/json-schema).
+The example passes `ignoreImplicitStringDefaults: true`. In the `simple` schema, `firstName` has an explicit
+default of `"Chuck"`, while `lastName` stays absent from the model until a value is entered. Resetting to defaults
+restores `firstName` and removes `lastName`.
 
 ## Customize JSON Schema output
 

@@ -44,9 +44,6 @@ The demo and exported examples retain Zone.js change detection.
 
 ## 2. Update all Formly packages together
 
-JSON Schema required strings no longer receive an implicit empty-string default. They stay undefined until a
-value is provided. Add `"default": ""` to a string schema if your application relies on the previous initialization.
-
 Update `@ngx-formly/core` and every `@ngx-formly/*` UI package used by your application to v10 in the same installation.
 For example, an application using Angular Material should run:
 
