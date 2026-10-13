@@ -34,6 +34,24 @@ If validation expressions change the status during the initial build, a final no
 | Name          | Description    |
 | ------------- | -------------- |
 | (modelChange) | Fired on model value change |
+| (formChange) | Emits the built `FormGroup` or `FormArray` when the `fields` or `form` input changes, including their initial binding. |
+
+### Accessing controls after a build
+
+Use `(formChange)` to access controls after Formly builds the form, including when fields load asynchronously:
+
+```html
+<formly-form [form]="form" [fields]="fields" [model]="model" (formChange)="onFormChange($event)"></formly-form>
+```
+
+The handler receives the form after its controls, default values, validation and expressions have been initialized.
+You can subscribe to a control's `valueChanges` or `statusChanges` there. Replace previous subscriptions when the
+handler runs again and unsubscribe when the host component is destroyed. The
+[JSON-powered example](https://formly.dev/examples/other/json-powered) uses Angular's `AsyncPipe` for this cleanup.
+
+The event fires once per input update, even when both `fields` and `form` change together. It does not fire for
+model-only changes, control value changes, repeat add/remove actions or direct calls to `options.build()`.
+It signals that the controls are available; it does not wait for asynchronous validators or browser rendering.
 
 ## fields
 

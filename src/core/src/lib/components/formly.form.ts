@@ -79,6 +79,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   /** Event that is emitted when the model value is changed */
   @Output() modelChange = new EventEmitter<any>();
+  /** Event emitted after building the form when the fields or form input changes. */
+  @Output() formChange = new EventEmitter<UntypedFormGroup | UntypedFormArray>();
   @ContentChildren(FormlyTemplate) set templates(templates: QueryList<FormlyTemplate>) {
     this.fieldTemplates.templates = templates;
   }
@@ -109,6 +111,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       this.valueChangesUnsubscribe();
       this.builder.build(this.field);
       this.valueChangesUnsubscribe = this.valueChanges();
+    }
+
+    if (changes.fields || changes.form) {
+      this.formChange.emit(this.form);
     }
   }
 

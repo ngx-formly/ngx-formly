@@ -1,15 +1,16 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormArray, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { UserService } from './user.service';
 
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
-  imports: [ReactiveFormsModule, FormlyForm],
+  imports: [AsyncPipe, ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent implements OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
@@ -17,6 +18,7 @@ export class AppComponent implements OnDestroy {
   options: FormlyFormOptions = {};
   model: any;
   fields: FormlyFieldConfig[];
+  firstName$: Observable<string>;
 
   constructor(private userService: UserService) {
     this.userService
@@ -26,6 +28,11 @@ export class AppComponent implements OnDestroy {
         this.model = model;
         this.fields = this.mapFields(fields);
       });
+  }
+
+  onFormChange(form: UntypedFormGroup | UntypedFormArray) {
+    const firstName = form.get('firstName');
+    this.firstName$ = firstName?.valueChanges.pipe(startWith(firstName.value));
   }
 
   submit() {
