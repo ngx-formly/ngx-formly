@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0](https://github.com/ngx-formly/ngx-formly/compare/v9.0.0...v10.0.0) (2026-10-13)
+
+### Breaking changes
+
+* **core:** Angular 21 or newer is now required. Upgrade Angular before updating all `@ngx-formly/*` packages together to v10. Applications on Angular 20 should remain on Formly v9. Angular 21 uses zoneless change detection by default; applications relying on Zone.js must retain its polyfill and register `provideZoneChangeDetection()` ([#4205](https://github.com/ngx-formly/ngx-formly/pull/4205)).
+* **material, primeng, ng-zorro-antd:** The integrations now require version 21 or newer of their respective UI libraries. PrimeNG styled mode requires `@primeuix/themes` 2.0.2 or newer; `showTransitionOptions` and `hideTransitionOptions` no longer control its animations ([#4205](https://github.com/ngx-formly/ngx-formly/pull/4205)).
+* **kendo, nativescript:** Kendo label, dropdown, and input packages now require version 21.4.1 or newer. NativeScript requires `@nativescript/angular` 21 or newer ([#4205](https://github.com/ngx-formly/ngx-formly/pull/4205)).
+* **ng-zorro-antd:** Numeric inputs now use `NzInputNumberModule` because NG-ZORRO 21 removed the legacy module. `FormlyFieldInput.nzFormatter` has been removed; custom templates must remove bindings to this helper ([#4205](https://github.com/ngx-formly/ngx-formly/pull/4205)).
+* **core:** The CSP expression parser now rejects trailing tokens that it previously ignored. Correct malformed string expressions before upgrading, as parse errors can prevent form construction ([#4213](https://github.com/ngx-formly/ngx-formly/pull/4213)).
+* **json-schema:** Cleared numeric fields whose schema allows `null` now preserve explicit `null` values. Update code that expected an absent value instead ([#4211](https://github.com/ngx-formly/ngx-formly/pull/4211)).
+* **core:** Valid forms now emit an initial `form.statusChanges` notification. Review subscribers and tests that assumed no initial notification; unchanged rebuilds do not repeat it ([#4210](https://github.com/ngx-formly/ngx-formly/pull/4210)).
+
+See the [v10 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v10.0.0/UPGRADE-10.0.md) for migration steps, including UI library updates and `CommonEngine.allowedHosts` configuration for server rendering.
+
+### Features
+
+* **core:** Add the asynchronous `fieldChange` output to `formly-form` for accessing controls after the `fields` or `form` input changes, including initial binding. Export its `FormlyValueChangeEvent` type ([#4214](https://github.com/ngx-formly/ngx-formly/pull/4214)).
+* **core:** Support optional property and index access in CSP expressions, such as `model.user?.name` and `model.items?.[0]` ([#4213](https://github.com/ngx-formly/ngx-formly/pull/4213)).
+* **json-schema:** Add `ignoreImplicitStringDefaults` to leave required strings without a schema default undefined instead of assigning an empty string. Existing behavior remains the default ([#4209](https://github.com/ngx-formly/ngx-formly/pull/4209)).
+* **demo:** Add documentation search, light and dark themes, and migration-guide navigation. Migrate the demo to Angular's application builder ([#4216](https://github.com/ngx-formly/ngx-formly/pull/4216), [#4215](https://github.com/ngx-formly/ngx-formly/pull/4215)).
+
+### Bug fixes
+
+* **core:** Preserve disabled nested groups and arrays when their parent is re-enabled, including fields with observable disabled expressions ([#4212](https://github.com/ngx-formly/ngx-formly/pull/4212)).
+* **ionic:** Pass `props.interfaceOptions` to select fields so applications can configure the alert, action sheet, or popover ([#4206](https://github.com/ngx-formly/ngx-formly/pull/4206)).
+* **testing:** Resolve Angular 21 package exports in the repository's TypeScript test configuration ([#4207](https://github.com/ngx-formly/ngx-formly/pull/4207)).
+
 ## [9.0.0](https://github.com/ngx-formly/ngx-formly/compare/v8.0.0...v9.0.0) (2026-10-07)
 
 ### Breaking changes
