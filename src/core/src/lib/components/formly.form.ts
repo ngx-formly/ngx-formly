@@ -11,9 +11,12 @@ import {
   NgZone,
   ContentChildren,
   QueryList,
+  DestroyRef,
+  PendingTasks,
+  inject,
 } from '@angular/core';
 import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { clone, hasKey, isNoopNgZone, isSignalRequired, observeDeep } from '../utils';
@@ -79,11 +82,15 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   /** Event that is emitted when the model value is changed */
   @Output() modelChange = new EventEmitter<any>();
+  /** Emits a build event asynchronously when the fields or form input changes. */
+  @Output() fieldChange = new EventEmitter<FormlyValueChangeEvent>();
   @ContentChildren(FormlyTemplate) set templates(templates: QueryList<FormlyTemplate>) {
     this.fieldTemplates.templates = templates;
   }
 
   field: FormlyFieldConfigCache = { type: 'formly-group' };
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly pendingTasks = inject(PendingTasks);
   private _modelChangeValue: any = {};
   private valueChangesUnsubscribe = () => {};
 
@@ -109,6 +116,15 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       this.valueChangesUnsubscribe();
       this.builder.build(this.field);
       this.valueChangesUnsubscribe = this.valueChanges();
+    }
+
+    if (changes.fields || changes.form) {
+      this.pendingTasks.run(async () => {
+        await Promise.resolve();
+        if (!this.destroyRef.destroyed) {
+          this.fieldChange.emit({ field: this.field, type: 'build', value: this.form });
+        }
+      });
     }
   }
 

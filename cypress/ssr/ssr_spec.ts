@@ -3,6 +3,7 @@
 describe('Server side rendering', () => {
   ['material', 'bootstrap', 'kendo', 'primeng', 'antd'].forEach((ui) => {
     it(`should hydrate ${ui} inputs`, () => {
+      cy.request(`/${ui}`).its('body').should('contain', 'Form ready');
       cy.visit(`/${ui}`);
       cy.get('formly-app-ui [ngh]').should('not.exist');
       cy.get('input[placeholder="input placeholder"]')

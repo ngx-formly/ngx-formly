@@ -34,6 +34,45 @@ If validation expressions change the status during the initial build, a final no
 | Name          | Description    |
 | ------------- | -------------- |
 | (modelChange) | Fired on model value change |
+| (fieldChange) | Emits a `FormlyValueChangeEvent` with `type: 'build'` when the `fields` or `form` input changes, including their initial binding. |
+
+### Accessing controls after a build
+
+Use `(fieldChange)` to access controls after Formly builds the form, including when fields load asynchronously:
+
+```html
+<formly-form [form]="form" [fields]="fields" [model]="model" (fieldChange)="onFieldChange($event)"></formly-form>
+```
+
+The handler receives a `FormlyValueChangeEvent`, the same event shape used by `options.fieldChanges`:
+
+- `field` is the root field configuration containing the form's `fieldGroup`.
+- `type` is `'build'`.
+- `value` is the built `FormGroup` or `FormArray`, also available as `field.formControl`.
+
+The event is delivered asynchronously after the current change-detection pass, so the handler can update parent
+bindings without an `ExpressionChangedAfterItHasBeenCheckedError`. Angular waits for delivery before considering
+the application stable, including during server rendering. Queued events are skipped if the form component is destroyed.
+In component tests, await `fixture.whenStable()` before asserting on the handler's effects.
+
+The form's controls, default values, validation and expressions have been initialized when the event fires:
+
+```ts
+import { FormlyValueChangeEvent } from '@ngx-formly/core';
+
+onFieldChange({ field }: FormlyValueChangeEvent) {
+  const control = field.formControl.get('firstName');
+  // Subscribe to control.valueChanges or control.statusChanges here.
+}
+```
+
+Replace previous subscriptions when the handler runs again and unsubscribe when the host component is destroyed. The
+[JSON-powered example](https://formly.dev/examples/other/json-powered) uses Angular's `AsyncPipe` for this cleanup.
+
+The event fires once per input update, even when both `fields` and `form` change together. It does not fire for
+model-only changes, control value changes, repeat add/remove actions or direct calls to `options.build()`.
+It signals that the controls are available; it does not wait for asynchronous validators or browser rendering.
+The output shares the `options.fieldChanges` payload shape; it does not forward that stream or add build events to it.
 
 ## fields
 
