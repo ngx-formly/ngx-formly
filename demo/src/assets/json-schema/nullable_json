@@ -17,7 +17,14 @@
           "integer",
           "null"
         ],
-        "title": "Age"
+        "title": "Age",
+        "widget": {
+          "formlyConfig": {
+            "props": {
+              "description": "Clear this number to keep an explicit null value"
+            }
+          }
+        }
       },
       "bio": {
         "type": [

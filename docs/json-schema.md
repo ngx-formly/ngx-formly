@@ -54,6 +54,12 @@ The example passes `ignoreImplicitStringDefaults: true`. In the `simple` schema,
 default of `"Chuck"`, while `lastName` stays absent from the model until a value is entered. Resetting to defaults
 restores `firstName` and removes `lastName`.
 
+## Nullable numbers
+
+Clearing a field with `type: ["number", "null"]` or `type: ["integer", "null"]` stores `null` in the model.
+An untouched property remains undefined unless the schema supplies a default. Non-nullable numeric fields
+continue to store undefined when cleared. See the nullable tab in the JSON Schema example.
+
 ## Customize JSON Schema output
 
 To adjust the generated `FormlyFieldConfig` use one of the following options:

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { FieldArrayType, FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
-import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createComponent, FormlyFieldInput, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { JSONSchema7 } from 'json-schema';
 import { FormlyJsonschema, FormlyJsonschemaOptions } from './formly-json-schema.service';
 
@@ -2386,6 +2387,69 @@ describe('Service: FormlyJsonschema', () => {
   });
 
   describe('FormlyJsonSchemaOptions map data', () => {
+    it.each([
+      { type: 'number', nullable: true },
+      { type: 'integer', nullable: true },
+      { type: 'number', nullable: false },
+      { type: 'integer', nullable: false },
+    ] as const)('should clear a native $type input with nullable=$nullable', ({ type, nullable }) => {
+      TestBed.overrideTemplate(
+        FormlyFieldInput,
+        '<input type="number" [formControl]="formControl" [formlyAttributes]="field" />',
+      );
+      const { field, query } = renderComponent({
+        schema: { type: 'object', properties: { value: { type: nullable ? [type, 'null'] : type } } },
+        model: { value: 12 },
+      });
+      const input = query<HTMLInputElement>('input[type="number"]').nativeElement;
+      const numericField = field.fieldGroup[0];
+
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(field.model).toStrictEqual(nullable ? { value: null } : {});
+      expect(numericField.formControl.value).toBe(nullable ? null : undefined);
+      expect(numericField.formControl.valid).toBe(true);
+
+      input.value = '0';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(field.model).toStrictEqual({ value: 0 });
+      expect(numericField.formControl.value).toBe(0);
+    });
+
+    it.each(['number', 'integer'] as const)('should preserve null when clearing a nullable %s field', (type) => {
+      const { field, query } = renderComponent({
+        schema: { type: 'object', properties: { value: { type: [type, 'null'] } } },
+        model: { value: 12 },
+      });
+      const input = query<HTMLInputElement>('input').nativeElement;
+      const numericField = field.fieldGroup[0];
+      const parser = numericField.parsers[0] as (value: string | number | null, f: FormlyFieldConfig) => any;
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '' }));
+      expect(field.model).toEqual({ value: null });
+      expect(numericField.formControl.value).toBeNull();
+      expect(numericField.formControl.valid).toBe(true);
+      expect(parser(0, numericField)).toBe(0);
+      expect(parser(undefined, numericField)).toBeUndefined();
+
+      const lookup = jest.spyOn(document, 'querySelector').mockReturnValue(input);
+      expect(parser(null, numericField)).toBeNull();
+      lookup.mockRestore();
+    });
+
+    it('should preserve invalid numeric input and clear non-nullable native inputs', () => {
+      const { field, query } = renderComponent({ schema: { type: 'number' } });
+      const input = query<HTMLInputElement>('input').nativeElement;
+      const parser = field.parsers[0] as (value: string | number | null, f: FormlyFieldConfig) => any;
+      const lookup = jest.spyOn(document, 'querySelector').mockReturnValue(input);
+
+      expect(parser(null, field)).toBeUndefined();
+      expect(parser('invalid', field)).toBe('invalid');
+      lookup.mockRestore();
+    });
+
     it('should set undefined when number type input is empty', () => {
       const { field, query } = renderComponent({
         schema: { type: 'integer' },
