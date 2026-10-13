@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'formly-app-example',
@@ -15,6 +16,10 @@ export class AppComponent {
   };
 
   options: FormlyFormOptions = {};
+
+  constructor() {
+    this.form.statusChanges.pipe(takeUntilDestroyed()).subscribe((status) => console.info('Form status', status));
+  }
 
   fields: FormlyFieldConfig[] = [
     {
