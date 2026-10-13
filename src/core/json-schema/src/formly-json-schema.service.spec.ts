@@ -1,14 +1,23 @@
 import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { FieldArrayType, FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
-import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createComponent, FormlyFieldInput, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { JSONSchema7 } from 'json-schema';
-import { FormlyJsonschema } from './formly-json-schema.service';
+import { FormlyJsonschema, FormlyJsonschemaOptions } from './formly-json-schema.service';
 
-const renderComponent = ({ schema, model }: { schema: JSONSchema7; model?: any }) => {
-  const field = new FormlyJsonschema().toFieldConfig(schema);
+const renderComponent = ({
+  schema,
+  model,
+  options,
+}: {
+  schema: JSONSchema7;
+  model?: any;
+  options?: FormlyJsonschemaOptions;
+}) => {
+  const field = new FormlyJsonschema().toFieldConfig(schema, options);
 
-  const options = createComponent<{ field: FormlyFieldConfig }>({
+  const component = createComponent<{ field: FormlyFieldConfig }>({
     template: `
       <form [formGroup]="form">
         <formly-form
@@ -39,7 +48,7 @@ const renderComponent = ({ schema, model }: { schema: JSONSchema7; model?: any }
     },
   });
 
-  return { ...options, field };
+  return { ...component, field };
 };
 
 describe('Service: FormlyJsonschema', () => {
@@ -450,6 +459,172 @@ describe('Service: FormlyJsonschema', () => {
       });
 
       describe('required keyword', () => {
+        it.each([undefined, false])(
+          'should preserve implicit string defaults when ignoreImplicitStringDefaults is %s',
+          (ignoreImplicitStringDefaults) => {
+            const { field, fixture } = renderComponent({
+              schema: { type: 'object', required: ['name'], properties: { name: { type: 'string' } } },
+              options: ignoreImplicitStringDefaults === undefined ? undefined : { ignoreImplicitStringDefaults },
+            });
+            const [name] = field.fieldGroup;
+
+            expect(name.defaultValue).toBe('');
+            expect(field.model).toEqual({ name: '' });
+            expect(name.formControl.hasError('required')).toBe(true);
+
+            name.formControl.setValue('Ada');
+            fixture.detectChanges();
+            expect(field.form.valid).toBe(true);
+            field.options.resetModel({});
+            fixture.detectChanges();
+            expect(field.model).toEqual({ name: '' });
+            expect(name.formControl.hasError('required')).toBe(true);
+          },
+        );
+
+        it('should leave required strings undefined when implicit string defaults are ignored', () => {
+          const { field, fixture } = renderComponent({
+            schema: { type: 'object', required: ['name'], properties: { name: { type: 'string' } } },
+            options: { ignoreImplicitStringDefaults: true },
+          });
+          const [name] = field.fieldGroup;
+
+          expect(name.defaultValue).toBeUndefined();
+          expect(field.model).toEqual({});
+          expect(name.formControl.hasError('required')).toBe(true);
+
+          name.formControl.setValue('Ada');
+          fixture.detectChanges();
+          expect(field.model).toEqual({ name: 'Ada' });
+          expect(field.form.valid).toBe(true);
+          field.options.resetModel({});
+          fixture.detectChanges();
+          expect(field.model).toEqual({});
+          expect(name.formControl.hasError('required')).toBe(true);
+        });
+
+        it.each(['', 'Ada'])(
+          'should preserve the explicit string default %j when implicit defaults are ignored',
+          (value) => {
+            const { field, fixture } = renderComponent({
+              schema: { type: 'object', required: ['name'], properties: { name: { type: 'string', default: value } } },
+              options: { ignoreImplicitStringDefaults: true },
+            });
+
+            expect(field.fieldGroup[0].defaultValue).toBe(value);
+            expect(field.model).toEqual({ name: value });
+            field.options.resetModel({});
+            fixture.detectChanges();
+            expect(field.model).toEqual({ name: value });
+          },
+        );
+
+        it('should preserve required container defaults when implicit string defaults are ignored', () => {
+          const object: JSONSchema7 = {
+            type: 'object',
+            required: ['name'],
+            properties: { name: { type: 'string' } },
+          };
+          const { field } = renderComponent({
+            schema: {
+              type: 'object',
+              required: ['address', 'rows', 'empty'],
+              properties: {
+                address: object,
+                rows: { type: 'array', minItems: 2, items: object },
+                empty: { type: 'array', items: { type: 'string' } },
+                optional: { type: 'string' },
+              },
+            },
+            options: { ignoreImplicitStringDefaults: true },
+          });
+
+          expect(field.model).toEqual({ address: {}, rows: [{}, {}], empty: [] });
+          expect(field.form.get('address.name').hasError('required')).toBe(true);
+          expect(field.form.get('rows.0.name').hasError('required')).toBe(true);
+          expect(field.form.get('rows.1.name').hasError('required')).toBe(true);
+        });
+
+        it('should preserve implicit null defaults when implicit string defaults are ignored', () => {
+          const field = formlyJsonschema.toFieldConfig(
+            { type: 'object', required: ['nil'], properties: { nil: { type: 'null' } } },
+            { ignoreImplicitStringDefaults: true },
+          );
+
+          expect(field.fieldGroup[0].defaultValue).toBeNull();
+        });
+
+        it.each([false, true])(
+          'should propagate ignoreImplicitStringDefaults=%s to string array items',
+          (ignoreImplicitStringDefaults) => {
+            const { field } = renderComponent({
+              schema: {
+                type: 'object',
+                required: ['rows'],
+                properties: { rows: { type: 'array', minItems: 2, items: { type: 'string' } } },
+              },
+              options: { ignoreImplicitStringDefaults },
+            });
+
+            expect(field.model).toEqual({ rows: ignoreImplicitStringDefaults ? [undefined, undefined] : ['', ''] });
+          },
+        );
+
+        it.each(['oneOf', 'anyOf'])('should ignore implicit string defaults in a required %s', (container) => {
+          const { field } = renderComponent({
+            schema: {
+              type: 'object',
+              required: ['choice'],
+              properties: {
+                choice: {
+                  type: 'object',
+                  [container]: [{ type: 'object', required: ['name'], properties: { name: { type: 'string' } } }],
+                },
+              },
+            },
+            options: { ignoreImplicitStringDefaults: true },
+          });
+
+          expect(field.model).toEqual({ choice: {} });
+          expect(field.form.valid).toBe(false);
+        });
+
+        it.each(['object', 'array', 'oneOf', 'anyOf'])(
+          'should validate required children of a present optional %s without inventing strings',
+          (container) => {
+            const object: JSONSchema7 = {
+              type: 'object',
+              required: ['name'],
+              properties: { name: { type: 'string' }, other: { type: 'string' } },
+            };
+            const schema: JSONSchema7 = {
+              type: 'object',
+              properties: {
+                optional:
+                  container === 'array'
+                    ? { type: 'array', items: object }
+                    : container === 'object'
+                      ? object
+                      : { type: 'object', [container]: [object] },
+              },
+            };
+            const model = { optional: container === 'array' ? [{ other: 'present' }] : { other: 'present' } };
+            const { field, fixture } = renderComponent({
+              schema,
+              model,
+              options: { ignoreImplicitStringDefaults: true },
+            });
+
+            expect(field.form.valid).toBe(false);
+            expect(field.model.optional).toEqual(container === 'array' ? [{ other: 'present' }] : { other: 'present' });
+
+            field.options.resetModel({});
+            fixture.detectChanges();
+            expect(field.model).toEqual({});
+            expect(field.form.valid).toBe(true);
+          },
+        );
+
         it('root object with required property', () => {
           const { field } = renderComponent({
             schema: {
@@ -2212,6 +2387,69 @@ describe('Service: FormlyJsonschema', () => {
   });
 
   describe('FormlyJsonSchemaOptions map data', () => {
+    it.each([
+      { type: 'number', nullable: true },
+      { type: 'integer', nullable: true },
+      { type: 'number', nullable: false },
+      { type: 'integer', nullable: false },
+    ] as const)('should clear a native $type input with nullable=$nullable', ({ type, nullable }) => {
+      TestBed.overrideTemplate(
+        FormlyFieldInput,
+        '<input type="number" [formControl]="formControl" [formlyAttributes]="field" />',
+      );
+      const { field, query } = renderComponent({
+        schema: { type: 'object', properties: { value: { type: nullable ? [type, 'null'] : type } } },
+        model: { value: 12 },
+      });
+      const input = query<HTMLInputElement>('input[type="number"]').nativeElement;
+      const numericField = field.fieldGroup[0];
+
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(field.model).toStrictEqual(nullable ? { value: null } : {});
+      expect(numericField.formControl.value).toBe(nullable ? null : undefined);
+      expect(numericField.formControl.valid).toBe(true);
+
+      input.value = '0';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(field.model).toStrictEqual({ value: 0 });
+      expect(numericField.formControl.value).toBe(0);
+    });
+
+    it.each(['number', 'integer'] as const)('should preserve null when clearing a nullable %s field', (type) => {
+      const { field, query } = renderComponent({
+        schema: { type: 'object', properties: { value: { type: [type, 'null'] } } },
+        model: { value: 12 },
+      });
+      const input = query<HTMLInputElement>('input').nativeElement;
+      const numericField = field.fieldGroup[0];
+      const parser = numericField.parsers[0] as (value: string | number | null, f: FormlyFieldConfig) => any;
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '' }));
+      expect(field.model).toEqual({ value: null });
+      expect(numericField.formControl.value).toBeNull();
+      expect(numericField.formControl.valid).toBe(true);
+      expect(parser(0, numericField)).toBe(0);
+      expect(parser(undefined, numericField)).toBeUndefined();
+
+      const lookup = jest.spyOn(document, 'querySelector').mockReturnValue(input);
+      expect(parser(null, numericField)).toBeNull();
+      lookup.mockRestore();
+    });
+
+    it('should preserve invalid numeric input and clear non-nullable native inputs', () => {
+      const { field, query } = renderComponent({ schema: { type: 'number' } });
+      const input = query<HTMLInputElement>('input').nativeElement;
+      const parser = field.parsers[0] as (value: string | number | null, f: FormlyFieldConfig) => any;
+      const lookup = jest.spyOn(document, 'querySelector').mockReturnValue(input);
+
+      expect(parser(null, field)).toBeUndefined();
+      expect(parser('invalid', field)).toBe('invalid');
+      lookup.mockRestore();
+    });
+
     it('should set undefined when number type input is empty', () => {
       const { field, query } = renderComponent({
         schema: { type: 'integer' },

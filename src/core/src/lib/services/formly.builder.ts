@@ -1,4 +1,4 @@
-import { Inject, Injectable, Injector, Optional, ViewContainerRef } from '@angular/core';
+import { EventEmitter, Inject, Injectable, Injector, Optional, ViewContainerRef } from '@angular/core';
 import { UntypedFormGroup, UntypedFormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, ConfigOption } from '../models';
@@ -7,6 +7,8 @@ import { FORMLY_CONFIG } from '../core.config';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
+  private readonly initializedForms = new WeakSet<UntypedFormGroup | UntypedFormArray>();
+
   constructor(
     private config: FormlyConfig,
     private injector: Injector,
@@ -37,23 +39,45 @@ export class FormlyFormBuilder {
       this._setOptions(field);
     }
 
-    disableTreeValidityCall(field.form, () => {
-      this._build(field);
-      // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
-      if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
-        // detect changes early to avoid reset value by hidden fields
-        const options = (field as FormlyFieldConfigCache).options;
+    const firstBuild = !field.parent && !this.initializedForms.has(field.form);
+    let lastEmittedStatus: string | undefined;
+    const subscription = firstBuild
+      ? field.form.statusChanges.subscribe((status) => (lastEmittedStatus = status))
+      : undefined;
+    if (firstBuild) {
+      this.initializedForms.add(field.form);
+    }
 
-        if (field.parent && isHiddenField(field)) {
-          // when hide is used in expression set defaul value will not be set until detect hide changes
-          // which causes default value not set on new item is added
-          options._hiddenFieldsForCheck?.push({ field, default: false });
+    try {
+      disableTreeValidityCall(field.form, () => {
+        this._build(field);
+        // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
+        if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
+          // detect changes early to avoid reset value by hidden fields
+          const options = (field as FormlyFieldConfigCache).options;
+
+          if (field.parent && isHiddenField(field)) {
+            // when hide is used in expression set defaul value will not be set until detect hide changes
+            // which causes default value not set on new item is added
+            options._hiddenFieldsForCheck?.push({ field, default: false });
+          }
+
+          options.checkExpressions?.(field, true);
+          options._detectChanges?.(field);
         }
-
-        options.checkExpressions?.(field, true);
-        options._detectChanges?.(field);
+      });
+    } catch (error) {
+      if (firstBuild) {
+        this.initializedForms.delete(field.form);
       }
-    });
+      throw error;
+    } finally {
+      subscription?.unsubscribe();
+    }
+
+    if (firstBuild && lastEmittedStatus !== field.form.status) {
+      (field.form.statusChanges as EventEmitter<string>).emit(field.form.status);
+    }
   }
 
   private _build(field: FormlyFieldConfigCache) {

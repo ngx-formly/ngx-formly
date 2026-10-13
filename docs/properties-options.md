@@ -22,6 +22,13 @@ Everything starts with the `formly-form`. General use of it will look something 
 | options | `FormlyFormOptions`    |                     | no            | Options for the form. |
 
 
+### Initial validation status
+
+The form's `statusChanges` emits its initial status after the first successful build, including when it remains
+`VALID`. This notification does not emit a value change or repeat for unchanged rebuilds. Subscribe before
+binding the form to receive it. Async validators can subsequently emit their resolved status.
+If validation expressions change the status during the initial build, a final notification corrects any earlier status.
+
 ### Outputs
 
 | Name          | Description    |
@@ -56,6 +63,24 @@ Everything starts with the `formly-form`. General use of it will look something 
 | formControl          | `AbstractControl` | This is the [FormControl](https://angular.io/api/forms/FormControl) for the field. It provides you more control like running validators, calculating status, and resetting state. |
 | modelOptions         | `object` | An object with a few useful properties to control the model changes: `debounce`, `updateOn` |
 
+
+## Ionic select interfaces
+
+Ionic select fields accept `props.interfaceOptions` to configure their alert, action sheet, or popover:
+
+```ts
+{
+  key: 'choice',
+  type: 'select',
+  props: {
+    interface: 'popover',
+    interfaceOptions: { size: 'cover' },
+    options: [{ label: 'First option', value: 1 }],
+  },
+}
+```
+
+The Ionic demo uses this configuration for its select fields.
 
 ## options
 

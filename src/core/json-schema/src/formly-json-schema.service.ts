@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 import { AbstractControl, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 import {
-  ɵreverseDeepMerge as reverseDeepMerge,
-  ɵgetFieldValue as getFieldValue,
   ɵclone as clone,
+  FormlyFieldConfig,
+  ɵgetFieldValue as getFieldValue,
   ɵhasKey as hasKey,
+  ɵreverseDeepMerge as reverseDeepMerge,
 } from '@ngx-formly/core';
+import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 import { tap } from 'rxjs/operators';
 
 export interface FormlyJsonschemaOptions {
+  /**
+   * Leave required strings without a schema default undefined instead of defaulting to ''.
+   * Defaults to false. Explicit schema defaults and other types are unaffected.
+   */
+  ignoreImplicitStringDefaults?: boolean;
+
   /**
    * allows to intercept the mapping, taking the already mapped
    * formly field and the original JSONSchema source from which it
@@ -149,7 +155,9 @@ export class FormlyJsonschema {
           break;
         }
         case 'string': {
-          field.defaultValue = '';
+          if (!options.ignoreImplicitStringDefaults) {
+            field.defaultValue = '';
+          }
           break;
         }
         case 'object': {
@@ -208,14 +216,14 @@ export class FormlyJsonschema {
       case 'integer': {
         field.parsers = [
           (v: string | number, f: FormlyFieldConfig) => {
-            v = toNumber(v);
+            v = v === '' && types.includes('null') ? null : toNumber(v);
 
             if (v === null && f) {
               const input =
                 typeof document !== 'undefined' && f.id
                   ? document.querySelector<HTMLInputElement>(`#${f.id}`)
                   : undefined;
-              if (input && input.validity && !input.validity.badInput) {
+              if (input && input.validity && !input.validity.badInput && !types.includes('null')) {
                 v = undefined;
               }
 

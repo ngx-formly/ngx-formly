@@ -1,6 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { createBuilder } from '@ngx-formly/core/testing';
-import { Subject, of } from 'rxjs';
+import { createBuilder, createFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
+import { BehaviorSubject, Subject, of } from 'rxjs';
 import { FormlyFieldConfig, FormlyFieldConfigCache } from '../../models';
 
 function buildField({ model, options, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
@@ -644,6 +644,132 @@ describe('FieldExpressionExtension', () => {
     });
 
     describe('field disabled state', () => {
+      it.each(['function', 'observable'])(
+        'should preserve a nested group disabled %s expression when its parent is enabled',
+        (source) => {
+          let disabled = true;
+          const disabled$ = new BehaviorSubject(true);
+          const { field, query, detectChanges } = createFieldComponent(
+            {
+              key: 'outer',
+              expressions: { 'props.disabled': () => disabled },
+              fieldGroup: [
+                {
+                  key: 'inner',
+                  expressions: { 'props.disabled': source === 'observable' ? disabled$ : () => disabled$.value },
+                  fieldGroup: [{ key: 'value', type: 'input', props: { required: true } }],
+                },
+                { key: 'sibling', defaultValue: 'saved' },
+              ],
+            },
+            { imports: [FormlyInputModule] },
+          );
+          const [inner, sibling] = field.fieldGroup;
+
+          for (const value of [false, true, false]) {
+            disabled = value;
+            field.options.detectChanges(field);
+            detectChanges();
+            expect(inner.props.disabled).toBe(true);
+            expect(inner.formControl.disabled).toBe(true);
+            expect(query<HTMLInputElement>('input').nativeElement.disabled).toBe(true);
+            expect(sibling.formControl.disabled).toBe(value);
+          }
+          expect(field.form.valid).toBe(true);
+          expect(field.form.value).toEqual({ outer: { sibling: 'saved' } });
+
+          disabled$.next(false);
+          field.options.detectChanges(field);
+          detectChanges();
+          expect(query<HTMLInputElement>('input').nativeElement.disabled).toBe(false);
+          expect(field.form.invalid).toBe(true);
+        },
+      );
+
+      it('should leave a group with only disabled children unchanged on repeated expression checks', () => {
+        const field = buildField({
+          key: 'group',
+          expressions: { 'props.disabled': () => false },
+          fieldGroup: [{ key: 'child', expressions: { 'props.disabled': () => true } }],
+        });
+        const enable = jest.spyOn(field.formControl, 'enable');
+        const disable = jest.spyOn(field.formControl, 'disable');
+
+        field.options.checkExpressions(field.parent);
+        field.options.checkExpressions(field.parent);
+
+        expect(field.props.disabled).toBe(false);
+        expect(field.formControl.disabled).toBe(true);
+        expect(enable).not.toHaveBeenCalled();
+        expect(disable).not.toHaveBeenCalled();
+      });
+
+      it('should not disable the shared control of a keyless group', () => {
+        const field = buildField({
+          fieldGroup: [
+            {
+              expressions: { 'props.disabled': () => true },
+              fieldGroup: [{ key: 'child', expressions: { 'props.disabled': () => false } }],
+            },
+            { key: 'sibling' },
+          ],
+        });
+
+        field.options.checkExpressions(field.parent);
+
+        expect(field.fieldGroup[0].fieldGroup[0].formControl.disabled).toBe(true);
+        expect(field.fieldGroup[1].formControl.enabled).toBe(true);
+        expect(field.formControl.enabled).toBe(true);
+      });
+
+      it.each(['props.disabled', 'templateOptions.disabled'])(
+        'should preserve a child %s expression when its parent is enabled',
+        (property) => {
+          let disabled = true;
+          const field = buildField({
+            key: 'group',
+            expressions: { [property]: () => disabled },
+            fieldGroup: [
+              { key: 'child', expressions: { [property]: () => true } },
+              { key: 'sibling', expressions: { [property]: () => false } },
+            ],
+          });
+          const [child, sibling] = field.fieldGroup;
+
+          for (const value of [false, true, false]) {
+            disabled = value;
+            field.options.checkExpressions(field.parent);
+            expect(child.props.disabled).toBe(true);
+            expect(child.formControl.disabled).toBe(true);
+            expect(sibling.props.disabled).toBe(value);
+            expect(sibling.formControl.disabled).toBe(value);
+          }
+        },
+      );
+
+      it('should preserve observable child disabled expressions when its parent is enabled', () => {
+        let disabled = true;
+        const disabled$ = new Subject<boolean>();
+        const field = buildField({
+          key: 'group',
+          expressions: { 'props.disabled': () => disabled },
+          fieldGroup: [{ key: 'child', expressions: { 'props.disabled': disabled$ } }],
+        });
+        const [child] = field.fieldGroup;
+        const subscription = (child as FormlyFieldConfigCache)._expressions['props.disabled'].value$.subscribe();
+
+        disabled$.next(true);
+        disabled = false;
+        field.options.checkExpressions(field.parent);
+        expect(child.props.disabled).toBe(true);
+        expect(child.formControl.disabled).toBe(true);
+
+        disabled$.next(false);
+        field.options.checkExpressions(field.parent);
+        expect(child.formControl.enabled).toBe(true);
+        subscription.unsubscribe();
+      });
+
       it('should update field disabled state', () => {
         const field = buildField({
           key: 'text',
