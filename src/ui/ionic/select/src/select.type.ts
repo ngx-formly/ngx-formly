@@ -8,6 +8,8 @@ interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   compareWith?: ((currentValue: any, compareValue: any) => boolean) | null | string | undefined;
   multiple?: boolean;
   interface?: 'action-sheet' | 'alert' | 'popover';
+  /** Options passed to the Ionic alert, action sheet, or popover interface. */
+  interfaceOptions?: any;
   okText?: string;
   cancelText?: string;
 }
@@ -29,6 +31,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [ionFormlyAttributes]="field"
         [multiple]="props.multiple"
         [interface]="props.interface"
+        [interfaceOptions]="props.interfaceOptions"
         [okText]="props.okText"
         [cancelText]="props.cancelText"
         [label]="props.label"
