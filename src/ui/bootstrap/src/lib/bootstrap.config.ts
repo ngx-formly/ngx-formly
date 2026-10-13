@@ -1,3 +1,4 @@
+import { ConfigOption } from '@ngx-formly/core';
 import { withFormlyFormField } from '@ngx-formly/bootstrap/form-field';
 import { withFormlyFieldInput } from '@ngx-formly/bootstrap/input';
 import { withFormlyFieldTextArea } from '@ngx-formly/bootstrap/textarea';
@@ -7,7 +8,7 @@ import { withFormlyFieldMultiCheckbox } from '@ngx-formly/bootstrap/multicheckbo
 import { withFormlyFieldSelect } from '@ngx-formly/bootstrap/select';
 import { withFormlyWrapperAddons } from '@ngx-formly/bootstrap/addons';
 
-export function withFormlyBootstrap() {
+export function withFormlyBootstrap(): ConfigOption[] {
   return [
     withFormlyFormField(),
     withFormlyFieldInput(),

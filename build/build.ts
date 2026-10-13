@@ -38,3 +38,5 @@ PACKAGES.map((name) => {
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkgJson, null, 2));
 });
+
+exec('ts-node --dir build check-declarations.ts');
