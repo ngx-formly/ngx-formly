@@ -17,12 +17,6 @@ export const appConfig: ApplicationConfig = {
       withFormlyFieldToggle(),
       additionalTypes,
       {
-        types: [
-          {
-            name: 'select',
-            defaultOptions: { props: { interface: 'popover', interfaceOptions: { size: 'cover' } } },
-          },
-        ],
         validationMessages: [{ name: 'required', message: 'This field is required' }],
       },
     ]),
