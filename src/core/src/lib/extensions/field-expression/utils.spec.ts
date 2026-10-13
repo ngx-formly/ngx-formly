@@ -2,6 +2,46 @@ import { parseExpression as evalStringExpression } from './utils';
 
 describe('evalStringExpression', () => {
   describe('property access', () => {
+    it.each([undefined, null, {}, { foo: null }, { foo: { name: 'Test' } }])(
+      'should support optional property chains for %p',
+      (model) => {
+        const expr = evalStringExpression('model?.foo?.name', ['model']);
+        expect(expr(model)).toBe((model as any)?.foo?.name);
+      },
+    );
+
+    it.each([0, false, ''])('should preserve falsey optional property values %p', (value) => {
+      const expr = evalStringExpression('model?.value', ['model']);
+      expect(expr({ value })).toBe(value);
+    });
+
+    it('should support optional bracket access without evaluating a key after a null value', () => {
+      const expr = evalStringExpression('model?.items?.[model.index]?.name', ['model']);
+      expect(expr({ items: [{ name: 'First' }], index: 0 })).toBe('First');
+      expect(
+        expr({
+          items: null,
+          get index() {
+            throw new Error('A short-circuited key must not be evaluated');
+          },
+        }),
+      ).toBeUndefined();
+    });
+
+    it('should preserve ternary parsing after optional property access', () => {
+      const expr = evalStringExpression('model?.enabled ? model?.value : "fallback"', ['model']);
+      expect(expr({ enabled: true, value: 0 })).toBe(0);
+      expect(expr(null)).toBe('fallback');
+    });
+
+    it('should reject malformed optional access and unsupported calls', () => {
+      const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+      for (const expression of ['model?.', 'model?.?.name', 'model?.()', 'model?.foo()']) {
+        expect(evalStringExpression(expression, ['model'])).toBeUndefined();
+      }
+      error.mockRestore();
+    });
+
     it('should access model properties', () => {
       const expr = evalStringExpression('model.name', ['model']);
       expect(expr({ name: 'Marisol' })).toBe('Marisol');

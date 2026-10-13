@@ -11,6 +11,7 @@ type ExpressionContext = {
 enum TokenType {
   IDENTIFIER = 'IDENTIFIER',
   DOT = 'DOT',
+  OPTIONAL_DOT = 'OPTIONAL_DOT',
   BRACKET_OPEN = 'BRACKET_OPEN',
   BRACKET_CLOSE = 'BRACKET_CLOSE',
   STRING = 'STRING',
@@ -80,6 +81,9 @@ class Tokenizer {
       } else if (char === ')') {
         tokens.push({ type: TokenType.PAREN_CLOSE, value: ')' });
         this.pos++;
+      } else if (char === '?' && this.peek() === '.') {
+        tokens.push({ type: TokenType.OPTIONAL_DOT, value: '?.' });
+        this.pos += 2;
       } else if (char === '?') {
         tokens.push({ type: TokenType.TERNARY_QUESTION, value: '?' });
         this.pos++;
@@ -271,6 +275,7 @@ class ExpressionParser {
 
   parse(): (context: ExpressionContext) => any {
     const expr = this.parseTernary();
+    this.consume(TokenType.EOF);
     return (context: ExpressionContext) => expr(context);
   }
 
@@ -447,9 +452,20 @@ class ExpressionParser {
     path.push(this.consume(TokenType.IDENTIFIER).value);
 
     // Read rest of path (dots and brackets)
-    while (this.current().type === TokenType.DOT || this.current().type === TokenType.BRACKET_OPEN) {
-      if (this.current().type === TokenType.DOT) {
-        this.consume(TokenType.DOT);
+    while (
+      this.current().type === TokenType.DOT ||
+      this.current().type === TokenType.OPTIONAL_DOT ||
+      this.current().type === TokenType.BRACKET_OPEN
+    ) {
+      const optional = this.current().type === TokenType.OPTIONAL_DOT;
+      if (optional) {
+        this.consume(TokenType.OPTIONAL_DOT);
+      }
+
+      if (this.current().type === TokenType.DOT || (optional && this.current().type !== TokenType.BRACKET_OPEN)) {
+        if (!optional) {
+          this.consume(TokenType.DOT);
+        }
         path.push(this.consume(TokenType.IDENTIFIER).value);
       } else {
         this.consume(TokenType.BRACKET_OPEN);
