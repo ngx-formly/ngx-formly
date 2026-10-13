@@ -1,5 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
+@use 'sass:meta';
+@use './app/shared/example-viewer/example-viewer-theme' as example-viewer;
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./assets/fonts/inter-tight-medium.ttf') format('truetype');
+}
+
+:root {
+  color-scheme: light;
+  --site-background: #fff;
+  --site-ink: #18161b;
+  --site-muted: #625d68;
+  --site-accent: #a52364;
+  --site-accent-soft: #f6e7ef;
+  --site-line: #dedbe2;
+  --site-soft: #f7f5f9;
+  --site-code: #813457;
+  --site-success: #286545;
+  --site-accent-contrast: #fff;
+}
+
+:root[data-bs-theme='dark'] {
+  color-scheme: dark;
+  --site-background: #111014;
+  --site-ink: #f3eff6;
+  --site-muted: #b8b0c0;
+  --site-accent: #f5b6dc;
+  --site-accent-soft: #34212f;
+  --site-line: #3c3642;
+  --site-soft: #1b181f;
+  --site-code: #f5b6dc;
+  --site-success: #8cdbad;
+  --site-accent-contrast: #271520;
+}
+
+::selection {
+  color: var(--site-accent-contrast);
+  background: var(--site-accent);
+}
+
 // bootstrap
 html {
   box-sizing: border-box;
@@ -13,10 +56,13 @@ html {
 
 // Fixes
 body {
-  @import './styles/sidenav';
+  color: var(--site-ink);
+  background: var(--site-background);
+  @include meta.load-css('./styles/sidenav');
 }
 
 // Bootstrap
+// shortcut: Bootstrap 5 partials require @import; migrate to @use when they support independent Sass modules.
 @import 'bootstrap/scss/bootstrap-grid';
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/root';
@@ -29,7 +75,7 @@ body {
 legend {
   margin-bottom: 20px;
   font-size: 21px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--site-line);
 }
 
 // highlight.js
@@ -37,7 +83,6 @@ legend {
 
 // material
 
-@import './app/shared/example-viewer/example-viewer-theme';
 @include mat.elevation-classes();
 @include mat.app-background();
 $typography: mat.m2-define-typography-config();
@@ -46,12 +91,98 @@ $typography: mat.m2-define-typography-config();
 // Define a theme.
 $matPrimary: mat.m2-define-palette(mat.$m2-blue-grey-palette, 900);
 $matAccent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+$matWarn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$theme: mat.m2-define-light-theme($matPrimary, $matAccent);
+$theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: $matPrimary,
+      accent: $matAccent,
+      warn: $matWarn,
+    ),
+    typography: null,
+    density: 0,
+  )
+);
 
 // Include all theme styles for the components.
 @include mat.all-component-themes($theme);
-@include example-viewer-theme($theme);
+@include example-viewer.example-viewer-theme();
+
+[data-bs-theme='dark'] {
+  $darkPrimary: mat.m2-define-palette(mat.$m2-blue-grey-palette, 200, 100, 300);
+  $darkTheme: mat.m2-define-dark-theme(
+    (
+      color: (
+        primary: $darkPrimary,
+        accent: $matAccent,
+        warn: $matWarn,
+      ),
+      typography: null,
+      density: 0,
+    )
+  );
+  @include mat.all-component-colors($darkTheme);
+  @include meta.load-css('highlight.js/styles/github-dark.css');
+
+  .json-formatter-row {
+    &,
+    a,
+    a:hover {
+      color: var(--site-ink);
+    }
+
+    .json-formatter-string,
+    .json-formatter-stringifiable {
+      color: #a5d6ff;
+    }
+
+    .json-formatter-key,
+    .json-formatter-number,
+    .json-formatter-bracket,
+    .json-formatter-url {
+      color: #79c0ff;
+    }
+
+    .json-formatter-boolean,
+    .json-formatter-null,
+    .json-formatter-undefined {
+      color: #f5b6dc;
+    }
+  }
+}
+
+.documentation-search-panel .mat-mdc-dialog-surface {
+  background: var(--site-background);
+  border: 1px solid var(--site-line);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.theme-menu.mat-mdc-menu-panel {
+  min-width: 96px;
+  border: 1px solid var(--site-line);
+  background: var(--site-background);
+  box-shadow: none;
+
+  .mat-mdc-menu-item {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 16px;
+    color: var(--site-muted);
+
+    .mat-icon {
+      margin: 0;
+      color: inherit;
+    }
+
+    &[aria-checked='true'] {
+      color: var(--site-accent);
+      background: var(--site-accent-soft);
+    }
+  }
+}
 
 pre {
   display: block;
@@ -59,16 +190,16 @@ pre {
   margin: 0 0 10px;
   font-size: 13px;
   line-height: 1.42857143;
-  color: #333;
+  color: var(--site-ink);
   word-break: break-all;
   word-wrap: break-word;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
+  background-color: var(--site-soft);
+  border: 1px solid var(--site-line);
   border-radius: 4px;
 }
 
 .active-link {
-  color: map_get(mat.$m2-blue-grey-palette, 900) !important;
+  color: var(--site-accent) !important;
 }
 
 @import './markdown.css';
@@ -80,7 +211,7 @@ pre {
 footer {
   font-size: 85%;
   text-align: center;
-  background-color: white;
+  background-color: var(--site-background);
   display: flex;
   justify-content: space-between;
   @include media-breakpoint-down(sm) {
@@ -89,11 +220,11 @@ footer {
 
   a {
     font-weight: 500;
-    color: $gray-700;
+    color: var(--site-muted);
 
     &:hover,
     &:focus {
-      color: $link-color;
+      color: var(--site-accent);
     }
   }
 
@@ -142,5 +273,5 @@ footer {
 }
 
 .text-muted {
-  color: #6c757d !important;
+  color: var(--site-muted) !important;
 }

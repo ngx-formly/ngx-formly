@@ -1,53 +1,111 @@
 @if (usDefaultLayout) {
-  <ngx-loading-bar [color]="'#fafafa'"></ngx-loading-bar>
-  <mat-toolbar color="primary" class="mat-elevation-z6 app-navbar" [class.navbar-small]="isSmallDevice$ | async">
+  @let isSmallDevice = isSmallDevice$ | async;
+  @let migrationMenuActive = migrationMenuActive$ | async;
+  <a class="skip-link" href="#main-content" (click)="$event.preventDefault(); mainContent.focus()">Skip to content</a>
+  <ngx-loading-bar [color]="'var(--site-accent)'"></ngx-loading-bar>
+  <nav class="app-navbar" aria-label="Main navigation">
     <a
-      mat-button
+      class="brand-link"
       routerLink=""
       routerLinkActive=""
       #homeLink="routerLinkActive"
       [routerLinkActiveOptions]="{ exact: true }"
+      aria-label="Formly home"
     >
-      <span class="d-flex align-items-center">
-        <img alt="Home" src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true" />
-        FORMLY
-      </span>
+      <img alt="" src="assets/formly-logo.svg" width="36" height="40" />
+      <span>Formly</span>
     </a>
-    @if (isSmallDevice$ | async) {
-      <span class="spacer" [style.flex]="'1 1 auto'"></span>
-      <ng-container *ngTemplateOutlet="version"></ng-container>
-      <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-        <img alt="GitHub" src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
-      </a>
-      <button mat-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    } @else {
-      @for (link of menu; track link) {
-        <a mat-button [routerLink]="link.path">{{ link.label }}</a>
-      }
-      <span class="spacer" [style.flex]="'1 1 auto'"></span>
-      <ng-container *ngTemplateOutlet="version"></ng-container>
-      <a mat-button href="https://github.com/ngx-formly/ngx-formly">
-        <span class="d-flex align-items-center">
-          <img alt="GitHub" src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg" />
-          GitHub
-        </span>
-      </a>
+    <div class="nav-version"><ng-container *ngTemplateOutlet="version"></ng-container></div>
+    <button
+      mat-button
+      class="search-toggle"
+      type="button"
+      aria-label="Search documentation"
+      aria-keyshortcuts="Meta+k Control+k"
+      [attr.aria-busy]="searchLoading()"
+      (click)="openSearch()"
+    >
+      <span class="search-toggle-content">
+        <mat-icon aria-hidden="true">search</mat-icon>
+        <span class="search-shortcut" aria-hidden="true"
+          ><kbd>{{ searchShortcut }}</kbd
+          ><kbd>K</kbd></span
+        >
+      </span>
+    </button>
+    @if (searchFailed()) {
+      <p class="search-error" role="status">Search couldn't load. Check your connection, then select Search again.</p>
     }
-  </mat-toolbar>
-  <mat-sidenav-container fullscreen [style.top]="'56px'" class="mat-typography">
+    <div class="primary-links">
+      @for (link of menu; track link.path) {
+        <a [routerLink]="link.path" routerLinkActive="nav-active" ariaCurrentWhenActive="page">
+          <mat-icon aria-hidden="true">{{ menuIcons[link.path] }}</mat-icon>
+          <span>{{ link.label }}</span>
+        </a>
+      }
+    </div>
+    <a class="github-link" href="https://github.com/ngx-formly/ngx-formly" aria-label="Formly on GitHub">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .1 1.46 2.22 3.29 1.58.1-.73.39-1.23.71-1.51-2.5-.29-5.12-1.25-5.12-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15a10.67 10.67 0 0 1 5.61 0c2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.32-2.63 5.27-5.14 5.55.4.35.76 1.04.76 2.09v3.1c0 .3.2.65.78.54A11.2 11.2 0 0 0 12 .8Z"
+        />
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <button
+      mat-icon-button
+      class="theme-toggle"
+      type="button"
+      [matMenuTriggerFor]="themeMenu"
+      [attr.aria-label]="'Change theme. Current theme: ' + theme()"
+    >
+      <mat-icon aria-hidden="true">
+        {{ theme() === 'system' ? 'brightness_6' : theme() === 'dark' ? 'dark_mode' : 'light_mode' }}
+      </mat-icon>
+    </button>
+    <mat-menu #themeMenu="matMenu" class="theme-menu" xPosition="after" yPosition="above" [overlapTrigger]="false">
+      @for (option of themeOptions; track option.value) {
+        <button
+          mat-menu-item
+          type="button"
+          role="menuitemradio"
+          [attr.aria-checked]="theme() === option.value"
+          (click)="setTheme(option.value)"
+        >
+          <mat-icon aria-hidden="true">{{ option.icon }}</mat-icon>
+          <span>{{ option.label }}</span>
+        </button>
+      }
+    </mat-menu>
+    @if (isSmallDevice) {
+      <button
+        mat-button
+        type="button"
+        (click)="sidenav.toggle()"
+        aria-label="Toggle navigation"
+        [attr.aria-expanded]="sidenav.opened"
+        aria-controls="section-navigation"
+      >
+        <mat-icon aria-hidden="true">menu</mat-icon>
+      </button>
+    }
+  </nav>
+  <mat-sidenav-container class="site-layout">
     <mat-sidenav
-      [mode]="(isSmallDevice$ | async) ? 'over' : 'side'"
-      [opened]="!homeLink.isActive && (isSmallDevice$ | async) === false"
-      [style.width.px]="250"
+      [mode]="isSmallDevice ? 'over' : 'side'"
+      [opened]="!homeLink.isActive && isSmallDevice === false"
+      id="section-navigation"
+      aria-label="Section navigation"
       #sidenav
     >
       @for (link of menu; track link) {
         <a
           mat-button
           class="menu-item"
+          [class.d-none]="migrationMenuActive"
           [routerLink]="link.path"
+          (click)="isSmallDevice && sidenav.close()"
           routerLinkActive="active-link"
           #routerLink="routerLinkActive"
         >
@@ -58,65 +116,65 @@
           </span>
         </a>
         @if (routerLink.isActive) {
-          <ng-template [ngTemplateOutlet]="sideMenuItem" [ngTemplateOutletContext]="{ items: link.items }">
+          <ng-template
+            [ngTemplateOutlet]="sideMenuItem"
+            [ngTemplateOutletContext]="{
+              items: migrationMenuActive ? [migrationMenu] : link.items,
+              migrationsActive: migrationMenuActive,
+              mobile: isSmallDevice,
+              drawer: sidenav,
+            }"
+          >
           </ng-template>
         }
       }
     </mat-sidenav>
-    <div style="min-height: 80vh">
-      <router-outlet></router-outlet>
-    </div>
-    <footer class="text-muted text-muted pt-3 pt-md-5" [class.container]="homeLink.isActive">
-      <a
-        mat-button
-        routerLink=""
-        routerLinkActive=""
-        #homeLink="routerLinkActive"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        <span class="bd-footer-logo">
-          <img
-            width="60"
-            alt="Home"
-            src="https://raw.githubusercontent.com/ngx-formly/ngx-formly/v5/logo.svg?sanitize=true"
-          />
-          <span class="bd-footer-logo-text"> FORMLY </span>
-        </span>
-      </a>
-      <div>
-        <ul class="bd-footer-links">
-          <li><a target="_blank" href="https://github.com/ngx-formly/ngx-formly">GitHub</a></li>
-          <li><a target="_blank" href="https://twitter.com/formlydev">Twitter</a></li>
-          <li><a routerLink="/guide">Guides</a></li>
-          <li><a routerLink="/ui">UI</a></li>
-          <li><a routerLink="/examples">Examples</a></li>
-        </ul>
-        <!-- <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener" target="_blank">Netlify</a>.</p> -->
-        <p>
-          Maintained by the
-          <a href="https://github.com/ngx-formly/ngx-formly#core-team" rel="noopener" target="_blank">core team</a> with
-          the help of
-          <a href="https://github.com/ngx-formly/ngx-formly/graphs/contributors" rel="noopener" target="_blank"
-            >our contributors</a
-          >.
-        </p>
-        <p>
-          Code licensed
-          <a href="https://github.com/ngx-formly/ngx-formly/blob/main/LICENSE" target="_blank" rel="license noopener"
-            >MIT</a
-          >.
-        </p>
-        <div class="bd-footer-badges">
-          <a href="https://www.netlify.com" rel="noopener" target="_blank">
-            <img
-              height="40"
-              src="https://www.netlify.com/img/global/badges/netlify-light.svg"
-              alt="Deploys by Netlify"
-            />
-          </a>
+    <mat-sidenav-content>
+      <main id="main-content" class="site-content" tabindex="-1" #mainContent>
+        <router-outlet></router-outlet>
+      </main>
+      <footer class="site-footer">
+        <a mat-button routerLink="">
+          <span class="bd-footer-logo">
+            <img width="60" alt="Home" src="assets/formly-logo.svg" />
+            <span class="bd-footer-logo-text"> FORMLY </span>
+          </span>
+        </a>
+        <div>
+          <ul class="bd-footer-links">
+            <li><a target="_blank" href="https://github.com/ngx-formly/ngx-formly">GitHub</a></li>
+            <li><a target="_blank" href="https://twitter.com/formlydev">Twitter</a></li>
+            <li><a routerLink="/guide">Guides</a></li>
+            <li><a routerLink="/ui">UI</a></li>
+            <li><a routerLink="/examples">Examples</a></li>
+          </ul>
+          <!-- <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener" target="_blank">Netlify</a>.</p> -->
+          <p>
+            Maintained by the
+            <a href="https://github.com/ngx-formly/ngx-formly#core-team" rel="noopener" target="_blank">core team</a>
+            with the help of
+            <a href="https://github.com/ngx-formly/ngx-formly/graphs/contributors" rel="noopener" target="_blank"
+              >our contributors</a
+            >.
+          </p>
+          <p>
+            Code licensed
+            <a href="https://github.com/ngx-formly/ngx-formly/blob/main/LICENSE" target="_blank" rel="license noopener"
+              >MIT</a
+            >.
+          </p>
+          <div class="bd-footer-badges">
+            <a href="https://www.netlify.com" rel="noopener" target="_blank">
+              <img
+                height="40"
+                src="https://www.netlify.com/img/global/badges/netlify-light.svg"
+                alt="Deploys by Netlify"
+              />
+            </a>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </mat-sidenav-content>
   </mat-sidenav-container>
 } @else {
   <router-outlet></router-outlet>
@@ -136,20 +194,60 @@
   </mat-menu>
 </ng-template>
 
-<ng-template #sideMenuItem let-items="items">
+<ng-template
+  #sideMenuItem
+  let-items="items"
+  let-mobile="mobile"
+  let-drawer="drawer"
+  let-migrationsActive="migrationsActive"
+>
   @for (item of items; track item) {
-    <a
-      mat-button
-      [disabled]="item.items"
-      [class]="!item.items ? 'menu-subitem' : 'menu-subheader'"
-      [routerLink]="!item.items ? item.path : undefined"
-      [routerLinkActiveOptions]="{ exact: true }"
-      routerLinkActive="active-link"
-    >
-      {{ item.label }}
-    </a>
-    @if (item.items) {
-      <ng-template [ngTemplateOutlet]="sideMenuItem" [ngTemplateOutletContext]="{ items: item.items }"> </ng-template>
+    @if (item === migrationMenu) {
+      <a
+        mat-button
+        class="menu-subitem"
+        [class.menu-back]="migrationsActive"
+        [routerLink]="migrationsActive ? '/guide' : item.path"
+        [attr.aria-label]="migrationsActive ? 'Back to Guides' : null"
+      >
+        <span class="menu-drill-link">
+          @if (migrationsActive) {
+            <mat-icon aria-hidden="true">arrow_back</mat-icon>
+          }
+          <span>{{ item.label }}</span>
+          @if (!migrationsActive) {
+            <mat-icon aria-hidden="true">chevron_right</mat-icon>
+          }
+        </span>
+      </a>
+      @if (migrationsActive) {
+        <div class="menu-children">
+          <ng-template
+            [ngTemplateOutlet]="sideMenuItem"
+            [ngTemplateOutletContext]="{ items: item.items, mobile: mobile, drawer: drawer }"
+          ></ng-template>
+        </div>
+      }
+    } @else {
+      <a
+        mat-button
+        [disabled]="item.items"
+        [class]="!item.items ? 'menu-subitem' : 'menu-subheader'"
+        [routerLink]="!item.items ? item.path : undefined"
+        (click)="mobile && !item.items && drawer.close()"
+        ariaCurrentWhenActive="page"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="active-link"
+      >
+        {{ item.label }}
+      </a>
+      @if (item.items) {
+        <ng-template
+          [ngTemplateOutlet]="sideMenuItem"
+          [ngTemplateOutletContext]="{ items: item.items, mobile: mobile, drawer: drawer }"
+        >
+        </ng-template>
+      }
     }
   }
 </ng-template>

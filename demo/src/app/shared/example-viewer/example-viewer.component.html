@@ -62,7 +62,7 @@
   }
 
   @if (showDebug && _debugFields) {
-    <div style="padding: 10px 100px; background: white">
+    <div style="padding: 10px 100px; background: var(--site-background)">
       <formly-form [model]="demoComponentRef.instance.fields[0]" [fields]="_debugFields"></formly-form>
     </div>
   }

@@ -1,19 +1,249 @@
+:host {
+  display: block;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 120px;
+  z-index: 10;
+  padding: 12px 20px;
+  color: var(--site-accent-contrast);
+  background: var(--site-accent);
+  transform: translateY(-150%);
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
 .app-navbar {
   position: fixed;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  height: 56px;
+  inset: 0 auto 0 0;
+  z-index: 3;
+  width: 104px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-right: 1px solid var(--site-line);
+  background: var(--site-background);
+  color: var(--site-muted);
+  padding-block: 28px 20px;
 
-  img {
-    height: 26px;
-    margin: 0 4px 3px 0;
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 
-  &.navbar-small .mat-button {
-    padding: 0 8px;
-    min-width: unset;
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--site-accent);
+    outline-offset: -4px;
+  }
+}
+
+.brand-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--site-ink) !important;
+  font:
+    500 18px 'Inter Tight',
+    Roboto,
+    sans-serif;
+}
+
+.nav-version {
+  align-self: center;
+  margin-block: 8px;
+}
+
+.search-toggle {
+  height: auto;
+  padding: 8px 12px 16px;
+  color: var(--site-muted);
+}
+
+.search-toggle-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-error {
+  position: fixed;
+  top: 24px;
+  left: 116px;
+  max-width: 260px;
+  padding: 16px;
+  border: 1px solid var(--site-line);
+  border-radius: 6px;
+  background: var(--site-background);
+  color: var(--site-ink);
+  font-size: 14px;
+}
+
+.search-shortcut {
+  display: flex;
+  gap: 4px;
+
+  kbd {
+    border: 1px solid var(--site-line);
+    border-radius: 3px;
+    padding: 0 5px;
+    background: transparent;
+    color: inherit;
+    font:
+      12px / 20px Roboto,
+      sans-serif;
+  }
+}
+
+.primary-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 82px;
+    font-size: 13px;
+    border-inline: 1px solid transparent;
+
+    &:hover {
+      background: var(--site-soft);
+      color: var(--site-ink);
+    }
+
+    &.nav-active {
+      color: var(--site-accent);
+      background: var(--site-accent-soft);
+      border-left-color: var(--site-accent);
+    }
+  }
+}
+
+.github-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 16px 0;
+  font-size: 13px;
+
+  &:hover {
+    color: var(--site-accent) !important;
+  }
+}
+
+.theme-toggle {
+  align-self: center;
+  color: var(--site-muted);
+}
+
+.site-layout {
+  position: absolute;
+  inset: 0 0 0 104px;
+}
+
+mat-sidenav {
+  width: 250px;
+}
+
+.site-content {
+  min-height: 80vh;
+}
+
+.site-content:focus {
+  outline: none;
+}
+
+.site-footer {
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 40px 48px 24px;
+  border-top: 1px solid var(--site-line);
+  color: var(--site-muted);
+  gap: 40px;
+}
+
+@media (max-width: 767px) {
+  .app-navbar {
+    inset: 0 0 auto;
+    width: auto;
+    height: 64px;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    padding: 0 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--site-line);
+  }
+
+  .brand-link {
+    flex-direction: row;
+    gap: 8px;
+    margin-right: auto;
+
+    img {
+      width: 27px;
+      height: 30px;
+    }
+  }
+
+  .nav-version {
+    margin: 0;
+    align-self: auto;
+
+    button {
+      min-width: 48px;
+      padding-inline: 4px;
+    }
+  }
+
+  .app-navbar > button:not(.theme-toggle) {
+    min-width: 44px;
+    padding-inline: 10px;
+  }
+
+  .primary-links {
+    display: none;
+  }
+
+  .github-link {
+    display: none;
+  }
+
+  .search-toggle {
+    padding-block: 10px;
+  }
+
+  .search-shortcut {
+    display: none;
+  }
+
+  .search-error {
+    top: 72px;
+    left: 12px;
+  }
+
+  .site-layout {
+    inset: 64px 0 0;
+  }
+
+  .site-footer {
+    padding: 32px 20px 20px;
+    gap: 24px;
+  }
+
+  .skip-link {
+    left: 12px;
   }
 }

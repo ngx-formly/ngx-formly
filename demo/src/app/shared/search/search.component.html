@@ -1,0 +1,79 @@
+<div class="search-header">
+  <mat-icon aria-hidden="true">search</mat-icon>
+  <input
+    #searchInput
+    type="search"
+    aria-label="Search documentation"
+    placeholder="Search docs"
+    autocomplete="off"
+    spellcheck="false"
+    [value]="query()"
+    (input)="query.set(searchInput.value)"
+    (keydown.arrowdown)="focusResult($event, 0)"
+    (keydown.arrowup)="focusResult($event, resultLinks().length - 1)"
+    (keydown.enter)="resultLinks()[0]?.nativeElement.click()"
+  />
+  <button mat-icon-button type="button" aria-label="Close search" (click)="dialog.close()">
+    <mat-icon aria-hidden="true">close</mat-icon>
+  </button>
+</div>
+
+<div class="search-body" [attr.aria-busy]="loading()">
+  @if (loading()) {
+    <p class="search-state" role="status">Loading search…</p>
+  } @else if (loadFailed()) {
+    <div class="search-state" role="status">
+      <p>Search couldn't load. Check your connection and try again.</p>
+      <button mat-button type="button" (click)="loadIndex()">Try again</button>
+    </div>
+  } @else if (!query().trim()) {
+    <div class="search-state">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <p>Search Formly documentation</p>
+      <span>Find guides, upgrade notes, UI libraries, and examples.</span>
+    </div>
+  } @else {
+    <p class="result-count" role="status">
+      @if (results().length > 20) {
+        Showing 20 of {{ results().length }} results. Add more words to narrow your search.
+      } @else {
+        {{ results().length }} {{ results().length === 1 ? 'result' : 'results' }}
+      }
+    </p>
+    <ul aria-label="Search results">
+      @for (result of results().slice(0, 20); track result.path; let index = $index) {
+        <li>
+          <a
+            #resultLink
+            [routerLink]="result.path"
+            (click)="dialog.close()"
+            (keydown.arrowdown)="focusResult($event, index + 1)"
+            (keydown.arrowup)="focusResult($event, index - 1)"
+          >
+            <span class="result-category">{{ result.category }}</span>
+            <span class="result-title">{{ result.title }}</span>
+            @if (result.excerpt) {
+              <span class="result-excerpt">{{ result.excerpt }}</span>
+            }
+          </a>
+        </li>
+      } @empty {
+        <li class="search-state">
+          <p>No results for “{{ query().trim() }}”</p>
+          <span>Try a field name, a UI library, or a version number.</span>
+        </li>
+      }
+    </ul>
+  }
+</div>
+
+<footer class="search-footer" aria-hidden="true">
+  <span
+    ><kbd><mat-icon>keyboard_return</mat-icon></kbd> to open</span
+  >
+  <span
+    ><kbd><mat-icon>arrow_downward</mat-icon></kbd
+    ><kbd><mat-icon>arrow_upward</mat-icon></kbd> to navigate</span
+  >
+  <span><kbd>esc</kbd> to close</span>
+</footer>

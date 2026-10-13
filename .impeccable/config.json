@@ -1,0 +1,15 @@
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-13T15:38:11.262Z",
+        "reason": "Agent: the user selected angular.dev as the design reference; its inspected heading font is Inter Tight, which this implementation intentionally matches."
+      }
+    ]
+  }
+}

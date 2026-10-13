@@ -1,0 +1,5 @@
+@use 'sass:meta';
+
+[data-bs-theme='dark'] {
+  @include meta.load-css('ng-zorro-antd/ng-zorro-antd.dark.css');
+}

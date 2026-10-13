@@ -1,14 +1,4 @@
-import gettingStartedMd from '../../../../docs/getting-started.md?raw' with { loader: 'text' };
-import propertiesOptionsMd from '../../../../docs/properties-options.md?raw' with { loader: 'text' };
-import customFormlyFieldMd from '../../../../docs/custom-formly-field.md?raw' with { loader: 'text' };
-import customFormlyExtensionMd from '../../../../docs/custom-formly-extension.md?raw' with { loader: 'text' };
-import customFormlyWrapperMd from '../../../../docs/custom-formly-wrapper.md?raw' with { loader: 'text' };
-import validationMd from '../../../../docs/validation.md?raw' with { loader: 'text' };
-import expressionPropertiesMd from '../../../../docs/expression-properties.md?raw' with { loader: 'text' };
-import formlyFieldPresetsMd from '../../../../docs/formly-field-presets.md?raw' with { loader: 'text' };
-import jsonSchemaMd from '../../../../docs/json-schema.md?raw' with { loader: 'text' };
-import faqMd from '../../../../docs/faq.md?raw' with { loader: 'text' };
-import migrationMd from '../../../../UPGRADE-10.0.md?raw' with { loader: 'text' };
+import { GUIDE_CONTENTS } from './guides.content';
 import { renderMarkdown } from '../shared/highlight';
 import { Component, ElementRef, Renderer2, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -27,19 +17,7 @@ import { Subject } from 'rxjs';
 })
 export class GuidesComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
-  contents: { [id: string]: string } = {
-    'getting-started': gettingStartedMd,
-    'properties-options': propertiesOptionsMd,
-    'custom-formly-field': customFormlyFieldMd,
-    'custom-formly-extension': customFormlyExtensionMd,
-    'custom-formly-wrapper': customFormlyWrapperMd,
-    validation: validationMd,
-    'expression-properties': expressionPropertiesMd,
-    'formly-field-presets': formlyFieldPresetsMd,
-    'json-schema': jsonSchemaMd,
-    faq: faqMd,
-    migration: migrationMd,
-  };
+  contents = GUIDE_CONTENTS;
 
   constructor(
     private renderer: Renderer2,
@@ -49,7 +27,11 @@ export class GuidesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(({ id }) => {
-      this.renderer.setProperty(this.elementRef.nativeElement, 'innerHTML', renderMarkdown(this.contents[id]));
+      const path = `/guide/${this.route.snapshot.url.map((segment) => segment.path).join('/')}`;
+      const content = renderMarkdown(this.contents[id])
+        .replace(/href="docs\/([^"#]+)\.md/g, 'href="/guide/$1')
+        .replace(/href="#/g, `href="${path}#`);
+      this.renderer.setProperty(this.elementRef.nativeElement, 'innerHTML', content);
     });
   }
 

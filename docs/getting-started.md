@@ -1,10 +1,11 @@
-<div align="center">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/xNiCHsSAsXo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
 # Quick Start
 
 Follow these steps to get started with Ngx Formly. Also check out our [demos](https://formly.dev/examples) for further examples.
+
+<details>
+  <summary>Watch the Formly introduction</summary>
+  <iframe title="Introduction to Formly" width="560" height="315" src="https://www.youtube.com/embed/xNiCHsSAsXo" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</details>
 
 ### 1. Install Formly packages:
 
