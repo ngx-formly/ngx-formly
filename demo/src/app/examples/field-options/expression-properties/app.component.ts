@@ -41,6 +41,20 @@ export class AppComponent {
           props: { label: 'Always disabled', placeholder: 'Stays disabled when its parent becomes enabled' },
           expressions: { 'props.disabled': () => true },
         },
+        {
+          key: 'nested',
+          expressions: { 'props.disabled': () => true },
+          fieldGroup: [
+            {
+              key: 'value',
+              type: 'input',
+              props: {
+                label: 'Disabled by its group',
+                placeholder: 'Stays disabled when the outer group becomes enabled',
+              },
+            },
+          ],
+        },
       ],
     },
   ];

@@ -5,6 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyInputModule, createFieldChangesSpy, createFieldComponent } from '@ngx-formly/core/testing';
 import { renderComponent as renderFormComponent } from '../components/formly.form.spec';
 import { FieldArrayType } from './field-array.type';
+import { BehaviorSubject } from 'rxjs';
 
 const renderComponent = (field: FormlyFieldConfig, config = {}) => {
   return createFieldComponent(field, {
@@ -23,6 +24,55 @@ const renderComponent = (field: FormlyFieldConfig, config = {}) => {
 };
 
 describe('Array Field Type', () => {
+  it.each(['function', 'observable'])(
+    'should preserve a nested array disabled %s expression when its parent is enabled',
+    (source) => {
+      let disabled = true;
+      const disabled$ = new BehaviorSubject(true);
+      const { field, query, queryAll, detectChanges } = renderComponent({
+        key: 'outer',
+        expressions: { 'props.disabled': () => disabled },
+        fieldGroup: [
+          {
+            key: 'items',
+            type: 'array',
+            defaultValue: ['saved'],
+            expressions: { 'props.disabled': source === 'observable' ? disabled$ : () => disabled$.value },
+            fieldArray: { type: 'input' },
+          },
+          { key: 'sibling' },
+        ],
+      });
+      const [items, sibling] = field.fieldGroup;
+
+      for (const value of [false, true, false]) {
+        disabled = value;
+        field.options.detectChanges(field);
+        detectChanges();
+        expect(items.props.disabled).toBe(true);
+        expect(items.formControl.disabled).toBe(true);
+        expect(query<HTMLInputElement>('input').nativeElement.disabled).toBe(true);
+        expect(sibling.formControl.disabled).toBe(value);
+      }
+
+      const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+      arrayType.add(undefined, 'new');
+      detectChanges();
+      expect(queryAll<HTMLInputElement>('input').every(({ nativeElement }) => nativeElement.disabled)).toBe(true);
+      arrayType.remove(0);
+      detectChanges();
+      expect(items.model).toEqual(['new']);
+      expect(items.formControl.disabled).toBe(true);
+      expect(query<HTMLInputElement>('input').nativeElement.disabled).toBe(true);
+
+      disabled$.next(false);
+      field.options.detectChanges(field);
+      detectChanges();
+      expect(items.formControl.enabled).toBe(true);
+      expect(query<HTMLInputElement>('input').nativeElement.disabled).toBe(false);
+    },
+  );
+
   it('should restore array and item defaults when resetting an unchanged visible field', () => {
     const { field, queryAll, detectChanges } = renderComponent({
       key: 'items',

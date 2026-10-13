@@ -59,6 +59,7 @@ options = {
 
 A disabled group disables its children. When the group becomes enabled, each child's disabled expression is
 reapplied, including observable expressions. A child whose expression returns `true` stays disabled.
+This also applies to nested groups and arrays, including their child controls.
 See the [expression properties example](https://formly.dev/docs/examples/field-options/expression-properties).
 
 ## 2. Conditional Rendering
