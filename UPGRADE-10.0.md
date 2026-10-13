@@ -121,6 +121,13 @@ run once during initialization even when the status stays `VALID`. Unchanged reb
 Initial validation expressions may cause a corrective notification after an earlier status.
 Update subscribers and tests that assumed valid forms would not emit an initial notification.
 
+### Field build notifications
+
+The new `fieldChange` output delivers build notifications asynchronously after the current change-detection pass.
+When replacing a synchronous form-ready workaround, move control subscriptions into the `fieldChange` handler.
+In component tests, await `fixture.whenStable()` before checking the notification or the UI it updates.
+See [form build notifications](docs/properties-options.md#accessing-controls-after-a-build).
+
 ### UI integrations
 
 Build your application and run its tests. Check date selection, themes, numeric inputs, labels, disabled states,

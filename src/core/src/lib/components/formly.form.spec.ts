@@ -308,14 +308,44 @@ describe('FormlyForm Component', () => {
   });
 
   describe('fieldChange output', () => {
-    it('should emit a build event with the root field and initialized form', () => {
+    it.each([false, true])('should allow updating parent bindings with zoneless=%s', async (zoneless) => {
+      const { fixture, query } = createComponent({
+        template: `
+          <p>{{ ready }}</p>
+          <formly-form [fields]="fields" (fieldChange)="ready = true"></formly-form>
+        `,
+        inputs: { ready: false, fields: [{ key: 'title' }] },
+        providers: zoneless ? [provideZonelessChangeDetection()] : [],
+      });
+      fixture.autoDetectChanges();
+
+      await fixture.whenStable();
+      expect(query('p').nativeElement.textContent).toBe('true');
+
+      fixture.componentRef.setInput('ready', false);
+      fixture.componentRef.setInput('fields', [{ key: 'other' }]);
+      await fixture.whenStable();
+      expect(query('p').nativeElement.textContent).toBe('true');
+    });
+
+    it('should not deliver a queued build event after destruction', async () => {
+      const fieldChange = jest.fn();
+      const { fixture } = renderComponent({ fields: [{ key: 'title' }], fieldChange });
+
+      fixture.destroy();
+      await fixture.whenStable();
+
+      expect(fieldChange).not.toHaveBeenCalled();
+    });
+
+    it('should emit a build event with the root field and initialized form', async () => {
       const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => {
         const form = field.formControl;
         expect(form.get('title').value).toBe('default');
         expect(form.get('title').valid).toBe(true);
         expect(form.get('hidden')).toBeNull();
       });
-      const { form, query } = renderComponent({
+      const { form, query, fixture } = renderComponent({
         fields: [
           { key: 'title', defaultValue: 'default', props: { required: true } },
           { key: 'hidden', expressions: { hide: 'true' } },
@@ -323,6 +353,8 @@ describe('FormlyForm Component', () => {
         fieldChange,
       });
 
+      expect(fieldChange).not.toHaveBeenCalled();
+      await fixture.whenStable();
       expect(fieldChange.mock.calls[0][0].field).toBe(query(FORMLY_FORM_SELECTOR).componentInstance.field);
       expect(fieldChange.mock.calls[0][0].value).toBe(form);
       expect(fieldChange).toHaveBeenCalledTimes(1);
@@ -333,7 +365,7 @@ describe('FormlyForm Component', () => {
       });
     });
 
-    it('should allow subscribing to controls when fields arrive later', () => {
+    it('should allow subscribing to controls when fields arrive later', async () => {
       const valueChanges = jest.fn();
       const statusChanges = jest.fn();
       const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => {
@@ -344,10 +376,12 @@ describe('FormlyForm Component', () => {
           control.statusChanges.subscribe(statusChanges);
         }
       });
-      const { form, setInputs, query } = renderComponent({ fields: null, fieldChange });
+      const { form, setInputs, query, fixture } = renderComponent({ fields: null, fieldChange });
+      await fixture.whenStable();
       fieldChange.mockClear();
 
       setInputs({ fields: [{ key: 'title', type: 'input', props: { required: true } }] });
+      await fixture.whenStable();
 
       expect(fieldChange).toHaveBeenCalledTimes(1);
       expect(fieldChange).toHaveBeenCalledWith({
@@ -360,15 +394,18 @@ describe('FormlyForm Component', () => {
       expect(statusChanges).toHaveBeenCalledWith('VALID');
     });
 
-    it('should emit for new and empty field configurations', () => {
+    it('should emit for new and empty field configurations', async () => {
       const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => field.formControl.get('new'));
-      const { form, setInputs, query } = renderComponent({ fields: [{ key: 'old' }], fieldChange });
+      const { form, setInputs, query, fixture } = renderComponent({ fields: [{ key: 'old' }], fieldChange });
+      await fixture.whenStable();
       fieldChange.mockClear();
 
       setInputs({ fields: [{ key: 'new' }] });
+      await fixture.whenStable();
       expect(fieldChange).toHaveReturnedWith(form.get('new'));
       expect(form.get('new')).not.toBeNull();
       setInputs({ fields: [] });
+      await fixture.whenStable();
 
       expect(fieldChange).toHaveBeenCalledTimes(2);
       expect(fieldChange).toHaveBeenLastCalledWith({
@@ -378,20 +415,22 @@ describe('FormlyForm Component', () => {
       });
     });
 
-    it('should emit the new form after replacing the form input', () => {
+    it('should emit the new form after replacing the form input', async () => {
       const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => {
         const form = field.formControl;
         expect(form.get('title').value).toBe('value');
       });
-      const { setInputs, query } = renderComponent({
+      const { setInputs, query, fixture } = renderComponent({
         fields: [{ key: 'title' }],
         model: { title: 'value' },
         fieldChange,
       });
+      await fixture.whenStable();
       fieldChange.mockClear();
       const form = new FormGroup({});
 
       setInputs({ form });
+      await fixture.whenStable();
 
       expect(fieldChange).toHaveBeenCalledTimes(1);
       expect(fieldChange).toHaveBeenCalledWith({
@@ -401,13 +440,15 @@ describe('FormlyForm Component', () => {
       });
     });
 
-    it('should emit a built FormArray once when fields and form change together', () => {
+    it('should emit a built FormArray once when fields and form change together', async () => {
       const fieldChange = jest.fn();
-      const { setInputs, query } = renderComponent({ fieldChange });
+      const { setInputs, query, fixture } = renderComponent({ fieldChange });
+      await fixture.whenStable();
       fieldChange.mockClear();
       const form = new FormArray([]);
 
       setInputs({ form, fields: [{ key: '0' }], model: ['value'] });
+      await fixture.whenStable();
 
       expect(fieldChange).toHaveBeenCalledTimes(1);
       expect(fieldChange).toHaveBeenCalledWith({
@@ -418,14 +459,15 @@ describe('FormlyForm Component', () => {
       expect(form.at(0).value).toBe('value');
     });
 
-    it('should emit an internally created form', () => {
+    it('should emit an internally created form', async () => {
       const fieldChange = jest.fn();
-      const { query } = renderComponent(
+      const { query, fixture } = renderComponent(
         { fields: [{ key: 'title' }], fieldChange },
         { template: '<formly-form [fields]="fields" (fieldChange)="fieldChange($event)"></formly-form>' },
       );
       const form = query(FORMLY_FORM_SELECTOR).componentInstance.form;
 
+      await fixture.whenStable();
       expect(fieldChange).toHaveBeenCalledTimes(1);
       expect(fieldChange).toHaveBeenCalledWith({
         field: query(FORMLY_FORM_SELECTOR).componentInstance.field,
@@ -435,17 +477,19 @@ describe('FormlyForm Component', () => {
       expect(form.get('title')).not.toBeNull();
     });
 
-    it('should not emit on model or control value changes', () => {
+    it('should not emit on model or control value changes', async () => {
       const fieldChange = jest.fn();
-      const { form, setInputs, detectChanges } = renderComponent({
+      const { form, setInputs, detectChanges, fixture } = renderComponent({
         fields: [{ key: 'title', type: 'input' }],
         fieldChange,
       });
+      await fixture.whenStable();
       fieldChange.mockClear();
 
       setInputs({ model: { title: 'value' } });
       form.get('title').setValue('changed');
       detectChanges();
+      await fixture.whenStable();
 
       expect(fieldChange).not.toHaveBeenCalled();
     });

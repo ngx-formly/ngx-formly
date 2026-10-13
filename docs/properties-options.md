@@ -50,6 +50,11 @@ The handler receives a `FormlyValueChangeEvent`, the same event shape used by `o
 - `type` is `'build'`.
 - `value` is the built `FormGroup` or `FormArray`, also available as `field.formControl`.
 
+The event is delivered asynchronously after the current change-detection pass, so the handler can update parent
+bindings without an `ExpressionChangedAfterItHasBeenCheckedError`. Angular waits for delivery before considering
+the application stable, including during server rendering. Queued events are skipped if the form component is destroyed.
+In component tests, await `fixture.whenStable()` before asserting on the handler's effects.
+
 The form's controls, default values, validation and expressions have been initialized when the event fires:
 
 ```ts

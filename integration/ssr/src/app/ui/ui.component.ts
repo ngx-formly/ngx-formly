@@ -6,14 +6,22 @@ import { FormlyConfig, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '
 @Component({
   selector: 'formly-app-ui',
   template: `
+    <p>{{ ready ? 'Form ready' : 'Building form' }}</p>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
+      <formly-form
+        [model]="model"
+        [fields]="fields"
+        [options]="options"
+        [form]="form"
+        (fieldChange)="ready = true"
+      ></formly-form>
     </form>
   `,
   imports: [ReactiveFormsModule, FormlyForm],
   providers: [provideNativeDateAdapter()],
 })
 export class UIComponent implements OnInit {
+  ready = false;
   form = new UntypedFormGroup({});
   model: any = {};
   options: FormlyFormOptions = {};

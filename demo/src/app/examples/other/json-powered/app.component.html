@@ -1,4 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
+  <p>First name: {{ firstName$ | async }}</p>
   <formly-form
     [model]="model"
     [fields]="fields"
@@ -6,6 +7,5 @@
     [form]="form"
     (fieldChange)="onFieldChange($event)"
   ></formly-form>
-  <p>First name: {{ firstName$ | async }}</p>
   <button type="submit" class="btn btn-primary submit-button">Submit</button>
 </form>
