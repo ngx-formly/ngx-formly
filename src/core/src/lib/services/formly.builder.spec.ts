@@ -36,6 +36,29 @@ describe('FormlyFormBuilder service', () => {
     expect(status).not.toHaveBeenCalled();
   });
 
+  it('should emit the final initial status after validation expressions', () => {
+    const builder = createFormlyBuilder();
+    const form = new FormGroup({});
+    const status = jest.fn();
+    const valueChanged = jest.fn();
+    form.statusChanges.subscribe(status);
+    form.valueChanges.subscribe(valueChanged);
+    const field: FormlyFieldConfigCache = {
+      form,
+      fieldGroup: [{ key: 'name', props: { required: true }, expressions: { 'props.required': 'false' } }],
+    };
+
+    builder.build(field);
+    expect(form.status).toBe('VALID');
+    expect(status.mock.calls).toEqual([['INVALID'], ['VALID']]);
+    expect(valueChanged).toHaveBeenCalledTimes(1);
+    expect(valueChanged).toHaveBeenCalledWith({ name: undefined });
+
+    status.mockClear();
+    builder.build(field);
+    expect(status).not.toHaveBeenCalled();
+  });
+
   it('should notify initial status without restarting async validation', () => {
     const builder = createFormlyBuilder();
     const form = new FormGroup({});

@@ -40,8 +40,10 @@ export class FormlyFormBuilder {
     }
 
     const firstBuild = !field.parent && !this.initializedForms.has(field.form);
-    let statusEmitted = false;
-    const subscription = firstBuild ? field.form.statusChanges.subscribe(() => (statusEmitted = true)) : undefined;
+    let lastEmittedStatus: string | undefined;
+    const subscription = firstBuild
+      ? field.form.statusChanges.subscribe((status) => (lastEmittedStatus = status))
+      : undefined;
     if (firstBuild) {
       this.initializedForms.add(field.form);
     }
@@ -73,7 +75,7 @@ export class FormlyFormBuilder {
       subscription?.unsubscribe();
     }
 
-    if (firstBuild && !statusEmitted) {
+    if (firstBuild && lastEmittedStatus !== field.form.status) {
       (field.form.statusChanges as EventEmitter<string>).emit(field.form.status);
     }
   }
