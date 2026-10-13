@@ -9,6 +9,27 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-ionic: Select Type', () => {
+  it('should pass interface options to the select and update them', () => {
+    const interfaceOptions = { size: 'cover', cssClass: 'custom-popover' };
+    const { field, query, detectChanges } = renderComponent({
+      key: 'name',
+      type: 'select',
+      props: {
+        interface: 'popover',
+        interfaceOptions,
+        options: [{ value: 1, label: 'label 1' }],
+      },
+    });
+    const select = query<HTMLIonSelectElement>('ion-select').nativeElement;
+
+    expect(select.interfaceOptions).toBe(interfaceOptions);
+
+    field.props.interfaceOptions = { header: 'Choose an option' };
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(select.interfaceOptions).toBe(field.props.interfaceOptions);
+  });
+
   it('should render select type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
