@@ -1,11 +1,4 @@
-@use '@angular/material' as mat;
-@mixin example-viewer-theme($theme) {
-  $primary: map-get($theme, primary);
-  $accent: map-get($theme, accent);
-  $warn: map-get($theme, warn);
-  $background: map-get($theme, background);
-  $foreground: map-get($theme, foreground);
-
+@mixin example-viewer-theme() {
   formly-example-viewer {
     .docs-example-viewer-wrapper {
       border: 1px solid var(--site-line);

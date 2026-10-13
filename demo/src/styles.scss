@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 @use 'sass:meta';
+@use './app/shared/example-viewer/example-viewer-theme' as example-viewer;
 @font-face {
   font-family: 'Inter Tight';
   font-style: normal;
@@ -57,10 +58,11 @@ html {
 body {
   color: var(--site-ink);
   background: var(--site-background);
-  @import './styles/sidenav';
+  @include meta.load-css('./styles/sidenav');
 }
 
 // Bootstrap
+// shortcut: Bootstrap 5 partials require @import; migrate to @use when they support independent Sass modules.
 @import 'bootstrap/scss/bootstrap-grid';
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/root';
@@ -81,7 +83,6 @@ legend {
 
 // material
 
-@import './app/shared/example-viewer/example-viewer-theme';
 @include mat.elevation-classes();
 @include mat.app-background();
 $typography: mat.m2-define-typography-config();
@@ -90,16 +91,38 @@ $typography: mat.m2-define-typography-config();
 // Define a theme.
 $matPrimary: mat.m2-define-palette(mat.$m2-blue-grey-palette, 900);
 $matAccent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+$matWarn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$theme: mat.m2-define-light-theme($matPrimary, $matAccent);
+$theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: $matPrimary,
+      accent: $matAccent,
+      warn: $matWarn,
+    ),
+    typography: null,
+    density: 0,
+  )
+);
 
 // Include all theme styles for the components.
 @include mat.all-component-themes($theme);
-@include example-viewer-theme($theme);
+@include example-viewer.example-viewer-theme();
 
 [data-bs-theme='dark'] {
   $darkPrimary: mat.m2-define-palette(mat.$m2-blue-grey-palette, 200, 100, 300);
-  @include mat.all-component-colors(mat.m2-define-dark-theme($darkPrimary, $matAccent));
+  $darkTheme: mat.m2-define-dark-theme(
+    (
+      color: (
+        primary: $darkPrimary,
+        accent: $matAccent,
+        warn: $matWarn,
+      ),
+      typography: null,
+      density: 0,
+    )
+  );
+  @include mat.all-component-colors($darkTheme);
   @include meta.load-css('highlight.js/styles/github-dark.css');
 
   .json-formatter-row {
