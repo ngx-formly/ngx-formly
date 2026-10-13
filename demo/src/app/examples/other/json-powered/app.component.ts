@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormArray, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyForm, FormlyFormOptions, FormlyFieldConfig, FormlyValueChangeEvent } from '@ngx-formly/core';
 import { UserService } from './user.service';
 
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -30,8 +30,8 @@ export class AppComponent implements OnDestroy {
       });
   }
 
-  onFormChange(form: UntypedFormGroup | UntypedFormArray) {
-    const firstName = form.get('firstName');
+  onFieldChange({ field }: FormlyValueChangeEvent) {
+    const firstName = field.formControl.get('firstName');
     this.firstName$ = firstName?.valueChanges.pipe(startWith(firstName.value));
   }
 

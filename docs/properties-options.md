@@ -34,24 +34,40 @@ If validation expressions change the status during the initial build, a final no
 | Name          | Description    |
 | ------------- | -------------- |
 | (modelChange) | Fired on model value change |
-| (formChange) | Emits the built `FormGroup` or `FormArray` when the `fields` or `form` input changes, including their initial binding. |
+| (fieldChange) | Emits a `FormlyValueChangeEvent` with `type: 'build'` when the `fields` or `form` input changes, including their initial binding. |
 
 ### Accessing controls after a build
 
-Use `(formChange)` to access controls after Formly builds the form, including when fields load asynchronously:
+Use `(fieldChange)` to access controls after Formly builds the form, including when fields load asynchronously:
 
 ```html
-<formly-form [form]="form" [fields]="fields" [model]="model" (formChange)="onFormChange($event)"></formly-form>
+<formly-form [form]="form" [fields]="fields" [model]="model" (fieldChange)="onFieldChange($event)"></formly-form>
 ```
 
-The handler receives the form after its controls, default values, validation and expressions have been initialized.
-You can subscribe to a control's `valueChanges` or `statusChanges` there. Replace previous subscriptions when the
-handler runs again and unsubscribe when the host component is destroyed. The
+The handler receives a `FormlyValueChangeEvent`, the same event shape used by `options.fieldChanges`:
+
+- `field` is the root field configuration containing the form's `fieldGroup`.
+- `type` is `'build'`.
+- `value` is the built `FormGroup` or `FormArray`, also available as `field.formControl`.
+
+The form's controls, default values, validation and expressions have been initialized when the event fires:
+
+```ts
+import { FormlyValueChangeEvent } from '@ngx-formly/core';
+
+onFieldChange({ field }: FormlyValueChangeEvent) {
+  const control = field.formControl.get('firstName');
+  // Subscribe to control.valueChanges or control.statusChanges here.
+}
+```
+
+Replace previous subscriptions when the handler runs again and unsubscribe when the host component is destroyed. The
 [JSON-powered example](https://formly.dev/examples/other/json-powered) uses Angular's `AsyncPipe` for this cleanup.
 
 The event fires once per input update, even when both `fields` and `form` change together. It does not fire for
 model-only changes, control value changes, repeat add/remove actions or direct calls to `options.build()`.
 It signals that the controls are available; it does not wait for asynchronous validators or browser rendering.
+The output shares the `options.fieldChanges` payload shape; it does not forward that stream or add build events to it.
 
 ## fields
 

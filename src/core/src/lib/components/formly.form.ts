@@ -13,7 +13,7 @@ import {
   QueryList,
 } from '@angular/core';
 import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { clone, hasKey, isNoopNgZone, isSignalRequired, observeDeep } from '../utils';
@@ -79,8 +79,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   /** Event that is emitted when the model value is changed */
   @Output() modelChange = new EventEmitter<any>();
-  /** Event emitted after building the form when the fields or form input changes. */
-  @Output() formChange = new EventEmitter<UntypedFormGroup | UntypedFormArray>();
+  /** Emits a build event with the root field and built form when the fields or form input changes. */
+  @Output() fieldChange = new EventEmitter<FormlyValueChangeEvent>();
   @ContentChildren(FormlyTemplate) set templates(templates: QueryList<FormlyTemplate>) {
     this.fieldTemplates.templates = templates;
   }
@@ -114,7 +114,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (changes.fields || changes.form) {
-      this.formChange.emit(this.form);
+      this.fieldChange.emit({ field: this.field, type: 'build', value: this.form });
     }
   }
 
