@@ -1,10 +1,13 @@
 .mat-drawer-container {
-  background-color: #fff;
+  background-color: var(--site-background);
+  color: var(--site-ink);
 }
 
 .mat-sidenav {
   min-width: 250px;
-  padding-top: 8px;
+  padding: 20px 12px;
+  background: var(--site-soft);
+  border-right: 1px solid var(--site-line);
 
   .mdc-button__label {
     width: 100%;
@@ -12,37 +15,92 @@
 
   .mat-drawer-inner-container {
     a {
-      text-align: left;
       width: 100%;
-      border-radius: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+      min-height: 40px;
+      height: auto;
+      text-align: left;
+      justify-content: flex-start;
+      border-radius: 6px;
+      white-space: normal;
+      line-height: 1.5;
+      padding: 10px 12px;
+      margin-block: 2px;
+      color: var(--site-muted);
+      font-size: 14px;
+      letter-spacing: normal;
 
-      &.active {
-        color: rgba(0, 0, 0, 0.26);
+      &:focus-visible {
+        outline: 2px solid var(--site-accent);
+        outline-offset: -2px;
+      }
+
+      &.active-link {
+        color: var(--site-accent) !important;
+        background: var(--site-accent-soft);
       }
     }
 
     .menu-item {
-      text-transform: uppercase;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
-      background: white;
-      z-index: 1;
+      font-weight: 500;
+      color: var(--site-ink);
+      margin-top: 12px;
+
+      @media (min-width: 768px) {
+        display: none;
+      }
     }
 
-    .menu-subitem,
-    .menu-subheader {
-      padding-left: 30px;
-      color: #6e6e6e;
+    .menu-subitem {
+      padding-left: 20px;
+    }
+
+    .menu-drill-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      span {
+        flex: 1;
+      }
+
+      mat-icon {
+        flex-shrink: 0;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .menu-back {
+      padding-left: 12px;
+      margin-bottom: 16px;
+      color: var(--site-ink);
+      font-weight: 500;
+    }
+
+    .menu-children {
+      margin-left: 12px;
+      border-left: 1px solid var(--site-line);
+
+      a {
+        border-radius: 0;
+        border-left: 1px solid transparent;
+        margin-left: -1px;
+
+        &.active-link {
+          background: transparent;
+          border-left-color: var(--site-accent);
+        }
+      }
     }
 
     .menu-subheader {
-      font-size: 10px;
-      padding: 6px 16px;
-      line-height: normal;
+      min-height: auto;
+      margin-top: 20px;
+      padding-left: 20px;
+      color: var(--site-ink);
+      font-size: 12px;
+      font-weight: 500;
     }
   }
 }

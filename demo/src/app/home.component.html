@@ -1,0 +1,114 @@
+<div class="home-page">
+  <section class="hero" aria-labelledby="home-title">
+    <div class="home-container">
+      <h1 id="home-title">Dynamic forms.<br /><span>Defined by you.</span></h1>
+      <p class="hero-description">
+        Turn configuration into working Angular forms.<br class="desktop-break" />
+        Bring your UI, your validation, and your ideas.
+      </p>
+      <div class="hero-actions">
+        <a class="home-button primary" routerLink="/guide">
+          Get started <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+        </a>
+        <a class="home-button secondary" routerLink="/examples">Explore examples</a>
+      </div>
+      <div class="install-command" aria-label="Install Formly with the Angular CLI">
+        <span aria-hidden="true">$</span>
+        <code>ng add &#64;ngx-formly/schematics</code>
+      </div>
+      <p class="hero-footnote">Open source. Built on Angular Reactive Forms.</p>
+    </div>
+  </section>
+
+  <section class="playground home-container" aria-labelledby="playground-title">
+    <div class="section-intro">
+      <h2 id="playground-title">You define the fields.<br /><span>Formly does the rest.</span></h2>
+      <p>Labels, validation, and model updates, all from one configuration. Try the form and watch the model change.</p>
+    </div>
+    <div class="example">
+      <div class="source-panel">
+        <div class="panel-heading"><span>Field configuration</span><span class="file-type">TypeScript</span></div>
+        <pre aria-label="Formly field configuration"><code [innerHTML]="schema"></code></pre>
+      </div>
+      <div class="preview-panel">
+        <div class="panel-heading"><span>Your form</span><span class="live-label">Live preview</span></div>
+        <form [formGroup]="form" (submit)="$event.preventDefault()" aria-label="Live Formly example">
+          <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+        </form>
+        <div class="model-output">
+          <span class="model-label">Model</span>
+          <pre aria-label="Current form model"><code>{{ model | json }}</code></pre>
+        </div>
+        <p class="preview-note">A working example. Nothing is submitted or saved.</p>
+      </div>
+    </div>
+    <a class="text-link" routerLink="/guide/getting-started">
+      Build your first form <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+    </a>
+  </section>
+
+  <section class="integrations" aria-labelledby="integrations-title">
+    <div class="home-container">
+      <div class="section-intro">
+        <h2 id="integrations-title">Your forms.<br /><span>Your design system.</span></h2>
+        <p>Use the components your team already knows. Choose a UI library, or create your own field types.</p>
+      </div>
+      <nav class="adapter-links" aria-label="UI library demos">
+        <a routerLink="/ui/bootstrap">Bootstrap <mat-icon aria-hidden="true">north_east</mat-icon></a>
+        <a routerLink="/ui/material">Material <mat-icon aria-hidden="true">north_east</mat-icon></a>
+        <a routerLink="/ui/ionic">Ionic <mat-icon aria-hidden="true">north_east</mat-icon></a>
+        <a routerLink="/ui/primeng">PrimeNG <mat-icon aria-hidden="true">north_east</mat-icon></a>
+        <a routerLink="/ui/kendo">Kendo <mat-icon aria-hidden="true">north_east</mat-icon></a>
+        <a routerLink="/ui/ng-zorro-antd">NG-ZORRO <mat-icon aria-hidden="true">north_east</mat-icon></a>
+      </nav>
+      <p class="adapter-note">
+        Building for mobile? There is a
+        <a href="https://github.com/ngx-formly/ngx-formly/tree/main/src/ui/nativescript">NativeScript adapter</a>, too.
+      </p>
+    </div>
+  </section>
+
+  <section class="learn home-container" aria-labelledby="learn-title">
+    <h2 id="learn-title">Start simple.<br /><span>Make it your own.</span></h2>
+    <div class="learning-links">
+      <a routerLink="/guide/expression-properties">
+        <div>
+          <h3>Forms that respond</h3>
+          <p>Show, hide, and update fields as your users make choices.</p>
+        </div>
+        <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+      </a>
+      <a routerLink="/guide/json-schema">
+        <div>
+          <h3>Bring your JSON Schema</h3>
+          <p>Generate fields from a schema you already have.</p>
+        </div>
+        <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+      </a>
+      <a routerLink="/guide/custom-formly-field">
+        <div>
+          <h3>Build your own field types</h3>
+          <p>Use custom components and wrappers across your forms.</p>
+        </div>
+        <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+      </a>
+      <a href="https://egghead.io/playlists/configuration-based-reactive-angular-forms-with-ngx-formly-465f">
+        <div>
+          <h3>Learn by building</h3>
+          <p>Follow the Formly course on egghead.</p>
+        </div>
+        <mat-icon aria-hidden="true">north_east</mat-icon>
+      </a>
+    </div>
+    <div class="project-resources">
+      <h3>Already using Formly?</h3>
+      <nav aria-label="Project resources">
+        <a href="https://github.com/ngx-formly/ngx-formly#which-version-to-use">Version compatibility</a>
+        <a href="https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/ngx-formly/ngx-formly#resources">Articles and resources</a>
+        <a href="https://github.com/ngx-formly/ngx-formly#features">Technical details</a>
+        <a href="https://github.com/ngx-formly/ngx-formly#contributors">Contributors</a>
+      </nav>
+    </div>
+  </section>
+</div>

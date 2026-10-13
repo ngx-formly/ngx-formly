@@ -8,20 +8,19 @@
 
   formly-example-viewer {
     .docs-example-viewer-wrapper {
-      border: 1px solid rgba(mat.m2-get-color-from-palette($foreground, secondary-text), 0.03);
-      box-shadow:
-        0 2px 2px rgba(0, 0, 0, 0.24),
-        0 0 2px rgba(0, 0, 0, 0.12);
-      margin: 4px;
+      border: 1px solid var(--site-line);
+      border-radius: 12px;
     }
 
     .docs-example-viewer-title {
-      color: mat.m2-get-color-from-palette($foreground, secondary-text);
-      background: #f2f3f2;
+      color: var(--site-ink);
+      background: var(--site-soft);
+      border-bottom: 1px solid var(--site-line);
+      border-radius: 12px 12px 0 0;
     }
 
     .docs-example-source-copy {
-      color: mat.m2-get-color-from-palette($foreground, hint-text);
+      color: var(--site-muted);
       right: 8px;
 
       [dir='rtl'] & {
@@ -31,8 +30,8 @@
     }
 
     .docs-example-source {
-      border-bottom: 1px solid mat.m2-get-color-from-palette($foreground, divider);
-      overflow-x: scroll;
+      border-bottom: 1px solid var(--site-line);
+      overflow-x: auto;
     }
   }
 }

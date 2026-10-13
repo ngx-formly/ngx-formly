@@ -1,1 +1,21 @@
 @import '@progress/kendo-theme-default/dist/all.css';
+
+:root[data-bs-theme='dark'] {
+  --kendo-color-app-surface: var(--site-background);
+  --kendo-color-on-app-surface: var(--site-ink);
+  --kendo-color-subtle: var(--site-muted);
+  --kendo-color-surface: #242424;
+  --kendo-color-surface-alt: #333;
+  --kendo-color-border: rgba(255, 255, 255, 0.24);
+  --kendo-color-border-alt: rgba(255, 255, 255, 0.48);
+  --kendo-color-base-subtle: #333;
+  --kendo-color-base-subtle-hover: #424242;
+  --kendo-color-base-subtle-active: #4d4d4d;
+  --kendo-color-base: #3d3d3d;
+  --kendo-color-base-hover: #4d4d4d;
+  --kendo-color-base-active: #575757;
+  --kendo-color-base-emphasis: #9c9c9c;
+  --kendo-color-base-on-subtle: var(--site-ink);
+  --kendo-color-on-base: var(--site-ink);
+  --kendo-color-base-on-surface: var(--site-ink);
+}

@@ -8,7 +8,7 @@ import { withFormlyFieldDatepicker } from '@ngx-formly/primeng/datepicker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: false } } }),
+    providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '[data-bs-theme="dark"]' } } }),
     provideFormlyCore([
       ...withFormlyPrimeNG(),
       withFormlyFieldDatepicker(),

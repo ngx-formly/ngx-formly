@@ -1,233 +1,197 @@
-/**
- * standard markdown style
- */
-
-code[class*='language-'],
-pre[class*='language-'] {
-  color: rgba(0, 0, 0, 0.87) !important;
-}
-
 .markdown {
-  font-family:
-    'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans',
-    'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif;
-  padding: 20px;
+  max-width: 920px;
+  margin-inline: auto;
+  padding: 48px;
+  color: var(--site-ink);
+  font:
+    400 16px/1.75 Roboto,
+    sans-serif;
+  overflow-wrap: break-word;
 }
+
 .markdown a {
-  text-decoration: none;
-  vertical-align: baseline;
-}
-.markdown a:hover {
+  color: var(--site-accent);
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
-.markdown h1 {
-  font-size: 2.2em;
-  font-weight: bold;
-  margin: 1.5em 0 1em 0;
+
+.markdown a:hover {
+  text-decoration-thickness: 2px;
 }
-.markdown h2 {
-  font-size: 1.8em;
-  font-weight: bold;
-  margin: 1.275em 0 0.85em 0;
+
+.markdown a:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
 }
-.markdown h3 {
-  font-size: 1.6em;
-  font-weight: bold;
-  margin: 1.125em 0 0.75em 0;
+
+.markdown.github h1,
+.markdown.github h2,
+.markdown.github h3,
+.markdown.github h4,
+.markdown.github h5,
+.markdown.github h6 {
+  color: var(--site-ink);
+  font-family: 'Inter Tight', Roboto, sans-serif;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 48px 0 20px;
+  scroll-margin-top: 24px;
 }
-.markdown h4 {
-  font-size: 1.4em;
-  font-weight: bold;
-  margin: 0.99em 0 0.66em 0;
+
+.markdown.github h1 {
+  font-size: 44px;
 }
-.markdown h5 {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin: 0.855em 0 0.57em 0;
+
+.markdown.github h2 {
+  font-size: 32px;
 }
-.markdown h6 {
-  font-size: 1em;
-  font-weight: bold;
-  margin: 0.75em 0 0.5em 0;
+
+.markdown.github h3 {
+  font-size: 25px;
 }
-.markdown h1:first-child,
-.markdown h2:first-child,
-.markdown h3:first-child,
-.markdown h4:first-child,
-.markdown h5:first-child,
-.markdown h6:first-child {
+
+.markdown.github h4 {
+  font-size: 21px;
+}
+
+.markdown.github h5,
+.markdown.github h6 {
+  font-size: 18px;
+}
+
+.markdown > :first-child {
   margin-top: 0;
 }
-.markdown h1 + p,
-.markdown h2 + p,
-.markdown h3 + p,
-.markdown h4 + p,
-.markdown h5 + p,
-.markdown h6 + p {
-  margin-top: 0;
-}
-.markdown hr {
-  border: 1px solid #cccccc;
-}
+
 .markdown p {
-  margin: 1em 0;
-  word-wrap: break-word;
+  margin: 16px 0;
 }
-.markdown ol {
-  list-style-type: decimal;
-}
+
 .markdown li {
-  display: list-item;
-  line-height: 1.4em;
+  margin-block: 8px;
 }
-.markdown blockquote {
-  margin: 1em 20px;
-}
-.markdown blockquote > :first-child {
-  margin-top: 0;
-}
-.markdown blockquote > :last-child {
-  margin-bottom: 0;
-}
-.markdown blockquote cite:before {
-  content: '\2014 \00A0';
-}
-.markdown .code {
-  border-radius: 3px;
-  word-wrap: break-word;
-}
-.markdown pre {
-  border-radius: 3px;
-  word-wrap: break-word;
-  border: 1px solid #cccccc;
-  overflow: auto;
-  padding: 0.5em;
-}
-.markdown pre code {
+
+.markdown.github hr {
+  margin-block: 32px;
   border: 0;
+  border-top: 1px solid var(--site-line);
+}
+
+.markdown pre {
+  margin: 24px 0;
+  padding: 24px;
+  border: 1px solid var(--site-line);
+  border-radius: 8px;
+  background: var(--site-soft);
+  overflow: auto;
+  scrollbar-color: #918795 var(--site-soft);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.markdown pre code {
   display: block;
-}
-.markdown pre > code {
-  font-family: Consolas, Inconsolata, Courier, monospace;
-  font-weight: bold;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: 400;
   white-space: pre;
-  margin: 0;
+  overflow-wrap: normal;
 }
+
 .markdown code {
-  border-radius: 3px;
-  word-wrap: break-word;
-  border: 1px solid #cccccc;
-  padding: 0 5px;
-  margin: 0 2px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: var(--site-soft);
+  color: var(--site-code);
+  font:
+    0.9em/1.6 Consolas,
+    'Liberation Mono',
+    Menlo,
+    monospace;
 }
-.markdown img {
+
+.markdown blockquote {
+  margin: 24px 0;
+  padding: 16px 24px;
+  border-left: 1px solid var(--site-accent);
+  background: var(--site-soft);
+}
+
+.markdown img,
+.markdown iframe {
   max-width: 100%;
 }
-.markdown mark {
-  color: #000;
-  background-color: #fcf8e3;
-}
-.markdown table {
-  padding: 0;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-bottom: 16px;
-}
-.markdown table tr th,
-.markdown table tr td {
-  border: 1px solid #cccccc;
-  margin: 0;
-  padding: 6px 13px;
-}
-.markdown table tr th {
-  font-weight: bold;
-}
-.markdown table tr th > :first-child {
-  margin-top: 0;
-}
-.markdown table tr th > :last-child {
-  margin-bottom: 0;
-}
-.markdown table tr td > :first-child {
-  margin-top: 0;
-}
-.markdown table tr td > :last-child {
-  margin-bottom: 0;
+
+.markdown iframe {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
 }
 
-/*---------------------------------------------------
-    LESS Elements 0.9
-  ---------------------------------------------------
-    A set of useful LESS mixins
-    More info at: http://lesselements.com
-  ---------------------------------------------------*/
-/**
- * https://github.com/rhiokim/markdown-css
- * solarized-light style
- * made by rhio.kim
- * powered by http://ethanschoonover.com/solarized
- */
-.github {
-  padding: 20px;
-  font-family:
-    'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', 'SimSun', 'Segoe UI',
-    AppleSDGothicNeo-Medium, 'Malgun Gothic', Arial, freesans, sans-serif;
-  font-size: 15px;
-  background: #ffffff;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+.markdown iframe[src*='youtube.com/'] {
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
-.github a {
-  color: #3269a0;
+
+.markdown table {
+  display: block;
+  overflow-x: auto;
+  margin: 24px 0;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
-.github a:hover {
-  color: #4183c4;
+
+.markdown th,
+.markdown td {
+  border: 1px solid var(--site-line);
+  padding: 12px 16px;
+  text-align: left;
 }
-.github h2 {
-  border-bottom: 1px solid #e6e6e6;
-  line-height: 1.6;
+
+.markdown th {
+  background: var(--site-soft);
+  font-weight: 500;
 }
-.github h6 {
-  color: #777;
+
+@media (max-width: 767px) {
+  .markdown {
+    padding: 32px 20px;
+  }
+
+  .markdown.github h1 {
+    font-size: 36px;
+  }
+
+  .markdown.github h2 {
+    font-size: 28px;
+  }
+
+  .markdown pre {
+    padding: 16px;
+  }
 }
-.github hr {
-  border: 1px solid #e6e6e6;
+
+.markdown details {
+  margin-block: 24px;
+  padding: 16px 20px;
+  border: 1px solid var(--site-line);
+  border-radius: 8px;
 }
-.github pre > code {
-  font-size: 0.9em;
-  font-family: Consolas, Inconsolata, Courier, monospace;
+
+.markdown summary {
+  cursor: pointer;
+  color: var(--site-accent);
+  font-weight: 500;
 }
-.github p > code,
-.github li > code,
-.github td > code,
-.github h1 > code,
-.github h2 > code,
-.github h3 > code,
-.github h4 > code,
-.github h5 > code,
-.github h6 > code,
-.github blockquote > code {
-  background-color: rgba(0, 0, 0, 0.07);
-  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  font-size: 85%;
-  padding: 0.2em 0.5em;
-  border: 0;
+
+.markdown summary:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 4px;
 }
-.github blockquote {
-  border-left: 4px solid #e6e6e6;
-  padding: 0 15px;
-  font-style: italic;
+
+.markdown details[open] summary {
+  margin-bottom: 16px;
 }
-.github table {
-  background-color: #fafafa;
-}
-.github table tr th,
-.github table tr td {
-  border: 1px solid #e6e6e6;
-}
-.github table tr:nth-child(2n) {
-  background-color: #f2f2f2;
-}
-/**
- * after less
- */

@@ -6,5 +6,6 @@
 /integration/**/dist
 /src/schematics/
 /.angular/
+/.impeccable/hook.cache.json
 **/test.ts
 **/*.md

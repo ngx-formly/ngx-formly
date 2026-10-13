@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-13T15:49:40.819642+00:00",
+  "title": "Design System: Formly documentation website",
+  "extensions": {
+    "colorMeta": {
+      "site-ink": {
+        "role": "neutral",
+        "displayName": "Primary ink",
+        "tonalRamp": [
+          "oklch(15% 0.0102 303.63)",
+          "oklch(26% 0.0102 303.63)",
+          "oklch(38% 0.0102 303.63)",
+          "oklch(49% 0.0102 303.63)",
+          "oklch(61% 0.0102 303.63)",
+          "oklch(72% 0.0102 303.63)",
+          "oklch(84% 0.0102 303.63)",
+          "oklch(95% 0.0102 303.63)"
+        ]
+      },
+      "site-muted": {
+        "role": "neutral",
+        "displayName": "Muted ink",
+        "tonalRamp": [
+          "oklch(15% 0.0184 306.14)",
+          "oklch(26% 0.0184 306.14)",
+          "oklch(38% 0.0184 306.14)",
+          "oklch(49% 0.0184 306.14)",
+          "oklch(61% 0.0184 306.14)",
+          "oklch(72% 0.0184 306.14)",
+          "oklch(84% 0.0184 306.14)",
+          "oklch(95% 0.0184 306.14)"
+        ]
+      },
+      "site-accent": {
+        "role": "primary",
+        "displayName": "Documentation magenta",
+        "tonalRamp": [
+          "oklch(15% 0.1737 355.57)",
+          "oklch(26% 0.1737 355.57)",
+          "oklch(38% 0.1737 355.57)",
+          "oklch(49% 0.1737 355.57)",
+          "oklch(61% 0.1737 355.57)",
+          "oklch(72% 0.1737 355.57)",
+          "oklch(84% 0.1737 355.57)",
+          "oklch(95% 0.1737 355.57)"
+        ]
+      },
+      "site-accent-soft": {
+        "role": "primary",
+        "displayName": "Active navigation pink",
+        "tonalRamp": [
+          "oklch(15% 0.0193 343.95)",
+          "oklch(26% 0.0193 343.95)",
+          "oklch(38% 0.0193 343.95)",
+          "oklch(49% 0.0193 343.95)",
+          "oklch(61% 0.0193 343.95)",
+          "oklch(72% 0.0193 343.95)",
+          "oklch(84% 0.0193 343.95)",
+          "oklch(95% 0.0193 343.95)"
+        ]
+      },
+      "site-line": {
+        "role": "neutral",
+        "displayName": "Boundary gray",
+        "tonalRamp": [
+          "oklch(15% 0.0100 305.39)",
+          "oklch(26% 0.0100 305.39)",
+          "oklch(38% 0.0100 305.39)",
+          "oklch(49% 0.0100 305.39)",
+          "oklch(61% 0.0100 305.39)",
+          "oklch(72% 0.0100 305.39)",
+          "oklch(84% 0.0100 305.39)",
+          "oklch(95% 0.0100 305.39)"
+        ]
+      },
+      "site-soft": {
+        "role": "neutral",
+        "displayName": "Pale lavender",
+        "tonalRamp": [
+          "oklch(15% 0.0057 308.40)",
+          "oklch(26% 0.0057 308.40)",
+          "oklch(38% 0.0057 308.40)",
+          "oklch(49% 0.0057 308.40)",
+          "oklch(61% 0.0057 308.40)",
+          "oklch(72% 0.0057 308.40)",
+          "oklch(84% 0.0057 308.40)",
+          "oklch(95% 0.0057 308.40)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Reading white",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(26% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "hero-background": {
+        "role": "neutral",
+        "displayName": "Hero black",
+        "tonalRamp": [
+          "oklch(15% 0.0083 296.98)",
+          "oklch(26% 0.0083 296.98)",
+          "oklch(38% 0.0083 296.98)",
+          "oklch(49% 0.0083 296.98)",
+          "oklch(61% 0.0083 296.98)",
+          "oklch(72% 0.0083 296.98)",
+          "oklch(84% 0.0083 296.98)",
+          "oklch(95% 0.0083 296.98)"
+        ]
+      },
+      "hero-accent": {
+        "role": "primary",
+        "displayName": "Hero pink",
+        "tonalRamp": [
+          "oklch(15% 0.0873 342.28)",
+          "oklch(26% 0.0873 342.28)",
+          "oklch(38% 0.0873 342.28)",
+          "oklch(49% 0.0873 342.28)",
+          "oklch(61% 0.0873 342.28)",
+          "oklch(72% 0.0873 342.28)",
+          "oklch(84% 0.0873 342.28)",
+          "oklch(95% 0.0873 342.28)"
+        ]
+      },
+      "hero-accent-hover": {
+        "role": "primary",
+        "displayName": "Hero hover pink",
+        "tonalRamp": [
+          "oklch(15% 0.0577 342.52)",
+          "oklch(26% 0.0577 342.52)",
+          "oklch(38% 0.0577 342.52)",
+          "oklch(49% 0.0577 342.52)",
+          "oklch(61% 0.0577 342.52)",
+          "oklch(72% 0.0577 342.52)",
+          "oklch(84% 0.0577 342.52)",
+          "oklch(95% 0.0577 342.52)"
+        ]
+      },
+      "hero-button-ink": {
+        "role": "neutral",
+        "displayName": "Action ink",
+        "tonalRamp": [
+          "oklch(15% 0.0347 342.92)",
+          "oklch(26% 0.0347 342.92)",
+          "oklch(38% 0.0347 342.92)",
+          "oklch(49% 0.0347 342.92)",
+          "oklch(61% 0.0347 342.92)",
+          "oklch(72% 0.0347 342.92)",
+          "oklch(84% 0.0347 342.92)",
+          "oklch(95% 0.0347 342.92)"
+        ]
+      },
+      "hero-button-border": {
+        "role": "neutral",
+        "displayName": "Action border",
+        "tonalRamp": [
+          "oklch(15% 0.0319 316.64)",
+          "oklch(26% 0.0319 316.64)",
+          "oklch(38% 0.0319 316.64)",
+          "oklch(49% 0.0319 316.64)",
+          "oklch(61% 0.0319 316.64)",
+          "oklch(72% 0.0319 316.64)",
+          "oklch(84% 0.0319 316.64)",
+          "oklch(95% 0.0319 316.64)"
+        ]
+      },
+      "hero-secondary-hover": {
+        "role": "neutral",
+        "displayName": "Secondary hover plum",
+        "tonalRamp": [
+          "oklch(15% 0.0230 316.76)",
+          "oklch(26% 0.0230 316.76)",
+          "oklch(38% 0.0230 316.76)",
+          "oklch(49% 0.0230 316.76)",
+          "oklch(61% 0.0230 316.76)",
+          "oklch(72% 0.0230 316.76)",
+          "oklch(84% 0.0230 316.76)",
+          "oklch(95% 0.0230 316.76)"
+        ]
+      },
+      "hero-muted": {
+        "role": "neutral",
+        "displayName": "Hero supporting text",
+        "tonalRamp": [
+          "oklch(15% 0.0164 310.08)",
+          "oklch(26% 0.0164 310.08)",
+          "oklch(38% 0.0164 310.08)",
+          "oklch(49% 0.0164 310.08)",
+          "oklch(61% 0.0164 310.08)",
+          "oklch(72% 0.0164 310.08)",
+          "oklch(84% 0.0164 310.08)",
+          "oklch(95% 0.0164 310.08)"
+        ]
+      },
+      "code-ink": {
+        "role": "neutral",
+        "displayName": "Inline code plum",
+        "tonalRamp": [
+          "oklch(15% 0.1134 354.35)",
+          "oklch(26% 0.1134 354.35)",
+          "oklch(38% 0.1134 354.35)",
+          "oklch(49% 0.1134 354.35)",
+          "oklch(61% 0.1134 354.35)",
+          "oklch(72% 0.1134 354.35)",
+          "oklch(84% 0.1134 354.35)",
+          "oklch(95% 0.1134 354.35)"
+        ]
+      },
+      "site-background": {
+        "role": "neutral",
+        "displayName": "Page surface",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(26% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Homepage display",
+        "purpose": "The homepage headline, using the self-hosted Inter Tight medium face."
+      },
+      "headline": {
+        "displayName": "Homepage section heading",
+        "purpose": "Headings above the working example, adapter links, and learning resources."
+      },
+      "title": {
+        "displayName": "Homepage link title",
+        "purpose": "Learning-resource headings."
+      },
+      "guide-title": {
+        "displayName": "Guide title",
+        "purpose": "Document h1, reduced to 36px at the mobile breakpoint."
+      },
+      "guide-heading": {
+        "displayName": "Guide heading",
+        "purpose": "Document h2, reduced to 28px at the mobile breakpoint."
+      },
+      "body": {
+        "displayName": "Homepage body",
+        "purpose": "Homepage paragraphs; the hero description increases to 19px, or 17px on mobile."
+      },
+      "reading": {
+        "displayName": "Document body",
+        "purpose": "Guide paragraphs with more line spacing."
+      },
+      "navigation": {
+        "displayName": "Section navigation",
+        "purpose": "Sidebar topic links."
+      },
+      "code": {
+        "displayName": "Document code",
+        "purpose": "Inline and fenced guide code."
+      }
+    },
+    "shadows": [
+      {
+        "name": "bootstrap-field-focus",
+        "value": "0 0 0 0.25rem rgba(13, 110, 253, 0.25)",
+        "purpose": "The Bootstrap adapter focus state only. Website containers use borders without custom shadows."
+      }
+    ],
+    "motion": [
+      {
+        "name": "homepage-action",
+        "value": "background-color 160ms ease-out",
+        "purpose": "Primary and secondary action hover feedback. Disabled with prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile-max",
+        "value": "767px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Homepage primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The Get started link on the dark homepage introduction.",
+      "html": "<div class=\"ds-hero-canvas\"><a class=\"ds-hero-action\" href=\"/guide\">Get started <svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z\"/></svg></a></div>",
+      "css": ".ds-hero-action{display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:12px;border:1px solid #726577;border-radius:6px;padding:10px 22px;font:500 16px/1.6 Roboto,sans-serif;text-decoration:none;transition:background-color 160ms ease-out}.ds-hero-action:focus-visible{outline:3px solid #f5b6dc;outline-offset:5px}.ds-hero-canvas{padding:24px;background:#111014}.ds-hero-action svg{flex:0 0 24px}@media(prefers-reduced-motion:reduce){.ds-hero-action{transition:none}}.ds-hero-action{color:#271520;background:#f5b6dc;border-color:#f5b6dc}.ds-hero-action:hover{background:#ffd4ed}"
+    },
+    {
+      "name": "Homepage secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The outlined examples link beside the primary homepage action.",
+      "html": "<div class=\"ds-hero-canvas\"><a class=\"ds-hero-action\" href=\"/examples\">Explore examples</a></div>",
+      "css": ".ds-hero-action{display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:12px;border:1px solid #726577;border-radius:6px;padding:10px 22px;font:500 16px/1.6 Roboto,sans-serif;text-decoration:none;transition:background-color 160ms ease-out}.ds-hero-action:focus-visible{outline:3px solid #f5b6dc;outline-offset:5px}.ds-hero-canvas{padding:24px;background:#111014}.ds-hero-action svg{flex:0 0 24px}@media(prefers-reduced-motion:reduce){.ds-hero-action{transition:none}}.ds-hero-action{color:#fff;background:transparent}.ds-hero-action:hover{background:#2b232e}"
+    },
+    {
+      "name": "Section navigation",
+      "kind": "nav",
+      "refersTo": "section-navigation",
+      "description": "Pale topic navigation with an active destination and inset keyboard focus.",
+      "html": "<nav class=\"ds-section-nav\" aria-label=\"Guide topics\"><a href=\"/guide/getting-started\" aria-current=\"page\">Getting Started</a><a href=\"/guide/properties-options\">Properties and Options</a><a href=\"/guide/validation\">Validation</a></nav>",
+      "css": ".ds-section-nav{width:226px;padding:20px 12px;background:var(--site-soft,#f7f5f9)}.ds-section-nav a{display:flex;align-items:center;min-height:40px;padding:10px 12px;margin:2px 0;border-radius:6px;color:var(--site-muted,#625d68);font:400 14px/1.5 Roboto,sans-serif;text-decoration:none}.ds-section-nav a[aria-current=\"page\"]{background:var(--site-accent-soft,#f6e7ef);color:var(--site-accent,#a52364)}.ds-section-nav a:focus-visible{outline:2px solid var(--site-accent,#a52364);outline-offset:-2px}"
+    },
+    {
+      "name": "Bootstrap example field",
+      "kind": "input",
+      "description": "The homepage adapter field. These styles belong to Bootstrap and are not global Formly control tokens.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-example-name\">Name <span aria-hidden=\"true\">*</span></label><input class=\"ds-field-input\" id=\"ds-example-name\" name=\"name\" value=\"Alex\" required /></div>",
+      "css": ".ds-field{font:400 16px/1.6 Roboto,sans-serif}.ds-field-label{display:inline-block;margin-bottom:.5rem}.ds-field-input{display:block;width:calc(100% - 1.5rem - 2px);padding:.375rem .75rem;font:400 1rem/1.5 Roboto,sans-serif;color:var(--bs-body-color,#212529);background:var(--bs-body-bg,#fff);border:1px solid var(--bs-border-color,#dee2e6);border-radius:var(--bs-border-radius,.375rem);transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}.ds-field-input:focus,.ds-field-input:focus-visible{border-color:#86b7fe;outline:0;box-shadow:0 0 0 .25rem rgba(13,110,253,.25)}.ds-field-input:disabled{background:var(--bs-secondary-bg,#e9ecef)}@media(prefers-reduced-motion:reduce){.ds-field-input{transition:none}}"
+    },
+    {
+      "name": "Documentation code block",
+      "kind": "custom",
+      "refersTo": "document-code",
+      "description": "A selectable installation command in a bordered, horizontally scrolling document block.",
+      "html": "<pre class=\"ds-code-block\"><code>ng add @ngx-formly/schematics --ui-theme=bootstrap</code></pre>",
+      "css": ".ds-code-block{margin:24px 0;padding:24px;border:1px solid var(--site-line,#dedbe2);border-radius:8px;background:var(--site-soft,#f7f5f9);color:#333;overflow:auto;font-size:14px;line-height:1.7;scrollbar-color:#918795 var(--site-soft,#f7f5f9)}.ds-code-block code{display:block;padding:0;background:transparent;color:inherit;font:.9em/1.6 Consolas,\"Liberation Mono\",Menlo,monospace;white-space:pre;overflow-wrap:normal}@media(max-width:767px){.ds-code-block{padding:16px}}"
+    },
+    {
+      "name": "Documentation disclosure",
+      "kind": "custom",
+      "refersTo": "document-details",
+      "description": "A native disclosure keeps optional introductory material beneath the guide introduction.",
+      "html": "<details class=\"ds-details\"><summary>Watch the Formly introduction</summary><p>Configuration-based reactive Angular forms with ngx-formly.</p></details>",
+      "css": ".ds-details{margin:24px 0;padding:16px 20px;border:1px solid var(--site-line,#dedbe2);border-radius:8px;color:var(--site-ink,#18161b);font:400 16px/1.75 Roboto,sans-serif}.ds-details summary{cursor:pointer;color:var(--site-accent,#a52364);font-weight:500}.ds-details summary:focus-visible{outline:2px solid var(--site-accent,#a52364);outline-offset:4px}.ds-details[open] summary{margin-bottom:16px}.ds-details p{margin:16px 0}"
+    },
+    {
+      "name": "Example viewer container",
+      "kind": "card",
+      "refersTo": "example-viewer",
+      "description": "The shared border, title strip, and content spacing around runnable examples. The sample shows the container without Angular behavior.",
+      "html": "<section class=\"ds-viewer\" aria-labelledby=\"ds-viewer-title\"><header class=\"ds-viewer-heading\"><h3 id=\"ds-viewer-title\">Simple form</h3></header><div class=\"ds-viewer-body\"><p>Labels, validation, and model updates, all from one configuration.</p></div></section>",
+      "css": ".ds-viewer{border:1px solid var(--site-line,#dedbe2);border-radius:12px;background:var(--site-background,#fff);color:var(--site-ink,#18161b);font:400 16px/1.6 Roboto,sans-serif}.ds-viewer-heading{display:flex;align-items:center;position:sticky;top:0;padding:12px 20px;border-bottom:1px solid var(--site-line,#dedbe2);border-radius:12px 12px 0 0;background:var(--site-soft,#f7f5f9)}.ds-viewer-heading h3{margin:0;font:500 20px/1.4 \"Inter Tight\",Roboto,sans-serif}.ds-viewer-body{padding:28px}.ds-viewer-body p{margin:0}@media(max-width:767px){.ds-viewer-heading{padding:12px}.ds-viewer-heading h3{font-size:18px}.ds-viewer-body{padding:20px 16px}}"
+    },
+    {
+      "name": "Learning resource row",
+      "kind": "custom",
+      "refersTo": "learning-link",
+      "description": "A bordered text link for a guide, with the title changing color on hover.",
+      "html": "<a class=\"ds-learning-link\" href=\"/guide/expression-properties\"><div><h3>Forms that respond</h3><p>Show, hide, and update fields as your users make choices.</p></div><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z\"/></svg></a>",
+      "css": ".ds-learning-link{display:flex;align-items:start;justify-content:space-between;gap:24px;padding:28px 0;border-top:1px solid var(--site-line,#dedbe2);color:var(--site-ink,#18161b);font:400 16px/1.6 Roboto,sans-serif;text-decoration:none}.ds-learning-link h3{margin:0;font:500 24px/1.3 \"Inter Tight\",Roboto,sans-serif;letter-spacing:-.015em;text-wrap:balance}.ds-learning-link p{margin:12px 0 0;color:var(--site-muted,#625d68)}.ds-learning-link svg{flex:0 0 24px;margin-top:4px;color:var(--site-accent,#a52364)}.ds-learning-link:hover h3{color:var(--site-accent,#a52364)}.ds-learning-link:focus-visible{outline:3px solid var(--site-accent,#a52364);outline-offset:5px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "angular.dev documentation reference",
+    "overview": "The user pinned [angular.dev](https://angular.dev/) as the visual reference. Formly keeps its name and logo, with a compact navigation rail, Inter Tight headings, and a restrained magenta accent. The homepage uses a dark introduction and a working configuration-to-form example. Guides use a white reading area beside a pale section sidebar.\n\nThis system covers the website around the examples. The forms inside examples keep their UI adapter's controls, validation, and interaction states. The source files are the authority for implementation; the tokens above record their reusable values. Page composition and intent remain in the [homepage brief](.impeccable/surfaces/demo-src-app-home-component-ts.md) and [documentation brief](.impeccable/surfaces/demo-src-app-app-component-ts.md).",
+    "keyCharacteristics": [
+      "Inter Tight headings with Roboto body text.",
+      "Thin borders and pale backgrounds separate navigation, code, and forms.",
+      "A near-black homepage introduction with pale pink actions.",
+      "Runnable examples retain the appearance of their selected UI library.",
+      "System, Dark, and Light themes selected from the navigation rail or mobile header; the browser remembers the preference."
+    ],
+    "rules": [
+      {
+        "name": "The Contextual Accent Rule",
+        "body": "Use magenta for links and navigation on light backgrounds and pale pink on dark backgrounds. Adapter control colors remain owned by their UI library.",
+        "section": "colors"
+      },
+      {
+        "name": "The Heading Weight Rule",
+        "body": "Use the shipped Inter Tight medium face for website headings. Keep the adapter's own typography inside runnable forms.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bordered Container Rule",
+        "body": "Separate website code, navigation, and example areas with the shared line color and background tones. Use the existing UI library for overlay and control elevation.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the shared website colors for navigation, documentation, and example containers.",
+      "Do preserve the Formly name and logo.",
+      "Do use Inter Tight medium for website headings and Roboto for body copy.",
+      "Do keep form controls and their states faithful to the selected UI adapter.",
+      "Do keep code selectable, allow horizontal scrolling, and preserve visible keyboard focus.",
+      "Do preserve authored embed heights except for the responsive YouTube treatment."
+    ],
+    "donts": [
+      "Don't apply homepage display sizing or dark hero colors to guide body content.",
+      "Don't turn the website's magenta accent into a global override of adapter controls.",
+      "Don't remove labels, validation messages, required markers, or accessible action names to simplify a preview.",
+      "Don't add shadows to the website's bordered code and example containers."
+    ]
+  }
+}

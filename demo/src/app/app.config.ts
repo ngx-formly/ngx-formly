@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(BrowserModule, SharedModule, MatMenuModule, IonicModule.forRoot()),
     { provide: APP_BASE_HREF, useValue: '/' },
     provideAnimations(),
-    providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: false } } }),
+    providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '[data-bs-theme="dark"]' } } }),
     provideNzI18n(en_US),
     provideRouter(routes),
     provideLoadingBarRouter(),

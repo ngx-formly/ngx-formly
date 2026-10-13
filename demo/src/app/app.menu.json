@@ -12,7 +12,19 @@
       { "path": "/guide/custom-formly-extension", "label": "Custom Extension" },
       { "path": "/guide/formly-field-presets", "label": "Formly Field Presets" },
       { "path": "/guide/json-schema", "label": "JSON Schema" },
-      { "path": "/guide/migration", "label": "Migration from v6 to v7" },
+      {
+        "path": "/guide/migration",
+        "label": "Migration guides",
+        "items": [
+          { "path": "/guide/migration/v10", "label": "Upgrade to v10" },
+          { "path": "/guide/migration/v9", "label": "Upgrade to v9" },
+          { "path": "/guide/migration/v8", "label": "Upgrade to v8" },
+          { "path": "/guide/migration/v7", "label": "Upgrade to v7" },
+          { "path": "/guide/migration/v6", "label": "Upgrade to v6" },
+          { "path": "/guide/migration/v5", "label": "Upgrade to v5" },
+          { "path": "/guide/migration/v2", "label": "Upgrade to v2" }
+        ]
+      },
       { "path": "/guide/faq", "label": "FAQ" }
     ]
   },

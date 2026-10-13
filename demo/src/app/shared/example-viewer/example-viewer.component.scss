@@ -1,6 +1,8 @@
 :host {
   display: block;
-  padding: 15px;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: 32px;
 }
 
 .docs-example-viewer-wrapper {
@@ -14,7 +16,7 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 8px 20px;
+  padding: 12px 20px;
   position: sticky;
   top: 0;
   z-index: 2;
@@ -22,25 +24,52 @@
 
 .docs-example-viewer-title-spacer {
   flex: 1 1 auto;
+  font-family: 'Inter Tight', Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .docs-example-source-copy {
   position: absolute;
   top: 8px;
-  display: none;
+  right: 8px;
 }
 
-.docs-example-source-wrapper:hover {
-  .docs-example-source-copy {
-    display: inline-block;
-  }
+.docs-example-source-wrapper {
+  position: relative;
 }
 
 .docs-example-source {
   min-height: 150px;
+  margin: 0;
+  padding: 24px 64px 24px 24px;
+  border: 0;
+  border-radius: 0;
+  background: var(--site-soft);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .docs-example-viewer-body {
   flex: 1 1 auto;
-  padding: 15px;
+  padding: 28px;
+}
+
+@media (max-width: 767px) {
+  :host {
+    padding: 20px 12px;
+  }
+
+  .docs-example-viewer-title {
+    padding: 12px;
+  }
+
+  .docs-example-viewer-title-spacer {
+    font-size: 18px;
+  }
+
+  .docs-example-viewer-body {
+    padding: 20px 16px;
+  }
 }
