@@ -4,6 +4,21 @@ Formly v10 requires Angular 21 or newer. Applications staying on Angular 20 shou
 If you are upgrading from Formly v8 or earlier, first follow the
 [v9 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/main/UPGRADE-9.0.md).
 
+## Breaking changes
+
+Check the changes that apply to your application, including those introduced by the required dependency upgrades.
+
+| Breaking change | Migration |
+| --- | --- |
+| Formly v10 requires Angular 21 or newer and compatible UI library versions. | [Upgrade Angular and UI libraries](#1-upgrade-angular-and-your-ui-library), then [update all Formly packages together](#2-update-all-formly-packages-together). |
+| Angular 21 uses zoneless change detection by default. Applications relying on Zone.js must opt in explicitly. | [Keep Zone.js change detection](#zonejs-applications). |
+| PrimeNG 21 requires updated themes and no longer uses `showTransitionOptions` or `hideTransitionOptions` for animations. | [Update PrimeNG themes and animations](#3-update-primeng-themes-and-animations). |
+| NG-ZORRO 21 removes the legacy numeric-input module, and Formly removes `FormlyFieldInput.nzFormatter`. | [Update custom NG-ZORRO numeric inputs](#4-review-custom-ng-zorro-numeric-inputs). |
+| The CSP parser rejects trailing tokens it previously ignored, which can prevent form construction. | [Correct CSP string expressions](#5-review-csp-string-expressions). |
+| Cleared nullable JSON Schema numeric fields now retain explicit `null` values. | [Handle nullable numeric values](#nullable-numeric-values). |
+| Valid forms now emit an initial `form.statusChanges` notification. | [Review initial status notifications](#initial-status-notifications). |
+| Applications using Angular's `CommonEngine` need allowed hostnames configured to retain server rendering. | [Configure server rendering](#server-rendering). |
+
 ## 1. Upgrade Angular and your UI library
 
 Follow the [Angular update guide](https://angular.dev/update-guide?v=20.0-21.0&l=1) before upgrading Formly.
@@ -37,6 +52,8 @@ ng update @angular/material@21
 
 Use Kendo theme v12.3 with Kendo Angular v21.4.1, as listed in the
 [Kendo changelog](https://www.telerik.com/kendo-angular-ui/components/changelogs/kendo-angular-ui#v2141).
+
+### Zone.js applications
 
 Angular 21 uses zoneless change detection by default. Existing applications that rely on Zone.js should keep
 `zone.js` in their polyfills and register `provideZoneChangeDetection()` in their application providers.
@@ -79,17 +96,37 @@ If you copied the previous Formly numeric-input implementation into a custom fie
 Replace `NzInputNumberLegacyModule` with `NzInputNumberModule` in that custom component or NgModule's `imports` array too.
 Applications using only the built-in Formly type do not need to add this import themselves.
 
-## 5. Verify the upgrade
+## 5. Review CSP string expressions
+
+If you enable `withFormlyFieldExpression()`, the parser now requires the entire string expression to be valid.
+Trailing tokens that were previously ignored now cause a parse error and may prevent the form from building.
+
+Review string values in `expressions`, `expressionProperties`, and `hideExpression`.
+For example, `model.enabled false` previously evaluated only `model.enabled`; it now fails parsing.
+Remove unintended trailing tokens or correct the expression, such as `model.enabled === false` if that is the intended condition.
+Method calls remain unsupported. See the [expression evaluation guide](docs/expression-properties.md#4-expression-evaluation)
+for supported optional property and index access.
+
+## 6. Verify the upgrade
+
+### Nullable numeric values
 
 JSON Schema fields that allow both a numeric type and `null` now preserve `null` when cleared.
 If your application treated a missing property as a cleared nullable number, handle explicit `null` values too.
 
+### Initial status notifications
+
 Formly now emits an initial `form.statusChanges` notification for valid forms too. Subscribers may therefore
 run once during initialization even when the status stays `VALID`. Unchanged rebuilds do not repeat that notification.
 Initial validation expressions may cause a corrective notification after an earlier status.
+Update subscribers and tests that assumed valid forms would not emit an initial notification.
+
+### UI integrations
 
 Build your application and run its tests. Check date selection, themes, numeric inputs, labels, disabled states,
 and validation messages in each UI integration you use. Check both single- and multiple-selection forms.
+
+### Server rendering
 
 For server-rendered applications, verify that forms hydrate and accept input after the page loads.
 If you use Angular's `CommonEngine`, configure `allowedHosts` with your application's hostnames.
