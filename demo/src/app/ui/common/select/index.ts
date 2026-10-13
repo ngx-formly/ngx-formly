@@ -1,3 +1,5 @@
+import appComponentHtmlSource from './app.component.html?raw' with { loader: 'text' };
+import appComponentTsSource from './app.component.ts?raw' with { loader: 'text' };
 import { AppComponent as SelectAppComponent } from './app.component';
 
 const SelectExampleConfig = {
@@ -7,13 +9,11 @@ const SelectExampleConfig = {
   files: [
     {
       file: 'app.component.html',
-      content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-      filecontent: require('!!raw-loader!./app.component.html'),
+      filecontent: appComponentHtmlSource,
     },
     {
       file: 'app.component.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-      filecontent: require('!!raw-loader!./app.component.ts'),
+      filecontent: appComponentTsSource,
     },
   ],
 };

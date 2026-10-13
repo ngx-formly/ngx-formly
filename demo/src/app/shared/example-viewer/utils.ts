@@ -1,3 +1,5 @@
+import appConfigTsSource from '../../../assets/stackblitz/app.config.ts?raw' with { loader: 'text' };
+import { highlight } from '../highlight';
 import { ExampleType } from './example-viewer.component';
 import { COPYRIGHT, dependencies, ngProvider, TEMPLATE_FILES } from '../stackblitz/stackblitz.config';
 import { angularVersion } from 'src/schematics/utils/lib-versions';
@@ -17,15 +19,14 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   if (!appConfig) {
     appConfig = {
       file: 'app.config.ts',
-      content: require('!!highlight-loader?raw=true&lang=typescript!@assets/stackblitz/app.config.ts'),
-      filecontent: require('!!raw-loader!@assets/stackblitz/app.config.ts'),
+      filecontent: appConfigTsSource,
     };
     exampleData = {
       ...exampleData,
       files: [...exampleData.files, appConfig],
     };
   }
-  const appConfigContent = appConfig.filecontent.default;
+  const appConfigContent = appConfig.filecontent;
   exampleData.deps = exampleData.deps || [];
 
   const options: IThemeOption = { type };
@@ -57,7 +58,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   if (
     ['material', 'kendo', 'primeng', 'ng-zorro-antd'].indexOf(options.type) !== -1 ||
     options.includeMaterial ||
-    exampleData.files.some((f) => _getFilecontent(f.filecontent).indexOf('@angular/animations') !== -1)
+    exampleData.files.some((f) => f.filecontent.indexOf('@angular/animations') !== -1)
   ) {
     options.useAnimation = true;
   }
@@ -135,10 +136,13 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
     }
 
     files[file] = _replaceExamplePlaceholderNames(data.file, data.filecontent, options);
-    if (data.content) {
+    if (exampleData.files.includes(data)) {
       exampleFiles.push({
         file: data.file,
-        content: _replaceExamplePlaceholderNames(data.file, data.content, { ...options, appendCopyright: false }),
+        content: highlight(
+          _replaceExamplePlaceholderNames(data.file, data.filecontent, { ...options, appendCopyright: false }),
+          data.file.endsWith('.ts') ? 'typescript' : data.file.split('.').pop(),
+        ),
       });
     }
   });
@@ -146,8 +150,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   return { exampleFiles, files, dependencies: deps };
 }
 
-function _replaceExamplePlaceholderNames(filename: string, _filecontent: any, options: IThemeOption): string {
-  let filecontent = _getFilecontent(_filecontent);
+function _replaceExamplePlaceholderNames(filename: string, filecontent: string, options: IThemeOption): string {
   if (filename === 'app.config.ts') {
     if (options.type === 'ionic') {
       filecontent = filecontent.replace(
@@ -158,32 +161,11 @@ function _replaceExamplePlaceholderNames(filename: string, _filecontent: any, op
     }
 
     if (options.type && filecontent.indexOf(`@ngx-formly/${options.type}`) === -1) {
-      if (filecontent.indexOf('hljs') !== -1) {
-        filecontent = filecontent.replace(
-          `<span class="hljs-string">&#x27;@ngx-formly/core&#x27;</span>`,
-          `<span class="hljs-string">&#x27;@ngx-formly/core&#x27;</span>\n<span class="hljs-keyword">import</span> { <span class="hljs-title class_">${
-            ngProvider[options.type]
-          }</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ngx-formly/${
-            options.type
-          }'</span>`,
-        );
-        filecontent = filecontent.replace(
-          `<span class="hljs-title class_">ReactiveFormsModule</span>,`,
-          `<span class="hljs-title class_">ReactiveFormsModule</span>,\n    <span class="hljs-title class_">${
-            ngProvider[options.type]
-          }</span>,`,
-        );
-        filecontent = filecontent.replace(
-          `// UI_CONFIG`,
-          `...<span class="hljs-title function_">${ngProvider[options.type]}</span>(),`,
-        );
-      } else {
-        filecontent = filecontent.replace(
-          `'@ngx-formly/core';`,
-          `'@ngx-formly/core';\nimport { ${ngProvider[options.type]} } from '@ngx-formly/${options.type}';`,
-        );
-        filecontent = filecontent.replace(`// UI_CONFIG`, `...${ngProvider[options.type]}(),`);
-      }
+      filecontent = filecontent.replace(
+        `'@ngx-formly/core';`,
+        `'@ngx-formly/core';\nimport { ${ngProvider[options.type]} } from '@ngx-formly/${options.type}';`,
+      );
+      filecontent = filecontent.replace(`// UI_CONFIG`, `...${ngProvider[options.type]}(),`);
     }
 
     if (options.useAnimation) {
@@ -230,12 +212,4 @@ function _appendCopyright(filename: string, content: string) {
     content = `${content}\n\n<!-- ${COPYRIGHT} -->`;
   }
   return content;
-}
-
-function _getFilecontent(content: any): string {
-  if (typeof content === 'string') {
-    return content;
-  }
-
-  return content.default;
 }

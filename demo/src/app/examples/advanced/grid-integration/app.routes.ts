@@ -1,3 +1,8 @@
+import appComponentHtmlSource from './app.component.html?raw' with { loader: 'text' };
+import appComponentTsSource from './app.component.ts?raw' with { loader: 'text' };
+import appConfigTsSource from './app.config.ts?raw' with { loader: 'text' };
+import gridTypeTsSource from './grid.type.ts?raw' with { loader: 'text' };
+import gridFormlyCellComponentTsSource from './grid-formly-cell.component.ts?raw' with { loader: 'text' };
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ExamplesRouterViewerComponent } from 'demo/src/app/shared';
@@ -20,28 +25,23 @@ export const appRoutes: Routes = [
           files: [
             {
               file: 'app.component.html',
-              content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-              filecontent: require('!!raw-loader!./app.component.html'),
+              filecontent: appComponentHtmlSource,
             },
             {
               file: 'app.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-              filecontent: require('!!raw-loader!./app.component.ts'),
+              filecontent: appComponentTsSource,
             },
             {
               file: 'app.config.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
-              filecontent: require('!!raw-loader!./app.config.ts'),
+              filecontent: appConfigTsSource,
             },
             {
               file: 'grid.type.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./grid.type.ts'),
-              filecontent: require('!!raw-loader!./grid.type.ts'),
+              filecontent: gridTypeTsSource,
             },
             {
               file: 'grid-formly-cell.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./grid-formly-cell.component.ts'),
-              filecontent: require('!!raw-loader!./grid-formly-cell.component.ts'),
+              filecontent: gridFormlyCellComponentTsSource,
             },
           ],
         },

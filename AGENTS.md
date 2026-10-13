@@ -67,5 +67,4 @@ Prefer `npm link` to test local Formly changes in a consuming application. Build
 - Preserve unrelated local changes. Do not stage, commit, amend, or push unless the user explicitly asks.
 - Before the final response, run `git status --porcelain=v1 --untracked-files=all` and inspect relevant staged, unstaged, and untracked changes.
 - Summarize what changed and how it was verified. If unrelated changes are present, identify this task's files.
-- If a completed, meaningful change remains uncommitted, end the response with `Suggested commit:` followed by the proposed message in backticks. Describe only this task's changes. Skip the suggestion for read-only tasks, clean repositories, already committed or reverted work, incomplete work, ignored/temporary artifacts, and inconsequential cosmetic edits. Meaningful documentation changes qualify.
 - Follow the Angular-style commit conventions in `commitlint.config.js`: `type(scope): concise imperative subject`. Use a configured scope when applicable (for example, `core`, `material`, `guides`, or `testing`); do not invent scopes. A commit suggestion does not authorize committing.

@@ -1,4 +1,10 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+import polyfillsTsSource from '../../../assets/stackblitz/polyfills.ts?raw' with { loader: 'text' };
+import angularJsonSource from '../../../assets/stackblitz/angular_json?raw' with { loader: 'text' };
+import mainTsSource from '../../../assets/stackblitz/main.ts?raw' with { loader: 'text' };
+import indexHtmlSource from '../../../assets/stackblitz/index.html?raw' with { loader: 'text' };
+import tsconfigJsonSource from '../../../assets/stackblitz/tsconfig_json?raw' with { loader: 'text' };
+import tsconfigAppJsonSource from '../../../assets/stackblitz/tsconfig.app_json?raw' with { loader: 'text' };
+import faviconIcoSource from '../../../favicon.ico?raw' with { loader: 'text' };
 import { ExampleType } from '../example-viewer/example-viewer.component';
 
 export const COPYRIGHT = `Copyright 2025 Formly. All Rights Reserved.
@@ -77,38 +83,35 @@ export const ngProvider: { [id: string]: string } = {
 
 export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
   core: [
-    { file: 'polyfills.ts', filecontent: require('!!raw-loader!@assets/stackblitz/polyfills.ts') },
-    { file: 'angular.json', filecontent: require('!!raw-loader!@assets/stackblitz/angular_json') },
-    { file: 'main.ts', filecontent: require('!!raw-loader!@assets/stackblitz/main.ts') },
-    { file: 'index.html', filecontent: require('!!raw-loader!@assets/stackblitz/index.html') },
-    { file: 'tsconfig.json', filecontent: require('!!raw-loader!@assets/stackblitz/tsconfig_json') },
-    { file: 'tsconfig.app.json', filecontent: require('!!raw-loader!@assets/stackblitz/tsconfig.app_json') },
-    { file: 'favicon.ico', filecontent: require('!!raw-loader!@assets/../favicon.ico') },
+    { file: 'polyfills.ts', filecontent: polyfillsTsSource },
+    { file: 'angular.json', filecontent: angularJsonSource },
+    { file: 'main.ts', filecontent: mainTsSource },
+    { file: 'index.html', filecontent: indexHtmlSource },
+    { file: 'tsconfig.json', filecontent: tsconfigJsonSource },
+    { file: 'tsconfig.app.json', filecontent: tsconfigAppJsonSource },
+    { file: 'favicon.ico', filecontent: faviconIcoSource },
   ],
-  bootstrap: [{ file: 'styles.scss', filecontent: { default: `@import 'bootstrap/scss/bootstrap.scss';` } }],
+  bootstrap: [{ file: 'styles.scss', filecontent: `@import 'bootstrap/scss/bootstrap.scss';` }],
   material: [
     {
       file: 'styles.scss',
-      filecontent: { default: `@import '@angular/material/prebuilt-themes/deeppurple-amber.css';` },
+      filecontent: `@import '@angular/material/prebuilt-themes/deeppurple-amber.css';`,
     },
   ],
-  kendo: [{ file: 'styles.scss', filecontent: { default: `@import '@progress/kendo-theme-default/dist/all.css';` } }],
+  kendo: [{ file: 'styles.scss', filecontent: `@import '@progress/kendo-theme-default/dist/all.css';` }],
   primeng: [
     {
       file: 'styles.scss',
-      filecontent: {
-        default: `
+      filecontent: `
 @import "primeflex/primeflex.css";
 @import "primeicons/primeicons.css";
       `,
-      },
     },
   ],
   ionic: [
     {
       file: 'styles.scss',
-      filecontent: {
-        default: `
+      filecontent: `
 @import "@ionic/angular/css/core.css";
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
@@ -119,17 +122,14 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/flex-utils.css";
       `,
-      },
     },
   ],
   'ng-zorro-antd': [
     {
       file: 'styles.scss',
-      filecontent: {
-        default: `
+      filecontent: `
 @import "ng-zorro-antd/ng-zorro-antd.min.css";
       `,
-      },
     },
   ],
 };

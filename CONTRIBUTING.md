@@ -74,6 +74,14 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 7. create a PR with a link to the original issue
 8. wait patiently :-)
 
+The demo uses Angular's `application` builder. Run `npx ng build app --configuration production`
+to build it into `demo/dist`. `npm run demo` serves it on port 4100.
+
+Example source tabs and StackBlitz exports share text imports such as
+`import source from './app.component.ts?raw' with { loader: 'text' };`.
+The `?raw` suffix provides string typings, and Angular's loader attribute imports the file's
+contents. Use the imported string as `filecontent`; the example viewer adds syntax highlighting.
+
 ## <a name="rules"></a> Coding Rules
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 

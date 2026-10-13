@@ -1,3 +1,8 @@
+import appComponentHtmlSource from './app.component.html?raw' with { loader: 'text' };
+import appComponentTsSource from './app.component.ts?raw' with { loader: 'text' };
+import addonsWrapperTsSource from './addons.wrapper.ts?raw' with { loader: 'text' };
+import addonsExtensionTsSource from './addons.extension.ts?raw' with { loader: 'text' };
+import appConfigTsSource from './app.config.ts?raw' with { loader: 'text' };
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ExamplesRouterViewerComponent } from 'demo/src/app/shared';
@@ -19,28 +24,23 @@ export const appRoutes: Routes = [
           files: [
             {
               file: 'app.component.html',
-              content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-              filecontent: require('!!raw-loader!./app.component.html'),
+              filecontent: appComponentHtmlSource,
             },
             {
               file: 'app.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-              filecontent: require('!!raw-loader!./app.component.ts'),
+              filecontent: appComponentTsSource,
             },
             {
               file: 'addons.wrapper.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./addons.wrapper.ts'),
-              filecontent: require('!!raw-loader!./addons.wrapper.ts'),
+              filecontent: addonsWrapperTsSource,
             },
             {
               file: 'addons.extension.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./addons.extension.ts'),
-              filecontent: require('!!raw-loader!./addons.extension.ts'),
+              filecontent: addonsExtensionTsSource,
             },
             {
               file: 'app.config.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
-              filecontent: require('!!raw-loader!./app.config.ts'),
+              filecontent: appConfigTsSource,
             },
           ],
         },

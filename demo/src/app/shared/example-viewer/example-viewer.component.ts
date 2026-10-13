@@ -27,7 +27,7 @@ export interface ExampleType {
   component: any;
   deps?: string[];
   debug: boolean;
-  files: { file: string; filecontent: { default: string }; content?: string }[];
+  files: { file: string; filecontent: string }[];
 }
 
 @Component({

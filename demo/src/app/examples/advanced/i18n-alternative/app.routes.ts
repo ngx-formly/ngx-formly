@@ -1,3 +1,9 @@
+import appComponentHtmlSource from './app.component.html?raw' with { loader: 'text' };
+import appComponentTsSource from './app.component.ts?raw' with { loader: 'text' };
+import appConfigTsSource from './app.config.ts?raw' with { loader: 'text' };
+import translateExtensionTsSource from './translate.extension.ts?raw' with { loader: 'text' };
+import enJsonSource from '../../../../assets/i18n/en_json?raw' with { loader: 'text' };
+import frJsonSource from '../../../../assets/i18n/fr_json?raw' with { loader: 'text' };
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ExamplesRouterViewerComponent } from 'demo/src/app/shared';
@@ -23,33 +29,27 @@ export const appRoutes: Routes = [
           files: [
             {
               file: 'app.component.html',
-              content: require('!!highlight-loader?raw=true&lang=html!./app.component.html'),
-              filecontent: require('!!raw-loader!./app.component.html'),
+              filecontent: appComponentHtmlSource,
             },
             {
               file: 'app.component.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.component.ts'),
-              filecontent: require('!!raw-loader!./app.component.ts'),
+              filecontent: appComponentTsSource,
             },
             {
               file: 'app.config.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./app.config.ts'),
-              filecontent: require('!!raw-loader!./app.config.ts'),
+              filecontent: appConfigTsSource,
             },
             {
               file: 'translate.extension.ts',
-              content: require('!!highlight-loader?raw=true&lang=typescript!./translate.extension.ts'),
-              filecontent: require('!!raw-loader!./translate.extension.ts'),
+              filecontent: translateExtensionTsSource,
             },
             {
               file: 'assets/i18n/en.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/i18n/en_json'),
-              filecontent: require('!!raw-loader!@assets/i18n/en_json'),
+              filecontent: enJsonSource,
             },
             {
               file: 'assets/i18n/fr.json',
-              content: require('!!highlight-loader?raw=true&lang=typescript!@assets/i18n/fr_json'),
-              filecontent: require('!!raw-loader!@assets/i18n/fr_json'),
+              filecontent: frJsonSource,
             },
           ],
         },
