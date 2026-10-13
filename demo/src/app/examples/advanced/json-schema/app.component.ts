@@ -1,9 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
 import { HttpClient } from '@angular/common/http';
-import { tap, takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { Subject } from 'rxjs';
 
@@ -53,7 +53,7 @@ export class AppComponent implements OnDestroy {
           this.type = type;
           this.form = new UntypedFormGroup({});
           this.options = {};
-          this.fields = [this.formlyJsonschema.toFieldConfig(schema)];
+          this.fields = [this.formlyJsonschema.toFieldConfig(schema, { ignoreImplicitStringDefaults: true })];
           this.model = model;
         }),
         takeUntil(this.destroy$),

@@ -3,6 +3,7 @@ import { CommonExampleConfigs, debugFields } from '../common';
 import { appConfig } from './app.config';
 import { additionalExamples } from './additional-examples';
 import { AppComponent } from './app.component';
+import { SelectExampleConfig } from './select';
 
 export const appRoutes: Routes = [
   {
@@ -12,7 +13,10 @@ export const appRoutes: Routes = [
     data: {
       debugFields,
       type: 'ionic',
-      examples: [...CommonExampleConfigs, ...additionalExamples],
+      examples: [
+        ...CommonExampleConfigs.map((example) => (example.title === 'Select type' ? SelectExampleConfig : example)),
+        ...additionalExamples,
+      ],
     },
   },
 ];

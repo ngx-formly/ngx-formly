@@ -63,6 +63,24 @@ binding the form to receive it. Async validators can subsequently emit their res
 | modelOptions         | `object` | An object with a few useful properties to control the model changes: `debounce`, `updateOn` |
 
 
+## Ionic select interfaces
+
+Ionic select fields accept `props.interfaceOptions` to configure their alert, action sheet, or popover:
+
+```ts
+{
+  key: 'choice',
+  type: 'select',
+  props: {
+    interface: 'popover',
+    interfaceOptions: { size: 'cover' },
+    options: [{ label: 'First option', value: 1 }],
+  },
+}
+```
+
+The Ionic demo uses this configuration for its select fields.
+
 ## options
 
 ### formState
