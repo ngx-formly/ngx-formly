@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.1](https://github.com/ngx-formly/ngx-formly/compare/v10.0.0...v10.0.1) (2026-10-13)
+
+### Bug fixes
+
+* **UI packages:** Fix TypeScript module-resolution errors caused by generated declarations importing private paths from `@ngx-formly/core`. All UI configuration functions now reference the public `ConfigOption` type ([#4219](https://github.com/ngx-formly/ngx-formly/pull/4219)).
+
 ## [10.0.0](https://github.com/ngx-formly/ngx-formly/compare/v9.0.0...v10.0.0) (2026-10-13)
 
 ### Breaking changes
