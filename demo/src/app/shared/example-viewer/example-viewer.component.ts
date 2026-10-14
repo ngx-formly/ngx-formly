@@ -8,7 +8,6 @@ import {
   ComponentRef,
   ElementRef,
   OnChanges,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
@@ -34,7 +33,6 @@ export interface ExampleType {
   selector: 'formly-example-viewer',
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIconButton, MatTooltip, MatIcon, FormlyForm, StackblitzButtonComponent, MatTabGroup, MatTab],
 })
 export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {

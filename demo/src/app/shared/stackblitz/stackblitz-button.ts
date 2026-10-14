@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, NgModule } from '@angular/core';
 import { StackblitzWriter } from './stackblitz-writer';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatIconModule, MatIcon } from '@angular/material/icon';
@@ -9,7 +9,6 @@ import { ExampleType } from '../example-viewer/example-viewer.component';
   selector: 'formly-stackblitz-button',
   templateUrl: './stackblitz-button.html',
   providers: [StackblitzWriter],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIconButton, MatTooltip, MatIcon],
 })
 export class StackblitzButtonComponent {

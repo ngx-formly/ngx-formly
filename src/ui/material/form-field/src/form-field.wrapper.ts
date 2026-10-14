@@ -8,7 +8,6 @@ import {
   ElementRef,
   ViewEncapsulation,
   TemplateRef,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   ɵdefineHiddenProp as defineHiddenProp,
@@ -123,7 +122,6 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   `,
   styleUrls: ['./form-field.wrapper.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyWrapperFormField

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
 
@@ -18,7 +18,6 @@ import { FormlyField } from '@ngx-formly/core';
       }
     </mat-tab-group>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTabGroup, MatTab, FormlyField],
 })
 export class FormlyFieldTabs extends FieldType {

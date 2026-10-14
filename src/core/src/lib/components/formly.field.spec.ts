@@ -649,7 +649,6 @@ describe('FormlyField Component', () => {
       </div>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FormlyWrapperFormFieldAsync extends FieldWrapper {}
@@ -691,7 +690,6 @@ export class ParentService {}
     }
   `,
   providers: [ParentService],
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyParentComponent extends FieldType {
@@ -703,7 +701,6 @@ export class FormlyParentComponent extends FieldType {
 @Component({
   selector: 'formly-child',
   template: ` <ng-content></ng-content> `,
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyChildComponent extends FieldType {
@@ -717,7 +714,6 @@ export class FormlyChildComponent extends FieldType {
 
 @Component({
   template: `<input type="text" [formControl]="formControl.get('title')" />`,
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyGroupLocalControlType extends FieldType {}

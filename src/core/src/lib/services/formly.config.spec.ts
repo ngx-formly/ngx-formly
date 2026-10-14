@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FormlyFieldInput } from '@ngx-formly/core/testing';
 import { FieldType, FieldWrapper } from '../core';
@@ -7,7 +7,6 @@ import { FormlyConfig } from './formly.config';
 @Component({
   selector: 'formly-test-cmp',
   template: '',
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FieldTypeComponent extends FieldType {}
@@ -15,7 +14,6 @@ class FieldTypeComponent extends FieldType {}
 @Component({
   selector: 'formly-test-cmp',
   template: '',
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FieldWrapperComponent extends FieldWrapper {}

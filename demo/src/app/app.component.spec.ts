@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -22,7 +22,7 @@ jest.mock('./shared/search/search-index', () => ({
   },
 }));
 
-@Component({ selector: 'formly-test-page', changeDetection: ChangeDetectionStrategy.Eager, template: '' })
+@Component({ selector: 'formly-test-page', template: '' })
 class TestPageComponent {}
 
 describe('Website navigation', () => {

@@ -112,6 +112,7 @@ export function createFieldComponent(
   selector: 'formly-test-component',
   template: '',
   providers: [FormlyFormBuilder],
+  // Tests mutate host properties directly before calling detectChanges().
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })

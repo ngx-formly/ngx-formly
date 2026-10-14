@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
@@ -13,7 +13,6 @@ import { Observable, startWith, switchMap } from 'rxjs';
 @Component({
   selector: 'formly-field-nz-native-select',
   imports: [AsyncPipe, ReactiveFormsModule, FormlyModule, FormlySelectOptionsPipe],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <select class="ant-input" [formControl]="formControl" [formlyAttributes]="field">
       <option [ngValue]="undefined">{{ props.placeholder }}</option>
@@ -28,7 +27,6 @@ export class NativeSelectTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-nz-datepicker',
   imports: [ReactiveFormsModule, FormlyModule, NzDatePickerModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <nz-date-picker
       [nzId]="id"
@@ -45,7 +43,6 @@ export class DatepickerTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-nz-toggle',
   imports: [ReactiveFormsModule, FormlyModule, NzSwitchModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<nz-switch [nzId]="id" [id]="id + '-container'" [formControl]="formControl" [formlyAttributes]="field" />`,
 })
 export class ToggleTypeComponent extends FieldType<FieldTypeConfig> {}
@@ -53,7 +50,6 @@ export class ToggleTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-nz-slider',
   imports: [ReactiveFormsModule, FormlyModule, NzSliderModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <nz-slider
       [formControl]="formControl"
@@ -70,7 +66,6 @@ export class SliderTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-nz-autocomplete',
   imports: [AsyncPipe, ReactiveFormsModule, FormlyModule, NzInputModule, NzAutocompleteModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <input
       nz-input

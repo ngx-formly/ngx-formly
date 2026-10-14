@@ -1,13 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Injector,
-  inject,
-  signal,
-  viewChild,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, inject, signal, viewChild } from '@angular/core';
 import { DOCUMENT, Location, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { filter, map, startWith, takeUntil } from 'rxjs/operators';
@@ -27,7 +18,6 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   host: { '(document:keydown)': 'onSearchShortcut($event)' },
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgxLoadingBar,
     MatAnchor,

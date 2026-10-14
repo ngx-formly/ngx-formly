@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormlyConfig, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
@@ -18,7 +18,6 @@ import { FormlyConfig, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '
     </form>
   `,
   imports: [ReactiveFormsModule, FormlyForm],
-  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideNativeDateAdapter()],
 })
 export class UIComponent implements OnInit {

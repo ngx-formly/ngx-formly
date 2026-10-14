@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/kendo/form-field';
@@ -12,7 +12,6 @@ import { Observable, Subject, switchMap } from 'rxjs';
 @Component({
   selector: 'formly-field-kendo-native-select',
   imports: [AsyncPipe, ReactiveFormsModule, FormlyModule, FormlySelectOptionsPipe],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <select
       class="k-input k-input-inner k-input-md k-rounded-md k-input-solid"
@@ -31,7 +30,6 @@ export class NativeSelectTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-kendo-datepicker',
   imports: [ReactiveFormsModule, FormlyModule, DatePickerModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <kendo-datepicker
       [formControl]="formControl"
@@ -48,7 +46,6 @@ export class DatepickerTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-kendo-toggle',
   imports: [ReactiveFormsModule, FormlyModule, SwitchModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<kendo-switch [formControl]="formControl" [formlyAttributes]="field" [attr.aria-label]="props.label" />`,
 })
 export class ToggleTypeComponent extends FieldType<FieldTypeConfig> {}
@@ -56,7 +53,6 @@ export class ToggleTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-kendo-slider',
   imports: [ReactiveFormsModule, FormlyModule, SliderModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <kendo-slider
       [focusableId]="id"
@@ -77,7 +73,6 @@ export class SliderTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-kendo-autocomplete',
   imports: [AsyncPipe, ReactiveFormsModule, FormlyModule, AutoCompleteModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <kendo-autocomplete
       [formControl]="formControl"

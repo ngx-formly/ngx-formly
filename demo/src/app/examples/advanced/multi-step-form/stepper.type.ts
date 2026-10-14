@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
 import { MatStepper, MatStep, MatStepLabel, MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
 
@@ -27,7 +27,6 @@ import { FormlyField } from '@ngx-formly/core';
       }
     </mat-horizontal-stepper>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatStepper, MatStep, MatStepLabel, FormlyField, MatStepperPrevious, MatStepperNext],
 })
 export class FormlyFieldStepper extends FieldType {

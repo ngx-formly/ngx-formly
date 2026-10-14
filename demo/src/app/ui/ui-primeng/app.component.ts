@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,7 +6,6 @@ import { RouterOutlet } from '@angular/router';
   template: `<router-outlet></router-outlet>`,
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterOutlet],
 })
 export class AppComponent {}

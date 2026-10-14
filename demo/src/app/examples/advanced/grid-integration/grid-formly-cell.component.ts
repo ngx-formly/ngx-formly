@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormlyField, FormlyFieldConfig } from '@ngx-formly/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 
 @Component({
   selector: 'formly-ag-grid-cell',
   template: ` <formly-field [field]="getField()"></formly-field> `,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormlyField],
 })
 export class GridFormlyCellComponent implements ICellRendererAngularComp {

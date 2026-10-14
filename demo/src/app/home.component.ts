@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -11,7 +11,6 @@ import { highlight } from './shared/highlight';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   imports: [JsonPipe, ReactiveFormsModule, RouterLink, MatIcon, FormlyForm],
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class HomeComponent {

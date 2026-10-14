@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig, FormlyValueChangeEvent } from '@ngx-formly/core';
 import { UserService } from './user.service';
@@ -10,7 +10,6 @@ import { Observable, Subject } from 'rxjs';
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AsyncPipe, ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent implements OnDestroy {

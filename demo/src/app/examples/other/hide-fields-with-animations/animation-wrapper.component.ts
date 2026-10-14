@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 import { trigger, state, style, transition, animate, group } from '@angular/animations';
@@ -76,7 +76,6 @@ const SlideInOutAnimation = [
     </div>
   `,
   animations: [SlideInOutAnimation],
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class AnimationWrapperComponent extends FieldWrapper {}

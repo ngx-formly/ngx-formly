@@ -1,11 +1,4 @@
-import {
-  Component,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FormlyFieldConfig, FieldTypeConfig, FieldWrapper } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 
@@ -27,7 +20,6 @@ interface AddonsProps extends FormlyFieldProps {
   templateUrl: './addons.component.html',
   styleUrls: ['./addons.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyWrapperAddons extends FieldWrapper<FieldTypeConfig<AddonsProps>> {
