@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, provideZonelessChangeDetection } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { createBuilder, createComponent, createFieldComponent } from '@ngx-formly/core/testing';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -242,6 +242,66 @@ describe('FormlyValidationMessagesPipe', () => {
     expect(result.entries[0].message).toBe('Updated translation');
   });
 
+  it.each([
+    { input: 'tree', debounce: 0 },
+    { input: 'leaf', debounce: 0 },
+    { input: 'leaf', debounce: 5 },
+  ])(
+    'refreshes sibling-dependent messages for a $input input with $debounce ms debounce',
+    fakeAsync(({ input, debounce }) => {
+      const translation = new Subject<string>();
+      const { field } = createFieldComponent({
+        fieldGroup: [
+          {
+            key: 'name',
+            props: { required: true },
+            validators: { translated: { expression: () => false, message: () => translation } },
+            validation: { messages: { required: (_error, field) => `Required for ${field.model.other}` } },
+          },
+          { key: 'other', defaultValue: 'Before', modelOptions: { debounce: { default: debounce } } },
+        ],
+      });
+      const result = watch(input === 'tree' ? field : field.fieldGroup[0]);
+      translation.next('Translated');
+      expect(result.entries.map(({ message }) => message)).toEqual(['Required for Before', 'Translated']);
+
+      field.fieldGroup[1].formControl.setValue('After');
+      tick(debounce);
+      expect(result.entries.map(({ message }) => message)).toEqual(['Required for After', 'Translated']);
+      expect(translation.observers).toHaveLength(1);
+      translation.next('Updated translation');
+      expect(result.entries.map(({ message }) => message)).toEqual(['Required for After', 'Updated translation']);
+      field.fieldGroup[0].formControl.setErrors({ translated: true });
+      expect(result.entries.map(({ message }) => message)).toEqual(['Updated translation']);
+    }),
+  );
+
+  it('replaces obsolete observable messages when a sibling changes their source', () => {
+    const before = new Subject<string>();
+    const after = new Subject<string>();
+    const { field } = createFieldComponent({
+      fieldGroup: [
+        {
+          key: 'name',
+          props: { required: true },
+          validation: { messages: { required: (_error, field) => (field.model.other ? after : before) } },
+        },
+        { key: 'other' },
+      ],
+    });
+    const result = watch(field);
+    before.next('Before');
+    expect(result.entries[0].message).toBe('Before');
+
+    field.fieldGroup[1].formControl.setValue(true);
+    expect(result.entries.map(({ message }) => message)).toEqual([]);
+    expect(before.observers).toHaveLength(0);
+    after.next('After');
+    expect(result.entries[0].message).toBe('After');
+    result.subscription.unsubscribe();
+    expect(after.observers).toHaveLength(0);
+  });
+
   it('updates when an ancestor outside the input hides or shows the field', () => {
     const fieldChanges = new Subject<FormlyValueChangeEvent>();
     const parent = { hide: false, options: { fieldChanges } };
@@ -297,6 +357,39 @@ describe('FormlyValidationMessagesPipe', () => {
     const calls = result.next.mock.calls.length;
     removed.setErrors({ required: true });
     expect(result.next).toHaveBeenCalledTimes(calls);
+  });
+
+  it('refreshes messages after removing an earlier repeated row while retaining its control', () => {
+    const { field, query } = createFieldComponent(
+      {
+        key: 'items',
+        type: 'array',
+        defaultValue: [{}, {}],
+        fieldArray: {
+          fieldGroup: [
+            {
+              key: 'name',
+              props: { required: true },
+              validation: { messages: { required: (_error, field) => `Row ${field.parent.key}` } },
+            },
+          ],
+        },
+      },
+      {
+        declarations: [TestArrayType],
+        config: { types: [{ name: 'array', component: TestArrayType }] },
+      },
+    );
+    const array = query('formly-test-array').componentInstance as TestArrayType;
+    const result = watch(field);
+    const remaining = field.fieldGroup[1].fieldGroup[0];
+    const control = remaining.formControl;
+    expect(result.entries.map(({ message }) => message)).toEqual(['Row 0', 'Row 1']);
+
+    array.remove(0);
+    expect(remaining.formControl).toBe(control);
+    expect(result.entries.map(({ message }) => message)).toEqual(['Row 0']);
+    expect(result.entries[0].field).toBe(remaining);
   });
 
   it('tears down field, control, and message subscriptions when the consumer unsubscribes', () => {

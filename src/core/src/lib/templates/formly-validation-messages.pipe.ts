@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { combineLatest, defer, isObservable, Observable, of, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { isObservable, Observable, of, Subscription } from 'rxjs';
 import { FormlyFieldConfig, FormlyValueChangeEvent } from '../models';
 import { FormlyConfig } from '../services/formly.config';
 import { getValidationMessage } from './validation-message';
@@ -29,12 +28,15 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
       const subscriptions = new Map<Observable<string | FormlyValueChangeEvent>, Subscription>();
       const messages = new Map<
         FormlyFieldConfig,
-        {
-          control: AbstractControl;
-          errors: AbstractControl['errors'];
-          entries: FormlyValidationMessageEntry[];
-          subscription: Subscription;
-        }
+        Map<
+          string,
+          {
+            control: AbstractControl;
+            message: string | Observable<string>;
+            entry: FormlyValidationMessageEntry;
+            subscription: Subscription;
+          }
+        >
       >();
       let currentFields: FormlyFieldConfig[] = [];
       let watchedFields: Set<FormlyFieldConfig>;
@@ -46,13 +48,16 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
         }
 
         const seen = new Map<AbstractControl, Set<string>>();
-        const entries = currentFields.flatMap((field) => messages.get(field)?.entries || []);
+        const entries = currentFields.flatMap((field) =>
+          Object.keys(field.formControl?.errors || {}).map((error) => messages.get(field)?.get(error)?.entry),
+        );
         subscriber.next(
-          entries.filter(({ field, error, message }) => {
-            if (!message || seen.get(field.formControl)?.has(error)) {
+          entries.filter((entry) => {
+            if (!entry?.message || seen.get(entry.field.formControl)?.has(entry.error)) {
               return false;
             }
 
+            const { field, error } = entry;
             if (!seen.has(field.formControl)) {
               seen.set(field.formControl, new Set());
             }
@@ -62,10 +67,7 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
         );
       };
 
-      const refresh = (
-        changedSource?: Observable<string | FormlyValueChangeEvent>,
-        changedField?: FormlyFieldConfig,
-      ) => {
+      const refresh = () => {
         if (subscriber.closed) {
           return;
         }
@@ -73,9 +75,9 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
         refreshing = true;
         currentFields = this.getFields(roots);
         watchedFields = new Set(currentFields);
-        messages.forEach((state, field) => {
+        messages.forEach((fieldMessages, field) => {
           if (!watchedFields.has(field) || !this.isVisible(field)) {
-            state.subscription.unsubscribe();
+            fieldMessages.forEach((state) => state.subscription.unsubscribe());
             messages.delete(field);
           }
         });
@@ -109,10 +111,10 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
                 next: (event: string | FormlyValueChangeEvent) => {
                   if (
                     typeof event === 'string' ||
-                    (watchedFields.has(event.field) &&
-                      ['valueChanges', 'expressionChanges', 'hidden'].includes(event.type))
+                    event.type === 'valueChanges' ||
+                    (watchedFields.has(event.field) && ['expressionChanges', 'hidden'].includes(event.type))
                   ) {
-                    refresh(source, typeof event === 'string' ? undefined : event.field);
+                    refresh();
                   }
                 },
                 error: (error) => subscriber.error(error),
@@ -126,34 +128,58 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
             return;
           }
 
-          const previous = messages.get(field);
-          // Keep unrelated observable messages subscribed so their last translation is not lost.
-          if (
-            previous?.control === field.formControl &&
-            previous.errors === field.formControl.errors &&
-            changedSource !== field.formControl.statusChanges &&
-            changedField !== field
-          ) {
-            return;
+          if (!messages.has(field)) {
+            messages.set(field, new Map());
           }
+          const fieldMessages = messages.get(field);
+          const errors = new Set(Object.keys(field.formControl.errors || {}));
+          fieldMessages.forEach((state, error) => {
+            if (state.control !== field.formControl || !errors.has(error)) {
+              state.subscription.unsubscribe();
+              fieldMessages.delete(error);
+            }
+          });
+          errors.forEach((error) => {
+            if (subscriber.closed) {
+              return;
+            }
 
-          previous?.subscription.unsubscribe();
-          const state = {
-            control: field.formControl,
-            errors: field.formControl.errors,
-            entries: [] as FormlyValidationMessageEntry[],
-            subscription: new Subscription(),
-          };
-          messages.set(field, state);
-          state.subscription.add(
-            defer(() => this.getMessages(field)).subscribe({
-              next: (entries) => {
-                state.entries = entries;
-                emit();
-              },
-              error: (error) => subscriber.error(error),
-            }),
-          );
+            let message: string | Observable<string>;
+            try {
+              message = getValidationMessage(field, error, this.config);
+            } catch (error) {
+              subscriber.error(error);
+              return;
+            }
+
+            const previous = fieldMessages.get(error);
+            // Re-evaluate field context, but retain unchanged streams and their latest translations.
+            if (previous?.message === message) {
+              return;
+            }
+            previous?.subscription.unsubscribe();
+            fieldMessages.delete(error);
+            if (!message) {
+              return;
+            }
+
+            const state = {
+              control: field.formControl,
+              message,
+              entry: null as FormlyValidationMessageEntry,
+              subscription: new Subscription(),
+            };
+            fieldMessages.set(error, state);
+            state.subscription.add(
+              (isObservable(message) ? message : of(message)).subscribe({
+                next: (message) => {
+                  state.entry = { field, error, message };
+                  emit();
+                },
+                error: (error) => subscriber.error(error),
+              }),
+            );
+          });
         });
         refreshing = false;
         emit();
@@ -161,7 +187,7 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
 
       subscriber.add(() => {
         subscriptions.forEach((subscription) => subscription.unsubscribe());
-        messages.forEach((state) => state.subscription.unsubscribe());
+        messages.forEach((fieldMessages) => fieldMessages.forEach((state) => state.subscription.unsubscribe()));
       });
       refresh();
     });
@@ -193,18 +219,5 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
     }
 
     return true;
-  }
-
-  private getMessages(field: FormlyFieldConfig): Observable<FormlyValidationMessageEntry[]> {
-    const messages: Observable<FormlyValidationMessageEntry>[] = [];
-    Object.keys(field.formControl.errors || {}).forEach((error) => {
-      const message = getValidationMessage(field, error, this.config);
-      if (message) {
-        const message$ = isObservable(message) ? message.pipe(startWith(undefined)) : of(message);
-        messages.push(message$.pipe(map((message) => ({ field, error, message }))));
-      }
-    });
-
-    return messages.length === 0 ? of([]) : combineLatest(messages);
   }
 }
