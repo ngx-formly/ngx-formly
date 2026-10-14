@@ -7,6 +7,7 @@ import { FormlyConfig } from './services/formly.config';
 import { FormlyFormBuilder } from './services/formly.builder';
 import { FormlyGroup } from './templates/formly.group';
 import { LegacyFormlyValidationMessage } from './templates/formly.validation-message';
+import { FormlyValidationMessagesPipe } from './templates/formly-validation-messages.pipe';
 import { FormlyTemplateType } from './templates/field-template.type';
 import { ConfigOption } from './models';
 import { LegacyFormlyTemplate } from './components/formly.template';
@@ -30,6 +31,7 @@ import { FORMLY_CONFIG, provideFormlyConfig, withDefaultConfig } from './core.co
     FormlyTemplateType,
   ],
   exports: [
+    FormlyValidationMessagesPipe,
     LegacyFormlyTemplate,
     LegacyFormlyForm,
     LegacyFormlyField,
@@ -37,7 +39,7 @@ import { FORMLY_CONFIG, provideFormlyConfig, withDefaultConfig } from './core.co
     LegacyFormlyValidationMessage,
     FormlyGroup,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, FormlyValidationMessagesPipe],
 })
 export class FormlyModule {
   static forRoot(config: ConfigOption = {}): ModuleWithProviders<FormlyModule> {

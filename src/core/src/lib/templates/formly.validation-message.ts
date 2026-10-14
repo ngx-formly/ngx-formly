@@ -4,10 +4,12 @@ import { Observable, isObservable, merge, of } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { FormlyFieldConfig } from '../models';
 import { FormlyConfig } from '../services/formly.config';
-import { FORMLY_VALIDATORS, isObject } from '../utils';
+import { FORMLY_VALIDATORS } from '../utils';
+import { getValidationMessage } from './validation-message';
 
 /**
  * The `<formly-validation-message>` component renders the error message of a given `field`.
+ * @deprecated Use the `validationMessages` pipe to render validation messages.
  */
 @Component({
   selector: 'formly-validation-message',
@@ -48,35 +50,7 @@ export class FormlyValidationMessage implements OnChanges {
     const fieldForm = this.field.formControl;
     for (const error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        let message = this.config.getValidatorMessage(error);
-
-        if (isObject(fieldForm.errors[error])) {
-          if (fieldForm.errors[error].errorPath) {
-            return undefined;
-          }
-
-          if (fieldForm.errors[error].message) {
-            message = fieldForm.errors[error].message;
-          }
-        }
-
-        if (this.field.validation?.messages?.[error]) {
-          message = this.field.validation.messages[error];
-        }
-
-        if (this.field.validators?.[error]?.message) {
-          message = this.field.validators[error].message;
-        }
-
-        if (this.field.asyncValidators?.[error]?.message) {
-          message = this.field.asyncValidators[error].message;
-        }
-
-        if (typeof message === 'function') {
-          return message(fieldForm.errors[error], this.field);
-        }
-
-        return message;
+        return getValidationMessage(this.field, error, this.config);
       }
     }
 
@@ -84,6 +58,7 @@ export class FormlyValidationMessage implements OnChanges {
   }
 }
 
+/** @deprecated Use the `validationMessages` pipe to render validation messages. */
 @Component({
   selector: 'formly-validation-message',
   template: '{{ errorMessage$ | async }}',

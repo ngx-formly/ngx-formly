@@ -1,4 +1,21 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="submit()">
+  @if (formDirective.submitted) {
+    @if (fields | validationMessages | async; as errors) {
+      @if (errors.length) {
+        <div role="alert" class="alert alert-danger">
+          <p>Please correct the following errors:</p>
+          <ul>
+            @for (entry of errors; track $index) {
+              <li>{{ entry.field.props?.label }}: {{ entry.message }}</li>
+            }
+          </ul>
+        </div>
+      }
+    }
+  }
   <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
   <button type="submit" class="btn btn-primary submit-button">Submit</button>
+  <button type="button" class="btn btn-secondary" (click)="options.resetModel(); formDirective.resetForm(form.value)">
+    Reset
+  </button>
 </form>
