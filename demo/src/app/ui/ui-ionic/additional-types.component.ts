@@ -1,14 +1,14 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonItem, IonLabel, IonList, IonSearchbar } from '@ionic/angular';
 import { ConfigOption, FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
 import { Observable, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'formly-field-ion-native-select',
-  imports: [AsyncPipe, ReactiveFormsModule, IonicModule, FormlyModule, FormlySelectOptionsPipe],
+  imports: [AsyncPipe, ReactiveFormsModule, FormlyModule, FormlySelectOptionsPipe],
   template: `
     @if (!props.hideLabel) {
       <label [for]="id">{{ props.label }}{{ props.required && !props.hideRequiredMarker ? ' *' : '' }}</label>
@@ -43,7 +43,7 @@ export class NativeSelectTypeComponent extends FieldType<FieldTypeConfig> {}
 
 @Component({
   selector: 'formly-field-ion-autocomplete',
-  imports: [AsyncPipe, ReactiveFormsModule, IonicModule, FormlyModule],
+  imports: [AsyncPipe, ReactiveFormsModule, IonItem, IonLabel, IonList, IonSearchbar, FormlyModule],
   template: `
     @if (!props.hideLabel) {
       <ion-label [id]="id + '-label'"

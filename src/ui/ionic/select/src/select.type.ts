@@ -31,9 +31,9 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [ionFormlyAttributes]="field"
         [multiple]="props.multiple"
         [interface]="props.interface"
-        [interfaceOptions]="props.interfaceOptions"
-        [okText]="props.okText"
-        [cancelText]="props.cancelText"
+        [interfaceOptions]="props.interfaceOptions ?? {}"
+        [okText]="props.okText ?? 'OK'"
+        [cancelText]="props.cancelText ?? 'Cancel'"
         [label]="props.label"
         [labelPlacement]="props.labelPosition ?? 'start'"
       >

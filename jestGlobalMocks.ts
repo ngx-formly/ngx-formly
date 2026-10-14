@@ -1,11 +1,16 @@
-// Zone.js discovers MutationObserver methods by enumeration; Happy DOM uses class methods.
-for (const method of ['observe', 'disconnect', 'takeRecords']) {
-  Object.defineProperty(MutationObserver.prototype, method, {
-    value: MutationObserver.prototype[method],
-    enumerable: true,
-    configurable: true,
-    writable: true,
-  });
+// Zone.js discovers observer methods by enumeration; Happy DOM uses class methods.
+for (const observer of [MutationObserver, IntersectionObserver]) {
+  for (const method of ['observe', 'unobserve', 'disconnect', 'takeRecords']) {
+    const value = observer.prototype[method];
+    if (typeof value === 'function') {
+      Object.defineProperty(observer.prototype, method, {
+        value,
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      });
+    }
+  }
 }
 
 // https://github.com/jsdom/jsdom/issues/1695#issuecomment-449931788
