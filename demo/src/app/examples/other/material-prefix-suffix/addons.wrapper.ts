@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { NgStyle } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -37,6 +37,7 @@ import { MatIcon } from '@angular/material/icon';
       }
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgStyle, MatIcon],
 })
 export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {

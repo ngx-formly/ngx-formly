@@ -58,9 +58,9 @@ export function addModuleImportToRootModule(host: Tree, moduleName: string, src:
 
 /** Gets the app index.html file */
 export function getIndexHtmlPath(host: Tree, project: WorkspaceProject): string {
-  const buildTarget = project.architect.build.options;
+  const buildTarget = project.architect?.build?.options;
 
-  if (buildTarget.index && buildTarget.index.endsWith('index.html')) {
+  if (buildTarget?.index && buildTarget.index.endsWith('index.html')) {
     return buildTarget.index;
   }
 
@@ -69,9 +69,9 @@ export function getIndexHtmlPath(host: Tree, project: WorkspaceProject): string 
 
 /** Get the root stylesheet file. */
 export function getStylesPath(host: Tree, project: WorkspaceProject): string {
-  const buildTarget = project.architect['build'];
+  const buildTarget = project.architect?.['build'];
 
-  if (buildTarget.options && buildTarget.options.styles && buildTarget.options.styles.length) {
+  if (buildTarget?.options?.styles?.length) {
     const styles = buildTarget.options.styles.map(s => typeof s === 'string' ? s : (s as any).input);
 
     // First, see if any of the assets is called "styles.(le|sc|c)ss", which is the default
@@ -95,7 +95,7 @@ export function getStylesPath(host: Tree, project: WorkspaceProject): string {
 export async function findModuleFromOptions(
   host: Tree,
   options: ComponentOptions,
-): Promise<string | undefined> {
+): Promise<string> {
   const workspace = await getWorkspace(host);
 
   if (!options.project) {
@@ -108,7 +108,11 @@ export async function findModuleFromOptions(
     options.path = `/${project.root}/src/app`;
   }
 
-  return internalFindModule(host, options);
+  const modulePath = internalFindModule(host, options);
+  if (!modulePath) {
+    throw new SchematicsException('Could not find an NgModule to configure Formly.');
+  }
+  return modulePath;
 }
 
 export function getProjectMainFile(project: workspaces.ProjectDefinition): Path {

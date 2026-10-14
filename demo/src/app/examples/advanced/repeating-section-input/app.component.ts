@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { startWith, tap, filter } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { FormlyForm } from '@ngx-formly/core';
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

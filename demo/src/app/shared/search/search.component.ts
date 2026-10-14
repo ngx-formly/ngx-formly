@@ -1,4 +1,13 @@
-import { Component, ElementRef, computed, inject, signal, viewChild, viewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  computed,
+  inject,
+  signal,
+  viewChild,
+  viewChildren,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
@@ -9,6 +18,7 @@ import { SearchDocument, searchDocuments } from './search';
   selector: 'formly-search',
   imports: [MatButton, MatIconButton, MatIcon, RouterLink],
   templateUrl: './search.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search.component.scss',
 })
 export class SearchComponent {

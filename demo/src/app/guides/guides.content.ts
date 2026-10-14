@@ -8,6 +8,7 @@ import expressionPropertiesMd from '../../../../docs/expression-properties.md?ra
 import formlyFieldPresetsMd from '../../../../docs/formly-field-presets.md?raw' with { loader: 'text' };
 import jsonSchemaMd from '../../../../docs/json-schema.md?raw' with { loader: 'text' };
 import faqMd from '../../../../docs/faq.md?raw' with { loader: 'text' };
+import migrationV11Md from '../../../../UPGRADE-11.0.md?raw' with { loader: 'text' };
 import migrationV10Md from '../../../../UPGRADE-10.0.md?raw' with { loader: 'text' };
 import migrationV9Md from '../../../../UPGRADE-9.0.md?raw' with { loader: 'text' };
 import migrationV8Md from '../../../../UPGRADE-8.0.md?raw' with { loader: 'text' };
@@ -27,6 +28,7 @@ export const GUIDE_CONTENTS: Record<string, string> = {
   'formly-field-presets': formlyFieldPresetsMd,
   'json-schema': jsonSchemaMd,
   faq: faqMd,
+  v11: migrationV11Md,
   v10: migrationV10Md,
   v9: migrationV9Md,
   v8: migrationV8Md,

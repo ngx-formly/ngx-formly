@@ -1,4 +1,4 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule, Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormlyModule, FieldType, FieldTypeConfig, FieldWrapper } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'formly-type-input',
   template: ` <input type="text" [formControl]="formControl" [formlyAttributes]="field" /> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
@@ -19,6 +20,7 @@ export class FormlyFieldInput extends FieldType<FieldTypeConfig> {}
       <formly-validation-message [field]="field"></formly-validation-message>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper {}

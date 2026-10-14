@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
@@ -13,6 +13,7 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

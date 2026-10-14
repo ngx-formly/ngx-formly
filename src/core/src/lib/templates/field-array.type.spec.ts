@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyInputModule, createFieldChangesSpy, createFieldComponent } from '@ngx-formly/core/testing';
@@ -679,6 +679,7 @@ describe('Array Field Type', () => {
     }
     <button id="add" type="button" (click)="add()">Add</button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ArrayTypeComponent extends FieldArrayType {}

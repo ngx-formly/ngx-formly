@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ConfigOption, FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
@@ -20,6 +20,7 @@ import { Observable, startWith, switchMap } from 'rxjs';
       }
     </select>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       :host {
@@ -84,6 +85,7 @@ export class NativeSelectTypeComponent extends FieldType<FieldTypeConfig> {}
       </ion-list>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       :host {

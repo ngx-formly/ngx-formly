@@ -32,7 +32,7 @@ describe('ui-primeng: Select Type', () => {
     detectChanges();
     const items = queryAll('li[pMultiSelectItem]');
     expect(items).toHaveLength(3);
-    expect(items[2].componentInstance.disabled).toBe(true);
+    expect(items[2].componentInstance.disabled()).toBe(true);
     queryAll('li[pMultiSelectItem]')[0].triggerEventHandler('click', new MouseEvent('click'));
     detectChanges();
     queryAll('li[pMultiSelectItem]')[1].triggerEventHandler('click', new MouseEvent('click'));
@@ -59,7 +59,7 @@ describe('ui-primeng: Select Type', () => {
 
     query('p-select').componentInstance.show(true);
     detectChanges();
-    expect(queryAll('p-selectItem')).toHaveLength(3);
+    expect(queryAll('p-select-item')).toHaveLength(3);
   });
 
   it('should render enum type', () => {
@@ -80,7 +80,7 @@ describe('ui-primeng: Select Type', () => {
 
     query('p-select').componentInstance.show(true);
     detectChanges();
-    expect(queryAll('p-selectItem')).toHaveLength(3);
+    expect(queryAll('p-select-item')).toHaveLength(3);
   });
 
   it('should bind control value on change', () => {
@@ -99,7 +99,7 @@ describe('ui-primeng: Select Type', () => {
 
     query('p-select').componentInstance.show(true);
     detectChanges();
-    queryAll('p-selectItem>li')[1].triggerEventHandler('click', new MouseEvent('click'));
+    queryAll('p-select-item>li')[1].triggerEventHandler('click', new MouseEvent('click'));
     expect(field.formControl.value).toEqual(2);
     expect(changeSpy).toHaveBeenCalledTimes(1);
   });
@@ -122,12 +122,12 @@ describe('ui-primeng: Select Type', () => {
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
     query('p-select').componentInstance.show(true);
     detectChanges();
-    expect(queryAll('p-selectItem')).toHaveLength(3);
+    expect(queryAll('p-select-item')).toHaveLength(3);
 
     const inputQuery = 'p-select input.p-select-filter';
     query(inputQuery).triggerEventHandler('input', { target: { value: 'pie' } });
     detectChanges();
-    expect(queryAll('p-selectItem')).toHaveLength(2);
-    expect(queryAll('p-selectItem>li')[0].nativeElement.textContent).toEqual('apple-pie label');
+    expect(queryAll('p-select-item')).toHaveLength(2);
+    expect(queryAll('p-select-item>li')[0].nativeElement.textContent).toEqual('apple-pie label');
   });
 });

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper, FormlyFieldConfig, FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
 
 export interface FormlyFieldProps extends CoreFormlyFieldProps {
@@ -23,6 +23,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </nz-form-control>
     </nz-form-item>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {

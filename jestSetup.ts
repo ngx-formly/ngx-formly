@@ -1,4 +1,5 @@
 import './jestGlobalMocks';
+import 'core-js/actual/structured-clone';
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 import 'jest-extended';
 // https://github.com/thymikee/jest-preset-angular/issues/347

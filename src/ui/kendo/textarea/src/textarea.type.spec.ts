@@ -18,7 +18,7 @@ describe('ui-kendo: Textarea Type', () => {
     expect(query('formly-wrapper-kendo-form-field')).not.toBeNull();
     const { attributes } = query('textarea');
     expect(attributes).toMatchObject({
-      class: 'k-textarea k-input k-input-md k-rounded-md k-input-solid k-autofill ng-untouched ng-pristine ng-valid',
+      class: 'k-input k-textarea k-autofill ng-untouched ng-pristine ng-valid',
       id: 'formly_1_textarea_name_0',
     });
   });

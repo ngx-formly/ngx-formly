@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 import { FormlyValidationMessage } from '@ngx-formly/core';
@@ -26,6 +26,7 @@ import { FormlyValidationMessage } from '@ngx-formly/core';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormlyValidationMessage],
 })
 export class FormlyHorizontalWrapper extends FieldWrapper {}

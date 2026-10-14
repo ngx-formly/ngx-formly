@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -22,7 +22,7 @@ jest.mock('./shared/search/search-index', () => ({
   },
 }));
 
-@Component({ selector: 'formly-test-page', template: '' })
+@Component({ selector: 'formly-test-page', changeDetection: ChangeDetectionStrategy.Eager, template: '' })
 class TestPageComponent {}
 
 describe('Website navigation', () => {
@@ -39,7 +39,7 @@ describe('Website navigation', () => {
         provideRouter([
           { path: '', component: TestPageComponent },
           { path: 'guide', component: TestPageComponent },
-          { path: 'guide/migration', pathMatch: 'full', redirectTo: 'guide/migration/v10' },
+          { path: 'guide/migration', pathMatch: 'full', redirectTo: 'guide/migration/v11' },
           { path: 'guide/migration/:id', component: TestPageComponent },
           { path: 'examples/introduction', component: TestPageComponent },
         ]),
@@ -173,17 +173,17 @@ describe('Website navigation', () => {
     const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
     await drawer.open();
     fixture.detectChanges();
-    expect(sidebar.querySelector('a[href="/guide/migration/v10"]')).toBeNull();
+    expect(sidebar.querySelector('a[href="/guide/migration/v11"]')).toBeNull();
 
     const entry = sidebar.querySelector<HTMLAnchorElement>('a[href="/guide/migration"]');
     entry.focus();
     entry.click();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(router.url).toBe('/guide/migration/v10');
+    expect(router.url).toBe('/guide/migration/v11');
     expect(sidebar.querySelector('a[href="/guide/faq"]')).toBeNull();
-    expect(sidebar.querySelectorAll('.menu-children a')).toHaveLength(7);
-    expect(sidebar.querySelector('[aria-current="page"]')?.textContent).toContain('Upgrade to v10');
+    expect(sidebar.querySelectorAll('.menu-children a')).toHaveLength(8);
+    expect(sidebar.querySelector('[aria-current="page"]')?.textContent).toContain('Upgrade to v11');
     expect(drawer.opened).toBe(true);
 
     const back = sidebar.querySelector<HTMLAnchorElement>('[aria-label="Back to Guides"]');

@@ -3,7 +3,7 @@ import { provideFormlyCore } from '@ngx-formly/core';
 import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
 import { FORMLY_CONFIG } from '@ngx-formly/core';
 
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withXhr } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideTranslateService, TranslateLoader, TranslateService } from '@ngx-translate/core';
 
@@ -16,7 +16,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withXhr()),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,

@@ -11,8 +11,8 @@ export const COPYRIGHT = `Copyright 2025 Formly. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
     can be found in the LICENSE file at https://github.com/ngx-formly/ngx-formly/blob/main/LICENSE`;
 
-export const angularVersion = '^21.0.0';
-export const formlyVersion = '^10.0.0';
+export const angularVersion = '^22.0.0';
+export const formlyVersion = '^11.0.0';
 
 export const dependencies: { [id: string]: { [id: string]: string } } = {
   core: {
@@ -25,32 +25,31 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/animations': angularVersion,
     '@angular/router': angularVersion,
     rxjs: '^7.8.0',
-    'zone.js': '~0.15.0',
     tslib: '^2.3.1',
     '@ngx-formly/core': formlyVersion,
   },
   bootstrap: {
     '@ngx-formly/bootstrap': formlyVersion,
     bootstrap: '^5.3.6',
-    '@ng-bootstrap/ng-bootstrap': '^20.0.0',
+    '@ng-bootstrap/ng-bootstrap': '^21.0.0',
     '@angular/cdk': angularVersion,
     '@popperjs/core': '^2.11.8',
   },
   material: { '@ngx-formly/material': formlyVersion },
   kendo: {
     '@ngx-formly/kendo': formlyVersion,
-    '@progress/kendo-angular-dateinputs': '^21.4.1',
-    '@progress/kendo-angular-common': '^21.4.1',
-    '@progress/kendo-angular-dropdowns': '^21.4.1',
-    '@progress/kendo-angular-inputs': '^21.4.1',
-    '@progress/kendo-angular-intl': '^21.4.1',
-    '@progress/kendo-angular-l10n': '^21.4.1',
-    '@progress/kendo-angular-label': '^21.4.1',
-    '@progress/kendo-angular-popup': '^21.4.1',
-    '@progress/kendo-angular-treeview': '^21.4.1',
-    '@progress/kendo-drawing': '^1.23.1',
-    '@progress/kendo-licensing': '^1.7.0',
-    '@progress/kendo-theme-default': '^12.3.0',
+    '@progress/kendo-angular-dateinputs': '^25.3.0',
+    '@progress/kendo-angular-common': '^25.3.0',
+    '@progress/kendo-angular-dropdowns': '^25.3.0',
+    '@progress/kendo-angular-inputs': '^25.3.0',
+    '@progress/kendo-angular-intl': '^25.3.0',
+    '@progress/kendo-angular-l10n': '^25.3.0',
+    '@progress/kendo-angular-label': '^25.3.0',
+    '@progress/kendo-angular-popup': '^25.3.0',
+    '@progress/kendo-angular-treeview': '^25.3.0',
+    '@progress/kendo-drawing': '^1.25.0',
+    '@progress/kendo-licensing': '^1.11.0',
+    '@progress/kendo-theme-default': '^14.6.1',
   },
   primeng: {
     '@ngx-formly/primeng': formlyVersion,
@@ -58,14 +57,14 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/cdk': angularVersion,
     primeflex: '^3.2.0',
     primeicons: '^7.0.0',
-    primeng: '^21.1.10',
+    primeng: '^22.1.2',
     '@primeuix/themes': '^2.0.2',
   },
   ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^8.0.0', '@angular/router': angularVersion },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
     '@angular/cdk': angularVersion,
-    'ng-zorro-antd': '^21.3.3',
+    'ng-zorro-antd': '^22.1.2',
   },
   // non UI framework libraries
   'ag-grid': { 'ag-grid-angular': '^33.1.0', 'ag-grid-community': '^33.1.0' },

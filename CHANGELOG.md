@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.0.0](https://github.com/ngx-formly/ngx-formly/compare/v10.0.1...v11.0.0) (2026-10-14)
+
+### Breaking changes
+
+* **core:** Require Angular 22 or newer. Upgrade Angular and its toolchain before updating all `@ngx-formly/*` packages together to v11. Applications on Angular 21 should remain on Formly v10.
+* **material, primeng, ng-zorro-antd, nativescript:** Require version 22 or newer of the corresponding Angular UI library. Bootstrap examples using ng-bootstrap require v21.
+* **kendo:** Require Kendo Angular label, dropdown, and input packages 25.3.0 or newer for zoneless support. Update related Kendo packages together and use the matching v14.6.1 theme.
+* **primeng:** Use `p-radiobutton` in copied radio templates and selectors. Select and datepicker `props.appendTo` now accept PrimeNG's `AppendTo` type, including `'body'`, `'self'`, and element or template references.
+* **ng-zorro-antd:** Datepicker examples require an explicit date adapter. Add `provideNzDateFnsAdapter()` to application providers to preserve the previous date-fns behavior.
+
+See the [v11 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v11.0.0/UPGRADE-11.0.md) for dependency updates and zoneless migration steps.
+
+### Features
+
+* **demo:** Run the documentation app, exported StackBlitz examples, and SSR integration without Zone.js. Existing consumers can retain `provideZoneChangeDetection()` while migrating.
+* **schematics:** Generate installations using Angular 22 and Formly v11.
+
+### Bug fixes
+
+* **demo:** Notify Angular when HTTP responses update the JSON Schema and JSON powered examples so their forms render in zoneless applications.
+
+Formly v11 continues to use Angular Reactive Forms. Signal Forms integration is planned for v12.
+
 ## [10.0.1](https://github.com/ngx-formly/ngx-formly/compare/v10.0.0...v10.0.1) (2026-10-13)
 
 ### Bug fixes

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { NgbDatepickerModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +7,7 @@ import { Observable, debounceTime, distinctUntilChanged, switchMap } from 'rxjs'
 @Component({
   selector: 'formly-field-bootstrap-datepicker',
   imports: [ReactiveFormsModule, FormlyModule, NgbDatepickerModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="input-group">
       <input
@@ -35,6 +36,7 @@ export class DatepickerTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-bootstrap-slider',
   imports: [ReactiveFormsModule, FormlyModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <input
       type="range"
@@ -54,6 +56,7 @@ export class SliderTypeComponent extends FieldType<FieldTypeConfig> {}
   imports: [ReactiveFormsModule, FormlyModule, NgbTypeaheadModule],
   encapsulation: ViewEncapsulation.None,
   styles: ['.formly-bootstrap-autocomplete-options { max-height: 240px; overflow-y: auto; }'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <input
       class="form-control"

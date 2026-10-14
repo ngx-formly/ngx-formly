@@ -24,7 +24,7 @@ describe('ui-primeng: Radio Type', () => {
     });
 
     expect(query('formly-wrapper-primeng-form-field')).not.toBeNull();
-    expect(queryAll('p-radioButton')).toHaveLength(3);
+    expect(queryAll('p-radiobutton')).toHaveLength(3);
   });
 
   it('should add "ng-invalid" class on invalid', () => {
@@ -38,7 +38,7 @@ describe('ui-primeng: Radio Type', () => {
       },
     });
 
-    expect(query('p-radioButton').classes['ng-invalid']).toBe(true);
+    expect(query('p-radiobutton').classes['ng-invalid']).toBe(true);
   });
 
   it('should bind control value on change', () => {

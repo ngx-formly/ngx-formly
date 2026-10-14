@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, ValidationErrors, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
@@ -9,6 +9,7 @@ export function ipValidator(control: AbstractControl): ValidationErrors {
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

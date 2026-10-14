@@ -16,6 +16,7 @@ import {
   EmbeddedViewRef,
   Optional,
   Injector,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormlyConfig } from '../services/formly.config';
@@ -45,6 +46,7 @@ import { FormlyFieldTemplates } from './formly.template';
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
   styleUrls: ['./formly.field.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit, AfterViewInit, OnDestroy {
@@ -417,6 +419,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
   selector: 'formly-field',
   template: '<ng-template #container></ng-template>',
   styleUrls: ['./formly.field.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LegacyFormlyField extends FormlyField {}

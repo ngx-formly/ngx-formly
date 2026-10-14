@@ -5,10 +5,10 @@ import {
   OnDestroy,
   ViewChild,
   ViewContainerRef,
-  ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
   OnChanges,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
@@ -34,6 +34,7 @@ export interface ExampleType {
   selector: 'formly-example-viewer',
   templateUrl: './example-viewer.component.html',
   styleUrls: ['./example-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIconButton, MatTooltip, MatIcon, FormlyForm, StackblitzButtonComponent, MatTabGroup, MatTab],
 })
 export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
@@ -57,10 +58,7 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   showSource = false;
   showDebug = false;
 
-  constructor(
-    private copier: CopierService,
-    private componentFactoryResolver: ComponentFactoryResolver,
-  ) {}
+  constructor(private copier: CopierService) {}
 
   get model() {
     const model = JSON.stringify(this.demoComponentRef.instance.model);
@@ -79,8 +77,7 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.exampleData.component);
-    this.demoComponentRef = this.demoRef.createComponent(componentFactory);
+    this.demoComponentRef = this.demoRef.createComponent(this.exampleData.component);
   }
 
   ngOnChanges() {

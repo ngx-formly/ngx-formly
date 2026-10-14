@@ -115,7 +115,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
           '@angular/cli': angularVersion,
           '@angular/compiler-cli': angularVersion,
           '@types/node': '^22.0.0',
-          typescript: '~5.9.3',
+          typescript: '~6.0.3',
         },
       },
       null,

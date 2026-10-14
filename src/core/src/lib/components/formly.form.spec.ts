@@ -1,4 +1,4 @@
-import { Component, inject, provideZonelessChangeDetection } from '@angular/core';
+import { Component, inject, provideZonelessChangeDetection, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { describe, expect, it, jest } from '@jest/globals';
@@ -1270,6 +1270,7 @@ describe('FormlyForm Component', () => {
   `,
   standalone: true,
   providers: [provideFormlyConfig([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, ReactiveFormsModule, FormlyModule],
 })
 export class StandaloneChildComponent {
@@ -1282,6 +1283,7 @@ export class StandaloneChildComponent {
   selector: 'formly-app-root',
   template: `<formly-app-child />`,
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StandaloneChildComponent],
 })
 export class StandaloneAppComponent {}
@@ -1296,6 +1298,7 @@ export class StandaloneAppComponent {}
   `,
   providers: [provideFormlyCore([{ validationMessages: [{ name: 'required', message: 'Required' }] }])],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, ReactiveFormsModule, FormlyModule],
 })
 export class StandaloneComponent {
@@ -1309,6 +1312,7 @@ export class StandaloneComponent {
   selector: 'formly-type-input',
   template: ` <input type="text" [formControl]="control" [formlyAttributes]="fieldConfig" /> `,
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, FormlyModule],
 })
 export class FormlyFieldInput extends FieldType<FieldTypeConfig> {

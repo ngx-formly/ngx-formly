@@ -2,6 +2,7 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import { join } from 'path';
 import { createWorkspace, getTestProjectPath } from '../../utils/testing';
 import { Schema } from './schema';
+import { findModuleFromOptions } from '../../utils/ast';
 
 describe('ng-add-schematic', () => {
   const COLLECTION_PATH = join(__dirname, '../collection.json');
@@ -20,10 +21,16 @@ describe('ng-add-schematic', () => {
     const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     expect(packageJson.dependencies['@angular/forms']).toBeDefined();
-    expect(packageJson.dependencies['@ngx-formly/core']).toBe('^10.0.0');
+    expect(packageJson.dependencies['@ngx-formly/core']).toBe('^11.0.0');
   });
 
-  it('should add Angular 21 forms when missing', async () => {
+  it('should report when module discovery returns no module', async () => {
+    await expect(findModuleFromOptions(appTree, { name: 'formly', project: 'formly', skipImport: true })).rejects.toThrow(
+      'Could not find an NgModule to configure Formly.',
+    );
+  });
+
+  it('should add Angular 22 forms when missing', async () => {
     const packageJson = JSON.parse(appTree.readContent('/package.json'));
     delete packageJson.dependencies['@angular/forms'];
     appTree.overwrite('/package.json', JSON.stringify(packageJson));
@@ -31,7 +38,7 @@ describe('ng-add-schematic', () => {
     const tree = await runner.runSchematic('ng-add', {}, appTree);
     const updatedPackageJson = JSON.parse(tree.readContent('/package.json'));
 
-    expect(updatedPackageJson.dependencies['@angular/forms']).toBe('^21.0.0');
+    expect(updatedPackageJson.dependencies['@angular/forms']).toBe('^22.0.0');
   });
 
   it('should not add a theme by default to package.json', async () => {

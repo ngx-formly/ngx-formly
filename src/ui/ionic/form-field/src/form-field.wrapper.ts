@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { IonItem, IonLabel } from '@ionic/angular';
 import { FieldWrapper, FormlyFieldConfig, FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
 
@@ -30,6 +30,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       </ion-item>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

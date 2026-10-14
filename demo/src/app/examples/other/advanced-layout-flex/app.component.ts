@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
@@ -7,6 +7,7 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {

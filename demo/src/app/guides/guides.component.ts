@@ -1,6 +1,6 @@
 import { GUIDE_CONTENTS } from './guides.content';
 import { renderMarkdown } from '../shared/highlight';
-import { Component, ElementRef, Renderer2, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { takeUntil } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
     '[class]': '"markdown github"',
     '[style.display]': '"block"',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class GuidesComponent implements OnInit, OnDestroy {

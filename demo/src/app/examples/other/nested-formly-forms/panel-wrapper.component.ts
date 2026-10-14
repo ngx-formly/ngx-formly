@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
@@ -11,6 +11,7 @@ import { FieldWrapper } from '@ngx-formly/core';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class PanelWrapperComponent extends FieldWrapper {}

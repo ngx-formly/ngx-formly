@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
@@ -12,6 +12,7 @@ import { FormlyForm } from '@ngx-formly/core';
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent implements OnDestroy {
@@ -41,6 +42,7 @@ export class AppComponent implements OnDestroy {
   constructor(
     private formlyJsonschema: FormlyJsonschema,
     private http: HttpClient,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.loadExample(this.examples[0]);
   }
@@ -55,6 +57,7 @@ export class AppComponent implements OnDestroy {
           this.options = {};
           this.fields = [this.formlyJsonschema.toFieldConfig(schema, { ignoreImplicitStringDefaults: true })];
           this.model = model;
+          this.changeDetectorRef.markForCheck();
         }),
         takeUntil(this.destroy$),
       )

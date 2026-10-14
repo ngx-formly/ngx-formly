@@ -3,11 +3,11 @@ import { provideFormlyCore } from '@ngx-formly/core';
 import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
 
 import { UserService } from './user.service';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withXhr()),
     provideFormlyCore([
       ...withFormlyBootstrap(),
       {

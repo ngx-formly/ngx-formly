@@ -20,7 +20,7 @@ describe('ui-kendo: Input Type', () => {
     const { properties, attributes } = query('input[type="text"]');
     expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
-      class: 'ng-untouched ng-pristine ng-valid k-textbox k-input k-input-md k-rounded-md k-input-solid',
+      class: 'k-input k-textbox ng-untouched ng-pristine ng-valid',
       id: 'formly_1_input_name_0',
     });
   });
@@ -36,7 +36,7 @@ describe('ui-kendo: Input Type', () => {
     const { properties, attributes } = query('input[type="text"]');
     expect(properties).toMatchObject({ type: 'text' });
     expect(attributes).toMatchObject({
-      class: 'ng-untouched ng-pristine ng-valid k-textbox k-input k-input-md k-rounded-md k-input-solid',
+      class: 'k-input k-textbox ng-untouched ng-pristine ng-valid',
       id: 'formly_1_string_name_0',
     });
   });

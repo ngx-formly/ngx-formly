@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FieldWrapper, FormlyFieldConfig, FormlyFieldProps as CoreFormlyFieldProps } from '@ngx-formly/core';
 
 export interface FormlyFieldProps extends CoreFormlyFieldProps {
@@ -32,6 +32,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
     </div>
   `,
   styles: ['.p-error { color: var(--p-red-500); }'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> {}

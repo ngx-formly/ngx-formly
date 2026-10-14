@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
@@ -12,6 +12,7 @@ import { Observable, Subject, switchMap } from 'rxjs';
 @Component({
   selector: 'formly-field-primeng-native-select',
   imports: [AsyncPipe, ReactiveFormsModule, FormlyModule, FormlySelectOptionsPipe, InputTextModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <select pInputText fluid [formControl]="formControl" [formlyAttributes]="field">
       <option [ngValue]="undefined">{{ props.placeholder }}</option>
@@ -26,6 +27,7 @@ export class NativeSelectTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-primeng-toggle',
   imports: [ReactiveFormsModule, FormlyModule, ToggleSwitchModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<p-toggleswitch
     [inputId]="id"
     [id]="id + '-container'"
@@ -48,6 +50,7 @@ export class ToggleTypeComponent extends FieldType<FieldTypeConfig> {}
       [step]="props.step ?? 1"
     />
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [':host { display: block; padding: 0.5rem; }'],
 })
 export class SliderTypeComponent extends FieldType<FieldTypeConfig> {}
@@ -55,6 +58,7 @@ export class SliderTypeComponent extends FieldType<FieldTypeConfig> {}
 @Component({
   selector: 'formly-field-primeng-autocomplete',
   imports: [AsyncPipe, ReactiveFormsModule, FormlyModule, AutoCompleteModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <p-autocomplete
       [fluid]="true"

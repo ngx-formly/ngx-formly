@@ -47,6 +47,8 @@ describe('ui-primeng: Date Picker Type', () => {
 
     field.formControl.setValue(new Date());
     detectChanges();
-    expect(query('p-datepicker').componentInstance.inputFieldValue).toBe(formatDate(Date.now(), 'yyyy/MM/dd', 'en-US'));
+    expect(query<HTMLInputElement>('p-datepicker input').nativeElement.value).toBe(
+      formatDate(Date.now(), 'yyyy/MM/dd', 'en-US'),
+    );
   });
 });

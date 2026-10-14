@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
 import { FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
@@ -28,6 +28,7 @@ import { MatOption } from '@angular/material/core';
       }
     </mat-autocomplete>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatInput,
     MatAutocompleteTrigger,

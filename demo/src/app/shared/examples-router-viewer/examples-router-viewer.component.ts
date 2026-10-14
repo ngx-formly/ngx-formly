@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { ExampleViewerComponent } from '../example-viewer/example-viewer.component';
@@ -13,6 +13,7 @@ import { ExampleViewerComponent } from '../example-viewer/example-viewer.compone
       }
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ExampleViewerComponent, AsyncPipe],
 })
 export class ExamplesRouterViewerComponent {

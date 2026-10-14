@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormlyField, FieldArrayType } from '@ngx-formly/core';
 
 @Component({
@@ -8,6 +8,7 @@ import { FormlyField, FieldArrayType } from '@ngx-formly/core';
       <formly-field [field]="field"></formly-field>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormlyField],
 })
 export class RepeatTypeComponent extends FieldArrayType {}

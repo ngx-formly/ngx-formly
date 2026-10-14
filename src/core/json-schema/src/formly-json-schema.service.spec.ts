@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { FieldArrayType, FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
@@ -2502,6 +2502,7 @@ describe('Service: FormlyJsonschema', () => {
     }
     <button id="add" type="button" (click)="add()">Add</button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ArrayTypeComponent extends FieldArrayType {}

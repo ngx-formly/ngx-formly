@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { ExamplesRouterViewerComponent } from '../../shared/examples-router-viewer/examples-router-viewer.component';
 
 @Component({
@@ -6,6 +6,7 @@ import { ExamplesRouterViewerComponent } from '../../shared/examples-router-view
   template: ` <formly-examples-viewer></formly-examples-viewer> `,
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ExamplesRouterViewerComponent],
 })
 export class AppComponent {}

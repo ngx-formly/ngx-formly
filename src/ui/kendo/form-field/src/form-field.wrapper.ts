@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormFieldComponent, Orientation } from '@progress/kendo-angular-inputs';
 import {
   ɵdefineHiddenProp as defineHiddenProp,
@@ -38,6 +38,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       }
     </kendo-formfield>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormlyWrapperFormField extends FieldWrapper<FormlyFieldConfig<FormlyFieldProps>> implements OnInit {

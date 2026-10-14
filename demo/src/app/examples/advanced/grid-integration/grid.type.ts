@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FieldArrayType } from '@ngx-formly/core';
 import { FirstDataRenderedEvent, GridOptions, ColDef } from 'ag-grid-community';
 import { GridFormlyCellComponent } from './grid-formly-cell.component';
@@ -19,6 +19,7 @@ import { AgGridAngular } from 'ag-grid-angular';
       </ag-grid-angular>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgStyle, AgGridAngular],
 })
 export class GridTypeComponent extends FieldArrayType implements OnInit {
