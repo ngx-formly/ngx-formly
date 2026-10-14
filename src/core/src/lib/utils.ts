@@ -57,7 +57,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
   return field._keyPath.path.slice(0);
 }
 
-export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max'];
+export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max', 'step'];
 
 export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
   let paths = getKeyPath(field);

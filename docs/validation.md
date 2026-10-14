@@ -1,5 +1,35 @@
 # Validation
 
+## Numeric step validation
+
+Set `props.step` to a positive number to validate numeric values in increments of that size:
+
+```typescript
+{
+  key: 'amount',
+  type: 'input',
+  props: { type: 'number', step: 0.01 },
+  validation: {
+    messages: { step: 'Enter an amount in increments of 0.01.' },
+  },
+}
+```
+
+With this configuration, `123.45` is valid and `123.456` produces a
+`step` error containing `{ step: 0.01, base: 0, actual: 123.456 }`.
+You can also register a global message named `step` through `validationMessages`.
+See the [built-in validations example](https://formly.dev/examples/validation/built-in-validations).
+
+The base is `props.min` when it is a finite number, otherwise zero. For example, `min: 0.005` and
+`step: 0.01` allow `0.015`. `defaultValue` does not change the base.
+Changing `props.step` or `props.min` revalidates the control.
+
+Use `step: 'any'` or omit `step` to disable this validation. Zero, negative and nonfinite steps are ignored.
+Empty values and nonnumeric values are left to other validators, such as `required`.
+Only `props.step` enables the validator; setting the HTML attribute through `props.attributes.step` does not.
+Fields with a named `multipleOf` validator, including JSON Schema fields, use that validator instead,
+since JSON Schema multiples are relative to zero regardless of `minimum`.
+
 ## Custom Validation
 
 Formly offers different methods to implement custom validations.

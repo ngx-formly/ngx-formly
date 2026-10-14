@@ -96,6 +96,86 @@ describe('FieldValidationExtension: initialise field validators', () => {
       validate(field, 5, { max: { max: 4, actual: 5 } });
     });
 
+    describe('step', () => {
+      it.each([
+        [0.01, 123.45, true],
+        [0.01, 123.456, false],
+        [0.05, 1.15, true],
+        [0.05, 1.12, false],
+        [0.1, 0.3, true],
+        [0.15, 15.3, true],
+        [0.01, -123.45, true],
+        [0.01, -123.456, false],
+        [1, 0, true],
+        [1, 1.5, false],
+        [1e-7, 3e-7, true],
+        [1e-7, 3.1e-7, false],
+        [0.03, 1e20, false],
+        [Number.MIN_VALUE, Number.MIN_VALUE, true],
+        [0.01, Infinity, false],
+        [0.01, NaN, false],
+      ])('validates step %s with value %s', (step, value, valid) => {
+        const field = buildField({ props: { step } });
+        validate(field, value, valid ? null : { step: { step, base: 0, actual: value } });
+      });
+
+      it('uses min as the step base', () => {
+        const field = buildField({ props: { min: 0.005, step: 0.01 } });
+        validate(field, 0.015, null);
+        validate(field, 0.01, { step: { step: 0.01, base: 0.005, actual: 0.01 } });
+      });
+
+      it('does not use defaultValue as the step base', () => {
+        const field = buildField({ defaultValue: 0.005, props: { step: 0.01 } });
+        validate(field, 0.01, null);
+      });
+
+      it.each([undefined, 'any', 0, -1, NaN, Infinity] as const)('ignores step %s', (step) => {
+        const field = buildField({ props: { step } });
+        validate(field, 123.456, null);
+      });
+
+      it.each([null, undefined, '', '12:34'])('ignores empty or nonnumeric value %s', (value) => {
+        const field = buildField({ props: { step: 0.01 } });
+        validate(field, value, null);
+      });
+
+      it('revalidates when step or min changes', () => {
+        const field = buildField({ props: { step: 0.1 } });
+        field.formControl = new FormControl(0.3, field._validators);
+        expect(field.formControl.valid).toBe(true);
+
+        field.props.step = 0.2;
+        expect(field.formControl.errors).toEqual({ step: { step: 0.2, base: 0, actual: 0.3 } });
+        field.props.min = 0.1;
+        expect(field.formControl.valid).toBe(true);
+        field.props.step = 'any';
+        field.props.min = 0;
+        expect(field.formControl.valid).toBe(true);
+        field.props.step = 0.2;
+        expect(field.formControl.valid).toBe(false);
+        field.props.step = undefined;
+        expect(field.formControl.valid).toBe(true);
+      });
+
+      it('revalidates when step is first added', () => {
+        const field = buildField({});
+        field.formControl = new FormControl(123.456, field._validators);
+        expect(field.formControl.valid).toBe(true);
+        field.props.step = 0.01;
+        expect(field.formControl.hasError('step')).toBe(true);
+      });
+
+      it('leaves JSON Schema multipleOf validation independent of min', () => {
+        const field = buildField({
+          props: { min: 0.05, step: 0.1 },
+          validators: { multipleOf: (control) => control.value === 0.1 },
+        });
+        validate(field, 0.1, null);
+        validate(field, 0.15, { multipleOf: true });
+      });
+    });
+
     it(`should take account of programmatic changes`, () => {
       const field = buildField({});
       field.formControl = new FormControl(null, field._validators);

@@ -33,6 +33,19 @@ export class AppComponent {
       },
     },
     {
+      key: 'amount',
+      type: 'input',
+      props: {
+        label: 'Amount (step = 0.01)',
+        type: 'number',
+        step: 0.01,
+        description: '123.45 is valid; 123.456 is invalid.',
+      },
+      validation: {
+        messages: { step: 'Enter an amount in increments of 0.01.' },
+      },
+    },
+    {
       key: 'password',
       type: 'input',
       props: {
