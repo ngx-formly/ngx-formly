@@ -35,7 +35,7 @@ import {
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { Observable, Subscription, isObservable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, skip, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, skip, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
 /**
@@ -356,48 +356,74 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
     if (field.formControl && !field.fieldGroup) {
       const control = field.formControl;
-      let valueChanges = control.valueChanges.pipe(
-        startWith(control.value),
-        map((value) => {
-          field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
-          if (!Object.is(value, field.formControl.value)) {
-            field.formControl.setValue(value);
-          }
+      const independent = field.shareFormControl === false && hasKey(field);
+      const subscribe = () => {
+        let valueChanges = control.valueChanges.pipe(
+          startWith(control.value),
+          filter(() => !independent || !field._hide),
+          map((value) => {
+            field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
+            if (!Object.is(value, control.value)) {
+              control.setValue(value, { emitEvent: !independent });
+            }
 
-          return value;
-        }),
-        distinctUntilChanged((x, y) => {
-          if (x !== y || Array.isArray(x) || isObject(x)) {
-            return false;
-          }
+            return value;
+          }),
+          distinctUntilChanged((x, y) => {
+            if (x !== y || Array.isArray(x) || isObject(x)) {
+              return false;
+            }
 
-          return true;
-        }),
-        skip(1),
-      );
+            return true;
+          }),
+          skip(independent ? 0 : 1),
+        );
 
-      if (control.value !== getFieldValue(field)) {
-        valueChanges = valueChanges.pipe(startWith(control.value));
-      }
-
-      const { updateOn, debounce } = field.modelOptions;
-      if ((!updateOn || updateOn === 'change') && debounce?.default > 0) {
-        valueChanges = valueChanges.pipe(debounceTime(debounce.default));
-      }
-
-      const sub = valueChanges.subscribe((value) => {
-        // workaround for https://github.com/angular/angular/issues/13792
-        if (control._fields?.length > 1 && control instanceof FormControl) {
-          control.patchValue(value, { emitEvent: false, onlySelf: true });
+        if (!independent && control.value !== getFieldValue(field)) {
+          valueChanges = valueChanges.pipe(startWith(control.value));
         }
 
-        if (hasKey(field)) {
-          assignFieldValue(field, value);
+        const { updateOn, debounce } = field.modelOptions;
+        if ((!updateOn || updateOn === 'change') && debounce?.default > 0) {
+          valueChanges = valueChanges.pipe(debounceTime(debounce.default));
         }
-        field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
-      });
 
-      subscribes.push(() => sub.unsubscribe());
+        if (independent) {
+          valueChanges = valueChanges.pipe(
+            filter((value) => value !== getFieldValue(field) || Array.isArray(value) || isObject(value)),
+          );
+        }
+
+        return valueChanges.subscribe((value) => {
+          // workaround for https://github.com/angular/angular/issues/13792
+          if (control._fields?.length > 1 && control instanceof FormControl) {
+            control.patchValue(value, { emitEvent: false, onlySelf: true });
+          }
+
+          if (hasKey(field)) {
+            assignFieldValue(field, value);
+          }
+          field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
+        });
+      };
+
+      if (independent) {
+        let sub: Subscription;
+        const observer = observe<boolean>(field, ['_controlActive'], ({ currentValue }) => {
+          sub?.unsubscribe();
+          sub = new Subscription();
+          if (currentValue) {
+            sub.add(subscribe());
+          }
+        });
+        subscribes.push(() => {
+          observer.unsubscribe();
+          sub?.unsubscribe();
+        });
+      } else {
+        const sub = subscribe();
+        subscribes.push(() => sub.unsubscribe());
+      }
     }
 
     let templateFieldsSubs: (() => void)[] = [];

@@ -18,6 +18,8 @@ export const appRoutes: Routes = [
           description: `
               <code>expressions</code> is used to set the
               <code>hide</code> property of your field conditionally based on model value.
+              The code editors use <code>shareFormControl: false</code> to keep their parsers and
+              validators separate, and <code>resetOnHide: false</code> to retain the value when switching.
             `,
           component: AppComponent,
           files: [

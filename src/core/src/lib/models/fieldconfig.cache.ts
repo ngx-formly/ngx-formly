@@ -14,7 +14,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   };
   parent?: FormlyFieldConfigCache;
   options?: FormlyFormOptionsCache;
-  shareFormControl?: boolean;
+  _controlActive?: boolean;
   index?: number;
   _localFields?: FormlyFieldConfigCache[];
   _elementRefs?: ElementRef[];
@@ -43,5 +43,6 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _injector?: Injector;
   _hiddenFieldsForCheck?: { field: FormlyFieldConfigCache; default?: boolean; emitEvent?: boolean }[];
   _initialModel?: any;
+  _formControlsForCheck?: Set<FormlyFieldConfigCache>;
   _detectChanges?: (field: FormlyFieldConfig) => void;
 }

@@ -110,6 +110,12 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
   resetOnHide?: boolean;
 
   /**
+   * Whether fields at the same model path share a control. Defaults to `true`.
+   * Set to `false` on each mutually exclusive alternative to isolate parsers and validators.
+   */
+  shareFormControl?: boolean;
+
+  /**
    * Conditionally hiding Field based on values from other Fields
    * @deprecated use `expressions: { hide: ... }`
    */
