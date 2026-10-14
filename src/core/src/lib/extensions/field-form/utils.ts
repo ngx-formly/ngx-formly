@@ -4,6 +4,9 @@ import { getKeyPath, getFieldValue, isNil, defineHiddenProp, observe, hasKey } f
 import { FormlyFieldConfigCache } from '../../models';
 
 export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = false) {
+  if (field.shareFormControl === false) {
+    field._controlActive = false;
+  }
   const control = field.formControl;
   const fieldIndex = control._fields ? control._fields.indexOf(field) : -1;
   if (fieldIndex !== -1) {
@@ -51,6 +54,14 @@ export function registerControl(
 ) {
   control = control || field.formControl;
 
+  if (field.shareFormControl === false && hasKey(field)) {
+    if (!field.hasOwnProperty('_controlActive')) {
+      defineHiddenProp(field, '_controlActive', false);
+    } else {
+      field._controlActive = false;
+    }
+  }
+
   if (!control._fields) {
     defineHiddenProp(control, '_fields', []);
   }
@@ -82,7 +93,7 @@ export function registerControl(
   const paths = getKeyPath(field);
   const value = getFieldValue(field);
   if (!(isNil(control.value) && isNil(value)) && control.value !== value && control instanceof FormControl) {
-    control.patchValue(value);
+    control.patchValue(value, { emitEvent: field.shareFormControl !== false });
   }
 
   for (let i = 0; i < paths.length - 1; i++) {
@@ -96,7 +107,24 @@ export function registerControl(
 
   const key = paths[paths.length - 1];
   if (!field._hide && form.get([key]) !== control) {
+    if (field.shareFormControl === false) {
+      const previous = form.get([key]) as FormlyFieldConfigCache['formControl'];
+      previous?._fields?.forEach((f) => {
+        if (f.shareFormControl === false) {
+          f._controlActive = false;
+        }
+      });
+      previous?.setParent(null);
+    }
     (form as UntypedFormGroup).setControl(key, control, { emitEvent });
+  }
+
+  if (field.shareFormControl === false) {
+    if (field.options?._formControlsForCheck) {
+      field.options._formControlsForCheck.add(field);
+    } else {
+      field._controlActive = !field._hide && form.get([key]) === control;
+    }
   }
 }
 

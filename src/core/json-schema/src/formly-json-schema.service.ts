@@ -121,7 +121,7 @@ export class FormlyJsonschema {
     schema = this.resolveSchema(schema, options);
     const types = this.guessSchemaType(schema);
 
-    let field: FormlyFieldConfig & { shareFormControl?: boolean } = {
+    let field: FormlyFieldConfig = {
       type: types[0],
       defaultValue: schema.default,
       props: {
