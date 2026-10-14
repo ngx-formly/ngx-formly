@@ -86,6 +86,34 @@ export class FieldValidationExtension implements FormlyExtension {
               return Validators.min(value)(control);
             case 'max':
               return Validators.max(value)(control);
+            case 'step': {
+              // JSON Schema multipleOf validates against zero, independently of min.
+              if (
+                field.validators?.multipleOf ||
+                typeof control.value !== 'number' ||
+                !Number.isFinite(value) ||
+                value <= 0
+              ) {
+                return null;
+              }
+
+              const base = Number.isFinite(field.props.min) ? field.props.min : 0;
+              const error = { step: { step: value, base, actual: control.value } };
+              if (!Number.isFinite(control.value)) {
+                return error;
+              }
+
+              // Scale decimal representations to integers without rounding away extra digits.
+              const decimals = [control.value, value, base].map((n) => {
+                const [coefficient, exponent = '0'] = n.toString().split('e');
+                const [integer, fraction = ''] = coefficient.split('.');
+                return { digits: BigInt(integer + fraction), exponent: Number(exponent) - fraction.length };
+              });
+              const exponent = Math.min(...decimals.map((n) => n.exponent));
+              const [actual, step, start] = decimals.map((n) => n.digits * 10n ** BigInt(n.exponent - exponent));
+
+              return (actual - start) % step === 0n ? null : error;
+            }
             default:
               return null;
           }

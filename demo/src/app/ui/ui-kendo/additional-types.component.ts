@@ -63,7 +63,7 @@ export class ToggleTypeComponent extends FieldType<FieldTypeConfig> {}
       [attr.aria-label]="props.label"
       [min]="props.min ?? 0"
       [max]="props.max ?? 100"
-      [smallStep]="props.step ?? 1"
+      [smallStep]="props.step === 'any' ? 1 : (props.step ?? 1)"
       [tickPlacement]="'none'"
     />
   `,

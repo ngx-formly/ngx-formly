@@ -236,7 +236,8 @@ export interface FormlyFieldProps {
   tabindex?: number;
   readonly?: boolean;
   attributes?: { [key: string]: string | number };
-  step?: number;
+  /** Numeric increment from `min` or zero. Use `any` to disable step validation. */
+  step?: number | 'any';
   focus?: FormlyAttributeEvent;
   blur?: FormlyAttributeEvent;
   keyup?: FormlyAttributeEvent;

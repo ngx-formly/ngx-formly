@@ -27,10 +27,10 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
       [displayWith]="props.displayWith"
       [max]="props.max"
       [min]="props.min"
-      [step]="props.step"
+      [step]="props.step === 'any' ? 1 : props.step"
       [discrete]="props.discrete"
       [showTickMarks]="props.showTickMarks"
-      [step]="props.step"
+      [step]="props.step === 'any' ? 1 : props.step"
       (input)="props.input && props.input(field, $event)"
       (change)="props.change && props.change(field, $event)"
     >

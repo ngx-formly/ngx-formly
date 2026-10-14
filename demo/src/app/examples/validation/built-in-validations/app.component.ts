@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
@@ -30,6 +30,20 @@ export class AppComponent {
         min: 18,
         max: 40,
         required: true,
+      },
+    },
+    {
+      key: 'amount',
+      type: 'input',
+      props: {
+        label: 'Amount (step = 0.01)',
+        type: 'number',
+        step: 0.01,
+        description: '123.45 is valid; 123.456 is not.',
+      },
+      validation: {
+        show: true,
+        messages: { step: 'Enter an amount in increments of 0.01.' },
       },
     },
     {

@@ -162,6 +162,18 @@ describe('Service: FormlyJsonschema', () => {
         expect(multipleOfValidator(new FormControl(150))).toBe(true);
       });
 
+      it('should validate multipleOf from zero when minimum is not a multiple', () => {
+        const { field } = renderComponent({
+          schema: { type: 'number', minimum: 0.05, multipleOf: 0.15 },
+          model: 0.3,
+        });
+
+        expect(field.formControl.valid).toBe(true);
+        field.formControl.setValue(0.2);
+        expect(field.formControl.hasError('multipleOf')).toBe(true);
+        expect(field.formControl.hasError('step')).toBe(false);
+      });
+
       it('should be a number value', () => {
         const f = formlyJsonschema.toFieldConfig({ type: 'number' });
         expect(validateType(f, 5)).toBe(true);

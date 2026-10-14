@@ -70,6 +70,27 @@ describe('ui-bootstrap: Input Type', () => {
     });
   });
 
+  it('should validate step on number input and show its message', () => {
+    const { query, field, detectChanges } = renderComponent({
+      key: 'amount',
+      type: 'input',
+      props: { type: 'number', step: 0.01 },
+      validation: { show: true, messages: { step: 'Enter an amount in increments of 0.01.' } },
+    });
+
+    expect(query('input').attributes.step).toBe('0.01');
+    query('input').triggerEventHandler('input', ɵCustomEvent({ value: '123.456' }));
+    detectChanges();
+    expect(field.formControl.errors).toEqual({ step: { step: 0.01, base: 0, actual: 123.456 } });
+    expect(query('input').nativeElement.getAttribute('aria-invalid')).toBe('true');
+    expect(query('formly-validation-message').nativeElement.textContent).toContain('increments of 0.01');
+
+    field.formControl.setValue(123.45);
+    detectChanges();
+    expect(field.formControl.valid).toBe(true);
+    expect(query('formly-validation-message')).toBeNull();
+  });
+
   it('should render integer type', () => {
     const { query } = renderComponent({
       key: 'name',

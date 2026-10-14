@@ -133,7 +133,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   ngDoCheck() {
     if (!this.uiAttributes) {
       const element = this.elementRef.nativeElement as HTMLElement;
-      this.uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled', 'step'].filter(
+      this.uiAttributes = [...FORMLY_VALIDATORS, 'tabindex', 'placeholder', 'readonly', 'disabled'].filter(
         (attr) => !element.hasAttribute || !element.hasAttribute(attr),
       );
     }

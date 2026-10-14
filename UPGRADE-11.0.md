@@ -92,7 +92,17 @@ Custom fields must also notify Angular when asynchronous callbacks update templa
 Replace waits on `NgZone.onStable` or `NgZone.onMicrotaskEmpty`, which do not emit in zoneless applications.
 See [Angular's zoneless guide](https://angular.dev/guide/zoneless) for render hooks and SSR pending tasks.
 
-## 4. Verify the upgrade
+## 4. Review numeric step validation
+
+An explicitly configured positive `props.step` now validates numeric values in Angular's form model.
+For example, `step: 0.01` rejects `123.456` with a `step` error. Add a validation message named `step`.
+The increment starts at `props.min` when supplied, otherwise zero.
+
+If the increment is only a UI preference and arbitrary numeric values must remain valid, set `props.step` to
+`'any'` and put the UI increment in `props.attributes.step`. Numeric fields without `props.step` retain their
+existing validation behavior. JSON Schema fields retain their separate `multipleOf` validation.
+
+## 5. Verify the upgrade
 
 Build your application and run its tests. Check asynchronously loaded fields, async validation, expression-driven
 visibility, disabled states, reset behavior, and each UI integration you use. In zoneless component tests, await
