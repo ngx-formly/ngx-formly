@@ -1,10 +1,10 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSidenav } from '@angular/material/sidenav';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { MatSidenav } from '@angular/material/sidenav';
-import { MatDialog } from '@angular/material/dialog';
 import { provideRouter, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { AppComponent } from './app.component';
@@ -266,7 +266,7 @@ describe('Website navigation', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.autoDetectChanges();
     const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
-    await drawer.open();
+    await fixture.ngZone.run(() => drawer.open());
     const openSearch = jest.spyOn(fixture.componentInstance, 'openSearch');
     fixture.nativeElement.querySelector('.search-toggle').click();
     await openSearch.mock.results[0].value;
