@@ -10,6 +10,30 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-material: Input Type', () => {
+  it.each([
+    { showAllErrors: false, subscriptSizing: undefined, expectedSizing: 'fixed' },
+    { showAllErrors: true, subscriptSizing: undefined, expectedSizing: 'dynamic' },
+    { showAllErrors: true, subscriptSizing: 'fixed', expectedSizing: 'fixed' },
+  ])(
+    'sizes the error area for $showAllErrors and $subscriptSizing',
+    ({ showAllErrors, subscriptSizing, expectedSizing }) => {
+      const { query } = renderComponent({
+        key: 'name',
+        type: 'input',
+        validation: { show: true, showAllErrors },
+        props: { subscriptSizing },
+        validators: {
+          first: { expression: () => false, message: 'First error.' },
+          second: { expression: () => false, message: 'Second error.' },
+        },
+      });
+      expect(query('mat-form-field').componentInstance.subscriptSizing).toBe(expectedSizing);
+      expect(query('mat-error').nativeElement.textContent.trim()).toBe(
+        showAllErrors ? 'First error.\nSecond error.' : 'First error.',
+      );
+    },
+  );
+
   it('should render input type', () => {
     const { query } = renderComponent({
       key: 'name',

@@ -17,6 +17,7 @@ export const appRoutes: Routes = [
           title: 'Validation message',
           description: `
               This demonstrates the different ways to define a custom validation message, globally or for a specific field.
+              The IP Address field uses validation.showAllErrors to display all its errors together.
             `,
           component: AppComponent,
           files: [
