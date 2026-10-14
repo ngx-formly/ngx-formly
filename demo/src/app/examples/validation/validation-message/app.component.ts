@@ -26,11 +26,14 @@ export class AppComponent {
       key: 'ip',
       type: 'input',
       props: {
-        label: 'IP Address (custom validation message through `validation` property)',
+        label: 'IP Address (all validation messages)',
+        description: 'Enter a short invalid value, such as abc, to see both messages.',
         required: true,
+        minLength: 7,
         pattern: /(\d{1,3}\.){3}\d{1,3}/,
       },
       validation: {
+        showAllErrors: true,
         messages: {
           pattern: (error: any, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
         },

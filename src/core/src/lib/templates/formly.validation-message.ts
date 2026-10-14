@@ -1,10 +1,11 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Observable, isObservable, merge, of } from 'rxjs';
-import { filter, startWith, switchMap } from 'rxjs/operators';
+import { Observable, combineLatest, isObservable, merge, of } from 'rxjs';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { FormlyFieldConfig } from '../models';
 import { FormlyConfig } from '../services/formly.config';
-import { FORMLY_VALIDATORS, isObject } from '../utils';
+import { FORMLY_VALIDATORS } from '../utils';
+import { getValidationMessage } from './validation-message';
 
 /**
  * The `<formly-validation-message>` component renders the error message of a given `field`.
@@ -15,6 +16,7 @@ import { FORMLY_VALIDATORS, isObject } from '../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [AsyncPipe],
+  host: { '[style.white-space]': "field.validation?.showAllErrors ? 'pre-line' : null" },
 })
 export class FormlyValidationMessage implements OnChanges {
   /** The field config. */
@@ -40,44 +42,34 @@ export class FormlyValidationMessage implements OnChanges {
           ),
     ).pipe(
       startWith(null),
-      switchMap(() => (isObservable(this.errorMessage) ? this.errorMessage : of(this.errorMessage))),
+      switchMap(() => {
+        const message = this.errorMessage;
+        return isObservable(message) ? message : of(message);
+      }),
     );
   }
 
   get errorMessage() {
     const fieldForm = this.field.formControl;
+    const messages: (string | Observable<string>)[] = [];
     for (const error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        let message = this.config.getValidatorMessage(error);
-
-        if (isObject(fieldForm.errors[error])) {
-          if (fieldForm.errors[error].errorPath) {
-            return undefined;
-          }
-
-          if (fieldForm.errors[error].message) {
-            message = fieldForm.errors[error].message;
-          }
+        const message = getValidationMessage(this.field, error, this.config);
+        if (!this.field.validation?.showAllErrors) {
+          return message;
         }
-
-        if (this.field.validation?.messages?.[error]) {
-          message = this.field.validation.messages[error];
+        if (message) {
+          messages.push(message);
         }
-
-        if (this.field.validators?.[error]?.message) {
-          message = this.field.validators[error].message;
-        }
-
-        if (this.field.asyncValidators?.[error]?.message) {
-          message = this.field.asyncValidators[error].message;
-        }
-
-        if (typeof message === 'function') {
-          return message(fieldForm.errors[error], this.field);
-        }
-
-        return message;
       }
+    }
+
+    if (this.field.validation?.showAllErrors) {
+      return messages.some(isObservable)
+        ? combineLatest(
+            messages.map((message) => (isObservable(message) ? message.pipe(startWith('')) : of(message))),
+          ).pipe(map((values) => values.filter(Boolean).join('\n')))
+        : messages.join('\n');
     }
 
     return undefined;

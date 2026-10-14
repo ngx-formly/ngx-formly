@@ -68,6 +68,8 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
       maxlength?: ValidationMessageOption['message'];
     };
     show?: boolean;
+    /** Display all configured error messages for this field. Defaults to false. */
+    showAllErrors?: boolean;
     [additionalProperties: string]: any;
   };
 
