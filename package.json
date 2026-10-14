@@ -59,7 +59,7 @@
     "@angular/router": "^22.2.2",
     "@angular/ssr": "^22.2.2",
     "@ctrl/tinycolor": "^4.1.0",
-    "@ionic/angular": "^8.3.4",
+    "@ionic/angular": "^9.0.7",
     "@nativescript/angular": "^22.0.1",
     "@nativescript/core": "^8.3.0",
     "@ng-bootstrap/ng-bootstrap": "^21.0.0",

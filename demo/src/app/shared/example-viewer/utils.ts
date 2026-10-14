@@ -152,12 +152,12 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
 
 function _replaceExamplePlaceholderNames(filename: string, filecontent: string, options: IThemeOption): string {
   if (filename === 'app.config.ts') {
-    if (options.type === 'ionic') {
+    if (options.type === 'ionic' && !filecontent.includes('provideIonicAngular')) {
       filecontent = filecontent.replace(
-        `'@angular/common';`,
-        `'@angular/common';\nimport { IonicModule } from '@ionic/angular';`,
+        `'@angular/core';`,
+        `'@angular/core';\nimport { provideIonicAngular } from '@ionic/angular';`,
       );
-      filecontent = filecontent.replace(`FormlyModule.forRoot`, `IonicModule.forRoot(),\n    FormlyModule.forRoot`);
+      filecontent = filecontent.replace('providers: [', 'providers: [\n    provideIonicAngular(),');
     }
 
     if (options.type && filecontent.indexOf(`@ngx-formly/${options.type}`) === -1) {

@@ -8,14 +8,18 @@ export default {
   setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/jestSetup.ts'],
   coverageReporters: ['html'],
   testPathIgnorePatterns: ['/node_modules/', 'schematics/.*/files/(.*)$'],
-  moduleNameMapper: pathsToModuleNameMapper(
-    {
-      '@ngx-formly/core': ['src/core/src/public_api'],
-      '@ngx-formly/core/testing': ['src/core/testing/src/private_api'],
-      '@ngx-formly/core/*': ['src/core/*/src/public_api'],
-      '@ngx-formly/*': ['src/ui/*/src/public_api'],
-    },
-    { prefix: '<rootDir>/' },
-  ),
-  transformIgnorePatterns: ['node_modules/(?!@ionic/core|@stencil/core|ionicons|.*\\.mjs$)'],
+  moduleNameMapper: {
+    ...pathsToModuleNameMapper(
+      {
+        '@ngx-formly/core': ['src/core/src/public_api'],
+        '@ngx-formly/core/testing': ['src/core/testing/src/private_api'],
+        '@ngx-formly/core/*': ['src/core/*/src/public_api'],
+        '@ngx-formly/*': ['src/ui/*/src/public_api'],
+      },
+      { prefix: '<rootDir>/' },
+    ),
+    // Ionicons exposes this component only through the ESM import condition.
+    '^ionicons/components/ion-icon\\.js$': '<rootDir>/node_modules/ionicons/components/ion-icon.js',
+  },
+  transformIgnorePatterns: ['node_modules/(?!@ionic/angular|@ionic/core|@stencil/core|ionicons|.*\\.mjs$)'],
 };

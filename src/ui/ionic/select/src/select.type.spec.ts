@@ -9,6 +9,33 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-ionic: Select Type', () => {
+  it.each([undefined, null])('should open the alert when interfaceOptions is %s', async (interfaceOptions) => {
+    const { query } = renderComponent({
+      key: 'name',
+      type: 'select',
+      props: {
+        label: 'Choose an option',
+        interfaceOptions,
+        options: [{ value: 1, label: 'Option 1' }],
+      },
+    });
+
+    const select = query<HTMLIonSelectElement>('ion-select').nativeElement;
+    const alert = await select.open();
+
+    try {
+      expect(alert.tagName).toBe('ION-ALERT');
+      expect(alert.header).toBe('Choose an option');
+      expect(alert.inputs).toEqual([expect.objectContaining({ label: 'Option 1', value: 1 })]);
+      expect(alert.buttons).toEqual([
+        expect.objectContaining({ text: 'Cancel' }),
+        expect.objectContaining({ text: 'OK' }),
+      ]);
+    } finally {
+      await alert.dismiss();
+    }
+  });
+
   it('should pass interface options to the select and update them', () => {
     const interfaceOptions = { size: 'cover', cssClass: 'custom-popover' };
     const { field, query, detectChanges } = renderComponent({
@@ -17,12 +44,16 @@ describe('ui-ionic: Select Type', () => {
       props: {
         interface: 'popover',
         interfaceOptions,
+        okText: 'Select',
+        cancelText: 'Close',
         options: [{ value: 1, label: 'label 1' }],
       },
     });
     const select = query<HTMLIonSelectElement>('ion-select').nativeElement;
 
     expect(select.interfaceOptions).toBe(interfaceOptions);
+    expect(select.okText).toBe('Select');
+    expect(select.cancelText).toBe('Close');
 
     field.props.interfaceOptions = { header: 'Choose an option' };
     field.options.detectChanges(field);
