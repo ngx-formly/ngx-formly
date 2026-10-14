@@ -61,12 +61,12 @@ describe('FormlyValidationMessage Component', () => {
       expect(validationMessageContent(query)).toEqual('Minimum Length.');
     });
 
-    it('with a `validator.message` property', () => {
+    it.each([() => false, 'false'])('with a `validator.message` property and expression %p', (expression) => {
       const { query } = renderComponent({
         key: 'title',
         validators: {
           required: {
-            expression: () => false,
+            expression,
             message: 'Custom error message.',
           },
         },

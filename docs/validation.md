@@ -177,7 +177,7 @@ The validators property of a field could accept different nested properties whic
 The format would be:
 ```
 NAME_OF_VALIDATOR: {
-  expression: FUNCTION
+  expression: FUNCTION | STRING
   message: FUNCTION | STRING
 }
 ```
@@ -227,6 +227,44 @@ If the function is async, you may need to define it in `asyncValidators` propert
 },
 ```
 :::
+
+#### String validation expressions
+
+For JSON field configurations, `validators.<name>.expression` can be a string. A truthy result means the field is valid; a falsy result adds the named validation error. Functions and registered validator names continue to work as before.
+
+String expressions can read `control`, `field`, `model`, and `formState`. Use `control.value` for the value being validated, because Angular runs validators before Formly updates the model. `model` is the field's model, and `formState` is `field.options.formState`.
+
+To compare two fields, put the validator on their group so changing either field reruns validation. Set `errorPath` to show the error on a child field:
+
+```json
+{
+  "validators": {
+    "endAfterStart": {
+      "expression": "!control.value.startdate || !control.value.enddate || control.value.enddate > control.value.startdate",
+      "message": "End date must be greater than start date",
+      "errorPath": "enddate"
+    }
+  },
+  "fieldGroup": [
+    {
+      "key": "startdate",
+      "type": "input",
+      "props": { "type": "date", "label": "Start date" }
+    },
+    {
+      "key": "enddate",
+      "type": "input",
+      "props": { "type": "date", "label": "End date" }
+    }
+  ]
+}
+```
+
+This example compares date strings in `yyyy-mm-dd` format and leaves empty values valid. Add `props.required` if a date is mandatory. See the [custom validation example](https://formly.dev/examples/validation/custom-validation).
+
+Validation strings always use Formly's CSP-safe parser, without `eval()` or `new Function()`. They support property access, optional chaining, comparisons, arithmetic, logical operators, and ternaries. Function calls and arbitrary JavaScript are unsupported; use a function validator for those cases. Invalid syntax throws an error when building the form.
+
+These expressions run with Angular's normal validation cycle. Changing a sibling field or `formState` does not automatically revalidate an individual control. Use a group validator for cross-field rules, or explicitly call `updateValueAndValidity()` after changing external state.
 
 ### 4. Declaring validation function in a formly type and message within App Config.
 
