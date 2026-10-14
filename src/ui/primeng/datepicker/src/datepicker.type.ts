@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
+import { AppendTo } from 'primeng/types/shared';
 
 interface DatepickerProps extends FormlyFieldProps {
   defaultDate?: Date;
@@ -21,7 +22,7 @@ interface DatepickerProps extends FormlyFieldProps {
   stepSecond?: number;
   stepHour?: number;
   stepMinute?: number;
-  appendTo?: string;
+  appendTo?: AppendTo;
 }
 
 export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<DatepickerProps> {

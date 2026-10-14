@@ -16,6 +16,7 @@
         "path": "/guide/migration",
         "label": "Migration guides",
         "items": [
+          { "path": "/guide/migration/v11", "label": "Upgrade to v11" },
           { "path": "/guide/migration/v10", "label": "Upgrade to v10" },
           { "path": "/guide/migration/v9", "label": "Upgrade to v9" },
           { "path": "/guide/migration/v8", "label": "Upgrade to v8" },

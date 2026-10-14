@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions, FormlyFieldConfig, FormlyValueChangeEvent } from '@ngx-formly/core';
 import { UserService } from './user.service';
@@ -20,13 +20,17 @@ export class AppComponent implements OnDestroy {
   fields: FormlyFieldConfig[];
   firstName$: Observable<string>;
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.userService
       .getUserData()
       .pipe(takeUntil(this.destroy$))
       .subscribe(([model, fields]) => {
         this.model = model;
         this.fields = this.mapFields(fields);
+        this.changeDetectorRef.markForCheck();
       });
   }
 

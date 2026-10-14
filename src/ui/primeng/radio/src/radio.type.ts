@@ -14,13 +14,13 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   template: `
     @for (option of props.options | formlySelectOptions: field | async; track option; let index = $index) {
       <div class="p-field-radiobutton field-radiobutton">
-        <p-radioButton
+        <p-radiobutton
           [name]="field.name || id"
           [formControl]="option.disabled ? disabledControl : formControl"
           [value]="option.value"
           [inputId]="id + index"
         >
-        </p-radioButton>
+        </p-radiobutton>
         <label [for]="id + index" class="ml-2">{{ option.label }}</label>
       </div>
     }

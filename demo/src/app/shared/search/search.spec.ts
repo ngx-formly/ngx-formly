@@ -5,6 +5,7 @@ jest.mock('../../guides/guides.content', () => ({
   GUIDE_CONTENTS: {
     validation: '# Validation\nUse **validators** and [validationMessages](https://formly.dev).',
     'properties-options': 'Configure validation messages for a field.',
+    v11: 'Angular 22 and zoneless applications. Signal Forms is planned for v12.',
     v10: 'Replace provideFormly with provideFormlyCore.',
   },
 }));
@@ -31,8 +32,9 @@ describe('Documentation search', () => {
   });
 
   it('includes every migration page and searches its content', () => {
-    expect(searchDocuments(SEARCH_INDEX, 'migration guides')).toHaveLength(7);
+    expect(searchDocuments(SEARCH_INDEX, 'migration guides')).toHaveLength(8);
     expect(searchDocuments(SEARCH_INDEX, 'provideFormlyCore')[0].path).toBe('/guide/migration/v10');
+    expect(searchDocuments(SEARCH_INDEX, 'zoneless')[0].path).toBe('/guide/migration/v11');
     expect(new Set(SEARCH_INDEX.map((entry) => entry.path)).size).toBe(SEARCH_INDEX.length);
   });
 

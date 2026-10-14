@@ -7,7 +7,7 @@ import { ArrayTypeComponent } from './array.type';
 import { ObjectTypeComponent } from './object.type';
 import { MultiSchemaTypeComponent } from './multischema.type';
 import { NullTypeComponent } from './null.type';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 
 export function minItemsValidationMessage(error: any, field: FormlyFieldConfig) {
   return `should NOT have fewer than ${field.props.minItems} items`;
@@ -55,7 +55,7 @@ export function typeValidationMessage({ schemaType }: any) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withXhr()),
     provideFormlyCore([
       ...withFormlyBootstrap(),
       {

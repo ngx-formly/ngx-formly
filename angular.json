@@ -108,7 +108,7 @@
             "outputPath": "integration/ssr/dist",
             "index": "integration/ssr/src/index.html",
             "browser": "integration/ssr/src/main.ts",
-            "polyfills": ["zone.js", "@angular/localize/init"],
+            "polyfills": ["@angular/localize/init"],
             "tsConfig": "integration/ssr/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -167,7 +167,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [

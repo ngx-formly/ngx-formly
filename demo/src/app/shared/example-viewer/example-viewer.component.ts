@@ -5,7 +5,6 @@ import {
   OnDestroy,
   ViewChild,
   ViewContainerRef,
-  ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
   OnChanges,
@@ -57,10 +56,7 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   showSource = false;
   showDebug = false;
 
-  constructor(
-    private copier: CopierService,
-    private componentFactoryResolver: ComponentFactoryResolver,
-  ) {}
+  constructor(private copier: CopierService) {}
 
   get model() {
     const model = JSON.stringify(this.demoComponentRef.instance.model);
@@ -79,8 +75,7 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.exampleData.component);
-    this.demoComponentRef = this.demoRef.createComponent(componentFactory);
+    this.demoComponentRef = this.demoRef.createComponent(this.exampleData.component);
   }
 
   ngOnChanges() {

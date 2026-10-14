@@ -4,7 +4,7 @@ import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
 
 import { FORMLY_CONFIG } from '@ngx-formly/core';
 
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withXhr } from '@angular/common/http';
 import { TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -29,7 +29,7 @@ export function formlyValidationConfig(translate: TranslateService) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withXhr()),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,

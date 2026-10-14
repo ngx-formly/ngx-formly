@@ -66,6 +66,7 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 
 | Angular version | Formly version       | Migration                          |
 | --------------- | -------------------- | ---------------------------------- |
+| Angular >= 22   | `@ngx-formly/core@11.x` | [Upgrade to v11](UPGRADE-11.0.md)    |
 | Angular >= 21   | `@ngx-formly/core@10.x` | [Upgrade to v10](UPGRADE-10.0.md)    |
 | Angular >= 20   | `@ngx-formly/core@9.x` | [Upgrade to v9](UPGRADE-9.0.md)      |
 | Angular >= 19   | `@ngx-formly/core@8.x` | [Upgrade to v8](UPGRADE-8.0.md)      |
@@ -76,6 +77,15 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 | Angular >= 5    | `@ngx-formly/core@3.x` |                                    |
 | Angular >= 4    | `@ngx-formly/core@2.x` | [Upgrade to v2](UPGRADE-2.0.md)      |
 | Angular >= 2    | `ng-formly@1.x`       |                                    |
+
+#### Upgrading to v11
+
+Formly v11 requires Angular 22 or newer and supports zoneless applications.
+The demo and exported examples run without Zone.js. Formly v11 continues to use
+Angular Reactive Forms; Signal Forms integration is planned for v12.
+
+See the [v11 upgrade guide](UPGRADE-11.0.md) for dependency updates and zoneless migration steps.
+Applications staying on Angular 21 should use Formly v10.
 
 #### Upgrading to v10
 

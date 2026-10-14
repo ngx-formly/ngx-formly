@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { Component, DebugElement, NgModule } from '@angular/core';
+import { Component, DebugElement, NgModule, ChangeDetectionStrategy } from '@angular/core';
 import { FormlyModule, FormlyFormBuilder, FormlyFieldConfig, ConfigOption } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -112,6 +112,8 @@ export function createFieldComponent(
   selector: 'formly-test-component',
   template: '',
   providers: [FormlyFormBuilder],
+  // Tests mutate host properties directly before calling detectChanges().
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

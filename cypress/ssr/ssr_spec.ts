@@ -5,11 +5,12 @@ describe('Server side rendering', () => {
     it(`should hydrate ${ui} inputs`, () => {
       cy.request(`/${ui}`).its('body').should('contain', 'Form ready');
       cy.visit(`/${ui}`);
+      cy.window().should('not.have.property', 'Zone');
       cy.get('formly-app-ui [ngh]').should('not.exist');
       cy.get('input[placeholder="input placeholder"]')
         .should('be.enabled')
-        .type('Angular 21')
-        .should('have.value', 'Angular 21')
+        .type('Angular 22')
+        .should('have.value', 'Angular 22')
         .and('have.class', 'ng-dirty');
     });
   });
