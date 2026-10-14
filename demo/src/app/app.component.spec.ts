@@ -10,7 +10,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { AppComponent } from './app.component';
 
 let mockSearchLoadFails = false;
-jest.mock('./shared/search/search-index', () => ({
+vi.mock('./shared/search/search-index', () => ({
   get SEARCH_INDEX() {
     if (mockSearchLoadFails) {
       throw new Error('Search chunk unavailable');
@@ -56,7 +56,7 @@ describe('Website navigation', () => {
 
   afterEach(() => {
     TestBed.inject(MatDialog).closeAll();
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
     localStorage.removeItem('formly-theme');
     delete document.documentElement.dataset.bsTheme;
     document.documentElement.classList.remove('ion-palette-dark');
@@ -118,10 +118,10 @@ describe('Website navigation', () => {
   });
 
   it('still switches themes when browser storage is blocked', () => {
-    jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
       throw new Error('Storage blocked');
     });
-    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('Storage blocked');
     });
     const fixture = TestBed.createComponent(AppComponent);
@@ -209,7 +209,7 @@ describe('Website navigation', () => {
     expect(sidebar.querySelector('[aria-current="page"]')?.textContent).toContain('Upgrade to v6');
 
     const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
-    await drawer.open();
+    await fixture.ngZone.run(() => drawer.open());
     sidebar.querySelector<HTMLAnchorElement>('a[href="/guide/migration/v9"]').click();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -232,7 +232,7 @@ describe('Website navigation', () => {
   it('opens search with focus in the input and restores focus when Escape closes it', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.autoDetectChanges();
-    const openSearch = jest.spyOn(fixture.componentInstance, 'openSearch');
+    const openSearch = vi.spyOn(fixture.componentInstance, 'openSearch');
     const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('.search-toggle');
     trigger.focus();
     trigger.click();
@@ -251,7 +251,7 @@ describe('Website navigation', () => {
   it.each(['metaKey', 'ctrlKey'])('opens only one search dialog using %s + K', async (modifier) => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.autoDetectChanges();
-    const openSearch = jest.spyOn(fixture.componentInstance, 'openSearch');
+    const openSearch = vi.spyOn(fixture.componentInstance, 'openSearch');
     const key = () => new KeyboardEvent('keydown', { key: 'k', [modifier]: true, bubbles: true, cancelable: true });
     const event = key();
     document.dispatchEvent(event);
@@ -267,7 +267,7 @@ describe('Website navigation', () => {
     fixture.autoDetectChanges();
     const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
     await fixture.ngZone.run(() => drawer.open());
-    const openSearch = jest.spyOn(fixture.componentInstance, 'openSearch');
+    const openSearch = vi.spyOn(fixture.componentInstance, 'openSearch');
     fixture.nativeElement.querySelector('.search-toggle').click();
     await openSearch.mock.results[0].value;
     await fixture.whenStable();
@@ -298,7 +298,7 @@ describe('Website navigation', () => {
     mockSearchLoadFails = true;
     const fixture = TestBed.createComponent(AppComponent);
     fixture.autoDetectChanges();
-    const openSearch = jest.spyOn(fixture.componentInstance, 'openSearch');
+    const openSearch = vi.spyOn(fixture.componentInstance, 'openSearch');
     fixture.nativeElement.querySelector('.search-toggle').click();
     await openSearch.mock.results[0].value;
     await fixture.whenStable();

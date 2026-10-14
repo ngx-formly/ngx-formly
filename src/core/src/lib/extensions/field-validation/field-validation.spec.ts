@@ -1,6 +1,6 @@
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { createBuilder } from '@ngx-formly/core/testing';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { FormlyFieldConfigCache } from '../../models';
 
 function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
@@ -31,11 +31,12 @@ function validate(field: FormlyFieldConfigCache, value: any, errors: ValidationE
   expect(formControl.errors).toEqual(errors);
 }
 
-function asyncValidate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
+async function asyncValidate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
   const formControl = new FormControl(value, { asyncValidators: field._asyncValidators });
-  formControl.statusChanges.subscribe(() => {
-    expect(formControl.errors).toEqual(errors);
-  });
+  if (formControl.pending) {
+    await firstValueFrom(formControl.statusChanges);
+  }
+  expect(formControl.errors).toEqual(errors);
 }
 
 describe('FieldValidationExtension: initialise field validators', () => {
@@ -283,7 +284,7 @@ describe('FieldValidationExtension: initialise field validators', () => {
       it.each(['', 'control.value >', 'control.value.trim()'])(
         'rejects invalid or unsupported string expression %p',
         (expression) => {
-          const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+          const error = vi.spyOn(console, 'error').mockImplementation(() => {});
           try {
             expect(() => buildField({ validators: { custom: { expression } } })).toThrow(
               '[Formly Error] Invalid validation expression for "custom"',
@@ -371,26 +372,26 @@ describe('FieldValidationExtension: initialise field validators', () => {
   });
 
   describe('asyncValidators', () => {
-    it(`using Promise`, () => {
+    it(`using Promise`, async () => {
       const field = buildField({
         asyncValidators: {
-          custom: (control: FormControl) => new Promise((resolve) => resolve(control.value !== 'test')),
+          custom: (control: FormControl) => new Promise((resolve) => resolve(control.value === 'test')),
         },
       });
 
-      asyncValidate(field, 'test', null);
-      asyncValidate(field, 'custom', { custom: true });
+      await asyncValidate(field, 'test', null);
+      await asyncValidate(field, 'custom', { custom: true });
     });
 
-    it(`using Observable`, () => {
+    it(`using Observable`, async () => {
       const field = buildField({
         asyncValidators: {
-          custom: (control: FormControl) => of(control.value !== 'test'),
+          custom: (control: FormControl) => of(control.value === 'test'),
         },
       });
 
-      asyncValidate(field, 'test', null);
-      asyncValidate(field, 'custom', { custom: true });
+      await asyncValidate(field, 'test', null);
+      await asyncValidate(field, 'custom', { custom: true });
     });
   });
 

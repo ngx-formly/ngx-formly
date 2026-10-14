@@ -1,7 +1,7 @@
 import { Component, inject, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 import {
   FieldType,
   FieldTypeConfig,
@@ -14,7 +14,6 @@ import {
   provideFormlyCore,
 } from '@ngx-formly/core';
 import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
-import 'jest-extended';
 import { FormlyOnPushComponent } from './formly.field.spec';
 import { config as rxjsConfig, of } from 'rxjs';
 
@@ -120,7 +119,7 @@ describe('FormlyForm Component', () => {
 
     it('should call the validation only once during build', () => {
       const fooValidator = { expression: () => false };
-      const spy = jest.spyOn(fooValidator, 'expression');
+      const spy = vi.spyOn(fooValidator, 'expression');
       const { setInputs, fields } = renderComponent({
         form: new FormGroup({}),
         fields: [
@@ -252,7 +251,7 @@ describe('FormlyForm Component', () => {
       });
 
       const app = fixture.componentInstance;
-      jest.spyOn(app, 'modelChange');
+      vi.spyOn(app, 'modelChange');
 
       setInputs({ model: { title: '****' } });
 
@@ -262,7 +261,7 @@ describe('FormlyForm Component', () => {
     it('should not emit `modelChange` on a field without key changes', () => {
       const { fixture, fields } = renderComponent({ fields: [{}] });
       const app = fixture.componentInstance;
-      jest.spyOn(app, 'modelChange');
+      vi.spyOn(app, 'modelChange');
 
       fields[0].formControl.setValue('foo');
       fixture.detectChanges();
@@ -329,7 +328,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not deliver a queued build event after destruction', async () => {
-      const fieldChange = jest.fn();
+      const fieldChange = vi.fn();
       const { fixture } = renderComponent({ fields: [{ key: 'title' }], fieldChange });
 
       fixture.destroy();
@@ -339,7 +338,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should emit a build event with the root field and initialized form', async () => {
-      const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => {
+      const fieldChange = vi.fn(({ field }: FormlyValueChangeEvent) => {
         const form = field.formControl;
         expect(form.get('title').value).toBe('default');
         expect(form.get('title').valid).toBe(true);
@@ -366,9 +365,9 @@ describe('FormlyForm Component', () => {
     });
 
     it('should allow subscribing to controls when fields arrive later', async () => {
-      const valueChanges = jest.fn();
-      const statusChanges = jest.fn();
-      const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => {
+      const valueChanges = vi.fn();
+      const statusChanges = vi.fn();
+      const fieldChange = vi.fn(({ field }: FormlyValueChangeEvent) => {
         const form = field.formControl;
         const control = form.get('title');
         if (control) {
@@ -395,7 +394,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should emit for new and empty field configurations', async () => {
-      const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => field.formControl.get('new'));
+      const fieldChange = vi.fn(({ field }: FormlyValueChangeEvent) => field.formControl.get('new'));
       const { form, setInputs, query, fixture } = renderComponent({ fields: [{ key: 'old' }], fieldChange });
       await fixture.whenStable();
       fieldChange.mockClear();
@@ -416,7 +415,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should emit the new form after replacing the form input', async () => {
-      const fieldChange = jest.fn(({ field }: FormlyValueChangeEvent) => {
+      const fieldChange = vi.fn(({ field }: FormlyValueChangeEvent) => {
         const form = field.formControl;
         expect(form.get('title').value).toBe('value');
       });
@@ -441,7 +440,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should emit a built FormArray once when fields and form change together', async () => {
-      const fieldChange = jest.fn();
+      const fieldChange = vi.fn();
       const { setInputs, query, fixture } = renderComponent({ fieldChange });
       await fixture.whenStable();
       fieldChange.mockClear();
@@ -460,7 +459,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should emit an internally created form', async () => {
-      const fieldChange = jest.fn();
+      const fieldChange = vi.fn();
       const { query, fixture } = renderComponent(
         { fields: [{ key: 'title' }], fieldChange },
         { template: '<formly-form [fields]="fields" (fieldChange)="fieldChange($event)"></formly-form>' },
@@ -478,7 +477,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not emit on model or control value changes', async () => {
-      const fieldChange = jest.fn();
+      const fieldChange = vi.fn();
       const { form, setInputs, detectChanges, fixture } = renderComponent({
         fields: [{ key: 'title', type: 'input' }],
         fieldChange,
@@ -502,7 +501,7 @@ describe('FormlyForm Component', () => {
       });
 
       const app = fixture.componentInstance;
-      jest.spyOn(app, 'modelChange');
+      vi.spyOn(app, 'modelChange');
 
       app.form.get('title').patchValue('***');
       fixture.detectChanges();
@@ -525,7 +524,7 @@ describe('FormlyForm Component', () => {
       });
 
       const app = fixture.componentInstance;
-      jest.spyOn(app, 'modelChange');
+      vi.spyOn(app, 'modelChange');
 
       setInputs({ model: { title: '****' } });
 
@@ -660,7 +659,7 @@ describe('FormlyForm Component', () => {
         },
         { providers: [provideZonelessChangeDetection()] },
       );
-      const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
       const onUnhandledError = rxjsConfig.onUnhandledError;
 
       try {
@@ -685,7 +684,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should hide and reset dependent fields in a zoneless app', async () => {
-      const modelChange = jest.fn();
+      const modelChange = vi.fn();
       const { form, fields, model, fixture, queryAll } = renderComponent(
         {
           model: { a: 'Yes', b: 'Yes', c: 'Yes', d: 'text' },
@@ -792,7 +791,7 @@ describe('FormlyForm Component', () => {
       );
 
       const app = fixture.componentInstance;
-      jest.spyOn(app, 'modelChange');
+      vi.spyOn(app, 'modelChange');
 
       app.form.get('title').patchValue('***');
       detectChanges();

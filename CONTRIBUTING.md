@@ -82,6 +82,22 @@ Example source tabs and StackBlitz exports share text imports such as
 The `?raw` suffix provides string typings, and Angular's loader attribute imports the file's
 contents. Use the imported string as `filecontent`; the example viewer adds syntax highlighting.
 
+### Unit tests
+
+Run `npm test` for the full Vitest suite or `npm run test:watch` while developing.
+Pass a file or directory to narrow the run, for example:
+
+```sh
+npm test -- src/core/src/lib/services/formly.builder.spec.ts
+npm test -- src/core
+```
+
+Angular tests use Happy DOM and resolve Formly imports directly to source. Schematic tests run
+in Node and use `ts-node` to load their TypeScript factories. Use `vi.fn()` and `vi.spyOn()` for
+mocks, and Vitest fake timers for timer-dependent tests. The test setup restores real timers
+after each Angular test. Run `npm test -- --coverage` to generate an HTML report in `coverage/`.
+SSR end-to-end tests remain available through `npm run e2e:ssr`.
+
 ## <a name="rules"></a> Coding Rules
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 

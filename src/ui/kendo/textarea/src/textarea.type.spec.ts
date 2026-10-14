@@ -35,7 +35,7 @@ describe('ui-kendo: Textarea Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, detectChanges } = renderComponent({
       key: 'name',
       type: 'textarea',

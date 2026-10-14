@@ -15,8 +15,8 @@ describe('FormlyFormBuilder service', () => {
   it.each(['filled', undefined])('should emit one initial status for model value %p', (value) => {
     const builder = createFormlyBuilder();
     const form = new FormGroup({});
-    const status = jest.fn();
-    const valueChanged = jest.fn();
+    const status = vi.fn();
+    const valueChanged = vi.fn();
     form.statusChanges.subscribe(status);
     form.valueChanges.subscribe(valueChanged);
     const field: FormlyFieldConfigCache = {
@@ -39,8 +39,8 @@ describe('FormlyFormBuilder service', () => {
   it('should emit the final initial status after validation expressions', () => {
     const builder = createFormlyBuilder();
     const form = new FormGroup({});
-    const status = jest.fn();
-    const valueChanged = jest.fn();
+    const status = vi.fn();
+    const valueChanged = vi.fn();
     form.statusChanges.subscribe(status);
     form.valueChanges.subscribe(valueChanged);
     const field: FormlyFieldConfigCache = {
@@ -62,8 +62,8 @@ describe('FormlyFormBuilder service', () => {
   it('should notify initial status without restarting async validation', () => {
     const builder = createFormlyBuilder();
     const form = new FormGroup({});
-    const status = jest.fn();
-    const validate = jest.fn(() => of(null));
+    const status = vi.fn();
+    const validate = vi.fn(() => of(null));
     form.statusChanges.subscribe(status);
 
     builder.build({ form, fieldGroup: [], asyncValidators: { validation: [validate] } });
@@ -89,7 +89,7 @@ describe('FormlyFormBuilder service', () => {
       ],
     });
     const form = new FormGroup({});
-    const status = jest.fn();
+    const status = vi.fn();
     form.statusChanges.subscribe(status);
     const field: FormlyFieldConfigCache = { form };
 
@@ -122,14 +122,14 @@ describe('FormlyFormBuilder service', () => {
       }),
     );
 
-    global.console = { ...global.console, warn: jest.fn() };
-    jest.spyOn(builder, 'build');
+    global.console = { ...global.console, warn: vi.fn() };
+    vi.spyOn(builder, 'build');
     field.options.build(field);
     expect(builder.build).toHaveBeenCalledTimes(1);
   });
 
   it('should call extension during build call', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const extension = {
       prePopulate: () => spy('prePopulate'),
       onPopulate: () => spy('onPopulate'),
@@ -146,7 +146,7 @@ describe('FormlyFormBuilder service', () => {
   });
 
   it('should call extensions in default order during build call', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const core = {
       prePopulate: () => spy('prePopulateCore'),
       onPopulate: () => spy('onPopulateCore'),
@@ -187,7 +187,7 @@ describe('FormlyFormBuilder service', () => {
   });
 
   it('should call extensions in modified order during build call', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const core = {
       prePopulate: () => spy('prePopulateCore'),
       onPopulate: () => spy('onPopulateCore'),
@@ -229,7 +229,7 @@ describe('FormlyFormBuilder service', () => {
 
   it('should build nested field', () => {
     const extension = { onPopulate: () => {} };
-    jest.spyOn(extension, 'onPopulate');
+    vi.spyOn(extension, 'onPopulate');
 
     const builder = createBuilder({
       extensions: [{ name: 'core', extension }],

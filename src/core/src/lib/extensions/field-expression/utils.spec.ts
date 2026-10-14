@@ -35,7 +35,7 @@ describe('evalStringExpression', () => {
     });
 
     it('should reject malformed optional access and unsupported calls', () => {
-      const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const error = vi.spyOn(console, 'error').mockImplementation(() => {});
       for (const expression of ['model?.', 'model?.?.name', 'model?.()', 'model?.foo()']) {
         expect(evalStringExpression(expression, ['model'])).toBeUndefined();
       }
