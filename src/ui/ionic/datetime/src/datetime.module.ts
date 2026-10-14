@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonItem, IonLabel, IonModal, IonDatetime, IonButtons, IonButton } from '@ionic/angular';
 import { FormlyFormFieldModule } from '@ngx-formly/ionic/form-field';
 
 import { FormlyFieldDatetime } from './datetime.type';
@@ -13,7 +13,12 @@ import { withFormlyFieldDatetime } from './datetime.config';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    IonicModule,
+    IonItem,
+    IonLabel,
+    IonModal,
+    IonDatetime,
+    IonButtons,
+    IonButton,
     FormlyFormFieldModule,
     FormlyModule.forChild(withFormlyFieldDatetime()),
   ],

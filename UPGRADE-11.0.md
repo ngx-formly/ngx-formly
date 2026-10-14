@@ -29,13 +29,19 @@ Update the UI libraries used by your application:
 | `@ngx-formly/ng-zorro-antd` | `ng-zorro-antd >= 22` |
 | `@ngx-formly/kendo` | Kendo Angular label, dropdown, and input packages >= 25.3.0 |
 | `@ngx-formly/nativescript` | `@nativescript/angular >= 22` |
-| `@ngx-formly/ionic` | `@ionic/angular ^8` |
+| `@ngx-formly/ionic` | `@ionic/angular ^9` |
 
 Keep related UI packages on compatible versions. Upgrade Angular Material with `ng update @angular/material@22`.
 Use Kendo theme v14.6.1 with Kendo Angular v25.3.0. The Kendo inputs and dropdowns gained zoneless support in v25.1;
 see the [Kendo changelog](https://www.telerik.com/kendo-angular-ui/components/changelogs/kendo-angular-ui).
 
 ### Review copied UI templates and custom styles
+
+Formly's Ionic adapter now imports individual standalone Ionic 9 components. Upgrade `@ionic/angular` to v9 and
+replace `importProvidersFrom(IonicModule.forRoot())` with `provideIonicAngular()` from `@ionic/angular` in your
+application providers. Import the individual Ionic components used by custom field templates in their component
+or NgModule `imports`. Formly's `FormlyIonicModule` and `provideFormlyCore(withFormlyIonic())` APIs remain supported.
+See the [Ionic 9 migration guide](https://ionicframework.com/docs/updating/9-0) for other application changes.
 
 PrimeNG 22 uses `p-radiobutton` in place of `p-radioButton`. Update copied radio templates and DOM selectors.
 Formly's select and datepicker `props.appendTo` now use PrimeNG's `AppendTo` type. Use `'body'`, `'self'`, or a supported

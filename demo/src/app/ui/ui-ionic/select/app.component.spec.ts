@@ -17,7 +17,7 @@ describe.each([
     const example: AppComponent = query('formly-app-example').componentInstance;
     const [singleSelect, select] = queryAll<HTMLIonSelectElement>('ion-select');
 
-    expect(singleSelect.nativeElement.interfaceOptions).toBeUndefined();
+    expect(singleSelect.nativeElement.interfaceOptions).toEqual({});
     expect(select.nativeElement.multiple).toBe(true);
     expect(select.nativeElement.interface).toBe('popover');
     expect(select.nativeElement.labelPlacement).toBe('floating');

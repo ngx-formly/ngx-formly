@@ -60,7 +60,7 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     primeng: '^22.1.2',
     '@primeuix/themes': '^2.0.2',
   },
-  ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^8.0.0', '@angular/router': angularVersion },
+  ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^9.0.0', '@angular/router': angularVersion },
   'ng-zorro-antd': {
     '@ngx-formly/ng-zorro-antd': formlyVersion,
     '@angular/cdk': angularVersion,
