@@ -12,11 +12,25 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
   selector: 'formly-field-ion-checkbox',
   template: `
     <ion-checkbox [formControl]="formControl" [ionFormlyAttributes]="field">
-      {{ props.label }}
+      @if (props.allowHtml) {
+        <span
+          [innerHTML]="props.label"
+          (click)="onLabelInteraction($event)"
+          (keydown)="onLabelInteraction($event)"
+        ></span>
+      } @else {
+        {{ props.label }}
+      }
     </ion-checkbox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./checkbox.type.scss'],
   standalone: false,
 })
-export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {}
+export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {
+  protected onLabelInteraction(event: Event) {
+    if ((event.target as HTMLElement).closest('a[href]')) {
+      event.stopPropagation();
+    }
+  }
+}

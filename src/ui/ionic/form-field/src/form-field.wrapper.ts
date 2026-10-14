@@ -16,7 +16,13 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       <ng-template #fieldComponent></ng-template>
     </ion-item>
     @if (props.description) {
-      <ion-note class="ion-margin-start">{{ props.description }}</ion-note>
+      <ion-note class="ion-margin-start">
+        @if (props.allowHtml) {
+          <span [innerHTML]="props.description"></span>
+        } @else {
+          <ng-container>{{ props.description }}</ng-container>
+        }
+      </ion-note>
     }
     @if (showError) {
       <ion-item lines="none">

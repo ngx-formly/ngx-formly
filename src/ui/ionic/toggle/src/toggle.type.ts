@@ -12,11 +12,25 @@ export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> 
   selector: 'formly-field-ion-toggle',
   template: `
     <ion-toggle [formControl]="formControl" [ionFormlyAttributes]="field">
-      {{ props.label }}
+      @if (props.allowHtml) {
+        <span
+          [innerHTML]="props.label"
+          (click)="onLabelInteraction($event)"
+          (keydown)="onLabelInteraction($event)"
+        ></span>
+      } @else {
+        {{ props.label }}
+      }
     </ion-toggle>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./toggle.type.scss'],
   standalone: false,
 })
-export class FormlyFieldToggle extends FieldType<FieldTypeConfig<ToggleProps>> {}
+export class FormlyFieldToggle extends FieldType<FieldTypeConfig<ToggleProps>> {
+  protected onLabelInteraction(event: Event) {
+    if ((event.target as HTMLElement).closest('a[href]')) {
+      event.stopPropagation();
+    }
+  }
+}

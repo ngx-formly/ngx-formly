@@ -17,9 +17,12 @@ export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> 
       [max]="props.max"
       [formControl]="formControl"
       [ionFormlyAttributes]="field"
-      [label]="props.label"
+      [label]="props.allowHtml ? undefined : props.label"
       [labelPlacement]="props.labelPosition ?? 'start'"
     >
+      @if (props.allowHtml && props.label) {
+        <span slot="label" [innerHTML]="props.label"></span>
+      }
       <ion-label slot="start">{{ props.min }}</ion-label>
       <ion-label slot="end">{{ props.max }}</ion-label>
     </ion-range>

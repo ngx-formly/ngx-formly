@@ -19,7 +19,11 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
     <kendo-formfield [orientation]="props.orientation">
       @if (props.label && props.hideLabel !== true) {
         <label [for]="id">
-          {{ props.label }}
+          @if (props.allowHtml) {
+            <span [innerHTML]="props.label"></span>
+          } @else {
+            {{ props.label }}
+          }
           @if (props.required && props.hideRequiredMarker !== true) {
             <span aria-hidden="true" class="k-required">*</span>
           }
@@ -29,7 +33,13 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       <ng-container #fieldComponent></ng-container>
 
       @if (props.description) {
-        <kendo-formhint>{{ props.description }}</kendo-formhint>
+        <kendo-formhint>
+          @if (props.allowHtml) {
+            <span [innerHTML]="props.description"></span>
+          } @else {
+            <ng-container>{{ props.description }}</ng-container>
+          }
+        </kendo-formhint>
       }
       @if (showError) {
         <kendo-formerror>

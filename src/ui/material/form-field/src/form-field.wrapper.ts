@@ -54,7 +54,11 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       <ng-container #fieldComponent></ng-container>
       @if (props.label && props.hideLabel !== true) {
         <mat-label>
-          {{ props.label }}
+          @if (props.allowHtml) {
+            <span [innerHTML]="props.label"></span>
+          } @else {
+            {{ props.label }}
+          }
           @if (props.required && props.hideRequiredMarker !== true) {
             <span aria-hidden="true" class="mat-form-field-required-marker mat-mdc-form-field-required-marker">*</span>
           }
@@ -99,7 +103,10 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
 
       @if (props.description || props.hintStart; as hint) {
         <mat-hint>
-          <ng-container [ngTemplateOutlet]="stringOrTemplate" [ngTemplateOutletContext]="{ content: hint }">
+          <ng-container
+            [ngTemplateOutlet]="stringOrTemplate"
+            [ngTemplateOutletContext]="{ content: hint, allowHtml: props.allowHtml && !!props.description }"
+          >
           </ng-container>
         </mat-hint>
       }
@@ -112,9 +119,13 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       }
     </mat-form-field>
 
-    <ng-template #stringOrTemplate let-content="content">
+    <ng-template #stringOrTemplate let-content="content" let-allowHtml="allowHtml">
       @if (!content.createEmbeddedView) {
-        <ng-container>{{ content }}</ng-container>
+        @if (allowHtml) {
+          <span [innerHTML]="content"></span>
+        } @else {
+          <ng-container>{{ content }}</ng-container>
+        }
       } @else {
         <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{ field: field }"></ng-container>
       }

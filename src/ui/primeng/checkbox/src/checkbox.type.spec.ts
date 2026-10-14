@@ -34,12 +34,12 @@ describe('ui-primeng: Checkbox Type', () => {
     expect(attributes).toMatchObject({ id: 'formly_1_boolean_name_0' });
   });
 
-  it('should bind control value on change', () => {
+  it.each([false, true])('should bind control value on change with allowHtml=%s', (allowHtml) => {
     const changeSpy = jest.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
-      props: { change: changeSpy },
+      props: { change: changeSpy, allowHtml, label: 'Accept <strong>terms</strong>' },
     });
 
     const inputElm = query<HTMLInputElement>('input[type="checkbox"]').nativeElement;

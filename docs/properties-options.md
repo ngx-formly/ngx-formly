@@ -103,6 +103,40 @@ The output shares the `options.fieldChanges` payload shape; it does not forward 
 | modelOptions         | `object` | An object with a few useful properties to control the model changes: `debounce`, `updateOn` |
 
 
+## HTML labels and descriptions
+
+Set `props.allowHtml` to `true` to render `props.label` and `props.description` strings as HTML:
+
+```ts
+{
+  key: 'accepted',
+  type: 'checkbox',
+  props: {
+    label: 'Accept <strong>terms</strong>',
+    description: 'Read the <a href="/terms">terms and conditions</a>.',
+    allowHtml: true,
+    required: true,
+  },
+}
+```
+
+This option defaults to `false`, so existing labels and descriptions remain plain text.
+It applies to the built-in fields in Bootstrap, Material, Ionic, Kendo, PrimeNG, and NG-ZORRO.
+NativeScript and custom field templates do not automatically support it.
+
+Angular sanitizes the HTML, removing scripts and event handlers and neutralizing unsafe URLs.
+The option does not bypass sanitization or change the existing `safeHtml` option for template fields.
+Use ordinary HTML strings; Angular directives such as `routerLink` and Angular event bindings are not compiled.
+
+Existing description templates in Material and NG-ZORRO continue to work. Placeholders, option labels,
+validation messages, and Material's separate `hintStart` and `hintEnd` properties keep their existing behavior.
+
+Prefer links in descriptions to interactive content inside labels. In particular,
+[Angular Material advises against interactive controls inside checkbox labels](https://material.angular.dev/components/checkbox/overview#accessibility).
+Keep label text descriptive so controls retain an accessible name.
+
+See the checkbox example in each web adapter's UI demo.
+
 ## Ionic select interfaces
 
 Ionic select fields accept `props.interfaceOptions` to configure their alert, action sheet, or popover:

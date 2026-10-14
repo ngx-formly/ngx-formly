@@ -24,7 +24,11 @@ export interface FormlyToggleFieldConfig extends FormlyFieldConfig<ToggleProps> 
       [required]="required"
       [labelPosition]="props.labelPosition"
     >
-      {{ props.label }}
+      @if (props.allowHtml) {
+        <span [innerHTML]="props.label"></span>
+      } @else {
+        {{ props.label }}
+      }
     </mat-slide-toggle>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

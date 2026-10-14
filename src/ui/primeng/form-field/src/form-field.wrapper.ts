@@ -12,7 +12,11 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
     <div class="p-field field">
       @if (props.label && props.hideLabel !== true) {
         <label [for]="id">
-          {{ props.label }}
+          @if (props.allowHtml) {
+            <span [innerHTML]="props.label"></span>
+          } @else {
+            {{ props.label }}
+          }
           @if (props.required && props.hideRequiredMarker !== true) {
             <span aria-hidden="true">*</span>
           }
@@ -21,7 +25,13 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       <ng-container #fieldComponent></ng-container>
 
       @if (props.description) {
-        <small class="block text-color-secondary">{{ props.description }}</small>
+        <small class="block text-color-secondary">
+          @if (props.allowHtml) {
+            <span [innerHTML]="props.description"></span>
+          } @else {
+            <ng-container>{{ props.description }}</ng-container>
+          }
+        </small>
       }
 
       @if (showError) {

@@ -13,7 +13,11 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
     <ng-template #labelTemplate>
       @if (props.label && props.hideLabel !== true) {
         <label [attr.for]="id" class="form-label">
-          {{ props.label }}
+          @if (props.allowHtml) {
+            <span [innerHTML]="props.label"></span>
+          } @else {
+            {{ props.label }}
+          }
           @if (props.required && props.hideRequiredMarker !== true) {
             <span aria-hidden="true">*</span>
           }
@@ -43,7 +47,13 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       }
 
       @if (props.description) {
-        <small class="form-text text-muted">{{ props.description }}</small>
+        <small class="form-text text-muted">
+          @if (props.allowHtml) {
+            <span [innerHTML]="props.description"></span>
+          } @else {
+            <ng-container>{{ props.description }}</ng-container>
+          }
+        </small>
       }
     </div>
   `,
