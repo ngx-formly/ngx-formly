@@ -98,6 +98,15 @@ mocks, and Vitest fake timers for timer-dependent tests. The test setup restores
 after each Angular test. Run `npm test -- --coverage` to generate an HTML report in `coverage/`.
 SSR end-to-end tests remain available through `npm run e2e:ssr`.
 
+### Package READMEs
+
+Each published package has its own `README.md` in `src/core`, `src/schematics`, or
+`src/ui/<theme>`. Keep installation, configuration, and supported fields specific to
+that package. Use absolute URLs so links also work on npm.
+
+`npm run build` copies these READMEs into the packages and checks that each built
+package contains its source README. The root README is the repository overview.
+
 ## <a name="rules"></a> Coding Rules
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 

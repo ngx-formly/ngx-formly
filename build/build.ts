@@ -17,9 +17,6 @@ PACKAGES.map((name) => {
   );
 
   const pkgDir = `${distDir}/${name}`;
-  fs.copyFile('README.md', `${pkgDir}/README.md`, (err) => {
-    if (err) throw err;
-  });
 
   // update `FORMLY-VERSION` in package.json for all sub-packages
   const pkgPath = `${pkgDir}/package.json`;
@@ -39,4 +36,5 @@ PACKAGES.map((name) => {
   fs.writeFileSync(pkgPath, JSON.stringify(pkgJson, null, 2));
 });
 
+exec('ts-node --dir build check-readmes.ts');
 exec('ts-node --dir build check-declarations.ts');
