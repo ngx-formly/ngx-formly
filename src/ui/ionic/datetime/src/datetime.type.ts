@@ -29,17 +29,26 @@ export interface FormlyDatetimeFieldConfig extends FormlyFieldConfig<DatetimePro
       [button]="true"
       [detail]="false"
       [disabled]="formControl.disabled"
-      [attr.aria-label]="props.label"
+      [attr.aria-label]="props.allowHtml ? null : props.label"
+      [attr.aria-labelledby]="props.allowHtml ? id + '-label' : null"
       aria-haspopup="dialog"
       [attr.aria-expanded]="isOpen"
       (click)="isOpen = true"
     >
       <ion-label>
-        @if (!props.hideLabel) {
+        @if (props.allowHtml) {
+          <span
+            [id]="id + '-label'"
+            [hidden]="props.hideLabel"
+            [innerHTML]="props.label"
+            (click)="onLabelInteraction($event)"
+            (keydown)="onLabelInteraction($event)"
+          ></span>
+        } @else if (!props.hideLabel) {
           {{ props.label }}
-          @if (props.required && !props.hideRequiredMarker) {
-            <span aria-hidden="true">*</span>
-          }
+        }
+        @if (!props.hideLabel && props.required && !props.hideRequiredMarker) {
+          <span aria-hidden="true">*</span>
         }
         <p>{{ formControl.value ? (formControl.value | date: displayFormat()) : props.placeholder }}</p>
       </ion-label>
@@ -123,5 +132,11 @@ export class FormlyFieldDatetime extends FieldType<FieldTypeConfig<DatetimeProps
   close() {
     this.isOpen = false;
     this.formControl.markAsTouched();
+  }
+
+  protected onLabelInteraction(event: Event) {
+    if ((event.target as HTMLElement).closest('a[href]')) {
+      event.stopPropagation();
+    }
   }
 }

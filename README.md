@@ -43,6 +43,7 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 - [Themes](https://formly.dev/ui)
 - [Material select trigger labels](docs/properties-options.md#material-select-trigger-labels)
 - [Ionic select interface options](docs/properties-options.md#ionic-select-interfaces)
+- [HTML labels and descriptions](docs/properties-options.md#html-labels-and-descriptions)
 - [Examples](https://formly.dev/examples)
 
 ## Resources

@@ -15,19 +15,27 @@ export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
     @if (props.type !== 'number') {
       <ion-input
         [type]="props.type || 'text'"
-        [label]="props.label"
+        [label]="props.allowHtml ? undefined : props.label"
         [labelPlacement]="props.labelPosition ?? 'start'"
         [formControl]="formControl"
         [ionFormlyAttributes]="field"
-      ></ion-input>
+      >
+        @if (props.allowHtml && props.label) {
+          <span slot="label" [innerHTML]="props.label"></span>
+        }
+      </ion-input>
     } @else {
       <ion-input
         type="number"
-        [label]="props.label"
+        [label]="props.allowHtml ? undefined : props.label"
         [labelPlacement]="props.labelPosition ?? 'start'"
         [formControl]="formControl"
         [ionFormlyAttributes]="field"
-      ></ion-input>
+      >
+        @if (props.allowHtml && props.label) {
+          <span slot="label" [innerHTML]="props.label"></span>
+        }
+      </ion-input>
     }
   `,
   styles: [':host { display: inherit; }'],

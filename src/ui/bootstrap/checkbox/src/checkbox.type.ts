@@ -35,7 +35,11 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
         />
         @if (props.formCheck !== 'nolabel') {
           <label [for]="id" class="form-check-label">
-            {{ props.label }}
+            @if (props.allowHtml) {
+              <span [innerHTML]="props.label"></span>
+            } @else {
+              {{ props.label }}
+            }
             @if (props.required && props.hideRequiredMarker !== true) {
               <span aria-hidden="true">*</span>
             }

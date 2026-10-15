@@ -34,9 +34,17 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
         [interfaceOptions]="props.interfaceOptions ?? {}"
         [okText]="props.okText ?? 'OK'"
         [cancelText]="props.cancelText ?? 'Cancel'"
-        [label]="props.label"
+        [label]="props.allowHtml ? undefined : props.label"
         [labelPlacement]="props.labelPosition ?? 'start'"
       >
+        @if (props.allowHtml && props.label) {
+          <span
+            slot="label"
+            [innerHTML]="props.label"
+            (click)="onLabelInteraction($event)"
+            (keydown)="onLabelInteraction($event)"
+          ></span>
+        }
         @for (option of selectOptions; track option) {
           <ion-select-option [value]="option.value" [disabled]="option.disabled">
             {{ option.label }}
@@ -57,4 +65,10 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
       },
     },
   };
+
+  protected onLabelInteraction(event: Event) {
+    if ((event.target as HTMLElement).closest('a[href]')) {
+      event.stopPropagation();
+    }
+  }
 }
