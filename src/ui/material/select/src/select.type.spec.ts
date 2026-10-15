@@ -54,7 +54,7 @@ describe('ui-material: Formly Field Select Component', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, queryAll, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
@@ -129,7 +129,7 @@ describe('ui-material: Formly Field Select Component', () => {
     });
 
     it.each([0, false])('should format a falsy single value (%s)', async (value) => {
-      const triggerLabel = jest.fn((value) => `Selected: ${value}`);
+      const triggerLabel = vi.fn((value) => `Selected: ${value}`);
       const { query, field, fixture } = renderComponent({
         key: 'name',
         type: 'select',
@@ -145,7 +145,7 @@ describe('ui-material: Formly Field Select Component', () => {
     });
 
     it('should update a formatted selection after selection, select all, and reset', async () => {
-      const triggerLabel = jest.fn((values: number[]) => `${values.length} selected`);
+      const triggerLabel = vi.fn((values: number[]) => `${values.length} selected`);
       const { query, queryAll, field, fixture, detectChanges } = renderComponent({
         key: 'weeks',
         type: 'select',

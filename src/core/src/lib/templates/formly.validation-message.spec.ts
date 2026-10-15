@@ -203,7 +203,7 @@ describe.each([
   it('keeps message precedence and supplies the error and field to message functions', () => {
     const { fixture, field, content } = renderMessages(true);
     const error = { message: 'Error object' };
-    const message = jest.fn(() => 'Async validator');
+    const message = vi.fn(() => 'Async validator');
     field.validation.messages = { first: 'Field' };
     field.validators = { first: { message: 'Validator' } };
     field.asyncValidators = { first: { message } };

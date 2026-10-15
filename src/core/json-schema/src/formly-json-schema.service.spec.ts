@@ -2446,7 +2446,7 @@ describe('Service: FormlyJsonschema', () => {
       expect(parser(0, numericField)).toBe(0);
       expect(parser(undefined, numericField)).toBeUndefined();
 
-      const lookup = jest.spyOn(document, 'querySelector').mockReturnValue(input);
+      const lookup = vi.spyOn(document, 'querySelector').mockReturnValue(input);
       expect(parser(null, numericField)).toBeNull();
       lookup.mockRestore();
     });
@@ -2455,7 +2455,7 @@ describe('Service: FormlyJsonschema', () => {
       const { field, query } = renderComponent({ schema: { type: 'number' } });
       const input = query<HTMLInputElement>('input').nativeElement;
       const parser = field.parsers[0] as (value: string | number | null, f: FormlyFieldConfig) => any;
-      const lookup = jest.spyOn(document, 'querySelector').mockReturnValue(input);
+      const lookup = vi.spyOn(document, 'querySelector').mockReturnValue(input);
 
       expect(parser(null, field)).toBeUndefined();
       expect(parser('invalid', field)).toBe('invalid');

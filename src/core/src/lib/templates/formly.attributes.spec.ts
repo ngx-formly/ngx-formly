@@ -1,4 +1,3 @@
-import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
@@ -175,14 +174,14 @@ describe('FormlyAttributes Component', () => {
     it(`should trigger props events`, () => {
       const { query, field } = renderComponent({
         props: {
-          focus: jest.fn(),
-          blur: jest.fn(),
-          change: jest.fn(),
-          keyup: jest.fn(),
-          keydown: jest.fn(),
-          click: jest.fn(),
-          keypress: jest.fn(),
-          wheel: jest.fn(),
+          focus: vi.fn(),
+          blur: vi.fn(),
+          change: vi.fn(),
+          keyup: vi.fn(),
+          keydown: vi.fn(),
+          click: vi.fn(),
+          keypress: vi.fn(),
+          wheel: vi.fn(),
         },
       });
 
@@ -203,18 +202,19 @@ describe('FormlyAttributes Component', () => {
   });
 
   describe('focus the element', () => {
-    it(`should focus the element when focus is set to "true" and then blurred when it's set to "false"`, fakeAsync(() => {
+    it(`should focus the element when focus is set to "true" and then blurred when it's set to "false"`, async () => {
+      vi.useFakeTimers();
       const { detectChanges, query, field } = renderComponent({ focus: true });
       const inputEl = <HTMLInputElement>query('input').nativeElement;
 
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       expect(document.activeElement === inputEl).toBe(true);
 
       field.focus = false;
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       detectChanges();
       expect(document.activeElement === inputEl).toBe(false);
-    }));
+    });
 
     it('should change field focus when the element is focused or blurred', () => {
       const { query, field } = renderComponent({ focus: false });
@@ -253,7 +253,8 @@ describe('FormlyAttributes Component', () => {
       expect(query('input').attributes.id).toEqual('foo');
     });
 
-    it(`should focus the first element when mutliple formlyAttributes is present`, fakeAsync(() => {
+    it(`should focus the first element when mutliple formlyAttributes is present`, async () => {
+      vi.useFakeTimers();
       const { detectChanges, field, query } = renderComponent(
         { focus: true },
         {
@@ -266,9 +267,9 @@ describe('FormlyAttributes Component', () => {
       );
 
       field.focus = true;
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       detectChanges();
       expect(document.activeElement === query('input').nativeElement).toBe(true);
-    }));
+    });
   });
 });
