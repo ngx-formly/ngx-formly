@@ -42,7 +42,7 @@ describe('ui-material: Checkbox Type', () => {
   });
 
   it.each([false, true])('should bind control value on change with allowHtml=%s', (allowHtml) => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',

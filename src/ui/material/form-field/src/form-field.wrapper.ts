@@ -48,7 +48,7 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
       [hideRequiredMarker]="true"
       [floatLabel]="props.floatLabel"
       [appearance]="props.appearance"
-      [subscriptSizing]="props.subscriptSizing"
+      [subscriptSizing]="props.subscriptSizing ?? (field.validation?.showAllErrors ? 'dynamic' : undefined)"
       [color]="props.color ?? 'primary'"
     >
       <ng-container #fieldComponent></ng-container>

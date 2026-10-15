@@ -1,7 +1,7 @@
 import { SEARCH_INDEX } from './search-index';
 import { searchDocuments } from './search';
 
-jest.mock('../../guides/guides.content', () => ({
+vi.mock('../../guides/guides.content', () => ({
   GUIDE_CONTENTS: {
     validation: '# Validation\nUse **validators** and [validationMessages](https://formly.dev).',
     'properties-options': 'Configure validation messages for a field.',

@@ -1,4 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it } from 'vitest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createBuilder, createFieldComponent, FormlyInputModule, mockComponent } from '@ngx-formly/core/testing';
 import { Subject } from 'rxjs';

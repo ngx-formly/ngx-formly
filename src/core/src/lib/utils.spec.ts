@@ -1,5 +1,4 @@
-import { describe, expect, it, jest } from '@jest/globals';
-import 'jest-extended';
+import { describe, expect, it, vi } from 'vitest';
 import { of } from 'rxjs';
 import { FormlyField } from './core';
 import { FormlyFieldConfig } from './models';
@@ -20,7 +19,7 @@ import {
 
 describe('FormlyUtils service', () => {
   it('should restore tree validation when the callback throws', () => {
-    const updateTreeValidity = jest.fn();
+    const updateTreeValidity = vi.fn();
     const form = { _updateTreeValidity: updateTreeValidity };
     const error = new Error('Build failed');
 
@@ -302,13 +301,13 @@ describe('clone', () => {
 
 describe('observeDeep', () => {
   it('should not emit first change on observe', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     observeDeep({ foo: 'test' }, ['foo'], spy);
     expect(spy).not.toHaveBeenCalled();
   });
 
   it('should observe a scalar value', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o = { foo: 'test' };
     observeDeep(o, ['foo'], spy);
     o.foo = 'bar';
@@ -317,7 +316,7 @@ describe('observeDeep', () => {
   });
 
   it('should observe an object', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o = { address: { city: 'foo' } };
     observeDeep(o, ['address'], spy);
     const prevAddress = o.address;
@@ -333,7 +332,7 @@ describe('observeDeep', () => {
   });
 
   it('should observe a nested object', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o = { foo: { bar: undefined } };
     observeDeep(o, ['foo'], spy);
     o.foo = { bar: 'test' };
@@ -343,7 +342,7 @@ describe('observeDeep', () => {
   });
 
   it('should be able to unsubscribe', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o = { address: { city: 'foo' } };
     const unsubscribe = observeDeep(o, ['address'], spy);
     o.address.city = 'bar';
@@ -359,7 +358,7 @@ describe('observeDeep', () => {
 
 describe('observe', () => {
   it('should emit first change on observe', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     observe({ foo: 'test' }, ['foo'], spy);
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -370,7 +369,7 @@ describe('observe', () => {
   });
 
   it('should observe and emit prop changes', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o = { foo: 'test' };
     observe(o, ['foo'], spy);
     spy.mockReset();
@@ -386,7 +385,7 @@ describe('observe', () => {
   });
 
   it('should observe a nested prop', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o = { group: { foo: 'test' } };
     observe(o, ['group', 'foo'], spy);
     spy.mockReset();
@@ -402,7 +401,7 @@ describe('observe', () => {
   });
 
   it('should init and observe an undefined nested prop', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o: any = {};
     observe(o, ['group', 'foo'], spy);
     spy.mockReset();
@@ -420,11 +419,11 @@ describe('observe', () => {
   it('should allow multi observe of the same property', () => {
     const o = { foo: 'test' };
 
-    const spy1 = jest.fn();
+    const spy1 = vi.fn();
     observe(o, ['foo'], spy1);
     spy1.mockReset();
 
-    const spy2 = jest.fn();
+    const spy2 = vi.fn();
     observe(o, ['foo'], spy2);
     spy2.mockReset();
 
@@ -435,7 +434,7 @@ describe('observe', () => {
   });
 
   it('should be able to update prop value without emitting a change event', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const o = { foo: 'test' };
     const observer = observe(o, ['foo'], spy);
     spy.mockReset();
@@ -447,7 +446,7 @@ describe('observe', () => {
   });
 
   it('should not allow subscribe duplication', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const field = { hide: null };
     observe(field, ['hide'], spy);
     observe(field, ['hide'], spy);
@@ -457,7 +456,7 @@ describe('observe', () => {
   });
 
   it('should be able to unsubscribe', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const field = { hide: null };
     const observer = observe(field, ['hide'], spy);
     expect(spy).toHaveBeenCalledTimes(1);
@@ -470,7 +469,7 @@ describe('observe', () => {
   });
 
   it('should be able to subscribe the same fn after detroy', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const field = { hide: null };
     const observer = observe(field, ['hide'], spy);
     expect(spy).toHaveBeenCalledTimes(1);

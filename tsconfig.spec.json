@@ -2,12 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "module": "ES2022",
     "moduleResolution": "bundler",
-    "types": ["jest", "node"],
+    "types": ["vitest/globals", "node"],
     "noImplicitAny": false
   },
-  "files": ["jestSetup.ts"],
+  "files": ["vitestSetup.ts", "src/schematics/test-setup.ts"],
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",

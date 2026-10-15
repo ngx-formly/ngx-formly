@@ -119,7 +119,7 @@ describe('registerControl', () => {
         parent: { model: {} },
       };
 
-      const spy = jest.fn();
+      const spy = vi.fn();
       const subscription = form.valueChanges.subscribe(spy);
 
       registerControl(field);
@@ -137,7 +137,7 @@ describe('registerControl', () => {
         parent: { model: {} },
       };
 
-      const spy = jest.fn();
+      const spy = vi.fn();
       const subscription = form.valueChanges.subscribe(spy);
 
       registerControl(field, null, true);
@@ -155,7 +155,7 @@ describe('registerControl', () => {
         parent: { model: { foo: 'test' } },
       };
 
-      const spy = jest.fn();
+      const spy = vi.fn();
       const subscription = field.formControl.valueChanges.subscribe(spy);
 
       registerControl(field);

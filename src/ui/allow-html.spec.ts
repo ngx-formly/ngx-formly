@@ -75,7 +75,7 @@ describe.each(adapters)('ui-$name: allowHtml', ({ name, imports, types }) => {
 
   it.each(['input', 'checkbox'])('sanitizes the %s label and description', (type) => {
     const unsafe = '<script>alert(1)</script><img src="x" onerror="alert(1)"><a href="javascript:alert(1)">Terms</a>';
-    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const { query, queryAll } = render(type, { label: unsafe, description: unsafe, allowHtml: true, safeHtml: true });
     warn.mockRestore();
 
@@ -127,7 +127,7 @@ describe.each(adapters)('ui-$name: allowHtml', ({ name, imports, types }) => {
       detectChanges();
       const initialValue = field.formControl.value;
       const parent = query('formly-field').nativeElement;
-      const onInteraction = jest.fn();
+      const onInteraction = vi.fn();
       parent.addEventListener('click', onInteraction);
       parent.addEventListener('keydown', onInteraction);
       [

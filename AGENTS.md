@@ -22,9 +22,9 @@ Run commands from the repository root. Use the Node version in `.node-version` a
 | Task | Command |
 | --- | --- |
 | Run the demo on port 4100 | `npm run demo` |
-| Run a single spec | `npm test -- --runInBand --runTestsByPath src/core/src/lib/services/formly.builder.spec.ts` |
-| Run core tests | `npm test -- --runInBand src/core` |
-| Run all unit tests | `npm test -- --runInBand` |
+| Run a single spec | `npm test -- src/core/src/lib/services/formly.builder.spec.ts` |
+| Run core tests | `npm test -- src/core` |
+| Run all unit tests | `npm test` |
 | Watch tests | `npm run test:watch` |
 | Check TypeScript and HTML lint | `npm run lint` |
 | Check formatting | `npm run format` |
@@ -55,8 +55,8 @@ Prefer `npm link` to test local Formly changes in a consuming application. Build
 ## Validation
 
 - Add a regression spec for bug fixes and specs for new behavior, following the existing colocated `*.spec.ts` tests.
-- Reuse `createFieldComponent`, `createComponent`, and `createBuilder` from `@ngx-formly/core/testing` where appropriate. Jest maps this entry point to `src/core/testing/src/private_api.ts` for repository tests.
-- Jest uses `jest-preset-angular` and Happy DOM. Its test roots are `src/` and `demo/src/app/ui/`; SSR Cypress tests run separately.
+- Reuse `createFieldComponent`, `createComponent`, and `createBuilder` from `@ngx-formly/core/testing` where appropriate. Vitest maps this entry point to `src/core/testing/src/private_api.ts` for repository tests.
+- Vitest uses the Analog Angular compiler plugin and Happy DOM for `src/` and `demo/src/app/` tests. Schematic tests run in Node with `ts-node` for factory loading; SSR Cypress tests run separately.
 - Start with affected specs. For shared core changes, run the full unit suite because all UI adapters depend on core. Run lint, formatting, and relevant package builds for code changes; include SSR checks when server rendering is affected.
 - Use `.github/workflows/ci.yml` as the reference for full CI validation, including bundle-size checks. Report checks actually run and any failures or checks you could not run.
 - For documentation-only changes, verify paths, commands, links, and the diff. The repository's formatting script excludes Markdown; application tests are unnecessary unless behavior also changes.

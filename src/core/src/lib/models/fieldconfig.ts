@@ -68,12 +68,15 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
       maxlength?: ValidationMessageOption['message'];
     };
     show?: boolean;
+    /** Display all configured error messages for this field. Defaults to false. */
+    showAllErrors?: boolean;
     [additionalProperties: string]: any;
   };
 
   /**
    * Used to set validation rules for a particular field.
-   * Should be an object of key - value pairs. The value can either be an expression to evaluate or a function to run.
+   * Should be an object of key - value pairs. The value can be a function or an object with an `expression` function or string.
+   * String expressions can access `control`, `field`, `model`, and `formState`.
    * Each should return a boolean value, returning true when the field is valid. See Validation for more information.
    */
   validators?: FormlyValidation<ValidatorFn, boolean>;
@@ -286,6 +289,6 @@ interface FormlyValidation<T, R> {
 type FormlyValidatorFn<T> = (control: AbstractControl, field: FormlyFieldConfig) => T;
 
 interface FormlyValidatorExpressionFn<T> {
-  expression: FormlyValidatorFn<T>;
+  expression: string | FormlyValidatorFn<T>;
   message: string | ((error: any, field: FormlyFieldConfig) => string | Observable<string>);
 }

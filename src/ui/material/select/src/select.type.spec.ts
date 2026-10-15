@@ -54,7 +54,7 @@ describe('ui-material: Formly Field Select Component', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, queryAll, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'select',
@@ -77,6 +77,144 @@ describe('ui-material: Formly Field Select Component', () => {
     detectChanges();
     expect(field.formControl.value).toEqual(2);
     expect(changeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  describe('triggerLabel', () => {
+    it.each([false, true])('should preserve default labels when multiple is %s', async (multiple) => {
+      const { query, field, fixture } = renderComponent({
+        key: 'name',
+        type: 'select',
+        props: {
+          multiple,
+          options: [
+            { value: 1, label: 'First' },
+            { value: 2, label: 'Second' },
+          ],
+        },
+      });
+      field.formControl.setValue(multiple ? [1, 2] : 1);
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(query('mat-select-trigger')).toBeNull();
+      expect(query('.mat-mdc-select-value-text').nativeElement.textContent).toBe(multiple ? 'First, Second' : 'First');
+    });
+
+    it.each([false, true])('should read value properties when multiple is %s', async (multiple) => {
+      const values = [{ code: 'CH' }, { code: 'FR' }];
+      const { query, queryAll, field, fixture, detectChanges } = renderComponent({
+        key: 'country',
+        type: 'select',
+        props: {
+          multiple,
+          triggerLabel: 'code',
+          options: [
+            { value: values[0], label: 'Switzerland' },
+            { value: values[1], label: 'France' },
+          ],
+        },
+      });
+      field.formControl.setValue(multiple ? values : values[0]);
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(query('.mat-mdc-select-value-text').nativeElement.textContent).toBe(multiple ? 'CH, FR' : 'CH');
+
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
+      expect(queryAll('mat-option').map((option) => option.nativeElement.textContent.trim())).toEqual([
+        'Switzerland',
+        'France',
+      ]);
+    });
+
+    it.each([0, false])('should format a falsy single value (%s)', async (value) => {
+      const triggerLabel = vi.fn((value) => `Selected: ${value}`);
+      const { query, field, fixture } = renderComponent({
+        key: 'name',
+        type: 'select',
+        props: { triggerLabel, options: [{ value, label: 'Option' }] },
+      });
+      field.formControl.setValue(value);
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(triggerLabel).toHaveBeenCalledWith(value);
+      expect(query('.mat-mdc-select-value-text').nativeElement.textContent).toBe(`Selected: ${value}`);
+      expect(field.formControl.value).toBe(value);
+    });
+
+    it('should update a formatted selection after selection, select all, and reset', async () => {
+      const triggerLabel = vi.fn((values: number[]) => `${values.length} selected`);
+      const { query, queryAll, field, fixture, detectChanges } = renderComponent({
+        key: 'weeks',
+        type: 'select',
+        props: {
+          multiple: true,
+          placeholder: 'Choose weeks',
+          selectAllOption: 'Select All',
+          triggerLabel,
+          options: [
+            { value: 1, label: 'Week 1' },
+            { value: 2, label: 'Week 2' },
+          ],
+        },
+      });
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(triggerLabel).not.toHaveBeenCalled();
+      expect(query('.mat-mdc-select-placeholder').nativeElement.textContent).toBe('Choose weeks');
+
+      query('.mat-mdc-select-trigger').triggerEventHandler('click', {});
+      detectChanges();
+      queryAll('mat-option')[1].triggerEventHandler('click', {});
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(triggerLabel).toHaveBeenCalledWith([1]);
+      expect(query('.mat-mdc-select-value-text').nativeElement.textContent).toBe('1 selected');
+
+      queryAll('mat-option')[0].triggerEventHandler('click', {});
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(triggerLabel).toHaveBeenCalledWith([1, 2]);
+      expect(query('.mat-mdc-select-value-text').nativeElement.textContent).toBe('2 selected');
+      expect(field.formControl.value).toEqual([1, 2]);
+
+      triggerLabel.mockClear();
+      queryAll('mat-option')[0].triggerEventHandler('click', {});
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(field.formControl.value).toEqual([]);
+      expect(triggerLabel).not.toHaveBeenCalled();
+      expect(query('.mat-mdc-select-placeholder').nativeElement.textContent).toBe('Choose weeks');
+
+      field.formControl.setValue([2]);
+      await fixture.whenStable();
+      fixture.detectChanges();
+      triggerLabel.mockClear();
+      field.formControl.reset();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(triggerLabel).not.toHaveBeenCalled();
+      expect(query('.mat-mdc-select-placeholder').nativeElement.textContent).toBe('Choose weeks');
+    });
+
+    it('should render custom labels as text', async () => {
+      const { query, field, fixture } = renderComponent({
+        key: 'name',
+        type: 'select',
+        props: {
+          triggerLabel: () => '<b>Custom label</b>',
+          options: [{ value: 1, label: 'Option' }],
+        },
+      });
+      field.formControl.setValue(1);
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(query('.mat-mdc-select-value-text').nativeElement.textContent).toBe('<b>Custom label</b>');
+      expect(query('mat-select-trigger b')).toBeNull();
+    });
   });
 
   describe('render select options', () => {

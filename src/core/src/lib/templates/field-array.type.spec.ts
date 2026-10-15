@@ -221,7 +221,7 @@ describe('Array Field Type', () => {
         },
       },
     );
-    const spy = jest.fn();
+    const spy = vi.fn();
     const subscription = fields[0].formControl.valueChanges.subscribe(spy);
 
     // add
@@ -255,7 +255,7 @@ describe('Array Field Type', () => {
       ],
     });
 
-    const spy = jest.fn();
+    const spy = vi.fn();
     const subscription = field.form.get('bar').valueChanges.subscribe(spy);
 
     // add
@@ -286,7 +286,7 @@ describe('Array Field Type', () => {
 
     const form = field.form.get('foo') as FormArray;
 
-    const spy = jest.fn();
+    const spy = vi.fn();
     const subscription = form.at(0).get('title').valueChanges.subscribe(spy);
 
     // add

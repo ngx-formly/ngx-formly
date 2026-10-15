@@ -54,6 +54,32 @@ export class AppComponent {
         },
       },
     },
+    {
+      validators: {
+        endAfterStart: {
+          expression:
+            '!control.value.startdate || !control.value.enddate || control.value.enddate > control.value.startdate',
+          message: 'End date must be greater than start date',
+          errorPath: 'enddate',
+        },
+      },
+      fieldGroup: [
+        {
+          key: 'startdate',
+          type: 'input',
+          props: { type: 'date', label: 'Start date' },
+        },
+        {
+          key: 'enddate',
+          type: 'input',
+          props: {
+            type: 'date',
+            label: 'End date',
+            description: 'Validated by a string expression on the group containing both dates.',
+          },
+        },
+      ],
+    },
   ];
 
   submit() {

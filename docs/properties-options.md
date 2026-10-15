@@ -137,6 +137,43 @@ Keep label text descriptive so controls retain an accessible name.
 
 See the checkbox example in each web adapter's UI demo.
 
+## Material select trigger labels
+
+Material select fields accept `props.triggerLabel` to customize the text displayed for the selected value.
+The dropdown options still use their normal labels, and the control value stays unchanged.
+
+- A string reads that property from the selected value. For multiple selections, it reads the property from each
+  selected value and joins the labels with `, `.
+- A function receives the control value, which is an array for multiple selections, and returns the display text.
+
+```ts
+{
+  key: 'country',
+  type: 'select',
+  props: {
+    triggerLabel: 'code',
+    options: [{ label: 'Switzerland', value: { code: 'CH' } }],
+  },
+},
+{
+  key: 'weeks',
+  type: 'select',
+  props: {
+    multiple: true,
+    triggerLabel: (weeks: number[]) => `${weeks.length} weeks selected`,
+    options: [
+      { label: 'Week 1', value: 1 },
+      { label: 'Week 2', value: 2 },
+    ],
+  },
+}
+```
+
+Omit `triggerLabel` to keep Material's default selected labels. Empty selections keep the placeholder and do not
+call the formatter. Labels render as text. Keep formatter functions free of side effects because Angular may call
+them during each change-detection pass. The [Material demo](https://formly.dev/ui/material) includes both forms of
+`triggerLabel` in its "Select with custom trigger" example.
+
 ## Ionic select interfaces
 
 Ionic select fields accept `props.interfaceOptions` to configure their alert, action sheet, or popover:

@@ -3,6 +3,7 @@ import { FormlyExtension, ValidatorOption, FormlyFieldConfigCache } from '../../
 import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { FORMLY_VALIDATORS, defineHiddenProp, isPromise, observe, clone, isObject, hasKey } from '../../utils';
 import { updateValidity } from '../field-form/utils';
+import { parseExpression } from '../field-expression/utils';
 import { isObservable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -135,11 +136,22 @@ export class FieldValidationExtension implements FormlyExtension {
       }
     }
 
-    if (typeof validator === 'object' && validator.expression) {
+    if (typeof validator === 'object' && 'expression' in validator) {
       const { expression, ...options } = validator;
+      let validation = expression;
+      if (typeof expression === 'string') {
+        const evaluate = parseExpression(expression, ['model', 'formState', 'field', 'control']);
+        if (!evaluate) {
+          throw new Error(`[Formly Error] Invalid validation expression for "${validatorName}": ${expression}`);
+        }
+
+        validation = (control: AbstractControl, field: FormlyFieldConfigCache) =>
+          evaluate(field.model, field.options.formState, field, control);
+      }
+
       validatorOption = {
         name: validatorName,
-        validation: expression,
+        validation,
         options: Object.keys(options).length > 0 ? options : null,
       };
     }
