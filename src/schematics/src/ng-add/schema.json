@@ -17,7 +17,7 @@
       "description": "Do not add @ngx-formly dependencies to package.json (e.g., --skipPackageJson)"
     },
     "uiTheme": {
-      "enum": ["material", "bootstrap", "ionic", "nativescript", "primeng", "kendo", "ng-zorro-antd"],
+      "enum": ["material", "bootstrap", "ionic", "nativescript", "primeng", "kendo", "ng-zorro-antd", "optimus-ui"],
       "description": "The UI with pre-defined types/templates"
     }
   },

@@ -66,6 +66,15 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/cdk': angularVersion,
     'ng-zorro-antd': '^22.1.2',
   },
+  'optimus-ui': {
+    '@ngx-formly/optimus-ui': formlyVersion,
+    '@angular/router': angularVersion,
+    '@angular/cdk': angularVersion,
+    primeflex: '^3.2.0',
+    primeicons: '^7.0.0',
+    '@openng/optimus-ui': '^1.0.2',
+    '@openng/optimus-ui-themes': '^1.0.2',
+  },
   // non UI framework libraries
   'ag-grid': { 'ag-grid-angular': '^33.1.0', 'ag-grid-community': '^33.1.0' },
   'ngx-translate': { '@ngx-translate/core': '^16.0.4', '@ngx-translate/http-loader': '^16.0.1' },
@@ -78,6 +87,7 @@ export const ngProvider: { [id: string]: string } = {
   primeng: 'withFormlyPrimeNG',
   ionic: 'withFormlyIonic',
   'ng-zorro-antd': 'withFormlyNgZorroAntd',
+  'optimus-ui': 'withFormlyOptimusUI',
 };
 
 export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
@@ -99,6 +109,15 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
   ],
   kendo: [{ file: 'styles.scss', filecontent: `@import '@progress/kendo-theme-default/dist/all.css';` }],
   primeng: [
+    {
+      file: 'styles.scss',
+      filecontent: `
+@import "primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
+      `,
+    },
+  ],
+  'optimus-ui': [
     {
       file: 'styles.scss',
       filecontent: `
