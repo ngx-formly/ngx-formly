@@ -46,6 +46,10 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 - [HTML labels and descriptions](docs/properties-options.md#html-labels-and-descriptions)
 - [Examples](https://formly.dev/examples)
 
+In [repeating sections](https://formly.dev/examples/advanced/repeating-section), use
+`add()` to append a row or `add(index, initialModel)` to insert one at a specific
+position. Existing rows keep their fields, form controls, and validation state.
+
 ## Resources
 
 - [How to auto-generate advanced forms using Formly](https://symflower.com/en/company/blog/2022/how-to-auto-generate-forms-with-formly)
