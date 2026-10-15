@@ -56,7 +56,7 @@ empty array. Replace the input reference when changing the field structure outsi
 ### Migrating inline messages
 
 `FormlyValidationMessage` and `LegacyFormlyValidationMessage` are deprecated. Their selectors, getters, observables,
-and existing first-error behavior remain available. UI adapters continue using them for compatibility.
+and default first-error behavior remain available. UI adapters continue using them for compatibility.
 
 For a leaf field in a custom wrapper, the pipe can display the first configured message:
 
@@ -71,6 +71,46 @@ The pipe skips unmapped errors and includes descendants, so migrating a group or
 change which message comes first. The existing component remains available for consumers that require its exact behavior.
 
 See the [validation-message example](https://formly.dev/examples/validation/validation-message) for a working summary.
+
+## Multiple validation messages
+
+Fields display one error message at a time by default. Set `validation.showAllErrors` to `true` to display every
+configured error message for a field, with each message on a separate line:
+
+```ts
+{
+  key: 'username',
+  type: 'input',
+  props: {
+    label: 'Username',
+    minLength: 5,
+    pattern: /^[a-z]+$/,
+  },
+  validation: {
+    showAllErrors: true,
+    messages: {
+      minLength: 'Enter at least five characters.',
+      pattern: 'Use lowercase letters only.',
+    },
+  },
+}
+```
+
+Entering `AB` produces both messages. Messages follow the control's error-key order and retain the existing message
+precedence. String, function, and observable messages are supported. Available messages appear immediately while
+observable messages are pending. Errors without a nonempty message are omitted, and errors forwarded with `errorPath`
+are displayed at their destination.
+
+This option changes the messages displayed by `formly-validation-message`, including the standard UI wrappers.
+It only includes the field's own errors, not errors from child fields. The usual touched, submitted, and
+`validation.show` rules still control when errors appear. You can also change `validation.showAllErrors` through an
+expression. Leave it unset or set it to `false` to retain the existing first-error behavior.
+
+Material fields use dynamic subscript sizing when this option is enabled, unless `props.subscriptSizing` is explicitly
+set. NativeScript labels wrap the messages. Custom wrappers that constrain error height must allow space for multiple
+lines.
+
+See the [validation-message example](https://formly.dev/examples/validation/validation-message).
 
 ## Numeric step validation
 
@@ -249,7 +289,7 @@ The validators property of a field could accept different nested properties whic
 The format would be:
 ```
 NAME_OF_VALIDATOR: {
-  expression: FUNCTION
+  expression: FUNCTION | STRING
   message: FUNCTION | STRING
 }
 ```
@@ -299,6 +339,44 @@ If the function is async, you may need to define it in `asyncValidators` propert
 },
 ```
 :::
+
+#### String validation expressions
+
+For JSON field configurations, `validators.<name>.expression` can be a string. A truthy result means the field is valid; a falsy result adds the named validation error. Functions and registered validator names continue to work as before.
+
+String expressions can read `control`, `field`, `model`, and `formState`. Use `control.value` for the value being validated, because Angular runs validators before Formly updates the model. `model` is the field's model, and `formState` is `field.options.formState`.
+
+To compare two fields, put the validator on their group so changing either field reruns validation. Set `errorPath` to show the error on a child field:
+
+```json
+{
+  "validators": {
+    "endAfterStart": {
+      "expression": "!control.value.startdate || !control.value.enddate || control.value.enddate > control.value.startdate",
+      "message": "End date must be greater than start date",
+      "errorPath": "enddate"
+    }
+  },
+  "fieldGroup": [
+    {
+      "key": "startdate",
+      "type": "input",
+      "props": { "type": "date", "label": "Start date" }
+    },
+    {
+      "key": "enddate",
+      "type": "input",
+      "props": { "type": "date", "label": "End date" }
+    }
+  ]
+}
+```
+
+This example compares date strings in `yyyy-mm-dd` format and leaves empty values valid. Add `props.required` if a date is mandatory. See the [custom validation example](https://formly.dev/examples/validation/custom-validation).
+
+Validation strings always use Formly's CSP-safe parser, without `eval()` or `new Function()`. They support property access, optional chaining, comparisons, arithmetic, logical operators, and ternaries. Function calls and arbitrary JavaScript are unsupported; use a function validator for those cases. Invalid syntax throws an error when building the form.
+
+These expressions run with Angular's normal validation cycle. Changing a sibling field or `formState` does not automatically revalidate an individual control. Use a group validator for cross-field rules, or explicitly call `updateValueAndValidity()` after changing external state.
 
 ### 4. Declaring validation function in a formly type and message within App Config.
 

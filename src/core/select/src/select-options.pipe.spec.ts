@@ -53,7 +53,7 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
       },
     };
 
-    const spy = jest.fn();
+    const spy = vi.fn();
     pipe.transform([], field).subscribe(spy);
     fieldChanges.next({ value: [], field, type: 'expressionChanges', property: 'props.options' });
     fieldChanges.next({ value: [], field, type: 'expressionChanges', property: 'templateOptions.options' });

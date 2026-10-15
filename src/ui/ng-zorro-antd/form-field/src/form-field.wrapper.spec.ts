@@ -1,5 +1,5 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it } from 'vitest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyNzFormFieldModule } from '@ngx-formly/ng-zorro-antd/form-field';

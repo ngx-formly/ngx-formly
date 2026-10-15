@@ -101,7 +101,7 @@ describe('ui-bootstrap: Select Type', () => {
   });
 
   it(`should call change callback after formControl update`, () => {
-    const changeFnSpy = jest.fn();
+    const changeFnSpy = vi.fn();
     const { query, field } = renderComponent({
       key: 'sportId',
       type: 'select',

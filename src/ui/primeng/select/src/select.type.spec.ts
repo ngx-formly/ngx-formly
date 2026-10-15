@@ -1,4 +1,3 @@
-import { fakeAsync, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
@@ -11,8 +10,9 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-primeng: Select Type', () => {
-  it('should select multiple values and disable unavailable options', fakeAsync(() => {
-    const changeSpy = jest.fn();
+  it('should select multiple values and disable unavailable options', async () => {
+    vi.useFakeTimers();
+    const changeSpy = vi.fn();
     const { query, queryAll, detectChanges, field } = renderComponent({
       key: 'name',
       type: 'select',
@@ -28,7 +28,7 @@ describe('ui-primeng: Select Type', () => {
       },
     });
     query('p-multiselect').componentInstance.show(true);
-    tick();
+    await vi.advanceTimersByTimeAsync(0);
     detectChanges();
     const items = queryAll('li[pMultiSelectItem]');
     expect(items).toHaveLength(3);
@@ -38,8 +38,8 @@ describe('ui-primeng: Select Type', () => {
     queryAll('li[pMultiSelectItem]')[1].triggerEventHandler('click', new MouseEvent('click'));
     expect(field.formControl.value).toEqual([1, 2]);
     expect(changeSpy).toHaveBeenCalledTimes(2);
-    tick(300);
-  }));
+    await vi.advanceTimersByTimeAsync(300);
+  });
 
   it('should render select type', () => {
     const { query, queryAll, detectChanges } = renderComponent({
@@ -84,7 +84,7 @@ describe('ui-primeng: Select Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, queryAll, detectChanges, field } = renderComponent({
       key: 'name',
       type: 'select',

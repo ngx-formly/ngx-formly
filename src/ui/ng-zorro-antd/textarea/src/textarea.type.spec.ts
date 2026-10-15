@@ -1,5 +1,5 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyNzTextAreaModule } from '@ngx-formly/ng-zorro-antd/textarea';
@@ -40,7 +40,7 @@ describe('ui-ng-zorro-antd: Textarea Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'textarea',

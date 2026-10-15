@@ -55,6 +55,26 @@ describe('ui-bootstrap: FormField Wrapper', () => {
     expect(query('label').nativeElement.textContent).toEqual(' Name ');
   });
 
+  it('shows multiple messages after touch while preserving the error ID and alert role', () => {
+    const { query, field, detectChanges } = renderComponent({
+      key: 'name',
+      wrappers: ['form-field'],
+      validation: { showAllErrors: true },
+      validators: {
+        first: { expression: () => false, message: 'First error.' },
+        second: { expression: () => false, message: 'Second error.' },
+      },
+    });
+    expect(query('formly-validation-message')).toBeNull();
+
+    field.formControl.markAsTouched();
+    detectChanges();
+    const message = query('formly-validation-message').nativeElement;
+    expect(message.textContent).toBe('First error.\nSecond error.');
+    expect(message.id).toBe(`${field.id}-formly-validation-error`);
+    expect(message.getAttribute('role')).toBe('alert');
+  });
+
   it('should hide label', () => {
     const { query } = renderComponent({
       wrappers: ['form-field'],

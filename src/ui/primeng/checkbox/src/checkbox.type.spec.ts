@@ -1,4 +1,4 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
@@ -35,7 +35,7 @@ describe('ui-primeng: Checkbox Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',

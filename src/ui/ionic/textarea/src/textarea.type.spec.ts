@@ -38,7 +38,7 @@ describe('ui-ionic: Textarea Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, field } = renderComponent({
       key: 'name',
       type: 'textarea',

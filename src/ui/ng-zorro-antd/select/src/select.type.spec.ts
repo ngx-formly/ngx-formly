@@ -1,5 +1,5 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyNzSelectModule } from '@ngx-formly/ng-zorro-antd/select';
@@ -55,7 +55,7 @@ describe('ui-ng-zorro-antd: Select Type', () => {
   });
 
   it('should bind control value on change', async () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, field, fixture } = renderComponent({
       key: 'name',
       type: 'select',

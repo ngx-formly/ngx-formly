@@ -7,6 +7,7 @@ import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   multiple?: boolean;
   selectAllOption?: string;
+  triggerLabel?: string | ((formValue: any) => string);
   disableOptionCentering?: boolean;
   typeaheadDebounceInterval?: number;
   compareWith?: (o1: any, o2: any) => boolean;
@@ -47,6 +48,9 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [panelClass]="props.panelClass"
       [panelWidth]="props.panelWidth"
     >
+      @if (props.triggerLabel != null) {
+        <mat-select-trigger>{{ triggerLabel }}</mat-select-trigger>
+      }
       @if (props.options | formlySelectOptions: field | async; as selectOptions) {
         @if (props.multiple && props.selectAllOption) {
           <ng-container [ngTemplateOutlet]="selectAll" [ngTemplateOutletContext]="{ selectOptions: selectOptions }">
@@ -88,6 +92,19 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   };
 
   private selectAllValue!: { options: any; value: any[] };
+
+  get triggerLabel() {
+    const { triggerLabel, multiple } = this.props;
+    if (this.empty || (multiple && this.value.length === 0)) {
+      return '';
+    }
+
+    if (typeof triggerLabel === 'function') {
+      return triggerLabel(this.value);
+    }
+
+    return multiple ? this.value.map((value: any) => value?.[triggerLabel]).join(', ') : this.value?.[triggerLabel];
+  }
 
   getSelectAllState(options: any[]) {
     if (this.empty || this.value.length === 0) {

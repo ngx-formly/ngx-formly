@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, provideZonelessChangeDetection } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { createBuilder, createComponent, createFieldComponent } from '@ngx-formly/core/testing';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -28,7 +28,7 @@ describe('FormlyValidationMessagesPipe', () => {
   afterEach(() => subscriptions.forEach((subscription) => subscription.unsubscribe()));
 
   function watch(fields: Parameters<FormlyValidationMessagesPipe['transform']>[0]) {
-    const next = jest.fn<void, [FormlyValidationMessageEntry[]]>();
+    const next = vi.fn<(entries: FormlyValidationMessageEntry[]) => void>();
     const subscription = pipe.transform(fields).subscribe(next);
     subscriptions.push(subscription);
     return {
@@ -129,7 +129,7 @@ describe('FormlyValidationMessagesPipe', () => {
 
   it('preserves message precedence and passes the error value and field to functions', () => {
     const error = { message: 'Error object' };
-    const message = jest.fn(() => of('Async validator'));
+    const message = vi.fn(() => of('Async validator'));
     const field = fieldWithErrors(
       { required: error },
       {
@@ -246,35 +246,33 @@ describe('FormlyValidationMessagesPipe', () => {
     { input: 'tree', debounce: 0 },
     { input: 'leaf', debounce: 0 },
     { input: 'leaf', debounce: 5 },
-  ])(
-    'refreshes sibling-dependent messages for a $input input with $debounce ms debounce',
-    fakeAsync(({ input, debounce }) => {
-      const translation = new Subject<string>();
-      const { field } = createFieldComponent({
-        fieldGroup: [
-          {
-            key: 'name',
-            props: { required: true },
-            validators: { translated: { expression: () => false, message: () => translation } },
-            validation: { messages: { required: (_error, field) => `Required for ${field.model.other}` } },
-          },
-          { key: 'other', defaultValue: 'Before', modelOptions: { debounce: { default: debounce } } },
-        ],
-      });
-      const result = watch(input === 'tree' ? field : field.fieldGroup[0]);
-      translation.next('Translated');
-      expect(result.entries.map(({ message }) => message)).toEqual(['Required for Before', 'Translated']);
+  ])('refreshes sibling-dependent messages for a $input input with $debounce ms debounce', ({ input, debounce }) => {
+    vi.useFakeTimers();
+    const translation = new Subject<string>();
+    const { field } = createFieldComponent({
+      fieldGroup: [
+        {
+          key: 'name',
+          props: { required: true },
+          validators: { translated: { expression: () => false, message: () => translation } },
+          validation: { messages: { required: (_error, field) => `Required for ${field.model.other}` } },
+        },
+        { key: 'other', defaultValue: 'Before', modelOptions: { debounce: { default: debounce } } },
+      ],
+    });
+    const result = watch(input === 'tree' ? field : field.fieldGroup[0]);
+    translation.next('Translated');
+    expect(result.entries.map(({ message }) => message)).toEqual(['Required for Before', 'Translated']);
 
-      field.fieldGroup[1].formControl.setValue('After');
-      tick(debounce);
-      expect(result.entries.map(({ message }) => message)).toEqual(['Required for After', 'Translated']);
-      expect(translation.observers).toHaveLength(1);
-      translation.next('Updated translation');
-      expect(result.entries.map(({ message }) => message)).toEqual(['Required for After', 'Updated translation']);
-      field.fieldGroup[0].formControl.setErrors({ translated: true });
-      expect(result.entries.map(({ message }) => message)).toEqual(['Updated translation']);
-    }),
-  );
+    field.fieldGroup[1].formControl.setValue('After');
+    vi.advanceTimersByTime(debounce);
+    expect(result.entries.map(({ message }) => message)).toEqual(['Required for After', 'Translated']);
+    expect(translation.observers).toHaveLength(1);
+    translation.next('Updated translation');
+    expect(result.entries.map(({ message }) => message)).toEqual(['Required for After', 'Updated translation']);
+    field.fieldGroup[0].formControl.setErrors({ translated: true });
+    expect(result.entries.map(({ message }) => message)).toEqual(['Updated translation']);
+  });
 
   it('replaces obsolete observable messages when a sibling changes their source', () => {
     const before = new Subject<string>();
@@ -425,7 +423,7 @@ describe('FormlyValidationMessagesPipe', () => {
         },
       },
     });
-    const error = jest.fn();
+    const error = vi.fn();
     pipe.transform(field).subscribe({ error });
 
     expect(error).toHaveBeenCalledWith(failure);

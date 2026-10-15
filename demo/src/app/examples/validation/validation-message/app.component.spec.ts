@@ -24,6 +24,15 @@ describe('Validation message example', () => {
     fixture.componentInstance.form.get('name').setValue('Ada');
     await fixture.whenStable();
     expect(summary().textContent).toContain('Second IP Address');
+    fixture.componentInstance.form.get('ip').setValue('abc');
+    await fixture.whenStable();
+    expect(summary().querySelectorAll('li')).toHaveLength(3);
+    const ipField = fixture.nativeElement.querySelector('input[id*="_ip_"]').closest('formly-field');
+    expect(ipField.querySelector('formly-validation-message').textContent).toBe(
+      '"abc" is not a valid IP Address\nShould have atleast 7 characters',
+    );
+    expect(summary().textContent).toContain('Should have atleast 7 characters');
+    expect(summary().textContent).toContain('"abc" is not a valid IP Address');
     fixture.componentInstance.form.get('ip').setValue('127.0.0.1');
     await fixture.whenStable();
     expect(summary().querySelectorAll('li')).toHaveLength(1);

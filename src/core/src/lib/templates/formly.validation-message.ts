@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Observable, isObservable, merge, of } from 'rxjs';
-import { filter, startWith, switchMap } from 'rxjs/operators';
+import { Observable, combineLatest, isObservable, merge, of } from 'rxjs';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { FormlyFieldConfig } from '../models';
 import { FormlyConfig } from '../services/formly.config';
 import { FORMLY_VALIDATORS } from '../utils';
@@ -17,6 +17,7 @@ import { getValidationMessage } from './validation-message';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [AsyncPipe],
+  host: { '[style.white-space]': "field.validation?.showAllErrors ? 'pre-line' : null" },
 })
 export class FormlyValidationMessage implements OnChanges {
   /** The field config. */
@@ -42,16 +43,34 @@ export class FormlyValidationMessage implements OnChanges {
           ),
     ).pipe(
       startWith(null),
-      switchMap(() => (isObservable(this.errorMessage) ? this.errorMessage : of(this.errorMessage))),
+      switchMap(() => {
+        const message = this.errorMessage;
+        return isObservable(message) ? message : of(message);
+      }),
     );
   }
 
   get errorMessage() {
     const fieldForm = this.field.formControl;
+    const messages: (string | Observable<string>)[] = [];
     for (const error in fieldForm.errors) {
       if (fieldForm.errors.hasOwnProperty(error)) {
-        return getValidationMessage(this.field, error, this.config);
+        const message = getValidationMessage(this.field, error, this.config);
+        if (!this.field.validation?.showAllErrors) {
+          return message;
+        }
+        if (message) {
+          messages.push(message);
+        }
       }
+    }
+
+    if (this.field.validation?.showAllErrors) {
+      return messages.some(isObservable)
+        ? combineLatest(
+            messages.map((message) => (isObservable(message) ? message.pipe(startWith('')) : of(message))),
+          ).pipe(map((values) => values.filter(Boolean).join('\n')))
+        : messages.join('\n');
     }
 
     return undefined;

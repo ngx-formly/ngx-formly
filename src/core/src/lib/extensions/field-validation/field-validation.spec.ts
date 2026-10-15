@@ -1,6 +1,6 @@
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { createBuilder } from '@ngx-formly/core/testing';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { FormlyFieldConfigCache } from '../../models';
 
 function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
@@ -31,11 +31,12 @@ function validate(field: FormlyFieldConfigCache, value: any, errors: ValidationE
   expect(formControl.errors).toEqual(errors);
 }
 
-function asyncValidate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
+async function asyncValidate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
   const formControl = new FormControl(value, { asyncValidators: field._asyncValidators });
-  formControl.statusChanges.subscribe(() => {
-    expect(formControl.errors).toEqual(errors);
-  });
+  if (formControl.pending) {
+    await firstValueFrom(formControl.statusChanges);
+  }
+  expect(formControl.errors).toEqual(errors);
 }
 
 describe('FieldValidationExtension: initialise field validators', () => {
@@ -236,6 +237,97 @@ describe('FieldValidationExtension: initialise field validators', () => {
         validate(field, null, { custom: true });
       });
 
+      it('evaluates string expressions with the current control value and field context', () => {
+        const field = buildField({
+          model: { enabled: true },
+          props: { upperBound: 20 },
+          options: { formState: { min: 10 } },
+          validators: {
+            custom: {
+              expression:
+                '!model.enabled || (control.value >= formState.min && control.value <= field.props.upperBound)',
+              message: 'Value is outside the allowed range',
+            },
+          },
+        });
+        const errors = { custom: { message: 'Value is outside the allowed range' } };
+
+        validate(field, 15, null);
+        validate(field, 5, errors);
+        validate(field, 25, errors);
+        field.options.formState = { min: 5 };
+        validate(field, 5, null);
+        field.model.enabled = false;
+        validate(field, 25, null);
+      });
+
+      it('evaluates the JSON date expression from #2278', () => {
+        const field = buildField(
+          JSON.parse(`{
+          "model": { "startdate": "2026-10-01", "enddate": "2026-10-02" },
+          "validators": {
+            "endAfterStart": {
+              "expression": "(model.startdate && model.enddate)?model.enddate>model.startdate:true",
+              "message": "End date must be greater than start date"
+            }
+          }
+        }`),
+        );
+
+        validate(field, null, null);
+        field.model.enddate = '2026-10-01';
+        validate(field, null, { endAfterStart: { message: 'End date must be greater than start date' } });
+        field.model.startdate = undefined;
+        validate(field, null, null);
+      });
+
+      it.each(['', 'control.value >', 'control.value.trim()'])(
+        'rejects invalid or unsupported string expression %p',
+        (expression) => {
+          const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+          try {
+            expect(() => buildField({ validators: { custom: { expression } } })).toThrow(
+              '[Formly Error] Invalid validation expression for "custom"',
+            );
+          } finally {
+            error.mockRestore();
+          }
+        },
+      );
+
+      it('revalidates a JSON group expression when either date changes and routes its error to the end date', () => {
+        const field = JSON.parse(`{
+          "model": { "range": { "startdate": "2026-10-01", "enddate": "2026-10-02" } },
+          "fieldGroup": [{
+            "key": "range",
+            "validators": {
+              "endAfterStart": {
+                "expression": "!control.value.startdate || !control.value.enddate || control.value.enddate > control.value.startdate",
+                "errorPath": "enddate",
+                "message": "End date must be greater than start date"
+              }
+            },
+            "fieldGroup": [{ "key": "startdate" }, { "key": "enddate", "props": { "required": true } }]
+          }]
+        }`);
+        const form: FormGroup = new FormGroup({});
+        createBuilder().build({ ...field, form });
+        const start = form.get('range.startdate');
+        const end = form.get('range.enddate');
+
+        expect(form.valid).toBe(true);
+        start.setValue('2026-10-03');
+        expect(end.errors).toEqual({ endAfterStart: { message: 'End date must be greater than start date' } });
+        end.setValue('2026-10-04');
+        expect(form.valid).toBe(true);
+        start.setValue('2026-10-04');
+        expect(end.hasError('endAfterStart')).toBe(true);
+        start.setValue('2026-10-03');
+        expect(form.valid).toBe(true);
+        end.setValue('');
+        expect(end.errors).toEqual({ required: true });
+      });
+
       it(`using expression property with errorPath`, () => {
         const field = buildField({
           key: 'address',
@@ -280,26 +372,26 @@ describe('FieldValidationExtension: initialise field validators', () => {
   });
 
   describe('asyncValidators', () => {
-    it(`using Promise`, () => {
+    it(`using Promise`, async () => {
       const field = buildField({
         asyncValidators: {
-          custom: (control: FormControl) => new Promise((resolve) => resolve(control.value !== 'test')),
+          custom: (control: FormControl) => new Promise((resolve) => resolve(control.value === 'test')),
         },
       });
 
-      asyncValidate(field, 'test', null);
-      asyncValidate(field, 'custom', { custom: true });
+      await asyncValidate(field, 'test', null);
+      await asyncValidate(field, 'custom', { custom: true });
     });
 
-    it(`using Observable`, () => {
+    it(`using Observable`, async () => {
       const field = buildField({
         asyncValidators: {
-          custom: (control: FormControl) => of(control.value !== 'test'),
+          custom: (control: FormControl) => of(control.value === 'test'),
         },
       });
 
-      asyncValidate(field, 'test', null);
-      asyncValidate(field, 'custom', { custom: true });
+      await asyncValidate(field, 'test', null);
+      await asyncValidate(field, 'custom', { custom: true });
     });
   });
 

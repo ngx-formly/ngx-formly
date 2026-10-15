@@ -9,6 +9,7 @@ import { DatepickerAppConfig, DatepickerExampleConfig } from './datepicker';
 import { ToggleAppConfig, ToggleExampleConfig } from './toggle';
 import { SliderAppConfig, SliderExampleConfig } from './slider';
 import { AutocompleteAppConfig, AutocompleteExampleConfig } from './autocomplete';
+import { SelectTriggerExampleConfig } from './select-trigger';
 
 export const appRoutes: Routes = [
   {
@@ -27,6 +28,7 @@ export const appRoutes: Routes = [
       type: 'material',
       examples: [
         ...CommonExampleConfigs,
+        SelectTriggerExampleConfig,
         NativeSelectExampleConfig,
         DatepickerExampleConfig,
         ToggleExampleConfig,

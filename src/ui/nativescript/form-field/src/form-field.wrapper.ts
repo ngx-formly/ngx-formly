@@ -16,8 +16,17 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
         <ng-container #fieldComponent></ng-container>
         <StackLayout class="hr-light"></StackLayout>
         @if (showError) {
-          <formly-validation-message #validationMessage [field]="field"></formly-validation-message>
-          <Label class="text-danger" [text]="validationMessage.errorMessage"></Label>
+          <!-- NativeScript labels handle line breaks; its CSS parser does not support pre-line. -->
+          <formly-validation-message
+            #validationMessage
+            [field]="field"
+            style="white-space: normal"
+          ></formly-validation-message>
+          @if (field.validation?.showAllErrors) {
+            <Label class="text-danger" [text]="validationMessage.errorMessage$ | async" [textWrap]="true"></Label>
+          } @else {
+            <Label class="text-danger" [text]="validationMessage.errorMessage"></Label>
+          }
         }
       </StackLayout>
     </StackLayout>

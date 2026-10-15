@@ -1,4 +1,3 @@
-import { fakeAsync, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { of } from 'rxjs';
@@ -62,8 +61,9 @@ describe.each([
     },
   );
 
-  it('filters autocomplete suggestions', fakeAsync(() => {
-    const filter = jest.fn((term: string) => of(['California', 'Colorado'].filter((state) => state.startsWith(term))));
+  it('filters autocomplete suggestions', async () => {
+    vi.useFakeTimers();
+    const filter = vi.fn((term: string) => of(['California', 'Colorado'].filter((state) => state.startsWith(term))));
     const { query, field, detectChanges } = createFieldComponent(
       {
         key: 'value',
@@ -83,7 +83,7 @@ describe.each([
     } else {
       field.formControl.setValue('Cal');
     }
-    tick(200);
+    await vi.advanceTimersByTimeAsync(200);
     detectChanges();
     expect(filter).toHaveBeenLastCalledWith('Cal');
     if (name === 'Ionic') {
@@ -101,5 +101,5 @@ describe.each([
       control.triggerEventHandler('keydown', new KeyboardEvent('keydown', { key: 'Enter' }));
       expect(field.formControl.value).toBe('Colorado');
     }
-  }));
+  });
 });
