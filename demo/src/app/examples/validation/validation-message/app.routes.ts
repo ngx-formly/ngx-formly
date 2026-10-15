@@ -16,7 +16,9 @@ export const appRoutes: Routes = [
         {
           title: 'Validation message',
           description: `
-              This demonstrates the different ways to define a custom validation message, globally or for a specific field.
+              Define validation messages globally or per field, then use the validationMessages pipe to list all errors
+              after submission. The summary includes nested fields and excludes hidden fields. Enter a name to reveal
+              the second IP address field, or reset the form to hide the summary.
               The IP Address field uses validation.showAllErrors to display all its errors together.
             `,
           component: AppComponent,

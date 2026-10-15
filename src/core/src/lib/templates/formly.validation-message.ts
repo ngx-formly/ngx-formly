@@ -9,6 +9,7 @@ import { getValidationMessage } from './validation-message';
 
 /**
  * The `<formly-validation-message>` component renders the error message of a given `field`.
+ * @deprecated Use the `validationMessages` pipe to render validation messages.
  */
 @Component({
   selector: 'formly-validation-message',
@@ -76,6 +77,7 @@ export class FormlyValidationMessage implements OnChanges {
   }
 }
 
+/** @deprecated Use the `validationMessages` pipe to render validation messages. */
 @Component({
   selector: 'formly-validation-message',
   template: '{{ errorMessage$ | async }}',
