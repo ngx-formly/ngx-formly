@@ -102,7 +102,18 @@ If the increment is only a UI preference and arbitrary numeric values must remai
 `'any'` and put the UI increment in `props.attributes.step`. Numeric fields without `props.step` retain their
 existing validation behavior. JSON Schema fields retain their separate `multipleOf` validation.
 
-## 5. Verify the upgrade
+## 5. Use the validationMessages pipe for error summaries
+
+`FormlyValidationMessagesPipe`, imported from `@ngx-formly/core`, collects configured messages from a built field or
+field tree. Use `fields | validationMessages | async` to receive entries containing the field, error name, and resolved
+message. `FormlyModule` also exports the pipe. The caller controls whether to display errors before submission.
+
+`FormlyValidationMessage` and `LegacyFormlyValidationMessage` are deprecated but retain their existing behavior and
+public members. Existing adapters and custom wrappers continue to work. New summaries can use the pipe without
+changing validators or message configuration. See the [validation guide](docs/validation.md#validation-summaries)
+for imports, a submit-gated summary, and inline migration guidance.
+
+## 6. Verify the upgrade
 
 Build your application and run its tests. Check asynchronously loaded fields, async validation, expression-driven
 visibility, disabled states, reset behavior, and each UI integration you use. In zoneless component tests, await

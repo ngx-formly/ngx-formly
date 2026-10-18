@@ -135,6 +135,40 @@ describe('FormlyValidationMessage Component', () => {
   });
 });
 
+describe.each([FormlyValidationMessage, LegacyFormlyValidationMessage])('%s compatibility', (MessageComponent) => {
+  it('keeps the getter and stream limited to the first error by default', () => {
+    const config = new FormlyConfig();
+    config.addValidatorMessage('required', 'Required');
+    const component = new MessageComponent(config);
+    component.field = { formControl: new FormControl() };
+    component.field.formControl.setErrors({ required: true, other: { message: 'Other' } });
+    expect(component.errorMessage).toBe('Required');
+    component.ngOnChanges();
+    const next = vi.fn();
+    const subscription = component.errorMessage$.subscribe(next);
+    expect(next).toHaveBeenLastCalledWith('Required');
+
+    component.field.formControl.setErrors({ missing: true, required: true });
+    expect(component.errorMessage).toBeUndefined();
+    expect(next).toHaveBeenLastCalledWith(undefined);
+    component.field.formControl.setErrors({ forwarded: { errorPath: 'child' }, required: true });
+    expect(component.errorMessage).toBeUndefined();
+    expect(next).toHaveBeenLastCalledWith(undefined);
+    subscription.unsubscribe();
+  });
+
+  it('preserves observable getter values used by custom wrappers', () => {
+    const config = new FormlyConfig();
+    const translation = new Subject<string>();
+    config.addValidatorMessage('required', () => translation);
+    const component = new MessageComponent(config);
+    component.field = { formControl: new FormControl() };
+    component.field.formControl.setErrors({ required: true });
+
+    expect(component.errorMessage).toBe(translation);
+  });
+});
+
 describe.each([
   { name: 'standalone', MessageComponent: FormlyValidationMessage },
   { name: 'NgModule', MessageComponent: LegacyFormlyValidationMessage },

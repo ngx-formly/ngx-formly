@@ -17,6 +17,10 @@ export { LegacyFormlyAttributes, FormlyAttributes } from './templates/formly.att
 export { FormlyGroup as ɵFormlyGroup } from './templates/formly.group';
 export { FormlyTemplate, LegacyFormlyTemplate as ɵFormlyTemplate } from './components/formly.template';
 export { LegacyFormlyValidationMessage, FormlyValidationMessage } from './templates/formly.validation-message';
+export {
+  FormlyValidationMessagesPipe,
+  FormlyValidationMessageEntry,
+} from './templates/formly-validation-messages.pipe';
 export { FormlyConfig } from './services/formly.config';
 export { FormlyFormBuilder } from './services/formly.builder';
 export { FieldType, FieldTypeConfig, FieldGroupTypeConfig } from './templates/field.type';
