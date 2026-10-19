@@ -31,7 +31,9 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm run test
+        run: |
+          npm run test
+          node --test build/archive-docs.test.mjs
 
       - name: npm publish
         run: npm run publish
@@ -40,3 +42,28 @@ jobs:
         run: npm run github-release
         env:
           CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  archive-docs:
+    needs: build
+    if: endsWith(github.ref_name, '.0.0')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    concurrency:
+      group: archive-docs
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+
+      - name: Archive previous major documentation
+        run: node build/archive-docs.mjs
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: cadca557-5879-4239-bddc-13b61b9e867f

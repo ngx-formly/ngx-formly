@@ -1,12 +1,24 @@
 import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { syncBuiltinESMExports } from 'node:module';
+import path, { resolve } from 'node:path';
 import { test } from 'node:test';
 import ts from 'typescript';
 import { marked, Slugger } from 'marked';
-import { apiMenu } from './docs.mjs';
+import { apiMenu, generateApi } from './docs.mjs';
 
 const pages = JSON.parse(readFileSync('demo/src/app/api/api.generated.json', 'utf8'));
+
+test('generates the same API routes, imports, and source links with Windows path separators', (t) => {
+  const relative = t.mock.method(path, 'relative', path.win32.relative);
+  syncBuiltinESMExports();
+  try {
+    assert.deepEqual(generateApi(), pages);
+  } finally {
+    relative.mock.restore();
+    syncBuiltinESMExports();
+  }
+});
 
 test('documents every package entry point, with unique routes and resolvable symbol anchors', () => {
   const entries = ts.sys.readDirectory('src', ['.ts'], undefined, ['**/public_api.ts']);

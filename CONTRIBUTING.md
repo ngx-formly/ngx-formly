@@ -89,6 +89,24 @@ It reads Node.js from `.node-version`; keep `NPM_VERSION` in `netlify.toml` alig
 `packageManager` in `package.json`. The fallback to `index.html` lets Angular handle direct
 links and page refreshes, including the published `/docs/...` URLs.
 
+After publishing a stable major release such as `v12.0.0`, the release workflow archives
+the latest stable `v11.*` tag reachable from that release. It creates the `v11` branch
+with Netlify build settings and an updated version menu, enables that branch in Netlify,
+and waits for its deployment at `https://v11.formly.dev/`. Patch, minor, and prerelease
+tags do not create archives. Existing archive branches are preserved when retrying.
+
+Set the repository's GitHub Actions secret `NETLIFY_AUTH_TOKEN` to a Netlify token with
+access to the `formly-dev` project. Its project ID is set in `.github/workflows/release.yml`.
+The project must retain its existing automatic branch deploy subdomain setting,
+`branch-name.formly.dev`, and Netlify DNS/TLS configuration. The workflow adds each new
+archive to the allowed branches while preserving the production branch and other settings.
+See the [Netlify API reference](https://open-api.netlify.com/#tag/Site/operation/updateSite).
+
+If archiving fails after publication, rerun only the failed `archive-docs` job in GitHub
+Actions. Rerunning the successful publishing job would attempt to publish npm packages again.
+Run `node --test build/archive-docs.test.mjs` to check the archive automation locally;
+the tests use temporary Git repositories and mocked Netlify responses.
+
 Guides and API pages share the documentation reader, including heading links, code copying,
 the table of contents, source links, and previous/next navigation. Published `/docs/...` URLs
 redirect to the corresponding app routes while keeping query parameters and heading fragments.

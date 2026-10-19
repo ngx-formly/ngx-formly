@@ -31,7 +31,9 @@ export function generateApi() {
     checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, declaration), declaration, typeFlags);
 
   const pages = entries.map((entry) => {
-    const packagePath = relative(resolve(root, 'src'), entry).replace(/\/src\/public_api\.ts$/, '');
+    const packagePath = relative(resolve(root, 'src'), entry)
+      .replaceAll('\\', '/')
+      .replace(/\/src\/public_api\.ts$/, '');
     const path = `/api/${packagePath}`;
     const packageName = `@ngx-formly/${packagePath.replace(/^ui\//, '')}`;
     if (process.argv.includes('--verbose')) console.log(`Documenting ${packageName}`);
@@ -63,7 +65,7 @@ export function generateApi() {
         const declaration = symbol.valueDeclaration || symbol.declarations?.[0];
         if (!declaration) throw new Error(`No declaration for ${packageName}: ${name}`);
         const file = declaration.getSourceFile();
-        const source = relative(root, file.fileName);
+        const source = relative(root, file.fileName).replaceAll('\\', '/');
         const line = file.getLineAndCharacterOfPosition(declaration.getStart()).line + 1;
         if (process.argv.includes('--verbose')) console.log(`  ${name}`);
         const parts = [
@@ -158,7 +160,7 @@ export function generateApi() {
     return {
       path,
       title: packageName,
-      source: relative(root, entry),
+      source: relative(root, entry).replaceAll('\\', '/'),
       content: `# ${packageName}\n\nAPI reference for this package entry point.\n\n${content}`,
     };
   });
