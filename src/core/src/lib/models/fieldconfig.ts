@@ -244,6 +244,8 @@ export interface FormlyFieldProps {
 
   pattern?: string | RegExp;
   required?: boolean;
+  /** Keep array fields and their state at fixed indices. Defaults to false; enabled for JSON Schema tuples. */
+  trackByIndex?: boolean;
   tabindex?: number;
   readonly?: boolean;
   attributes?: { [key: string]: string | number };

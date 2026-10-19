@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyInputModule, createFieldChangesSpy, createFieldComponent } from '@ngx-formly/core/testing';
+import { FormlyInputModule, createFieldChangesSpy, createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { renderComponent as renderFormComponent } from '../components/formly.form.spec';
 import { FieldArrayType } from './field-array.type';
 import { BehaviorSubject } from 'rxjs';
@@ -24,6 +24,424 @@ const renderComponent = (field: FormlyFieldConfig, config = {}) => {
 };
 
 describe('Array Field Type', () => {
+  it.each([false, true])('should keep a fixed-path editor bound after insertion (editor first: %s)', (editorFirst) => {
+    const rows: FormlyFieldConfig = {
+      key: 'rows',
+      type: 'array',
+      fieldArray: { fieldGroup: [{ key: 'name', type: 'input' }] },
+    };
+    const editor: FormlyFieldConfig = { key: 'rows.0.name', type: 'input' };
+    const { field, query, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A' }] },
+      fieldGroup: editorFirst ? [editor, rows] : [rows, editor],
+    });
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+    const originalControl = rows.formControl.get('0.name');
+
+    arrayType.add(0, { name: 'New' });
+    detectChanges();
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Edited' }));
+
+    expect(field.model).toEqual({ rows: [{ name: 'Edited' }, { name: 'A' }] });
+    expect(editor.formControl).toBe(rows.formControl.get('0.name'));
+    expect(rows.formControl.get('1.name')).toBe(originalControl);
+
+    originalControl.setValue('Moved');
+    expect(field.model).toEqual({ rows: [{ name: 'Edited' }, { name: 'Moved' }] });
+
+    arrayType.remove(0);
+    detectChanges();
+    editor.formControl.setValue('After removal');
+    expect(field.model).toEqual({ rows: [{ name: 'After removal' }] });
+    expect(editor.formControl).toBe(originalControl);
+  });
+
+  it('should rebind a fixed-path group and keep its validation and disabled state at that path', () => {
+    const { field, query, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'Saved' }] },
+      fieldGroup: [
+        { key: 'rows', type: 'array', fieldArray: { fieldGroup: [{ key: 'name', type: 'input' }] } },
+        { key: 'rows.0', fieldGroup: [{ key: 'name', type: 'input', props: { minLength: 3 } }] },
+      ],
+    });
+    const [rows, group] = field.fieldGroup;
+    const editor = group.fieldGroup[0];
+    const movedControl = editor.formControl;
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+
+    arrayType.add(0, { name: 'N' });
+    detectChanges();
+    expect(group.formControl).toBe(rows.formControl.get('0'));
+    expect(editor.formControl).toBe(rows.formControl.get('0.name'));
+    expect(editor.formControl.invalid).toBe(true);
+    movedControl.setValue('A');
+    expect(movedControl.valid).toBe(true);
+    expect(field.model).toEqual({ rows: [{ name: 'N' }, { name: 'A' }] });
+
+    movedControl.disable();
+    expect(editor.props.disabled).toBe(false);
+    editor.formControl.disable();
+    expect(editor.props.disabled).toBe(true);
+    editor.props.disabled = false;
+    expect(editor.formControl.enabled).toBe(true);
+    expect(movedControl.disabled).toBe(true);
+  });
+
+  it('should rebind every child of a fixed-path group before hidden rows are shown', () => {
+    let hideRows = false;
+    const { field, query, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A' }, { name: 'B' }, { name: 'C' }] },
+      fieldGroup: [
+        {
+          key: 'rows',
+          type: 'array',
+          fieldArray: {
+            resetOnHide: false,
+            expressions: { hide: () => hideRows },
+            fieldGroup: [{ key: 'name', type: 'input', resetOnHide: false }],
+          },
+        },
+        { key: 'rows.2', fieldGroup: [{ key: 'name', type: 'input', resetOnHide: false }] },
+      ],
+    });
+    const [rows, group] = field.fieldGroup;
+    const editor = group.fieldGroup[0];
+    const movedControl = rows.fieldGroup[1].fieldGroup[0].formControl;
+    hideRows = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    (query('formly-array').componentInstance as ArrayTypeComponent).add(0, { name: 'New' });
+    detectChanges();
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Edited' }));
+    expect(field.model.rows).toEqual([{ name: 'New' }, { name: 'A' }, { name: 'Edited' }, { name: 'C' }]);
+
+    hideRows = false;
+    field.options.detectChanges(field);
+    detectChanges();
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Again' }));
+    expect(field.model.rows).toEqual([{ name: 'New' }, { name: 'A' }, { name: 'Again' }, { name: 'C' }]);
+    expect(rows.formControl.value).toEqual(field.model.rows);
+    expect(editor.formControl).toBe(movedControl);
+    expect(group.formControl).toBe(rows.fieldGroup[2].formControl);
+  });
+
+  it.each(['add', 'remove'])('should keep a fixed-path editor bound when rows are hidden during %s', (operation) => {
+    let hideRows = false;
+    const { field, query, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A' }, { name: 'B' }] },
+      fieldGroup: [
+        {
+          key: 'rows',
+          type: 'array',
+          fieldArray: {
+            resetOnHide: false,
+            expressions: { hide: () => hideRows },
+            fieldGroup: [{ key: 'name', type: 'input', resetOnHide: false }],
+          },
+        },
+        { key: 'rows.0.name', type: 'input', resetOnHide: false },
+      ],
+    });
+    const [rows, editor] = field.fieldGroup;
+    const originalControls = rows.fieldGroup.map((row) => row.formControl);
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+
+    hideRows = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(field.model).toEqual({ rows: [{ name: 'A' }, { name: 'B' }] });
+
+    if (operation === 'add') {
+      arrayType.add(0, { name: 'New' });
+    } else {
+      arrayType.remove(0);
+    }
+    detectChanges();
+    hideRows = false;
+    field.options.detectChanges(field);
+    detectChanges();
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Edited' }));
+
+    expect(field.model).toEqual({
+      rows: operation === 'add' ? [{ name: 'Edited' }, { name: 'A' }, { name: 'B' }] : [{ name: 'Edited' }],
+    });
+    expect(editor.formControl).toBe(rows.formControl.get('0.name'));
+    expect(rows.formControl.get(operation === 'add' ? '2' : '0')).toBe(originalControls[1]);
+  });
+
+  it('should rebind a fixed-path validation message after insertion and removal', () => {
+    const { field, query, detectChanges } = createFieldComponent(
+      {
+        model: { rows: [{ name: 'Saved' }] },
+        fieldGroup: [
+          { key: 'rows', type: 'array', fieldArray: { fieldGroup: [{ key: 'name', type: 'input' }] } },
+          {
+            key: 'rows.0.name',
+            type: 'input',
+            props: { minLength: 3 },
+            validation: { messages: { minLength: 'Too short' } },
+          },
+        ],
+      },
+      {
+        template: `
+          <formly-field [field]="field"></formly-field>
+          <formly-validation-message [field]="field.fieldGroup[1]"></formly-validation-message>
+        `,
+        imports: [FormlyInputModule, CommonModule],
+        declarations: [ArrayTypeComponent],
+        config: { types: [{ name: 'array', component: ArrayTypeComponent }] },
+      },
+    );
+    const editor = field.fieldGroup[1];
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+    const content = () => query('formly-validation-message').nativeElement.textContent;
+
+    arrayType.add(0, { name: 'New' });
+    detectChanges();
+    editor.formControl.setValue('N');
+    detectChanges();
+    expect(editor.formControl.invalid).toBe(true);
+    expect(content()).toBe('Too short');
+
+    arrayType.remove(0);
+    detectChanges();
+    expect(content()).toBe('');
+    editor.formControl.setValue('S');
+    detectChanges();
+    expect(content()).toBe('Too short');
+  });
+
+  it('should bind a fixed-path editor to a hidden row when other rows remain visible', () => {
+    let hideRow = false;
+    const { field, query, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A' }, { name: 'B' }] },
+      fieldGroup: [
+        {
+          key: 'rows',
+          type: 'array',
+          fieldArray: {
+            resetOnHide: false,
+            expressions: { hide: (f) => hideRow && f.model.name === 'A' },
+            fieldGroup: [{ key: 'name', type: 'input', resetOnHide: false }],
+          },
+        },
+        { key: 'rows.1.name', type: 'input', resetOnHide: false },
+      ],
+    });
+    const [rows, editor] = field.fieldGroup;
+    const originalControl = rows.formControl.get('0.name');
+    const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
+
+    hideRow = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    arrayType.add(0, { name: 'New' });
+    detectChanges();
+    expect(editor.formControl === originalControl).toBe(true);
+
+    editor.formControl.setValue('Edited');
+    hideRow = false;
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(field.model).toEqual({ rows: [{ name: 'New' }, { name: 'Edited' }, { name: 'B' }] });
+    expect(rows.formControl.value).toEqual(field.model.rows);
+  });
+
+  it.each([0, 1])('should rebind a hidden row editor across connected arrays (source: %s)', (source) => {
+    let hideRow = false;
+    const arrays: FormlyFieldConfig[] = ['other', 'name'].map((key) => ({
+      key: 'rows',
+      type: 'array',
+      fieldArray: {
+        resetOnHide: false,
+        expressions: { hide: (f) => hideRow && f.model.name === 'A' },
+        fieldGroup: [{ key, type: 'input', resetOnHide: false }],
+      },
+    }));
+    const editor: FormlyFieldConfig = { key: 'rows.1.name', type: 'input', resetOnHide: false };
+    const { field, query, queryAll, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A' }, { name: 'B' }, { name: 'C' }] },
+      fieldGroup: [...arrays, editor],
+    });
+    const originalControl = arrays[1].fieldGroup[0].fieldGroup[0].formControl;
+
+    hideRow = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    (queryAll('formly-array')[source].componentInstance as ArrayTypeComponent).add(0, { name: 'New' });
+    detectChanges();
+    expect(field.model.rows).toEqual([{ name: 'New' }, { name: 'A' }, { name: 'B' }, { name: 'C' }]);
+    expect(editor.formControl).toBe(originalControl);
+
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Edited' }));
+    hideRow = false;
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(field.model.rows).toEqual([{ name: 'New' }, { name: 'Edited' }, { name: 'B' }, { name: 'C' }]);
+    expect(arrays[0].formControl.value).toEqual(field.model.rows);
+    expect(editor.formControl).toBe(arrays[1].fieldGroup[1].fieldGroup[0].formControl);
+  });
+
+  it.each([0, 1])('should share newly inserted hidden row controls across connected arrays (source: %s)', (source) => {
+    let hideRows = false;
+    const arrays: FormlyFieldConfig[] = ['other', 'name'].map((key) => ({
+      key: 'rows',
+      type: 'array',
+      fieldArray: {
+        resetOnHide: false,
+        expressions: { hide: () => hideRows },
+        fieldGroup: [{ key, type: 'input', resetOnHide: false, props: { required: true } }],
+      },
+    }));
+    const { field, query, queryAll, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A', other: 'X' }] },
+      fieldGroup: [...arrays, { key: 'rows.0.name', type: 'input', resetOnHide: false }],
+    });
+
+    hideRows = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    (queryAll('formly-array')[source].componentInstance as ArrayTypeComponent).add(0, { name: 'New', other: 'Y' });
+    detectChanges();
+    hideRows = false;
+    field.options.detectChanges(field);
+    detectChanges();
+
+    expect(arrays[0].fieldGroup[0].formControl).toBe(arrays[1].fieldGroup[0].formControl);
+    expect(arrays[0].formControl.value).toEqual([
+      { name: 'New', other: 'Y' },
+      { name: 'A', other: 'X' },
+    ]);
+    const other = arrays[0].fieldGroup[0].fieldGroup[0];
+    query(`[id="${other.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: '' }));
+    expect(field.model.rows[0]).toEqual({ name: 'New', other: '' });
+    expect(field.formControl.valid).toBe(false);
+  });
+
+  it('should exclude hidden parent positions from array values and validation', () => {
+    let hideRows = false;
+    let visibleName: string;
+    const { field, query, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A' }, { name: 'B' }, { name: 'C' }] },
+      fieldGroup: [
+        {
+          key: 'rows',
+          type: 'array',
+          props: { required: true },
+          validators: { noEmptyRow: { expression: (c) => c.value.every((row) => !!row.name) } },
+          fieldArray: {
+            resetOnHide: false,
+            expressions: { hide: (f) => hideRows && f.model.name !== visibleName },
+            validators: { hiddenRow: { expression: () => false } },
+            fieldGroup: [{ key: 'name', type: 'input', resetOnHide: false }],
+          },
+        },
+        { key: 'rows.2.name', type: 'input', resetOnHide: false },
+      ],
+    });
+    const [rows, editor] = field.fieldGroup;
+    const array = query('formly-array').componentInstance as ArrayTypeComponent;
+    hideRows = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    array.add(0, { name: 'New' });
+    detectChanges();
+
+    expect(rows.formControl.valid).toBe(true);
+    expect(rows.formControl.value).toEqual([{ name: 'B' }]);
+    visibleName = 'A';
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(rows.formControl.value).toEqual([{ name: 'A' }, { name: 'B' }]);
+    visibleName = undefined;
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(rows.formControl.value).toEqual([{ name: 'B' }]);
+    editor.hide = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(rows.formControl.value).toEqual([]);
+    expect(rows.formControl.errors).toEqual({ required: true });
+    expect(field.model.rows).toEqual([{ name: 'New' }, { name: 'A' }, { name: 'B' }, { name: 'C' }]);
+
+    array.add(0, { name: 'Next' });
+    detectChanges();
+    expect(rows.formControl.value).toEqual([]);
+    expect(rows.formControl.errors).toEqual({ required: true });
+    editor.hide = false;
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(rows.formControl.value).toEqual([{ name: 'A' }]);
+    expect(rows.formControl.valid).toBe(true);
+
+    hideRows = false;
+    field.options.detectChanges(field);
+    detectChanges();
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Edited' }));
+    expect(field.model.rows).toEqual([
+      { name: 'Next' },
+      { name: 'New' },
+      { name: 'Edited' },
+      { name: 'B' },
+      { name: 'C' },
+    ]);
+    expect(rows.formControl.value).toEqual(field.model.rows);
+    expect(rows.formControl.valid).toBe(false);
+  });
+
+  it.each([false, true])('should rebind an editor at a later hidden position (connected: %s)', (connected) => {
+    let hideRows = false;
+    const arrays: FormlyFieldConfig[] = (connected ? ['other', 'name'] : ['name']).map((key) => ({
+      key: 'rows',
+      type: 'array',
+      fieldArray: {
+        resetOnHide: false,
+        expressions: { hide: () => hideRows },
+        validators: { row: { expression: (_control, f) => f.model.name !== 'A' } },
+        fieldGroup: [{ key, type: 'input', resetOnHide: false }],
+      },
+    }));
+    const editor: FormlyFieldConfig = { key: 'rows.2.name', type: 'input', resetOnHide: false };
+    const { field, query, detectChanges } = renderComponent({
+      model: { rows: [{ name: 'A' }, { name: 'B' }, { name: 'C' }] },
+      fieldGroup: [...arrays, editor],
+    });
+    const rows = arrays[arrays.length - 1];
+    const originalControls = rows.fieldGroup.map((row) => row.fieldGroup[0].formControl);
+    const array = query('formly-array').componentInstance as ArrayTypeComponent;
+    expect(field.formControl.valid).toBe(false);
+
+    hideRows = true;
+    field.options.detectChanges(field);
+    detectChanges();
+    array.add(0, { name: 'New' });
+    detectChanges();
+    expect(field.model.rows).toEqual([{ name: 'New' }, { name: 'A' }, { name: 'B' }, { name: 'C' }]);
+    expect(editor.formControl).toBe(originalControls[1]);
+    expect(field.formControl.valid).toBe(true);
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Edited' }));
+    expect(field.model.rows).toEqual([{ name: 'New' }, { name: 'A' }, { name: 'Edited' }, { name: 'C' }]);
+
+    array.remove(0);
+    detectChanges();
+    expect(editor.formControl).toBe(originalControls[2]);
+    expect(field.formControl.valid).toBe(true);
+    expect(query<HTMLInputElement>(`[id="${editor.id}"]`).nativeElement.value).toBe('C');
+    query(`[id="${editor.id}"]`).triggerEventHandler('input', ɵCustomEvent({ value: 'Again' }));
+    hideRows = false;
+    field.options.detectChanges(field);
+    detectChanges();
+    expect(field.model.rows).toEqual([{ name: 'A' }, { name: 'Edited' }, { name: 'Again' }]);
+    expect(rows.formControl.value).toEqual(field.model.rows);
+    rows.fieldGroup.forEach((row, index) => expect(row.fieldGroup[0].formControl).toBe(originalControls[index]));
+    expect(field.formControl.valid).toBe(false);
+
+    originalControls[2].setValue('Row edit');
+    detectChanges();
+    expect(query<HTMLInputElement>(`[id="${editor.id}"]`).nativeElement.value).toBe('Row edit');
+  });
+
   it.each(['function', 'observable'])(
     'should preserve a nested array disabled %s expression when its parent is enabled',
     (source) => {
@@ -491,6 +909,7 @@ describe('Array Field Type', () => {
     const originalControls = [...formArray.controls];
     const originalInputs = queryAll('input').map(({ nativeElement }) => nativeElement);
     originalControls[1].get('name').markAsTouched();
+    originalControls[1].get('name').markAsDirty();
 
     const arrayType = query('formly-array').componentInstance as ArrayTypeComponent;
     arrayType.add(index, { name: 'New' });
@@ -512,6 +931,7 @@ describe('Array Field Type', () => {
       expect(queryAll('input')[shiftedIndex].nativeElement).toBe(originalInputs[i]);
     });
     expect(formArray.at(2).get('name').touched).toBe(true);
+    expect(formArray.at(2).get('name').dirty).toBe(true);
     expect(formArray.at(index).pristine).toBe(true);
     expect(formArray.at(index).untouched).toBe(true);
     expect(formArray.dirty).toBe(true);
@@ -563,6 +983,71 @@ describe('Array Field Type', () => {
       'A',
       'B',
     ]);
+
+    arrayType.remove(0);
+    detectChanges();
+    field.fieldGroup.forEach((f, index) => {
+      originalFields[index].forEach((originalField, i) => {
+        expect(f.fieldGroup[i]).toBe(originalField);
+        expect(f.fieldGroup[i].formControl).toBe(originalControls[i]);
+      });
+    });
+    expect(field.model).toEqual({ rows: [{ name: 'A' }, { name: 'B' }] });
+  });
+
+  it.each([0, 1])('should track connected arrays by index when array %s initiates a change', (source) => {
+    const { field, queryAll, detectChanges } = renderComponent({
+      model: { rows: ['A', 'BB'] },
+      fieldGroup: [
+        {
+          key: 'rows',
+          type: 'array',
+          props: { trackByIndex: true },
+          fieldArray: (f) => ({ type: 'input', props: { minLength: f.fieldGroup.length + 1 } }),
+        },
+        { key: 'rows', type: 'array', fieldArray: { type: 'input' } },
+      ],
+    });
+    const originalFields = field.fieldGroup.map((f) => [...f.fieldGroup]);
+    const formArray = field.fieldGroup[0].formControl as FormArray;
+    const originalControls = [...formArray.controls];
+    const originalInputs = queryAll('input').map(({ nativeElement }) => nativeElement);
+    const arrayType = queryAll('formly-array')[source].componentInstance as ArrayTypeComponent;
+    originalControls[1].markAsTouched();
+    originalControls[1].markAsDirty();
+
+    arrayType.add(0, 'New');
+    detectChanges();
+
+    expect(field.model).toEqual({ rows: ['New', 'A', 'BB'] });
+    expect(formArray.value).toEqual(['New', 'A', 'BB']);
+    expect(formArray.invalid).toBe(true);
+    expect(field.fieldGroup[0].fieldGroup.map((f) => f.props.minLength)).toEqual([1, 2, 3]);
+    field.fieldGroup.forEach((f, index) => {
+      originalFields[index].forEach((originalField, i) => {
+        expect(f.fieldGroup[i]).toBe(originalField);
+        expect(f.fieldGroup[i].formControl).toBe(originalControls[i]);
+        expect(queryAll('input')[index * 3 + i].nativeElement).toBe(originalInputs[index * 2 + i]);
+      });
+    });
+    expect(formArray.at(1).touched).toBe(true);
+    expect(formArray.at(1).dirty).toBe(true);
+    expect(formArray.at(2).untouched).toBe(true);
+    expect(formArray.at(2).pristine).toBe(true);
+
+    arrayType.remove(0);
+    detectChanges();
+
+    expect(field.model).toEqual({ rows: ['A', 'BB'] });
+    expect(formArray.value).toEqual(['A', 'BB']);
+    expect(formArray.valid).toBe(true);
+    expect(field.fieldGroup[0].fieldGroup.map((f) => f.props.minLength)).toEqual([1, 2]);
+    field.fieldGroup.forEach((f, index) => {
+      originalFields[index].forEach((originalField, i) => {
+        expect(f.fieldGroup[i]).toBe(originalField);
+        expect(f.fieldGroup[i].formControl).toBe(originalControls[i]);
+      });
+    });
   });
 
   it('should insert a keyless fieldArray with defaults without marking the form dirty', () => {
@@ -593,6 +1078,12 @@ describe('Array Field Type', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({ value: field.model, field, type: 'valueChanges' });
     subscription.unsubscribe();
+
+    arrayType.remove(0);
+    detectChanges();
+    expect(field.model).toEqual([{ name: 'A' }]);
+    expect(formArray.value).toEqual(field.model);
+    expect(formArray.at(0)).toBe(originalControl);
   });
 
   it('should preserve controls when inserting into an array field without a key', () => {

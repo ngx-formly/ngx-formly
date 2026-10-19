@@ -30,6 +30,16 @@ export class AppComponent {
         },
       },
     },
+    {
+      key: 'tasks.0',
+      type: 'input',
+      props: {
+        label: 'First task',
+        description: 'This editor stays at position 0 when tasks are inserted or removed.',
+      },
+      resetOnHide: false,
+      expressions: { hide: ({ model }) => !model.tasks?.length },
+    },
   ];
 
   submit() {

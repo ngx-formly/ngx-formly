@@ -4,7 +4,7 @@ import { Observable, combineLatest, isObservable, merge, of } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { FormlyFieldConfig } from '../models';
 import { FormlyConfig } from '../services/formly.config';
-import { FORMLY_VALIDATORS } from '../utils';
+import { FORMLY_VALIDATORS, observe } from '../utils';
 import { getValidationMessage } from './validation-message';
 
 /**
@@ -28,8 +28,14 @@ export class FormlyValidationMessage implements OnChanges {
 
   ngOnChanges() {
     const EXPR_VALIDATORS = FORMLY_VALIDATORS.map((v) => `templateOptions.${v}`);
+    const controlChanges = new Observable<FormlyFieldConfig['formControl']>((subscriber) => {
+      const observer = observe<FormlyFieldConfig['formControl']>(this.field, ['formControl'], ({ currentValue }) =>
+        subscriber.next(currentValue),
+      );
+      return () => observer.unsubscribe();
+    });
     this.errorMessage$ = merge(
-      this.field.formControl.statusChanges,
+      controlChanges.pipe(switchMap((control) => (control ? control.statusChanges.pipe(startWith(null)) : of(null)))),
       !this.field.options
         ? of(null)
         : this.field.options.fieldChanges.pipe(
@@ -42,7 +48,6 @@ export class FormlyValidationMessage implements OnChanges {
             }),
           ),
     ).pipe(
-      startWith(null),
       switchMap(() => {
         const message = this.errorMessage;
         return isObservable(message) ? message : of(message);
@@ -51,10 +56,10 @@ export class FormlyValidationMessage implements OnChanges {
   }
 
   get errorMessage() {
-    const fieldForm = this.field.formControl;
+    const errors = this.field.formControl?.errors || {};
     const messages: (string | Observable<string>)[] = [];
-    for (const error in fieldForm.errors) {
-      if (fieldForm.errors.hasOwnProperty(error)) {
+    for (const error in errors) {
+      if (errors.hasOwnProperty(error)) {
         const message = getValidationMessage(this.field, error, this.config);
         if (!this.field.validation?.showAllErrors) {
           return message;

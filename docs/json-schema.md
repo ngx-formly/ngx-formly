@@ -47,6 +47,26 @@ Schema `default` values fill undefined model properties when Formly builds or re
 
 If restoring a default hides another field with `resetOnHide: true`, any default restored for that field during the same rebuild is cleared.
 
+## Array positions
+
+`FieldArrayType.add(index, value)` preserves existing row fields, controls, input instances,
+and touched/dirty state for ordinary arrays. A separate editor with a fixed key such as
+`rows.0.name` continues to edit index 0 after insertion or removal.
+
+JSON Schema tuples, where `items` is an array of schemas, use `props.trackByIndex: true`.
+Their fields, validators, and control state stay at their positions while model values shift.
+For example, inserting `42` before `'A'` in a tuple with string and number schemas produces
+`[42, 'A']`, which is invalid. Tuple fields do not preserve identity with the moved model values.
+Connected arrays that share a control use positional tracking if any of them enables it.
+
+Set `props.trackByIndex: true` on custom arrays whose `fieldArray` factory chooses a different
+configuration for each position. During factory evaluation, `fieldGroup` contains the fields
+before the new position, so `fieldGroup.length` identifies that position. Factories for ordinary
+arrays run when a row is created, not when an existing row moves.
+
+Recursive `oneOf` branches use their current row keys, including branches first opened after
+insertion or removal.
+
 ## Demo
 
 See [JSON Schema Examples](https://formly.dev/docs/examples/advanced/json-schema).

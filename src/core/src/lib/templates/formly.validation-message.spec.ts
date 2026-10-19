@@ -219,6 +219,33 @@ describe.each([
     expect(content()).toBe('');
   });
 
+  it('switches to the current control and stops listening to the previous control', () => {
+    const { fixture, field, content } = renderMessages();
+    const previous = field.formControl;
+
+    field.formControl = null;
+    fixture.detectChanges();
+    expect(content()).toBe('');
+
+    const control = new FormControl();
+    control.setErrors({ second: { message: 'Replacement error.' } });
+    field.formControl = control;
+    fixture.detectChanges();
+    expect(content()).toBe('Replacement error.');
+
+    field.validation.messages = { second: 'Updated error.' };
+    previous.setErrors(null);
+    fixture.detectChanges();
+    expect(content()).toBe('Replacement error.');
+
+    control.setErrors({ second: true });
+    fixture.detectChanges();
+    expect(content()).toBe('Updated error.');
+    control.setErrors(null);
+    fixture.detectChanges();
+    expect(content()).toBe('');
+  });
+
   it('skips unmapped, empty, inherited, and forwarded errors without suppressing later messages', () => {
     const { fixture, field, content } = renderMessages(true);
     field.validation.messages = { empty: () => '' };
