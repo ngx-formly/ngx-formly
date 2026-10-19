@@ -2,26 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [11.0.0](https://github.com/ngx-formly/ngx-formly/compare/v10.0.1...v11.0.0) (2026-10-14)
+## [11.0.0](https://github.com/ngx-formly/ngx-formly/compare/v10.0.1...v11.0.0) (2026-10-19)
 
 ### Breaking changes
 
 * **core:** Require Angular 22 or newer. Upgrade Angular and its toolchain before updating all `@ngx-formly/*` packages together to v11. Applications on Angular 21 should remain on Formly v10.
 * **material, primeng, ng-zorro-antd, nativescript:** Require version 22 or newer of the corresponding Angular UI library. Bootstrap examples using ng-bootstrap require v21.
 * **kendo:** Require Kendo Angular label, dropdown, and input packages 25.3.0 or newer for zoneless support. Update related Kendo packages together and use the matching v14.6.1 theme.
+* **ionic:** Require Ionic 9 and use its standalone components. Replace `IonicModule.forRoot()` with `provideIonicAngular()` in application providers and import individual Ionic components in custom templates ([#4222](https://github.com/ngx-formly/ngx-formly/pull/4222)).
 * **primeng:** Use `p-radiobutton` in copied radio templates and selectors. Select and datepicker `props.appendTo` now accept PrimeNG's `AppendTo` type, including `'body'`, `'self'`, and element or template references.
 * **ng-zorro-antd:** Datepicker examples require an explicit date adapter. Add `provideNzDateFnsAdapter()` to application providers to preserve the previous date-fns behavior.
+* **core:** Explicit positive `props.step` values now validate numeric model values. Configure a `step` validation message, or use `step: 'any'` and `props.attributes.step` when the increment should only affect the UI ([#4223](https://github.com/ngx-formly/ngx-formly/pull/4223)).
+* **core:** Hidden fields using `shareFormControl: false` no longer run parsers or write detached control values to the model, and hiding cancels pending debounced writes. Update inactive values through the model and set `resetOnHide: false` on every alternative to retain values when switching ([#4230](https://github.com/ngx-formly/ngx-formly/pull/4230)).
+* **core:** Array row fields and control state now follow their model values on indexed insertion and removal. Set `props.trackByIndex: true` for custom arrays whose configuration depends on position. JSON Schema tuples enable this automatically ([#4197](https://github.com/ngx-formly/ngx-formly/pull/4197), [#4231](https://github.com/ngx-formly/ngx-formly/pull/4231)).
 
 See the [v11 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v11.0.0/UPGRADE-11.0.md) for dependency updates and zoneless migration steps.
 
 ### Features
 
+* **core:** Add `props.allowHtml` to render labels and descriptions as sanitized HTML in web UI adapters. Plain text remains the default; NativeScript and custom templates do not automatically support this option ([#4225](https://github.com/ngx-formly/ngx-formly/pull/4225)).
+* **core:** Support string validator expressions with access to `control`, `field`, `model`, and `formState` through the CSP-safe expression parser ([#4226](https://github.com/ngx-formly/ngx-formly/pull/4226)).
+* **core:** Add `validation.showAllErrors` to display all configured field error messages, including asynchronous messages ([#4228](https://github.com/ngx-formly/ngx-formly/pull/4228)).
+* **core:** Export `FormlyValidationMessagesPipe` and `FormlyValidationMessageEntry` for validation summaries. The `validationMessages` pipe collects messages from a built field or field tree, excludes hidden and disabled fields, and deduplicates shared-control errors ([#4224](https://github.com/ngx-formly/ngx-formly/pull/4224)).
+* **core:** Expose `shareFormControl: false` for mutually exclusive editors at the same model path, with separate parsers, validators, and control state ([#4230](https://github.com/ngx-formly/ngx-formly/pull/4230)).
+* **material:** Add `props.triggerLabel` to customize select trigger text using a selected-value property or formatter function ([#4227](https://github.com/ngx-formly/ngx-formly/pull/4227)).
 * **demo:** Run the documentation app, exported StackBlitz examples, and SSR integration without Zone.js. Existing consumers can retain `provideZoneChangeDetection()` while migrating.
+* **guides:** Add a generated API reference, shared guide and API navigation, search integration, and package-specific READMEs. Configure Netlify deployment and archive the previous major's documentation after stable major releases ([#4232](https://github.com/ngx-formly/ngx-formly/pull/4232)).
 * **schematics:** Generate installations using Angular 22 and Formly v11.
 
 ### Bug fixes
 
+* **core:** Preserve existing row controls, input instances, and touched/dirty state during indexed array insertion. Keep connected arrays and fixed-path editors bound correctly after insertion or removal, including hidden rows and their validation messages ([#4197](https://github.com/ngx-formly/ngx-formly/pull/4197), [#4231](https://github.com/ngx-formly/ngx-formly/pull/4231)).
+* **json-schema:** Keep tuple validation at the correct position and resolve recursive `oneOf` branches using their current row keys after array changes ([#4231](https://github.com/ngx-formly/ngx-formly/pull/4231)).
 * **demo:** Notify Angular when HTTP responses update the JSON Schema and JSON powered examples so their forms render in zoneless applications.
+
+### Deprecations
+
+* **core:** Deprecate `FormlyValidationMessage` and `LegacyFormlyValidationMessage` in favor of the `validationMessages` pipe. Existing components and their public members remain available ([#4224](https://github.com/ngx-formly/ngx-formly/pull/4224)).
 
 Formly v11 continues to use Angular Reactive Forms. Signal Forms integration is planned for v12.
 

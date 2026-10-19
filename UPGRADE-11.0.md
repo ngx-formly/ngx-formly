@@ -113,7 +113,21 @@ Set `resetOnHide: false` on every alternative to retain values when switching. T
 Keep at most one independent editor visible at a model path. See the
 [alternate editor documentation](docs/properties-options.md#alternate-editors-for-the-same-model-value).
 
-## 6. Use the validationMessages pipe for error summaries
+## 6. Review array row state and positional configuration
+
+Indexed insertion and removal now keep ordinary array row fields, controls, input instances, and touched/dirty
+state with their model values. A separate editor with a fixed key such as `rows.0.name` still edits index 0.
+
+Set `props.trackByIndex: true` on custom arrays whose `fieldArray` factory chooses different validators or field
+types for each position. This keeps fields and control state at fixed indices while model values shift.
+JSON Schema tuples enable this option automatically. Connected arrays that share a control use positional
+tracking if any of them enables it.
+
+Factories for ordinary arrays run when a row is created, not when an existing row moves. During factory
+evaluation, `fieldGroup.length` identifies the new position. Review factories that depend on the array length
+and tests that expect touched/dirty state to stay at an index. See [array positions](docs/json-schema.md#array-positions).
+
+## 7. Use the validationMessages pipe for error summaries
 
 `FormlyValidationMessagesPipe`, imported from `@ngx-formly/core`, collects configured messages from a built field or
 field tree. Use `fields | validationMessages | async` to receive entries containing the field, error name, and resolved
@@ -124,7 +138,7 @@ public members. Existing adapters and custom wrappers continue to work. New summ
 changing validators or message configuration. See the [validation guide](docs/validation.md#validation-summaries)
 for imports, a submit-gated summary, and inline migration guidance.
 
-## 7. Verify the upgrade
+## 8. Verify the upgrade
 
 Build your application and run its tests. Check asynchronously loaded fields, async validation, expression-driven
 visibility, disabled states, reset behavior, and each UI integration you use. In zoneless component tests, await
