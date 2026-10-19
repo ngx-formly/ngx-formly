@@ -38,7 +38,7 @@ jobs:
       - name: Test
         run: |
           npm run test
-          node --test build/archive-docs.test.mjs
+          node --test build/archive-docs.test.mjs build/github-release.test.mjs
 
       - name: Bundlesize
         run: npx bundlesize

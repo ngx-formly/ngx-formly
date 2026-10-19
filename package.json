@@ -25,7 +25,7 @@
     "prestart": "npm run docs:api",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "github-release": "conventional-github-releaser -p angular --draft",
+    "github-release": "node build/github-release.mjs",
     "e2e:ssr": "ng build ssr --configuration production && (PORT=4200 node integration/ssr/dist/server/server.mjs & pid=$!; trap 'kill $pid' EXIT; cypress run)",
     "prepare": "husky install"
   },

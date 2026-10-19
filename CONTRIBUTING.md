@@ -89,6 +89,19 @@ It reads Node.js from `.node-version`; keep `NPM_VERSION` in `netlify.toml` alig
 `packageManager` in `package.json`. The fallback to `index.html` lets Angular handle direct
 links and page refreshes, including the published `/docs/...` URLs.
 
+After npm publication, the separate `github-release` job publishes the matching version's
+`CHANGELOG.md` entry as the GitHub release notes, including breaking changes and migration
+links. The tag must already exist and match `package.json`; missing or empty entries fail
+the job. Retries update the existing release, including a draft, and preserve its title
+and assets. Prerelease versions are marked as prereleases.
+
+If release notes fail, rerun only the failed `github-release` job. To repair notes locally
+from the matching release checkout, set `GITHUB_REF_NAME` (for example, `v11.0.0`),
+`GITHUB_REPOSITORY=ngx-formly/ngx-formly`, and `GITHUB_TOKEN` with Contents write access,
+then run `npm run github-release`. This command only updates GitHub release metadata;
+it does not publish npm packages. Run `node --test build/github-release.test.mjs` to check
+the changelog extraction and mocked GitHub API requests.
+
 After publishing a stable major release such as `v12.0.0`, the release workflow archives
 the latest stable `v11.*` tag reachable from that release. It creates the `v11` branch
 with Netlify build settings and an updated version menu, enables that branch in Netlify,

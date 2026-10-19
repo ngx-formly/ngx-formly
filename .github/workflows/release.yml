@@ -33,15 +33,28 @@ jobs:
       - name: Test
         run: |
           npm run test
-          node --test build/archive-docs.test.mjs
+          node --test build/archive-docs.test.mjs build/github-release.test.mjs
 
       - name: npm publish
         run: npm run publish
 
-      - name: Github release
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+
+      - name: Publish GitHub release notes from CHANGELOG.md
         run: npm run github-release
         env:
-          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   archive-docs:
     needs: build
