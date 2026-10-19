@@ -17,7 +17,13 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
         [inputId]="id"
         [id]="undefined"
       />
-      <label [for]="id" class="ml-2">{{ props.label }}</label>
+      <label [for]="id" class="ml-2">
+        @if (props.allowHtml) {
+          <span [innerHTML]="props.label"></span>
+        } @else {
+          <ng-container>{{ props.label }}</ng-container>
+        }
+      </label>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

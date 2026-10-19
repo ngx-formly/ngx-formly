@@ -35,7 +35,11 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
       [color]="props.color"
       [labelPosition]="props.labelPosition"
     >
-      {{ props.label }}
+      @if (props.allowHtml) {
+        <span [innerHTML]="props.label"></span>
+      } @else {
+        {{ props.label }}
+      }
       @if (props.required && props.hideRequiredMarker !== true) {
         <span aria-hidden="true" class="mat-form-field-required-marker mat-mdc-form-field-required-marker">*</span>
       }

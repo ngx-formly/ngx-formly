@@ -222,6 +222,8 @@ export interface FormlyTemplateOptions extends FormlyFieldProps {
 export interface FormlyFieldProps {
   type?: string;
   label?: string;
+  /** Render label and description strings as sanitized HTML in web UI adapters. Defaults to false. */
+  allowHtml?: boolean;
   placeholder?: string;
   disabled?: boolean;
   options?: any[] | Observable<any[]>;

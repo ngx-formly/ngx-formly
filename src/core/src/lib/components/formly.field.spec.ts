@@ -9,7 +9,7 @@ import {
   FormlyFieldInput,
   FormlyWrapperFormField,
 } from '@ngx-formly/core/testing';
-import { tick, fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyExtension, FormlyFieldConfigCache } from '../models';
 import { BehaviorSubject, timer } from 'rxjs';
@@ -152,7 +152,7 @@ describe('FormlyField Component', () => {
 
     const hooks = f.hooks;
     Object.keys(f.hooks).forEach((hook) => {
-      jest.spyOn(hooks, hook as any);
+      vi.spyOn(hooks, hook as any);
     });
 
     const { fixture, field } = renderComponent(f);
@@ -265,7 +265,7 @@ describe('FormlyField Component', () => {
 
   it('init hooks with observables', () => {
     const control = new FormControl();
-    const spy = jest.fn();
+    const spy = vi.fn();
     const initHookFn = (f: FormlyFieldConfig) => {
       return f.formControl.valueChanges.pipe(tap(spy));
     };
@@ -385,7 +385,8 @@ describe('FormlyField Component', () => {
     expect(field.props.label).toEqual('test');
   });
 
-  it('should detect observable expressions changes', fakeAsync(() => {
+  it('should detect observable expressions changes', async () => {
+    vi.useFakeTimers();
     const timer$ = timer(100);
     const { query, detectChanges } = renderComponent({
       type: 'on-push',
@@ -394,10 +395,10 @@ describe('FormlyField Component', () => {
       },
     });
 
-    tick(150);
+    await vi.advanceTimersByTimeAsync(150);
     detectChanges();
     expect(query('.props').nativeElement.textContent).toContain('ticker');
-  }));
+  });
 
   it('should update template options of OnPush FieldType #2191', async () => {
     const { field, query } = renderComponent({ type: 'on-populate' });
@@ -440,7 +441,8 @@ describe('FormlyField Component', () => {
       subscription.unsubscribe();
     });
 
-    it('should apply debounce to the emitted valueChanges', fakeAsync(() => {
+    it('should apply debounce to the emitted valueChanges', async () => {
+      vi.useFakeTimers();
       const { field } = renderComponent({
         key: 'foo',
         type: 'input',
@@ -454,10 +456,10 @@ describe('FormlyField Component', () => {
       field.formControl.setValue('15');
 
       expect(spy).not.toHaveBeenCalled();
-      tick(6);
+      await vi.advanceTimersByTimeAsync(6);
       expect(spy).toHaveBeenCalled();
       subscription.unsubscribe();
-    }));
+    });
 
     it('should ignore default debounce when using "blur" or "submit"', () => {
       const { field } = renderComponent({

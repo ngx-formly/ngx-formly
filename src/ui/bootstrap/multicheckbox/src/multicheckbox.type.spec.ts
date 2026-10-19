@@ -42,7 +42,7 @@ describe('ui-bootstrap: MultiCheckbox Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, queryAll, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'multicheckbox',

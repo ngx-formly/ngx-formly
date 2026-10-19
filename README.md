@@ -43,6 +43,7 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 - [Themes](https://formly.dev/ui)
 - [Material select trigger labels](docs/properties-options.md#material-select-trigger-labels)
 - [Ionic select interface options](docs/properties-options.md#ionic-select-interfaces)
+- [HTML labels and descriptions](docs/properties-options.md#html-labels-and-descriptions)
 - [Examples](https://formly.dev/examples)
 
 ## Resources
@@ -51,7 +52,7 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 - [Build Fast, JSON-Powered Forms on Angular With Ngx Formly](https://medium.com/better-programming/build-fast-json-powered-forms-on-angular-with-ngx-formly-b7a00733e66e?source=friends_link&sk=34fc6bdc71dd15fd255af18fb3280763)
 - [How to Build Fast, Advanced JSON-Powered Forms on Angular With ngx-formly](https://medium.com/better-programming/how-to-build-fast-advanced-json-powered-forms-on-angular-with-ngx-formly-77aeed406f73?source=friends_link&sk=8d4f332458a46557778a3438e8f63581)
 
-#### **Supported UI libs**
+#### Supported UI libs
 
 | UI                                                |                                                              |                                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------- |
@@ -63,7 +64,7 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 | [NG-ZORRO](http://ng.ant.design) | [Demo](https://formly.dev/ui/ng-zorro-antd) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ng-zorro-antd)     |
 | [NativeScript](https://www.nativescript.org)      | ||
 
-#### **Which Version to use?**
+#### Which Version to use?
 
 | Angular version | Formly version       | Migration                          |
 | --------------- | -------------------- | ---------------------------------- |

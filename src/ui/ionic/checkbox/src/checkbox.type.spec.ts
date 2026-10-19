@@ -35,12 +35,12 @@ describe('ui-ionic: Checkbox Type', () => {
     });
   });
 
-  it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+  it.each([false, true])('should bind control value on change with allowHtml=%s', (allowHtml) => {
+    const changeSpy = vi.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
-      props: { change: changeSpy },
+      props: { change: changeSpy, allowHtml, label: 'Accept <strong>terms</strong>' },
     });
 
     const inputDebugEl = query<HTMLInputElement>('ion-checkbox');

@@ -1,5 +1,5 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import { FormlyNzRadioModule } from '@ngx-formly/ng-zorro-antd/radio';
@@ -44,7 +44,7 @@ describe('ui-ng-zorro-antd: Radio Type', () => {
   });
 
   it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+    const changeSpy = vi.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'radio',

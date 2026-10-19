@@ -17,9 +17,12 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
       [ionFormlyAttributes]="field"
       [cols]="props.cols"
       [rows]="props.rows"
-      [label]="props.label"
+      [label]="props.allowHtml ? undefined : props.label"
       [labelPlacement]="props.labelPosition ?? 'start'"
     >
+      @if (props.allowHtml && props.label) {
+        <span slot="label" [innerHTML]="props.label"></span>
+      }
     </ion-textarea>
   `,
   styles: [':host { display: inherit; }'],

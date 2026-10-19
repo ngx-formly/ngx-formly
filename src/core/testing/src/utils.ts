@@ -1,3 +1,4 @@
+import { Mock, vi } from 'vitest';
 import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -24,8 +25,8 @@ export function mockComponent(options: Component): any {
   return Component(metadata)(Mock);
 }
 
-export function createFieldChangesSpy(field: FormlyFieldConfig): [jest.Mock, Subscription] {
-  const spy = jest.fn();
+export function createFieldChangesSpy(field: FormlyFieldConfig): [Mock, Subscription] {
+  const spy = vi.fn();
 
   return [spy, field.options.fieldChanges.subscribe(spy)];
 }

@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy, Type } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, Type, ViewChild } from '@angular/core';
+import { MatRadioGroup } from '@angular/material/radio';
 import { FieldTypeConfig, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { MatRadioGroup } from '@angular/material/radio';
 
 interface RadioProps extends FormlyFieldProps {
   labelPosition?: 'before' | 'after';
@@ -14,12 +14,16 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-mat-radio',
   template: `
+    @if (props.allowHtml) {
+      <span [id]="id + '-label'" hidden [innerHTML]="props.label"></span>
+    }
     <mat-radio-group
       [formControl]="formControl"
       [formlyAttributes]="field"
       [required]="required"
       [tabindex]="props.tabindex"
-      [attr.aria-label]="props.label"
+      [attr.aria-label]="props.allowHtml ? null : props.label"
+      [attr.aria-labelledby]="props.allowHtml ? id + '-label' : null"
     >
       @for (option of props.options | formlySelectOptions: field | async; track $index; let i = $index) {
         <mat-radio-button

@@ -1,3 +1,4 @@
+import { MockInstance } from 'vitest';
 import { FormControl, FormGroup } from '@angular/forms';
 import { createBuilder, createFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
 import { BehaviorSubject, Subject, of } from 'rxjs';
@@ -19,9 +20,9 @@ function buildField({ model, options, ...field }: FormlyFieldConfigCache): Forml
 
 describe('FieldExpressionExtension', () => {
   describe('expression check limit', () => {
-    let warn: jest.SpyInstance;
+    let warn: MockInstance;
 
-    beforeEach(() => (warn = jest.spyOn(console, 'warn').mockImplementation(() => {})));
+    beforeEach(() => (warn = vi.spyOn(console, 'warn').mockImplementation(() => {})));
     afterEach(() => warn.mockRestore());
 
     it('should settle a long nested hide chain when checking a child', () => {
@@ -109,7 +110,7 @@ describe('FieldExpressionExtension', () => {
           },
         ],
       };
-      const updateTreeValidity = jest.spyOn(form, '_updateTreeValidity');
+      const updateTreeValidity = vi.spyOn(form, '_updateTreeValidity');
 
       expect(() => builder.build(root)).toThrow('Expressions did not settle after 100 passes.');
       expect(warn).toHaveBeenCalledTimes(1);
@@ -368,7 +369,7 @@ describe('FieldExpressionExtension', () => {
     });
 
     it('should provide model, formState and field args', () => {
-      const spy = jest.fn();
+      const spy = vi.fn();
       const field = buildField({
         expressions: { hide: spy },
       });
@@ -548,7 +549,7 @@ describe('FieldExpressionExtension', () => {
     });
 
     it('should provide model, formState and field args', () => {
-      const spy = jest.fn();
+      const spy = vi.fn();
       const field = buildField({
         expressions: {
           className: spy,
@@ -629,7 +630,7 @@ describe('FieldExpressionExtension', () => {
 
     it('should update field validity when using built-in validations expression', () => {
       const formControl = new FormControl();
-      jest.spyOn(formControl, 'updateValueAndValidity');
+      vi.spyOn(formControl, 'updateValueAndValidity');
 
       buildField({
         key: 'checked',
@@ -692,8 +693,8 @@ describe('FieldExpressionExtension', () => {
           expressions: { 'props.disabled': () => false },
           fieldGroup: [{ key: 'child', expressions: { 'props.disabled': () => true } }],
         });
-        const enable = jest.spyOn(field.formControl, 'enable');
-        const disable = jest.spyOn(field.formControl, 'disable');
+        const enable = vi.spyOn(field.formControl, 'enable');
+        const disable = vi.spyOn(field.formControl, 'disable');
 
         field.options.checkExpressions(field.parent);
         field.options.checkExpressions(field.parent);
@@ -894,7 +895,7 @@ describe('FieldExpressionExtension', () => {
         });
 
         expect(fields[1].formControl.value).toBeUndefined();
-        const spy = jest.fn();
+        const spy = vi.fn();
         fields[1].formControl.valueChanges.subscribe(spy);
         expect(spy).not.toHaveBeenCalled();
 
@@ -950,7 +951,7 @@ describe('FieldExpressionExtension', () => {
       });
 
       it('should avoid extra expressions calls', () => {
-        const spy = jest.fn();
+        const spy = vi.fn();
         const field = buildField({
           key: 'text',
           _componentRefs: [],
@@ -1017,7 +1018,7 @@ describe('FieldExpressionExtension', () => {
   describe('fieldChanges', () => {
     it('should emit fieldChanges on change field visibility', () => {
       const fieldChanges = new Subject<any>();
-      const spy = jest.fn();
+      const spy = vi.fn();
       const subscription = fieldChanges.subscribe(spy);
 
       const field = buildField({
@@ -1041,7 +1042,7 @@ describe('FieldExpressionExtension', () => {
 
     it('should emit fieldChanges when expression value changes', () => {
       const fieldChanges = new Subject<any>();
-      const spy = jest.fn();
+      const spy = vi.fn();
       const subscription = fieldChanges.subscribe(spy);
 
       const field = buildField({

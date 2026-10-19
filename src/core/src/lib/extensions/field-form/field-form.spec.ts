@@ -160,9 +160,9 @@ describe('FieldFormExtension', () => {
 
   it('should update the formcontrol validation when field update', () => {
     const formControl = new FormControl();
-    jest.spyOn(formControl, 'setValidators');
-    jest.spyOn(formControl, 'setAsyncValidators');
-    jest.spyOn(formControl, 'updateValueAndValidity');
+    vi.spyOn(formControl, 'setValidators');
+    vi.spyOn(formControl, 'setAsyncValidators');
+    vi.spyOn(formControl, 'updateValueAndValidity');
     buildField({
       key: 'test',
       formControl,
@@ -180,7 +180,7 @@ describe('FieldFormExtension', () => {
 
   it('should not call "setAsyncValidators" when no asyncValidator is present in field', () => {
     const formControl = new FormControl();
-    jest.spyOn(formControl, 'setAsyncValidators');
+    vi.spyOn(formControl, 'setAsyncValidators');
     buildField({
       key: 'test',
       formControl,
@@ -193,7 +193,7 @@ describe('FieldFormExtension', () => {
 
   it('should updateValueAndValidity of detached field', () => {
     const formControl = new FormControl();
-    jest.spyOn(formControl, 'updateValueAndValidity');
+    vi.spyOn(formControl, 'updateValueAndValidity');
 
     buildField({
       key: 'test',
@@ -216,8 +216,8 @@ describe('FieldFormExtension', () => {
 
     buildField(field);
 
-    jest.spyOn(formControl, 'setValidators');
-    jest.spyOn(formControl, 'setAsyncValidators');
+    vi.spyOn(formControl, 'setValidators');
+    vi.spyOn(formControl, 'setAsyncValidators');
 
     buildField(field);
 

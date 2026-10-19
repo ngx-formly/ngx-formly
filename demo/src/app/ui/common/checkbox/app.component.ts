@@ -16,8 +16,9 @@ export class AppComponent {
       key: 'Checkbox',
       type: 'checkbox',
       props: {
-        label: 'Accept terms',
-        description: 'In order to proceed, please accept terms',
+        label: 'Accept <strong>terms</strong>',
+        description: 'Read the <a href="https://opensource.org/license/mit">terms and conditions</a> before accepting.',
+        allowHtml: true,
         pattern: 'true',
         required: true,
       },

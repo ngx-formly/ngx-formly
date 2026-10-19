@@ -35,7 +35,7 @@ describe('ui-ionic: FormField Wrapper', () => {
     expect(query('formly-validation-message')).not.toBeNull();
   });
 
-  xit('should hide required marker', () => {
+  it.skip('should hide required marker', () => {
     const { query } = renderComponent({
       wrappers: ['form-field'],
       props: {

@@ -1,5 +1,4 @@
 .idea
-.config\karma-shim.js
 .config\webpack.test.js
 demo
 node_modules
@@ -10,6 +9,5 @@ test
 .npmignore
 .travis.yml
 gulpfile.js
-karma.conf.js
 npm-debug.log
 tsconfig.json

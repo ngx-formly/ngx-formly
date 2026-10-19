@@ -1,5 +1,77 @@
 # Validation
 
+## Validation summaries
+
+Use `validationMessages` to collect every configured error message from a built field or an array of built fields.
+The pipe returns an `Observable<FormlyValidationMessageEntry[]>`. Each entry contains `field`, the original field
+configuration, `error`, the key in the control's errors object, and `message`, the resolved text.
+
+Import `FormlyValidationMessagesPipe` from `@ngx-formly/core` and `AsyncPipe` from `@angular/common` in a standalone
+component's `imports`. NgModule applications can use `FormlyModule` and `CommonModule` instead.
+
+```html
+<form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="submit()">
+  @if (formDirective.submitted) {
+    @if (fields | validationMessages | async; as errors) {
+      @if (errors.length) {
+        <div role="alert">
+          <p>Please correct the following errors:</p>
+          <ul>
+            @for (entry of errors; track $index) {
+              <li>{{ entry.field.props?.label }}: {{ entry.message }}</li>
+            }
+          </ul>
+        </div>
+      }
+    }
+  }
+  <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
+  <button type="submit">Submit</button>
+  <button type="button" (click)="options.resetModel(); formDirective.resetForm(form.value)">Reset</button>
+</form>
+```
+
+The pipe includes errors before a field is touched or the form is submitted. The surrounding template controls when
+to display them. The example above starts collecting after submission and hides the summary on reset.
+
+Nested groups and instantiated repeated rows are visited in field order. Group-level errors are included when the
+group has its own errors. Hidden fields, descendants of hidden fields, and disabled controls are excluded. Shared
+controls contribute each error once, at the first visible field that resolves its message. An error forwarded with
+`errorPath` is collected at its destination, not its source. Errors without a configured, nonempty message are omitted.
+
+Messages use the same resolution rules as inline validation. From highest to lowest priority, these are the
+async-validator message, validator message, `validation.messages`, the error object's `message`, and the global
+message. Functions receive the error value and the field. Observable messages update as they emit; a delayed message
+does not hold up messages that are already available.
+
+Control status changes and Formly value, expression, and visibility events update the collection. Repeated-row
+additions and removals update it without replacing the input array. The async pipe releases subscriptions when the
+view is destroyed or its input changes. Angular operations using `emitEvent: false` remain silent until another
+observed event occurs.
+
+Supply fields after Formly has built them. For asynchronously loaded fields, establish the binding after the
+[`fieldChange` build event](properties-options.md#accessing-controls-after-a-build). Null and empty inputs produce an
+empty array. Replace the input reference when changing the field structure outside Formly's field APIs.
+
+### Migrating inline messages
+
+`FormlyValidationMessage` and `LegacyFormlyValidationMessage` are deprecated. Their selectors, getters, observables,
+and default first-error behavior remain available. UI adapters continue using them for compatibility.
+
+For a leaf field in a custom wrapper, the pipe can display the first configured message:
+
+```html
+@if (showError) {
+  {{ (field | validationMessages | async)?.[0]?.message }}
+}
+```
+
+Preserve the wrapper's error ID, accessibility attributes, and visibility condition when replacing its template.
+The pipe skips unmapped errors and includes descendants, so migrating a group or a field with unmapped errors can
+change which message comes first. The existing component remains available for consumers that require its exact behavior.
+
+See the [validation-message example](https://formly.dev/examples/validation/validation-message) for a working summary.
+
 ## Multiple validation messages
 
 Fields display one error message at a time by default. Set `validation.showAllErrors` to `true` to display every

@@ -20,7 +20,15 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
       [formlyAttributes]="field"
       (ngModelChange)="props.change && props.change(field, $event)"
     >
-      {{ props.label }}
+      @if (props.allowHtml) {
+        <span
+          [innerHTML]="props.label"
+          (click)="onLabelInteraction($event)"
+          (keydown)="onLabelInteraction($event)"
+        ></span>
+      } @else {
+        {{ props.label }}
+      }
     </label>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,4 +41,10 @@ export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps
       hideLabel: true,
     },
   };
+
+  protected onLabelInteraction(event: Event) {
+    if ((event.target as HTMLElement).closest('a[href]')) {
+      event.stopPropagation();
+    }
+  }
 }

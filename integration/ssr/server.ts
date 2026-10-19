@@ -28,6 +28,9 @@ export function app(): express.Express {
     }),
   );
 
+  // Ionic's web components are exercised in the browser; CommonEngine always renders on the server.
+  server.get('/ionic', (_req, res) => res.sendFile(join(browserDistFolder, 'index.csr.html')));
+
   // All regular routes use the Angular engine
   server.get('**', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;

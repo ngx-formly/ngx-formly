@@ -13,7 +13,11 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
   template: `
     <input type="checkbox" kendoCheckBox [formControl]="formControl" [formlyAttributes]="field" />
     <label [for]="id" class="k-checkbox-label">
-      {{ props.label }}
+      @if (props.allowHtml) {
+        <span [innerHTML]="props.label"></span>
+      } @else {
+        {{ props.label }}
+      }
       @if (props.required && props.hideRequiredMarker !== true) {
         <span aria-hidden="true" class="k-required">*</span>
       }

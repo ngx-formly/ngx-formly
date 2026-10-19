@@ -1,5 +1,5 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { FormlyNzCheckboxModule } from '@ngx-formly/ng-zorro-antd/checkbox';
@@ -43,12 +43,12 @@ describe('ui-ng-zorro-antd: Checkbox Type', () => {
     });
   });
 
-  it('should bind control value on change', () => {
-    const changeSpy = jest.fn();
+  it.each([false, true])('should bind control value on change with allowHtml=%s', (allowHtml) => {
+    const changeSpy = vi.fn();
     const { query, field, detectChanges } = renderComponent({
       key: 'name',
       type: 'checkbox',
-      props: { change: changeSpy },
+      props: { change: changeSpy, allowHtml, label: 'Accept <strong>terms</strong>' },
     });
 
     const inputDebugEl = query<HTMLInputElement>('input[type="checkbox"]');
