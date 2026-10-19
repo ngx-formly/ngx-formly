@@ -1,5 +1,4 @@
 import { provideZonelessChangeDetection } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
@@ -53,8 +52,8 @@ describe('alternate fields with independent controls', () => {
   });
 
   it.each([true, false])('isolates parsers and switches nested editors with lazyRender=%s', (lazyRender) => {
-    const upper = jest.fn((value) => value?.toUpperCase());
-    const lower = jest.fn((value) => value?.toLowerCase());
+    const upper = vi.fn((value) => value?.toUpperCase());
+    const lower = vi.fn((value) => value?.toLowerCase());
     const first = alternative(false, { key: 'address.value', parsers: [upper] });
     const second = alternative(true, { key: 'address.value', parsers: [lower] });
     const { form, model, options, detectChanges, queryAll } = renderAlternatives(
@@ -96,7 +95,7 @@ describe('alternate fields with independent controls', () => {
   });
 
   it.each([true, false])('respects a hidden parent with lazyRender=%s', (lazyRender) => {
-    const parser = jest.fn((value) => value?.toUpperCase());
+    const parser = vi.fn((value) => value?.toUpperCase());
     const child = alternative(false, { expressions: {}, parsers: [parser] });
     const parent: FormlyFieldConfig = {
       expressions: { hide: ({ options }) => options.formState.alternate },
@@ -118,7 +117,8 @@ describe('alternate fields with independent controls', () => {
     expect(child.formControl.value).toBe('INITIAL');
   });
 
-  it('cancels a debounced write even when its editor is shown again before the delay expires', fakeAsync(() => {
+  it('cancels a debounced write even when its editor is shown again before the delay expires', async () => {
+    vi.useFakeTimers();
     const first = alternative(false, { modelOptions: { debounce: { default: 50 } } });
     const second = alternative(true);
     const { model, options, detectChanges } = renderAlternatives([first, second]);
@@ -131,11 +131,11 @@ describe('alternate fields with independent controls', () => {
     options.formState.alternate = false;
     options.detectChanges(first.parent);
     detectChanges();
-    tick(60);
+    await vi.advanceTimersByTimeAsync(60);
 
     expect(model.value).toBe('current');
     expect(first.formControl.value).toBe('current');
-  }));
+  });
 
   it('keeps sync and pending async validation local to the active control', () => {
     const result = new Subject<boolean>();
@@ -164,7 +164,8 @@ describe('alternate fields with independent controls', () => {
     expect(first.formControl.hasError('required')).toBe(true);
   });
 
-  it('cancels pending writes while an editor remains hidden', fakeAsync(() => {
+  it('cancels pending writes while an editor remains hidden', async () => {
+    vi.useFakeTimers();
     const first = alternative(false, { modelOptions: { debounce: { default: 50 } } });
     const second = alternative(true);
     const { model, options } = renderAlternatives([first, second]);
@@ -172,27 +173,29 @@ describe('alternate fields with independent controls', () => {
     options.formState.alternate = true;
     options.detectChanges(first.parent);
     second.formControl.setValue('current');
-    tick(60);
+    await vi.advanceTimersByTimeAsync(60);
     expect(model.value).toBe('current');
-  }));
+  });
 
-  it('cancels a debounced edit when the user returns to the current model value', fakeAsync(() => {
+  it('cancels a debounced edit when the user returns to the current model value', async () => {
+    vi.useFakeTimers();
     const first = alternative(false, { modelOptions: { debounce: { default: 50 } } });
     const { model } = renderAlternatives([first]);
     first.formControl.setValue('pending');
     first.formControl.setValue('initial');
-    tick(60);
+    await vi.advanceTimersByTimeAsync(60);
     expect(model.value).toBe('initial');
-  }));
+  });
 
-  it('disposes pending writes when the form is destroyed', fakeAsync(() => {
+  it('disposes pending writes when the form is destroyed', async () => {
+    vi.useFakeTimers();
     const first = alternative(false, { modelOptions: { debounce: { default: 50 } } });
     const { model, fixture } = renderAlternatives([first]);
     first.formControl.setValue('pending');
     fixture.destroy();
-    tick(60);
+    await vi.advanceTimersByTimeAsync(60);
     expect(model.value).toBe('initial');
-  }));
+  });
 
   it('preserves resetOnHide clearing and the next editor default', () => {
     const first = alternative(false, { resetOnHide: true, defaultValue: 'first' });
@@ -212,8 +215,8 @@ describe('alternate fields with independent controls', () => {
   });
 
   it('normalizes only the active editor when replacing or resetting the model', () => {
-    const upper = jest.fn((value) => value?.toUpperCase());
-    const lower = jest.fn((value) => value?.toLowerCase());
+    const upper = vi.fn((value) => value?.toUpperCase());
+    const lower = vi.fn((value) => value?.toLowerCase());
     const first = alternative(false, {
       parsers: [upper],
       expressions: { hide: ({ model }) => model.alternate === true },
