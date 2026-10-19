@@ -31,6 +31,39 @@ export class AppComponent {
         hide: '!model.name',
       },
     },
+    {
+      key: 'numericCode',
+      type: 'checkbox',
+      props: { label: 'Use a numeric code' },
+    },
+    {
+      key: 'code',
+      type: 'input',
+      shareFormControl: false,
+      resetOnHide: false,
+      props: {
+        label: 'Text code',
+        description: 'Converted to uppercase. Switching editors keeps the value.',
+        pattern: '^[A-Z0-9]*$',
+      },
+      parsers: [(value) => (value == null ? value : String(value).toUpperCase())],
+      validation: { messages: { pattern: 'Use letters and digits only.' } },
+      expressions: { hide: ({ model }) => !!model.numericCode },
+    },
+    {
+      key: 'code',
+      type: 'input',
+      shareFormControl: false,
+      resetOnHide: false,
+      props: {
+        label: 'Numeric code',
+        description: 'Stored as a number. Only the visible editor validates the code.',
+        pattern: '^\\d+$',
+      },
+      parsers: [(value) => (value == null || value === '' || isNaN(Number(value)) ? value : Number(value))],
+      validation: { messages: { pattern: 'Use digits only.' } },
+      expressions: { hide: ({ model }) => !model.numericCode },
+    },
   ];
 
   submit() {

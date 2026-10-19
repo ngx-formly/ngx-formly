@@ -2,7 +2,14 @@ import { EventEmitter, Inject, Injectable, Injector, Optional, ViewContainerRef 
 import { UntypedFormGroup, UntypedFormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, ConfigOption } from '../models';
-import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField, isSignalRequired } from '../utils';
+import {
+  defineHiddenProp,
+  observe,
+  disableTreeValidityCall,
+  getKeyPath,
+  isHiddenField,
+  isSignalRequired,
+} from '../utils';
 import { FORMLY_CONFIG } from '../core.config';
 
 @Injectable({ providedIn: 'root' })
@@ -48,14 +55,16 @@ export class FormlyFormBuilder {
       this.initializedForms.add(field.form);
     }
 
+    const options = (field as FormlyFieldConfigCache).options;
+    const controlsForCheck = options._formControlsForCheck;
+    options._formControlsForCheck = controlsForCheck || new Set();
+
     try {
       disableTreeValidityCall(field.form, () => {
         this._build(field);
         // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
         if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
           // detect changes early to avoid reset value by hidden fields
-          const options = (field as FormlyFieldConfigCache).options;
-
           if (field.parent && isHiddenField(field)) {
             // when hide is used in expression set defaul value will not be set until detect hide changes
             // which causes default value not set on new item is added
@@ -66,12 +75,24 @@ export class FormlyFormBuilder {
           options._detectChanges?.(field);
         }
       });
+
+      if (!controlsForCheck) {
+        const controls = options._formControlsForCheck;
+        delete options._formControlsForCheck;
+        // Resume independent editors only after rebuilding and resolving their visibility.
+        controls.forEach((f) => (f._controlActive = !f._hide && f.form.get(getKeyPath(f)) === f.formControl));
+      }
     } catch (error) {
       if (firstBuild) {
         this.initializedForms.delete(field.form);
       }
       throw error;
     } finally {
+      if (controlsForCheck) {
+        options._formControlsForCheck = controlsForCheck;
+      } else {
+        delete options._formControlsForCheck;
+      }
       subscription?.unsubscribe();
     }
 

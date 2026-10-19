@@ -102,7 +102,18 @@ If the increment is only a UI preference and arbitrary numeric values must remai
 `'any'` and put the UI increment in `props.attributes.step`. Numeric fields without `props.step` retain their
 existing validation behavior. JSON Schema fields retain their separate `multipleOf` validation.
 
-## 5. Use the validationMessages pipe for error summaries
+## 5. Review independent alternate editors
+
+`shareFormControl: false` is now public for mutually exclusive fields at the same model path. If you used this
+previously internal option, hidden editors no longer run parsers or write detached control values into the model.
+Hiding cancels pending debounced model writes. Update the model directly when changing an inactive value; the
+editor reads that value and applies its parser when shown again.
+
+Set `resetOnHide: false` on every alternative to retain values when switching. The default remains `true`.
+Keep at most one independent editor visible at a model path. See the
+[alternate editor documentation](docs/properties-options.md#alternate-editors-for-the-same-model-value).
+
+## 6. Use the validationMessages pipe for error summaries
 
 `FormlyValidationMessagesPipe`, imported from `@ngx-formly/core`, collects configured messages from a built field or
 field tree. Use `fields | validationMessages | async` to receive entries containing the field, error name, and resolved
@@ -113,7 +124,7 @@ public members. Existing adapters and custom wrappers continue to work. New summ
 changing validators or message configuration. See the [validation guide](docs/validation.md#validation-summaries)
 for imports, a submit-gated summary, and inline migration guidance.
 
-## 6. Verify the upgrade
+## 7. Verify the upgrade
 
 Build your application and run its tests. Check asynchronously loaded fields, async validation, expression-driven
 visibility, disabled states, reset behavior, and each UI integration you use. In zoneless component tests, await

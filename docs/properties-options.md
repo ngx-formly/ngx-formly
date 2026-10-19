@@ -93,6 +93,7 @@ The output shares the `options.fieldChanges` payload shape; it does not forward 
 | focus                | `boolean`    | Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressions` |
 | wrappers             | `string[]`   | It is expected to be the name of the wrappers. The formly field template will be wrapped by the first wrapper, then the second, then the third, etc. You can also specify these as part of a type (which is the recommended approach). |
 | parsers              | `function[]` | Array of functions to execute, as a pipeline, whenever the model updates, usually via user input. |
+| shareFormControl     | `boolean` | Whether fields at the same model path share a control. Defaults to `true`. Set to `false` on each mutually exclusive alternative to isolate its parsers and validators. |
 | fieldGroup           | `FormlyFieldConfig[]` | A field group is a way to group fields together, making advanced layout very simple. It can also be used to group fields that are associated with the same model (useful if it's different than the model for the rest of the fields). |
 | fieldArray           | `FormlyFieldConfig` | |
 | fieldGroupClassName  | `string` | Specify your own class that will be applied to the `formly-group` component. |
@@ -102,6 +103,49 @@ The output shares the `options.fieldChanges` payload shape; it does not forward 
 | formControl          | `AbstractControl` | This is the [FormControl](https://angular.io/api/forms/FormControl) for the field. It provides you more control like running validators, calculating status, and resetting state. |
 | modelOptions         | `object` | An object with a few useful properties to control the model changes: `debounce`, `updateOn` |
 
+
+## Alternate editors for the same model value
+
+Fields at the same model path share a form control by default. To switch between editors with different parsers
+or validators, set `shareFormControl: false` on every alternative and use mutually exclusive hide expressions:
+
+```ts
+fields: FormlyFieldConfig[] = [
+  { key: 'uppercase', type: 'checkbox', props: { label: 'Use uppercase' } },
+  {
+    key: 'code',
+    type: 'input',
+    shareFormControl: false,
+    resetOnHide: false,
+    parsers: [(value) => value?.toLowerCase()],
+    expressions: { hide: ({ model }) => !!model.uppercase },
+  },
+  {
+    key: 'code',
+    type: 'input',
+    shareFormControl: false,
+    resetOnHide: false,
+    parsers: [(value) => value?.toUpperCase()],
+    expressions: { hide: ({ model }) => !model.uppercase },
+  },
+];
+```
+
+Each alternative owns its control. `form.get('code')` returns the visible editor's control, whose validators
+determine the form's validity. A hidden editor does not run its parsers or write to the model, including through
+programmatic changes to its detached control. Hiding also cancels pending debounced model updates. When shown,
+the editor reads the current model value and applies its own parsers. Keep parsers safe for the values another
+editor can produce.
+
+Set `resetOnHide: false` on all alternatives to retain the value between editors. The default remains `true`,
+which clears the outgoing value and allows the next editor's default value to apply. Control state, such as
+touched and dirty, belongs to each editor and is not copied between them.
+
+This option applies to the configured field, not automatically to its descendants. Keep at most one independent
+editor visible at a model path, and do not mix independent and shared controls at that path. Multiple visible
+independent editors are not supported. Existing shared-control behavior is unchanged.
+
+The [hide-fields example](https://formly.dev/examples/field-options/hide-fields) demonstrates text and numeric editors.
 
 ## HTML labels and descriptions
 
