@@ -52,6 +52,85 @@ const renderComponent = ({
 };
 
 describe('Service: FormlyJsonschema', () => {
+  it('should validate tuple items at their current positions after insertion', () => {
+    const { field, query, detectChanges } = renderComponent({
+      schema: {
+        type: 'object',
+        properties: { rows: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] } },
+      },
+      model: { rows: ['A'] },
+    });
+    const arrayType = query('formly-array-type').componentInstance as ArrayTypeComponent;
+
+    arrayType.add(0, 42);
+    detectChanges();
+
+    expect(field.model).toEqual({ rows: [42, 'A'] });
+    expect(field.formControl.valid).toBe(false);
+    expect(field.fieldGroup[0].fieldGroup.map((f) => f.type)).toEqual(['string', 'number']);
+
+    arrayType.remove(0);
+    detectChanges();
+    expect(field.model).toEqual({ rows: ['A'] });
+    expect(field.formControl.valid).toBe(true);
+    expect(field.fieldGroup[0].fieldGroup[0].type).toBe('string');
+  });
+
+  it.each([false, true])('should keep recursive oneOf branches at current positions (nested: %s)', (nested) => {
+    const { field, query, detectChanges } = renderComponent({
+      schema: {
+        definitions: {
+          predicate: {
+            oneOf: [
+              { title: 'Equals', type: 'object', properties: { value: { type: 'string' } } },
+              {
+                title: 'Not',
+                type: 'object',
+                properties: { predicate: { $ref: '#/definitions/predicate' } },
+              },
+            ],
+          },
+        },
+        type: 'object',
+        properties: { rows: { type: 'array', items: { $ref: '#/definitions/predicate' } } },
+      },
+      model: { rows: [nested ? { predicate: { value: 'A' } } : { value: 'A' }] },
+    });
+    const arrayType = query('formly-array-type').componentInstance as ArrayTypeComponent;
+    expect(field.fieldGroup[0].fieldGroup[0].fieldGroup[0].fieldGroup[0].formControl.value).toBe(nested ? 1 : 0);
+
+    arrayType.add(0, { value: 'New' });
+    detectChanges();
+
+    const rows = field.fieldGroup[0].fieldGroup;
+    const insertedBranch = rows[0].fieldGroup[0].fieldGroup[1].fieldGroup[0];
+    expect(insertedBranch.key).toBe('0');
+    insertedBranch.fieldGroup[0].formControl.setValue('Edited');
+    expect(field.model).toEqual({
+      rows: [{ value: 'Edited' }, nested ? { predicate: { value: 'A' } } : { value: 'A' }],
+    });
+    expect(rows[1].fieldGroup[0].fieldGroup[0].formControl.value).toBe(nested ? 1 : 0);
+
+    for (const [index, row] of rows.entries()) {
+      const [selector, branches] = row.fieldGroup[0].fieldGroup;
+      selector.formControl.setValue(1);
+      detectChanges();
+      expect(branches.fieldGroup[1].key).toBe(`${index}`);
+      selector.formControl.setValue(0);
+      detectChanges();
+      expect(branches.fieldGroup[0].key).toBe(`${index}`);
+      branches.fieldGroup[0].fieldGroup[0].formControl.setValue(`Row ${index}`);
+    }
+    expect(field.model).toEqual({ rows: [{ value: 'Row 0' }, { value: 'Row 1' }] });
+
+    arrayType.remove(0);
+    detectChanges();
+    const remainingBranch = field.fieldGroup[0].fieldGroup[0].fieldGroup[0].fieldGroup[1].fieldGroup[0];
+    expect(remainingBranch.key).toBe('0');
+    remainingBranch.fieldGroup[0].formControl.setValue('Remaining');
+    expect(field.model).toEqual({ rows: [{ value: 'Remaining' }] });
+  });
+
   let formlyJsonschema: FormlyJsonschema;
   const emmptyFieldProps: FormlyFieldProps = {
     label: undefined,

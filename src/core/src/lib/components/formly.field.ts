@@ -34,7 +34,7 @@ import {
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
-import { Observable, Subscription, isObservable } from 'rxjs';
+import { Subscription, isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
@@ -285,11 +285,15 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           ),
         ),
       );
-    } else if (this.field.formControl) {
-      const events = ((this.field.formControl as any).events as Observable<any>).subscribe(() =>
-        markFieldForCheck(this.field),
+    } else {
+      let events: Subscription;
+      this.hostObservers.push(
+        observe<FormlyFieldConfig['formControl']>(this.field, ['formControl'], ({ currentValue }) => {
+          events?.unsubscribe();
+          events = currentValue?.events.subscribe(() => markFieldForCheck(this.field));
+        }),
+        new Subscription(() => events?.unsubscribe()),
       );
-      this.hostObservers.push(events);
     }
   }
 
@@ -354,76 +358,91 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       subscribes.push(() => fieldObserver.unsubscribe());
     }
 
-    if (field.formControl && !field.fieldGroup) {
-      const control = field.formControl;
-      const independent = field.shareFormControl === false && hasKey(field);
-      const subscribe = () => {
-        let valueChanges = control.valueChanges.pipe(
-          startWith(control.value),
-          filter(() => !independent || !field._hide),
-          map((value) => {
-            field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
-            if (!Object.is(value, control.value)) {
-              control.setValue(value, { emitEvent: !independent });
+    if (!field.fieldGroup) {
+      let unsubscribe = () => {};
+      const controlObserver = observe<FormlyFieldConfigCache['formControl']>(
+        field,
+        ['formControl'],
+        ({ currentValue: control }) => {
+          unsubscribe();
+          unsubscribe = () => {};
+          if (!control || field.fieldGroup) {
+            return;
+          }
+          const independent = field.shareFormControl === false && hasKey(field);
+          const subscribe = () => {
+            let valueChanges = control.valueChanges.pipe(
+              startWith(control.value),
+              filter(() => !independent || !field._hide),
+              map((value) => {
+                field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
+                if (!Object.is(value, control.value)) {
+                  control.setValue(value, { emitEvent: !independent });
+                }
+
+                return value;
+              }),
+              distinctUntilChanged((x, y) => {
+                if (x !== y || Array.isArray(x) || isObject(x)) {
+                  return false;
+                }
+
+                return true;
+              }),
+              skip(independent ? 0 : 1),
+            );
+
+            if (!independent && control.value !== getFieldValue(field)) {
+              valueChanges = valueChanges.pipe(startWith(control.value));
             }
 
-            return value;
-          }),
-          distinctUntilChanged((x, y) => {
-            if (x !== y || Array.isArray(x) || isObject(x)) {
-              return false;
+            const { updateOn, debounce } = field.modelOptions;
+            if ((!updateOn || updateOn === 'change') && debounce?.default > 0) {
+              valueChanges = valueChanges.pipe(debounceTime(debounce.default));
             }
 
-            return true;
-          }),
-          skip(independent ? 0 : 1),
-        );
+            if (independent) {
+              valueChanges = valueChanges.pipe(
+                filter((value) => value !== getFieldValue(field) || Array.isArray(value) || isObject(value)),
+              );
+            }
 
-        if (!independent && control.value !== getFieldValue(field)) {
-          valueChanges = valueChanges.pipe(startWith(control.value));
-        }
+            return valueChanges.subscribe((value) => {
+              // workaround for https://github.com/angular/angular/issues/13792
+              if (control._fields?.length > 1 && control instanceof FormControl) {
+                control.patchValue(value, { emitEvent: false, onlySelf: true });
+              }
 
-        const { updateOn, debounce } = field.modelOptions;
-        if ((!updateOn || updateOn === 'change') && debounce?.default > 0) {
-          valueChanges = valueChanges.pipe(debounceTime(debounce.default));
-        }
+              if (hasKey(field)) {
+                assignFieldValue(field, value);
+              }
+              field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
+            });
+          };
 
-        if (independent) {
-          valueChanges = valueChanges.pipe(
-            filter((value) => value !== getFieldValue(field) || Array.isArray(value) || isObject(value)),
-          );
-        }
-
-        return valueChanges.subscribe((value) => {
-          // workaround for https://github.com/angular/angular/issues/13792
-          if (control._fields?.length > 1 && control instanceof FormControl) {
-            control.patchValue(value, { emitEvent: false, onlySelf: true });
+          if (independent) {
+            let sub: Subscription;
+            const observer = observe<boolean>(field, ['_controlActive'], ({ currentValue }) => {
+              sub?.unsubscribe();
+              sub = new Subscription();
+              if (currentValue) {
+                sub.add(subscribe());
+              }
+            });
+            unsubscribe = () => {
+              observer.unsubscribe();
+              sub?.unsubscribe();
+            };
+          } else {
+            const sub = subscribe();
+            unsubscribe = () => sub.unsubscribe();
           }
-
-          if (hasKey(field)) {
-            assignFieldValue(field, value);
-          }
-          field.options.fieldChanges.next({ value, field, type: 'valueChanges' });
-        });
-      };
-
-      if (independent) {
-        let sub: Subscription;
-        const observer = observe<boolean>(field, ['_controlActive'], ({ currentValue }) => {
-          sub?.unsubscribe();
-          sub = new Subscription();
-          if (currentValue) {
-            sub.add(subscribe());
-          }
-        });
-        subscribes.push(() => {
-          observer.unsubscribe();
-          sub?.unsubscribe();
-        });
-      } else {
-        const sub = subscribe();
-        subscribes.push(() => sub.unsubscribe());
-      }
+        },
+      );
+      subscribes.push(() => {
+        controlObserver.unsubscribe();
+        unsubscribe();
+      });
     }
 
     let templateFieldsSubs: (() => void)[] = [];

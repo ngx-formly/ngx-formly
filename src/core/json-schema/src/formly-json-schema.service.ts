@@ -476,6 +476,9 @@ export class FormlyJsonschema {
 
         // TODO: remove isEnum check once adding an option to skip extension
         if (!this.isEnum(schema)) {
+          if (Array.isArray(schema.items)) {
+            field.props.trackByIndex = true;
+          }
           field.fieldArray = (root: FormlyFieldConfig) => {
             const length = root.fieldGroup ? root.fieldGroup.length : 0;
             const items = schema.items as JSONSchema7 | JSONSchema7[];
@@ -722,6 +725,8 @@ export class FormlyJsonschema {
     expressions: FormlyFieldConfig['expressions'],
   ): FormlyFieldConfig {
     return {
+      key: options.key,
+      shareFormControl: options.shareFormControl,
       expressions,
       hooks: {
         onInit: (f) => {
@@ -742,6 +747,7 @@ export class FormlyJsonschema {
       return;
     }
 
+    const key = field.key;
     const expressions = field.expressions;
     const hooks = field.hooks;
     const mutableField = field as unknown as Record<string, unknown>;
@@ -749,10 +755,13 @@ export class FormlyJsonschema {
     delete mutableField['_keyPath'];
 
     Object.keys(field).forEach((prop) => {
-      delete mutableField[prop];
+      // Keep the visibility observer when activating a previously hidden deferred branch.
+      if (prop !== 'hide') {
+        delete mutableField[prop];
+      }
     });
 
-    Object.assign(field, this._toFieldConfig(schema, { ...options, resetOnHide: true }));
+    Object.assign(field, this._toFieldConfig(schema, { ...options, key, resetOnHide: true }));
     field.expressions = expressions;
     field.hooks = hooks;
 
@@ -1040,7 +1049,11 @@ export class FormlyJsonschema {
       Object.defineProperty(schema, '_field', { enumerable: false, writable: true, configurable: true });
     }
 
+    const key = hasKey(root) ? root.key : options.key;
     let field = schema._field;
+    if (field?.fieldGroup[0].key !== key) {
+      field = undefined;
+    }
     let model = root.model ? root.model : root.fieldArray ? [] : {};
     if (root.model && hasKey(root)) {
       model = { [Array.isArray(root.key) ? root.key.join('.') : root.key]: getFieldValue(root) };
@@ -1053,6 +1066,7 @@ export class FormlyJsonschema {
         fieldGroup: [
           this._toFieldConfig(schema, {
             ...options,
+            key,
             resetOnHide: true,
             ignoreDefault: true,
             skipMultiSchemaValidation,

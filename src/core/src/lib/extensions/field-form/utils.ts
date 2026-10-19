@@ -1,9 +1,13 @@
 import { EventEmitter } from '@angular/core';
 import { UntypedFormArray, UntypedFormGroup, AbstractControl, FormControl } from '@angular/forms';
-import { getKeyPath, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
+import { getKeyPath, getField, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
 import { FormlyFieldConfigCache } from '../../models';
 
 export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = false) {
+  if (!hasKey(field) && field.fieldGroup) {
+    field.fieldGroup.forEach((f) => unregisterControl(f, emitEvent));
+    return;
+  }
   if (field.shareFormControl === false) {
     field._controlActive = false;
   }
@@ -13,7 +17,7 @@ export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = fal
     control._fields.splice(fieldIndex, 1);
   }
 
-  const form = control.parent as UntypedFormArray | UntypedFormGroup;
+  const form = control.parent as FormlyFieldConfigCache['formControl'];
   if (!form) {
     return;
   }
@@ -33,6 +37,16 @@ export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = fal
   }
 
   control.setParent(null);
+  // A hidden row may have been attached only to hold a visible fixed-path editor.
+  if (
+    form instanceof UntypedFormGroup &&
+    !Object.keys(form.controls).length &&
+    !(form as FormlyFieldConfigCache['formControl'])._fields?.some((f) => !f._hide) &&
+    form.parent
+  ) {
+    const key = Object.keys((form.parent as UntypedFormGroup).controls).find((key) => form.parent.get([key]) === form);
+    unregisterControl({ key, formControl: form }, emitEvent);
+  }
 }
 
 export function findControl(field: FormlyFieldConfigCache): AbstractControl {
@@ -44,7 +58,39 @@ export function findControl(field: FormlyFieldConfigCache): AbstractControl {
     return null;
   }
 
-  return field.form?.get(getKeyPath(field));
+  // Hidden fields retain controls even when they are absent from the registered form tree.
+  return findArrayControl(field.form, getKeyPath(field)) || field.form?.get(getKeyPath(field));
+}
+
+function findArrayControl(form: FormlyFieldConfigCache['formControl'], path: string[]) {
+  for (const owner of form?._fields || []) {
+    const target = owner.fieldArray && getField(owner, path);
+    if (target?.formControl && target.shareFormControl !== false) {
+      return target.formControl;
+    }
+  }
+  return null;
+}
+
+function setControl(
+  form: FormlyFieldConfigCache['formControl'],
+  key: string,
+  control: FormlyFieldConfigCache['formControl'],
+  emitEvent: boolean,
+) {
+  const array = form._fields?.find((f) => f.fieldArray);
+  if (form instanceof UntypedFormArray && array && control._fields?.every((f) => f.shareFormControl !== false)) {
+    // Hidden rows compact the FormArray: insert relative to retained rows, without empty slots.
+    const registered = new Set(form.controls);
+    if (!registered.has(control)) {
+      const index = array.fieldGroup.slice(0, Number(key)).filter((row, index) => {
+        return registered.has((hasKey(row) ? row : getField(row, `${index}`))?.formControl);
+      }).length;
+      form.insert(index, control, { emitEvent });
+    }
+  } else if (form.get([key]) !== control) {
+    (form as UntypedFormGroup).setControl(key, control, { emitEvent });
+  }
 }
 
 export function registerControl(
@@ -70,39 +116,47 @@ export function registerControl(
   }
 
   if (!field.formControl && control) {
-    defineHiddenProp(field, 'formControl', control);
+    if (!Object.getOwnPropertyDescriptor(field, 'formControl')?.set) {
+      defineHiddenProp(field, 'formControl', undefined);
+      field.props.disabled = !!field.props.disabled;
+      const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
+        if (!firstChange && field.formControl) {
+          currentValue ? field.formControl.disable() : field.formControl.enable();
+        }
+      });
+      observe<AbstractControl>(field, ['formControl'], ({ previousValue, currentValue }) => {
+        if (previousValue instanceof FormControl) {
+          (previousValue as any)._unregisterOnDisabledChange(disabledObserver.setValue);
+        }
+        if (currentValue instanceof FormControl) {
+          currentValue.registerOnDisabledChange(disabledObserver.setValue);
+        }
+      });
+    }
+    field.formControl = control;
     control.setValidators(null);
     control.setAsyncValidators(null);
-
-    field.props.disabled = !!field.props.disabled;
-    const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
-      if (!firstChange) {
-        currentValue ? field.formControl.disable() : field.formControl.enable();
-      }
-    });
-    if (control instanceof FormControl) {
-      control.registerOnDisabledChange(disabledObserver.setValue);
-    }
   }
 
   if (!field.form || !hasKey(field)) {
     return;
   }
 
-  let form = field.form;
+  let form: FormlyFieldConfigCache['formControl'] = field.form;
   const paths = getKeyPath(field);
   const value = getFieldValue(field);
   if (!(isNil(control.value) && isNil(value)) && control.value !== value && control instanceof FormControl) {
     control.patchValue(value, { emitEvent: field.shareFormControl !== false });
   }
+  if (field._hide) {
+    return;
+  }
 
   for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
-    if (!form.get([path])) {
-      (form as UntypedFormGroup).setControl(path, new UntypedFormGroup({}), { emitEvent });
-    }
-
-    form = <UntypedFormGroup>form.get([path]);
+    const child = findArrayControl(form, [path]) || form.get([path]) || new UntypedFormGroup({});
+    setControl(form, path, child, emitEvent);
+    form = child;
   }
 
   const key = paths[paths.length - 1];
@@ -116,7 +170,7 @@ export function registerControl(
       });
       previous?.setParent(null);
     }
-    (form as UntypedFormGroup).setControl(key, control, { emitEvent });
+    setControl(form, key, control, emitEvent);
   }
 
   if (field.shareFormControl === false) {
