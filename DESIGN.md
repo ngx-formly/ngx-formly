@@ -193,7 +193,7 @@ Code uses monospace. Inline document code uses the `code` role; code blocks have
 
 ## Layout
 
-Desktop navigation occupies a fixed 104px rail. Documentation adds a 250px section sidebar. The reading container is at most 920px wide, including 48px padding. Homepage sections and example viewers are at most 1120px wide. Homepage containers leave 48px on each side when the viewport limits their width.
+Desktop navigation occupies a fixed 104px rail. Documentation adds a 250px section sidebar. The guide and API reader is at most 1000px wide, including 48px padding. At viewport widths of 1440px and above, its maximum width becomes 1360px and it adds a 200px sticky table of contents. Smaller viewports show a collapsible table of contents above the article. Homepage sections and example viewers are at most 1120px wide. Homepage containers leave 48px on each side when the viewport limits their width.
 
 The section sidebar only shows the current section's topics on desktop. The theme control sits below GitHub at the bottom of the rail and moves into the mobile header. Its keyboard-accessible menu offers System, Dark, and Light. System is the default and follows operating-system changes. Explicit choices persist in browser storage; blocked storage only prevents persistence.
 
@@ -225,11 +225,13 @@ Primary actions pair pale pink with dark text. Secondary actions are transparent
 
 Rail links place an icon above a short label in an 82px minimum-height target. Hover uses the soft background and primary text; the active route uses the accent fill, text, and left border. Keyboard focus has a 2px accent outline inset by 4px.
 
-Section links use the control radius, a minimum height of 40px, and 2px vertical margins. Child links indent to 20px. Their active state uses the shared accent colors; focus has a 2px outline inset by 2px. The mobile drawer closes after selecting a destination. The skip link appears on focus and moves focus to the main content.
+Section links use the control radius, a minimum height of 40px, and 2px vertical margins. Child links indent to 20px. Their active state uses the shared accent colors; focus has a 2px outline inset by 2px. Groups open a child panel with a back button, without changing the current page. Direct links open the panel containing the active page. Back restores focus to the parent group; mobile users can return to the section list. The mobile drawer stays open while browsing groups and closes after selecting a destination. The skip link appears on focus and moves focus to the main content.
 
-The search button sits below the version selector, with a Cmd/Ctrl+K shortcut hint on desktop. On mobile it becomes an icon in the header; GitHub remains available in the footer. Search opens a dialog with the shared background, border, and focus colors. Results show their section, title, and a matching text excerpt. Arrow keys navigate results, Enter opens a page, and Escape closes the dialog and restores focus. The dialog and its local index load on demand. Guides and migrations support text search; UI and example pages are searchable by name and category.
+The search button sits below the version selector, with a Cmd/Ctrl+K shortcut hint on desktop. On mobile it becomes an icon in the header; GitHub remains available in the footer. Search opens a dialog with the shared background, border, and focus colors. Results show their section, title, and a matching text excerpt. Arrow keys navigate results, Enter opens a page, and Escape closes the dialog and restores focus. The dialog and its local index load on demand. Guides, migrations, and API references support text search. API results link to symbol headings; UI and example pages are searchable by name and category.
 
 ### Reading content
+
+Guides and generated API references share a reader. Headings expose permalink controls, code blocks have copy buttons with success/failure feedback, and the article ends with an edit link and previous/next navigation. API references group current exports by kind and show typed member tables and source links. The version menu derives its current label from the package version and lists available archives alongside migration guides.
 
 Document links are underlined with a 3px offset. Hover thickens the underline and keyboard focus adds a 2px outline with a 3px offset. Code blocks use the document radius, border, and background tokens, with 24px padding reduced to 16px on mobile. Preserve unwrapped source lines and horizontal scrolling.
 

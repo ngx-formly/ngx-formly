@@ -1,0 +1,320 @@
+[
+  {
+    "path": "/api/core",
+    "label": "Core",
+    "items": [
+      {
+        "path": "/api/core",
+        "label": "Core"
+      },
+      {
+        "path": "/api/core/json-schema",
+        "label": "JSON Schema"
+      },
+      {
+        "path": "/api/core/preset",
+        "label": "Preset"
+      },
+      {
+        "path": "/api/core/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/core/testing",
+        "label": "Testing"
+      }
+    ]
+  },
+  {
+    "path": "/api/schematics",
+    "label": "Schematics",
+    "items": [
+      {
+        "path": "/api/schematics",
+        "label": "Schematics"
+      }
+    ]
+  },
+  {
+    "path": "/api/ui/bootstrap",
+    "label": "Bootstrap",
+    "items": [
+      {
+        "path": "/api/ui/bootstrap",
+        "label": "Bootstrap"
+      },
+      {
+        "path": "/api/ui/bootstrap/addons",
+        "label": "Addons"
+      },
+      {
+        "path": "/api/ui/bootstrap/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/bootstrap/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/bootstrap/input",
+        "label": "Input"
+      },
+      {
+        "path": "/api/ui/bootstrap/multicheckbox",
+        "label": "Multicheckbox"
+      },
+      {
+        "path": "/api/ui/bootstrap/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/bootstrap/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/bootstrap/textarea",
+        "label": "Textarea"
+      }
+    ]
+  },
+  {
+    "path": "/api/ui/ionic",
+    "label": "Ionic",
+    "items": [
+      {
+        "path": "/api/ui/ionic",
+        "label": "Ionic"
+      },
+      {
+        "path": "/api/ui/ionic/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/ionic/datetime",
+        "label": "Datetime"
+      },
+      {
+        "path": "/api/ui/ionic/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/ionic/input",
+        "label": "Input"
+      },
+      {
+        "path": "/api/ui/ionic/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/ionic/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/ionic/slider",
+        "label": "Slider"
+      },
+      {
+        "path": "/api/ui/ionic/textarea",
+        "label": "Textarea"
+      },
+      {
+        "path": "/api/ui/ionic/toggle",
+        "label": "Toggle"
+      }
+    ]
+  },
+  {
+    "path": "/api/ui/kendo",
+    "label": "Kendo",
+    "items": [
+      {
+        "path": "/api/ui/kendo",
+        "label": "Kendo"
+      },
+      {
+        "path": "/api/ui/kendo/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/kendo/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/kendo/input",
+        "label": "Input"
+      },
+      {
+        "path": "/api/ui/kendo/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/kendo/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/kendo/textarea",
+        "label": "Textarea"
+      }
+    ]
+  },
+  {
+    "path": "/api/ui/material",
+    "label": "Material",
+    "items": [
+      {
+        "path": "/api/ui/material",
+        "label": "Material"
+      },
+      {
+        "path": "/api/ui/material/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/material/datepicker",
+        "label": "Datepicker"
+      },
+      {
+        "path": "/api/ui/material/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/material/input",
+        "label": "Input"
+      },
+      {
+        "path": "/api/ui/material/multicheckbox",
+        "label": "Multicheckbox"
+      },
+      {
+        "path": "/api/ui/material/native-select",
+        "label": "Native Select"
+      },
+      {
+        "path": "/api/ui/material/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/material/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/material/slider",
+        "label": "Slider"
+      },
+      {
+        "path": "/api/ui/material/textarea",
+        "label": "Textarea"
+      },
+      {
+        "path": "/api/ui/material/toggle",
+        "label": "Toggle"
+      }
+    ]
+  },
+  {
+    "path": "/api/ui/nativescript",
+    "label": "NativeScript",
+    "items": [
+      {
+        "path": "/api/ui/nativescript",
+        "label": "NativeScript"
+      },
+      {
+        "path": "/api/ui/nativescript/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/nativescript/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/nativescript/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/nativescript/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/nativescript/text-field",
+        "label": "Text Field"
+      },
+      {
+        "path": "/api/ui/nativescript/textarea",
+        "label": "Textarea"
+      }
+    ]
+  },
+  {
+    "path": "/api/ui/ng-zorro-antd",
+    "label": "NG-ZORRO",
+    "items": [
+      {
+        "path": "/api/ui/ng-zorro-antd",
+        "label": "NG-ZORRO"
+      },
+      {
+        "path": "/api/ui/ng-zorro-antd/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/ng-zorro-antd/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/ng-zorro-antd/input",
+        "label": "Input"
+      },
+      {
+        "path": "/api/ui/ng-zorro-antd/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/ng-zorro-antd/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/ng-zorro-antd/textarea",
+        "label": "Textarea"
+      }
+    ]
+  },
+  {
+    "path": "/api/ui/primeng",
+    "label": "PrimeNG",
+    "items": [
+      {
+        "path": "/api/ui/primeng",
+        "label": "PrimeNG"
+      },
+      {
+        "path": "/api/ui/primeng/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/primeng/datepicker",
+        "label": "Datepicker"
+      },
+      {
+        "path": "/api/ui/primeng/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/primeng/input",
+        "label": "Input"
+      },
+      {
+        "path": "/api/ui/primeng/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/primeng/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/primeng/textarea",
+        "label": "Textarea"
+      }
+    ]
+  }
+]

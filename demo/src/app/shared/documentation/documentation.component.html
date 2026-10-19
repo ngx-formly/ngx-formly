@@ -1,0 +1,47 @@
+@if (page() && headings().length) {
+  <details class="mobile-toc">
+    <summary>On this page</summary>
+    <ng-container *ngTemplateOutlet="contents" />
+  </details>
+}
+<div class="document-body">
+  <article #article class="markdown github"></article>
+  @if (page()) {
+    <p class="copy-status" role="status">{{ copyStatus() }}</p>
+    <a class="edit-page" [href]="editUrl()">Edit this page on GitHub</a>
+    <nav class="page-navigation" aria-label="Documentation pages">
+      @if (previous(); as previousPage) {
+        <a [routerLink]="previousPage.path"><span>Previous</span>{{ previousPage.title }}</a>
+      }
+      @if (next(); as nextPage) {
+        <a class="next-page" [routerLink]="nextPage.path"><span>Next</span>{{ nextPage.title }}</a>
+      }
+    </nav>
+  } @else {
+    <h1>Page not found</h1>
+    <p>This documentation page is not available.</p>
+    <a routerLink="/guide">Browse the guides</a> or <a routerLink="/api/core">open the API reference</a>.
+  }
+</div>
+@if (page() && headings().length) {
+  <aside class="desktop-toc">
+    <h2 class="toc-heading">On this page</h2>
+    <ng-container *ngTemplateOutlet="contents" />
+  </aside>
+}
+<ng-template #contents>
+  <nav aria-label="On this page">
+    @for (heading of headings(); track heading.id) {
+      <a
+        [href]="page().path + '#' + heading.id"
+        [class.subheading]="heading.level === 3"
+        [attr.aria-current]="activeHeading() === heading.id ? 'location' : null"
+        >{{ heading.title }}</a
+      >
+    }
+  </nav>
+  <button type="button" class="back-to-top" (click)="backToTop()">
+    <mat-icon aria-hidden="true">arrow_upward</mat-icon>
+    Back to the top
+  </button>
+</ng-template>

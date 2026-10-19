@@ -1,10 +1,21 @@
-import { Component, OnInit, OnDestroy, Injector, inject, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Injector,
+  ElementRef,
+  afterNextRender,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { DOCUMENT, Location, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { filter, map, startWith, takeUntil } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import APP_MENU from './app.menu.json';
+import { APP_MENU, MenuItem, menuAncestors, menuPages } from './app.menu';
+import { version } from '../../../package.json';
 
 import { Subject } from 'rxjs';
 import { NgxLoadingBar } from '@ngx-loading-bar/core';
@@ -41,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private document = inject(DOCUMENT);
   private injector = inject(Injector);
   private sidenav = viewChild(MatSidenav);
+  private sectionMenu = viewChild<ElementRef<HTMLElement>>('sectionMenu');
   readonly searchLoading = signal(false);
   readonly searchFailed = signal(false);
   readonly searchShortcut = this.document.defaultView?.navigator.platform.includes('Mac') ? '⌘' : 'Ctrl';
@@ -54,31 +66,30 @@ export class AppComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
   isSmallDevice$ = this.breakpointObserver.observe('(max-width: 767px)').pipe(map((result) => result.matches));
   menu = APP_MENU;
-  migrationMenu = this.menu
-    .find((section) => section.path === '/guide')
-    .items.find((item) => item.path === '/guide/migration');
-  migrationMenuActive$ = this.router.events.pipe(
-    filter((event) => event instanceof NavigationEnd),
-    startWith(null),
-    map(() =>
-      this.router.isActive(this.migrationMenu.path, {
-        paths: 'subset',
-        queryParams: 'ignored',
-        fragment: 'ignored',
-        matrixParams: 'ignored',
-      }),
-    ),
-  );
-  menuIcons: Record<string, string> = { '/guide': 'menu_book', '/ui': 'dashboard', '/examples': 'code' };
+  readonly menuPath = signal<MenuItem[]>([]);
+  readonly activeMenuPath = signal<MenuItem[]>([]);
+  readonly currentVersion = `v${version.split('.')[0]}`;
+  get versions(): string[] {
+    const versions = this.menu
+      .find((section) => section.path === '/guide')
+      .items.find((item) => item.path === '/guide/migration')
+      .items.slice(0, 3)
+      .map(({ path }) => path.split('/').pop());
+
+    return [versions[0], versions[1], versions.includes(this.currentVersion) ? versions[2] : this.currentVersion];
+  }
+  menuIcons: Record<string, string> = {
+    '/guide': 'menu_book',
+    '/ui': 'dashboard',
+    '/examples': 'code',
+    '/api': 'data_object',
+  };
   usDefaultLayout = !this.location.path().includes('embeddedview=true');
   documentTitle$ = this.router.events.pipe(
     filter((event: any) => event instanceof NavigationEnd),
     map((event: NavigationEnd) => event.urlAfterRedirects),
     map((currentUrl) => {
-      const sidebarLinks = this.menu.flatMap((group) =>
-        group.items.flatMap((group: any) => (group.items ? group.items : group)),
-      );
-      const activeLink = sidebarLinks.find((link: any) => link.path === currentUrl);
+      const activeLink = menuPages(this.menu).find((link) => link.path === currentUrl.split(/[?#]/)[0]);
       const label = activeLink?.label;
 
       const baseTitle = 'Angular Formly';
@@ -94,6 +105,17 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        startWith(null),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(() => {
+        const path = menuAncestors(this.menu, this.router.url.split(/[?#]/)[0]) ?? [];
+        this.activeMenuPath.set(path);
+        this.menuPath.set(path);
+      });
     try {
       const saved = this.document.defaultView?.localStorage.getItem('formly-theme');
       if (saved === 'light' || saved === 'dark' || saved === 'system') {
@@ -110,6 +132,33 @@ export class AppComponent implements OnInit, OnDestroy {
         this.applyTheme();
       });
     this.documentTitle$.pipe(takeUntil(this.destroy$)).subscribe((title) => this.titleService.setTitle(title));
+  }
+
+  openMenu(item: MenuItem): void {
+    this.showMenu([...this.menuPath(), item]);
+  }
+
+  backMenu(): void {
+    this.showMenu(this.menuPath().slice(0, -1));
+  }
+
+  private showMenu(path: MenuItem[]): void {
+    const previous = this.menuPath().at(-1);
+    const goingBack = path.length < this.menuPath().length;
+    this.menuPath.set(path);
+    afterNextRender(
+      () => {
+        const menu = this.sectionMenu()?.nativeElement;
+        const target = goingBack
+          ? Array.from(menu?.querySelectorAll<HTMLButtonElement>('[data-menu-label]') ?? []).find(
+              (button) => button.dataset.menuLabel === previous.label,
+            )
+          : menu?.querySelector<HTMLButtonElement>('.menu-back');
+        target?.focus();
+        menu?.parentElement.scrollTo({ top: 0 });
+      },
+      { injector: this.injector },
+    );
   }
 
   setTheme(theme: 'system' | 'dark' | 'light'): void {

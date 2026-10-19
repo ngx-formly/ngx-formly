@@ -22,6 +22,11 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Documentation
+        run: |
+          npm run docs:check
+          npm run docs:build
+
       - name: Bundlesize
         run: npx bundlesize
 

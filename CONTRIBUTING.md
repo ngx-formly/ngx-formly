@@ -77,6 +77,22 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 The demo uses Angular's `application` builder. Run `npx ng build app --configuration production`
 to build it into `demo/dist`. `npm run demo` serves it on port 4100.
 
+The API reference is generated from package entry points and their TypeScript declarations.
+Run `npm run docs:api` after changing exported APIs or their comments. This refreshes
+`demo/src/app/api/api.generated.json` and its navigation index; edit the source declarations,
+not these generated files. `npm run demo` regenerates them before starting the server.
+`npm run docs:check` checks freshness and the generator's coverage. `npm run docs:build`
+regenerates the API reference and builds the documentation website. CI runs both checks.
+
+Netlify uses the root `netlify.toml` to run `npm run docs:build` and publish `demo/dist`.
+It reads Node.js from `.node-version`; keep `NPM_VERSION` in `netlify.toml` aligned with
+`packageManager` in `package.json`. The fallback to `index.html` lets Angular handle direct
+links and page refreshes, including the published `/docs/...` URLs.
+
+Guides and API pages share the documentation reader, including heading links, code copying,
+the table of contents, source links, and previous/next navigation. Published `/docs/...` URLs
+redirect to the corresponding app routes while keeping query parameters and heading fragments.
+
 Example source tabs and StackBlitz exports share text imports such as
 `import source from './app.component.ts?raw' with { loader: 'text' };`.
 The `?raw` suffix provides string typings, and Angular's loader attribute imports the file's

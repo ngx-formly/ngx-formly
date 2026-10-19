@@ -18,7 +18,9 @@ describe('Documentation search', () => {
   });
 
   it('finds content that is not in a page title and removes Markdown from excerpts', () => {
-    const [result] = searchDocuments(SEARCH_INDEX, 'validationMessages');
+    const result = searchDocuments(SEARCH_INDEX, 'validationMessages').find(
+      (result) => result.path === '/guide/validation',
+    );
     expect(result.path).toBe('/guide/validation');
     expect(result.excerpt).toBe('Validation Use validators and validationMessages.');
   });
@@ -27,13 +29,15 @@ describe('Documentation search', () => {
     expect(searchDocuments(SEARCH_INDEX, 'examples reset model').map((result) => result.path)).toEqual([
       '/examples/form-options/reset-model',
     ]);
-    expect(searchDocuments(SEARCH_INDEX, 'ui bootstrap').map((result) => result.path)).toEqual(['/ui/bootstrap']);
+    expect(searchDocuments(SEARCH_INDEX, 'ui bootstrap')[0].path).toBe('/ui/bootstrap');
     expect(searchDocuments(SEARCH_INDEX, 'validation nonexistent')).toEqual([]);
   });
 
   it('includes every migration page and searches its content', () => {
     expect(searchDocuments(SEARCH_INDEX, 'migration guides')).toHaveLength(8);
-    expect(searchDocuments(SEARCH_INDEX, 'provideFormlyCore')[0].path).toBe('/guide/migration/v10');
+    expect(
+      searchDocuments(SEARCH_INDEX, 'provideFormlyCore').some((result) => result.path === '/guide/migration/v10'),
+    ).toBe(true);
     expect(searchDocuments(SEARCH_INDEX, 'zoneless')[0].path).toBe('/guide/migration/v11');
     expect(new Set(SEARCH_INDEX.map((entry) => entry.path)).size).toBe(SEARCH_INDEX.length);
   });
@@ -41,5 +45,19 @@ describe('Documentation search', () => {
   it('returns no results for empty or unmatched queries', () => {
     expect(searchDocuments(SEARCH_INDEX, ' \n ')).toEqual([]);
     expect(searchDocuments(SEARCH_INDEX, '<script>alert(1)</script>')).toEqual([]);
+  });
+
+  it('finds API symbols and member names with links to their reference headings', () => {
+    expect(searchDocuments(SEARCH_INDEX, 'FormlyFormBuilder')[0].path).toBe('/api/core#formlyformbuilder');
+    expect(searchDocuments(SEARCH_INDEX, 'provideFormlyCore')[0].path).toBe('/api/core#provideformlycore');
+    expect(
+      searchDocuments(SEARCH_INDEX, 'buildForm').some((result) => result.path === '/api/core#formlyformbuilder'),
+    ).toBe(true);
+    expect(searchDocuments(SEARCH_INDEX, 'FormlyJsonschema')[0].path).toBe('/api/core/json-schema#formlyjsonschema');
+    expect(
+      searchDocuments(SEARCH_INDEX, 'FormlyFieldSelect').some(
+        (result) => result.path === '/api/ui/material/select#formlyfieldselect',
+      ),
+    ).toBe(true);
   });
 });

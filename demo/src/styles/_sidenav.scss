@@ -14,7 +14,8 @@
   }
 
   .mat-drawer-inner-container {
-    a {
+    a,
+    button {
       width: 100%;
       min-height: 40px;
       height: auto;
@@ -40,16 +41,6 @@
       }
     }
 
-    .menu-item {
-      font-weight: 500;
-      color: var(--site-ink);
-      margin-top: 12px;
-
-      @media (min-width: 768px) {
-        display: none;
-      }
-    }
-
     .menu-subitem {
       padding-left: 20px;
     }
@@ -61,6 +52,8 @@
 
       span {
         flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
 
       mat-icon {
@@ -82,7 +75,8 @@
       margin-left: 12px;
       border-left: 1px solid var(--site-line);
 
-      a {
+      a,
+      button {
         border-radius: 0;
         border-left: 1px solid transparent;
         margin-left: -1px;
@@ -92,15 +86,6 @@
           border-left-color: var(--site-accent);
         }
       }
-    }
-
-    .menu-subheader {
-      min-height: auto;
-      margin-top: 20px;
-      padding-left: 20px;
-      color: var(--site-ink);
-      font-size: 12px;
-      font-weight: 500;
     }
   }
 }
