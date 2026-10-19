@@ -101,21 +101,6 @@ requires `@nativescript/angular` 21 or newer. Applications staying on Angular 20
 
 See the [v10 upgrade guide](UPGRADE-10.0.md) for migration steps.
 
-#### Upgrading to v9
-
-Formly v9 requires Angular 20 or newer. Upgrade Angular first, then update all
-`@ngx-formly/*` packages used by your application together to v9.
-The Material, PrimeNG, and NG-ZORRO integrations require version 20 or newer of
-their respective UI libraries. Kendo requires version 19.1 or newer, and NativeScript
-requires `@nativescript/angular` 20 or newer. Applications staying on Angular 19 should
-use Formly v8; applications staying on Angular 18 should use Formly v7.
-
-PrimeNG datepicker fields no longer accept `monthNavigator`, `yearNavigator`, or
-`yearRange`, which PrimeNG 20 removed. Replace `@primeng/themes` imports with
-`@primeuix/themes` when configuring a PrimeNG theme.
-
-See the [v9 upgrade guide](UPGRADE-9.0.md) for migration steps and the [changelog](CHANGELOG.md) for the full list of changes.
-
 ## Core Team
 
 <table>
@@ -160,6 +145,13 @@ See the [v9 upgrade guide](UPGRADE-9.0.md) for migration steps and the [changelo
         <img src="https://avatars.githubusercontent.com/u/34165455" width="100px;" />
         <br />
         <sub><b>Max Kless</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/rbalet">
+        <img src="https://avatars.githubusercontent.com/u/44493964" alt="Raphaël Balet" width="100px;" />
+        <br />
+        <sub><b>Raphaël Balet</b></sub>
       </a>
     </td>
   </tr>
