@@ -1,0 +1,156 @@
+:host {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  max-width: 1000px;
+  margin-inline: auto;
+  padding: 48px;
+  color: var(--site-ink);
+}
+
+.document-body {
+  min-width: 0;
+}
+.markdown {
+  padding: 0;
+  max-width: none;
+}
+
+a,
+summary {
+  color: var(--site-accent);
+  text-underline-offset: 3px;
+}
+a:focus-visible,
+summary:focus-visible,
+.back-to-top:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
+}
+
+.desktop-toc {
+  display: none;
+}
+.mobile-toc {
+  padding: 16px 20px;
+  border: 1px solid var(--site-line);
+  border-radius: 8px;
+  background: var(--site-soft);
+  summary {
+    cursor: pointer;
+  }
+  nav {
+    margin-top: 16px;
+    max-height: 50vh;
+    overflow: auto;
+  }
+}
+
+nav[aria-label='On this page'] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  border-left: 1px solid var(--site-line);
+  a {
+    padding: 8px 16px;
+    color: var(--site-muted);
+    text-decoration: none;
+  }
+  a[aria-current='location'] {
+    color: var(--site-accent);
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .subheading {
+    padding-left: 32px;
+  }
+}
+
+.toc-heading {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.back-to-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--site-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--site-accent);
+  }
+
+  mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+  }
+}
+
+.copy-status {
+  min-height: 24px;
+  margin-block: 16px;
+  color: var(--site-muted);
+  font-size: 14px;
+}
+
+.page-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--site-line);
+  a {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-wrap: anywhere;
+  }
+  span {
+    color: var(--site-muted);
+    font-size: 14px;
+  }
+  .next-page {
+    margin-left: auto;
+    text-align: right;
+  }
+}
+
+@media (min-width: 1440px) {
+  :host {
+    grid-template-columns: minmax(0, 1fr) 200px;
+    max-width: 1360px;
+  }
+  .mobile-toc {
+    display: none;
+  }
+  .desktop-toc {
+    display: block;
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  :host {
+    padding: 32px 20px;
+    gap: 24px;
+  }
+}

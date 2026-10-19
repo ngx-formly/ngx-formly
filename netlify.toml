@@ -1,0 +1,12 @@
+[build]
+  base = "."
+  command = "npm run docs:build"
+  publish = "demo/dist"
+
+[build.environment]
+  NPM_VERSION = "11.19.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

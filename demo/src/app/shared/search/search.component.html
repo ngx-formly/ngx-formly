@@ -30,7 +30,7 @@
     <div class="search-state">
       <mat-icon aria-hidden="true">search</mat-icon>
       <p>Search Formly documentation</p>
-      <span>Find guides, upgrade notes, UI libraries, and examples.</span>
+      <span>Find guides, API symbols, upgrade notes, UI libraries, and examples.</span>
     </div>
   } @else {
     <p class="result-count" role="status">
@@ -45,7 +45,8 @@
         <li>
           <a
             #resultLink
-            [routerLink]="result.path"
+            [routerLink]="result.path.split('#')[0]"
+            [fragment]="result.path.split('#')[1]"
             (click)="dialog.close()"
             (keydown.arrowdown)="focusResult($event, index + 1)"
             (keydown.arrowup)="focusResult($event, index - 1)"

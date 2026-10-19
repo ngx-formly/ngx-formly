@@ -1,6 +1,6 @@
 @if (usDefaultLayout) {
   @let isSmallDevice = isSmallDevice$ | async;
-  @let migrationMenuActive = migrationMenuActive$ | async;
+  @let currentMenu = menuPath().at(-1);
   <a class="skip-link" href="#main-content" (click)="$event.preventDefault(); mainContent.focus()">Skip to content</a>
   <ngx-loading-bar [color]="'var(--site-accent)'"></ngx-loading-bar>
   <nav class="app-navbar" aria-label="Main navigation">
@@ -99,35 +99,62 @@
       aria-label="Section navigation"
       #sidenav
     >
-      @for (link of menu; track link) {
-        <a
-          mat-button
-          class="menu-item"
-          [class.d-none]="migrationMenuActive"
-          [routerLink]="link.path"
-          (click)="isSmallDevice && sidenav.close()"
-          routerLinkActive="active-link"
-          #routerLink="routerLinkActive"
-        >
-          <span class="d-flex align-items-center">
-            {{ link.label }}
-            <span class="spacer" [style.flex]="'1 1 auto'"></span>
-            <mat-icon>{{ routerLink.isActive ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon>
-          </span>
-        </a>
-        @if (routerLink.isActive) {
-          <ng-template
-            [ngTemplateOutlet]="sideMenuItem"
-            [ngTemplateOutletContext]="{
-              items: migrationMenuActive ? [migrationMenu] : link.items,
-              migrationsActive: migrationMenuActive,
-              mobile: isSmallDevice,
-              drawer: sidenav,
-            }"
+      <nav #sectionMenu [attr.aria-label]="currentMenu?.label || 'Sections'">
+        @if (currentMenu && (menuPath().length > 1 || isSmallDevice)) {
+          <button
+            mat-button
+            type="button"
+            class="menu-back"
+            [attr.aria-label]="'Back to ' + (menuPath().at(-2)?.label || 'sections')"
+            aria-controls="section-menu-items"
+            aria-expanded="true"
+            (click)="backMenu()"
           >
-          </ng-template>
+            <span class="menu-drill-link">
+              <mat-icon aria-hidden="true">arrow_back</mat-icon>
+              <span>{{ currentMenu.label }}</span>
+            </span>
+          </button>
         }
-      }
+        <div id="section-menu-items" [class.menu-children]="menuPath().length > 1">
+          @for (item of currentMenu?.items || menu; track item) {
+            @if (item.items) {
+              <button
+                mat-button
+                type="button"
+                class="menu-subitem"
+                [class.active-link]="activeMenuPath().includes(item)"
+                [attr.data-menu-label]="item.label"
+                aria-controls="section-menu-items"
+                aria-expanded="false"
+                (click)="openMenu(item)"
+              >
+                <span class="menu-drill-link">
+                  <span>{{ item.label }}</span>
+                  <mat-icon aria-hidden="true">chevron_right</mat-icon>
+                </span>
+              </button>
+            } @else {
+              <a
+                mat-button
+                class="menu-subitem"
+                [routerLink]="item.path"
+                (click)="isSmallDevice && sidenav.close()"
+                ariaCurrentWhenActive="page"
+                [routerLinkActiveOptions]="{
+                  paths: 'exact',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored',
+                }"
+                routerLinkActive="active-link"
+              >
+                {{ item.label }}
+              </a>
+            }
+          }
+        </div>
+      </nav>
     </mat-sidenav>
     <mat-sidenav-content>
       <main id="main-content" class="site-content" tabindex="-1" #mainContent>
@@ -147,6 +174,7 @@
             <li><a routerLink="/guide">Guides</a></li>
             <li><a routerLink="/ui">UI</a></li>
             <li><a routerLink="/examples">Examples</a></li>
+            <li><a routerLink="/api">API</a></li>
           </ul>
           <!-- <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener" target="_blank">Netlify</a>.</p> -->
           <p>
@@ -182,72 +210,19 @@
 
 <ng-template #version>
   <button mat-button [matMenuTriggerFor]="menu">
-    v9
+    {{ currentVersion }}
     <mat-icon>arrow_drop_down</mat-icon>
   </button>
   <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-    <a disabled mat-menu-item>v9 (latest)</a>
-    <a disabled mat-menu-item title="Documentation archive is not available yet">v8</a>
-    <a disabled mat-menu-item title="Documentation archive is not available yet">v7</a>
-    <a href="https://v6.formly.dev/" mat-menu-item>v6</a>
-    <a href="https://v5.formly.dev/" mat-menu-item>v5</a>
-  </mat-menu>
-</ng-template>
-
-<ng-template
-  #sideMenuItem
-  let-items="items"
-  let-mobile="mobile"
-  let-drawer="drawer"
-  let-migrationsActive="migrationsActive"
->
-  @for (item of items; track item) {
-    @if (item === migrationMenu) {
+    @for (release of versions; track release; let latest = $first) {
       <a
-        mat-button
-        class="menu-subitem"
-        [class.menu-back]="migrationsActive"
-        [routerLink]="migrationsActive ? '/guide' : item.path"
-        [attr.aria-label]="migrationsActive ? 'Back to Guides' : null"
+        [href]="latest ? 'https://formly.dev/' : 'https://' + release + '.formly.dev/'"
+        [disabled]="release === currentVersion"
+        mat-menu-item
       >
-        <span class="menu-drill-link">
-          @if (migrationsActive) {
-            <mat-icon aria-hidden="true">arrow_back</mat-icon>
-          }
-          <span>{{ item.label }}</span>
-          @if (!migrationsActive) {
-            <mat-icon aria-hidden="true">chevron_right</mat-icon>
-          }
-        </span>
+        {{ release }}{{ release === currentVersion ? ' (current)' : latest ? ' (latest)' : '' }}
       </a>
-      @if (migrationsActive) {
-        <div class="menu-children">
-          <ng-template
-            [ngTemplateOutlet]="sideMenuItem"
-            [ngTemplateOutletContext]="{ items: item.items, mobile: mobile, drawer: drawer }"
-          ></ng-template>
-        </div>
-      }
-    } @else {
-      <a
-        mat-button
-        [disabled]="item.items"
-        [class]="!item.items ? 'menu-subitem' : 'menu-subheader'"
-        [routerLink]="!item.items ? item.path : undefined"
-        (click)="mobile && !item.items && drawer.close()"
-        ariaCurrentWhenActive="page"
-        [routerLinkActiveOptions]="{ exact: true }"
-        routerLinkActive="active-link"
-      >
-        {{ item.label }}
-      </a>
-      @if (item.items) {
-        <ng-template
-          [ngTemplateOutlet]="sideMenuItem"
-          [ngTemplateOutletContext]="{ items: item.items, mobile: mobile, drawer: drawer }"
-        >
-        </ng-template>
-      }
     }
-  }
+    <a routerLink="/guide/migration" mat-menu-item>Migration guides</a>
+  </mat-menu>
 </ng-template>

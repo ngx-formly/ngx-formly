@@ -192,6 +192,47 @@
   outline-offset: 4px;
 }
 
+.markdown .heading-link {
+  margin-left: 10px;
+  font-size: 0.7em;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.markdown .doc-code {
+  position: relative;
+  margin: 24px 0;
+}
+
+.markdown .doc-code pre {
+  margin: 0;
+  padding-top: 56px;
+}
+
+.markdown .copy-code {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 12px;
+  min-height: 36px;
+  border: 1px solid var(--site-line);
+  border-radius: 6px;
+  color: var(--site-accent);
+  background: var(--site-background);
+  font:
+    500 14px/1.5 Roboto,
+    sans-serif;
+  cursor: pointer;
+}
+
+.markdown .copy-code:hover {
+  background: var(--site-accent-soft);
+}
+.markdown .copy-code:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 2px;
+}
+
 .markdown details[open] summary {
   margin-bottom: 16px;
 }

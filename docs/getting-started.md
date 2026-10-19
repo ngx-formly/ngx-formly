@@ -31,17 +31,17 @@ Follow these steps to get started with Ngx Formly. Also check out our [demos](ht
 
   Once installed, import the config in the `app.config.ts`:
 
-```patch
+```ts
 import { ApplicationConfig } from '@angular/core';
-+ import { provideFormlyCore, withFormlyFieldExpression } from '@ngx-formly/core'
-+ import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
+import { provideFormlyCore, withFormlyFieldExpression } from '@ngx-formly/core';
+import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-+   provideFormlyCore(
-+     withFormlyFieldExpression(),
-+     withFormlyBootstrap(),
-+   ),
+    provideFormlyCore([
+      withFormlyFieldExpression(),
+      ...withFormlyBootstrap(),
+    ]),
   ],
 };
 ```
@@ -67,8 +67,8 @@ export const appConfig: ApplicationConfig = {
 
   ```ts
   import { Component } from '@angular/core';
-  import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
-  import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
+  import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+  import { FormlyForm, FormlyFieldConfig } from '@ngx-formly/core';
 
   @Component({
     selector: 'app',
@@ -95,7 +95,7 @@ export const appConfig: ApplicationConfig = {
       }
     ];
 
-    onSubmit(model) {
+    onSubmit(model: { email: string }) {
       console.log(model);
     }
   }
