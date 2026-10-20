@@ -25,7 +25,7 @@ Update the UI libraries used by your application:
 | --- | --- |
 | `@ngx-formly/bootstrap` | `bootstrap ^5`; applications using `@ng-bootstrap/ng-bootstrap` need v21 for Angular 22 |
 | `@ngx-formly/material` | `@angular/material >= 22` |
-| `@ngx-formly/primeng` | `primeng >= 22` |
+| `@ngx-formly/primeng` | `primeng >= 21.1.10`, with `@primeuix/themes >= 2.0.2` when using styled mode |
 | `@ngx-formly/ng-zorro-antd` | `ng-zorro-antd >= 22` |
 | `@ngx-formly/kendo` | Kendo Angular label, dropdown, and input packages >= 25.3.0 |
 | `@ngx-formly/nativescript` | `@nativescript/angular >= 22` |
@@ -43,9 +43,11 @@ application providers. Import the individual Ionic components used by custom fie
 or NgModule `imports`. Formly's `FormlyIonicModule` and `provideFormlyCore(withFormlyIonic())` APIs remain supported.
 See the [Ionic 9 migration guide](https://ionicframework.com/docs/updating/9-0) for other application changes.
 
-PrimeNG 22 uses `p-radiobutton` in place of `p-radioButton`. Update copied radio templates and DOM selectors.
-Formly's select and datepicker `props.appendTo` now use PrimeNG's `AppendTo` type. Use `'body'`, `'self'`, or a supported
-element or template reference instead of an arbitrary string.
+The website and exported examples use the open-source PrimeNG 21 release. PrimeNG 21 declares Angular 21 peer
+dependencies, so Angular 22 applications need the scoped npm overrides in the
+[PrimeNG adapter installation guide](src/ui/primeng/README.md#installation).
+Formly's select and datepicker `props.appendTo` accept `'body'`, `'self'`, an element, or an Angular element or
+template reference instead of an arbitrary string.
 
 NG-ZORRO 22 datepickers require an explicit date adapter. If your application uses one, add
 `provideNzDateFnsAdapter()` from `ng-zorro-antd/core/time` to its providers to retain the previous date-fns behavior.

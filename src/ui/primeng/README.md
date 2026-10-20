@@ -4,15 +4,32 @@ PrimeNG field types and wrappers for Formly. This adapter connects PrimeNG input
 
 ## Installation
 
-For Formly 11, use Angular 22 or newer and PrimeNG 22 or newer. Keep all `@ngx-formly/*` packages on the same version, and use an `@angular/forms` version matching your application.
+For Formly 11, use Angular 22 and PrimeNG 21.1.10. Keep all `@ngx-formly/*` packages on the same version, and use an `@angular/forms` version matching your application.
+
+PrimeNG 21 declares Angular 21 peer dependencies. To use it with Angular 22, add these scoped npm overrides to your application's `package.json` before installing. Each referenced Angular package must be a direct dependency of the application:
+
+```json
+{
+  "overrides": {
+    "primeng": {
+      "@angular/cdk": "$@angular/cdk",
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core",
+      "@angular/forms": "$@angular/forms",
+      "@angular/platform-browser": "$@angular/platform-browser",
+      "@angular/router": "$@angular/router"
+    }
+  }
+}
+```
 
 In an Angular application with Reactive Forms installed:
 
 ```sh
-npm install @ngx-formly/core@^11 @ngx-formly/primeng@^11 primeng@^22 @primeuix/themes
+npm install @ngx-formly/core@^11 @ngx-formly/primeng@^11 primeng@^21.1.10 @primeuix/themes@^2.0.2 @angular/cdk@^22
 ```
 
-The example below configures the Aura theme. Keep your existing `providePrimeNG()` configuration if the application already has one. See the [PrimeNG installation guide](https://primeng.dev/installation) for the UI library's application setup requirements.
+The example below configures the Aura theme. Keep your existing `providePrimeNG()` configuration if the application already has one. See the [PrimeNG 21 installation guide](https://v21.primeng.org/installation) for the UI library's application setup requirements.
 
 ## Configuration
 

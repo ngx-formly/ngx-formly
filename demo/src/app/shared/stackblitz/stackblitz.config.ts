@@ -57,7 +57,7 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@angular/cdk': angularVersion,
     primeflex: '^3.2.0',
     primeicons: '^7.0.0',
-    primeng: '^22.1.2',
+    primeng: '^21.1.10',
     '@primeuix/themes': '^2.0.2',
   },
   ionic: { '@ngx-formly/ionic': formlyVersion, '@ionic/angular': '^9.0.0', '@angular/router': angularVersion },
@@ -69,6 +69,18 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
   // non UI framework libraries
   'ag-grid': { 'ag-grid-angular': '^33.1.0', 'ag-grid-community': '^33.1.0' },
   'ngx-translate': { '@ngx-translate/core': '^16.0.4', '@ngx-translate/http-loader': '^16.0.1' },
+};
+
+// shortcut: PrimeNG 21 declares Angular 21 peers, remove once a community release accepts Angular 22.
+export const primengOverrides = {
+  primeng: {
+    '@angular/cdk': '$@angular/cdk',
+    '@angular/common': '$@angular/common',
+    '@angular/core': '$@angular/core',
+    '@angular/forms': '$@angular/forms',
+    '@angular/platform-browser': '$@angular/platform-browser',
+    '@angular/router': '$@angular/router',
+  },
 };
 
 export const ngProvider: { [id: string]: string } = {
