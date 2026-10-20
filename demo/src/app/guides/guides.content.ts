@@ -7,6 +7,7 @@ import validationMd from '../../../../docs/validation.md?raw' with { loader: 'te
 import expressionPropertiesMd from '../../../../docs/expression-properties.md?raw' with { loader: 'text' };
 import formlyFieldPresetsMd from '../../../../docs/formly-field-presets.md?raw' with { loader: 'text' };
 import jsonSchemaMd from '../../../../docs/json-schema.md?raw' with { loader: 'text' };
+import externalLibrariesMd from '../../../../docs/external-libraries.md?raw' with { loader: 'text' };
 import faqMd from '../../../../docs/faq.md?raw' with { loader: 'text' };
 import migrationV11Md from '../../../../UPGRADE-11.0.md?raw' with { loader: 'text' };
 import migrationV10Md from '../../../../UPGRADE-10.0.md?raw' with { loader: 'text' };
@@ -27,6 +28,7 @@ export const GUIDE_CONTENTS: Record<string, string> = {
   'expression-properties': expressionPropertiesMd,
   'formly-field-presets': formlyFieldPresetsMd,
   'json-schema': jsonSchemaMd,
+  'external-libraries': externalLibrariesMd,
   faq: faqMd,
   v11: migrationV11Md,
   v10: migrationV10Md,
