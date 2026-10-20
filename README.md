@@ -60,6 +60,7 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 | [Material2](https://github.com/angular/material2) | [Demo](https://formly.dev/ui/material)  | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-material)  |
 | [Ionic](https://ionicframework.com)               | [Demo](https://formly.dev/ui/ionic)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ionic)     |
 | [PrimeNG](http://primefaces.org/primeng/#/)       | [Demo](https://formly.dev/ui/primeng)   | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-primeng)   |
+| [Optimus UI](https://optimus.openng.org)          | [Demo](https://formly.dev/ui/optimus-ui) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-optimus-ui) |
 | [Kendo](http://www.telerik.com/kendo-angular-ui)  | [Demo](https://formly.dev/ui/kendo)     | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-kendo)     |
 | [NG-ZORRO](http://ng.ant.design) | [Demo](https://formly.dev/ui/ng-zorro-antd) | [StackBlitz](https://stackblitz.com/edit/ngx-formly-ui-ng-zorro-antd)     |
 | [NativeScript](https://www.nativescript.org)      | ||
