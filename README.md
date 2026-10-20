@@ -87,6 +87,8 @@ The demo and exported examples run without Zone.js. Formly v11 continues to use
 Angular Reactive Forms; Signal Forms integration is planned for v12.
 The Ionic adapter requires Ionic 9 and uses its standalone components. Initialize Ionic with
 `provideIonicAngular()` from `@ionic/angular` in your application providers.
+The website uses PrimeNG 21.1.10. See the [PrimeNG adapter setup](src/ui/primeng/README.md#installation)
+for its Angular 22 npm overrides.
 
 See the [v11 upgrade guide](UPGRADE-11.0.md) for dependency updates and zoneless migration steps.
 Applications staying on Angular 21 should use Formly v10.

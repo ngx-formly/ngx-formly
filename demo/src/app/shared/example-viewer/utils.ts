@@ -1,8 +1,14 @@
 import appConfigTsSource from '../../../assets/stackblitz/app.config.ts?raw' with { loader: 'text' };
 import { highlight } from '../highlight';
 import { ExampleType } from './example-viewer.component';
-import { COPYRIGHT, dependencies, ngProvider, TEMPLATE_FILES } from '../stackblitz/stackblitz.config';
-import { angularVersion } from 'src/schematics/utils/lib-versions';
+import {
+  angularVersion,
+  COPYRIGHT,
+  dependencies,
+  ngProvider,
+  primengOverrides,
+  TEMPLATE_FILES,
+} from '../stackblitz/stackblitz.config';
 
 interface IThemeOption {
   type: string;
@@ -110,6 +116,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
           test: 'ng test',
         },
         dependencies: deps,
+        overrides: options.type === 'primeng' ? primengOverrides : undefined,
         devDependencies: {
           '@angular/build': angularVersion,
           '@angular/cli': angularVersion,
