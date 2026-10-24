@@ -1,4 +1,12 @@
-import { Component, inject, provideZonelessChangeDetection } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  NgZone,
+  provideZonelessChangeDetection,
+  signal,
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { describe, expect, it, vi } from 'vitest';
@@ -303,6 +311,222 @@ describe('FormlyForm Component', () => {
       });
 
       expect((form as FormArray).at(0).value).toEqual('test');
+    });
+  });
+
+  describe('model input as a WritableSignal', () => {
+    it('should set a copy of the model on the signal after each change', () => {
+      const model = signal<any>({ title: 'foo' });
+      const { form, detectChanges } = renderComponent({
+        model,
+        fields: [{ key: 'title', type: 'input' }],
+      });
+
+      const initial = model();
+      form.get('title').setValue('bar');
+      detectChanges();
+
+      expect(model()).toEqual({ title: 'bar' });
+      expect(model()).not.toBe(initial);
+    });
+
+    it('should set nested keyed group changes on the signal', () => {
+      const model = signal<any>({ address: { city: 'foo' } });
+      const { form, detectChanges } = renderComponent({
+        model,
+        fields: [{ key: 'address', fieldGroup: [{ key: 'city', type: 'input' }] }],
+      });
+
+      form.get('address.city').setValue('bar');
+      detectChanges();
+
+      expect(model()).toEqual({ address: { city: 'bar' } });
+    });
+
+    it('should keep model properties without a field', () => {
+      const model = signal<any>({ id: 1, title: 'foo' });
+      const { form, detectChanges } = renderComponent({
+        model,
+        fields: [{ key: 'title', type: 'input' }],
+      });
+
+      form.get('title').setValue('bar');
+      detectChanges();
+
+      expect(model()).toEqual({ id: 1, title: 'bar' });
+    });
+
+    it('should rebuild the form when the host sets a new value', () => {
+      const model = signal<any>({ title: 'foo' });
+      const { form, detectChanges } = renderComponent({
+        model,
+        fields: [{ key: 'title', type: 'input' }],
+      });
+
+      model.set({ title: 'baz' });
+      detectChanges();
+
+      expect(form.get('title').value).toEqual('baz');
+    });
+
+    it('should set a copy of the model on the signal with the immutable option', () => {
+      const model = signal<any>({ title: 'foo' });
+      const { form, detectChanges } = renderComponent(
+        {
+          model,
+          fields: [{ key: 'title', type: 'input' }],
+        },
+        { extras: { immutable: true } },
+      );
+
+      form.get('title').setValue('bar');
+      detectChanges();
+
+      expect(model()).toEqual({ title: 'bar' });
+    });
+
+    it.each([false, true])(
+      'should rebuild the form when the host resets the signal to its original value with immutable=%s',
+      (immutable) => {
+        const initial = { title: 'foo' };
+        const model = signal<any>(initial);
+        const { form, detectChanges } = renderComponent(
+          { model, fields: [{ key: 'title', type: 'input' }] },
+          { extras: { immutable } },
+        );
+
+        form.get('title').setValue('bar');
+        detectChanges();
+        model.set(initial);
+        detectChanges();
+
+        expect(form.get('title').value).toEqual('foo');
+      },
+    );
+
+    it('should not mutate the objects set on the signal by the host', () => {
+      const initial = { title: 'foo', address: { city: 'foo' } };
+      const model = signal<any>(initial);
+      const { form, detectChanges } = renderComponent({
+        model,
+        fields: [
+          { key: 'title', type: 'input' },
+          { key: 'address', fieldGroup: [{ key: 'city', type: 'input' }] },
+        ],
+      });
+
+      form.get('title').setValue('bar');
+      form.get('address.city').setValue('bar');
+      detectChanges();
+      expect(initial).toEqual({ title: 'foo', address: { city: 'foo' } });
+
+      const loaded = { title: 'baz', address: { city: 'baz' } };
+      model.set(loaded);
+      detectChanges();
+      form.get('title').setValue('qux');
+      detectChanges();
+      expect(loaded).toEqual({ title: 'baz', address: { city: 'baz' } });
+      expect(model()).toEqual({ title: 'qux', address: { city: 'baz' } });
+    });
+
+    it('should set the signal before checking expressions that read it', () => {
+      const model = signal<any>({ title: 'foo' });
+      const { form, fields, detectChanges } = renderComponent({
+        model,
+        fields: [{ key: 'title', type: 'input', expressions: { 'props.placeholder': () => model().title } }],
+      });
+
+      form.get('title').setValue('bar');
+      detectChanges();
+
+      expect(fields[0].props.placeholder).toEqual('bar');
+    });
+
+    it.each([false, true])(
+      'should keep an edit when the host updates the signal in the same task with zoneless=%s',
+      async (zoneless) => {
+        const model = signal<any>({ title: 'foo' });
+        const { fixture } = createComponent({
+          template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
+          inputs: { form: new FormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
+          imports: [FormlyInputModule],
+          providers: zoneless ? [provideZonelessChangeDetection()] : [],
+        });
+        fixture.autoDetectChanges();
+        await fixture.whenStable();
+
+        TestBed.inject(NgZone).run(() => {
+          fixture.componentInstance.form.get('title').setValue('bar');
+          model.update((m) => ({ ...m, count: 1 }));
+        });
+        await fixture.whenStable();
+
+        expect(fixture.componentInstance.form.get('title').value).toEqual('bar');
+        expect(model()).toEqual({ title: 'bar', count: 1 });
+      },
+    );
+
+    it('should stop following the signal when a plain model is bound', () => {
+      const model = signal<any>({ title: 'foo' });
+      const { form, setInputs, detectChanges } = renderComponent({
+        model,
+        fields: [{ key: 'title', type: 'input' }],
+      });
+
+      setInputs({ model: { title: 'plain' } });
+      model.set({ title: 'signal' });
+      detectChanges();
+      expect(form.get('title').value).toEqual('plain');
+
+      form.get('title').setValue('bar');
+      detectChanges();
+      expect(model()).toEqual({ title: 'signal' });
+    });
+
+    it('should update a computed in an OnPush host as the user types', async () => {
+      TestBed.configureTestingModule({
+        imports: [SignalModelHostComponent],
+        providers: [provideFormlyCore({ types: [{ name: 'input', component: FormlyFieldInput }] })],
+      });
+      const fixture = TestBed.createComponent(SignalModelHostComponent);
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+
+      const [name, city] = fixture.nativeElement.querySelectorAll('input');
+      name.value = 'Partners';
+      name.dispatchEvent(new Event('input'));
+      city.value = 'York';
+      city.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+
+      expect(fixture.nativeElement.querySelector('p').textContent).toBe('Partners (York)');
+    });
+
+    it.each([false, true])('should update a computed read in the host template with zoneless=%s', async (zoneless) => {
+      const model = signal<any>({ title: 'foo' });
+      const { fixture, query } = createComponent({
+        template: `
+          <p>{{ title() }}</p>
+          <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+        `,
+        inputs: {
+          form: new FormGroup({}),
+          fields: [{ key: 'title', type: 'input' }],
+          model,
+          title: computed(() => model().title),
+        },
+        imports: [FormlyInputModule],
+        providers: zoneless ? [provideZonelessChangeDetection()] : [],
+      });
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+
+      const input = query<HTMLInputElement>('input').nativeElement;
+      input.value = 'bar';
+      input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+
+      expect(query('p').nativeElement.textContent).toBe('bar');
     });
   });
 
@@ -1302,6 +1526,26 @@ export class StandaloneComponent {
   model = {};
   fields: FormlyFieldConfig[] = [{ type: 'input' }];
   config = inject(FormlyConfig);
+}
+
+@Component({
+  selector: 'formly-signal-model-host',
+  template: `
+    <p>{{ title() }}</p>
+    <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyModule],
+})
+export class SignalModelHostComponent {
+  form = new FormGroup({});
+  model = signal({ name: 'Consultants', address: { city: 'Leeds' } });
+  title = computed(() => `${this.model().name} (${this.model().address.city})`);
+  fields: FormlyFieldConfig[] = [
+    { key: 'name', type: 'input' },
+    { key: 'address', fieldGroup: [{ key: 'city', type: 'input' }] },
+  ];
 }
 
 @Component({

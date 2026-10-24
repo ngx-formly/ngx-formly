@@ -14,13 +14,19 @@ import {
   DestroyRef,
   PendingTasks,
   inject,
+  Injector,
+  WritableSignal,
+  EffectRef,
+  untracked,
+  effect,
+  isWritableSignal,
 } from '@angular/core';
 import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
 import { clone, hasKey, isNoopNgZone, isSignalRequired, observeDeep } from '../utils';
-import { switchMap, filter, take } from 'rxjs/operators';
+import { switchMap, filter, take, tap } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate, LegacyFormlyTemplate } from './formly.template';
 import { of, Subscription } from 'rxjs';
@@ -49,9 +55,18 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     return this.field.form;
   }
 
-  /** The model to be represented by the form. */
+  /**
+   * The model to be represented by the form.
+   * A `WritableSignal` is set to a copy of the model after each change.
+   */
   @Input()
   set model(model: any) {
+    this.modelSignalEffect?.destroy();
+    this.modelSignal = undefined;
+    if (isWritableSignal(model)) {
+      this.bindModelSignal(model);
+      return;
+    }
     if (this.config.extras.immutable && this._modelChangeValue === model) {
       return;
     }
@@ -91,7 +106,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   field: FormlyFieldConfigCache = { type: 'formly-group' };
   private readonly destroyRef = inject(DestroyRef);
   private readonly pendingTasks = inject(PendingTasks);
+  private readonly injector = inject(Injector);
   private _modelChangeValue: any = {};
+  private modelSignal?: WritableSignal<any>;
+  private modelSignalValue: any;
+  private modelSignalEffect?: EffectRef;
   private valueChangesUnsubscribe = () => {};
 
   constructor(
@@ -113,9 +132,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     }
 
     if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {
-      this.valueChangesUnsubscribe();
-      this.builder.build(this.field);
-      this.valueChangesUnsubscribe = this.valueChanges();
+      this.build();
     }
 
     if (changes.fields || changes.form) {
@@ -157,6 +174,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     const valueChanges = this.field.options.fieldChanges
       .pipe(
         filter(({ field, type }) => hasKey(field) && type === 'valueChanges'),
+        // keep the signal current for expressions and host code that run before the zone is stable
+        tap(() => {
+          if (this.modelSignal) {
+            this.setModelSignal(clone(this.model));
+          }
+        }),
         switchMap(() => (isNoopNgZone(this.ngZone) ? of(null) : this.ngZone.onStable.asObservable().pipe(take(1)))),
       )
       .subscribe(() =>
@@ -164,7 +187,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           // runGuarded is used to keep in sync the expression changes
           // https://github.com/ngx-formly/ngx-formly/issues/2095
           this.checkExpressionChange();
-          this.modelChange.emit((this._modelChangeValue = clone(this.model)));
+          this._modelChangeValue = clone(this.model);
+          this.setModelSignal(this._modelChangeValue);
+          this.modelChange.emit(this._modelChangeValue);
         }),
       );
 
@@ -181,6 +206,44 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     } else {
       Object.keys(field).forEach((p) => ((this.field as any)[p] = (field as any)[p]));
     }
+  }
+
+  private build() {
+    this.valueChangesUnsubscribe();
+    this.builder.build(this.field);
+    this.valueChangesUnsubscribe = this.valueChanges();
+  }
+
+  private bindModelSignal(model: WritableSignal<any>) {
+    this.modelSignal = model;
+    this.modelSignalValue = model();
+    this.useSignalValue(this.modelSignalValue);
+    this.modelSignalEffect = effect(
+      () => {
+        const value = model();
+        if (value === this.modelSignalValue) {
+          return;
+        }
+        this.modelSignalValue = value;
+        untracked(() => {
+          this.useSignalValue(value);
+          this.build();
+        });
+      },
+      { injector: this.injector },
+    );
+  }
+
+  private setModelSignal(model: any) {
+    if (this.modelSignal) {
+      this.modelSignalValue = model;
+      this.modelSignal.set(model);
+    }
+  }
+
+  // Formly mutates the root model, so bind a copy and leave the host's object untouched.
+  private useSignalValue(model: any) {
+    this.setField({ model: this.config.extras.immutable ? model : clone(model) });
   }
 }
 
