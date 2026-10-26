@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ElementRef, TemplateRef, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
-import { AppendTo } from 'primeng/types/shared';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
-  appendTo?: AppendTo;
+  appendTo?: 'body' | 'self' | HTMLElement | ElementRef | TemplateRef<unknown> | null;
   filter?: boolean;
   filterBy?: string;
   multiple?: boolean;

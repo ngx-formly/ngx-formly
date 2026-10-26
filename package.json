@@ -94,9 +94,19 @@
     "ng-zorro-antd": "^22.1.2",
     "primeflex": "^3.2.1",
     "primeicons": "^7.0.0",
-    "primeng": "^22.1.2",
+    "primeng": "^21.1.10",
     "rxjs": "^7.8.1",
     "tslib": "^2.4.0"
+  },
+  "overrides": {
+    "primeng": {
+      "@angular/cdk": "$@angular/cdk",
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core",
+      "@angular/forms": "$@angular/forms",
+      "@angular/platform-browser": "$@angular/platform-browser",
+      "@angular/router": "$@angular/router"
+    }
   },
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.8.1",
