@@ -6,9 +6,7 @@ supported Angular and Formly versions, and license terms.
 
 | Type | Name | Description | Demo link |
 | --- | --- | --- | --- |
-| Builder | [Formly Designer](https://github.com/GrumpTech/formly-designer) | Visual form designer and reusable frontend components, with tools to generate a frontend from an OpenAPI specification. | [Demo](https://grumptech.github.io/demos/formly-designer) |
-| Builder | [Formly Editor](https://github.com/sesan07/formly-editor) | Configurable editor framework for ngx-formly forms. Its Formly Studio demo lets you build, preview, and export forms as JSON. | [Demo](https://formlystudio.com) |
-| Builder | [Formly Form Builder](https://github.com/bmickoski/formly-form-builder) | Drag-and-drop editor with nested layouts, Material and Bootstrap previews, and export to `FormlyFieldConfig[]`. | [Demo](https://bmickoski.github.io/formly-form-builder/) |
+| Builder | [ngx-formly Builder](https://github.com/ngx-formly/ngx-formly-builder) | Shared community form builder with drag-and-drop editing, custom components, live previews, and Formly JSON export. | |
 
 ## Share your library
 
