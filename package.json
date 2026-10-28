@@ -71,6 +71,8 @@
     "@ngx-loading-bar/router": "^7.0.0",
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",
+    "@openng/optimus-ui": "^1.0.2",
+    "@openng/optimus-ui-themes": "^1.0.2",
     "@primeuix/themes": "^2.0.2",
     "@progress/kendo-angular-common": "^25.3.0",
     "@progress/kendo-angular-dateinputs": "^25.3.0",
@@ -186,6 +188,10 @@
     },
     {
       "path": "./dist/@ngx-formly/primeng/fesm2022/ngx-formly-primeng-*.mjs",
+      "maxSize": "4 kB"
+    },
+    {
+      "path": "./dist/@ngx-formly/optimus-ui/fesm2022/ngx-formly-optimus-ui-*.mjs",
       "maxSize": "4 kB"
     },
     {
