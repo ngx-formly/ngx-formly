@@ -99,6 +99,10 @@ export class FormlyFormBuilder {
     if (firstBuild && lastEmittedStatus !== field.form.status) {
       (field.form.statusChanges as EventEmitter<string>).emit(field.form.status);
     }
+
+    if (!controlsForCheck) {
+      options._afterBuild?.();
+    }
   }
 
   private _build(field: FormlyFieldConfigCache) {
