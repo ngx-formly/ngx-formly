@@ -153,15 +153,19 @@ export function isPromise(obj: any): obj is Promise<any> {
   return !!obj && typeof obj.then === 'function';
 }
 
-export function clone(value: any): any {
-  if (
+function isKeptByReference(value: any) {
+  return (
     !isObject(value) ||
     isObservable(value) ||
     isPromise(value) ||
     value instanceof TemplateRef ||
     /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity ||
     ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor?.name) !== -1
-  ) {
+  );
+}
+
+export function clone(value: any): any {
+  if (isKeptByReference(value)) {
     return value;
   }
 
@@ -219,6 +223,35 @@ export function clone(value: any): any {
 
     return newVal;
   }, c);
+}
+
+export function isEqualValue(a: any, b: any): boolean {
+  if (a === b) {
+    return true;
+  }
+
+  if (isKeptByReference(a) || isKeptByReference(b) || Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) {
+    return false;
+  }
+
+  if (a instanceof Date) {
+    return a.getTime() === b.getTime();
+  }
+
+  if (a instanceof Map) {
+    return a.size === b.size && [...a].every(([k, v]) => b.has(k) && isEqualValue(v, b.get(k)));
+  }
+
+  if (a instanceof Set) {
+    return a.size === b.size && [...a].every((v) => b.has(v));
+  }
+
+  const keys = Object.keys(a);
+
+  return (
+    keys.length === Object.keys(b).length &&
+    keys.every((k) => Object.prototype.hasOwnProperty.call(b, k) && isEqualValue(a[k], b[k]))
+  );
 }
 
 export function defineHiddenProp(field: any, prop: string, defaultValue: any) {

@@ -25,7 +25,7 @@ import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
 import { FormlyConfig } from '../services/formly.config';
-import { clone, hasKey, isNoopNgZone, isSignalRequired, observeDeep } from '../utils';
+import { clone, defineHiddenProp, hasKey, isEqualValue, isNoopNgZone, isSignalRequired, observeDeep } from '../utils';
 import { switchMap, filter, take, tap } from 'rxjs/operators';
 import { clearControl } from '../extensions/field-form/utils';
 import { FormlyFieldTemplates, FormlyTemplate, LegacyFormlyTemplate } from './formly.template';
@@ -57,7 +57,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   /**
    * The model to be represented by the form.
-   * A `WritableSignal` is set to a copy of the model after each change.
+   * The form sets a `WritableSignal` to a copy of the model after each change.
    */
   @Input()
   set model(model: any) {
@@ -112,6 +112,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private modelSignalValue: any;
   private modelSignalEffect?: EffectRef;
   private valueChangesUnsubscribe = () => {};
+  private readonly afterBuild = () => {
+    if (this.modelSignal) {
+      this.syncModelSignal(this.modelSignal);
+    }
+  };
 
   constructor(
     private builder: FormlyFormBuilder,
@@ -148,6 +153,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.valueChangesUnsubscribe();
     this.config.clearRefs();
+    if (this.field.options?._afterBuild === this.afterBuild) {
+      delete this.field.options._afterBuild;
+    }
   }
 
   private checkExpressionChange() {
@@ -177,7 +185,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
         // keep the signal current for expressions and host code that run before the zone is stable
         tap(() => {
           if (this.modelSignal) {
-            this.setModelSignal(clone(this.model));
+            this.syncModelSignal(this.modelSignal);
           }
         }),
         switchMap(() => (isNoopNgZone(this.ngZone) ? of(null) : this.ngZone.onStable.asObservable().pipe(take(1)))),
@@ -188,7 +196,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
           // https://github.com/ngx-formly/ngx-formly/issues/2095
           this.checkExpressionChange();
           this._modelChangeValue = clone(this.model);
-          this.setModelSignal(this._modelChangeValue);
+          if (this.modelSignal) {
+            this.syncModelSignal(this.modelSignal, this._modelChangeValue);
+          }
           this.modelChange.emit(this._modelChangeValue);
         }),
       );
@@ -210,6 +220,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private build() {
     this.valueChangesUnsubscribe();
+    if (this.modelSignal) {
+      defineHiddenProp((this.field.options ??= {}), '_afterBuild', this.afterBuild);
+    }
     this.builder.build(this.field);
     this.valueChangesUnsubscribe = this.valueChanges();
   }
@@ -234,11 +247,16 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     );
   }
 
-  private setModelSignal(model: any) {
-    if (this.modelSignal) {
-      this.modelSignalValue = model;
-      this.modelSignal.set(model);
+  private syncModelSignal(modelSignal: WritableSignal<any>, copy?: any) {
+    const current = untracked(modelSignal);
+
+    if (current !== this.modelSignalValue || isEqualValue(this.model, current ?? {})) {
+      return;
     }
+
+    modelSignal.set(copy ?? clone(this.model));
+    // a signal with a custom `equal` can keep its previous value
+    this.modelSignalValue = untracked(modelSignal);
   }
 
   // Formly mutates the root model, so bind a copy and leave the host's object untouched.

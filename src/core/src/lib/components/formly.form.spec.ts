@@ -2,7 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
+  Injector,
   NgZone,
   provideZonelessChangeDetection,
   signal,
@@ -404,7 +406,7 @@ describe('FormlyForm Component', () => {
       },
     );
 
-    it('should not mutate the objects set on the signal by the host', () => {
+    it('should not mutate the initial object held by the signal', () => {
       const initial = { title: 'foo', address: { city: 'foo' } };
       const model = signal<any>(initial);
       const { form, detectChanges } = renderComponent({
@@ -419,17 +421,40 @@ describe('FormlyForm Component', () => {
       form.get('address.city').setValue('bar');
       detectChanges();
       expect(initial).toEqual({ title: 'foo', address: { city: 'foo' } });
+    });
+
+    it('should not mutate an object the host sets on the signal later', () => {
+      const model = signal<any>({ title: 'foo', address: { city: 'foo' } });
+      const { form, detectChanges } = renderComponent({
+        model,
+        fields: [
+          { key: 'title', type: 'input' },
+          { key: 'address', fieldGroup: [{ key: 'city', type: 'input' }] },
+        ],
+      });
 
       const loaded = { title: 'baz', address: { city: 'baz' } };
       model.set(loaded);
       detectChanges();
       form.get('title').setValue('qux');
       detectChanges();
+
       expect(loaded).toEqual({ title: 'baz', address: { city: 'baz' } });
       expect(model()).toEqual({ title: 'qux', address: { city: 'baz' } });
     });
 
-    it('should set the signal before checking expressions that read it', () => {
+    it('should set a newly chosen file on the signal', () => {
+      const chosen = new File([], 'a.txt');
+      const model = signal<any>({ file: new File([], 'a.txt') });
+      const { form, detectChanges } = renderComponent({ model, fields: [{ key: 'file' }] });
+
+      form.get('file').setValue(chosen);
+      detectChanges();
+
+      expect(model().file).toBe(chosen);
+    });
+
+    it('should give expressions that read the signal the latest edit', () => {
       const model = signal<any>({ title: 'foo' });
       const { form, fields, detectChanges } = renderComponent({
         model,
@@ -465,6 +490,232 @@ describe('FormlyForm Component', () => {
         expect(model()).toEqual({ title: 'bar', count: 1 });
       },
     );
+
+    it.each([false, true])('should set build-time default values on the signal with zoneless=%s', async (zoneless) => {
+      const model = signal<any>({});
+      const modelChange = vi.fn();
+      const { fixture } = createComponent({
+        template: `<formly-form [form]="form" [fields]="fields" [model]="model" (modelChange)="modelChange($event)"></formly-form>`,
+        inputs: {
+          form: new FormGroup({}),
+          fields: [{ key: 'country', type: 'input', defaultValue: 'CH' }],
+          model,
+          modelChange,
+        },
+        imports: [FormlyInputModule],
+        providers: zoneless ? [provideZonelessChangeDetection()] : [],
+      });
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+
+      expect(fixture.componentInstance.form.value).toEqual({ country: 'CH' });
+      expect(model()).toEqual({ country: 'CH' });
+      expect(modelChange).not.toHaveBeenCalled();
+    });
+
+    it.each([false, true])(
+      'should keep initially hidden values on the signal like a plain model with zoneless=%s',
+      async (zoneless) => {
+        const model = signal<any>({ title: 'hidden' });
+        const { fixture } = createComponent({
+          template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
+          inputs: { form: new FormGroup({}), fields: [{ key: 'title', type: 'input', hide: true }], model },
+          imports: [FormlyInputModule],
+          providers: zoneless ? [provideZonelessChangeDetection()] : [],
+        });
+        fixture.autoDetectChanges();
+        await fixture.whenStable();
+
+        expect(fixture.componentInstance.form.value).toEqual({});
+        expect(model()).toEqual({ title: 'hidden' });
+      },
+    );
+
+    it.each([false, true])(
+      'should keep a value set by the host before it is applied with zoneless=%s',
+      async (zoneless) => {
+        const model = signal<any>({ id: 1, title: 'foo' });
+        const { fixture } = createComponent({
+          template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
+          inputs: { form: new FormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
+          imports: [FormlyInputModule],
+          providers: zoneless ? [provideZonelessChangeDetection()] : [],
+        });
+        fixture.autoDetectChanges();
+        await fixture.whenStable();
+
+        model.set({ id: 2, title: 'loaded' });
+        fixture.componentInstance.form.get('title').setValue('adjusted');
+        await fixture.whenStable();
+
+        expect(model()).toEqual({ id: 2, title: 'loaded' });
+        expect(fixture.componentInstance.form.get('title').value).toEqual('loaded');
+      },
+    );
+
+    it.each([false, true])('should settle when two forms share one signal with zoneless=%s', async (zoneless) => {
+      const model = signal<any>({ a: 'foo' });
+      const { fixture } = createComponent({
+        template: `
+          <formly-form [form]="form1" [fields]="fields1" [model]="model"></formly-form>
+          <formly-form [form]="form2" [fields]="fields2" [model]="model"></formly-form>
+        `,
+        inputs: {
+          form1: new FormGroup({}),
+          form2: new FormGroup({}),
+          fields1: [{ key: 'a', type: 'input' }],
+          fields2: [{ key: 'b', type: 'input', defaultValue: 'bar' }],
+          model,
+        },
+        imports: [FormlyInputModule],
+        providers: zoneless ? [provideZonelessChangeDetection()] : [],
+      });
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+
+      expect(model()).toEqual({ a: 'foo', b: 'bar' });
+
+      fixture.componentInstance.form1.get('a').setValue('edited');
+      await fixture.whenStable();
+
+      expect(model()).toEqual({ a: 'edited', b: 'bar' });
+      expect(fixture.componentInstance.form2.get('b').value).toEqual('bar');
+    });
+
+    it.each([false, true])(
+      'should settle when the fields are computed from the signal with zoneless=%s',
+      async (zoneless) => {
+        const model = signal<any>({ type: 'a' });
+        const fields = computed(() => [
+          { key: 'type', type: 'input' },
+          { key: `extra_${model().type}`, type: 'input' },
+        ]);
+        const { fixture } = createComponent({
+          template: `<formly-form [form]="form" [fields]="fields()" [model]="model"></formly-form>`,
+          inputs: { form: new FormGroup({}), fields, model },
+          imports: [FormlyInputModule],
+          providers: zoneless ? [provideZonelessChangeDetection()] : [],
+        });
+        fixture.autoDetectChanges();
+        await fixture.whenStable();
+
+        fixture.componentInstance.form.get('type').setValue('b');
+        await fixture.whenStable();
+
+        expect(model()).toEqual({ type: 'b' });
+        expect(fixture.componentInstance.form.get('extra_b')).not.toBeNull();
+      },
+    );
+
+    it('should keep a null signal value when the build leaves the model empty', () => {
+      const model = signal<any>(null);
+      const { form, detectChanges } = renderComponent({ model, fields: [{ key: 'title', type: 'input' }] });
+      expect(model()).toBeNull();
+
+      form.get('title').setValue('foo');
+      detectChanges();
+      expect(model()).toEqual({ title: 'foo' });
+    });
+
+    it('should keep syncing a signal that has a custom equal function', () => {
+      const model = signal<any>({ title: 'foo' }, { equal: (a, b) => JSON.stringify(a) === JSON.stringify(b) });
+      const { form, detectChanges } = renderComponent({ model, fields: [{ key: 'title', type: 'input' }] });
+
+      form.get('title').setValue('bar');
+      detectChanges();
+      form.get('title').setValue('baz');
+      detectChanges();
+      expect(model()).toEqual({ title: 'baz' });
+
+      model.set({ title: 'host' });
+      detectChanges();
+      expect(form.get('title').value).toEqual('host');
+    });
+
+    it('should set default values added by options.build() on the signal', () => {
+      const model = signal<any>({ title: 'foo' });
+      const fields: FormlyFieldConfig[] = [{ key: 'title', type: 'input' }];
+      const { options, detectChanges } = renderComponent({ model, fields });
+
+      fields.push({ key: 'country', type: 'input', defaultValue: 'CH' });
+      options.build();
+      detectChanges();
+
+      expect(model()).toEqual({ title: 'foo', country: 'CH' });
+    });
+
+    it('should not make a host effect that calls options.build() depend on the signal', () => {
+      const model = signal<any>({ title: 'foo' });
+      const config = signal(1);
+      const options: FormlyFormOptions = {};
+      const { form, detectChanges } = renderComponent({ model, options, fields: [{ key: 'title', type: 'input' }] });
+      let runs = 0;
+      effect(
+        () => {
+          runs++;
+          config();
+          options.build();
+        },
+        { injector: TestBed.inject(Injector) },
+      );
+      TestBed.tick();
+
+      form.get('title').setValue('bar');
+      detectChanges();
+      TestBed.tick();
+      expect(runs).toEqual(1);
+      expect(model()).toEqual({ title: 'bar' });
+
+      config.set(2);
+      TestBed.tick();
+      expect(runs).toEqual(2);
+    });
+
+    it('should not keep a reference to itself on the options after it is destroyed', () => {
+      const options: FormlyFormOptions = {};
+      const { fixture } = renderComponent({
+        model: signal<any>({ title: 'foo' }),
+        options,
+        fields: [{ key: 'title', type: 'input' }],
+      });
+
+      fixture.destroy();
+
+      expect(Object.getOwnPropertyNames(options)).not.toContain('_afterBuild');
+    });
+
+    it('should keep the build hook of another form that shares the options', () => {
+      const options: FormlyFormOptions = {};
+      const shared = signal<any>({ title: 'foo' });
+      const { fixture, form1, form2 } = createComponent({
+        template: `
+          <formly-form [form]="form1" [fields]="fields1" [model]="model1" [options]="options"></formly-form>
+          @if (showSecond) {
+            <formly-form [form]="form2" [fields]="fields2" [model]="model2" [options]="options"></formly-form>
+          }
+        `,
+        inputs: {
+          form1: new FormGroup({}),
+          form2: new FormGroup({}),
+          fields1: [{ key: 'title', type: 'input' }],
+          fields2: [{ key: 'title', type: 'input' }],
+          model1: shared,
+          model2: { title: 'plain' },
+          options,
+          showSecond: true,
+        },
+        imports: [FormlyInputModule],
+      });
+
+      fixture.componentInstance.showSecond = false;
+      fixture.detectChanges();
+      fixture.componentInstance.fields1.push({ key: 'country', type: 'input', defaultValue: 'CH' });
+      options.build();
+
+      expect(shared()).toEqual({ title: 'foo', country: 'CH' });
+      expect(form1.get('title').value).toEqual('foo');
+      expect(form2.get('title').value).toEqual('plain');
+    });
 
     it('should stop following the signal when a plain model is bound', () => {
       const model = signal<any>({ title: 'foo' });
