@@ -681,7 +681,20 @@ describe('FormlyForm Component', () => {
 
       fixture.destroy();
 
-      expect(Object.getOwnPropertyNames(options)).not.toContain('_afterBuild');
+      expect((options as any)._afterBuild.size).toEqual(0);
+    });
+
+    it('should not keep a reference to itself on options that were replaced', () => {
+      const options: FormlyFormOptions = {};
+      const { setInputs } = renderComponent({
+        model: signal<any>({ title: 'foo' }),
+        options,
+        fields: [{ key: 'title', type: 'input' }],
+      });
+
+      setInputs({ options: {} });
+
+      expect((options as any)._afterBuild.size).toEqual(0);
     });
 
     it('should keep the build hook of another form that shares the options', () => {
@@ -715,6 +728,50 @@ describe('FormlyForm Component', () => {
       expect(shared()).toEqual({ title: 'foo', country: 'CH' });
       expect(form1.get('title').value).toEqual('foo');
       expect(form2.get('title').value).toEqual('plain');
+    });
+
+    it('should sync defaults from options.build() when two forms with signals share options', () => {
+      const options: FormlyFormOptions = {};
+      const sig1 = signal<any>({ a: 'foo' });
+      const sig2 = signal<any>({ b: 'bar' });
+      const { fields1, form1, detectChanges } = createComponent<any>({
+        template: `
+          <formly-form [form]="form1" [fields]="fields1" [model]="sig1" [options]="options"></formly-form>
+          <formly-form [form]="form2" [fields]="fields2" [model]="sig2" [options]="options"></formly-form>
+        `,
+        inputs: {
+          form1: new FormGroup({}),
+          form2: new FormGroup({}),
+          fields1: [{ key: 'a', type: 'input' }],
+          fields2: [{ key: 'b', type: 'input' }],
+          sig1,
+          sig2,
+          options,
+        },
+        imports: [FormlyInputModule],
+      });
+
+      form1.get('a').setValue('edited');
+      detectChanges();
+      fields1.push({ key: 'country', type: 'input', defaultValue: 'CH' });
+      options.build();
+      detectChanges();
+
+      expect(form1.value).toEqual({ a: 'edited', country: 'CH' });
+      expect(sig1()).toEqual({ a: 'edited', country: 'CH' });
+    });
+
+    it('should not set the signal again when the model contains NaN', () => {
+      const model = signal<any>({ title: 'foo', n: NaN });
+      const set = vi.spyOn(model, 'set');
+      const { options, detectChanges } = renderComponent({ model, fields: [{ key: 'title', type: 'input' }] });
+
+      set.mockClear();
+      options.build();
+      options.build();
+      detectChanges();
+
+      expect(set).not.toHaveBeenCalled();
     });
 
     it('should stop following the signal when a plain model is bound', () => {

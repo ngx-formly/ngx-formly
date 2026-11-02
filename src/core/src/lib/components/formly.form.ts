@@ -89,6 +89,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   /** Options for the form. */
   @Input()
   set options(options: FormlyFormOptions) {
+    this.field.options?._afterBuild?.delete(this.afterBuild);
     this.setField({ options });
   }
   get options(): FormlyFormOptions {
@@ -153,9 +154,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.valueChangesUnsubscribe();
     this.config.clearRefs();
-    if (this.field.options?._afterBuild === this.afterBuild) {
-      delete this.field.options._afterBuild;
-    }
+    this.field.options?._afterBuild?.delete(this.afterBuild);
   }
 
   private checkExpressionChange() {
@@ -221,7 +220,11 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private build() {
     this.valueChangesUnsubscribe();
     if (this.modelSignal) {
-      defineHiddenProp((this.field.options ??= {}), '_afterBuild', this.afterBuild);
+      const options = (this.field.options ??= {});
+      if (!options._afterBuild) {
+        defineHiddenProp(options, '_afterBuild', new Set());
+      }
+      options._afterBuild.add(this.afterBuild);
     }
     this.builder.build(this.field);
     this.valueChangesUnsubscribe = this.valueChanges();

@@ -101,7 +101,7 @@ export class FormlyFormBuilder {
     }
 
     if (!controlsForCheck) {
-      options._afterBuild?.();
+      options._afterBuild?.forEach((afterBuild) => afterBuild());
     }
   }
 
