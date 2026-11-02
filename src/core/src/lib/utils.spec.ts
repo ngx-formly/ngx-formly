@@ -187,11 +187,13 @@ describe('isEqualValue', () => {
     expect(isEqualValue({ a: 1 }, { a: 1, b: undefined })).toBe(false);
     expect(isEqualValue([1, 2], { 0: 1, 1: 2 })).toBe(false);
     expect(isEqualValue(null, {})).toBe(false);
+    expect(isEqualValue({ value: NaN }, { value: NaN })).toBe(true);
   });
 
   it('should compare the types copied by clone', () => {
     expect(isEqualValue(new Date(1), new Date(1))).toBe(true);
     expect(isEqualValue(new Date(1), new Date(2))).toBe(false);
+    expect(isEqualValue(new Date(NaN), new Date(NaN))).toBe(true);
     expect(isEqualValue(new Map([['a', { b: 1 }]]), new Map([['a', { b: 1 }]]))).toBe(true);
     expect(isEqualValue(new Map([['a', 1]]), new Map([['a', 2]]))).toBe(false);
     expect(isEqualValue(new Set([1, 2]), new Set([1, 2]))).toBe(true);
