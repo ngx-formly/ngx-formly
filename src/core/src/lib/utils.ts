@@ -226,7 +226,7 @@ export function clone(value: any): any {
 }
 
 export function isEqualValue(a: any, b: any): boolean {
-  if (a === b) {
+  if (Object.is(a, b)) {
     return true;
   }
 
@@ -235,7 +235,7 @@ export function isEqualValue(a: any, b: any): boolean {
   }
 
   if (a instanceof Date) {
-    return a.getTime() === b.getTime();
+    return Object.is(a.getTime(), b.getTime());
   }
 
   if (a instanceof Map) {
