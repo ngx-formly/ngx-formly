@@ -275,13 +275,13 @@ describe('Website navigation', () => {
     await router.navigateByUrl('/examples/introduction');
     await fixture.whenStable();
     const sidebar: HTMLElement = fixture.nativeElement.querySelector('#section-navigation');
-    expect(sidebar.querySelector('a[href="/examples/introduction"]')).not.toBeNull();
+    const introduction = sidebar.querySelector<HTMLAnchorElement>('#section-menu-items > :first-child');
+    expect(introduction.getAttribute('href')).toBe('/examples/introduction');
+    expect(introduction.textContent).toContain('Introduction Example');
+    expect(introduction.getAttribute('aria-current')).toBe('page');
+    expect(sidebar.querySelector('[data-menu-label="Intro"]')).toBeNull();
     expect(sidebar.querySelector('a[href="/examples/form-options/reset-model"]')).toBeNull();
 
-    sidebar.querySelector<HTMLButtonElement>('[aria-label="Back to Examples"]').click();
-    await fixture.whenStable();
-    expect(sidebar.querySelector('.active-link')?.textContent).toContain('Intro');
-    expect(document.activeElement).toBe(sidebar.querySelector('[data-menu-label="Intro"]'));
     sidebar.querySelector<HTMLButtonElement>('[data-menu-label="Form Options"]').click();
     await fixture.whenStable();
     expect(sidebar.querySelector('a[href="/examples/form-options/reset-model"]')).not.toBeNull();
@@ -293,6 +293,17 @@ describe('Website navigation', () => {
     await fixture.whenStable();
     expect(router.url).toBe('/examples/form-options/reset-model');
     expect(sidebar.querySelector('[aria-current="page"]')?.textContent).toContain('Reset Model');
+
+    const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
+    await fixture.ngZone.run(() => drawer.open());
+    sidebar.querySelector<HTMLButtonElement>('[aria-label="Back to Examples"]').click();
+    await fixture.whenStable();
+    expect(sidebar.querySelector('[data-menu-label="Form Options"].active-link')).not.toBeNull();
+    expect(document.activeElement).toBe(sidebar.querySelector('[data-menu-label="Form Options"]'));
+    sidebar.querySelector<HTMLAnchorElement>('a[href="/examples/introduction"]').click();
+    await fixture.whenStable();
+    expect(router.url).toBe('/examples/introduction');
+    expect(drawer.opened).toBe(false);
   });
 
   it('opens the correct API group for direct links, including query parameters and headings', async () => {

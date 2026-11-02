@@ -46,10 +46,7 @@
     "path": "/examples",
     "label": "Examples",
     "items": [
-      {
-        "label": "Intro",
-        "items": [{ "path": "/examples/introduction", "label": "Introduction Example" }]
-      },
+      { "path": "/examples/introduction", "label": "Introduction Example" },
       {
         "label": "Field Options",
         "path": "/examples/field-options",
