@@ -17,6 +17,10 @@ import { FieldWrapper } from '../templates/field.wrapper';
 
 declare const ngDevMode: any;
 
+function defaultShowValidation(field: FieldType) {
+  return field.formControl?.touched || field.options.parentForm?.submitted || !!field.field.validation?.show;
+}
+
 /**
  * Maintains list of formly config options. This can be used to register new field type.
  */
@@ -33,11 +37,9 @@ export class FormlyConfig {
     resetFieldOnHide: true,
     renderFormlyFieldElement: true,
     showError(field: FieldType) {
-      return (
-        field.formControl?.invalid &&
-        (field.formControl?.touched || field.options.parentForm?.submitted || !!field.field.validation?.show)
-      );
+      return field.formControl?.invalid && (field.options?.showValidation ?? defaultShowValidation)(field);
     },
+    showValidation: defaultShowValidation,
   };
   extensions: { [name: string]: FormlyExtension } = {};
   presets: { [name: string]: FormlyFieldConfig | FormlyFieldConfigPresetProvider } = {};
