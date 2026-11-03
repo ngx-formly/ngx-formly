@@ -195,7 +195,7 @@ Code uses monospace. Inline document code uses the `code` role; code blocks have
 
 Desktop navigation occupies a fixed 104px rail. Documentation adds a 250px section sidebar. The guide and API reader is at most 1000px wide, including 48px padding. At viewport widths of 1440px and above, its maximum width becomes 1360px and it adds a 200px sticky table of contents. Smaller viewports show a collapsible table of contents above the article. Homepage sections and example viewers are at most 1120px wide. Homepage containers leave 48px on each side when the viewport limits their width.
 
-The section sidebar only shows the current section's topics on desktop. The theme control sits below GitHub at the bottom of the rail and moves into the mobile header. Its keyboard-accessible menu offers System, Dark, and Light. System is the default and follows operating-system changes. Explicit choices persist in browser storage; blocked storage only prevents persistence.
+The section sidebar only shows the current section's topics on desktop. The theme control sits below GitHub at the bottom of the rail and moves into the mobile header. Each activation cycles through System, Dark, and Light, with the icon, tooltip, and accessible label showing the selected mode. System is the default and follows operating-system changes. Explicit choices persist in browser storage; blocked storage only prevents persistence.
 
 Homepage section introductions use two columns in a 1:0.8 ratio with a 64px gap. The configuration and form example use equal columns. Adapter links use three columns, and learning links use two. Major homepage sections use the section spacing token; the adapter section uses 72px vertical padding.
 

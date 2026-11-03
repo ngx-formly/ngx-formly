@@ -89,6 +89,10 @@ It reads Node.js from `.node-version`; keep `NPM_VERSION` in `netlify.toml` alig
 `packageManager` in `package.json`. The fallback to `index.html` lets Angular handle direct
 links and page refreshes, including the published `/docs/...` URLs.
 
+Pushing a `v*` tag starts npm publication for all packages. The publisher uses the `next` npm
+dist-tag for prereleases, including release candidates, and `latest` for stable versions.
+Run `node --test build/publish.test.mjs` to check tag selection without publishing packages.
+
 After npm publication, the separate `github-release` job publishes the matching version's
 `CHANGELOG.md` entry as the GitHub release notes, including breaking changes and migration
 links. The tag must already exist and match `package.json`; missing or empty entries fail

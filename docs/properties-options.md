@@ -18,7 +18,7 @@ Everything starts with the `formly-form`. General use of it will look something 
 | ------- | ---------------------- | ------------------- | ------------- | ------------- |
 | form    | `FormGroup` or `FormArray` | `new FormGroup({})` | no            | The form instance which allow to track model value and validation status. |
 | fields  | `FormlyFieldConfig[]`  |                     | yes           | The field configurations for building the form. |
-| model   | `any`                  |                     | yes           | The model to be represented by the form. |
+| model   | `any` or `WritableSignal<any>` |             | yes           | The model to be represented by the form. The form sets a `WritableSignal` to a copy of the model after each change, and rebuilds when you set a new value on it. Bind a signal with `[model]="model"`. `[(model)]` passes the signal's value instead of the signal. |
 | options | `FormlyFormOptions`    |                     | no            | Options for the form. |
 
 

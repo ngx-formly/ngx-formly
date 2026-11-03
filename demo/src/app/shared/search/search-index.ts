@@ -21,6 +21,13 @@ export const SEARCH_INDEX: SearchDocument[] = menu.flatMap((section) =>
   }),
 );
 
+SEARCH_INDEX.push({
+  title: 'JSON validator',
+  path: '/tools/validator',
+  category: 'Tools',
+  content: 'Check Formly fields JSON syntax and configuration. Find errors, property paths, and likely misspellings.',
+});
+
 for (const page of apiPages) {
   const slugger = new Slugger();
   const sections = page.content.split(/\n(?=#{2,3} )/);

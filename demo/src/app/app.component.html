@@ -57,27 +57,14 @@
       mat-icon-button
       class="theme-toggle"
       type="button"
-      [matMenuTriggerFor]="themeMenu"
+      (click)="setTheme(theme() === 'system' ? 'dark' : theme() === 'dark' ? 'light' : 'system')"
       [attr.aria-label]="'Change theme. Current theme: ' + theme()"
+      [title]="'Current theme: ' + theme()"
     >
       <mat-icon aria-hidden="true">
         {{ theme() === 'system' ? 'brightness_6' : theme() === 'dark' ? 'dark_mode' : 'light_mode' }}
       </mat-icon>
     </button>
-    <mat-menu #themeMenu="matMenu" class="theme-menu" xPosition="after" yPosition="above" [overlapTrigger]="false">
-      @for (option of themeOptions; track option.value) {
-        <button
-          mat-menu-item
-          type="button"
-          role="menuitemradio"
-          [attr.aria-checked]="theme() === option.value"
-          (click)="setTheme(option.value)"
-        >
-          <mat-icon aria-hidden="true">{{ option.icon }}</mat-icon>
-          <span>{{ option.label }}</span>
-        </button>
-      }
-    </mat-menu>
     @if (isSmallDevice) {
       <button
         mat-button
@@ -134,6 +121,21 @@
                   <mat-icon aria-hidden="true">chevron_right</mat-icon>
                 </span>
               </button>
+            } @else if (item.href) {
+              <a
+                mat-button
+                class="menu-subitem"
+                [href]="item.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="item.label + ', opens in a new tab'"
+                (click)="isSmallDevice && sidenav.close()"
+              >
+                <span class="menu-drill-link">
+                  <span>{{ item.label }}</span>
+                  <mat-icon aria-hidden="true">open_in_new</mat-icon>
+                </span>
+              </a>
             } @else {
               <a
                 mat-button
@@ -175,6 +177,7 @@
             <li><a routerLink="/ui">UI</a></li>
             <li><a routerLink="/examples">Examples</a></li>
             <li><a routerLink="/api">API</a></li>
+            <li><a routerLink="/tools">Tools</a></li>
           </ul>
           <!-- <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener" target="_blank">Netlify</a>.</p> -->
           <p>

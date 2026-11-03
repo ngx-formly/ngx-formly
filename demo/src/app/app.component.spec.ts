@@ -49,6 +49,8 @@ describe('Website navigation', () => {
           { path: 'examples/form-options/reset-model', component: TestPageComponent },
           { path: 'api/core', component: TestPageComponent },
           { path: 'api/core/json-schema', component: TestPageComponent },
+          { path: 'tools', pathMatch: 'full', redirectTo: 'tools/validator' },
+          { path: 'tools/validator', component: TestPageComponent },
         ]),
         {
           provide: BreakpointObserver,
@@ -80,6 +82,49 @@ describe('Website navigation', () => {
     expect(document.title).toBe('Angular Formly - Core');
   });
 
+  it.each([false, true])('offers Tools and an external builder link (mobile: %s)', async (mobile) => {
+    smallDevice.next({ matches: mobile });
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.autoDetectChanges();
+    await TestBed.inject(Router).navigateByUrl('/');
+    await fixture.whenStable();
+    const railLinks = [...fixture.nativeElement.querySelectorAll('.primary-links a')].map((link: HTMLAnchorElement) =>
+      link.getAttribute('href'),
+    );
+    expect(railLinks.indexOf('/tools')).toBe(railLinks.indexOf('/api') + 1);
+    expect(fixture.nativeElement.querySelector('.site-footer a[href="/tools"]')).not.toBeNull();
+    const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
+    if (mobile) {
+      fixture.nativeElement.querySelector('[aria-label="Toggle navigation"]').click();
+      await fixture.whenStable();
+      fixture.nativeElement.querySelector('[data-menu-label="Tools"]').click();
+    } else {
+      fixture.nativeElement.querySelector('.primary-links a[href="/tools"]').click();
+    }
+    await fixture.whenStable();
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector(
+      '#section-navigation a[href="https://builder.formly.dev/"]',
+    );
+    expect(link.target).toBe('_blank');
+    expect(link.rel).toBe('noopener noreferrer');
+    expect(link.getAttribute('aria-label')).toContain('opens in a new tab');
+    const currentUrl = TestBed.inject(Router).url;
+    link.addEventListener('click', (event) => event.preventDefault());
+    link.click();
+    await fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe(currentUrl);
+    if (mobile) {
+      expect(drawer.opened).toBe(false);
+      fixture.nativeElement.querySelector('[aria-label="Toggle navigation"]').click();
+      await fixture.whenStable();
+    }
+    fixture.nativeElement.querySelector('#section-navigation a[href="/tools/validator"]').click();
+    await fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe('/tools/validator');
+    expect(document.title).toBe('Angular Formly - JSON validator');
+    if (mobile) expect(drawer.opened).toBe(false);
+  });
+
   it.each([
     ['v11', ['v11 (current)', 'v10', 'v9']],
     ['v10', ['v11 (latest)', 'v10 (current)', 'v9']],
@@ -107,29 +152,39 @@ describe('Website navigation', () => {
     expect(TestBed.inject(Router).url).toBe('/guide/migration/v11');
   });
 
-  it('selects a theme from the menu and remembers it when the app starts again', async () => {
+  it.each([false, true])('cycles themes directly and remembers the selection (mobile: %s)', async (mobile) => {
+    smallDevice.next({ matches: mobile });
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    fixture.nativeElement.querySelector('.theme-toggle').click();
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     await fixture.whenStable();
+    const toggle: HTMLButtonElement = fixture.nativeElement.querySelector('.theme-toggle');
+    expect(toggle.querySelector('mat-icon').textContent.trim()).toBe('brightness_6');
+    expect(toggle.hasAttribute('aria-haspopup')).toBe(false);
 
-    const darkOption = [...document.querySelectorAll<HTMLButtonElement>('[role="menuitemradio"]')].find((option) =>
-      option.textContent.includes('Dark'),
-    );
-    darkOption.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(document.documentElement.dataset.bsTheme).toBe('dark');
-    expect(document.documentElement.classList.contains('ion-palette-dark')).toBe(true);
-    expect(localStorage.getItem('formly-theme')).toBe('dark');
-    expect(fixture.nativeElement.querySelector('.theme-toggle').getAttribute('aria-label')).toContain('dark');
+    for (const [theme, icon, appliedTheme] of [
+      ['dark', 'dark_mode', 'dark'],
+      ['light', 'light_mode', 'light'],
+      ['system', 'brightness_6', 'light'],
+      ['dark', 'dark_mode', 'dark'],
+    ]) {
+      toggle.click();
+      await fixture.whenStable();
+      expect(document.documentElement.dataset.bsTheme).toBe(appliedTheme);
+      expect(document.documentElement.classList.contains('ion-palette-dark')).toBe(appliedTheme === 'dark');
+      expect(localStorage.getItem('formly-theme')).toBe(theme);
+      expect(toggle.querySelector('mat-icon').textContent.trim()).toBe(icon);
+      expect(toggle.getAttribute('aria-label')).toBe(`Change theme. Current theme: ${theme}`);
+      expect(toggle.title).toBe(`Current theme: ${theme}`);
+      expect(document.querySelector('[role="menu"]')).toBeNull();
+    }
     fixture.destroy();
 
     const reloaded = TestBed.createComponent(AppComponent);
-    reloaded.detectChanges();
+    reloaded.autoDetectChanges();
+    await reloaded.whenStable();
     expect(reloaded.componentInstance.theme()).toBe('dark');
     expect(document.documentElement.dataset.bsTheme).toBe('dark');
+    expect(reloaded.nativeElement.querySelector('.theme-toggle mat-icon').textContent.trim()).toBe('dark_mode');
   });
 
   it('follows system changes only when System is selected', () => {
@@ -275,13 +330,13 @@ describe('Website navigation', () => {
     await router.navigateByUrl('/examples/introduction');
     await fixture.whenStable();
     const sidebar: HTMLElement = fixture.nativeElement.querySelector('#section-navigation');
-    expect(sidebar.querySelector('a[href="/examples/introduction"]')).not.toBeNull();
+    const introduction = sidebar.querySelector<HTMLAnchorElement>('#section-menu-items > :first-child');
+    expect(introduction.getAttribute('href')).toBe('/examples/introduction');
+    expect(introduction.textContent).toContain('Introduction Example');
+    expect(introduction.getAttribute('aria-current')).toBe('page');
+    expect(sidebar.querySelector('[data-menu-label="Intro"]')).toBeNull();
     expect(sidebar.querySelector('a[href="/examples/form-options/reset-model"]')).toBeNull();
 
-    sidebar.querySelector<HTMLButtonElement>('[aria-label="Back to Examples"]').click();
-    await fixture.whenStable();
-    expect(sidebar.querySelector('.active-link')?.textContent).toContain('Intro');
-    expect(document.activeElement).toBe(sidebar.querySelector('[data-menu-label="Intro"]'));
     sidebar.querySelector<HTMLButtonElement>('[data-menu-label="Form Options"]').click();
     await fixture.whenStable();
     expect(sidebar.querySelector('a[href="/examples/form-options/reset-model"]')).not.toBeNull();
@@ -293,6 +348,17 @@ describe('Website navigation', () => {
     await fixture.whenStable();
     expect(router.url).toBe('/examples/form-options/reset-model');
     expect(sidebar.querySelector('[aria-current="page"]')?.textContent).toContain('Reset Model');
+
+    const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
+    await fixture.ngZone.run(() => drawer.open());
+    sidebar.querySelector<HTMLButtonElement>('[aria-label="Back to Examples"]').click();
+    await fixture.whenStable();
+    expect(sidebar.querySelector('[data-menu-label="Form Options"].active-link')).not.toBeNull();
+    expect(document.activeElement).toBe(sidebar.querySelector('[data-menu-label="Form Options"]'));
+    sidebar.querySelector<HTMLAnchorElement>('a[href="/examples/introduction"]').click();
+    await fixture.whenStable();
+    expect(router.url).toBe('/examples/introduction');
+    expect(drawer.opened).toBe(false);
   });
 
   it('opens the correct API group for direct links, including query parameters and headings', async () => {

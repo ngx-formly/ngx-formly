@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.1.0-rc.0](https://github.com/ngx-formly/ngx-formly/compare/v11.0.0...v11.1.0-rc.0) (2026-11-03)
+
+### Features
+
+* **core:** Accept a `WritableSignal` as the form model. Bind it with `[model]="model"` to update the signal with a copy after form edits and rebuild when the application sets a new value. Add a signal model example with a computed value and live model preview ([#4240](https://github.com/ngx-formly/ngx-formly/pull/4240)).
+
+### Bug fixes
+
+* **primeng:** Support PrimeNG 21.1.10 and remove the dependency on its v22-only `AppendTo` type. The website and exported examples use PrimeNG 21 with scoped Angular 22 npm overrides. Applications using this combination need the overrides in the [PrimeNG installation guide](https://github.com/ngx-formly/ngx-formly/blob/v11.1.0-rc.0/src/ui/primeng/README.md#installation) ([#4236](https://github.com/ngx-formly/ngx-formly/pull/4236)).
+* **demo:** Link directly to the introduction example and restore the GitHub link's bottom placement and centered artwork ([#4242](https://github.com/ngx-formly/ngx-formly/pull/4242), [b20e2d1](https://github.com/ngx-formly/ngx-formly/commit/b20e2d1adff276516c06becd816626136f1551f6)).
+
+### Documentation
+
+* **guides:** Add an external libraries guide listing the community form builder and instructions for submitting other projects ([#4234](https://github.com/ngx-formly/ngx-formly/pull/4234)).
+
+### Release tooling
+
+* Publish prereleases, including release candidates, with the `next` npm dist-tag. Stable releases use `latest`.
+* Publish GitHub release notes from the matching changelog entry in a separate, retryable job after npm publication. Mark prereleases accordingly ([3eb83a3](https://github.com/ngx-formly/ngx-formly/commit/3eb83a3dc180025e4e657250fada35cffdf0d607)).
+
 ## [11.0.0](https://github.com/ngx-formly/ngx-formly/compare/v10.0.1...v11.0.0) (2026-10-19)
 
 ### Breaking changes

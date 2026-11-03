@@ -33,7 +33,7 @@ jobs:
       - name: Test
         run: |
           npm run test
-          node --test build/archive-docs.test.mjs build/github-release.test.mjs
+          node --test build/archive-docs.test.mjs build/github-release.test.mjs build/publish.test.mjs
 
       - name: npm publish
         run: npm run publish

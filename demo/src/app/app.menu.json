@@ -46,10 +46,7 @@
     "path": "/examples",
     "label": "Examples",
     "items": [
-      {
-        "label": "Intro",
-        "items": [{ "path": "/examples/introduction", "label": "Introduction Example" }]
-      },
+      { "path": "/examples/introduction", "label": "Introduction Example" },
       {
         "label": "Field Options",
         "path": "/examples/field-options",
@@ -64,6 +61,7 @@
         "label": "Form Options",
         "path": "/examples/form-options",
         "items": [
+          { "path": "/examples/form-options/signal-model", "label": "Signal Model" },
           { "path": "/examples/form-options/reset-model", "label": "Reset Model" },
           { "path": "/examples/form-options/form-state", "label": "Form State" }
         ]
