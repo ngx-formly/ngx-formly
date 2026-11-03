@@ -134,6 +134,21 @@
                   <mat-icon aria-hidden="true">chevron_right</mat-icon>
                 </span>
               </button>
+            } @else if (item.href) {
+              <a
+                mat-button
+                class="menu-subitem"
+                [href]="item.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="item.label + ', opens in a new tab'"
+                (click)="isSmallDevice && sidenav.close()"
+              >
+                <span class="menu-drill-link">
+                  <span>{{ item.label }}</span>
+                  <mat-icon aria-hidden="true">open_in_new</mat-icon>
+                </span>
+              </a>
             } @else {
               <a
                 mat-button
@@ -175,6 +190,7 @@
             <li><a routerLink="/ui">UI</a></li>
             <li><a routerLink="/examples">Examples</a></li>
             <li><a routerLink="/api">API</a></li>
+            <li><a routerLink="/tools">Tools</a></li>
           </ul>
           <!-- <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener" target="_blank">Netlify</a>.</p> -->
           <p>

@@ -29,6 +29,7 @@
   background: var(--site-background);
   color: var(--site-muted);
   padding-block: 28px 20px;
+  overflow-y: auto;
 
   a {
     text-decoration: none;

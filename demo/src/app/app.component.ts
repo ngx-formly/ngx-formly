@@ -83,6 +83,7 @@ export class AppComponent implements OnInit, OnDestroy {
     '/ui': 'dashboard',
     '/examples': 'code',
     '/api': 'data_object',
+    '/tools': 'build',
   };
   usDefaultLayout = !this.location.path().includes('embeddedview=true');
   documentTitle$ = this.router.events.pipe(
