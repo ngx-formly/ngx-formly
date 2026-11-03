@@ -1,0 +1,81 @@
+<header>
+  <h1>JSON validator</h1>
+  <p id="json-instructions">
+    Paste the JSON array you pass to <code>[fields]</code> to find syntax and configuration errors. Wrap a single field
+    in <code>[ … ]</code>. Use double quotes, without comments or trailing commas.
+  </p>
+</header>
+
+<div class="validator-workspace">
+  <section class="editor-panel" aria-labelledby="editor-title">
+    <div class="editor-toolbar">
+      <h2 id="editor-title">Fields JSON</h2>
+      <div class="editor-actions">
+        <button mat-button type="button" (click)="loadExample()">Load example</button>
+        <button mat-button type="button" (click)="formatJson()" [disabled]="pending() || !result().syntaxValid">
+          Format JSON
+        </button>
+      </div>
+    </div>
+    <div class="json-editor" #editorHost></div>
+    <p class="editor-note">Checked in your browser. Nothing is uploaded or saved.</p>
+  </section>
+
+  <section class="diagnostics-panel" aria-labelledby="diagnostics-title" [attr.aria-busy]="pending()">
+    <h2 id="diagnostics-title">Diagnostics</h2>
+    <div
+      class="validation-status"
+      [class.validation-success]="!pending() && !result().empty && !errorCount()"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <mat-icon aria-hidden="true">{{
+        pending() || result().empty ? 'data_object' : errorCount() ? 'error_outline' : 'check_circle_outline'
+      }}</mat-icon>
+      <div>
+        <p>{{ summary() }}</p>
+        @if (!pending() && warningCount()) {
+          <p class="warning-count">{{ warningCount() }} {{ warningCount() === 1 ? 'warning' : 'warnings' }}</p>
+        }
+      </div>
+    </div>
+    @if (!pending()) {
+      @if (result().empty) {
+        <p class="diagnostics-hint">Errors will appear here with their location. Select one to jump to the source.</p>
+      } @else if (diagnostics().length) {
+        <ol class="diagnostic-list">
+          @for (diagnostic of diagnostics(); track $index) {
+            <li>
+              <button type="button" class="diagnostic" (click)="selectDiagnostic(diagnostic)">
+                <span class="diagnostic-heading">
+                  <mat-icon aria-hidden="true">{{
+                    diagnostic.severity === 'error' ? 'error_outline' : 'warning_amber'
+                  }}</mat-icon>
+                  <strong>{{ diagnostic.severity === 'error' ? 'Error' : 'Warning' }}</strong>
+                  <span>Line {{ diagnostic.line }}, column {{ diagnostic.column }}</span>
+                </span>
+                <code>{{ diagnostic.label }}</code>
+                <span>{{ diagnostic.message }}</span>
+              </button>
+            </li>
+          }
+        </ol>
+      }
+    }
+  </section>
+</div>
+
+<aside id="validation-scope" class="validation-scope" aria-labelledby="scope-title">
+  <h2 id="scope-title">What this checks</h2>
+  <p>
+    Strict JSON syntax and shared Formly configuration rules, including nested fields, common properties, and likely
+    misspellings. Custom field types and properties are allowed.
+  </p>
+  <p>
+    Component registration, UI-specific properties, expressions, and runtime behavior are not verified. This tool never
+    executes your configuration and does not validate model values. See
+    <a routerLink="/guide/properties-options">field properties</a> and
+    <a routerLink="/guide/validation">model validation</a>.
+  </p>
+</aside>

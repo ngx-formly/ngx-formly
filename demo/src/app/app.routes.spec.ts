@@ -6,6 +6,13 @@ import { routes } from './app.routes';
 describe('Published documentation URLs', () => {
   beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter(routes)] }));
 
+  it('redirects Tools to the lazy-loaded validator', async () => {
+    const harness = await RouterTestingHarness.create('/tools');
+    await harness.fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe('/tools/validator');
+    expect(harness.routeNativeElement.querySelector('h1').textContent).toBe('JSON validator');
+  });
+
   it.each([
     ['/docs/api/core?source=old#formlyformbuilder', '/api/core?source=old#formlyformbuilder', 'FormlyFormBuilder'],
     ['/docs/api/core/json-schema/', '/api/core/json-schema', 'FormlyJsonschema'],

@@ -49,6 +49,8 @@ describe('Website navigation', () => {
           { path: 'examples/form-options/reset-model', component: TestPageComponent },
           { path: 'api/core', component: TestPageComponent },
           { path: 'api/core/json-schema', component: TestPageComponent },
+          { path: 'tools', pathMatch: 'full', redirectTo: 'tools/validator' },
+          { path: 'tools/validator', component: TestPageComponent },
         ]),
         {
           provide: BreakpointObserver,
@@ -78,6 +80,49 @@ describe('Website navigation', () => {
     expect(fixture.nativeElement.querySelector('.site-footer a[href="/api"]')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('#section-navigation a[href="/api/core/json-schema"]')).not.toBeNull();
     expect(document.title).toBe('Angular Formly - Core');
+  });
+
+  it.each([false, true])('offers Tools and an external builder link (mobile: %s)', async (mobile) => {
+    smallDevice.next({ matches: mobile });
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.autoDetectChanges();
+    await TestBed.inject(Router).navigateByUrl('/');
+    await fixture.whenStable();
+    const railLinks = [...fixture.nativeElement.querySelectorAll('.primary-links a')].map((link: HTMLAnchorElement) =>
+      link.getAttribute('href'),
+    );
+    expect(railLinks.indexOf('/tools')).toBe(railLinks.indexOf('/api') + 1);
+    expect(fixture.nativeElement.querySelector('.site-footer a[href="/tools"]')).not.toBeNull();
+    const drawer: MatSidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance;
+    if (mobile) {
+      fixture.nativeElement.querySelector('[aria-label="Toggle navigation"]').click();
+      await fixture.whenStable();
+      fixture.nativeElement.querySelector('[data-menu-label="Tools"]').click();
+    } else {
+      fixture.nativeElement.querySelector('.primary-links a[href="/tools"]').click();
+    }
+    await fixture.whenStable();
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector(
+      '#section-navigation a[href="https://builder.formly.dev/"]',
+    );
+    expect(link.target).toBe('_blank');
+    expect(link.rel).toBe('noopener noreferrer');
+    expect(link.getAttribute('aria-label')).toContain('opens in a new tab');
+    const currentUrl = TestBed.inject(Router).url;
+    link.addEventListener('click', (event) => event.preventDefault());
+    link.click();
+    await fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe(currentUrl);
+    if (mobile) {
+      expect(drawer.opened).toBe(false);
+      fixture.nativeElement.querySelector('[aria-label="Toggle navigation"]').click();
+      await fixture.whenStable();
+    }
+    fixture.nativeElement.querySelector('#section-navigation a[href="/tools/validator"]').click();
+    await fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe('/tools/validator');
+    expect(document.title).toBe('Angular Formly - JSON validator');
+    if (mobile) expect(drawer.opened).toBe(false);
   });
 
   it.each([

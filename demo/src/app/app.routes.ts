@@ -35,4 +35,9 @@ export const routes: Routes = [
   { path: 'ui', loadChildren: () => import('./ui/ui.routes').then((m) => m.uiRoutes) },
   { path: 'examples', loadChildren: () => import('./examples/examples.routes').then((m) => m.examplesRoutes) },
   { path: 'api', loadChildren: () => import('./api/api.routes').then((m) => m.apiRoutes) },
+  { path: 'tools', pathMatch: 'full', redirectTo: 'tools/validator' },
+  {
+    path: 'tools/validator',
+    loadComponent: () => import('./tools/validator/validator.component').then((m) => m.ValidatorComponent),
+  },
 ];

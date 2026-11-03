@@ -3,11 +3,23 @@ import apiMenu from './api/api-menu.generated.json';
 
 export interface MenuItem {
   path?: string;
+  href?: string;
   label: string;
   items?: MenuItem[];
 }
 
-export const APP_MENU: MenuItem[] = [...menu, { path: '/api', label: 'API', items: apiMenu }];
+export const APP_MENU: MenuItem[] = [
+  ...menu,
+  { path: '/api', label: 'API', items: apiMenu },
+  {
+    path: '/tools',
+    label: 'Tools',
+    items: [
+      { href: 'https://builder.formly.dev/', label: 'Form builder' },
+      { path: '/tools/validator', label: 'JSON validator' },
+    ],
+  },
+];
 
 export function menuPages(items: MenuItem[]): MenuItem[] {
   return items.flatMap((item) => (item.items ? menuPages(item.items) : [item]));

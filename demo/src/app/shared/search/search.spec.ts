@@ -11,6 +11,15 @@ vi.mock('../../guides/guides.content', () => ({
 }));
 
 describe('Documentation search', () => {
+  it('finds the JSON validator by title and category', () => {
+    expect(searchDocuments(SEARCH_INDEX, 'json validator')[0]).toMatchObject({
+      path: '/tools/validator',
+      title: 'JSON validator',
+      category: 'Tools',
+    });
+    expect(searchDocuments(SEARCH_INDEX, 'tools configuration')[0].path).toBe('/tools/validator');
+  });
+
   it('ranks a page title above content matches, ignoring case and whitespace', () => {
     const results = searchDocuments(SEARCH_INDEX, '  VALIDATION  ');
     expect(results[0].path).toBe('/guide/validation');
