@@ -58,11 +58,6 @@ export class AppComponent implements OnInit, OnDestroy {
   readonly searchShortcut = this.document.defaultView?.navigator.platform.includes('Mac') ? '⌘' : 'Ctrl';
   private systemDark = false;
   readonly theme = signal<'system' | 'dark' | 'light'>('system');
-  readonly themeOptions = [
-    { value: 'system', label: 'System', icon: 'brightness_6' },
-    { value: 'dark', label: 'Dark', icon: 'dark_mode' },
-    { value: 'light', label: 'Light', icon: 'light_mode' },
-  ] as const;
   private destroy$: Subject<any> = new Subject<any>();
   isSmallDevice$ = this.breakpointObserver.observe('(max-width: 767px)').pipe(map((result) => result.matches));
   menu = APP_MENU;

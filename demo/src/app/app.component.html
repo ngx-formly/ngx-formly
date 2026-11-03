@@ -57,27 +57,14 @@
       mat-icon-button
       class="theme-toggle"
       type="button"
-      [matMenuTriggerFor]="themeMenu"
+      (click)="setTheme(theme() === 'system' ? 'dark' : theme() === 'dark' ? 'light' : 'system')"
       [attr.aria-label]="'Change theme. Current theme: ' + theme()"
+      [title]="'Current theme: ' + theme()"
     >
       <mat-icon aria-hidden="true">
         {{ theme() === 'system' ? 'brightness_6' : theme() === 'dark' ? 'dark_mode' : 'light_mode' }}
       </mat-icon>
     </button>
-    <mat-menu #themeMenu="matMenu" class="theme-menu" xPosition="after" yPosition="above" [overlapTrigger]="false">
-      @for (option of themeOptions; track option.value) {
-        <button
-          mat-menu-item
-          type="button"
-          role="menuitemradio"
-          [attr.aria-checked]="theme() === option.value"
-          (click)="setTheme(option.value)"
-        >
-          <mat-icon aria-hidden="true">{{ option.icon }}</mat-icon>
-          <span>{{ option.label }}</span>
-        </button>
-      }
-    </mat-menu>
     @if (isSmallDevice) {
       <button
         mat-button
