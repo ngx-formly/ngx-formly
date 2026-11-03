@@ -107,29 +107,39 @@ describe('Website navigation', () => {
     expect(TestBed.inject(Router).url).toBe('/guide/migration/v11');
   });
 
-  it('selects a theme from the menu and remembers it when the app starts again', async () => {
+  it.each([false, true])('cycles themes directly and remembers the selection (mobile: %s)', async (mobile) => {
+    smallDevice.next({ matches: mobile });
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    fixture.nativeElement.querySelector('.theme-toggle').click();
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     await fixture.whenStable();
+    const toggle: HTMLButtonElement = fixture.nativeElement.querySelector('.theme-toggle');
+    expect(toggle.querySelector('mat-icon').textContent.trim()).toBe('brightness_6');
+    expect(toggle.hasAttribute('aria-haspopup')).toBe(false);
 
-    const darkOption = [...document.querySelectorAll<HTMLButtonElement>('[role="menuitemradio"]')].find((option) =>
-      option.textContent.includes('Dark'),
-    );
-    darkOption.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(document.documentElement.dataset.bsTheme).toBe('dark');
-    expect(document.documentElement.classList.contains('ion-palette-dark')).toBe(true);
-    expect(localStorage.getItem('formly-theme')).toBe('dark');
-    expect(fixture.nativeElement.querySelector('.theme-toggle').getAttribute('aria-label')).toContain('dark');
+    for (const [theme, icon, appliedTheme] of [
+      ['dark', 'dark_mode', 'dark'],
+      ['light', 'light_mode', 'light'],
+      ['system', 'brightness_6', 'light'],
+      ['dark', 'dark_mode', 'dark'],
+    ]) {
+      toggle.click();
+      await fixture.whenStable();
+      expect(document.documentElement.dataset.bsTheme).toBe(appliedTheme);
+      expect(document.documentElement.classList.contains('ion-palette-dark')).toBe(appliedTheme === 'dark');
+      expect(localStorage.getItem('formly-theme')).toBe(theme);
+      expect(toggle.querySelector('mat-icon').textContent.trim()).toBe(icon);
+      expect(toggle.getAttribute('aria-label')).toBe(`Change theme. Current theme: ${theme}`);
+      expect(toggle.title).toBe(`Current theme: ${theme}`);
+      expect(document.querySelector('[role="menu"]')).toBeNull();
+    }
     fixture.destroy();
 
     const reloaded = TestBed.createComponent(AppComponent);
-    reloaded.detectChanges();
+    reloaded.autoDetectChanges();
+    await reloaded.whenStable();
     expect(reloaded.componentInstance.theme()).toBe('dark');
     expect(document.documentElement.dataset.bsTheme).toBe('dark');
+    expect(reloaded.nativeElement.querySelector('.theme-toggle mat-icon').textContent.trim()).toBe('dark_mode');
   });
 
   it('follows system changes only when System is selected', () => {

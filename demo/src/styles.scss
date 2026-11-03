@@ -159,31 +159,6 @@ $theme: mat.m2-define-light-theme(
   box-shadow: none;
 }
 
-.theme-menu.mat-mdc-menu-panel {
-  min-width: 96px;
-  border: 1px solid var(--site-line);
-  background: var(--site-background);
-  box-shadow: none;
-
-  .mat-mdc-menu-item {
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    padding: 12px 16px;
-    color: var(--site-muted);
-
-    .mat-icon {
-      margin: 0;
-      color: inherit;
-    }
-
-    &[aria-checked='true'] {
-      color: var(--site-accent);
-      background: var(--site-accent-soft);
-    }
-  }
-}
-
 pre {
   display: block;
   padding: 9.5px;
