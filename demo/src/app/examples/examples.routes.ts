@@ -39,6 +39,10 @@ export const examplesRoutes: Routes = [
         path: 'form-options',
         children: [
           {
+            path: 'signal-model',
+            loadChildren: () => import('./form-options/signal-model/app.routes').then((m) => m.appRoutes),
+          },
+          {
             path: 'reset-model',
             loadChildren: () => import('./form-options/reset-model/app.routes').then((m) => m.appRoutes),
           },

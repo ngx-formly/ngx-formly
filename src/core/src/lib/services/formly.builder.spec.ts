@@ -148,4 +148,72 @@ describe('FormlyFormBuilder service', () => {
     builder.build({ fieldGroup: [{ key: 'child' }] });
     expect(extension.onPopulate).toHaveBeenCalledTimes(2);
   });
+
+  describe('_afterBuild notification', () => {
+    function setup(onOuterPopulate?: (builders: FormlyFormBuilder[], options: any) => void) {
+      const order: string[] = [];
+      let probe: ((builders: FormlyFormBuilder[], options: any) => void) | undefined = onOuterPopulate;
+      const builders: FormlyFormBuilder[] = [];
+      const options: any = { _afterBuild: new Set([() => order.push('after')]) };
+      const option: ConfigOption = {
+        extensions: [
+          { name: 'core', extension: {} },
+          {
+            name: 'probe',
+            extension: {
+              onPopulate: (field) => {
+                if (!field.parent && probe) {
+                  const run = probe;
+                  probe = undefined;
+                  run(builders, options);
+                }
+              },
+            },
+          },
+        ],
+      };
+      builders.push(createBuilder(option), createBuilder(option));
+      const root = () => ({ form: new FormGroup({}), model: {}, options, fieldGroup: [] }) as FormlyFieldConfigCache;
+
+      return { order, builders, options, root };
+    }
+
+    it('should notify once after a plain build', () => {
+      const { order, builders, root } = setup();
+
+      builders[0].build(root());
+
+      expect(order).toEqual(['after']);
+    });
+
+    it('should wait for the outermost build when a nested build uses the same builder', () => {
+      const { order, builders, root } = setup(([builder], _options) => builder.build(root()));
+
+      builders[0].build(root());
+      order.push('returned');
+
+      expect(order).toEqual(['after', 'returned']);
+    });
+
+    it('should wait for the outermost build when a nested build uses another builder sharing the options', () => {
+      const { order, builders, root } = setup(([, other]) => other.build(root()));
+
+      builders[0].build(root());
+      order.push('returned');
+
+      expect(order).toEqual(['after', 'returned']);
+    });
+
+    it('should not notify when the build throws, and notify on the next build', () => {
+      const { order, builders, root } = setup(() => {
+        throw new Error('boom');
+      });
+
+      expect(() => builders[0].build(root())).toThrow('boom');
+      expect(order).toEqual([]);
+
+      builders[0].build(root());
+      expect(order).toEqual(['after']);
+    });
+  });
 });
