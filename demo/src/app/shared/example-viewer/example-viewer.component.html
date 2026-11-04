@@ -77,7 +77,7 @@
     @if ((!exampleData.debug || showDebug) && demoComponentRef) {
       <div>
         <h3>Form Data</h3>
-        <pre [style.display]="'none'">{{ model }}</pre>
+        <pre [style.display]="'none'">{{ renderModel(modelPreview) }}</pre>
         <pre #modelPreview></pre>
       </div>
     }
