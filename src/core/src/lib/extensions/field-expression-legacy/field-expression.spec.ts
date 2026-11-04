@@ -1,4 +1,6 @@
 import { MockInstance } from 'vitest';
+import { computed, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { createBuilder, createFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
 import { BehaviorSubject, Subject, of } from 'rxjs';
@@ -19,6 +21,177 @@ function buildField({ model, options, ...field }: FormlyFieldConfigCache): Forml
 }
 
 describe('FieldExpressionExtension', () => {
+  describe('signal expressions', () => {
+    const flush = (detectChanges: () => void) => {
+      TestBed.tick();
+      detectChanges();
+    };
+
+    it('should apply the value during the build', () => {
+      const field = buildField({ key: 'city', expressions: { 'props.label': signal('City') } });
+
+      expect(field.props.label).toBe('City');
+    });
+
+    it('should update the field when the signal changes without a model change', () => {
+      const locked = signal(true);
+      const { field, query, detectChanges } = createFieldComponent(
+        { key: 'city', type: 'input', expressions: { 'props.disabled': locked } },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+      expect(query<HTMLInputElement>('input').nativeElement.disabled).toBe(true);
+
+      locked.set(false);
+      flush(detectChanges);
+
+      expect(field.props.disabled).toBe(false);
+      expect(query<HTMLInputElement>('input').nativeElement.disabled).toBe(false);
+    });
+
+    it('should recompute a computed expression only when its source changes', () => {
+      const locked = signal(false);
+      const compute = vi.fn(() => locked());
+      const { field, detectChanges } = createFieldComponent(
+        {
+          fieldGroup: [
+            { key: 'name', type: 'input' },
+            { key: 'city', type: 'input', expressions: { 'props.disabled': computed(compute) } },
+          ],
+        },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+      const [name, city] = field.fieldGroup;
+      compute.mockClear();
+
+      name.formControl.setValue('Ada');
+      flush(detectChanges);
+      expect(compute).not.toHaveBeenCalled();
+
+      locked.set(true);
+      flush(detectChanges);
+      expect(compute).toHaveBeenCalledTimes(1);
+      expect(city.props.disabled).toBe(true);
+    });
+
+    it('should keep the model value of a field hidden from the start and show it later', () => {
+      const hidden = signal(true);
+      const { field, query, detectChanges } = createFieldComponent(
+        { key: 'city', type: 'input', model: { city: 'Rome' }, expressions: { hide: hidden } },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+
+      expect(query('input')).toBeNull();
+      expect(field.form.get('city')).toBeNull();
+      expect(field.model.city).toBe('Rome');
+
+      hidden.set(false);
+      flush(detectChanges);
+
+      expect(query('input')).not.toBeNull();
+      expect(field.form.get('city')).not.toBeNull();
+    });
+
+    it('should follow the new signal and release the old one when the expression is replaced', () => {
+      const source = signal('First');
+      const compute = vi.fn(() => source());
+      const replacement = signal('Second');
+      const { field, detectChanges } = createFieldComponent(
+        { key: 'city', type: 'input', expressions: { 'props.label': computed(compute) } },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+
+      field.expressions['props.label'] = replacement;
+      flush(detectChanges);
+      expect(field.props.label).toBe('Second');
+
+      compute.mockClear();
+      source.set('Ignored');
+      flush(detectChanges);
+      expect(compute).not.toHaveBeenCalled();
+
+      replacement.set('Updated');
+      flush(detectChanges);
+      expect(field.props.label).toBe('Updated');
+    });
+
+    it('should not follow signals read by other expressions of the field', () => {
+      const other = signal('Before');
+      const { field, detectChanges } = createFieldComponent(
+        {
+          key: 'city',
+          type: 'input',
+          expressions: { 'props.label': signal('City'), 'props.description': () => other() },
+        },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+
+      other.set('After');
+      flush(detectChanges);
+
+      expect(field.props.description).toBe('Before');
+    });
+
+    it('should remove the control and clear the value when the hide signal changes', () => {
+      const hidden = signal(false);
+      const { field, query, detectChanges } = createFieldComponent(
+        { key: 'city', type: 'input', model: { city: 'Rome' }, expressions: { hide: hidden } },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+      expect(query('input')).not.toBeNull();
+      expect(field.form.get('city')).not.toBeNull();
+
+      hidden.set(true);
+      flush(detectChanges);
+      expect(query('input')).toBeNull();
+      expect(field.form.get('city')).toBeNull();
+      expect(field.model.city).toBeUndefined();
+
+      hidden.set(false);
+      flush(detectChanges);
+      expect(query('input')).not.toBeNull();
+      expect(field.form.get('city')).not.toBeNull();
+    });
+
+    it('should emit the initial value only once', () => {
+      const fieldChanges = new Subject<any>();
+      const spy = vi.fn();
+      const subscription = fieldChanges.subscribe(spy);
+      const { detectChanges } = createFieldComponent(
+        { key: 'city', type: 'input', options: { fieldChanges }, expressions: { 'props.label': signal('City') } },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+
+      expect(spy.mock.calls.filter(([event]) => event.type === 'expressionChanges')).toHaveLength(1);
+
+      subscription.unsubscribe();
+    });
+
+    it('should keep a child disabled while its parent is disabled', () => {
+      const locked = signal(true);
+      const { field, detectChanges } = createFieldComponent(
+        {
+          key: 'group',
+          expressions: { 'props.disabled': () => true },
+          fieldGroup: [{ key: 'city', type: 'input', expressions: { 'props.disabled': locked } }],
+        },
+        { imports: [FormlyInputModule] },
+      );
+      flush(detectChanges);
+
+      locked.set(false);
+      flush(detectChanges);
+
+      expect(field.fieldGroup[0].props.disabled).toBe(true);
+    });
+  });
+
   describe('expression check limit', () => {
     let warn: MockInstance;
 

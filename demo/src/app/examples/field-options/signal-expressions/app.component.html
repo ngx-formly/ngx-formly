@@ -1,0 +1,6 @@
+<form [formGroup]="form">
+  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+  <button type="button" class="btn btn-primary" (click)="toggleLocked()">
+    {{ locked() ? 'Unlock' : 'Lock' }} city
+  </button>
+</form>
