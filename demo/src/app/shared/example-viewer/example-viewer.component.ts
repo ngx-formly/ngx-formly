@@ -7,8 +7,8 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
   ComponentRef,
-  ElementRef,
   OnChanges,
+  isSignal,
 } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
@@ -61,7 +61,6 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   _prevModel: any;
 
   @ViewChild('demo', { read: ViewContainerRef, static: true }) demoRef!: ViewContainerRef;
-  @ViewChild('modelPreview') modelPreviewRef!: ElementRef;
   demoComponentRef: ComponentRef<any>;
 
   /** Whether the source for the example is being displayed. */
@@ -73,16 +72,16 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
 
-  get model() {
-    const model = JSON.stringify(this.demoComponentRef.instance.model);
-    if (this._prevModel !== model && this.modelPreviewRef && this.modelPreviewRef.nativeElement) {
+  renderModel(modelPreview: HTMLElement) {
+    const value = this.demoComponentRef.instance.model;
+    const modelValue = isSignal(value) ? value() : value;
+    const model = JSON.stringify(modelValue);
+    if (this._prevModel !== model || !modelPreview.hasChildNodes()) {
       this._prevModel = model;
-      const formatter = new JSONFormatter(this.demoComponentRef.instance.model, 5, { hoverPreviewEnabled: true });
-      this.modelPreviewRef.nativeElement.innerHTML = '';
-      this.modelPreviewRef.nativeElement.appendChild(formatter.render());
+      const formatter = new JSONFormatter(modelValue, 5, { hoverPreviewEnabled: true });
+      modelPreview.innerHTML = '';
+      modelPreview.appendChild(formatter.render());
     }
-
-    return this.demoComponentRef.instance.model;
   }
 
   get debugModel() {
