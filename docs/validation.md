@@ -112,6 +112,47 @@ lines.
 
 See the [validation-message example](https://formly.dev/examples/validation/validation-message).
 
+## Controlling when validation is displayed
+
+The `showValidation` extra decides when validation feedback is displayed for a field. By default, it returns `true` once
+the field is touched, the form is submitted, or `validation.show` is set. The default `showError` displays errors when
+the control is invalid and `showValidation` returns `true`, so this function also controls errors in the UI adapters.
+It only affects display: validators always run, and `form.valid` is unaffected.
+
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideFormlyCore({
+      extras: {
+        showValidation: (field) => !!(field.formControl?.dirty || field.options.parentForm?.submitted),
+      },
+    }),
+  ],
+};
+```
+
+A custom `showValidation` replaces all of the default conditions, including `validation.show`. Include it when
+needed: `showValidation: (field) => !!(field.formControl?.dirty || field.field.validation?.show)`.
+
+Set `options.showValidation` on a form to override the extra for that form. Custom types and wrappers can read
+`showValidation` to display a pending or valid state:
+
+```html
+@if (showValidation && formControl.pending) {
+  <small>Checking availability…</small>
+} @else if (showValidation && formControl.valid) {
+  <small class="valid-feedback d-block">Looks good!</small>
+}
+```
+
+A custom `showError` replaces the default and does not call `showValidation`. Combine them when both are needed:
+`showError: (field) => field.formControl?.invalid && field.showValidation`.
+
+`showValidation` is evaluated during change detection. When it depends on state outside the field, such as
+`formState`, call `options.detectChanges(field)` after changing that state.
+
+See the [show-validation example](https://formly.dev/examples/validation/show-validation).
+
 ## Numeric step validation
 
 Set `props.step` to a positive number to validate numeric values in increments of that size:

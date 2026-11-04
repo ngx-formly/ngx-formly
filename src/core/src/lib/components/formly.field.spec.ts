@@ -12,7 +12,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { tap, map, shareReplay } from 'rxjs/operators';
 import { FormlyExtension, FormlyFieldConfigCache } from '../models';
-import { BehaviorSubject, timer } from 'rxjs';
+import { BehaviorSubject, Subject, timer } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 
 const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
@@ -21,6 +21,7 @@ const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
     imports: [FormlyInputModule],
     declarations: [
       FormlyWrapperFormFieldAsync,
+      FormlyWrapperValidationState,
       FormlyOnPushComponent,
       FormlyParentComponent,
       FormlyChildComponent,
@@ -50,6 +51,10 @@ const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
         {
           name: 'form-field-async',
           component: FormlyWrapperFormFieldAsync,
+        },
+        {
+          name: 'validation-state',
+          component: FormlyWrapperValidationState,
         },
       ],
       ...(config || {}),
@@ -602,6 +607,100 @@ describe('FormlyField Component', () => {
     expect(query('formly-validation-message').nativeElement.textContent).toEqual('server error :)');
   });
 
+  describe('showValidation', () => {
+    const requiredField = (field: FormlyFieldConfig = {}): FormlyFieldConfig => ({
+      key: 'name',
+      type: 'input',
+      props: { required: true },
+      ...field,
+    });
+
+    it('should show errors before the field is touched when `showValidation` returns true', () => {
+      const { query } = renderComponent(requiredField(), { config: { extras: { showValidation: () => true } } });
+
+      expect(query('formly-validation-message')).not.toBeNull();
+    });
+
+    it('should leave a touched field blank when `showValidation` returns false', () => {
+      const { query, field, detectChanges } = renderComponent(requiredField(), {
+        config: { extras: { showValidation: () => false } },
+      });
+
+      field.formControl.markAsTouched();
+      detectChanges();
+
+      expect(query('formly-validation-message')).toBeNull();
+    });
+
+    it('should expose pending and resolved async validation states', () => {
+      let result = new Subject<boolean>();
+      const { query, field, detectChanges } = renderComponent(
+        {
+          key: 'username',
+          type: 'input',
+          wrappers: ['form-field', 'validation-state'],
+          asyncValidators: { taken: { expression: () => (result = new Subject<boolean>()) } },
+        },
+        { config: { extras: { showValidation: () => true } } },
+      );
+
+      field.formControl.setValue('john');
+      detectChanges();
+
+      expect(query('.validation-state')?.nativeElement.textContent).toEqual('PENDING');
+      expect(query('formly-validation-message')).toBeNull();
+
+      result.next(false);
+      result.complete();
+      detectChanges();
+
+      expect(query('.validation-state')?.nativeElement.textContent).toEqual('INVALID');
+      expect(query('formly-validation-message')).not.toBeNull();
+    });
+
+    it('should reflect condition changes after `options.detectChanges`', () => {
+      const { query, field, detectChanges } = renderComponent(
+        requiredField({ options: { formState: { showValidation: false } } }),
+        { config: { extras: { showValidation: (f: FieldType) => f.formState.showValidation } } },
+      );
+      expect(query('formly-validation-message')).toBeNull();
+
+      field.options.formState.showValidation = true;
+      field.options.detectChanges(field);
+      detectChanges();
+
+      expect(query('formly-validation-message')).not.toBeNull();
+    });
+
+    it('should prefer `options.showValidation` over the extra', () => {
+      const { query } = renderComponent(requiredField({ options: { showValidation: () => true } }), {
+        config: { extras: { showValidation: () => false } },
+      });
+
+      expect(query('formly-validation-message')).not.toBeNull();
+    });
+
+    it('should not change a custom `showError`', () => {
+      const { query } = renderComponent(requiredField(), {
+        config: { extras: { showError: () => true, showValidation: () => false } },
+      });
+
+      expect(query('formly-validation-message')).not.toBeNull();
+    });
+
+    it('should leave the field blank again after `resetModel`', () => {
+      const { query, field, detectChanges } = renderComponent(requiredField());
+      field.formControl.markAsTouched();
+      detectChanges();
+      expect(query('formly-validation-message')).not.toBeNull();
+
+      field.options.resetModel();
+      detectChanges();
+
+      expect(query('formly-validation-message')).toBeNull();
+    });
+  });
+
   describe('component-level injectors', () => {
     it('should inject parent service to child type', () => {
       // should inject `ParentService` in `ChildComponent` without raising an error
@@ -654,6 +753,18 @@ describe('FormlyField Component', () => {
   standalone: false,
 })
 class FormlyWrapperFormFieldAsync extends FieldWrapper {}
+
+@Component({
+  selector: 'formly-wrapper-validation-state',
+  template: `
+    <ng-container #fieldComponent></ng-container>
+    @if (showValidation) {
+      <span class="validation-state">{{ formControl.status }}</span>
+    }
+  `,
+  standalone: false,
+})
+class FormlyWrapperValidationState extends FieldWrapper {}
 
 @Component({
   selector: 'formly-on-push-component',

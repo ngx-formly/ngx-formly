@@ -86,6 +86,10 @@ export const examplesRoutes: Routes = [
             loadChildren: () => import('./validation/force-show-error/app.routes').then((m) => m.appRoutes),
           },
           {
+            path: 'show-validation',
+            loadChildren: () => import('./validation/show-validation/app.routes').then((m) => m.appRoutes),
+          },
+          {
             path: 'toggle-required',
             loadChildren: () => import('./validation/toggle-required/app.routes').then((m) => m.appRoutes),
           },

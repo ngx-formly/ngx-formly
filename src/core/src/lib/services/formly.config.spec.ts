@@ -64,6 +64,37 @@ describe('FormlyConfig service', () => {
 
       expect(config.extras.showError({ options, formControl, field } as any)).toBe(true);
     });
+
+    it('should use `options.showValidation` to decide when to show errors', () => {
+      const formControl = new FormControl(null, Validators.required);
+      const showError = (showValidation: () => boolean) =>
+        config.extras.showError({ options: { showValidation }, formControl, field: {} } as unknown as FieldType);
+
+      expect(showError(() => true)).toBe(true);
+
+      formControl.markAsTouched();
+      expect(showError(() => false)).toBe(false);
+    });
+
+    it('should not force errors with `validation.show` when `options.showValidation` is custom', () => {
+      const formControl = new FormControl(null, Validators.required);
+      const field = { validation: { show: true } };
+      const options = { showValidation: () => false };
+
+      expect(config.extras.showError({ options, formControl, field } as unknown as FieldType)).toBe(false);
+    });
+  });
+
+  describe('extra option: showValidation', () => {
+    it('should show the validation state of a valid field once touched', () => {
+      const formControl = new FormControl('valid');
+      const field = { options: { parentForm: { submitted: false } }, formControl, field: {} } as unknown as FieldType;
+
+      expect(config.extras.showValidation(field)).toBe(false);
+
+      formControl.markAsTouched();
+      expect(config.extras.showValidation(field)).toBe(true);
+    });
   });
 
   describe('wrappers', () => {

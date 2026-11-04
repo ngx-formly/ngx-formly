@@ -70,6 +70,15 @@ export interface ConfigOption {
     showError?: (field: FieldType) => boolean;
 
     /**
+     * Decides when validation feedback (errors, valid or pending state) is displayed for a field.
+     * The default `showError` displays errors when the control is invalid and this function returns `true`.
+     * Display only: validators always run and `form.valid` is unaffected.
+     *
+     * Defaults to `true` when the field is touched, the form is submitted, or `validation.show` is set.
+     */
+    showValidation?: (field: FieldType) => boolean;
+
+    /**
      * Defines the option which formly rely on to check field expression properties.
      * - `modelChange`: perform a check when the value of the form control changes.
      * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.
