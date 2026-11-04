@@ -124,13 +124,16 @@
 
 <ng-template #version>
   <button mat-button [matMenuTriggerFor]="menu">
-    v7
+    v8
     <mat-icon>arrow_drop_down</mat-icon>
   </button>
   <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-    <a disabled mat-menu-item>v7 (latest)</a>
-    <a href="https://v6.formly.dev/" mat-menu-item>v6</a>
-    <a href="https://v5.formly.dev/" mat-menu-item>v5</a>
+    <a href="https://formly.dev/" mat-menu-item>v11 (latest)</a>
+    <a href="https://v10.formly.dev/" mat-menu-item>v10</a>
+    <a href="https://v9.formly.dev/" mat-menu-item>v9</a>
+    <a disabled mat-menu-item>v8 (current)</a>
+    <a href="https://v7-1.formly.dev/" mat-menu-item>v7.1</a>
+    <a href="https://formly.dev/guide/migration" mat-menu-item>Migration guides</a>
   </mat-menu>
 </ng-template>
 
