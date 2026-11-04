@@ -5,6 +5,9 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, ConfigOpt
 import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField, isSignalRequired } from '../utils';
 import { FORMLY_CONFIG } from '../core.config';
 
+// shared by every builder: a form's options can be built through more than one builder
+const buildingOptions = new WeakSet<FormlyFormOptions>();
+
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
   private readonly initializedForms = new WeakSet<UntypedFormGroup | UntypedFormArray>();
@@ -48,14 +51,17 @@ export class FormlyFormBuilder {
       this.initializedForms.add(field.form);
     }
 
+    const options = (field as FormlyFieldConfigCache).options;
+    // a nested build (e.g. a field array item) must not notify before the outermost build is done
+    const outermostBuild = !buildingOptions.has(options);
+    buildingOptions.add(options);
+
     try {
       disableTreeValidityCall(field.form, () => {
         this._build(field);
         // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
         if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
           // detect changes early to avoid reset value by hidden fields
-          const options = (field as FormlyFieldConfigCache).options;
-
           if (field.parent && isHiddenField(field)) {
             // when hide is used in expression set defaul value will not be set until detect hide changes
             // which causes default value not set on new item is added
@@ -72,11 +78,18 @@ export class FormlyFormBuilder {
       }
       throw error;
     } finally {
+      if (outermostBuild) {
+        buildingOptions.delete(options);
+      }
       subscription?.unsubscribe();
     }
 
     if (firstBuild && lastEmittedStatus !== field.form.status) {
       (field.form.statusChanges as EventEmitter<string>).emit(field.form.status);
+    }
+
+    if (outermostBuild) {
+      options._afterBuild?.forEach((afterBuild) => afterBuild());
     }
   }
 
