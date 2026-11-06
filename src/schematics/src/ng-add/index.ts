@@ -68,6 +68,7 @@ function mapUIName(uiTheme: string): string {
     primeng: 'PrimeNG',
     kendo: 'Kendo',
     'ng-zorro-antd': 'NgZorroAntd',
+    'optimus-ui': 'OptimusUI',
   };
 
   return uiMap[uiTheme];
