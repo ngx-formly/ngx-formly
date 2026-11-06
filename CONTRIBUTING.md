@@ -77,6 +77,13 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 The demo uses Angular's `application` builder. Run `npx ng build app --configuration production`
 to build it into `demo/dist`. `npm run demo` serves it on port 4100.
 
+To run the demo through [Portless](https://github.com/vercel-labs/portless), install dependencies
+with `npm ci`, then run `pnpm dev:portless` using pnpm 11 or newer. This regenerates the API
+reference and serves the demo at `https://ngx-formly.localhost`. Git worktrees get their own
+subdomain. Portless prints the URL when it starts; its first run may prompt for permission to
+trust its local certificate and bind the HTTPS proxy port. The repository still uses npm and
+`package-lock.json` for installs.
+
 The API reference is generated from package entry points and their TypeScript declarations.
 Run `npm run docs:api` after changing exported APIs or their comments. This refreshes
 `demo/src/app/api/api.generated.json` and its navigation index; edit the source declarations,

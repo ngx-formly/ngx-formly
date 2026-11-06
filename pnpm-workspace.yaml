@@ -1,0 +1,3 @@
+# Keep npm for installs while allowing pnpm to run development scripts.
+pmOnFail: ignore
+verifyDepsBeforeRun: false
