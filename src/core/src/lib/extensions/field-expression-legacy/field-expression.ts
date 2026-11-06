@@ -1,3 +1,4 @@
+import { effect, isSignal, untracked } from '@angular/core';
 import { FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../models';
 import {
   isObject,
@@ -41,7 +42,23 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     const evalExpr = (key: string, expr: any) => {
-      if (typeof expr === 'string' || isFunction(expr)) {
+      if (isSignal(expr)) {
+        field._expressions[key] = {
+          ...this.parseExpressions(field, key, expr),
+          // The signal only triggers the usual check, so hide and disabled behave as in function expressions.
+          value$: new Observable(() => {
+            const ref = effect(
+              () => {
+                expr();
+                untracked(() => field.options.detectChanges(field));
+              },
+              { injector: field.options._injector },
+            );
+
+            return () => ref.destroy();
+          }),
+        };
+      } else if (typeof expr === 'string' || isFunction(expr)) {
         field._expressions[key] = this.parseExpressions(field, key, expr);
       } else if (expr instanceof Observable) {
         field._expressions[key] = {
@@ -63,7 +80,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     field.expressions = field.expressions || {};
     for (const key of Object.keys(field.expressions)) {
       observe(field, ['expressions', key], ({ currentValue: expr }) => {
-        evalExpr(key, isFunction(expr) ? (...args: any) => expr(field, args[3]) : expr);
+        evalExpr(key, isFunction(expr) && !isSignal(expr) ? (...args: any) => expr(field, args[3]) : expr);
       });
     }
 

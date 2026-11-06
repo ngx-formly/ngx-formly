@@ -10,9 +10,9 @@ import { Subject, Observable } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { ValidationMessageOption } from '../models';
-import { Type } from '@angular/core';
+import { Signal, Type } from '@angular/core';
 
-type FieldExpression<T = any> = string | ((field: FormlyFieldConfig) => T) | Observable<T>;
+type FieldExpression<T = any> = string | ((field: FormlyFieldConfig) => T) | Observable<T> | Signal<T>;
 type FieldExpressions = { [property: string]: FieldExpression } & {
   className?: FieldExpression<string>;
   hide?: FieldExpression<boolean>;
