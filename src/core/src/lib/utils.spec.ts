@@ -1,4 +1,5 @@
 import { describe, expect, it, jest } from '@jest/globals';
+import { computed, signal } from '@angular/core';
 import 'jest-extended';
 import { of } from 'rxjs';
 import { FormlyField } from './core';
@@ -16,6 +17,8 @@ import {
   observe,
   observeDeep,
   reverseDeepMerge,
+  isEqualValue,
+  isWritableSignal,
 } from './utils';
 
 describe('FormlyUtils service', () => {
@@ -177,6 +180,35 @@ describe('FormlyUtils service', () => {
       fieldConfig.key = 'ddd';
       expect(getKeyPath(fieldConfig)).toEqual(['ddd']);
     });
+  });
+});
+
+describe('isEqualValue', () => {
+  it('should compare values by content', () => {
+    expect(isEqualValue({ a: [1, { b: 'c' }] }, { a: [1, { b: 'c' }] })).toBe(true);
+    expect(isEqualValue({ a: [1, { b: 'c' }] }, { a: [1, { b: 'd' }] })).toBe(false);
+    expect(isEqualValue({ a: 1 }, { a: 1, b: undefined })).toBe(false);
+    expect(isEqualValue([1, 2], { 0: 1, 1: 2 })).toBe(false);
+    expect(isEqualValue(null, {})).toBe(false);
+    expect(isEqualValue({ value: NaN }, { value: NaN })).toBe(true);
+  });
+
+  it('should compare the types copied by clone', () => {
+    expect(isEqualValue(new Date(1), new Date(1))).toBe(true);
+    expect(isEqualValue(new Date(1), new Date(2))).toBe(false);
+    expect(isEqualValue(new Date(NaN), new Date(NaN))).toBe(true);
+    expect(isEqualValue(new Map([['a', { b: 1 }]]), new Map([['a', { b: 1 }]]))).toBe(true);
+    expect(isEqualValue(new Map([['a', 1]]), new Map([['a', 2]]))).toBe(false);
+    expect(isEqualValue(new Set([1, 2]), new Set([1, 2]))).toBe(true);
+    expect(isEqualValue(new Set([1]), new Set([2]))).toBe(false);
+    const file = new File([], 'a');
+    expect(isEqualValue({ file }, { file })).toBe(true);
+    expect(isEqualValue({ file }, { file: new File([], 'a') })).toBe(false);
+  });
+
+  it('should be true for a value and its clone', () => {
+    const value = { a: [1, { b: new Date(1) }], c: new Map([['d', new Set([1])]]) };
+    expect(isEqualValue(value, clone(value))).toBe(true);
   });
 });
 
@@ -534,5 +566,21 @@ describe('getField', () => {
 
   it('should return undefined when field does not exist', () => {
     expect(getField({}, ['parent', 'child1'])).toBeUndefined();
+  });
+});
+
+describe('isWritableSignal', () => {
+  it('should be true for signals that can be set', () => {
+    expect(isWritableSignal(signal({}))).toBe(true);
+  });
+
+  it('should be false for readonly signals and other values', () => {
+    const model = signal({});
+
+    expect(isWritableSignal(computed(() => model()))).toBe(false);
+    expect(isWritableSignal(model.asReadonly())).toBe(false);
+    expect(isWritableSignal({})).toBe(false);
+    expect(isWritableSignal(null)).toBe(false);
+    expect(isWritableSignal(undefined)).toBe(false);
   });
 });
