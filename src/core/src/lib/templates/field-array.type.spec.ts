@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyInputModule, createFieldChangesSpy, createFieldComponent } from '@ngx-formly/core/testing';
@@ -196,6 +196,30 @@ describe('Array Field Type', () => {
     expect(field.parent.model).toEqual({ array: [] });
 
     subscription.unsubscribe();
+  });
+
+  it('should add a repeat item to a signal model', async () => {
+    const model = signal<any>({ foo: [] });
+    const { query, fixture, detectChanges } = renderFormComponent(
+      {
+        model,
+        fields: [{ key: 'foo', type: 'array', fieldArray: { fieldGroup: [{ key: 'title', defaultValue: 'x' }] } }],
+      },
+      {
+        config: {
+          declarations: [ArrayTypeComponent],
+          types: [{ name: 'array', component: ArrayTypeComponent }],
+        },
+      },
+    );
+    const set = jest.spyOn(model, 'set');
+
+    (query('#add').nativeElement as HTMLButtonElement).click();
+    detectChanges();
+    await fixture.whenStable();
+
+    expect(model().foo).toEqual([{ title: 'x' }]);
+    expect(set).toHaveBeenCalledTimes(1);
   });
 
   it('should emit `valueChanges` on model change', () => {
