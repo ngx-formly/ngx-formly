@@ -52,6 +52,7 @@
         "path": "/examples/field-options",
         "items": [
           { "path": "/examples/field-options/expression-properties", "label": "Expression Properties" },
+          { "path": "/examples/field-options/signal-expressions", "label": "Signal Expressions" },
           { "path": "/examples/field-options/default-value", "label": "Default Value" },
           { "path": "/examples/field-options/hide-fields", "label": "Hide Fields" },
           { "path": "/examples/field-options/model-options", "label": "modelOptions" }

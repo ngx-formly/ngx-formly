@@ -20,6 +20,10 @@ export const examplesRoutes: Routes = [
             loadChildren: () => import('./field-options/expression-properties/app.routes').then((m) => m.appRoutes),
           },
           {
+            path: 'signal-expressions',
+            loadChildren: () => import('./field-options/signal-expressions/app.routes').then((m) => m.appRoutes),
+          },
+          {
             path: 'default-value',
             loadChildren: () => import('./field-options/default-value/app.routes').then((m) => m.appRoutes),
           },

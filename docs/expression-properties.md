@@ -3,7 +3,7 @@
 ## 1. Dynamically Change field properties
 
 Expressions allow you to dynamically change field properties.
-For example, you can disable a form field dynamically. The value of this property can be `string` or `function`.
+For example, you can disable a form field dynamically. The value of this property can be `string`, `function`, `Observable` or `signal`.
 You can see an example using string value [here](https://stackblitz.com/edit/angular-formly-eehxjb?file=app/app.component.ts)
 
 ```typescript
@@ -54,6 +54,33 @@ options = {
 ```
 
 :::
+
+### Signals
+
+Pass a signal or a `computed` to update the property as soon as it changes, even when the model does not change:
+
+```typescript
+locked = signal(false);
+cityLabel = computed(() => (this.locked() ? 'City (locked)' : 'City'));
+
+fields: FormlyFieldConfig[] = [
+  {
+    key: 'city',
+    type: 'input',
+    expressions: {
+      'props.disabled': this.locked,
+      'props.label': this.cityLabel,
+    },
+  },
+];
+```
+
+A `computed` runs again only when the signals it reads change, not on every expression check.
+
+Pass the signal itself. A function that reads a signal, such as `() => this.locked()`, is still evaluated only during
+expression checks, so it does not update when the signal changes.
+A signal does not receive the `field` argument; use a function expression when you need it.
+See the [signal expressions example](https://formly.dev/docs/examples/field-options/signal-expressions).
 
 ### Disabled groups
 

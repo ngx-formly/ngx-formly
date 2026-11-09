@@ -89,7 +89,7 @@ The output shares the `options.fieldChanges` payload shape; it does not forward 
 | defaultValue         | `any` | If this is provided and the value of the model at compile-time is `undefined`, then the value of the model will be assigned the defaultValue. |
 | hide                 | `boolean`    | Whether to hide the field. Defaults to false. If you wish this to be conditional use `expressions: { hide: ... }`. |
 | hideExpression       | `boolean`/`string`/`function` | Conditionally hide the field based on values from other fields. @deprecated use `expressions: { hide: ... }` instead |
-| expressions | `boolean`/`string`/`function` | An object where the key is a property to be set on the main field config and the value is an expression used to assign that property. |
+| expressions | `boolean`/`string`/`function`/`signal` | An object where the key is a property to be set on the main field config and the value is an expression used to assign that property. |
 | focus                | `boolean`    | Whether to focus or blur the element field. Defaults to false. If you wish this to be conditional use `expressions` |
 | wrappers             | `string[]`   | It is expected to be the name of the wrappers. The formly field template will be wrapped by the first wrapper, then the second, then the third, etc. You can also specify these as part of a type (which is the recommended approach). |
 | parsers              | `function[]` | Array of functions to execute, as a pipeline, whenever the model updates, usually via user input. |
