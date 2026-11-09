@@ -5,6 +5,9 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, ConfigOpt
 import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField, isSignalRequired } from '../utils';
 import { FORMLY_CONFIG } from '../core.config';
 
+// shared by every builder: a form's options can be built through more than one builder
+const buildingOptions = new WeakSet<FormlyFormOptions>();
+
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
   constructor(
@@ -37,23 +40,36 @@ export class FormlyFormBuilder {
       this._setOptions(field);
     }
 
-    disableTreeValidityCall(field.form, () => {
-      this._build(field);
-      // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
-      if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
-        // detect changes early to avoid reset value by hidden fields
-        const options = (field as FormlyFieldConfigCache).options;
+    const options = (field as FormlyFieldConfigCache).options;
+    // a nested build (e.g. a field array item) must not notify before the outermost build is done
+    const outermostBuild = !buildingOptions.has(options);
+    buildingOptions.add(options);
 
-        if (field.parent && isHiddenField(field)) {
-          // when hide is used in expression set defaul value will not be set until detect hide changes
-          // which causes default value not set on new item is added
-          options._hiddenFieldsForCheck?.push({ field, default: false });
+    try {
+      disableTreeValidityCall(field.form, () => {
+        this._build(field);
+        // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
+        if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
+          // detect changes early to avoid reset value by hidden fields
+          if (field.parent && isHiddenField(field)) {
+            // when hide is used in expression set defaul value will not be set until detect hide changes
+            // which causes default value not set on new item is added
+            options._hiddenFieldsForCheck?.push({ field, default: false });
+          }
+
+          options.checkExpressions?.(field, true);
+          options._detectChanges?.(field);
         }
-
-        options.checkExpressions?.(field, true);
-        options._detectChanges?.(field);
+      });
+    } finally {
+      if (outermostBuild) {
+        buildingOptions.delete(options);
       }
-    });
+    }
+
+    if (outermostBuild) {
+      options._afterBuild?.forEach((afterBuild) => afterBuild());
+    }
   }
 
   private _build(field: FormlyFieldConfigCache) {
