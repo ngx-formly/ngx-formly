@@ -1,0 +1,7 @@
+<form [formGroup]="form">
+  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+  <p>
+    Full name: <strong>{{ fullName() }}</strong>
+  </p>
+  <button type="button" class="btn btn-primary" (click)="loadModel()">Load another name</button>
+</form>

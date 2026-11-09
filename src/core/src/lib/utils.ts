@@ -2,7 +2,17 @@ import { FormlyFieldConfig } from './models';
 import { isObservable } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './models';
-import { ChangeDetectorRef, ComponentRef, NgZone, TemplateRef, Type, VERSION, ɵNoopNgZone } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  ComponentRef,
+  isSignal,
+  NgZone,
+  TemplateRef,
+  Type,
+  VERSION,
+  WritableSignal,
+  ɵNoopNgZone,
+} from '@angular/core';
 
 export function disableTreeValidityCall(form: any, callback: () => void) {
   const _updateTreeValidity = form._updateTreeValidity.bind(form);
@@ -150,15 +160,24 @@ export function isPromise(obj: any): obj is Promise<any> {
   return !!obj && typeof obj.then === 'function';
 }
 
-export function clone(value: any): any {
-  if (
+// `isWritableSignal` is public in Angular 21+ only
+export function isWritableSignal(value: any): value is WritableSignal<any> {
+  return isSignal(value) && typeof (value as any).set === 'function';
+}
+
+function isKeptByReference(value: any) {
+  return (
     !isObject(value) ||
     isObservable(value) ||
     isPromise(value) ||
     value instanceof TemplateRef ||
     /* instanceof SafeHtmlImpl */ value.changingThisBreaksApplicationSecurity ||
     ['RegExp', 'FileList', 'File', 'Blob'].indexOf(value.constructor?.name) !== -1
-  ) {
+  );
+}
+
+export function clone(value: any): any {
+  if (isKeptByReference(value)) {
     return value;
   }
 
@@ -216,6 +235,35 @@ export function clone(value: any): any {
 
     return newVal;
   }, c);
+}
+
+export function isEqualValue(a: any, b: any): boolean {
+  if (Object.is(a, b)) {
+    return true;
+  }
+
+  if (isKeptByReference(a) || isKeptByReference(b) || Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) {
+    return false;
+  }
+
+  if (a instanceof Date) {
+    return Object.is(a.getTime(), b.getTime());
+  }
+
+  if (a instanceof Map) {
+    return a.size === b.size && [...a].every(([k, v]) => b.has(k) && isEqualValue(v, b.get(k)));
+  }
+
+  if (a instanceof Set) {
+    return a.size === b.size && [...a].every((v) => b.has(v));
+  }
+
+  const keys = Object.keys(a);
+
+  return (
+    keys.length === Object.keys(b).length &&
+    keys.every((k) => Object.prototype.hasOwnProperty.call(b, k) && isEqualValue(a[k], b[k]))
+  );
 }
 
 export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
