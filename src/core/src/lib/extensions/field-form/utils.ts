@@ -3,6 +3,22 @@ import { UntypedFormArray, UntypedFormGroup, AbstractControl, FormControl } from
 import { getKeyPath, getField, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
 import { FormlyFieldConfigCache } from '../../models';
 
+// Duck-typed to keep `@angular/forms/signals/compat` out of the core bundle.
+export function isSignalFormControl(control: AbstractControl | null | undefined): boolean {
+  return !!control && 'fieldTree' in control && 'sourceValue' in control;
+}
+
+const parentSyncedControls = new WeakSet<AbstractControl>();
+
+// SignalFormControl notifies its parent on value changes only, not when a rule changes its status.
+function syncParentOnStatusChange(control: AbstractControl): void {
+  if (parentSyncedControls.has(control)) {
+    return;
+  }
+  parentSyncedControls.add(control);
+  control.statusChanges.subscribe(() => control.parent?.updateValueAndValidity());
+}
+
 export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = false) {
   if (!hasKey(field) && field.fieldGroup) {
     field.fieldGroup.forEach((f) => unregisterControl(f, emitEvent));
@@ -120,7 +136,7 @@ export function registerControl(
       defineHiddenProp(field, 'formControl', undefined);
       field.props.disabled = !!field.props.disabled;
       const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
-        if (!firstChange && field.formControl) {
+        if (!firstChange && field.formControl && !isSignalFormControl(field.formControl)) {
           currentValue ? field.formControl.disable() : field.formControl.enable();
         }
       });
@@ -134,8 +150,12 @@ export function registerControl(
       });
     }
     field.formControl = control;
-    control.setValidators(null);
-    control.setAsyncValidators(null);
+    if (isSignalFormControl(control)) {
+      syncParentOnStatusChange(control);
+    } else {
+      control.setValidators(null);
+      control.setAsyncValidators(null);
+    }
   }
 
   if (!field.form || !hasKey(field)) {
@@ -145,7 +165,8 @@ export function registerControl(
   let form: FormlyFieldConfigCache['formControl'] = field.form;
   const paths = getKeyPath(field);
   const value = getFieldValue(field);
-  if (!(isNil(control.value) && isNil(value)) && control.value !== value && control instanceof FormControl) {
+  const writable = control instanceof FormControl || isSignalFormControl(control);
+  if (!(isNil(control.value) && isNil(value)) && control.value !== value && writable) {
     control.patchValue(value, { emitEvent: field.shareFormControl !== false });
   }
   if (field._hide) {
@@ -197,8 +218,10 @@ export function updateValidity(c: AbstractControl, onlySelf = false) {
 
 export function clearControl(form: FormlyFieldConfigCache['formControl']) {
   delete form?._fields;
-  form.setValidators(null);
-  form.setAsyncValidators(null);
+  if (!isSignalFormControl(form)) {
+    form.setValidators(null);
+    form.setAsyncValidators(null);
+  }
   if (form instanceof UntypedFormGroup || form instanceof UntypedFormArray) {
     Object.values(form.controls).forEach((c) => clearControl(c));
   }

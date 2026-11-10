@@ -7,9 +7,13 @@ import {
   ValidatorFn,
   AsyncValidatorFn,
   FormControl,
+  AbstractControl,
 } from '@angular/forms';
-import { getFieldValue, defineHiddenProp, hasKey, getKeyPath } from '../../utils';
-import { registerControl, findControl, updateValidity } from './utils';
+import { signal } from '@angular/core';
+import { disabled as disabledRule, required as requiredRule } from '@angular/forms/signals';
+import { SignalFormControl } from '@angular/forms/signals/compat';
+import { getFieldValue, defineHiddenProp, hasKey, getKeyPath, observe } from '../../utils';
+import { registerControl, findControl, updateValidity, isSignalFormControl } from './utils';
 import { of } from 'rxjs';
 
 export class FieldFormExtension implements FormlyExtension {
@@ -64,6 +68,8 @@ export class FieldFormExtension implements FormlyExtension {
 
       if (field.fieldGroup) {
         control = new UntypedFormGroup({}, controlOptions);
+      } else if (field.options.signalForms && hasKey(field)) {
+        control = this.createSignalFormControl(field);
       } else {
         const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
         control = new UntypedFormControl(
@@ -79,6 +85,23 @@ export class FieldFormExtension implements FormlyExtension {
     }
 
     registerControl(field, control);
+  }
+
+  // The schema runs once, so the rules read signals that mirror the props through `observe`.
+  private createSignalFormControl(field: FormlyFieldConfigCache): AbstractControl {
+    const isRequired = signal(!!field.props.required);
+    const isDisabled = signal(!!field.props.disabled);
+    observe(field, ['props', 'required'], ({ currentValue }) => isRequired.set(!!currentValue));
+    observe(field, ['props', 'disabled'], ({ currentValue }) => isDisabled.set(!!currentValue));
+
+    return new SignalFormControl<unknown>(
+      getFieldValue(field),
+      (p) => {
+        requiredRule(p, { when: () => isRequired() });
+        disabledRule(p, { when: () => isDisabled() });
+      },
+      { injector: field.options._injector },
+    );
   }
 
   private setValidators(field: FormlyFieldConfigCache, disabled = false) {
@@ -103,7 +126,9 @@ export class FieldFormExtension implements FormlyExtension {
           }
         }
 
-        if (null === c.validator && this.hasValidators(field, '_validators')) {
+        // Validation of a SignalFormControl comes from its Signal Forms rules.
+        const signalControl = isSignalFormControl(c);
+        if (!signalControl && null === c.validator && this.hasValidators(field, '_validators')) {
           c.setValidators(() => {
             const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
 
@@ -112,7 +137,7 @@ export class FieldFormExtension implements FormlyExtension {
           markForCheck = true;
         }
 
-        if (null === c.asyncValidator && this.hasValidators(field, '_asyncValidators')) {
+        if (!signalControl && null === c.asyncValidator && this.hasValidators(field, '_asyncValidators')) {
           c.setAsyncValidators(() => {
             const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
             return v ? v(c) : of(null);

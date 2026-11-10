@@ -245,3 +245,24 @@ The `formState` property is passed to all fields and is a mechanism for communic
 ### resetModel and updateInitialValue
 
 This also receives the methods `resetModel` and `updateInitialValue` which will invoke all of the field's resetModel and updateInitialValue respectively.
+
+### signalForms (experimental)
+
+> The API may change. It is a prototype for [Signal Forms support](https://github.com/ngx-formly/ngx-formly/issues/4241).
+
+When `signalForms` is `true`, Formly creates an Angular [`SignalFormControl`](https://angular.dev/guide/forms/signals/migration) instead of a `FormControl` for each keyed field without a `fieldGroup`. `props.required` and `props.disabled` become Signal Forms rules and follow their expressions, including signal expressions. Formly also updates the parent form when a rule changes the control status.
+
+Enable it per form with `options` or globally with `extras`:
+
+```ts
+options: FormlyFormOptions = { signalForms: true };
+
+// or
+provideFormlyCore({ extras: { signalForms: true } });
+```
+
+Current limitations:
+
+- Only `props.required` and `props.disabled` are applied. Other Formly validation, such as `validators`, `asyncValidators`, `props.pattern`, `props.min` and `props.max`, is not applied to these fields.
+- `field.formControl` is a `SignalFormControl`. Code that calls `disable()`, `enable()`, `setValidators()` or `setErrors()` on it throws `NG01920`.
+- A `SignalFormControl` already registered in the form under the field key is reused and keeps its own rules.

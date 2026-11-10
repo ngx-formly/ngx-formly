@@ -1,5 +1,9 @@
+import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { createBuilder } from '@ngx-formly/core/testing';
+import { disabled, required } from '@angular/forms/signals';
+import { SignalFormControl } from '@angular/forms/signals/compat';
+import { createBuilder, createFieldComponent, FormlyInputModule } from '@ngx-formly/core/testing';
 import { FormlyFieldConfigCache } from '../../models';
 
 function buildField({ model, options, form, ...field }: FormlyFieldConfigCache): FormlyFieldConfigCache {
@@ -102,6 +106,38 @@ describe('FieldFormExtension', () => {
       });
 
       expect((field.formControl as FormControl).defaultValue).toEqual(6);
+    });
+
+    it('should reuse an existing SignalFormControl without calling the imperative validator setters', () => {
+      const name = TestBed.runInInjectionContext(() => new SignalFormControl('foo'));
+      const field = buildField({ key: 'name', form: new FormGroup({ name }), model: { name: 'foo' } });
+
+      expect(field.formControl).toBe(name);
+      expect(field.formControl.value).toEqual('foo');
+    });
+
+    it('should update the parent form when a SignalFormControl rule changes its status', () => {
+      const isRequired = signal(true);
+      const isDisabled = signal(false);
+      const name = TestBed.runInInjectionContext(
+        () =>
+          new SignalFormControl('', (p) => {
+            required(p, { when: () => isRequired() });
+            disabled(p, { when: () => isDisabled() });
+          }),
+      );
+      const form = new FormGroup({ name, age: new FormControl(25) });
+      buildField({ fieldGroup: [{ key: 'name' }, { key: 'age' }], form, model: { name: '', age: 25 } });
+      TestBed.tick();
+      expect(form.status).toEqual('INVALID');
+
+      isRequired.set(false);
+      TestBed.tick();
+      expect(form.status).toEqual('VALID');
+
+      isDisabled.set(true);
+      TestBed.tick();
+      expect(form.value).toEqual({ age: 25 });
     });
 
     it('should use the same formcontrol for fields that use the same key', () => {
@@ -305,6 +341,79 @@ describe('FieldFormExtension', () => {
 
       expect(form.get('foo').disabled).toEqual(true);
       expect(form.get('bar').disabled).toEqual(false);
+    });
+  });
+
+  describe('signalForms option (experimental)', () => {
+    function buildSignalField(field: FormlyFieldConfigCache, model: any): FormlyFieldConfigCache {
+      const builder = createBuilder();
+      const form = new FormGroup({});
+      // createBuilder has no injector, so SignalFormControl falls back to inject().
+      TestBed.runInInjectionContext(() =>
+        builder.build({ model, form, options: { signalForms: true }, fieldGroup: [field] }),
+      );
+      TestBed.tick();
+
+      return field;
+    }
+
+    it('should create a SignalFormControl with the model value', () => {
+      const field = buildSignalField({ key: 'name' }, { name: 'foo' });
+
+      expect(field.formControl).toBeInstanceOf(SignalFormControl);
+      expect(field.formControl.value).toEqual('foo');
+      expect(field.form.value).toEqual({ name: 'foo' });
+    });
+
+    it('should apply props.required as a rule and follow its changes', () => {
+      const field = buildSignalField({ key: 'name', props: { required: true } }, { name: '' });
+
+      expect(field.formControl.errors).toEqual({ required: expect.anything() });
+      expect(field.form.status).toEqual('INVALID');
+
+      field.props.required = false;
+      TestBed.tick();
+      expect(field.formControl.errors).toBeNull();
+      expect(field.form.status).toEqual('VALID');
+    });
+
+    it('should apply props.disabled as a rule and follow its changes', () => {
+      const field = buildSignalField(
+        { fieldGroup: [{ key: 'name', props: { disabled: true } }, { key: 'age' }] },
+        { name: 'foo', age: 25 },
+      );
+      const [name] = field.fieldGroup;
+
+      expect(name.formControl.disabled).toBe(true);
+      expect(field.form.value).toEqual({ age: 25 });
+
+      name.props.disabled = false;
+      TestBed.tick();
+      expect(name.formControl.disabled).toBe(false);
+      expect(field.form.value).toEqual({ name: 'foo', age: 25 });
+    });
+
+    it('should support a signal expression on props.disabled', () => {
+      const locked = signal(false);
+      const { field, query, detectChanges } = createFieldComponent(
+        { key: 'name', type: 'input', expressions: { 'props.disabled': locked }, options: { signalForms: true } },
+        { imports: [FormlyInputModule] },
+      );
+      const input = (): HTMLInputElement => query<HTMLInputElement>('input').nativeElement;
+      expect(field.formControl).toBeInstanceOf(SignalFormControl);
+      expect(input().disabled).toBe(false);
+
+      locked.set(true);
+      TestBed.tick();
+      detectChanges();
+      expect(field.formControl.disabled).toBe(true);
+      expect(input().disabled).toBe(true);
+    });
+
+    it('should keep creating a FormControl when the option is off', () => {
+      const field = buildField({ key: 'name' });
+
+      expect(field.formControl).toBeInstanceOf(FormControl);
     });
   });
 });
