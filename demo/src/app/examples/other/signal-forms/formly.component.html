@@ -1,0 +1,20 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
+
+  <p>
+    Computed summary: <strong>{{ summary() }}</strong>
+  </p>
+
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-outline-primary" (click)="toggleRequired()">
+      Required: {{ isRequired() ? 'on' : 'off' }}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="toggleDisabled()">
+      Disabled: {{ isDisabled() ? 'on' : 'off' }}
+    </button>
+  </div>
+</form>
+
+<h6>FormGroup</h6>
+<pre class="formly-group-state">{{ { status: form.status, value: form.value } | json }}</pre>
