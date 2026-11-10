@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.2.0](https://github.com/ngx-formly/ngx-formly/compare/v11.1.0...v11.2.0) (2026-11-10)
+
+### Features
+
+* **core:** Accept a signal or `computed` directly in `expressions` to update field properties when its value changes, even without a model change. Existing string, function, and Observable expressions remain supported. See the [signal expressions guide](https://github.com/ngx-formly/ngx-formly/blob/v11.2.0/docs/expression-properties.md#signals) and the new example ([#4251](https://github.com/ngx-formly/ngx-formly/pull/4251)).
+
+### Development tooling
+
+* **demo:** Add `pnpm dev:portless` to serve the demo at `https://ngx-formly.localhost` with separate subdomains for Git worktrees. Requires pnpm 11 or newer; dependency installation continues to use npm ([#4253](https://github.com/ngx-formly/ngx-formly/pull/4253)).
+
 ## [11.1.0](https://github.com/ngx-formly/ngx-formly/compare/v11.0.0...v11.1.0) (2026-11-04)
 
 ### Features
