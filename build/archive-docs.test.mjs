@@ -23,6 +23,8 @@ function repository(t, { docsBuild = true, html = template } = {}) {
   git('init', '--bare', remote);
   git('remote', 'add', 'origin', remote);
   mkdirSync(join(cwd, 'demo/src/app'), { recursive: true });
+  mkdirSync(join(cwd, 'demo/functions'), { recursive: true });
+  writeFileSync(join(cwd, 'demo/functions/mcp.ts'), 'export default () => new Response("MCP");');
   writeFileSync(join(cwd, templatePath), html);
   writeFileSync(join(cwd, '.node-version'), '24.21.0\n');
   function release(version) {
@@ -118,6 +120,7 @@ test('archives the highest reachable stable tag, preserving release files and Ne
   assert.match(menu, /href="https:\/\/v11.formly.dev\/" disabled mat-menu-item/);
   assert.match(menu, /href="https:\/\/formly.dev\/guide\/migration"/);
   assert.match(repo.git('show', `${result.commit}:netlify.toml`), /command = "npm run docs:build"/);
+  assert.doesNotMatch(repo.git('show', `${result.commit}:netlify.toml`), /build:mcp|\[functions\]|dist\/functions/);
   assert.match(repo.git('show', `${result.commit}:netlify.toml`), /NPM_VERSION = "11.19.0"/);
   assert.match(repo.git('show', `${result.commit}:netlify.toml`), /to = "\/index.html"\n  status = 200/);
   assert.equal(repo.git('rev-parse', 'HEAD'), head);

@@ -1,0 +1,26 @@
+{
+  "name": "@ngx-formly/mcp",
+  "version": "0.0.0-FORMLY-VERSION",
+  "description": "A Streamable HTTP MCP handler for Formly documentation, examples, and field validation.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.4.0",
+    "jsonc-parser": "^3.3.1"
+  }
+}

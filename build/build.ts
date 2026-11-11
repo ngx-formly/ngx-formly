@@ -13,18 +13,21 @@ PACKAGES.map((name) => {
   exec(
     name === 'schematics'
       ? `ts-node --dir build schematics.ts`
-      : `ng build --configuration production @ngx-formly/${name}`,
+      : name === 'mcp'
+        ? 'node build/mcp.mjs'
+        : `ng build --configuration production @ngx-formly/${name}`,
   );
 
   const pkgDir = `${distDir}/${name}`;
 
   // update `FORMLY-VERSION` in package.json for all sub-packages
   const pkgPath = `${pkgDir}/package.json`;
+  const builtPkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
   const pkgJson = {
-    ...JSON.parse(fs.readFileSync(pkgPath, 'utf8')),
+    ...builtPkg,
     version: mainPkg.version,
     homepage: mainPkg.homepage,
-    description: mainPkg.description,
+    description: name === 'mcp' ? builtPkg.description : mainPkg.description,
     repository: mainPkg.repository,
     bugs: mainPkg.bugs,
   };

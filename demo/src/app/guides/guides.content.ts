@@ -9,6 +9,7 @@ import formlyFieldPresetsMd from '../../../../docs/formly-field-presets.md?raw' 
 import jsonSchemaMd from '../../../../docs/json-schema.md?raw' with { loader: 'text' };
 import externalLibrariesMd from '../../../../docs/external-libraries.md?raw' with { loader: 'text' };
 import faqMd from '../../../../docs/faq.md?raw' with { loader: 'text' };
+import mcpMd from '../../../../docs/mcp.md?raw' with { loader: 'text' };
 import migrationV11Md from '../../../../UPGRADE-11.0.md?raw' with { loader: 'text' };
 import migrationV10Md from '../../../../UPGRADE-10.0.md?raw' with { loader: 'text' };
 import migrationV9Md from '../../../../UPGRADE-9.0.md?raw' with { loader: 'text' };
@@ -30,6 +31,7 @@ export const GUIDE_CONTENTS: Record<string, string> = {
   'json-schema': jsonSchemaMd,
   'external-libraries': externalLibrariesMd,
   faq: faqMd,
+  mcp: mcpMd,
   v11: migrationV11Md,
   v10: migrationV10Md,
   v9: migrationV9Md,

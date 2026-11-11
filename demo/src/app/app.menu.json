@@ -13,6 +13,7 @@
       { "path": "/guide/formly-field-presets", "label": "Formly Field Presets" },
       { "path": "/guide/json-schema", "label": "JSON Schema" },
       { "path": "/guide/external-libraries", "label": "External libraries" },
+      { "path": "/guide/mcp", "label": "MCP tools" },
       {
         "path": "/guide/migration",
         "label": "Migration guides",

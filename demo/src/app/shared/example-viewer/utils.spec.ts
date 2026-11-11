@@ -4,6 +4,19 @@ import { getExampleFiles } from './utils';
 const example = { title: '', description: '', component: null, debug: false, files: [] };
 
 describe('getExampleFiles', () => {
+  it('keeps TypeScript helper files beside the components that import them', () => {
+    const { files } = getExampleFiles('bootstrap', {
+      ...example,
+      files: [
+        { file: 'app.component.ts', filecontent: "import { accessor } from './file-value-accessor';" },
+        { file: 'file-value-accessor.ts', filecontent: 'export const accessor = {};' },
+      ],
+    });
+    expect(files['src/app/file-value-accessor.ts']).toContain('export const accessor');
+    expect(files['src/file-value-accessor.ts']).toBeUndefined();
+    expect(files['src/main.ts']).toContain('bootstrapApplication');
+  });
+
   it.each(['primeng', 'core'])('exports installable PrimeNG 21 examples for %s', (type) => {
     const { files, dependencies } = getExampleFiles(type, {
       ...example,

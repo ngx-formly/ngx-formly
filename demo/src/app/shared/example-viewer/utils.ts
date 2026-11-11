@@ -134,7 +134,10 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
   [...TEMPLATE_FILES.core, ...(TEMPLATE_FILES[options.type] || []), ...exampleData.files].forEach((data) => {
     let file = data.file;
 
-    if (file.match(/(component|module|type|service|preset|wrapper|extension|config)/)) {
+    if (
+      file.match(/(component|module|type|service|preset|wrapper|extension|config)/) ||
+      (exampleData.files.includes(data) && file.endsWith('.ts'))
+    ) {
       file = 'app/' + file;
     }
 

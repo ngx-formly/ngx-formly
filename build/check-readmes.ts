@@ -6,7 +6,7 @@ const { projects } = JSON.parse(fs.readFileSync('angular.json', 'utf8'));
 
 for (const name of PACKAGES) {
   const packageName = `@ngx-formly/${name}`;
-  const sourceDir = name === 'schematics' ? 'src/schematics' : projects[packageName].root;
+  const sourceDir = ['schematics', 'mcp'].includes(name) ? `src/${name}` : projects[packageName].root;
   const source = fs.readFileSync(`${sourceDir}/README.md`, 'utf8');
   const built = fs.readFileSync(`dist/@ngx-formly/${name}/README.md`, 'utf8');
 
