@@ -2,13 +2,13 @@ import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { FormArray, FormGroup } from '@angular/forms';
 import { getKeyPath, isEqualValue } from '../utils';
 
-export interface Schema {
+export interface FormlyWebMcpInputSchema {
   type?: string | string[];
-  properties?: Record<string, Schema>;
+  properties?: Record<string, FormlyWebMcpInputSchema>;
   additionalProperties?: false;
-  items?: Schema;
-  anyOf?: Schema[];
-  allOf?: Schema[];
+  items?: FormlyWebMcpInputSchema;
+  anyOf?: FormlyWebMcpInputSchema[];
+  allOf?: FormlyWebMcpInputSchema[];
   const?: unknown;
   title?: string;
   description?: string;
@@ -19,12 +19,12 @@ export interface Schema {
   pattern?: string;
 }
 
-export interface AgentField {
+export interface FormlyWebMcpField {
   field: FormlyFieldConfig;
   path: string[];
   writable: boolean;
   password: boolean;
-  schema?: Schema;
+  schema?: FormlyWebMcpInputSchema;
   value: (value: any) => any;
 }
 
@@ -44,11 +44,11 @@ export function isJson(value: unknown, depth = 0): boolean {
   );
 }
 
-export function objectSchema(): Schema {
+export function objectSchema(): FormlyWebMcpInputSchema {
   return { type: 'object', properties: Object.create(null), additionalProperties: false };
 }
 
-function inferSchema(value: any): Schema | undefined {
+function inferSchema(value: any): FormlyWebMcpInputSchema | undefined {
   if (!isJson(value)) return undefined;
   if (value === null) return { type: 'null' };
   if (Array.isArray(value)) {
@@ -71,15 +71,15 @@ function typeName(field: FormlyFieldConfig): string {
   return typeof field.type === 'string' ? field.type : '';
 }
 
-interface Choice {
+interface FormlyWebMcpChoice {
   value: any;
   label?: string;
   disabled: boolean;
 }
 
 // Core cannot import the select entry point, which already depends on core.
-function choices(options: any[], props: FormlyFieldConfig['props']): Choice[] {
-  const result: Choice[] = [];
+function choices(options: any[], props: FormlyFieldConfig['props']): FormlyWebMcpChoice[] {
+  const result: FormlyWebMcpChoice[] = [];
   const get = (option: any, prop: string) => {
     const mapping = props[`${prop}Prop`];
     return typeof mapping === 'function' ? mapping(option) : option?.[mapping || prop];
@@ -103,18 +103,18 @@ function choices(options: any[], props: FormlyFieldConfig['props']): Choice[] {
   return result;
 }
 
-function describe(entry: AgentField, options: any[] | undefined) {
+function describe(entry: FormlyWebMcpField, options: any[] | undefined) {
   const { field } = entry;
   const props = field.props || {};
   const type = typeName(field);
   if (props.type === 'file' || field.formControl instanceof FormGroup || field.formControl instanceof FormArray) return;
 
-  let schema: Schema;
+  let schema: FormlyWebMcpInputSchema;
   if (props.options !== undefined) {
     if (!Array.isArray(options)) return;
     const all = choices(options, props);
     const enabled = all.filter((option) => !option.disabled);
-    const optionSchema: Schema = {
+    const optionSchema: FormlyWebMcpInputSchema = {
       anyOf: enabled.map(({ value, label }) => ({
         const: value,
         ...(typeof label === 'string' ? { title: label } : {}),
@@ -178,8 +178,8 @@ export function collectFields(
   root: FormlyFieldConfig,
   defaultEnabled: boolean,
   options: (field: FormlyFieldConfig) => any[] | undefined,
-): AgentField[] {
-  const candidates = new Map<string, { entry: AgentField; included: boolean }[]>();
+): FormlyWebMcpField[] {
+  const candidates = new Map<string, { entry: FormlyWebMcpField; included: boolean }[]>();
   const visit = (
     field: FormlyFieldConfigCache,
     parentPath: string[],
@@ -206,7 +206,7 @@ export function collectFields(
     )
       return;
 
-    const entry: AgentField = {
+    const entry: FormlyWebMcpField = {
       field,
       path,
       writable: !readonly && !field.formControl.disabled,
@@ -219,7 +219,7 @@ export function collectFields(
   };
   visit(root, [], defaultEnabled, false, false);
 
-  const result: AgentField[] = [];
+  const result: FormlyWebMcpField[] = [];
   candidates.forEach((aliases) => {
     // One model value must not escape an exclusion through a second visible editor.
     if (aliases.some(({ included }) => !included)) return;
@@ -237,7 +237,7 @@ export function collectFields(
   return result;
 }
 
-export function inputSchema(fields: AgentField[]): Schema {
+export function inputSchema(fields: FormlyWebMcpField[]): FormlyWebMcpInputSchema {
   const root = objectSchema();
   for (const { path, schema, writable } of fields) {
     if (!schema || !writable) continue;
@@ -252,7 +252,7 @@ export function inputSchema(fields: AgentField[]): Schema {
   return root;
 }
 
-export function matches(value: any, schema: Schema): boolean {
+export function matches(value: any, schema: FormlyWebMcpInputSchema): boolean {
   if (schema.allOf) return schema.allOf.every((option) => matches(value, option));
   if (schema.anyOf) return schema.anyOf.some((option) => matches(value, option));
   if (Object.prototype.hasOwnProperty.call(schema, 'const')) return isEqualValue(schema.const, value);
@@ -266,11 +266,14 @@ export function matches(value: any, schema: Schema): boolean {
   return true;
 }
 
-export function parsePatch(args: unknown, fields: AgentField[]): { entry: AgentField; value: any }[] | undefined {
+export function parsePatch(
+  args: unknown,
+  fields: FormlyWebMcpField[],
+): { entry: FormlyWebMcpField; value: any }[] | undefined {
   if (!isJson(args) || !args || Array.isArray(args) || typeof args !== 'object') return undefined;
   const schema = inputSchema(fields);
   if (!matches(args, schema)) return undefined;
-  const writes: { entry: AgentField; value: any }[] = [];
+  const writes: { entry: FormlyWebMcpField; value: any }[] = [];
   for (const entry of fields) {
     let value: any = args;
     for (const key of entry.path) {

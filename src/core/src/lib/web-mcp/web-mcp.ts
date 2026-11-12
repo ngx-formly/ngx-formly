@@ -4,24 +4,24 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyWebMcpOptions } from '../mo
 import { FormlyConfig } from '../services/formly.config';
 import { clone, isEqualValue } from '../utils';
 import { getValidationMessage } from '../templates/validation-message';
-import { AgentField, collectFields, inputSchema, isJson, parsePatch, Schema } from './fields';
+import { FormlyWebMcpField, collectFields, inputSchema, isJson, parsePatch, FormlyWebMcpInputSchema } from './fields';
 
-interface Tool {
+interface FormlyWebMcpTool {
   name: string;
   description: string;
-  inputSchema: Schema;
+  inputSchema: FormlyWebMcpInputSchema;
   annotations: { untrustedContentHint: boolean; consequentialHint?: boolean };
   execute: (args: unknown, context?: { signal?: AbortSignal }) => Promise<unknown>;
 }
 
-interface ModelContext {
-  registerTool(tool: Tool, options: { signal: AbortSignal }): unknown;
+interface FormlyWebMcpModelContext {
+  registerTool(tool: FormlyWebMcpTool, options: { signal: AbortSignal }): unknown;
 }
 
-export function modelContext(): ModelContext | undefined {
+export function modelContext(): FormlyWebMcpModelContext | undefined {
   const hosts = globalThis as unknown as {
-    document?: { modelContext?: ModelContext };
-    navigator?: { modelContext?: ModelContext };
+    document?: { modelContext?: FormlyWebMcpModelContext };
+    navigator?: { modelContext?: FormlyWebMcpModelContext };
   };
   return [hosts.document?.modelContext, hosts.navigator?.modelContext].find(
     (context) => typeof context?.registerTool === 'function',
@@ -81,7 +81,7 @@ class FormlyWebMcp {
     this.sources.clear();
   }
 
-  private fields(): AgentField[] {
+  private fields(): FormlyWebMcpField[] {
     const used = new Set<Observable<any[]>>();
     const fields = collectFields(this.root(), !!this.config.extras.webMcp, (field) => {
       const options = field.props?.options;
