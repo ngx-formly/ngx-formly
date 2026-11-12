@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.1.0](https://github.com/ngx-formly/ngx-formly/compare/v10.0.1...v10.1.0) (2026-11-12)
+
+
+### Features
+
+* **core:** support WritableSignal as the model input ([#4247](https://github.com/ngx-formly/ngx-formly/issues/4247)) ([b1ed7af](https://github.com/ngx-formly/ngx-formly/commit/b1ed7af86a1b6fcf2ba506158b8e0edace1431ef)), closes [ngx-formly/ngx-formly#4240](https://github.com/ngx-formly/ngx-formly/issues/4240) [#4239](https://github.com/ngx-formly/ngx-formly/issues/4239)
+
 ## [10.0.1](https://github.com/ngx-formly/ngx-formly/compare/v10.0.0...v10.0.1) (2026-10-13)
 
 ### Bug fixes
