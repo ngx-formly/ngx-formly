@@ -10,10 +10,10 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { signal } from '@angular/core';
-import { disabled as disabledRule, required as requiredRule } from '@angular/forms/signals';
-import { SignalFormControl } from '@angular/forms/signals/compat';
+import { required } from '@angular/forms/signals';
 import { getFieldValue, defineHiddenProp, hasKey, getKeyPath, observe } from '../../utils';
 import { registerControl, findControl, updateValidity, isSignalFormControl } from './utils';
+import { FormlySignalFormControl } from './signal-form-control';
 import { of } from 'rxjs';
 
 export class FieldFormExtension implements FormlyExtension {
@@ -87,20 +87,16 @@ export class FieldFormExtension implements FormlyExtension {
     registerControl(field, control);
   }
 
-  // The schema runs once, so the rules read signals that mirror the props through `observe`.
+  // The schema runs once, so the rule reads a signal that mirrors the prop through `observe`.
   private createSignalFormControl(field: FormlyFieldConfigCache): AbstractControl {
     const isRequired = signal(!!field.props.required);
-    const isDisabled = signal(!!field.props.disabled);
     observe(field, ['props', 'required'], ({ currentValue }) => isRequired.set(!!currentValue));
-    observe(field, ['props', 'disabled'], ({ currentValue }) => isDisabled.set(!!currentValue));
 
-    return new SignalFormControl<unknown>(
+    return new FormlySignalFormControl(
       getFieldValue(field),
-      (p) => {
-        requiredRule(p, { when: () => isRequired() });
-        disabledRule(p, { when: () => isDisabled() });
-      },
-      { injector: field.options._injector },
+      !!field.props.disabled,
+      (p) => required(p, { when: () => isRequired() }),
+      field.options._injector,
     );
   }
 
@@ -114,7 +110,7 @@ export class FieldFormExtension implements FormlyExtension {
     if (hasKey(field) || !field.parent || (!hasKey(field) && !field.fieldGroup)) {
       const { formControl: c } = field;
       if (c) {
-        if (hasKey(field) && c instanceof FormControl) {
+        if (hasKey(field) && (c instanceof FormControl || c instanceof FormlySignalFormControl)) {
           if (disabled && c.enabled) {
             c.disable({ emitEvent: false, onlySelf: true });
             markForCheck = true;

@@ -2,10 +2,16 @@ import { EventEmitter } from '@angular/core';
 import { UntypedFormArray, UntypedFormGroup, AbstractControl, FormControl } from '@angular/forms';
 import { getKeyPath, getField, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
 import { FormlyFieldConfigCache } from '../../models';
+import { FormlySignalFormControl } from './signal-form-control';
 
 // Duck-typed to keep `@angular/forms/signals/compat` out of the core bundle.
 export function isSignalFormControl(control: AbstractControl | null | undefined): boolean {
   return !!control && 'fieldTree' in control && 'sourceValue' in control;
+}
+
+// A plain SignalFormControl rejects disable()/enable() (NG01920); Formly's own control forwards them.
+export function supportsImperativeDisable(control: AbstractControl | null | undefined): boolean {
+  return !isSignalFormControl(control) || control instanceof FormlySignalFormControl;
 }
 
 const parentSyncedControls = new WeakSet<AbstractControl>();
@@ -136,7 +142,7 @@ export function registerControl(
       defineHiddenProp(field, 'formControl', undefined);
       field.props.disabled = !!field.props.disabled;
       const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
-        if (!firstChange && field.formControl && !isSignalFormControl(field.formControl)) {
+        if (!firstChange && field.formControl && supportsImperativeDisable(field.formControl)) {
           currentValue ? field.formControl.disable() : field.formControl.enable();
         }
       });
@@ -144,7 +150,7 @@ export function registerControl(
         if (previousValue instanceof FormControl) {
           (previousValue as any)._unregisterOnDisabledChange(disabledObserver.setValue);
         }
-        if (currentValue instanceof FormControl) {
+        if (currentValue instanceof FormControl || currentValue instanceof FormlySignalFormControl) {
           currentValue.registerOnDisabledChange(disabledObserver.setValue);
         }
       });

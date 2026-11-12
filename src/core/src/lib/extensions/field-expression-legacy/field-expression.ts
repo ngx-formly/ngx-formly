@@ -15,7 +15,7 @@ import { evalExpression, evalStringExpressionLegacy } from './utils';
 import { isObservable, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../models';
-import { unregisterControl, registerControl, updateValidity, isSignalFormControl } from '../field-form/utils';
+import { unregisterControl, registerControl, updateValidity, supportsImperativeDisable } from '../field-form/utils';
 import { AbstractControl, UntypedFormArray } from '@angular/forms';
 
 export class FieldExpressionExtension implements FormlyExtension {
@@ -319,7 +319,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
       if (['templateOptions.disabled', 'props.disabled'].includes(prop) && hasKey(field)) {
         // Angular enables descendants without updating a group's disabled property.
-        if (value && field.formControl?.enabled && !isSignalFormControl(field.formControl)) {
+        if (value && field.formControl?.enabled && supportsImperativeDisable(field.formControl)) {
           field.formControl.disable();
         }
         this.changeDisabledState(field, value);

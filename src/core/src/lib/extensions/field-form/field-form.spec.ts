@@ -416,4 +416,121 @@ describe('FieldFormExtension', () => {
       expect(field.formControl).toBeInstanceOf(FormControl);
     });
   });
+
+  // Existing configuration must behave the same with the option on.
+  describe.each([false, true])('existing configuration with signalForms: %s', (signalForms: boolean) => {
+    function build(field: FormlyFieldConfigCache, model: Record<string, unknown>): FormlyFieldConfigCache {
+      const builder = createBuilder();
+      // createBuilder has no injector, so SignalFormControl falls back to inject().
+      TestBed.runInInjectionContext(() =>
+        builder.build({ model, form: new FormGroup({}), options: { signalForms }, fieldGroup: [field] }),
+      );
+      TestBed.tick();
+
+      return field;
+    }
+
+    // Pending for signalForms: not forwarded yet.
+    it.skipIf(signalForms)('should apply props.min', () => {
+      const field = build({ key: 'age', props: { min: 18 } }, { age: 10 });
+
+      expect(field.formControl.hasError('min')).toBe(true);
+      expect(field.form.status).toEqual('INVALID');
+    });
+
+    it('should support form.disable() and form.enable()', () => {
+      const field = build({ key: 'name' }, { name: 'foo' });
+
+      field.form.disable();
+      TestBed.tick();
+      expect(field.formControl.disabled).toBe(true);
+
+      field.form.enable();
+      TestBed.tick();
+      expect(field.formControl.disabled).toBe(false);
+    });
+
+    it('should inherit disabled state from a keyed parent group', () => {
+      const field = build(
+        { key: 'address', props: { disabled: true }, fieldGroup: [{ key: 'city' }] },
+        { address: { city: 'Bern' } },
+      );
+
+      expect(field.formControl.get('city').disabled).toBe(true);
+    });
+
+    it('should follow a disabled expression on a keyed parent group', () => {
+      const field = build(
+        {
+          key: 'address',
+          expressions: { 'props.disabled': (f) => !!f.options.formState.locked },
+          fieldGroup: [{ key: 'city' }],
+        },
+        { address: { city: 'Bern' } },
+      );
+      const city = field.formControl.get('city');
+      expect(city.disabled).toBe(false);
+
+      field.options.formState.locked = true;
+      field.options.checkExpressions(field.parent);
+      TestBed.tick();
+      expect(city.disabled).toBe(true);
+
+      field.options.formState.locked = false;
+      field.options.checkExpressions(field.parent);
+      TestBed.tick();
+      expect(city.disabled).toBe(false);
+    });
+
+    // Pending for signalForms: not forwarded yet.
+    it.skipIf(signalForms)('should route a group validator error to a child through errorPath', () => {
+      const field = build(
+        {
+          key: 'range',
+          validators: {
+            endAfterStart: {
+              expression: (c: AbstractControl) => c.value.end > c.value.start,
+              errorPath: 'end',
+            },
+          },
+          fieldGroup: [{ key: 'start' }, { key: 'end' }],
+        },
+        { range: { start: 3, end: 2 } },
+      );
+      const end = field.formControl.get('end');
+      expect(end.hasError('endAfterStart')).toBe(true);
+      expect(field.form.status).toEqual('INVALID');
+
+      end.setValue(4);
+      TestBed.tick();
+      expect(end.hasError('endAfterStart')).toBe(false);
+      expect(field.form.status).toEqual('VALID');
+    });
+
+    // Pending for signalForms: not forwarded yet.
+    it.skipIf(signalForms)('should update the control on blur with updateOn: blur', () => {
+      const { field, query, detectChanges } = createFieldComponent(
+        {
+          key: 'name',
+          type: 'input',
+          model: { name: 'Alice' },
+          modelOptions: { updateOn: 'blur' },
+          options: { signalForms },
+        } as FormlyFieldConfigCache,
+        { imports: [FormlyInputModule] },
+      );
+      const input: HTMLInputElement = query<HTMLInputElement>('input').nativeElement;
+
+      input.value = 'Bob';
+      input.dispatchEvent(new Event('input'));
+      TestBed.tick();
+      detectChanges();
+      expect(field.formControl.value).toEqual('Alice');
+
+      input.dispatchEvent(new Event('blur'));
+      TestBed.tick();
+      detectChanges();
+      expect(field.formControl.value).toEqual('Bob');
+    });
+  });
 });
