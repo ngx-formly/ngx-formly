@@ -5,6 +5,7 @@ import { join } from 'path';
 export const PACKAGES = [
   'core',
   'schematics',
+  'mcp',
 
   // UI
   'bootstrap',
@@ -22,11 +23,11 @@ export function exec(cmd: string, options: ExecSyncOptions = { stdio: 'inherit' 
 
 export function copyDirSync(src: string, dest: string) {
   fs.mkdirSync(dest, { recursive: true });
-  let entries = fs.readdirSync(src, { withFileTypes: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
 
-  for (let entry of entries) {
-    let srcPath = join(src, entry.name);
-    let destPath = join(dest, entry.name);
+  for (const entry of entries) {
+    const srcPath = join(src, entry.name);
+    const destPath = join(dest, entry.name);
 
     entry.isDirectory() ? copyDirSync(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
   }

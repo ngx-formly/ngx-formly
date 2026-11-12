@@ -17,6 +17,7 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
+      "@ngx-formly/mcp": ["./dist/@ngx-formly/mcp/index"],
       "@ngx-formly/*": ["./src/*/src/private_api", "./src/*/src/public_api", "./src/ui/*/src/public_api"],
       "@assets/*": ["./demo/src/assets/*"],
       "demo/*": ["./demo/*"],

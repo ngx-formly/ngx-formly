@@ -91,10 +91,23 @@ not these generated files. `npm run demo` regenerates them before starting the s
 `npm run docs:check` checks freshness and the generator's coverage. `npm run docs:build`
 regenerates the API reference and builds the documentation website. CI runs both checks.
 
-Netlify uses the root `netlify.toml` to run `npm run docs:build` and publish `demo/dist`.
+Netlify uses the root `netlify.toml` to run `npm run build:mcp && npm run docs:build` and publish `demo/dist`.
 It reads Node.js from `.node-version`; keep `NPM_VERSION` in `netlify.toml` aligned with
 `packageManager` in `package.json`. The fallback to `index.html` lets Angular handle direct
 links and page refreshes, including the published `/docs/...` URLs.
+
+The public MCP service is built as `@ngx-formly/mcp`, with its Netlify adapter in
+`demo/functions/mcp.ts`. The build writes the deployable function to `dist/functions`
+and embeds Netlify's build-time preview URLs in its allowlist. Run `npm run mcp:serve`
+for local review on port 4101 and `npm test -- --project mcp` for the Node tests.
+The website and MCP package share the
+Angular-independent rules in `src/validation/`. See [the MCP README](src/mcp/README.md)
+for request limits, the tool contract, and packaging. Nothing is deployed by these commands.
+
+The MCP documentation tools bundle the existing guides, generated API reference, and demo
+exports. Edit those sources, then run `npm run build:mcp` to refresh the package snapshot.
+Run `node --test build/mcp.test.mjs` after building to check content coverage and all four
+tools from an installed tarball without Angular. No separate MCP content registry is maintained.
 
 Pushing a `v*` tag starts npm publication for all packages. The publisher uses the `next` npm
 dist-tag for prereleases, including release candidates, and `latest` for stable versions.
@@ -158,7 +171,7 @@ SSR end-to-end tests remain available through `npm run e2e:ssr`.
 
 ### Package READMEs
 
-Each published package has its own `README.md` in `src/core`, `src/schematics`, or
+Each published package has its own `README.md` in `src/core`, `src/mcp`, `src/schematics`, or
 `src/ui/<theme>`. Keep installation, configuration, and supported fields specific to
 that package. Use absolute URLs so links also work on npm.
 

@@ -1,7 +1,11 @@
 [build]
   base = "."
-  command = "npm run docs:build"
+  command = "npm run build:mcp && npm run docs:build"
   publish = "demo/dist"
+
+[functions]
+  directory = "dist/functions"
+  node_bundler = "esbuild"
 
 [build.environment]
   NPM_VERSION = "11.19.0"

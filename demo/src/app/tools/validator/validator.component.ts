@@ -19,7 +19,8 @@ import { lintGutter, setDiagnostics } from '@codemirror/lint';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
 import { applyEdits, format } from 'jsonc-parser';
-import { ConfigurationDiagnostic, validateFormlyJson } from './validate-formly-json';
+import { ConfigurationDiagnostic, validateFormlyJson } from 'src/validation/validate-formly-json';
+import { locateDiagnostics } from 'src/validation/diagnostic-location';
 
 const EXAMPLE =
   '[\n  {\n    "key": "email",\n    "type": "input",\n    "props": {\n      "label": "Email",\n      "type": "email",\n      "required": true\n    }\n  }\n]';
@@ -48,27 +49,7 @@ export class ValidatorComponent {
       ? `${this.errorCount()} ${this.errorCount() === 1 ? 'error' : 'errors'} found`
       : 'No structural errors found.';
   });
-  readonly diagnostics = computed(() =>
-    this.result().diagnostics.map((diagnostic) => {
-      const before = this.source().slice(0, diagnostic.offset);
-      return {
-        ...diagnostic,
-        line: before.split('\n').length,
-        column: diagnostic.offset - before.lastIndexOf('\n'),
-        label:
-          '$' +
-          diagnostic.path
-            .map((part) =>
-              typeof part === 'number'
-                ? `[${part}]`
-                : /^[a-zA-Z_$][\w$]*$/.test(part)
-                  ? `.${part}`
-                  : `[${JSON.stringify(part)}]`,
-            )
-            .join(''),
-      };
-    }),
-  );
+  readonly diagnostics = computed(() => locateDiagnostics(this.source(), this.result().diagnostics));
 
   constructor() {
     afterNextRender(() =>

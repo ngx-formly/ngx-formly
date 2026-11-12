@@ -34,6 +34,7 @@ jobs:
         run: |
           npm run test
           node --test build/archive-docs.test.mjs build/github-release.test.mjs build/publish.test.mjs
+          node --test build/mcp.test.mjs
 
       - name: npm publish
         run: npm run publish
