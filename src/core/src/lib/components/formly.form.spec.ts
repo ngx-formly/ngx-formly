@@ -10,7 +10,7 @@ import {
   signal,
 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { describe, expect, it, vi } from 'vitest';
 import {
   FieldType,
@@ -473,7 +473,7 @@ describe('FormlyForm Component', () => {
         const model = signal<any>({ title: 'foo' });
         const { fixture } = createComponent({
           template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
-          inputs: { form: new FormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
+          inputs: { form: new UntypedFormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
           imports: [FormlyInputModule],
           providers: zoneless ? [provideZonelessChangeDetection()] : [],
         });
@@ -537,7 +537,7 @@ describe('FormlyForm Component', () => {
         const model = signal<any>({ id: 1, title: 'foo' });
         const { fixture } = createComponent({
           template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
-          inputs: { form: new FormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
+          inputs: { form: new UntypedFormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
           imports: [FormlyInputModule],
           providers: zoneless ? [provideZonelessChangeDetection()] : [],
         });
@@ -561,8 +561,8 @@ describe('FormlyForm Component', () => {
           <formly-form [form]="form2" [fields]="fields2" [model]="model"></formly-form>
         `,
         inputs: {
-          form1: new FormGroup({}),
-          form2: new FormGroup({}),
+          form1: new UntypedFormGroup({}),
+          form2: new UntypedFormGroup({}),
           fields1: [{ key: 'a', type: 'input' }],
           fields2: [{ key: 'b', type: 'input', defaultValue: 'bar' }],
           model,
@@ -592,7 +592,7 @@ describe('FormlyForm Component', () => {
         ]);
         const { fixture } = createComponent({
           template: `<formly-form [form]="form" [fields]="fields()" [model]="model"></formly-form>`,
-          inputs: { form: new FormGroup({}), fields, model },
+          inputs: { form: new UntypedFormGroup({}), fields, model },
           imports: [FormlyInputModule],
           providers: zoneless ? [provideZonelessChangeDetection()] : [],
         });
@@ -700,6 +700,7 @@ describe('FormlyForm Component', () => {
     it('should keep the build hook of another form that shares the options', () => {
       const options: FormlyFormOptions = {};
       const shared = signal<any>({ title: 'foo' });
+      const fields1: FormlyFieldConfig[] = [{ key: 'title', type: 'input' }];
       const { fixture, form1, form2 } = createComponent({
         template: `
           <formly-form [form]="form1" [fields]="fields1" [model]="model1" [options]="options"></formly-form>
@@ -710,7 +711,7 @@ describe('FormlyForm Component', () => {
         inputs: {
           form1: new FormGroup({}),
           form2: new FormGroup({}),
-          fields1: [{ key: 'title', type: 'input' }],
+          fields1,
           fields2: [{ key: 'title', type: 'input' }],
           model1: shared,
           model2: { title: 'plain' },
