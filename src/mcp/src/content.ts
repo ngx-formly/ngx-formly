@@ -1,6 +1,6 @@
 import { fromJsonSchema, McpServer } from '@modelcontextprotocol/server';
 
-interface ContentEntry {
+interface FormlyMcpContentEntry {
   id: string;
   kind: 'guide' | 'api' | 'example';
   title: string;
@@ -10,7 +10,7 @@ interface ContentEntry {
   files?: Record<string, string>;
 }
 
-declare const __FORMLY_MCP_CONTENT__: ContentEntry[];
+declare const __FORMLY_MCP_CONTENT__: FormlyMcpContentEntry[];
 
 const entries = __FORMLY_MCP_CONTENT__;
 const index = entries.map((entry) => ({
@@ -27,7 +27,7 @@ const error = (text: string) => ({ isError: true, content: [{ type: 'text' as co
 
 export function registerContentTools(server: McpServer, version: string, revision: string) {
   const sourceRef = revision === 'development' ? 'main' : revision;
-  const summary = (entry: ContentEntry) => ({
+  const summary = (entry: FormlyMcpContentEntry) => ({
     id: entry.id,
     kind: entry.kind,
     title: entry.title,
@@ -38,7 +38,7 @@ export function registerContentTools(server: McpServer, version: string, revisio
     const output = { ...data, version, revision };
     return { structuredContent: output, content: [{ type: 'text' as const, text: JSON.stringify(output) }] };
   };
-  const list = (matches: ContentEntry[], offset = 0, limit = 10) =>
+  const list = (matches: FormlyMcpContentEntry[], offset = 0, limit = 10) =>
     result({
       results: matches.slice(offset, offset + limit).map(summary),
       total: matches.length,
@@ -51,7 +51,12 @@ export function registerContentTools(server: McpServer, version: string, revisio
       title: 'Search Formly documentation and examples',
       description:
         'Keyword search across bundled guides, API symbols and demo source. Returns IDs for formly_lookup or formly_examples. Content matches the MCP build version, not necessarily your installed Formly version.',
-      inputSchema: fromJsonSchema<{ query: string; kind?: ContentEntry['kind']; limit?: number; offset?: number }>({
+      inputSchema: fromJsonSchema<{
+        query: string;
+        kind?: FormlyMcpContentEntry['kind'];
+        limit?: number;
+        offset?: number;
+      }>({
         type: 'object',
         properties: {
           query: { type: 'string', minLength: 1, maxLength: 200 },
