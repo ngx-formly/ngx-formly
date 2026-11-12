@@ -1,85 +1,20 @@
-<div class="mb-3">
-  <label class="form-label" for="sf-name">Name{{ isRequired() ? ' *' : '' }}</label>
-  <input
-    id="sf-name"
-    class="form-control"
-    [class.is-invalid]="nameState().touched() && nameState().invalid()"
-    [formField]="name.fieldTree"
-  />
-  @if (nameState().touched() && nameState().errors().length) {
-    <div class="invalid-feedback d-block">{{ nameState().errors()[0].message }}</div>
-  }
-</div>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
 
-<p>
-  Computed summary: <strong>{{ summary() }}</strong>
-</p>
+  <p>
+    Computed summary: <strong>{{ summary() }}</strong>
+  </p>
 
-<div class="d-flex flex-wrap gap-2 mb-3">
-  <button type="button" class="btn btn-primary" (click)="submit()">Submit</button>
-  <button type="button" class="btn btn-secondary" (click)="reset()">Reset</button>
-  <button type="button" class="btn btn-secondary" (click)="replaceExternally()">Set "Alice" externally</button>
-  <button type="button" class="btn btn-outline-primary" (click)="toggleRequired()">
-    Required: {{ isRequired() ? 'on' : 'off' }}
-  </button>
-  <button type="button" class="btn btn-outline-primary" (click)="toggleDisabled()">
-    Disabled: {{ isDisabled() ? 'on' : 'off' }}
-  </button>
-</div>
-
-<h6>Expected (plain Reactive Forms) vs actual (SignalFormControl)</h6>
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Expected</th>
-      <th>Actual</th>
-    </tr>
-  </thead>
-  <tbody>
-    @let exp = expected();
-    <tr [class.table-danger]="exp.control !== name.status">
-      <th>Control status</th>
-      <td>{{ exp.control }}</td>
-      <td>{{ name.status }}</td>
-    </tr>
-    <tr [class.table-danger]="exp.groupStatus !== form.status">
-      <th>FormGroup status</th>
-      <td>{{ exp.groupStatus }}</td>
-      <td>{{ form.status }}</td>
-    </tr>
-    <tr [class.table-danger]="(exp.groupValue | json) !== (form.value | json)">
-      <th>FormGroup value</th>
-      <td>
-        <code>{{ exp.groupValue | json }}</code>
-      </td>
-      <td>
-        <code>{{ form.value | json }}</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="small text-muted">
-  Red rows: the parent FormGroup was not notified. SignalFormControl updates its parent only when its value changes, not
-  when a rule (required/disabled) changes its status. Formly handles this for its fields (see the next example).
-</p>
-
-<div class="row">
-  <div class="col-md-6">
-    <h6>Signal side (fieldTree)</h6>
-    <pre>{{
-      {
-        value: nameState().value(),
-        valid: nameState().valid(),
-        touched: nameState().touched(),
-        dirty: nameState().dirty(),
-        required: nameState().required(),
-        disabled: nameState().disabled(),
-      } | json
-    }}</pre>
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-outline-primary" (click)="toggleRequired()">
+      Required: {{ isRequired() ? 'on' : 'off' }}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="toggleDisabled()">
+      Disabled: {{ isDisabled() ? 'on' : 'off' }}
+    </button>
   </div>
-  <div class="col-md-6">
-    <h6>Reactive Forms side (FormGroup)</h6>
-    <pre>{{ { value: formValue(), status: formStatus() } | json }}</pre>
-  </div>
-</div>
+</form>
+
+<h6>FormGroup</h6>
+<pre class="formly-group-state">{{ { status: form.status, value: form.value } | json }}</pre>

@@ -1,56 +1,32 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
-import { disabled, FormField, required } from '@angular/forms/signals';
-import { SignalFormControl } from '@angular/forms/signals/compat';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-app-example',
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormField, JsonPipe],
+  imports: [ReactiveFormsModule, FormlyForm, JsonPipe],
 })
 export class AppComponent {
-  // Declared before `name`: its schema reads them.
+  form = new FormGroup({});
+  model = signal({ name: '', age: 25 });
+  summary = computed(() => `Hello ${this.model().name || '…'}`);
+
   isRequired = signal(true);
   isDisabled = signal(false);
 
-  name = new SignalFormControl('', (p) => {
-    required(p, { message: 'Name is required', when: () => this.isRequired() });
-    disabled(p, { when: () => this.isDisabled() });
-  });
-
-  form = new FormGroup({ name: this.name, age: new FormControl(25) });
-
-  nameState = computed(() => this.name.fieldTree());
-  summary = computed(() => `Hello ${this.name.sourceValue() || '…'}`);
-
-  formValue = toSignal(this.form.valueChanges, { initialValue: this.form.value });
-  formStatus = toSignal(this.form.statusChanges, { initialValue: this.form.status });
-
-  // Plain Reactive Forms behavior: a disabled control is left out of the parent value and validity.
-  expected = computed(() => {
-    const value = this.name.sourceValue();
-    const control = this.isDisabled() ? 'DISABLED' : this.isRequired() && !value ? 'INVALID' : 'VALID';
-    return {
-      control,
-      groupStatus: control === 'INVALID' ? 'INVALID' : 'VALID',
-      groupValue: this.isDisabled() ? { age: 25 } : { name: value, age: 25 },
-    };
-  });
-
-  replaceExternally(): void {
-    this.name.setValue('Alice');
-  }
-
-  reset(): void {
-    this.name.reset();
-  }
-
-  submit(): void {
-    this.form.markAllAsTouched();
-  }
+  options: FormlyFormOptions = { signalForms: true };
+  fields: FormlyFieldConfig[] = [
+    {
+      key: 'name',
+      type: 'input',
+      props: { label: 'Name' },
+      expressions: { 'props.required': this.isRequired, 'props.disabled': this.isDisabled },
+    },
+    { key: 'age', type: 'input', props: { label: 'Age', type: 'number' } },
+  ];
 
   toggleRequired(): void {
     this.isRequired.update((v) => !v);
@@ -58,5 +34,9 @@ export class AppComponent {
 
   toggleDisabled(): void {
     this.isDisabled.update((v) => !v);
+  }
+
+  submit(): void {
+    this.form.markAllAsTouched();
   }
 }

@@ -133,7 +133,7 @@
           { "path": "/examples/other/json-powered", "label": "JSON powered" },
           { "path": "/examples/other/input-file", "label": "File input (Upload)" },
           { "path": "/examples/other/presets", "label": "Presets" },
-          { "path": "/examples/other/signal-forms", "label": "Signal Forms (prototype)" }
+          { "path": "/examples/other/signal-forms", "label": "Signal Forms (experimental)" }
         ]
       }
     ]
