@@ -232,6 +232,10 @@ export const examplesRoutes: Routes = [
             path: 'presets',
             loadChildren: () => import('./other/presets/app.routes').then((m) => m.appRoutes),
           },
+          {
+            path: 'signal-forms',
+            loadChildren: () => import('./other/signal-forms/app.routes').then((m) => m.appRoutes),
+          },
         ],
       },
     ],
