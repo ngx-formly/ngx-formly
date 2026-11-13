@@ -430,12 +430,36 @@ describe('FieldFormExtension', () => {
       return field;
     }
 
-    // Pending for signalForms: not forwarded yet.
-    it.skipIf(signalForms)('should apply props.min', () => {
+    it('should apply props.min', () => {
       const field = build({ key: 'age', props: { min: 18 } }, { age: 10 });
 
-      expect(field.formControl.hasError('min')).toBe(true);
+      expect(field.formControl.errors).toEqual({ min: { min: 18, actual: 10 } });
       expect(field.form.status).toEqual('INVALID');
+    });
+
+    it('should revalidate when a validation prop changes', () => {
+      const field = build({ key: 'age', props: { min: 18 } }, { age: 10 });
+
+      field.props.min = 5;
+      TestBed.tick();
+
+      expect(field.formControl.errors).toBeNull();
+      expect(field.form.status).toEqual('VALID');
+    });
+
+    it('should apply a custom validator', () => {
+      const field = build(
+        {
+          key: 'code',
+          validators: { digits: { expression: (c: AbstractControl) => /^\d+$/.test(c.value), message: 'Digits only' } },
+        },
+        { code: 'abc' },
+      );
+      expect(field.formControl.errors).toEqual({ digits: { message: 'Digits only' } });
+
+      field.formControl.setValue('123');
+      TestBed.tick();
+      expect(field.formControl.errors).toBeNull();
     });
 
     it('should support form.disable() and form.enable()', () => {

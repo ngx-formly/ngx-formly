@@ -9,14 +9,15 @@ export function isSignalFormControl(control: AbstractControl | null | undefined)
   return !!control && 'fieldTree' in control && 'sourceValue' in control;
 }
 
-// A plain SignalFormControl rejects disable()/enable() (NG01920); Formly's own control forwards them.
-export function supportsImperativeDisable(control: AbstractControl | null | undefined): boolean {
+// A plain SignalFormControl rejects the imperative API (NG01920); Formly's own control forwards it.
+export function acceptsImperativeApi(control: AbstractControl | null | undefined): boolean {
   return !isSignalFormControl(control) || control instanceof FormlySignalFormControl;
 }
 
 const parentSyncedControls = new WeakSet<AbstractControl>();
 
 // SignalFormControl notifies its parent on value changes only, not when a rule changes its status.
+// Workaround for https://github.com/angular/angular/issues/72009: remove once it is fixed.
 function syncParentOnStatusChange(control: AbstractControl): void {
   if (parentSyncedControls.has(control)) {
     return;
@@ -142,7 +143,7 @@ export function registerControl(
       defineHiddenProp(field, 'formControl', undefined);
       field.props.disabled = !!field.props.disabled;
       const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
-        if (!firstChange && field.formControl && supportsImperativeDisable(field.formControl)) {
+        if (!firstChange && field.formControl && acceptsImperativeApi(field.formControl)) {
           currentValue ? field.formControl.disable() : field.formControl.enable();
         }
       });
@@ -158,7 +159,8 @@ export function registerControl(
     field.formControl = control;
     if (isSignalFormControl(control)) {
       syncParentOnStatusChange(control);
-    } else {
+    }
+    if (acceptsImperativeApi(control)) {
       control.setValidators(null);
       control.setAsyncValidators(null);
     }
@@ -224,7 +226,7 @@ export function updateValidity(c: AbstractControl, onlySelf = false) {
 
 export function clearControl(form: FormlyFieldConfigCache['formControl']) {
   delete form?._fields;
-  if (!isSignalFormControl(form)) {
+  if (acceptsImperativeApi(form)) {
     form.setValidators(null);
     form.setAsyncValidators(null);
   }

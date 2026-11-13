@@ -10,9 +10,9 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { signal } from '@angular/core';
-import { required } from '@angular/forms/signals';
+import { metadata, REQUIRED } from '@angular/forms/signals';
 import { getFieldValue, defineHiddenProp, hasKey, getKeyPath, observe } from '../../utils';
-import { registerControl, findControl, updateValidity, isSignalFormControl } from './utils';
+import { registerControl, findControl, updateValidity, isSignalFormControl, acceptsImperativeApi } from './utils';
 import { FormlySignalFormControl } from './signal-form-control';
 import { of } from 'rxjs';
 
@@ -87,15 +87,15 @@ export class FieldFormExtension implements FormlyExtension {
     registerControl(field, control);
   }
 
-  // The schema runs once, so the rule reads a signal that mirrors the prop through `observe`.
   private createSignalFormControl(field: FormlyFieldConfigCache): AbstractControl {
+    // Validation runs through Formly's validators; this only exposes `required()` on the field tree.
     const isRequired = signal(!!field.props.required);
     observe(field, ['props', 'required'], ({ currentValue }) => isRequired.set(!!currentValue));
 
     return new FormlySignalFormControl(
       getFieldValue(field),
       !!field.props.disabled,
-      (p) => required(p, { when: () => isRequired() }),
+      (p) => metadata(p, REQUIRED, () => isRequired()),
       field.options._injector,
     );
   }
@@ -122,9 +122,7 @@ export class FieldFormExtension implements FormlyExtension {
           }
         }
 
-        // Validation of a SignalFormControl comes from its Signal Forms rules.
-        const signalControl = isSignalFormControl(c);
-        if (!signalControl && null === c.validator && this.hasValidators(field, '_validators')) {
+        if (acceptsImperativeApi(c) && null === c.validator && this.hasValidators(field, '_validators')) {
           c.setValidators(() => {
             const v = Validators.compose(this.mergeValidators<ValidatorFn>(field, '_validators'));
 
@@ -133,7 +131,8 @@ export class FieldFormExtension implements FormlyExtension {
           markForCheck = true;
         }
 
-        if (!signalControl && null === c.asyncValidator && this.hasValidators(field, '_asyncValidators')) {
+        // Async validators are not forwarded to signal form controls yet.
+        if (!isSignalFormControl(c) && null === c.asyncValidator && this.hasValidators(field, '_asyncValidators')) {
           c.setAsyncValidators(() => {
             const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
             return v ? v(c) : of(null);
