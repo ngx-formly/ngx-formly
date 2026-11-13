@@ -46,7 +46,7 @@ describe('ng-add-schematic', () => {
     const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     // @TODO: list of themes should probably be retrieved from some config file
-    ['material', 'bootstrap', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd'].forEach(theme => {
+    ['material', 'bootstrap', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd', 'optimus-ui'].forEach(theme => {
       expect(packageJson.dependencies[`@ngx-formly/${theme}`]).toBeUndefined();
     });
   });
@@ -82,7 +82,7 @@ describe('ng-add-schematic', () => {
     );
   });
 
-  it.each(['bootstrap', 'material', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd', 'nativescript'])(
+  it.each(['bootstrap', 'material', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd', 'nativescript', 'optimus-ui'])(
     'should install %s with the same version as core',
     async (uiTheme) => {
       const tree = await runner.runSchematic('ng-add', { uiTheme }, appTree);

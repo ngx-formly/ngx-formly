@@ -22,6 +22,8 @@ module.exports = {
         'kendo',
         'ng-zorro-antd',
         'nativescript',
+        'optimus-ui',
+        'libs'
       ],
     ],
     'scope-empty': [1, 'never'],

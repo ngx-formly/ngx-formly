@@ -15,6 +15,7 @@ export const PACKAGES = [
   'kendo',
   'nativescript',
   'ng-zorro-antd',
+  'optimus-ui',
 ];
 
 export function exec(cmd: string, options: ExecSyncOptions = { stdio: 'inherit' }) {

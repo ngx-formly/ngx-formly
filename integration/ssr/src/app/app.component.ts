@@ -10,5 +10,5 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'ssr';
-  links = ['material', 'bootstrap', 'kendo', 'primeng', 'antd'];
+  links = ['material', 'bootstrap', 'kendo', 'primeng', 'optimus-ui', 'antd'];
 }
