@@ -32,6 +32,7 @@ export class FormlyConfig {
   messages: { [name: string]: ValidationMessageOption['message'] } = {};
 
   extras: NonNullable<ConfigOption['extras']> = {
+    webMcp: false,
     checkExpressionOn: 'modelChange',
     lazyRender: true,
     resetFieldOnHide: true,

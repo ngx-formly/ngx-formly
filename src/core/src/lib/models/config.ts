@@ -66,6 +66,11 @@ export interface ConfigOption {
   extensions?: ExtensionOption[];
   validationMessages?: ValidationMessageOption[];
   extras?: {
+    /**
+     * Default WebMCP participation. Fields and groups can override it. Defaults to false.
+     * @experimental
+     */
+    webMcp?: boolean;
     immutable?: boolean;
     showError?: (field: FieldType) => boolean;
 

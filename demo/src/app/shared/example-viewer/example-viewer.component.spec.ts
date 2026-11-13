@@ -21,7 +21,7 @@ describe('Example model preview', () => {
     const preview = () => query('.json-formatter-row').nativeElement.textContent;
     expect(preview()).toContain('Ada');
 
-    query('.edit-model').nativeElement.click();
+    query<HTMLButtonElement>('.edit-model').nativeElement.click();
     detectChanges();
     expect(preview()).toContain('Grace');
   });

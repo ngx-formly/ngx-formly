@@ -20,7 +20,9 @@ import {
   untracked,
   effect,
   isWritableSignal,
+  PLATFORM_ID,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
@@ -108,6 +110,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private readonly destroyRef = inject(DestroyRef);
   private readonly pendingTasks = inject(PendingTasks);
   private readonly injector = inject(Injector);
+  private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
+  private webMcp?: { refresh(): void; destroy(): void };
+  private webMcpLoading = false;
   private _modelChangeValue: any = {};
   private modelSignal?: WritableSignal<any>;
   private modelSignalValue: any;
@@ -117,6 +122,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (this.modelSignal) {
       this.syncModelSignal(this.modelSignal);
     }
+    this.checkWebMcp();
   };
 
   constructor(
@@ -130,6 +136,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (this.config.extras.checkExpressionOn === 'changeDetectionCheck') {
       this.checkExpressionChange();
     }
+    this.checkWebMcp();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -137,7 +144,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       clearControl(this.form);
     }
 
-    if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {
+    if (
+      changes.fields ||
+      changes.form ||
+      (changes.options && this.webMcp) ||
+      (changes.model && this._modelChangeValue !== changes.model.currentValue)
+    ) {
       this.build();
     }
 
@@ -152,6 +164,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.webMcp?.destroy();
     this.valueChangesUnsubscribe();
     this.config.clearRefs();
     this.field.options?._afterBuild?.delete(this.afterBuild);
@@ -219,15 +232,44 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
   private build() {
     this.valueChangesUnsubscribe();
-    if (this.modelSignal) {
-      const options = (this.field.options ??= {});
-      if (!options._afterBuild) {
-        defineHiddenProp(options, '_afterBuild', new Set());
-      }
-      options._afterBuild.add(this.afterBuild);
+    const options = (this.field.options ??= {});
+    if (!options._afterBuild) {
+      defineHiddenProp(options, '_afterBuild', new Set());
     }
+    options._afterBuild.add(this.afterBuild);
     this.builder.build(this.field);
     this.valueChangesUnsubscribe = this.valueChanges();
+  }
+
+  private checkWebMcp() {
+    if (!this.browser || this.destroyRef.destroyed || !this.options?.fieldChanges) return;
+    if (this.webMcp) {
+      this.webMcp.refresh();
+      return;
+    }
+    if (this.webMcpLoading) return;
+    const hosts = globalThis as unknown as {
+      document?: { modelContext?: unknown };
+      navigator?: { modelContext?: unknown };
+    };
+    if (!hosts.document?.modelContext && !hosts.navigator?.modelContext) return;
+    const participates = (field: FormlyFieldConfig, inherited: boolean): boolean => {
+      const enabled = field.webMcp ?? inherited;
+      return field.fieldGroup
+        ? field.fieldGroup.some((child) => child && participates(child, enabled))
+        : enabled && !!field.formControl;
+    };
+    if (!participates(this.field, !!this.config.extras.webMcp)) return;
+    this.webMcpLoading = true;
+    this.ngZone.runOutsideAngular(() => {
+      void import('../web-mcp/web-mcp')
+        .then(({ createWebMcp, modelContext }) => {
+          if (!this.destroyRef.destroyed && modelContext()) {
+            this.webMcp = createWebMcp(() => this.field, this.config, this.ngZone);
+          }
+        })
+        .catch(() => console.error('Formly could not load WebMCP support.'));
+    });
   }
 
   private bindModelSignal(model: WritableSignal<any>) {
