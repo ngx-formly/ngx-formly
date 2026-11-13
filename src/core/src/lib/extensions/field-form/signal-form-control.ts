@@ -1,5 +1,5 @@
 import { Injector, signal, WritableSignal } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControlState, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { disabled, SchemaFn, validate, ValidationError } from '@angular/forms/signals';
 import { CompatValidationError, SignalFormControl } from '@angular/forms/signals/compat';
 
@@ -60,6 +60,32 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   override updateValueAndValidity(): void {
     this.revalidate.update((count) => count + 1);
   }
+
+  // SignalFormControl rejects the `{ value, disabled }` form, which Formly uses when hiding a field.
+  override reset(value?: unknown, options?: Parameters<SignalFormControl<unknown>['reset']>[1]): void {
+    if (!isFormControlState(value)) {
+      super.reset(value, options);
+      return;
+    }
+
+    this.disabledState.set(value.disabled);
+    super.reset(value.value, options);
+    // SignalFormControl.reset(undefined) restores the initial value; FormControl resets to the given value.
+    if (value.value === undefined) {
+      this.setValue(undefined, options);
+    }
+  }
+}
+
+// Same check as Angular's internal `isFormControlState`.
+function isFormControlState(value: unknown): value is FormControlState<unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    Object.keys(value).length === 2 &&
+    'value' in value &&
+    'disabled' in value
+  );
 }
 
 // CompatValidationError round-trips: `control.errors` returns the original `{ [kind]: context }`.

@@ -83,6 +83,41 @@ describe('FormlySignalFormControl', () => {
     });
   });
 
+  describe('reset()', () => {
+    it('should accept the { value, disabled } form like a FormControl', () => {
+      const control = createControl('foo');
+      control.markAsTouched();
+      control.markAsDirty();
+
+      control.reset({ value: 'bar', disabled: true });
+
+      expect(control.value).toEqual('bar');
+      expect(control.disabled).toBe(true);
+      expect(control.touched).toBe(false);
+      expect(control.dirty).toBe(false);
+    });
+
+    it('should reset to undefined when the state value is undefined', () => {
+      const control = createControl('foo');
+      const classic = new FormControl('foo');
+
+      control.reset({ value: undefined, disabled: false });
+      classic.reset({ value: undefined, disabled: false });
+
+      expect(control.value).toEqual(classic.value);
+      expect(control.value).toBeUndefined();
+    });
+
+    it('should keep resetting to the initial value without arguments', () => {
+      const control = createControl('foo');
+      control.setValue('bar');
+
+      control.reset();
+
+      expect(control.value).toEqual('foo');
+    });
+  });
+
   describe('setAsyncValidators()', () => {
     it('should accept clearing and reject actual async validators', () => {
       const control = createControl('foo');

@@ -70,4 +70,21 @@ describe('Signal Forms example', () => {
     expect(nameInput().disabled).toBe(false);
     expect(groupState().value).toEqual({ name: '', age: 25 });
   });
+
+  it('hides the name field and clears its value with resetOnHide', async () => {
+    const { harness, example, button, groupState, nameInput } = await render();
+    nameInput().value = 'Bob';
+    nameInput().dispatchEvent(new Event('input'));
+    await harness.fixture.whenStable();
+
+    button('Hidden: off').click();
+    await harness.fixture.whenStable();
+    expect(example.querySelectorAll('formly-form input').length).toBe(1);
+    expect(groupState().value).toEqual({ age: 25 });
+    expect(example.textContent).toContain('Hello …');
+
+    button('Hidden: on').click();
+    await harness.fixture.whenStable();
+    expect(example.querySelectorAll('formly-form input').length).toBe(2);
+  });
 });

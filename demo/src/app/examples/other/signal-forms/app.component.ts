@@ -16,6 +16,7 @@ export class AppComponent {
 
   isRequired = signal(true);
   isDisabled = signal(false);
+  isHidden = signal(false);
 
   options: FormlyFormOptions = { signalForms: true };
   fields: FormlyFieldConfig[] = [
@@ -23,7 +24,11 @@ export class AppComponent {
       key: 'name',
       type: 'input',
       props: { label: 'Name' },
-      expressions: { 'props.required': this.isRequired, 'props.disabled': this.isDisabled },
+      expressions: {
+        'props.required': this.isRequired,
+        'props.disabled': this.isDisabled,
+        hide: this.isHidden,
+      },
     },
     { key: 'age', type: 'input', props: { label: 'Age', type: 'number' } },
   ];
@@ -34,6 +39,10 @@ export class AppComponent {
 
   toggleDisabled(): void {
     this.isDisabled.update((v) => !v);
+  }
+
+  toggleHidden(): void {
+    this.isHidden.update((v) => !v);
   }
 
   submit(): void {

@@ -531,6 +531,26 @@ describe('FieldFormExtension', () => {
       expect(field.form.status).toEqual('VALID');
     });
 
+    it('should clear a hidden field with resetOnHide and restore it when shown', () => {
+      const field = build(
+        { fieldGroup: [{ key: 'name', expressions: { hide: (f) => !!f.options.formState.hidden } }, { key: 'age' }] },
+        { name: 'Bob', age: 25 },
+      );
+      const [name] = field.fieldGroup;
+
+      field.options.formState.hidden = true;
+      field.options.checkExpressions(field);
+      TestBed.tick();
+      expect(field.form.value).toEqual({ age: 25 });
+      expect(field.model).toEqual({ age: 25 });
+
+      field.options.formState.hidden = false;
+      field.options.checkExpressions(field);
+      TestBed.tick();
+      expect(field.form.get('name')).toBe(name.formControl);
+      expect(name.formControl.value).toBeUndefined();
+    });
+
     // Pending for signalForms: not forwarded yet.
     it.skipIf(signalForms)('should update the control on blur with updateOn: blur', () => {
       const { field, query, detectChanges } = createFieldComponent(
