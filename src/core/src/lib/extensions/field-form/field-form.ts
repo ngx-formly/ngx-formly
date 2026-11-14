@@ -97,6 +97,7 @@ export class FieldFormExtension implements FormlyExtension {
       !!field.props.disabled,
       (p) => metadata(p, REQUIRED, () => isRequired()),
       field.options._injector,
+      field.modelOptions.updateOn,
     );
   }
 
@@ -131,8 +132,13 @@ export class FieldFormExtension implements FormlyExtension {
           markForCheck = true;
         }
 
-        // Async validators are not forwarded to signal form controls yet.
-        if (!isSignalFormControl(c) && null === c.asyncValidator && this.hasValidators(field, '_asyncValidators')) {
+        if (null === c.asyncValidator && this.hasValidators(field, '_asyncValidators')) {
+          if (isSignalFormControl(c)) {
+            throw new Error(
+              `[Formly Error] Async validators are not supported with signalForms (field "${getKeyPath(field).join('.')}").`,
+            );
+          }
+
           c.setAsyncValidators(() => {
             const v = Validators.composeAsync(this.mergeValidators<AsyncValidatorFn>(field, '_asyncValidators'));
             return v ? v(c) : of(null);

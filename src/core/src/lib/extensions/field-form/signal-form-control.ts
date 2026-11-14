@@ -1,7 +1,24 @@
 import { Injector, signal, WritableSignal } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControlState, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  AbstractControlOptions,
+  AsyncValidatorFn,
+  FormControlState,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { disabled, SchemaFn, validate, ValidationError } from '@angular/forms/signals';
 import { CompatValidationError, SignalFormControl } from '@angular/forms/signals/compat';
+
+type UpdateOn = NonNullable<AbstractControlOptions['updateOn']>;
+
+// Set on the control by Angular's forms directives while a typed value waits for blur or submit.
+interface PendingState {
+  _pendingValue: unknown;
+  _pendingChange: boolean;
+  _pendingDirty: boolean;
+  _pendingTouched: boolean;
+}
 
 interface ManualErrors {
   errors: ValidationErrors | null;
@@ -20,7 +37,13 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   // Errors set with setErrors(); they replace the validators until the next validation run, as on a FormControl.
   private readonly manualErrors: WritableSignal<ManualErrors | undefined>;
 
-  constructor(value: unknown, isDisabled: boolean, schema: SchemaFn<unknown>, injector?: Injector) {
+  constructor(
+    value: unknown,
+    isDisabled: boolean,
+    schema: SchemaFn<unknown>,
+    injector?: Injector,
+    private readonly updateStrategy?: UpdateOn,
+  ) {
     // `this` is not available before super(), so the rules close over locals.
     const disabledState = signal(isDisabled);
     const revalidate = signal(0);
@@ -52,6 +75,31 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     this.disabledState = disabledState;
     this.revalidate = revalidate;
     this.manualErrors = manualErrors;
+  }
+
+  // The forms directives read `updateOn` to decide when a typed value reaches the control.
+  override get updateOn(): UpdateOn {
+    return this.updateStrategy ?? super.updateOn;
+  }
+
+  // Called by FormGroupDirective on submit; same steps as FormControl, which SignalFormControl skips.
+  _syncPendingControls(): boolean {
+    const pending = this as unknown as PendingState;
+    if (this.updateOn !== 'submit') {
+      return false;
+    }
+    if (pending._pendingDirty) {
+      this.markAsDirty();
+    }
+    if (pending._pendingTouched) {
+      this.markAsTouched();
+    }
+    if (!pending._pendingChange) {
+      return false;
+    }
+    this.setValue(pending._pendingValue, { onlySelf: true, emitModelToViewChange: false });
+
+    return true;
   }
 
   override disable(): void {

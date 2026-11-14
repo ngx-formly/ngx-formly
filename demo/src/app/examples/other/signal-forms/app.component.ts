@@ -30,7 +30,12 @@ export class AppComponent {
         hide: this.isHidden,
       },
     },
-    { key: 'age', type: 'input', props: { label: 'Age', type: 'number' } },
+    {
+      key: 'age',
+      type: 'input',
+      props: { label: 'Age (updates on blur)', type: 'number' },
+      modelOptions: { updateOn: 'blur' },
+    },
     {
       key: 'range',
       // The group validator reports its error on the `end` control through setErrors().
@@ -63,5 +68,8 @@ export class AppComponent {
 
   submit(): void {
     this.form.markAllAsTouched();
+    if (this.form.valid) {
+      alert(JSON.stringify(this.model()));
+    }
   }
 }

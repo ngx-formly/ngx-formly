@@ -19,7 +19,8 @@ export const appRoutes: Routes = [
             <p>Work in progress for <a href="https://github.com/ngx-formly/ngx-formly/issues/4241">#4241</a>.
             With <code>options.signalForms</code>, Formly creates a <code>SignalFormControl</code> for each keyed field
             and applies <code>props.required</code> / <code>props.disabled</code> as Signal Forms rules. The model is a
-            signal and the summary is a <code>computed()</code>. The <code>range</code> group validator shows its error
+            signal and the summary is a <code>computed()</code>. <code>Age</code> uses
+            <code>modelOptions.updateOn: 'blur'</code>. The <code>range</code> group validator shows its error
             on <code>End</code> through <code>errorPath</code>.</p>
           `,
           component: AppComponent,

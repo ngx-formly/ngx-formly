@@ -410,6 +410,15 @@ describe('FieldFormExtension', () => {
       expect(input().disabled).toBe(true);
     });
 
+    it('should reject async validators with a Formly error', () => {
+      expect(() =>
+        buildSignalField(
+          { key: 'name', asyncValidators: { taken: { expression: async () => true } } },
+          { name: 'foo' },
+        ),
+      ).toThrow('[Formly Error] Async validators are not supported with signalForms (field "name").');
+    });
+
     it('should keep creating a FormControl when the option is off', () => {
       const field = buildField({ key: 'name' });
 
@@ -550,8 +559,7 @@ describe('FieldFormExtension', () => {
       expect(name.formControl.value).toBeUndefined();
     });
 
-    // Pending for signalForms: not forwarded yet.
-    it.skipIf(signalForms)('should update the control on blur with updateOn: blur', () => {
+    it('should update the control on blur with updateOn: blur', () => {
       const { field, query, detectChanges } = createFieldComponent(
         {
           key: 'name',

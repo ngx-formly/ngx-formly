@@ -88,6 +88,20 @@ describe('Signal Forms example', () => {
     expect(example.querySelectorAll('formly-form input').length).toBe(4);
   });
 
+  it('updates the age control on blur with modelOptions.updateOn', async () => {
+    const { harness, example, groupState } = await render();
+    const age: HTMLInputElement = example.querySelectorAll<HTMLInputElement>('formly-form input')[1];
+
+    age.value = '30';
+    age.dispatchEvent(new Event('input'));
+    await harness.fixture.whenStable();
+    expect(groupState().value).toEqual({ name: '', age: 25, range: { start: 1, end: 5 } });
+
+    age.dispatchEvent(new Event('blur'));
+    await harness.fixture.whenStable();
+    expect(groupState().value).toEqual({ name: '', age: 30, range: { start: 1, end: 5 } });
+  });
+
   it('routes the range group validator error to the end field through errorPath', async () => {
     const { harness, example, button, groupState } = await render();
     button('Required: on').click();

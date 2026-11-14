@@ -155,6 +155,62 @@ describe('FormlySignalFormControl', () => {
     });
   });
 
+  describe('updateOn', () => {
+    function createHost(updateOn: 'blur' | 'submit'): { control: FormlySignalFormControl; root: HTMLElement } {
+      @Component({
+        template: `<form [formGroup]="form"><input formControlName="name" /></form>`,
+        imports: [ReactiveFormsModule],
+      })
+      class HostComponent {
+        control = new FormlySignalFormControl('Alice', false, () => {}, undefined, updateOn);
+        form = new FormGroup({ name: this.control });
+      }
+      const fixture = TestBed.createComponent(HostComponent);
+      fixture.detectChanges();
+
+      return { control: fixture.componentInstance.control, root: fixture.nativeElement };
+    }
+
+    function type(root: HTMLElement, value: string): HTMLInputElement {
+      const input = root.querySelector('input');
+      input.value = value;
+      input.dispatchEvent(new Event('input'));
+
+      return input;
+    }
+
+    it('should default to change, like a FormControl', () => {
+      expect(createControl('foo').updateOn).toEqual('change');
+    });
+
+    it('should hold the typed value until blur', () => {
+      const { control, root } = createHost('blur');
+
+      const input = type(root, 'Bob');
+      expect(control.value).toEqual('Alice');
+      expect(control.dirty).toBe(false);
+
+      input.dispatchEvent(new Event('blur'));
+      expect(control.value).toEqual('Bob');
+      expect(control.dirty).toBe(true);
+      expect(control.touched).toBe(true);
+    });
+
+    it('should hold the typed value until submit', () => {
+      const { control, root } = createHost('submit');
+
+      const input = type(root, 'Bob');
+      input.dispatchEvent(new Event('blur'));
+      expect(control.value).toEqual('Alice');
+      expect(control.touched).toBe(false);
+
+      root.querySelector('form').dispatchEvent(new Event('submit'));
+      expect(control.value).toEqual('Bob');
+      expect(control.dirty).toBe(true);
+      expect(control.touched).toBe(true);
+    });
+  });
+
   describe('setAsyncValidators()', () => {
     it('should accept clearing and reject actual async validators', () => {
       const control = createControl('foo');
