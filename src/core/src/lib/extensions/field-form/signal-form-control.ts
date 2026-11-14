@@ -38,7 +38,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   private readonly manualErrors: WritableSignal<ManualErrors | undefined>;
 
   constructor(
-    value: unknown,
+    private readonly defaultValue: unknown,
     isDisabled: boolean,
     schema: SchemaFn<unknown>,
     injector?: Injector,
@@ -50,7 +50,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     const manualErrors = signal<ManualErrors | undefined>(undefined);
     const self: { control?: FormlySignalFormControl } = {};
     super(
-      value,
+      defaultValue,
       (p) => {
         disabled(p, { when: () => disabledState() });
         validate(p, ({ value }) => {
@@ -116,6 +116,27 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     this.updateValueAndValidity();
   }
 
+  // AbstractControl implements these on top of setValidators(), which this control forwards.
+  override addValidators(validators: ValidatorFn | ValidatorFn[]): void {
+    AbstractControl.prototype.addValidators.call(this, validators);
+  }
+
+  override removeValidators(validators: ValidatorFn | ValidatorFn[]): void {
+    AbstractControl.prototype.removeValidators.call(this, validators);
+  }
+
+  override clearValidators(): void {
+    this.setValidators(null);
+  }
+
+  override addAsyncValidators(validators: AsyncValidatorFn | AsyncValidatorFn[]): void {
+    this.setAsyncValidators(validators);
+  }
+
+  override removeAsyncValidators(): void {}
+
+  override clearAsyncValidators(): void {}
+
   override setAsyncValidators(validators: AsyncValidatorFn | AsyncValidatorFn[] | null): void {
     if (validators && (!Array.isArray(validators) || validators.length)) {
       throw new Error('[Formly Error] Async validators are not supported on a signal form control.');
@@ -133,15 +154,16 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
 
   // SignalFormControl rejects the `{ value, disabled }` form, which Formly uses when hiding a field.
   override reset(value?: unknown, options?: Parameters<SignalFormControl<unknown>['reset']>[1]): void {
-    if (!isFormControlState(value)) {
-      super.reset(value, options);
-      return;
+    const state = isFormControlState(value) ? value : undefined;
+    if (state) {
+      this.disabledState.set(state.disabled);
     }
 
-    this.disabledState.set(value.disabled);
-    super.reset(value.value, options);
-    // SignalFormControl.reset(undefined) restores the initial value; FormControl resets to the given value.
-    if (value.value === undefined) {
+    const next = state ? state.value : value;
+    super.reset(next, options);
+    // SignalFormControl.reset(undefined) restores a defined initial value and otherwise keeps the current one;
+    // FormControl resets to the given value, or to its default value without arguments.
+    if (next === undefined && (state || this.defaultValue === undefined)) {
       this.setValue(undefined, options);
     }
   }

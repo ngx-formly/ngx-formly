@@ -286,14 +286,14 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 | Operation | Behavior |
 | --- | --- |
 | `disable()`, `enable()`, `form.disable()`, `form.enable()` | Supported. |
-| `setValidators()` | Supported. `control.errors` keeps the Reactive Forms shape, such as `{ min: { min: 18, actual: 10 } }`. |
+| `setValidators()`, `addValidators()`, `removeValidators()`, `clearValidators()` | Supported. `control.errors` keeps the Reactive Forms shape, such as `{ min: { min: 18, actual: 10 } }`. |
 | `updateValueAndValidity()` | Reruns the validators. The parent is notified only when the control status changes. |
 | `setErrors()` | Supported. The errors last until the value changes or `updateValueAndValidity()` runs, as on a `FormControl`. |
 | `reset()`, `reset({ value, disabled })` | Supported. `reset()` without a value restores the initial value. |
 | `setValue()`, `patchValue()`, `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
 | `modelOptions.updateOn` (`'blur'`, `'submit'`) | Supported. |
-| `setAsyncValidators()` | Not supported: throws a Formly error, except when clearing with `null`. |
-| `addValidators()`, `removeValidators()`, `clearValidators()`, their async variants, `markAsPending()` | Not supported: throw `NG01920`. Use `setValidators()`. |
+| `setAsyncValidators()`, `addAsyncValidators()` | Not supported: throw a Formly error, except when clearing with `null`. |
+| `markAsPending()` | Not supported: throws `NG01920`. |
 
 #### Current limitations
 
@@ -305,4 +305,4 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 
 #### UI adapters
 
-The unit tests of every UI adapter were run with the option enabled. Bootstrap, Ionic, Kendo, NG-ZORRO, PrimeNG and NativeScript pass. Material passes except one select test: the formatted trigger label is not cleared after a reset.
+The unit tests of every UI adapter were run with the option enabled. Bootstrap, Material, Ionic, Kendo, NG-ZORRO, PrimeNG and NativeScript pass.

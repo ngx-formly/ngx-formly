@@ -116,6 +116,46 @@ describe('FormlySignalFormControl', () => {
 
       expect(control.value).toEqual('foo');
     });
+
+    it('should clear the value without arguments when there is no initial value', () => {
+      const control = createControl(undefined);
+      control.setValue([2]);
+
+      control.reset();
+
+      expect(control.value).toBeUndefined();
+    });
+  });
+
+  describe('addValidators(), removeValidators() and clearValidators()', () => {
+    it('should behave like a FormControl', () => {
+      const control = createControl(10);
+      const min = Validators.min(18);
+
+      control.addValidators(min);
+      expect(control.hasValidator(min)).toBe(true);
+      expect(control.errors).toEqual({ min: { min: 18, actual: 10 } });
+
+      control.removeValidators(min);
+      expect(control.hasValidator(min)).toBe(false);
+      expect(control.errors).toBeNull();
+
+      control.setValidators(min);
+      control.clearValidators();
+      expect(control.validator).toBeNull();
+      expect(control.errors).toBeNull();
+    });
+
+    it('should accept removing and clearing async validators and reject adding one', () => {
+      const control = createControl('foo');
+      const asyncValidator = async (): Promise<null> => null;
+
+      expect(() => control.removeAsyncValidators(asyncValidator)).not.toThrow();
+      expect(() => control.clearAsyncValidators()).not.toThrow();
+      expect(() => control.addAsyncValidators(asyncValidator)).toThrow(
+        '[Formly Error] Async validators are not supported on a signal form control.',
+      );
+    });
   });
 
   describe('setErrors()', () => {
