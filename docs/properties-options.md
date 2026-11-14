@@ -250,7 +250,7 @@ This also receives the methods `resetModel` and `updateInitialValue` which will 
 
 > The API may change. It is a prototype for [Signal Forms support](https://github.com/ngx-formly/ngx-formly/issues/4241).
 
-When `signalForms` is `true`, Formly creates an Angular [`SignalFormControl`](https://angular.dev/guide/forms/signals/migration) instead of a `FormControl` for each keyed field without a `fieldGroup`. `props.required` and `props.disabled` become Signal Forms rules and follow their expressions, including signal expressions. Formly also updates the parent form when a rule changes the control status.
+When `signalForms` is `true`, Formly creates a signal form control instead of a `FormControl` for each keyed field without a `fieldGroup` or `fieldArray`. The control extends Angular's [`SignalFormControl`](https://angular.dev/guide/forms/signals/migration), so its value and state are signals, and it stays inside the same `FormGroup`. Existing field configuration keeps working: validation props such as `props.required` and `props.min`, `validators`, `props.disabled`, `hide`, `resetOnHide`, expressions (including signal expressions), `modelOptions.updateOn` and `options.resetModel()`.
 
 Enable it per form with `options` or globally with `extras`:
 
@@ -261,8 +261,48 @@ options: FormlyFormOptions = { signalForms: true };
 provideFormlyCore({ extras: { signalForms: true } });
 ```
 
-Current limitations:
+See the [Signal Forms example](https://formly.dev/examples/other/signal-forms).
 
-- Only `props.required` and `props.disabled` are applied. Other Formly validation, such as `validators`, `asyncValidators`, `props.pattern`, `props.min` and `props.max`, is not applied to these fields.
-- `field.formControl` is a `SignalFormControl`. Code that calls `disable()`, `enable()`, `setValidators()` or `setErrors()` on it throws `NG01920`.
-- A `SignalFormControl` already registered in the form under the field key is reused and keeps its own rules.
+#### Reading the field tree
+
+`field.formControl` exposes the Signal Forms field tree. Read its state as signals, for example in a `computed()` or a custom field type:
+
+```ts
+import { SignalFormControl } from '@angular/forms/signals/compat';
+
+const control = field.formControl as SignalFormControl<string>;
+const state = control.fieldTree();
+
+state.value(); // current value
+state.required(); // follows props.required
+state.disabled(); // follows props.disabled
+state.errors(); // Signal Forms errors; control.errors keeps the Reactive Forms shape
+```
+
+#### Supported control operations
+
+A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01920`. Formly's control forwards these calls, so code written for a `FormControl` keeps working:
+
+| Operation | Behavior |
+| --- | --- |
+| `disable()`, `enable()`, `form.disable()`, `form.enable()` | Supported. |
+| `setValidators()` | Supported. `control.errors` keeps the Reactive Forms shape, such as `{ min: { min: 18, actual: 10 } }`. |
+| `updateValueAndValidity()` | Reruns the validators. The parent is notified only when the control status changes. |
+| `setErrors()` | Supported. The errors last until the value changes or `updateValueAndValidity()` runs, as on a `FormControl`. |
+| `reset()`, `reset({ value, disabled })` | Supported. `reset()` without a value restores the initial value. |
+| `setValue()`, `patchValue()`, `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
+| `modelOptions.updateOn` (`'blur'`, `'submit'`) | Supported. |
+| `setAsyncValidators()` | Not supported: throws a Formly error, except when clearing with `null`. |
+| `addValidators()`, `removeValidators()`, `clearValidators()`, their async variants, `markAsPending()` | Not supported: throw `NG01920`. Use `setValidators()`. |
+
+#### Current limitations
+
+- `asyncValidators` are not supported. A field that configures them throws `[Formly Error] Async validators are not supported with signalForms (field "<key>").` instead of ignoring them.
+- Fields with a `fieldGroup` or `fieldArray` keep their `FormGroup` or `FormArray`; only their keyed leaf fields get a signal form control.
+- A `SignalFormControl` that the application registered in the form under the field key is reused and keeps its own rules. Formly does not apply validators or the disabled state to it.
+- Formly updates the parent form when the control status changes. A signal form control placed in a `FormGroup` outside Formly does not notify that group on status changes ([angular/angular#72009](https://github.com/angular/angular/issues/72009)).
+- An error routed to a child with `errorPath` is dropped when that child revalidates on its own, until the group validator runs again.
+
+#### UI adapters
+
+The unit tests of every UI adapter were run with the option enabled. Bootstrap, Ionic, Kendo, NG-ZORRO, PrimeNG and NativeScript pass. Material passes except one select test: the formatted trigger label is not cleared after a reset.

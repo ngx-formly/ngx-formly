@@ -1,7 +1,8 @@
 # Upgrade from 10.0 to 11.0
 
 Formly v11 requires Angular 22 or newer and runs in zoneless applications. It continues to use Angular Reactive Forms.
-Signal Forms integration is planned for Formly v12 and is not included in v11.
+Signal Forms integration is planned for Formly v12. An experimental, opt-in `signalForms` option is available for
+evaluation; see [signalForms](docs/properties-options.md#signalforms-experimental).
 Applications staying on Angular 21 should continue using Formly v10.
 If you are upgrading from an earlier release, first follow the
 [v10 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/main/UPGRADE-10.0.md).
@@ -68,6 +69,11 @@ npm install @ngx-formly/core@11 @ngx-formly/material@11
 Replace `@ngx-formly/material` with your UI package, or include each UI package if your application uses several.
 Keep your existing `FormGroup`, `FormlyFieldConfig`, validators, and model bindings. The standalone and NgModule APIs
 remain supported. No Signal Forms migration is required for v11.
+
+The experimental `signalForms` option is off by default and does not change existing forms. When enabled, fields
+with `asyncValidators` throw a Formly error, and `field.formControl` of keyed leaf fields is no longer a `FormControl`:
+replace `instanceof FormControl` checks in custom code. See the
+[supported control operations](docs/properties-options.md#supported-control-operations).
 
 ## 3. Run without Zone.js
 
