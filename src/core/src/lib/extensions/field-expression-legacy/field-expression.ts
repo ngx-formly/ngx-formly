@@ -158,6 +158,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     let currentValue: any;
+    let initialized = false;
 
     return {
       callback: (ignoreCache?: boolean) => {
@@ -168,17 +169,23 @@ export class FieldExpressionExtension implements FormlyExtension {
             [field.model, field.options.formState, field, ignoreCache],
           );
 
+          const valueChanged =
+            currentValue !== exprValue &&
+            (!isObject(exprValue) ||
+              isObservable(exprValue) ||
+              JSON.stringify(exprValue) !== JSON.stringify(currentValue));
+
           if (
             ignoreCache ||
             (isDisabledExpression &&
               (field.props.disabled !== !!exprValue || (exprValue && hasKey(field) && field.formControl?.enabled))) ||
-            (currentValue !== exprValue &&
-              (!isObject(exprValue) ||
-                isObservable(exprValue) ||
-                JSON.stringify(exprValue) !== JSON.stringify(currentValue)))
+            valueChanged
           ) {
+            // A rebuild re-applies the value but only reports it when it differs from the previous one.
+            const emit = !ignoreCache || !initialized || valueChanged;
+            initialized = true;
             currentValue = exprValue;
-            this.evalExpr(field, path, exprValue);
+            this.evalExpr(field, path, exprValue, emit);
 
             return true;
           }
@@ -289,7 +296,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
+  private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any, emit = true) {
     if (prop.indexOf('model.') === 0) {
       const key = prop.replace(/^model\./, ''),
         parent = field.fieldGroup ? field : field.parent;
@@ -326,7 +333,9 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
     }
 
-    this.emitExpressionChanges(field, prop, value);
+    if (emit) {
+      this.emitExpressionChanges(field, prop, value);
+    }
   }
 
   private emitExpressionChanges(field: FormlyFieldConfigCache, property: string, value: any) {

@@ -173,6 +173,32 @@ describe('FieldExpressionExtension', () => {
       subscription.unsubscribe();
     });
 
+    it('should not emit expressionChanges on rebuild when the signal value is unchanged', () => {
+      const fieldChanges = new Subject<any>();
+      const spy = vi.fn();
+      const subscription = fieldChanges.subscribe(spy);
+      const label = signal('City');
+      const field = buildField({
+        key: 'city',
+        options: { fieldChanges },
+        expressions: { 'props.label': label },
+      });
+      const expressionEvents = () => spy.mock.calls.filter(([event]) => event.type === 'expressionChanges');
+      expect(expressionEvents()).toHaveLength(1);
+
+      spy.mockReset();
+      field.options.checkExpressions(field.parent, true);
+      expect(expressionEvents()).toHaveLength(0);
+      expect(field.props.label).toBe('City');
+
+      label.set('Town');
+      field.options.checkExpressions(field.parent, true);
+      expect(expressionEvents()).toHaveLength(1);
+      expect(field.props.label).toBe('Town');
+
+      subscription.unsubscribe();
+    });
+
     it('should keep a child disabled while its parent is disabled', () => {
       const locked = signal(true);
       const { field, detectChanges } = createFieldComponent(
@@ -1209,6 +1235,53 @@ describe('FieldExpressionExtension', () => {
 
       expect(spy).toHaveBeenNthCalledWith(1, { field, type: 'expressionChanges', property: 'hide', value: false });
       expect(spy).toHaveBeenNthCalledWith(2, { field, type: 'hidden', value: false });
+
+      subscription.unsubscribe();
+    });
+
+    it('should not emit expressionChanges on rebuild when the value is unchanged', () => {
+      const fieldChanges = new Subject<any>();
+      const spy = vi.fn();
+      const subscription = fieldChanges.subscribe(spy);
+
+      const field = buildField({
+        key: 'text',
+        options: { fieldChanges },
+        expressions: {
+          hide: '!model.visibilityToggle',
+          'props.label': 'model.label',
+        },
+        model: { label: 'foo' },
+      });
+      expect(spy.mock.calls.filter(([e]) => e.type === 'expressionChanges')).toHaveLength(2);
+
+      spy.mockReset();
+      field.options.checkExpressions(field.parent, true);
+      expect(spy.mock.calls.filter(([e]) => e.type === 'expressionChanges')).toHaveLength(0);
+      expect(field.props.label).toBe('foo');
+
+      subscription.unsubscribe();
+    });
+
+    it('should emit expressionChanges on rebuild when the value changed', () => {
+      const fieldChanges = new Subject<any>();
+      const spy = vi.fn();
+      const subscription = fieldChanges.subscribe(spy);
+
+      const field = buildField({
+        key: 'text',
+        options: { fieldChanges },
+        expressions: { 'props.label': 'model.label' },
+        model: { label: 'foo' },
+      });
+
+      spy.mockReset();
+      field.model.label = 'bar';
+      field.options.checkExpressions(field.parent, true);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith({ field, type: 'expressionChanges', property: 'props.label', value: 'bar' });
+      expect(field.props.label).toBe('bar');
 
       subscription.unsubscribe();
     });

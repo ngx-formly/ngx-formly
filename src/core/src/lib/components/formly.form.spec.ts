@@ -181,6 +181,25 @@ describe('FormlyForm Component', () => {
       subscription.unsubscribe();
     });
 
+    it('should only emit expressionChanges on model replacement when the expression value changes', () => {
+      const { fields, options, setInputs } = renderComponent({
+        model: { email: 'a@b.c' },
+        fields: [{ key: 'name', type: 'input', expressions: { hide: '!model.email' } }],
+      });
+      const events = [];
+      const subscription = options.fieldChanges.subscribe((event) => events.push(event));
+      const expressionEvents = () => events.filter(({ type }) => type === 'expressionChanges');
+
+      setInputs({ model: { email: 'other@b.c' } });
+      expect(fields[0].hide).toBe(false);
+      expect(expressionEvents()).toEqual([]);
+
+      setInputs({ model: {} });
+      expect(fields[0].hide).toBe(true);
+      expect(expressionEvents()).toEqual([expect.objectContaining({ property: 'hide', value: true })]);
+      subscription.unsubscribe();
+    });
+
     it('should not restore observable expression defaults when the new model hides their parent', () => {
       const { setInputs, queryAll } = renderComponent({
         fields: [
@@ -330,6 +349,28 @@ describe('FormlyForm Component', () => {
 
       expect(model()).toEqual({ title: 'bar' });
       expect(model()).not.toBe(initial);
+    });
+
+    it('should only emit expressionChanges when the host sets a signal value that changes the expression', () => {
+      const model = signal<any>({ email: 'a@b.c' });
+      const { fields, options, detectChanges } = renderComponent({
+        model,
+        fields: [{ key: 'name', type: 'input', expressions: { hide: '!model.email' } }],
+      });
+      const events = [];
+      const subscription = options.fieldChanges.subscribe((event) => events.push(event));
+      const expressionEvents = () => events.filter(({ type }) => type === 'expressionChanges');
+
+      model.set({ email: 'other@b.c' });
+      detectChanges();
+      expect(fields[0].hide).toBe(false);
+      expect(expressionEvents()).toEqual([]);
+
+      model.set({});
+      detectChanges();
+      expect(fields[0].hide).toBe(true);
+      expect(expressionEvents()).toEqual([expect.objectContaining({ property: 'hide', value: true })]);
+      subscription.unsubscribe();
     });
 
     it('should set nested keyed group changes on the signal', () => {
