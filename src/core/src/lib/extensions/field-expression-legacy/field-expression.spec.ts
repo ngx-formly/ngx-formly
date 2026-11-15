@@ -1286,6 +1286,74 @@ describe('FieldExpressionExtension', () => {
       subscription.unsubscribe();
     });
 
+    describe.each(['function', 'signal'])('%s expression serialization', (source) => {
+      const circular: any = {};
+      circular.self = circular;
+
+      it.each([
+        ['circular', circular],
+        ['bigint', BigInt(1)],
+      ])('should apply %s option values on the initial build', (_name, value) => {
+        const options = [{ label: 'Item', value }];
+        const fieldChanges = new Subject<any>();
+        const spy = vi.fn();
+        const subscription = fieldChanges.subscribe(spy);
+        const field = buildField({
+          key: 'item',
+          options: { fieldChanges },
+          expressions: { 'props.options': source === 'signal' ? signal(options) : () => options },
+        });
+
+        expect(field.props.options).toBe(options);
+        expect(spy).toHaveBeenCalledExactlyOnceWith({
+          field,
+          type: 'expressionChanges',
+          property: 'props.options',
+          value: options,
+        });
+
+        spy.mockClear();
+        field.options.build();
+        expect(field.props.options).toBe(options);
+        expect(spy).not.toHaveBeenCalled();
+        subscription.unsubscribe();
+      });
+
+      it.each([
+        ['circular', circular],
+        ['bigint', BigInt(1)],
+        ['serializable', 1],
+      ])('should apply new %s option values on rebuild', (name, value) => {
+        const initial = [{ label: 'Item', value: 0 }];
+        const options = signal(initial);
+        const fieldChanges = new Subject<any>();
+        const spy = vi.fn();
+        const subscription = fieldChanges.subscribe(spy);
+        const field = buildField({
+          key: 'item',
+          options: { fieldChanges },
+          expressions: { 'props.options': source === 'signal' ? options : () => options() },
+        });
+
+        for (const { next, count } of [
+          { next: [{ label: 'Item', value }], count: 1 },
+          { next: [{ label: 'Item', value }], count: name === 'serializable' ? 0 : 1 },
+          { next: initial, count: 1 },
+        ]) {
+          spy.mockClear();
+          options.set(next);
+          field.options.build();
+          expect(field.props.options).toBe(next);
+          expect(spy).toHaveBeenCalledTimes(count);
+
+          spy.mockClear();
+          field.options.build();
+          expect(spy).not.toHaveBeenCalled();
+        }
+        subscription.unsubscribe();
+      });
+    });
+
     it('should emit fieldChanges when expression value changes', () => {
       const fieldChanges = new Subject<any>();
       const spy = vi.fn();

@@ -169,11 +169,17 @@ export class FieldExpressionExtension implements FormlyExtension {
             [field.model, field.options.formState, field, ignoreCache],
           );
 
-          const valueChanged =
-            currentValue !== exprValue &&
-            (!isObject(exprValue) ||
-              isObservable(exprValue) ||
-              JSON.stringify(exprValue) !== JSON.stringify(currentValue));
+          let valueChanged = currentValue !== exprValue;
+          if (valueChanged && (!ignoreCache || initialized) && isObject(exprValue) && !isObservable(exprValue)) {
+            try {
+              valueChanged = JSON.stringify(exprValue) !== JSON.stringify(currentValue);
+            } catch (error) {
+              // Rebuilds previously skipped serialization; retain reference equality when it fails.
+              if (!ignoreCache) {
+                throw error;
+              }
+            }
+          }
 
           if (
             ignoreCache ||
