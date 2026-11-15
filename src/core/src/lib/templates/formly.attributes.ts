@@ -232,13 +232,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     if (attr === 'pattern') {
       let pattern = value instanceof RegExp ? value.source : value;
 
-      // 1. Safely escape unescaped hyphens inside character classes for 'v' flag compatibility
-      pattern = pattern.replace(/(\[[^\]]*?)(?<!\\)-(.*?\])/g, '$1\\-$2');
+      // 1. Safely escape unescaped literal hyphens at the edges of character classes for 'v' flag compatibility
+      pattern = pattern.replace(/(\[(?:\^)?)-(.*?\])/g, '$1\\-$2').replace(/(\[[^\]]*?)(?<!\\)-(])/g, '$1\\-$2');
 
       // 2. Cleanly strip leading ^ and trailing $ so HTML5 handles the boundaries natively
-      pattern = pattern.replace(/^^\^/, '').replace(/\$$/, '');
-
-      return pattern;
+      return pattern.replace(/^\^/, '').replace(/\$$/, '');
     }
     return value === true ? attr : `${value}`;
   }

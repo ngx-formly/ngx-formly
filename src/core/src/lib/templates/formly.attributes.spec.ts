@@ -146,7 +146,7 @@ describe('FormlyAttributes Component', () => {
       });
 
       const inputElm = query('input');
-      expect(inputElm.attributes.pattern).toBe('(?! )[a\\-zA-Z0-9_ ()-]*(?<! )');
+      expect(inputElm.attributes.pattern).toBe('(?! )[a-zA-Z0-9_ ()\\-]*(?<! )');
     });
 
     it('should handle pattern as a string', () => {
@@ -157,7 +157,29 @@ describe('FormlyAttributes Component', () => {
       });
 
       const inputElm = query('input');
-      expect(inputElm.attributes.pattern).toBe('[0\\-9]{5}');
+      expect(inputElm.attributes.pattern).toBe('[0-9]{5}');
+    });
+
+    it('should preserve character ranges in pattern attribute', () => {
+      const { query } = renderComponent({
+        props: {
+          pattern: '^[a-z0-9]+$',
+        },
+      });
+
+      const inputElm = query('input');
+      expect(inputElm.attributes.pattern).toBe('[a-z0-9]+');
+    });
+
+    it('should escape literal edge hyphens in character classes', () => {
+      const { query } = renderComponent({
+        props: {
+          pattern: '^[-A-Z]+$',
+        },
+      });
+
+      const inputElm = query('input');
+      expect(inputElm.attributes.pattern).toBe('[\\-A-Z]+');
     });
   });
 
