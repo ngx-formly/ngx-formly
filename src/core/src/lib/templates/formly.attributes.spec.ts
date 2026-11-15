@@ -181,6 +181,36 @@ describe('FormlyAttributes Component', () => {
       const inputElm = query('input');
       expect(inputElm.attributes.pattern).toBe('[\\-A-Z]+');
     });
+
+    it.each([
+      [/^[\w-.]+$/, 'a.b-c', '!'],
+      [/^[.-\w]+$/, 'a.b-c', '!'],
+      [/^[\d-a]+$/, '12-a', 'b'],
+      [/^[a-\d]+$/, '12-a', 'b'],
+      [/^[\D-a]+$/, '!-a', '1'],
+      [/^[a-\D]+$/, '!-a', '1'],
+      [/^[\s-a]+$/, ' -a', 'b'],
+      [/^[a-\s]+$/, ' -a', 'b'],
+      [/^[\S-a]+$/, '1-a', ' '],
+      [/^[a-\S]+$/, '1-a', ' '],
+      [/^[\W-a]+$/, '!-a', '1'],
+      [/^[a-\W]+$/, '!-a', '1'],
+      [/^[\w\-]+$/, 'a-b', '!'],
+      [/^[\\-]+$/, '\\-', 'a'],
+      [/^\w-\w$/, 'a-b', 'ab'],
+      [/^\[\w-.\]$/, '[a-.]', '[ab.]'],
+      [/^[0-9A-Z]+$/, 'A123', 'a'],
+      [/^[-A-Z]+$/, 'A-Z', 'a'],
+      [/^[A-Z-]+$/, 'A-Z', 'a'],
+      [String.raw`^[\w-.]+$`, 'a.b-c', '!'],
+    ])('should preserve native pattern validation for %s', (pattern, validValue, invalidValue) => {
+      const { query } = renderComponent({ props: { pattern } });
+      // Browsers compile HTML pattern attributes with the v flag.
+      const nativePattern = new RegExp(`^(?:${query('input').attributes.pattern})$`, 'v');
+
+      expect(nativePattern.test(validValue)).toBe(true);
+      expect(nativePattern.test(invalidValue)).toBe(false);
+    });
   });
 
   describe('props events', () => {

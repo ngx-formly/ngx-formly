@@ -230,10 +230,20 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   private getSafeAttributeValue(attr: string, value: any): string {
     if (attr === 'pattern') {
-      let pattern = value instanceof RegExp ? value.source : value;
+      let pattern: string = value instanceof RegExp ? value.source : value;
 
-      // 1. Safely escape unescaped literal hyphens at the edges of character classes for 'v' flag compatibility
-      pattern = pattern.replace(/(\[(?:\^)?)-(.*?\])/g, '$1\\-$2').replace(/(\[[^\]]*?)(?<!\\)-(])/g, '$1\\-$2');
+      // Literal hyphens at class edges or beside class escapes cannot form ranges in v mode.
+      pattern = pattern.replace(/\\.|(\[(?:\\.|[^\]\\])*\])/g, (match, characterClass?: string) => {
+        if (!characterClass) {
+          return match;
+        }
+
+        return characterClass
+          .replace(/(\[\^?)-/, '$1\\-')
+          .replace(/\\[dDsSwW]-|\\.|-(?=\\[dDsSwW]|\]$)/g, (token) =>
+            token.endsWith('-') && token !== '\\-' ? `${token.slice(0, -1)}\\-` : token,
+          );
+      });
 
       // 2. Cleanly strip leading ^ and trailing $ so HTML5 handles the boundaries natively
       return pattern.replace(/^\^/, '').replace(/\$$/, '');
