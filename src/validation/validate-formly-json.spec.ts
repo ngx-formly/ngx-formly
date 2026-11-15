@@ -12,6 +12,11 @@ describe('Formly JSON configuration validation', () => {
     expect(validateFormlyJson('[]')).toEqual({ empty: false, syntaxValid: true, diagnostics: [] });
   });
 
+  it('accepts boolean WebMCP participation and rejects other values', () => {
+    expect(check([{ webMcp: false, fieldGroup: [{ key: 'name', webMcp: true }] }]).diagnostics).toEqual([]);
+    expect(errors([{ webMcp: 'true' }])[0].path).toEqual([0, 'webMcp']);
+  });
+
   it.each([
     '[/* comment */{}]',
     '[{} // comment\n]',

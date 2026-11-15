@@ -32,7 +32,7 @@ describe('Website navigation', () => {
 
   beforeEach(() => {
     mockSearchLoadFails = false;
-    smallDevice = new BehaviorSubject({ matches: true });
+    smallDevice = new BehaviorSubject<{ matches: boolean }>({ matches: true });
     systemTheme = new BehaviorSubject<{ matches: boolean }>({ matches: false });
     localStorage.removeItem('formly-theme');
     TestBed.configureTestingModule({

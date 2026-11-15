@@ -14,6 +14,7 @@
       { "path": "/guide/json-schema", "label": "JSON Schema" },
       { "path": "/guide/external-libraries", "label": "External libraries" },
       { "path": "/guide/mcp", "label": "MCP tools" },
+      { "path": "/guide/web-mcp", "label": "WebMCP" },
       {
         "path": "/guide/migration",
         "label": "Migration guides",
@@ -106,6 +107,7 @@
         "label": "Advanced",
         "path": "/examples/advanced",
         "items": [
+          { "path": "/examples/advanced/web-mcp", "label": "WebMCP" },
           { "path": "/examples/advanced/i18n", "label": "i18n ngx-translate (Translations)" },
           { "path": "/examples/advanced/i18n-alternative", "label": "i18n ngx-translate (alternative approach)" },
           { "path": "/examples/advanced/json-schema", "label": "Json schema" },

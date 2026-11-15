@@ -22,6 +22,14 @@ type FieldExpressions = { [property: string]: FieldExpression } & {
 
 export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalProperties: string]: any }> {
   /**
+   * Whether browser agents can interact with this field through WebMCP.
+   * Inherits the nearest enclosing group's setting, then `extras.webMcp`. Children can override either value.
+   * Does not permit writes to hidden, disabled, or read-only controls, or expose password values.
+   * @experimental
+   */
+  webMcp?: boolean;
+
+  /**
    * The key that relates to the model. This will link the field value to the model
    */
   key?: string | number | (string | number)[];
@@ -272,6 +280,11 @@ export interface FormlyHookConfig {
 }
 
 export interface FormlyFormOptions {
+  /**
+   * Tool identification and optional submission. Does not enable field participation.
+   * @experimental
+   */
+  webMcp?: FormlyWebMcpOptions;
   updateInitialValue?: (model?: any) => void;
   resetModel?: (model?: any) => void;
   formState?: any;
@@ -282,6 +295,23 @@ export interface FormlyFormOptions {
   checkExpressions?: (field: FormlyFieldConfig) => void;
   detectChanges?: (field: FormlyFieldConfig) => void;
   parentForm?: FormGroupDirective | null;
+}
+
+/**
+ * Configuration for a form's browser WebMCP tools.
+ * @experimental
+ */
+export interface FormlyWebMcpOptions {
+  /** Unique tool name suffix. Generated once per mounted form when omitted. */
+  name?: string;
+  /** Describes the form's purpose to an agent. */
+  description?: string;
+  /**
+   * Enables agent submission. Called with a model snapshot after validation settles.
+   * Await all submission work; return values and thrown error details are not exposed to agents.
+   * Cancellation signals cannot undo work already performed by the application.
+   */
+  submit?: (model: any, signal: AbortSignal) => void | Promise<void>;
 }
 
 export interface FormlyValueChangeEvent {

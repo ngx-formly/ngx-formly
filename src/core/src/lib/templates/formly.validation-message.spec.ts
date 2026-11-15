@@ -10,6 +10,7 @@ import { of, Subject } from 'rxjs';
 import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
+import { FormlyFieldConfigCache } from '../models';
 
 function validationMessageContent(query: (v: string) => DebugElement): string {
   return query('formly-validation-message').nativeElement.textContent;
@@ -179,7 +180,7 @@ describe.each([
     });
     TestBed.inject(FormlyConfig).addValidatorMessage('first', 'First error.');
     const fixture = TestBed.createComponent(MessageComponent);
-    const field: FormlyFieldConfig = {
+    const field: FormlyFieldConfigCache = {
       formControl: new FormControl(),
       validation: { showAllErrors },
       options: { fieldChanges: new Subject() },
