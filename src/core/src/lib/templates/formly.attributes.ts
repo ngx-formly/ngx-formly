@@ -232,17 +232,28 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     if (attr === 'pattern') {
       let pattern: string = value instanceof RegExp ? value.source : value;
 
-      // Literal hyphens at class edges or beside class escapes cannot form ranges in v mode.
       pattern = pattern.replace(/\\.|(\[(?:\\.|[^\]\\])*\])/g, (match, characterClass?: string) => {
         if (!characterClass) {
           return match;
         }
 
-        return characterClass
-          .replace(/(\[\^?)-/, '$1\\-')
-          .replace(/\\[dDsSwW]-|\\.|-(?=\\[dDsSwW]|\]$)/g, (token) =>
-            token.endsWith('-') && token !== '\\-' ? `${token.slice(0, -1)}\\-` : token,
-          );
+        const prefix = characterClass.startsWith('[^') ? '[^' : '[';
+        const tokens =
+          characterClass
+            .slice(prefix.length, -1)
+            .match(/\\(?:u\{[\da-f]+\}|u[\da-f]{4}|x[\da-f]{2}|c[a-z]|.)|[\s\S]/giu) || [];
+        let result = prefix;
+        for (let i = 0; i < tokens.length; i++) {
+          result += tokens[i] === '-' ? '\\-' : tokens[i];
+          if (tokens[i + 1] === '-' && tokens[i + 2]) {
+            const separator = /^\\[dDsSwW]$/.test(tokens[i]) || /^\\[dDsSwW]$/.test(tokens[i + 2]) ? '\\-' : '-';
+            result += `${separator}${tokens[i + 2] === '-' ? '\\-' : tokens[i + 2]}`;
+            // A range endpoint cannot also start the next range.
+            i += 2;
+          }
+        }
+
+        return `${result}]`;
       });
 
       // 2. Cleanly strip leading ^ and trailing $ so HTML5 handles the boundaries natively

@@ -202,6 +202,16 @@ describe('FormlyAttributes Component', () => {
       [/^[0-9A-Z]+$/, 'A123', 'a'],
       [/^[-A-Z]+$/, 'A-Z', 'a'],
       [/^[A-Z-]+$/, 'A-Z', 'a'],
+      [/^[a-b-c]+$/, 'a-b-c', 'd'],
+      [/^[a-b-c-d-e]+$/, 'a-b-c-d-e', 'f'],
+      [/^[^a-b-c]+$/, 'def', 'a'],
+      [/^[a-\x62-c]+$/, 'a-b-c', 'd'],
+      [/^[\u0061-\u0062-c]+$/, 'a-b-c', 'd'],
+      [/^[\\\-a-b-c]+$/, '\\-abc', 'd'],
+      [/^[\w--a]+$/, '-a', '.'],
+      ['^[a-b-c]+$', 'a-b-c', 'd'],
+      ['^[a-b-c\n]+$', 'a\n-b-c', 'd'],
+      [/^[😀-🙏-a]+$/u, '😀😁🙏-a', 'b'],
       [String.raw`^[\w-.]+$`, 'a.b-c', '!'],
     ])('should preserve native pattern validation for %s', (pattern, validValue, invalidValue) => {
       const { query } = renderComponent({ props: { pattern } });
