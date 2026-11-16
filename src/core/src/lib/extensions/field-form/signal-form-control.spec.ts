@@ -249,6 +249,102 @@ describe('FormlySignalFormControl', () => {
       expect(control.dirty).toBe(true);
       expect(control.touched).toBe(true);
     });
+
+    it.each([
+      ['blur', 'reset'],
+      ['blur', 'setValue'],
+      ['submit', 'reset'],
+      ['submit', 'setValue'],
+    ] as const)('should discard the pending %s input on %s()', (updateOn, method) => {
+      const { control, root } = createHost(updateOn);
+
+      const input = type(root, 'Bob');
+      control[method]('Carol');
+      input.dispatchEvent(new Event('blur'));
+      root.querySelector('form').dispatchEvent(new Event('submit'));
+
+      expect(control.value).toEqual('Carol');
+      expect(control.dirty).toBe(method === 'setValue');
+    });
+  });
+
+  describe('Reactive Forms compatibility', () => {
+    // Same sequences on a FormControl (false) and on the signal control (true).
+    function build(signalForms: boolean): FormControl | FormlySignalFormControl {
+      const control = signalForms ? createControl('Alice') : new FormControl('Alice');
+      new FormGroup({ name: control });
+      // Formly subscribes to the status of its signal controls to keep the parent in sync.
+      control.statusChanges.subscribe(() => control.parent.updateValueAndValidity());
+      TestBed.tick();
+
+      return control;
+    }
+
+    describe.each([false, true])('signalForms=%s', (signalForms) => {
+      it('should not restore manual errors when the value comes back', () => {
+        const control = build(signalForms);
+        control.setErrors({ server: true });
+        expect(control.errors).toEqual({ server: true });
+
+        control.setValue('Bob');
+        expect(control.errors).toBeNull();
+
+        control.setValue('Alice');
+        expect(control.errors).toBeNull();
+      });
+
+      it('should drop manual errors on reset', () => {
+        const control = build(signalForms);
+        control.setErrors({ server: true });
+
+        control.reset('Alice');
+        TestBed.tick();
+
+        expect(control.errors).toBeNull();
+      });
+
+      it.each(['disable', 'enable'] as const)('should not emit on %s({ emitEvent: false })', (method) => {
+        const control = build(signalForms);
+        control[method === 'disable' ? 'enable' : 'disable']();
+        TestBed.tick();
+        const events: unknown[] = [];
+        control.valueChanges.subscribe((value) => events.push(value));
+        control.statusChanges.subscribe((status) => events.push(status));
+        control.parent.valueChanges.subscribe((value) => events.push(value));
+        control.parent.statusChanges.subscribe((status) => events.push(status));
+
+        control[method]({ emitEvent: false });
+        expect(control.parent.disabled).toBe(method === 'disable');
+        TestBed.tick();
+
+        expect(events).toEqual([]);
+      });
+
+      it('should emit again after a suppressed toggle was reverted', () => {
+        const control = build(signalForms);
+        control.disable({ emitEvent: false });
+        control.enable({ emitEvent: false });
+        TestBed.tick();
+        const events: unknown[] = [];
+        control.statusChanges.subscribe((status) => events.push(status));
+
+        control.disable();
+        TestBed.tick();
+
+        expect(events).toEqual(['DISABLED']);
+      });
+
+      it('should update the parent validity synchronously on setErrors()', () => {
+        const control = build(signalForms);
+        expect(control.parent.valid).toBe(true);
+
+        control.setErrors({ server: true });
+        expect(control.parent.invalid).toBe(true);
+
+        control.setErrors(null);
+        expect(control.parent.valid).toBe(true);
+      });
+    });
   });
 
   describe('setAsyncValidators()', () => {

@@ -370,6 +370,37 @@ describe('FormlyForm Component', () => {
       expect(name.dirty).toBe(false);
     });
 
+    describe.each([false, true])('resetModel with signalForms=%s', (enabled) => {
+      it.each(['blur', 'submit'] as const)('should discard the pending %s input', (updateOn) => {
+        const options: FormlyFormOptions = { signalForms: enabled };
+        const { fixture, form } = createComponent<{ form: FormGroup }>({
+          template: `<form [formGroup]="form">
+            <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options" />
+          </form>`,
+          imports: [FormlyInputModule],
+          inputs: {
+            form: new FormGroup({}),
+            model: { name: 'Alice' },
+            options,
+            fields: [{ key: 'name', type: 'input', modelOptions: { updateOn } }],
+          },
+        });
+        TestBed.tick();
+
+        const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+        input.value = 'Bob';
+        input.dispatchEvent(new Event('input'));
+        options.resetModel({ name: 'Carol' });
+        TestBed.tick();
+        expect(form.get('name').value).toBe('Carol');
+
+        input.dispatchEvent(new Event('blur'));
+        fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
+        TestBed.tick();
+        expect(form.get('name').value).toBe('Carol');
+      });
+    });
+
     it('should show the required error after submit', () => {
       const { form, query, detectChanges } = renderComponent(
         { model: { name: '' }, fields: [{ key: 'name', type: 'input', props: { required: true } }] },

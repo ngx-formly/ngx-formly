@@ -1,4 +1,4 @@
-import { Injector, signal, WritableSignal } from '@angular/core';
+import { EventEmitter, Injector, signal, WritableSignal } from '@angular/core';
 import {
   AbstractControl,
   AbstractControlOptions,
@@ -11,6 +11,8 @@ import { disabled, SchemaFn, validate, ValidationError } from '@angular/forms/si
 import { CompatValidationError, SignalFormControl } from '@angular/forms/signals/compat';
 
 type UpdateOn = NonNullable<AbstractControlOptions['updateOn']>;
+type EventOptions = { onlySelf?: boolean; emitEvent?: boolean };
+type ValueOptions = Parameters<SignalFormControl<unknown>['setValue']>[1];
 
 // Set on the control by Angular's forms directives while a typed value waits for blur or submit.
 interface PendingState {
@@ -36,6 +38,8 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   private readonly revalidate: WritableSignal<number>;
   // Errors set with setErrors(); they replace the validators until the next validation run, as on a FormControl.
   private readonly manualErrors: WritableSignal<ManualErrors | undefined>;
+  // Last status that statusChanges emitted, or that a call with `emitEvent: false` asked not to emit.
+  private lastStatus?: string;
 
   constructor(
     private readonly defaultValue: unknown,
@@ -61,7 +65,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
           }
 
           const manual = manualErrors();
-          // A value change is a validation run: manual errors set for a previous value are stale.
+          // setValue() and reset() discard manual errors; the comparison covers direct writes to the field tree.
           const errors =
             manual && Object.is(manual.value, value()) ? manual.errors : (control.validator?.(control) ?? null);
 
@@ -75,6 +79,18 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     this.disabledState = disabledState;
     this.revalidate = revalidate;
     this.manualErrors = manualErrors;
+
+    // SignalFormControl emits its status from an effect, after the call that asked for `emitEvent: false` returned.
+    // The effect also runs again when the status was read between two writes that cancel out (a group validator
+    // that clears and sets an error on this control), so an unchanged status is not emitted.
+    const statusChanges = this.statusChanges as EventEmitter<string>;
+    const emit = statusChanges.emit.bind(statusChanges);
+    statusChanges.emit = (status: string) => {
+      if (status !== this.lastStatus) {
+        this.lastStatus = status;
+        emit(status);
+      }
+    };
   }
 
   // The forms directives read `updateOn` to decide when a typed value reaches the control.
@@ -102,12 +118,38 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     return true;
   }
 
-  override disable(): void {
-    this.disabledState.set(true);
+  override disable(opts?: EventOptions): void {
+    this.setDisabled(true, opts);
   }
 
-  override enable(): void {
-    this.disabledState.set(false);
+  override enable(opts?: EventOptions): void {
+    this.setDisabled(false, opts);
+  }
+
+  private setDisabled(isDisabled: boolean, opts?: EventOptions): void {
+    this.disabledState.set(isDisabled);
+    this.silence(opts);
+    if (!opts?.onlySelf) {
+      // Events, unless silenced, are emitted when the status effect runs.
+      this.parent?.updateValueAndValidity({ emitEvent: false });
+    }
+  }
+
+  private silence(opts?: EventOptions): void {
+    if (opts?.emitEvent === false) {
+      this.lastStatus = this.status;
+    }
+  }
+
+  // As on a FormControl, a programmatic value replaces the typed value that waits for blur or submit.
+  override setValue(value: unknown, options?: ValueOptions): void {
+    this.manualErrors.set(undefined);
+    (this as unknown as PendingState)._pendingValue = value;
+    super.setValue(value, options);
+  }
+
+  override patchValue(value: unknown, options?: ValueOptions): void {
+    this.setValue(value, options);
   }
 
   override setValidators(validators: ValidatorFn | ValidatorFn[] | null): void {
@@ -143,8 +185,13 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     }
   }
 
-  override setErrors(errors: ValidationErrors | null): void {
+  override setErrors(errors: ValidationErrors | null, opts?: { emitEvent?: boolean }): void {
     this.manualErrors.set({ errors, value: this.value });
+    this.silence(opts);
+    // Same internal call as FormControl.setErrors(): recomputes the status of the ancestors only.
+    (
+      this.parent as unknown as { _updateControlsErrors?(emitEvent: boolean, changed: AbstractControl): void }
+    )?._updateControlsErrors?.(false, this);
   }
 
   override updateValueAndValidity(): void {
@@ -160,12 +207,20 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     }
 
     const next = state ? state.value : value;
+    this.manualErrors.set(undefined);
     super.reset(next, options);
     // SignalFormControl.reset(undefined) restores a defined initial value and otherwise keeps the current one;
     // FormControl resets to the given value, or to its default value without arguments.
     if (next === undefined && (state || this.defaultValue === undefined)) {
       this.setValue(undefined, options);
     }
+
+    Object.assign(this, {
+      _pendingValue: this.value,
+      _pendingChange: false,
+      _pendingDirty: false,
+      _pendingTouched: false,
+    });
   }
 }
 
