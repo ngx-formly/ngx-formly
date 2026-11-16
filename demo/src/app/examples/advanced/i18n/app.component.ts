@@ -11,7 +11,7 @@ import { FormlyForm } from '@ngx-formly/core';
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model: { lang?: string } = {};
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {

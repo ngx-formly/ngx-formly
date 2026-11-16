@@ -31,12 +31,13 @@ describe('JSON validator editor', () => {
     vi.useRealTimers();
   });
 
-  it('starts neutral with accessible instructions and loads a valid example', async () => {
+  it('starts neutral with accessible instructions and validates pasted fields', async () => {
     expect(editor.state.doc.length).toBe(0);
     expect(editor.contentDOM.getAttribute('aria-label')).toBe('Formly fields JSON');
     expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain('Paste your fields to begin.');
     expect(button('Format JSON').disabled).toBe(true);
-    button('Load example').click();
+    expect(button('Load example')).toBeUndefined();
+    paste('[{"key":"email","type":"input","props":{"label":"Email","type":"email","required":true}}]');
     await settle();
     expect(JSON.parse(editor.state.doc.toString())[0].key).toBe('email');
     expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain('No structural errors found.');

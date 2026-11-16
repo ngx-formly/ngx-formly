@@ -21,12 +21,14 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select methods retain consumer-defined option objects.
   tap(options: any[]) {
     action({ title: this.props.label, actions: options.map((o) => o.label) }).then((selectedAction) =>
       this.formControl.patchValue(options.find((o) => o.label === selectedAction).value),
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select methods retain consumer-defined option objects.
   selectedItem(options: any[]) {
     if (this.formControl.value) {
       return options.find((o) => o.value === this.formControl.value).label;

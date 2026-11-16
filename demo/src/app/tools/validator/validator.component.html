@@ -11,7 +11,6 @@
     <div class="editor-toolbar">
       <h2 id="editor-title">Fields JSON</h2>
       <div class="editor-actions">
-        <button mat-button type="button" (click)="loadExample()">Load example</button>
         <button mat-button type="button" (click)="formatJson()" [disabled]="pending() || !result().syntaxValid">
           Format JSON
         </button>

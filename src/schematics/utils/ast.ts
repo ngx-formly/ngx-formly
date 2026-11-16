@@ -72,7 +72,7 @@ export function getStylesPath(host: Tree, project: WorkspaceProject): string {
   const buildTarget = project.architect?.['build'];
 
   if (buildTarget?.options?.styles?.length) {
-    const styles = buildTarget.options.styles.map(s => typeof s === 'string' ? s : (s as any).input);
+    const styles = buildTarget.options.styles.map(s => typeof s === 'string' ? s : (s as { input: string }).input);
 
     // First, see if any of the assets is called "styles.(le|sc|c)ss", which is the default
     // "main" style sheet.

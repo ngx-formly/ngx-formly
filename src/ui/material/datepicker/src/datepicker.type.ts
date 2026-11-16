@@ -13,6 +13,7 @@ import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatCalendarCellClassFunction, MatDatepicker } from '@angular/material/datepicker';
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- Public date callbacks support any Material DateAdapter and its value type. */
 interface DatepickerProps extends FormlyFieldProps {
   datepickerOptions?: Partial<{
     touchUi: boolean;
@@ -35,6 +36,8 @@ interface DatepickerProps extends FormlyFieldProps {
     startAt: any | null;
   }>;
 }
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export interface FormlyDatepickerFieldConfig extends FormlyFieldConfig<DatepickerProps> {
   type: 'datepicker' | Type<FormlyFieldDatepicker>;
@@ -93,6 +96,7 @@ export class FormlyFieldDatepicker
   extends FieldType<FieldTypeConfig<DatepickerProps>>
   implements AfterViewInit, OnDestroy
 {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public templates retain their consumer-defined context types.
   @ViewChild('datepickerToggle', { static: true }) datepickerToggle!: TemplateRef<any>;
 
   override defaultOptions = {
@@ -130,15 +134,19 @@ export class FormlyFieldDatepicker
 
     // temporary fix for https://github.com/angular/components/issues/16761
     if (this.config.getValidatorMessage('matDatepickerParse')) {
-      this.fieldErrorsObserver = observe<any>(this.field, ['formControl', 'errors'], ({ currentValue }) => {
-        if (currentValue && currentValue.required && currentValue.matDatepickerParse) {
-          const errors = Object.keys(currentValue)
-            .sort((prop) => (prop === 'matDatepickerParse' ? -1 : 0))
-            .reduce((errors, prop) => ({ ...errors, [prop]: currentValue[prop] }), {});
+      this.fieldErrorsObserver = observe<import('@angular/forms').ValidationErrors>(
+        this.field,
+        ['formControl', 'errors'],
+        ({ currentValue }) => {
+          if (currentValue && currentValue.required && currentValue.matDatepickerParse) {
+            const errors = Object.keys(currentValue)
+              .sort((prop) => (prop === 'matDatepickerParse' ? -1 : 0))
+              .reduce((errors, prop) => ({ ...errors, [prop]: currentValue[prop] }), {});
 
-          this.fieldErrorsObserver?.setValue(errors);
-        }
-      });
+            this.fieldErrorsObserver?.setValue(errors);
+          }
+        },
+      );
     }
   }
 

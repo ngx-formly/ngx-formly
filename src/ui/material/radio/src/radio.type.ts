@@ -69,6 +69,8 @@ export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> imp
 
   override ngOnDestroy() {
     super.ngOnDestroy();
-    this.focusObserver && this.focusObserver.unsubscribe();
+    if (this.focusObserver) {
+      this.focusObserver.unsubscribe();
+    }
   }
 }

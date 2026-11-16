@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Expression evaluation preserves JavaScript coercion of user-defined values. */
 // CSP-compliant expression parser for Formly expressions
 // Supports: model.path, formState.path, field.path, comparisons, logical operators, and negation
 

@@ -31,7 +31,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   @Input() id: string;
 
   private document: Document;
-  private uiAttributesCache: any = {};
+  private uiAttributesCache: Record<string, unknown> = {};
   private uiAttributes: string[];
   private focusObserver: IObserver<boolean>;
 
@@ -43,7 +43,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   private uiEvents = {
     listeners: [] as (() => void)[],
     events: ['click', 'keyup', 'keydown', 'keypress', 'focus', 'blur', 'change', 'wheel'],
-    callback: (eventName: string, $event: any) => {
+    callback: (eventName: string, $event: unknown) => {
       switch (eventName) {
         case 'focus':
           return this.onFocus($event);
@@ -68,7 +68,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   constructor(
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Inject(DOCUMENT) _document: any,
+    @Inject(DOCUMENT) _document: Document,
     @Optional() private formlyField?: FormlyField,
   ) {
     this.document = _document;
@@ -76,7 +76,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.field) {
-      this.field.name && this.setAttribute('name', this.field.name);
+      if (this.field.name) {
+        this.setAttribute('name', this.field.name);
+      }
       this.uiEvents.listeners.forEach((listener) => listener());
       this.uiEvents.events.forEach((eventName) => {
         if (this.props?.[eventName] || ['focus', 'blur', 'change'].indexOf(eventName) !== -1) {
@@ -110,7 +112,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
         previousField?._elementRefs?.length ? undefined : previousField,
       );
       if (this.fieldAttrElements.length === 1) {
-        !this.id && this.field.id && this.setAttribute('id', this.field.id);
+        if (!this.id && this.field.id) {
+          this.setAttribute('id', this.field.id);
+        }
         this.focusObserver = observe<boolean>(this.field, ['focus'], ({ currentValue }) => {
           this.toggleFocus(currentValue);
         });
@@ -184,18 +188,18 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
   }
 
-  onFocus($event: any) {
+  onFocus($event: unknown) {
     this.focusObserver?.setValue(true);
     this.props.focus?.(this.field, $event);
   }
 
-  onBlur($event: any) {
+  onBlur($event: unknown) {
     this.focusObserver?.setValue(false);
     this.props.blur?.(this.field, $event);
   }
 
   // handle custom `change` event, for regular ones rely on DOM listener
-  onHostChange($event: any) {
+  onHostChange($event: unknown) {
     if ($event instanceof Event) {
       return;
     }
@@ -203,7 +207,7 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     this.onChange($event);
   }
 
-  onChange($event: any) {
+  onChange($event: unknown) {
     this.props.change?.(this.field, $event);
     this.field.formControl?.markAsDirty();
   }
@@ -228,9 +232,9 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
   }
 
-  private getSafeAttributeValue(attr: string, value: any): string {
+  private getSafeAttributeValue(attr: string, value: unknown): string {
     if (attr === 'pattern') {
-      let pattern = value instanceof RegExp ? value.source : value;
+      let pattern = value instanceof RegExp ? value.source : (value as string);
 
       // 1. Safely escape unescaped hyphens inside character classes for 'v' flag compatibility
       pattern = pattern.replace(/(\[[^\]]*?)(?<!\\)-(.*?\])/g, '$1\\-$2');

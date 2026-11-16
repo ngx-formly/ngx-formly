@@ -10,7 +10,7 @@ import { DataService } from './data.service';
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [

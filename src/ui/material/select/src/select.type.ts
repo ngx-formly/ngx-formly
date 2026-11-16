@@ -2,14 +2,16 @@ import { Component, ChangeDetectionStrategy, Type, ViewChild } from '@angular/co
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { FieldTypeConfig, FormlyFieldConfig, ɵobserve as observe } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
-import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+import { FormlyFieldSelectProps, FormlySelectOption } from '@ngx-formly/core/select';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   multiple?: boolean;
   selectAllOption?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select API accepts arbitrary option objects and consumer-specific comparators.
   triggerLabel?: string | ((formValue: any) => string);
   disableOptionCentering?: boolean;
   typeaheadDebounceInterval?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select API accepts arbitrary option objects and consumer-specific comparators.
   compareWith?: (o1: any, o2: any) => boolean;
   panelClass?: string;
   panelWidth?: string | number | null;
@@ -76,22 +78,23 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
-  @ViewChild(MatSelect, { static: true }) set select(select: any) {
+  @ViewChild(MatSelect, { static: true }) set select(select: MatSelect) {
     observe(select, ['_parentFormField', '_textField'], ({ currentValue }) => {
       if (currentValue) {
-        select._preferredOverlayOrigin = select._parentFormField.getConnectedOverlayOrigin();
+        select._preferredOverlayOrigin = select['_parentFormField'].getConnectedOverlayOrigin();
       }
     });
   }
   override defaultOptions = {
     props: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select API accepts arbitrary option objects and consumer-specific comparators.
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },
     },
   };
 
-  private selectAllValue!: { options: any; value: any[] };
+  private selectAllValue!: { options: FormlySelectOption[]; value: unknown[] };
 
   get triggerLabel() {
     const { triggerLabel, multiple } = this.props;
@@ -103,9 +106,11 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
       return triggerLabel(this.value);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select API accepts arbitrary option objects and consumer-specific comparators.
     return multiple ? this.value.map((value: any) => value?.[triggerLabel]).join(', ') : this.value?.[triggerLabel];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select API accepts arbitrary option objects and consumer-specific comparators.
   getSelectAllState(options: any[]) {
     if (this.empty || this.value.length === 0) {
       return null;
@@ -114,6 +119,7 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
     return this.value.length !== this.getSelectAllValue(options).length ? 'indeterminate' : 'checked';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public select API accepts arbitrary option objects and consumer-specific comparators.
   toggleSelectAll(options: any[]) {
     const selectAllValue = this.getSelectAllValue(options);
     this.formControl.markAsDirty();
@@ -136,9 +142,9 @@ export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
     return this.props.attributes?.['aria-label'] as string;
   }
 
-  private getSelectAllValue(options: any[]) {
+  private getSelectAllValue(options: FormlySelectOption[]) {
     if (!this.selectAllValue || options !== this.selectAllValue.options) {
-      const flatOptions: any[] = [];
+      const flatOptions: FormlySelectOption[] = [];
       options.forEach((o) => (o.group ? flatOptions.push(...o.group) : flatOptions.push(o)));
 
       this.selectAllValue = {

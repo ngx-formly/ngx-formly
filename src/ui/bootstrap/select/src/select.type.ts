@@ -5,6 +5,7 @@ import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
   multiple?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public comparators must accept consumer-specific option value types.
   compareWith?: (o1: any, o2: any) => boolean;
 }
 
@@ -85,6 +86,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   override defaultOptions = {
     props: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public comparators must accept consumer-specific option value types.
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },

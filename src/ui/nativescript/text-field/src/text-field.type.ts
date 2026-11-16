@@ -6,6 +6,7 @@ interface InputProps extends FormlyFieldProps {
   autocorrect?: boolean;
   secure?: boolean;
   hint?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Keep the existing public keyboard configuration type for NativeScript consumers.
   keyboardType?: any;
 }
 

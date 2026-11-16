@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Public model and callback types must accept consumer-defined values. */
 import {
   UntypedFormGroup,
   UntypedFormArray,

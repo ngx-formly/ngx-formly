@@ -13,15 +13,14 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 })
 // https://github.com/angular/angular/issues/7341
 export class FileValueAccessor implements ControlValueAccessor {
-  value: any;
-  onChange = (_: any) => {};
+  onChange = (_: FileList | null) => {};
   onTouched = () => {};
 
-  writeValue(_value: any) {}
-  registerOnChange(fn: any) {
+  writeValue(_value: FileList | null) {}
+  registerOnChange(fn: (files: FileList | null) => void) {
     this.onChange = fn;
   }
-  registerOnTouched(fn: any) {
+  registerOnTouched(fn: () => void) {
     this.onTouched = fn;
   }
 }

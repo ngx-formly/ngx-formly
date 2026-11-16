@@ -13,7 +13,7 @@ export function ipValidator(control: AbstractControl): ValidationErrors {
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [
@@ -50,7 +50,8 @@ export class AppComponent {
       validators: {
         ip: {
           expression: (c: AbstractControl) => !c.value || /(\d{1,3}\.){3}\d{1,3}/.test(c.value),
-          message: (error: any, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
+          message: (error: unknown, field: FormlyFieldConfig) =>
+            `"${field.formControl.value}" is not a valid IP Address`,
         },
       },
     },

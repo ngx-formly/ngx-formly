@@ -11,7 +11,7 @@ import { FormlyForm } from '@ngx-formly/core';
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {
+  model: { investmentsCount: number; investments: string[] } = {
     investmentsCount: 3,
     investments: [],
   };

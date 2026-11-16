@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
-interface TextAreaProps extends FormlyFieldProps {}
+type TextAreaProps = FormlyFieldProps;
 
 export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaProps> {
   type: 'textarea' | Type<FormlyFieldTextArea>;

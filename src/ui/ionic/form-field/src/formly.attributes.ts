@@ -14,7 +14,7 @@ import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class IonFormlyAttributes extends FormlyAttributes {
   @Input('ionFormlyAttributes') override field: FormlyFieldConfig;
-  constructor(renderer: Renderer2, elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
+  constructor(renderer: Renderer2, elementRef: ElementRef, @Inject(DOCUMENT) _document: Document) {
     super(renderer, elementRef, _document);
   }
 }

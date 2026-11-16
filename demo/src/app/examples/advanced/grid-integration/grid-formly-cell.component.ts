@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormlyField, FormlyFieldConfig } from '@ngx-formly/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { ICellRendererParams } from 'ag-grid-community';
 
 @Component({
   selector: 'formly-ag-grid-cell',
@@ -8,9 +9,9 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
   imports: [FormlyField],
 })
 export class GridFormlyCellComponent implements ICellRendererAngularComp {
-  private params: any;
+  private params: ICellRendererParams;
 
-  agInit(params: any): void {
+  agInit(params: ICellRendererParams): void {
     this.params = params;
   }
 
@@ -19,7 +20,7 @@ export class GridFormlyCellComponent implements ICellRendererAngularComp {
   }
 
   getField(): FormlyFieldConfig {
-    const rowIndex = this.params.rowIndex;
+    const rowIndex = this.params.node.rowIndex;
     const prop = this.params.colDef.field;
     const parentField = this.params.context.parentField;
 

@@ -8,11 +8,11 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent {
-  @ViewChild('hintStart', { static: true }) hintStart!: TemplateRef<any>;
-  @ViewChild('hintEnd', { static: true }) hintEnd!: TemplateRef<any>;
+  @ViewChild('hintStart', { static: true }) hintStart!: TemplateRef<unknown>;
+  @ViewChild('hintEnd', { static: true }) hintEnd!: TemplateRef<unknown>;
 
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [

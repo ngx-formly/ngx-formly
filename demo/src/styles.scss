@@ -62,7 +62,7 @@ body {
 }
 
 // Bootstrap
-// shortcut: Bootstrap 5 partials require @import; migrate to @use when they support independent Sass modules.
+// shortcut: angular.json silences @import warnings until Bootstrap supports independent Sass modules.
 @import 'bootstrap/scss/bootstrap-grid';
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/root';

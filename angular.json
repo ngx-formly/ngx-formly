@@ -32,7 +32,10 @@
             "optimization": false,
             "namedChunks": true,
             "stylePreprocessorOptions": {
-              "includePaths": ["./node_modules"]
+              "includePaths": ["./node_modules"],
+              "sass": {
+                "silenceDeprecations": ["import"]
+              }
             },
             "allowedCommonJsDependencies": ["json-formatter-js"],
             "browser": "demo/src/main.ts"

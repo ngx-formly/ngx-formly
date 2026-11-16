@@ -6,31 +6,37 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { FormlyFieldProps } from './form-field.wrapper';
 
 @Directive()
+ 
 export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
   extends CoreFieldType<F>
   implements OnDestroy, MatFormFieldControl<any>
 {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The Material adapter accepts custom control values and template contexts.
   @ViewChild('matPrefix') set matPrefix(prefix: TemplateRef<any>) {
     if (prefix) {
       this.props.prefix = prefix;
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The Material adapter accepts custom control values and template contexts.
   @ViewChild('matTextPrefix') set matTextPrefix(textPrefix: TemplateRef<any>) {
     if (textPrefix) {
       this.props.textPrefix = textPrefix;
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The Material adapter accepts custom control values and template contexts.
   @ViewChild('matSuffix') set matSuffix(suffix: TemplateRef<any>) {
     if (suffix) {
       this.props.suffix = suffix;
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The Material adapter accepts custom control values and template contexts.
   @ViewChild('matTextSuffix') set matTextSuffix(textSuffix: TemplateRef<any>) {
     if (textSuffix) {
       this.props.textSuffix = textSuffix;
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The Material adapter accepts custom control values and template contexts.
   @ViewChildren(MatFormFieldControl) set _controls(controls: QueryList<MatFormFieldControl<any>>) {
     this.attachControl(controls.length === 1 ? controls.first : this);
   }
@@ -41,7 +47,7 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
   _focused = false;
 
   ngOnDestroy() {
-    delete (this.formField as any)?._control;
+    delete this.formField?._control;
     this.stateChanges.complete();
   }
 
@@ -96,6 +102,7 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
     this.formControl?.patchValue(value);
   }
   get ngControl() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Retain the public ngControl bridge used by Material form-field consumers.
     return this.formControl as any;
   }
   get empty() {
@@ -105,14 +112,16 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
     return this.focused || !this.empty;
   }
   get formField(): MatFormField {
-    return (this.field as any)?.['_formField'];
+    return (this.field as F & { _formField?: MatFormField })?._formField;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The Material adapter accepts custom control values and template contexts.
   private attachControl(control: MatFormFieldControl<any>) {
     if (this.formField && control !== this.formField._control) {
       this.formField._control = control;
 
       // temporary fix for https://github.com/angular/material2/issues/6728
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Material value accessors carry private form-field backreferences.
       const ngControl = control?.ngControl as any;
       if (ngControl?.valueAccessor?.hasOwnProperty('_formField')) {
         ngControl.valueAccessor['_formField'] = this.formField;
@@ -122,7 +131,7 @@ export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
       }
 
       ['prefix', 'suffix', 'textPrefix', 'textSuffix'].forEach((type) =>
-        observe<TemplateRef<any>>(
+        observe<TemplateRef<unknown>>(
           this.field,
           ['props', type],
           ({ currentValue }) =>

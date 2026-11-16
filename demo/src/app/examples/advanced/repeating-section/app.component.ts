@@ -9,7 +9,7 @@ import { FormlyForm, FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/co
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {
+  model: { tasks: (string | null)[] } = {
     tasks: [null],
   };
   options: FormlyFormOptions = {};
