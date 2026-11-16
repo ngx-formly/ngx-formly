@@ -1,3 +1,4 @@
+import { FormlyValueChangeEvent } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import {
   FormlyModule,
@@ -101,7 +102,7 @@ describe('FormlyValidationMessage Component', () => {
     it('should handle expressions changes', () => {
       const { query, field, detectChanges } = renderComponent({
         key: 'title',
-        options: { fieldChanges: new Subject<any>() },
+        options: { fieldChanges: new Subject<FormlyValueChangeEvent>() },
         validators: {
           required: {
             expression: () => false,

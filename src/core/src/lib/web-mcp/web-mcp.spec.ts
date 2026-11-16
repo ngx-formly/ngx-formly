@@ -1,6 +1,6 @@
 import { Component, PLATFORM_ID, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { BehaviorSubject, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import {
@@ -35,6 +35,7 @@ class StandaloneHost {
 }
 
 describe('WebMCP', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The fake registry also accepts malformed and conflicting tool descriptors.
   let registered: Map<string, any>;
   let api: { registerTool: ReturnType<typeof vi.fn> };
   let original: PropertyDescriptor;
@@ -43,13 +44,13 @@ describe('WebMCP', () => {
   const render = (
     fields = [field()],
     config: ConfigOption = { extras: { webMcp: true } },
-    model: any = {},
+    model: FormlyFieldConfig['model'] = {},
     options: FormlyFormOptions = { webMcp: { name: 'test' } },
   ) => {
     return createComponent({
       template:
         '<formly-form [form]="form" [fields]="fields" [model]="model" [options]="options" (modelChange)="changed($event)" />',
-      inputs: { fields, form: new FormGroup<any>({}), model, options, changed: vi.fn() },
+      inputs: { fields, form: new UntypedFormGroup({}), model, options, changed: vi.fn() },
       imports: [FormlyInputModule, Repeat],
       config: {
         ...config,
@@ -92,7 +93,7 @@ describe('WebMCP', () => {
   afterEach(() => {
     TestBed.resetTestingModule();
     if (original) Object.defineProperty(document, 'modelContext', original);
-    else delete (document as any).modelContext;
+    else delete (document as Document & { modelContext?: unknown }).modelContext;
     vi.restoreAllMocks();
   });
 
@@ -325,7 +326,7 @@ describe('WebMCP', () => {
   it('waits for async validation, submits a snapshot once, and hides callback output', async () => {
     const submit = vi.fn(async (model) => {
       model.name = 'Callback copy';
-      return 'DO NOT LEAK' as any;
+      return 'DO NOT LEAK' as unknown as void;
     });
     const host = render(
       [field('name', { asyncValidators: { valid: { expression: () => of(true).pipe(delay(20)) } } })],
@@ -459,14 +460,14 @@ describe('WebMCP', () => {
 
   it('uses the navigator compatibility fallback', async () => {
     const saved = Object.getOwnPropertyDescriptor(navigator, 'modelContext');
-    delete (document as any).modelContext;
+    delete (document as Document & { modelContext?: unknown }).modelContext;
     Object.defineProperty(navigator, 'modelContext', { configurable: true, value: api });
     try {
       render();
       expect((await fill({ name: 'Alice' })).status).toBe('filled');
     } finally {
       if (saved) Object.defineProperty(navigator, 'modelContext', saved);
-      else delete (navigator as any).modelContext;
+      else delete (navigator as Navigator & { modelContext?: unknown }).modelContext;
     }
   });
 
@@ -476,7 +477,7 @@ describe('WebMCP', () => {
     await host.fixture.whenStable();
     expect(api.registerTool).not.toHaveBeenCalled();
     TestBed.resetTestingModule();
-    delete (document as any).modelContext;
+    delete (document as Document & { modelContext?: unknown }).modelContext;
     const browser = render();
     await browser.fixture.whenStable();
     expect(api.registerTool).not.toHaveBeenCalled();

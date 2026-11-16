@@ -4,6 +4,7 @@ import { AbstractControl } from '@angular/forms';
 import { FormlyFieldConfigCache } from './models';
 import { ChangeDetectorRef, ComponentRef, NgZone, TemplateRef, Type, VERSION, ɵNoopNgZone } from '@angular/core';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function disableTreeValidityCall(form: any, callback: () => void) {
   const _updateTreeValidity = form._updateTreeValidity.bind(form);
   form._updateTreeValidity = () => {};
@@ -59,6 +60,7 @@ export function getKeyPath(field: FormlyFieldConfigCache): string[] {
 
 export const FORMLY_VALIDATORS = ['required', 'pattern', 'minLength', 'maxLength', 'min', 'max', 'step'];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
   let paths = getKeyPath(field);
   if (paths.length === 0) {
@@ -81,6 +83,7 @@ export function assignFieldValue(field: FormlyFieldConfigCache, value: any) {
   assignModelValue(root.model, paths, value);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function assignModelValue(model: any, paths: string[], value: any) {
   for (let i = 0; i < paths.length - 1; i++) {
     const path = paths[i];
@@ -94,6 +97,7 @@ export function assignModelValue(model: any, paths: string[], value: any) {
   model[paths[paths.length - 1]] = clone(value);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function getFieldValue(field: FormlyFieldConfig): any {
   let model = field.parent ? field.parent.model : field.model;
   for (const path of getKeyPath(field)) {
@@ -106,6 +110,7 @@ export function getFieldValue(field: FormlyFieldConfig): any {
   return model;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function reverseDeepMerge(dest: any, ...args: any[]) {
   args.forEach((src) => {
     for (const srcArg in src) {
@@ -120,23 +125,23 @@ export function reverseDeepMerge(dest: any, ...args: any[]) {
 }
 
 // check a value is null or undefined
-export function isNil(value: any) {
+export function isNil(value: unknown) {
   return value == null;
 }
 
-export function isUndefined(value: any) {
+export function isUndefined(value: unknown) {
   return value === undefined;
 }
 
-export function isBlankString(value: any) {
+export function isBlankString(value: unknown) {
   return value === '';
 }
 
-export function isFunction(value: any) {
+export function isFunction(value: unknown) {
   return typeof value === 'function';
 }
 
-export function objAndSameType(obj1: any, obj2: any) {
+export function objAndSameType(obj1: unknown, obj2: unknown) {
   return (
     isObject(obj1) &&
     isObject(obj2) &&
@@ -145,14 +150,16 @@ export function objAndSameType(obj1: any, obj2: any) {
   );
 }
 
-export function isObject(x: any) {
+export function isObject(x: unknown) {
   return x != null && typeof x === 'object';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function isPromise(obj: any): obj is Promise<any> {
   return !!obj && typeof obj.then === 'function';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 function isKeptByReference(value: any) {
   return (
     !isObject(value) ||
@@ -164,6 +171,7 @@ function isKeptByReference(value: any) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function clone(value: any): any {
   if (isKeptByReference(value)) {
     return value;
@@ -225,6 +233,7 @@ export function clone(value: any): any {
   }, c);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function isEqualValue(a: any, b: any): boolean {
   if (Object.is(a, b)) {
     return true;
@@ -254,6 +263,7 @@ export function isEqualValue(a: any, b: any): boolean {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function defineHiddenProp(field: any, prop: string, defaultValue: any) {
   Object.defineProperty(field, prop, { enumerable: false, writable: true, configurable: true });
   field[prop] = defaultValue;
@@ -265,6 +275,7 @@ export interface IObserver<T> {
   unsubscribe: () => void;
 }
 interface IObserveTarget<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
   [prop: string]: any;
   _observers?: {
     [prop: string]: {
@@ -274,6 +285,7 @@ interface IObserveTarget<T> {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[], setFn: () => void): () => void {
   let observers: (() => void)[] = [];
 
@@ -282,7 +294,9 @@ export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[],
     observers = [];
   };
   const observer = observe(source, paths, ({ firstChange, currentValue }) => {
-    !firstChange && setFn();
+    if (!firstChange) {
+      setFn();
+    }
 
     unsubscribe();
     if (isObject(currentValue) && currentValue.constructor.name === 'Object') {
@@ -298,6 +312,7 @@ export function observeDeep<T = any>(source: IObserveTarget<T>, paths: string[],
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public model utilities retain arbitrary values and dynamically addressed extension properties.
 export function observe<T = any>(o: IObserveTarget<T>, paths: string[], setFn?: IObserveFn<T>): IObserver<T> {
   if (!o._observers) {
     defineHiddenProp(o, '_observers', {});

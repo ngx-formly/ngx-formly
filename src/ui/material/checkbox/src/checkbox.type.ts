@@ -82,9 +82,13 @@ export class FormlyFieldCheckbox
         this.field.focus = !!focusOrigin;
         this.stateChanges.next();
         if (focusOrigin) {
-          this.props.focus && this.props.focus(this.field);
+          if (this.props.focus) {
+            this.props.focus(this.field);
+          }
         } else {
-          this.props.blur && this.props.blur(this.field);
+          if (this.props.blur) {
+            this.props.blur(this.field);
+          }
         }
       });
     }

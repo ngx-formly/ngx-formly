@@ -8,6 +8,7 @@ import {
   ComponentRef,
   OnChanges,
   isSignal,
+  Type,
 } from '@angular/core';
 import { CopierService } from '../copier/copier.service';
 import JSONFormatter from 'json-formatter-js';
@@ -23,7 +24,7 @@ import { MatTabGroup, MatTab } from '@angular/material/tabs';
 export interface ExampleType {
   title: string;
   description: string;
-  component: any;
+  component: Type<{ model?: unknown; fields?: FormlyFieldConfig[] }>;
   deps?: string[];
   debug: boolean;
   files: { file: string; filecontent: string }[];
@@ -45,11 +46,11 @@ export class ExampleViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   exampleFiles: { file: string; content: string }[] = [];
-  _debugFields: any;
-  _prevModel: any;
+  _debugFields: FormlyFieldConfig[];
+  _prevModel: string;
 
   @ViewChild('demo', { read: ViewContainerRef, static: true }) demoRef!: ViewContainerRef;
-  demoComponentRef: ComponentRef<any>;
+  demoComponentRef: ComponentRef<InstanceType<ExampleType['component']>>;
 
   /** Whether the source for the example is being displayed. */
   showSource = false;

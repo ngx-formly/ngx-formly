@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 @Injectable()
 export class DataService {
@@ -8,7 +8,7 @@ export class DataService {
     { id: '2', name: 'Basketball' },
   ];
 
-  getSports(): Observable<any[]> {
+  getSports() {
     return of(this.sports);
   }
 }

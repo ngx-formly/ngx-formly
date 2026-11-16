@@ -628,8 +628,8 @@ describe('Array Field Type', () => {
         ],
       },
       {
+        declarations: [ArrayTypeComponent],
         config: {
-          declarations: [ArrayTypeComponent],
           types: [
             {
               name: 'array',

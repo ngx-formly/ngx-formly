@@ -62,6 +62,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
    * The form sets a `WritableSignal` to a copy of the model after each change.
    */
   @Input()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   set model(model: any) {
     this.modelSignalEffect?.destroy();
     this.modelSignal = undefined;
@@ -75,6 +76,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     this.setField({ model });
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   get model(): any {
     return this.field.model;
   }
@@ -99,6 +101,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   /** Event that is emitted when the model value is changed */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   @Output() modelChange = new EventEmitter<any>();
   /** Emits a build event asynchronously when the fields or form input changes. */
   @Output() fieldChange = new EventEmitter<FormlyValueChangeEvent>();
@@ -113,9 +116,10 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private webMcp?: { refresh(): void; destroy(): void };
   private webMcpLoading = false;
-  private _modelChangeValue: any = {};
+  private _modelChangeValue: unknown = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   private modelSignal?: WritableSignal<any>;
-  private modelSignalValue: any;
+  private modelSignalValue: unknown;
   private modelSignalEffect?: EffectRef;
   private valueChangesUnsubscribe = () => {};
   private readonly afterBuild = () => {
@@ -180,7 +184,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     let formEvents: Subscription | null = null;
     if (isSignalRequired()) {
       let submitted = this.options?.parentForm?.submitted;
-      formEvents = (this.form as any).events.subscribe(() => {
+      formEvents = this.form.events.subscribe(() => {
         if (submitted !== this.options?.parentForm?.submitted) {
           this.options.detectChanges(this.field);
           submitted = this.options?.parentForm?.submitted;
@@ -188,7 +192,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       });
     }
 
-    const fieldChangesDetection: any[] = [
+    const fieldChangesDetection: (() => void)[] = [
       observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
     ];
     const valueChanges = this.field.options.fieldChanges
@@ -226,7 +230,9 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (this.config.extras.immutable) {
       this.field = { ...this.field, ...clone(field) };
     } else {
-      Object.keys(field).forEach((p) => ((this.field as any)[p] = (field as any)[p]));
+      Object.keys(field).forEach(
+        (p) => ((this.field as Record<string, unknown>)[p] = (field as Record<string, unknown>)[p]),
+      );
     }
   }
 
@@ -272,6 +278,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   private bindModelSignal(model: WritableSignal<any>) {
     this.modelSignal = model;
     this.modelSignalValue = model();
@@ -292,7 +299,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     );
   }
 
-  private syncModelSignal(modelSignal: WritableSignal<any>, copy?: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
+  private syncModelSignal(modelSignal: WritableSignal<any>, copy?: unknown) {
     const current = untracked(modelSignal);
 
     if (current !== this.modelSignalValue || isEqualValue(this.model, current ?? {})) {
@@ -305,7 +313,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   // Formly mutates the root model, so bind a copy and leave the host's object untouched.
-  private useSignalValue(model: any) {
+  private useSignalValue(model: unknown) {
     this.setField({ model: this.config.extras.immutable ? model : clone(model) });
   }
 }

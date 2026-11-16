@@ -27,6 +27,7 @@ export interface FormlyJsonschemaOptions {
 
 interface FormlyJSONSchema7 extends JSONSchema7 {
   widget?: { formlyConfig: FormlyFieldConfig };
+  _ifCondition?: { property: string; value: JSONSchema7['const']; negate?: boolean };
 }
 
 // https://stackoverflow.com/a/27865285
@@ -45,15 +46,15 @@ function decimalPlaces(a: number) {
   return p;
 }
 
-function isEmpty(v: any) {
+function isEmpty(v: unknown) {
   return v === '' || v == null;
 }
 
-function isObject(v: any) {
+function isObject(v: unknown) {
   return v != null && typeof v === 'object' && !Array.isArray(v);
 }
 
-function isInteger(value: any) {
+function isInteger(value: unknown) {
   return Number.isInteger ? Number.isInteger(value) : typeof value === 'number' && Math.floor(value) === value;
 }
 
@@ -106,7 +107,7 @@ interface IOptions extends FormlyJsonschemaOptions {
   readOnly?: boolean;
   key?: FormlyFieldConfig['key'];
   isOptional?: boolean;
-  conditionalSchemas?: JSONSchema7[];
+  conditionalSchemas?: FormlyJSONSchema7[];
   skipMultiSchemaValidation?: boolean;
 }
 
@@ -234,7 +235,7 @@ export class FormlyJsonschema {
 
             return v;
           },
-        ] as ((value: any, f?: FormlyFieldConfig) => any)[];
+        ] as ((value: unknown, f?: FormlyFieldConfig) => unknown)[];
 
         if (schema.hasOwnProperty('minimum')) {
           field.props.min = schema.minimum;
@@ -287,11 +288,11 @@ export class FormlyJsonschema {
 
             return v;
           },
-        ] as ((value: any, f?: FormlyFieldConfig) => any)[];
+        ] as ((value: unknown, f?: FormlyFieldConfig) => unknown)[];
 
-        ['minLength', 'maxLength', 'pattern'].forEach((prop) => {
+        (['minLength', 'maxLength', 'pattern'] as const).forEach((prop) => {
           if (schema.hasOwnProperty(prop)) {
-            field.props[prop] = (schema as any)[prop];
+            (field.props as Record<string, unknown>)[prop] = schema[prop];
           }
         });
         break;
@@ -380,7 +381,7 @@ export class FormlyJsonschema {
 
         // Process if/then/else conditional schemas
         if (options.conditionalSchemas) {
-          const conditionalSchemas = options.conditionalSchemas as Array<JSONSchema7 & { _ifCondition: any }>;
+          const conditionalSchemas = options.conditionalSchemas;
           conditionalSchemas.forEach((conditionalSchema) => {
             const condition = conditionalSchema._ifCondition;
             if (condition && conditionalSchema.properties) {
@@ -448,12 +449,12 @@ export class FormlyJsonschema {
 
             const uniqueItems = Array.from(
               new Set(
-                value.map((v: any) =>
+                value.map((v: unknown) =>
                   JSON.stringify(v, (k, o) => {
                     if (isObject(o)) {
                       return Object.keys(o)
                         .sort()
-                        .reduce((obj: any, key) => {
+                        .reduce((obj: Record<string, unknown>, key) => {
                           obj[key] = o[key];
                           return obj;
                         }, {});
@@ -610,20 +611,16 @@ export class FormlyJsonschema {
       }
 
       // resolve to min value
-      (
-        ['maxLength', 'maximum', 'exclusiveMaximum', 'maxItems', 'maxProperties'] as (keyof FormlyJSONSchema7)[]
-      ).forEach((prop) => {
+      (['maxLength', 'maximum', 'exclusiveMaximum', 'maxItems', 'maxProperties'] as const).forEach((prop) => {
         if (!isEmpty(base[prop]) && !isEmpty(schema[prop])) {
-          (base as any)[prop] = base[prop] < schema[prop] ? base[prop] : schema[prop];
+          base[prop] = base[prop] < schema[prop] ? base[prop] : schema[prop];
         }
       });
 
       // resolve to max value
-      (
-        ['minLength', 'minimum', 'exclusiveMinimum', 'minItems', 'minProperties'] as (keyof FormlyJSONSchema7)[]
-      ).forEach((prop) => {
+      (['minLength', 'minimum', 'exclusiveMinimum', 'minItems', 'minProperties'] as const).forEach((prop) => {
         if (!isEmpty(base[prop]) && !isEmpty(schema[prop])) {
-          (base as any)[prop] = base[prop] > schema[prop] ? base[prop] : schema[prop];
+          base[prop] = base[prop] > schema[prop] ? base[prop] : schema[prop];
         }
       });
 
@@ -872,7 +869,11 @@ export class FormlyJsonschema {
       ? null
       : pointer
           .split('/')
-          .reduce((def, path) => (def?.hasOwnProperty(path) ? (def as any)[path] : null), options.schema);
+          .reduce(
+            (def, path) =>
+              def?.hasOwnProperty(path) ? (def as unknown as Record<string, FormlyJSONSchema7>)[path] : null,
+            options.schema,
+          );
 
     if (!definition) {
       throw Error(`Cannot find a definition for ${schema.$ref}.`);
@@ -884,13 +885,16 @@ export class FormlyJsonschema {
 
     return {
       ...definition,
-      ...['title', 'description', 'default', 'widget'].reduce((annotation, p) => {
-        if (schema.hasOwnProperty(p)) {
-          annotation[p] = (schema as any)[p];
-        }
+      ...['title', 'description', 'default', 'widget'].reduce(
+        (annotation, p) => {
+          if (schema.hasOwnProperty(p)) {
+            annotation[p] = schema[p as keyof FormlyJSONSchema7];
+          }
 
-        return annotation;
-      }, {} as any),
+          return annotation;
+        },
+        {} as Record<string, unknown>,
+      ),
     };
   }
 
@@ -918,7 +922,7 @@ export class FormlyJsonschema {
     return { propDeps, schemaDeps };
   }
 
-  private extractIfCondition(ifSchema: JSONSchema7): { property: string; value: any } | null {
+  private extractIfCondition(ifSchema: JSONSchema7): { property: string; value: JSONSchema7['const'] } | null {
     // Extract the property and const value from the "if" schema
     // Supports: { "properties": { "propName": { "const": value } } }
     if (ifSchema.properties) {
@@ -935,7 +939,7 @@ export class FormlyJsonschema {
 
   private resolveIfThenElse(schema: JSONSchema7, options: IOptions): JSONSchema7[] {
     // Process if/then/else and return array of conditional schemas to add to fieldGroup
-    const conditionalSchemas: JSONSchema7[] = [];
+    const conditionalSchemas: FormlyJSONSchema7[] = [];
 
     if (schema.if && typeof schema.if === 'object') {
       const condition = this.extractIfCondition(schema.if as JSONSchema7);
@@ -946,7 +950,7 @@ export class FormlyJsonschema {
           conditionalSchemas.push({
             ...resolvedSchema,
             _ifCondition: condition,
-          } as any);
+          });
         }
 
         // Process "else" branch
@@ -955,7 +959,7 @@ export class FormlyJsonschema {
           conditionalSchemas.push({
             ...resolvedSchema,
             _ifCondition: { property: condition.property, value: condition.value, negate: true },
-          } as any);
+          });
         }
       }
     }
@@ -1011,14 +1015,19 @@ export class FormlyJsonschema {
     );
   }
 
-  private toEnumOptions(schema: JSONSchema7): { value: any; label: any }[] {
+  private toEnumOptions(
+    schema: JSONSchema7,
+  ): { value: JSONSchema7['const']; label: JSONSchema7['const']; disabled?: boolean }[] {
     if (schema.enum) {
       return schema.enum.map((value) => ({ value, label: value }));
     }
 
     const toEnum = (s: JSONSchema7) => {
       const value = s.hasOwnProperty('const') ? s.const : s.enum[0];
-      const option: any = { value, label: s.title || value };
+      const option: { value: JSONSchema7['const']; label: JSONSchema7['const']; disabled?: boolean } = {
+        value,
+        label: s.title || value,
+      };
       if (s.readOnly) {
         option.disabled = true;
       }
@@ -1077,13 +1086,14 @@ export class FormlyJsonschema {
         options: {},
       });
     } else {
-      (field as any).model = model;
+      (field as { model?: FormlyFieldConfig['model'] }).model = model;
       root.options.build(field);
     }
 
     return field.form.valid;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Widget configuration can contain recursively nested values and custom extension keys.
   private mergeFields(f1: any, f2: any) {
     for (const prop in f2) {
       const f1Prop = prop === 'templateOptions' ? 'props' : prop;

@@ -40,8 +40,8 @@ import { MatIcon } from '@angular/material/icon';
   imports: [NgStyle, MatIcon],
 })
 export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
-  @ViewChild('matPrefix', { static: true }) matPrefix!: TemplateRef<any>;
-  @ViewChild('matSuffix', { static: true }) matSuffix!: TemplateRef<any>;
+  @ViewChild('matPrefix', { static: true }) matPrefix!: TemplateRef<unknown>;
+  @ViewChild('matSuffix', { static: true }) matSuffix!: TemplateRef<unknown>;
 
   ngAfterViewInit() {
     if (this.matPrefix) {
@@ -55,13 +55,13 @@ export class FormlyWrapperAddons extends FieldWrapper implements AfterViewInit {
     }
   }
 
-  addonRightClick($event: any) {
+  addonRightClick($event: MouseEvent) {
     if (this.props.addonRight.onClick) {
       this.props.addonRight.onClick(this.to, this, $event);
     }
   }
 
-  addonLeftClick($event: any) {
+  addonLeftClick($event: MouseEvent) {
     if (this.props.addonLeft.onClick) {
       this.props.addonLeft.onClick(this.to, this, $event);
     }

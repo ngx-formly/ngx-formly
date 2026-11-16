@@ -7,7 +7,7 @@ describe('registerControl', () => {
     const field = {
       key: '0',
       formControl: new FormControl(),
-      form: new FormArray([]) as any,
+      form: new FormArray([]),
       parent: {
         model: {},
       },
@@ -85,7 +85,7 @@ describe('registerControl', () => {
     const field = {
       key: '0',
       formControl: new FormControl(),
-      form: new FormArray([new FormControl()]) as any,
+      form: new FormArray([new FormControl()]),
       parent: {
         model: {},
       },
