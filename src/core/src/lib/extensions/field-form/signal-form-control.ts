@@ -1,9 +1,10 @@
-import { EventEmitter, Injector, signal, WritableSignal } from '@angular/core';
+import { Injector, signal, WritableSignal } from '@angular/core';
 import {
   AbstractControl,
   AbstractControlOptions,
   AsyncValidatorFn,
   FormControlState,
+  FormControlStatus,
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
@@ -83,9 +84,9 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     // SignalFormControl emits its status from an effect, after the call that asked for `emitEvent: false` returned.
     // The effect also runs again when the status was read between two writes that cancel out (a group validator
     // that clears and sets an error on this control), so an unchanged status is not emitted.
-    const statusChanges = this.statusChanges as EventEmitter<string>;
+    const statusChanges = this.statusChanges;
     const emit = statusChanges.emit.bind(statusChanges);
-    statusChanges.emit = (status: string) => {
+    statusChanges.emit = (status: FormControlStatus) => {
       if (status !== this.lastStatus) {
         this.lastStatus = status;
         emit(status);
