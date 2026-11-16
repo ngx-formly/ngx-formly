@@ -20,7 +20,9 @@ import {
   untracked,
   effect,
   isWritableSignal,
+  PLATFORM_ID,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache, FormlyValueChangeEvent } from '../models';
 import { FormlyFormBuilder } from '../services/formly.builder';
@@ -60,6 +62,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
    * The form sets a `WritableSignal` to a copy of the model after each change.
    */
   @Input()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   set model(model: any) {
     this.modelSignalEffect?.destroy();
     this.modelSignal = undefined;
@@ -73,6 +76,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
 
     this.setField({ model });
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   get model(): any {
     return this.field.model;
   }
@@ -97,6 +101,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   /** Event that is emitted when the model value is changed */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   @Output() modelChange = new EventEmitter<any>();
   /** Emits a build event asynchronously when the fields or form input changes. */
   @Output() fieldChange = new EventEmitter<FormlyValueChangeEvent>();
@@ -108,15 +113,20 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   private readonly destroyRef = inject(DestroyRef);
   private readonly pendingTasks = inject(PendingTasks);
   private readonly injector = inject(Injector);
-  private _modelChangeValue: any = {};
+  private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
+  private webMcp?: { refresh(): void; destroy(): void };
+  private webMcpLoading = false;
+  private _modelChangeValue: unknown = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   private modelSignal?: WritableSignal<any>;
-  private modelSignalValue: any;
+  private modelSignalValue: unknown;
   private modelSignalEffect?: EffectRef;
   private valueChangesUnsubscribe = () => {};
   private readonly afterBuild = () => {
     if (this.modelSignal) {
       this.syncModelSignal(this.modelSignal);
     }
+    this.checkWebMcp();
   };
 
   constructor(
@@ -130,6 +140,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (this.config.extras.checkExpressionOn === 'changeDetectionCheck') {
       this.checkExpressionChange();
     }
+    this.checkWebMcp();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -137,7 +148,12 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       clearControl(this.form);
     }
 
-    if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {
+    if (
+      changes.fields ||
+      changes.form ||
+      (changes.options && this.webMcp) ||
+      (changes.model && this._modelChangeValue !== changes.model.currentValue)
+    ) {
       this.build();
     }
 
@@ -152,6 +168,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.webMcp?.destroy();
     this.valueChangesUnsubscribe();
     this.config.clearRefs();
     this.field.options?._afterBuild?.delete(this.afterBuild);
@@ -167,7 +184,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     let formEvents: Subscription | null = null;
     if (isSignalRequired()) {
       let submitted = this.options?.parentForm?.submitted;
-      formEvents = (this.form as any).events.subscribe(() => {
+      formEvents = this.form.events.subscribe(() => {
         if (submitted !== this.options?.parentForm?.submitted) {
           this.options.detectChanges(this.field);
           submitted = this.options?.parentForm?.submitted;
@@ -175,7 +192,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
       });
     }
 
-    const fieldChangesDetection: any[] = [
+    const fieldChangesDetection: (() => void)[] = [
       observeDeep(this.field.options, ['formState'], () => this.field.options.detectChanges(this.field)),
     ];
     const valueChanges = this.field.options.fieldChanges
@@ -213,23 +230,55 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     if (this.config.extras.immutable) {
       this.field = { ...this.field, ...clone(field) };
     } else {
-      Object.keys(field).forEach((p) => ((this.field as any)[p] = (field as any)[p]));
+      Object.keys(field).forEach(
+        (p) => ((this.field as Record<string, unknown>)[p] = (field as Record<string, unknown>)[p]),
+      );
     }
   }
 
   private build() {
     this.valueChangesUnsubscribe();
-    if (this.modelSignal) {
-      const options = (this.field.options ??= {});
-      if (!options._afterBuild) {
-        defineHiddenProp(options, '_afterBuild', new Set());
-      }
-      options._afterBuild.add(this.afterBuild);
+    const options = (this.field.options ??= {});
+    if (!options._afterBuild) {
+      defineHiddenProp(options, '_afterBuild', new Set());
     }
+    options._afterBuild.add(this.afterBuild);
     this.builder.build(this.field);
     this.valueChangesUnsubscribe = this.valueChanges();
   }
 
+  private checkWebMcp() {
+    if (!this.browser || this.destroyRef.destroyed || !this.options?.fieldChanges) return;
+    if (this.webMcp) {
+      this.webMcp.refresh();
+      return;
+    }
+    if (this.webMcpLoading) return;
+    const hosts = globalThis as unknown as {
+      document?: { modelContext?: unknown };
+      navigator?: { modelContext?: unknown };
+    };
+    if (!hosts.document?.modelContext && !hosts.navigator?.modelContext) return;
+    const participates = (field: FormlyFieldConfig, inherited: boolean): boolean => {
+      const enabled = field.webMcp ?? inherited;
+      return field.fieldGroup
+        ? field.fieldGroup.some((child) => child && participates(child, enabled))
+        : enabled && !!field.formControl;
+    };
+    if (!participates(this.field, !!this.config.extras.webMcp)) return;
+    this.webMcpLoading = true;
+    this.ngZone.runOutsideAngular(() => {
+      void import('../web-mcp/web-mcp')
+        .then(({ createWebMcp, modelContext }) => {
+          if (!this.destroyRef.destroyed && modelContext()) {
+            this.webMcp = createWebMcp(() => this.field, this.config, this.ngZone);
+          }
+        })
+        .catch(() => console.error('Formly could not load WebMCP support.'));
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
   private bindModelSignal(model: WritableSignal<any>) {
     this.modelSignal = model;
     this.modelSignalValue = model();
@@ -250,7 +299,8 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
     );
   }
 
-  private syncModelSignal(modelSignal: WritableSignal<any>, copy?: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public form model accepts consumer-defined values and writable signals of those values.
+  private syncModelSignal(modelSignal: WritableSignal<any>, copy?: unknown) {
     const current = untracked(modelSignal);
 
     if (current !== this.modelSignalValue || isEqualValue(this.model, current ?? {})) {
@@ -263,7 +313,7 @@ export class FormlyForm implements DoCheck, OnChanges, OnDestroy {
   }
 
   // Formly mutates the root model, so bind a copy and leave the host's object untouched.
-  private useSignalValue(model: any) {
+  private useSignalValue(model: unknown) {
     this.setField({ model: this.config.extras.immutable ? model : clone(model) });
   }
 }

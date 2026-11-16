@@ -23,9 +23,12 @@ export class FieldValidationExtension implements FormlyExtension {
 
     if (field[type]) {
       for (const validatorName of Object.keys(field[type])) {
-        validatorName === 'validation'
-          ? validators.push(...field[type].validation.map((v: any) => this.wrapNgValidatorFn(field, v)))
-          : validators.push(this.wrapNgValidatorFn(field, field[type][validatorName], validatorName));
+        if (validatorName === 'validation') {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Custom validators support boolean results, error maps, promises, and observables.
+          validators.push(...field[type].validation.map((v: any) => this.wrapNgValidatorFn(field, v)));
+        } else {
+          validators.push(this.wrapNgValidatorFn(field, field[type][validatorName], validatorName));
+        }
       }
     }
 
@@ -123,6 +126,7 @@ export class FieldValidationExtension implements FormlyExtension {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Custom validators support boolean results, error maps, promises, and observables.
   private wrapNgValidatorFn(field: FormlyFieldConfigCache, validator: any, validatorName?: string) {
     let validatorOption: ValidatorOption;
     if (typeof validator === 'string') {
@@ -164,6 +168,7 @@ export class FieldValidationExtension implements FormlyExtension {
     }
 
     return (control: AbstractControl) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Custom validators support boolean results, error maps, promises, and observables.
       const errors: any = validatorOption.validation(control, field, validatorOption.options);
       if (isPromise(errors)) {
         return errors.then((v) => this.handleResult(field, validatorName ? !!v : v, validatorOption));
@@ -177,6 +182,7 @@ export class FieldValidationExtension implements FormlyExtension {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Custom validators support boolean results, error maps, promises, and observables.
   private handleResult(field: FormlyFieldConfigCache, errors: any, { name, options }: ValidatorOption) {
     if (typeof errors === 'boolean') {
       errors = errors ? null : { [name]: options ? options : true };
@@ -194,7 +200,9 @@ export class FieldValidationExtension implements FormlyExtension {
           const { errorPath: _errorPath, ...opts } = errors[name];
           childCtrl.setErrors({ ...(childCtrl.errors || {}), [name]: opts });
 
-          !ctrl._childrenErrors && defineHiddenProp(ctrl, '_childrenErrors', {});
+          if (!ctrl._childrenErrors) {
+            defineHiddenProp(ctrl, '_childrenErrors', {});
+          }
           ctrl._childrenErrors[name] = () => {
             const { [name]: _toDelete, ...childErrors } = childCtrl.errors || {};
             childCtrl.setErrors(Object.keys(childErrors).length === 0 ? null : childErrors);

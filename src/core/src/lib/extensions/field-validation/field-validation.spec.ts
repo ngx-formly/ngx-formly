@@ -26,12 +26,12 @@ function buildField(field: FormlyFieldConfigCache): FormlyFieldConfigCache {
   return field;
 }
 
-function validate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
+function validate(field: FormlyFieldConfigCache, value: unknown, errors: ValidationErrors) {
   const formControl = new FormControl(value, { validators: field._validators });
   expect(formControl.errors).toEqual(errors);
 }
 
-async function asyncValidate(field: FormlyFieldConfigCache, value: any, errors: ValidationErrors) {
+async function asyncValidate(field: FormlyFieldConfigCache, value: unknown, errors: ValidationErrors) {
   const formControl = new FormControl(value, { asyncValidators: field._asyncValidators });
   if (formControl.pending) {
     await firstValueFrom(formControl.statusChanges);

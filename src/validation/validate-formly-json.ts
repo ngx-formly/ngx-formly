@@ -19,6 +19,7 @@ type Path = ConfigurationDiagnostic['path'];
 type Shape = Record<string, Node['type']>;
 
 const FIELD_SHAPE = {
+  webMcp: 'boolean',
   type: 'string',
   id: 'string',
   name: 'string',

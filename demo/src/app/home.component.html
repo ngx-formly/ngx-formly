@@ -23,12 +23,31 @@
   <section class="playground home-container" aria-labelledby="playground-title">
     <div class="section-intro">
       <h2 id="playground-title">You define the fields.<br /><span>Formly does the rest.</span></h2>
-      <p>Labels, validation, and model updates, all from one configuration. Try the form and watch the model change.</p>
+      <p id="playground-instructions">
+        Edit the labels or required rules, then try the form and watch the model change.
+      </p>
     </div>
     <div class="example">
       <div class="source-panel">
-        <div class="panel-heading"><span>Field configuration</span><span class="file-type">TypeScript</span></div>
-        <pre aria-label="Formly field configuration"><code [innerHTML]="schema"></code></pre>
+        <div class="panel-heading">
+          <label for="field-configuration">Field configuration</label><span class="file-type">Editable JSON</span>
+        </div>
+        <textarea
+          id="field-configuration"
+          class="configuration-editor"
+          rows="20"
+          spellcheck="false"
+          autocapitalize="off"
+          [value]="schema"
+          (input)="updateSchema($any($event.target).value)"
+          [attr.aria-invalid]="!!schemaError"
+          [attr.aria-describedby]="
+            schemaError ? 'playground-instructions configuration-error' : 'playground-instructions'
+          "
+        ></textarea>
+        @if (schemaError) {
+          <p id="configuration-error" class="configuration-error" role="alert">{{ schemaError }}</p>
+        }
       </div>
       <div class="preview-panel">
         <div class="panel-heading"><span>Your form</span><span class="live-label">Live preview</span></div>

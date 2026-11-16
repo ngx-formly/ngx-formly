@@ -9,7 +9,7 @@ import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/co
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
 
   fields: FormlyFieldConfig[] = [
@@ -76,7 +76,8 @@ export class AppComponent {
       },
       validation: {
         messages: {
-          pattern: (error: any, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid IP Address`,
+          pattern: (error: unknown, field: FormlyFieldConfig) =>
+            `"${field.formControl.value}" is not a valid IP Address`,
         },
       },
     },

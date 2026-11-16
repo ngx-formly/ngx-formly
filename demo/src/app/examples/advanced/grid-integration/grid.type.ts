@@ -23,7 +23,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 })
 export class GridTypeComponent extends FieldArrayType implements OnInit {
   gridOptions: GridOptions;
-  style: any = {};
+  style: Record<string, string | number> = {};
 
   ngOnInit() {
     this.style = {

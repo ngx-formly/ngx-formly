@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 
 function renderAlternatives(
   fields: FormlyFieldConfig[],
-  model: any = { value: 'initial' },
+  model: FormlyFieldConfig['model'] = { value: 'initial' },
   lazyRender = true,
   zoneless = false,
 ) {

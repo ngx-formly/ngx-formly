@@ -126,7 +126,7 @@ describe('FormlyUtils service', () => {
 
     it('should take account passing a non-string for type', () => {
       const customType = FormlyField;
-      const options: FormlyFieldConfig = { type: customType as any };
+      const options: FormlyFieldConfig = { type: customType as unknown as FormlyFieldConfig['type'] };
       const id = getFieldId('formly_1', options, 2);
       expect(id).toBe('formly_1_FormlyField__2');
     });
@@ -432,7 +432,7 @@ describe('observe', () => {
 
   it('should init and observe an undefined nested prop', () => {
     const spy = vi.fn();
-    const o: any = {};
+    const o: { group?: { foo?: string } } = {};
     observe(o, ['group', 'foo'], spy);
     spy.mockReset();
 

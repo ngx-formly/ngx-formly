@@ -92,7 +92,7 @@ describe('Formly MCP over Streamable HTTP', () => {
   it('finds API symbols and filters and paginates examples without returning their source', async () => {
     await connect();
     const search = async (args: Record<string, unknown>) =>
-      (await client.callTool({ name: 'formly_search', arguments: args })).structuredContent;
+      (await client.callTool({ name: 'formly_search', arguments: args })).structuredContent as Record<string, unknown>;
     expect(await search({ query: 'FormlyFieldConfig', kind: 'api', limit: 1 })).toMatchObject({
       results: [{ id: 'api/core#formlyfieldconfig', kind: 'api' }],
     });
@@ -138,7 +138,10 @@ describe('Formly MCP over Streamable HTTP', () => {
   it('lists examples and retrieves complete exported projects with custom types and assets', async () => {
     await connect();
     const examples = async (args: Record<string, unknown> = {}) =>
-      (await client.callTool({ name: 'formly_examples', arguments: args })).structuredContent;
+      (await client.callTool({ name: 'formly_examples', arguments: args })).structuredContent as Record<
+        string,
+        unknown
+      >;
     const page = await examples({ limit: 1 });
     expect(page).toMatchObject({ results: [expect.any(Object)], nextOffset: 1 });
     expect((await examples({ offset: page.total })).results).toEqual([]);

@@ -5,10 +5,12 @@ import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
 interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public Ionic select options and callbacks retain consumer-defined value types.
   compareWith?: ((currentValue: any, compareValue: any) => boolean) | null | string | undefined;
   multiple?: boolean;
   interface?: 'action-sheet' | 'alert' | 'popover';
   /** Options passed to the Ionic alert, action sheet, or popover interface. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public Ionic select options and callbacks retain consumer-defined value types.
   interfaceOptions?: any;
   okText?: string;
   cancelText?: string;
@@ -60,6 +62,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
   override defaultOptions = {
     props: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public Ionic select options and callbacks retain consumer-defined value types.
       compareWith(o1: any, o2: any) {
         return o1 === o2;
       },

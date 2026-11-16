@@ -22,9 +22,6 @@ import { applyEdits, format } from 'jsonc-parser';
 import { ConfigurationDiagnostic, validateFormlyJson } from 'src/validation/validate-formly-json';
 import { locateDiagnostics } from 'src/validation/diagnostic-location';
 
-const EXAMPLE =
-  '[\n  {\n    "key": "email",\n    "type": "input",\n    "props": {\n      "label": "Email",\n      "type": "email",\n      "required": true\n    }\n  }\n]';
-
 @Component({
   imports: [MatButton, MatIcon, RouterLink],
   selector: 'formly-validator',
@@ -124,10 +121,6 @@ export class ValidatorComponent {
       clearTimeout(this.timer);
       this.editor?.destroy();
     });
-  }
-
-  loadExample() {
-    this.replaceSource(EXAMPLE);
   }
 
   formatJson() {
