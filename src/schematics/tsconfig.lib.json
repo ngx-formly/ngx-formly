@@ -4,6 +4,7 @@
     "declaration": true,
     "module": "Node16",
     "moduleResolution": "Node16",
+    "rootDir": ".",
     "noEmitOnError": true,
     "skipLibCheck": true,
     "sourceMap": true,
