@@ -14,7 +14,7 @@ export const routes: Routes = [
       provideFormlyCore([
         withFormlyFormField(),
         withFormlyFieldInput(),
-        { validationMessages: [{ name: 'required', message: 'Please enter your name.' }] },
+        { validationMessages: [{ name: 'required', message: (_, field) => `${field.props.label} is required.` }] },
       ]),
     ],
   },
