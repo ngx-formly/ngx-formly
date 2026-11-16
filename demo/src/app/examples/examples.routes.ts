@@ -147,6 +147,7 @@ export const examplesRoutes: Routes = [
       {
         path: 'advanced',
         children: [
+          { path: 'web-mcp', loadChildren: () => import('./advanced/web-mcp/app.routes').then((m) => m.appRoutes) },
           { path: 'i18n', loadChildren: () => import('./advanced/i18n/app.routes').then((m) => m.appRoutes) },
           {
             path: 'i18n-alternative',

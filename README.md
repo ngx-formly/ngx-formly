@@ -35,7 +35,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 ## Docs
 
-Try the live configuration-to-form example on [formly.dev](https://formly.dev), then explore the guides and UI demos.
+Edit the input fields' JSON and try the live form on [formly.dev](https://formly.dev), then explore the guides and UI demos.
 Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI and example page names.
 
 - [Get Started](https://formly.dev/guide)
@@ -46,6 +46,31 @@ Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI 
 - [HTML labels and descriptions](docs/properties-options.md#html-labels-and-descriptions)
 - [Examples](https://formly.dev/examples)
 - [External libraries](docs/external-libraries.md)
+
+## AI coding skill
+
+The [ngx-formly skill](skills/ngx-formly/SKILL.md) helps coding agents implement Formly in your own Angular project.
+It checks your installed versions and UI adapter, then guides setup, field configuration, validation, custom types,
+repeated sections, and JSON Schema. It uses the [Agent Skills format](https://agentskills.io/specification).
+
+From your application directory, install it with the [skills CLI](https://github.com/vercel-labs/skills):
+
+```bash
+npx skills add ngx-formly/ngx-formly --skill ngx-formly
+```
+
+Choose your coding agent when prompted. To try the skill from a local checkout before it is published, use:
+
+```bash
+npx skills add /path/to/ngx-formly --skill ngx-formly
+```
+
+You can also copy the entire `skills/ngx-formly` folder into your agent's skill directory. Keep the `references`
+folder alongside `SKILL.md`. The skill works without MCP; a connected [Formly MCP service](docs/mcp.md) adds
+documentation search, example retrieval, and structural JSON validation.
+
+Example request: "Use the ngx-formly skill to add a contact form with repeatable addresses, using this project's
+existing UI library. Keep address values when their section is hidden."
 
 ## Resources
 

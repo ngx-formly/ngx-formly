@@ -196,6 +196,10 @@ mat-icon {
   border-bottom: 1px solid var(--site-line);
   font-size: 14px;
   font-weight: 500;
+
+  label {
+    margin: 0;
+  }
 }
 
 .file-type,
@@ -225,6 +229,36 @@ pre {
   code {
     color: inherit;
   }
+}
+
+.configuration-editor {
+  display: block;
+  width: 100%;
+  padding: 24px 28px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--site-ink);
+  font:
+    14px / 1.6 Consolas,
+    'Liberation Mono',
+    Menlo,
+    monospace;
+  caret-color: var(--site-accent);
+  scrollbar-color: #918795 var(--site-soft);
+  resize: vertical;
+  tab-size: 2;
+
+  &:focus-visible {
+    outline: 2px solid var(--site-accent);
+    outline-offset: -2px;
+  }
+}
+
+.configuration-error {
+  padding: 0 28px 24px;
+  color: var(--site-accent);
+  font-size: 14px;
 }
 
 .preview-panel form {

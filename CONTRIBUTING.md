@@ -78,7 +78,7 @@ The demo uses Angular's `application` builder. Run `npx ng build app --configura
 to build it into `demo/dist`. `npm run demo` serves it on port 4100.
 
 To run the demo through [Portless](https://github.com/vercel-labs/portless), install dependencies
-with `npm ci`, then run `pnpm dev:portless` using pnpm 11 or newer. This regenerates the API
+with `npm ci`, then run `pnpm dev` using pnpm 11 or newer. This regenerates the API
 reference and serves the demo at `https://ngx-formly.localhost`. Git worktrees get their own
 subdomain. Portless prints the URL when it starts; its first run may prompt for permission to
 trust its local certificate and bind the HTTPS proxy port. The repository still uses npm and
