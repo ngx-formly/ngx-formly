@@ -36,6 +36,29 @@ try {
 
   assert.equal(errors.length, 0, errors.join('\n'));
   console.log('Built Formly declaration imports resolve through package exports.');
+
+  const consumerFile = join(consumerDir, 'consumer.ts');
+  fs.copyFileSync('build/fixtures/public-api-compatibility.ts', consumerFile);
+  const program = ts.createProgram([consumerFile], {
+    target: ts.ScriptTarget.ES2022,
+    module: ts.ModuleKind.Preserve,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
+    strict: true,
+    skipLibCheck: true,
+    noEmit: true,
+    types: [],
+  });
+  const diagnostics = ts.getPreEmitDiagnostics(program);
+  assert.equal(
+    diagnostics.length,
+    0,
+    ts.formatDiagnosticsWithColorAndContext(diagnostics, {
+      getCurrentDirectory: () => consumerDir,
+      getCanonicalFileName: (file) => file,
+      getNewLine: () => '\n',
+    }),
+  );
+  console.log('Built Formly public APIs accept existing consumer mocks and events.');
 } finally {
   fs.rmSync(consumerDir, { recursive: true, force: true });
 }

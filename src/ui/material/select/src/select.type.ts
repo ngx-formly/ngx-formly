@@ -78,7 +78,8 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
   standalone: false,
 })
 export class FormlyFieldSelect extends FieldType<FieldTypeConfig<SelectProps>> {
-  @ViewChild(MatSelect, { static: true }) set select(select: MatSelect) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public setter accepts consumer select mocks.
+  @ViewChild(MatSelect, { static: true }) set select(select: any) {
     observe(select, ['_parentFormField', '_textField'], ({ currentValue }) => {
       if (currentValue) {
         select._preferredOverlayOrigin = select['_parentFormField'].getConnectedOverlayOrigin();

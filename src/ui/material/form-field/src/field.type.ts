@@ -5,12 +5,13 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormlyFieldProps } from './form-field.wrapper';
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- Material controls accept consumer-defined value types. */
 @Directive()
- 
 export abstract class FieldType<F extends FormlyFieldConfig<FormlyFieldProps>>
   extends CoreFieldType<F>
   implements OnDestroy, MatFormFieldControl<any>
 {
+  /* eslint-enable @typescript-eslint/no-explicit-any */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The Material adapter accepts custom control values and template contexts.
   @ViewChild('matPrefix') set matPrefix(prefix: TemplateRef<any>) {
     if (prefix) {

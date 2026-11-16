@@ -14,7 +14,8 @@ import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class IonFormlyAttributes extends FormlyAttributes {
   @Input('ionFormlyAttributes') override field: FormlyFieldConfig;
-  constructor(renderer: Renderer2, elementRef: ElementRef, @Inject(DOCUMENT) _document: Document) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public constructor accepts consumer document mocks.
+  constructor(renderer: Renderer2, elementRef: ElementRef, @Inject(DOCUMENT) _document: any) {
     super(renderer, elementRef, _document);
   }
 }

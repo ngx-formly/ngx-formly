@@ -68,7 +68,8 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
   constructor(
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Inject(DOCUMENT) _document: Document,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The public constructor accepts consumer document mocks.
+    @Inject(DOCUMENT) _document: any,
     @Optional() private formlyField?: FormlyField,
   ) {
     this.document = _document;
@@ -188,18 +189,19 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     }
   }
 
-  onFocus($event: unknown) {
+  /* eslint-disable @typescript-eslint/no-explicit-any -- Public event parameters retain compatibility with consumer-defined event types. */
+  onFocus($event: any) {
     this.focusObserver?.setValue(true);
     this.props.focus?.(this.field, $event);
   }
 
-  onBlur($event: unknown) {
+  onBlur($event: any) {
     this.focusObserver?.setValue(false);
     this.props.blur?.(this.field, $event);
   }
 
   // handle custom `change` event, for regular ones rely on DOM listener
-  onHostChange($event: unknown) {
+  onHostChange($event: any) {
     if ($event instanceof Event) {
       return;
     }
@@ -207,10 +209,11 @@ export class FormlyAttributes implements OnChanges, DoCheck, OnDestroy {
     this.onChange($event);
   }
 
-  onChange($event: unknown) {
+  onChange($event: any) {
     this.props.change?.(this.field, $event);
     this.field.formControl?.markAsDirty();
   }
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   private attachElementRef(f: FormlyFieldConfigCache) {
     if (!f) {
