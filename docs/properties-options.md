@@ -78,6 +78,7 @@ The output shares the `options.fieldChanges` payload shape; it does not forward 
 
 | Attribute            | Type         | Description   |
 | ---------            | -----        | ------------- |
+| webMcp               | `boolean`    | Experimental browser-agent participation. Inherits the nearest group's setting, then `extras.webMcp`, which defaults to false. Children can override either value. See [WebMCP](https://formly.dev/guide/web-mcp). |
 | key                  | `string`     | The key that relates to the model. This will link the field value to the model. |
 | id                   | `string`     | This allows you to specify the `id` of your field. Note, the `id` is generated if not set. |
 | name                 | `string`     | If you wish, you can specify a specific `name` for your field. This is useful if you're posting the form to a server using techniques of yester-year. |
@@ -237,6 +238,12 @@ Ionic select fields accept `props.interfaceOptions` to configure their alert, ac
 The Ionic demo uses this configuration for its select fields.
 
 ## options
+
+### webMcp
+
+Experimental WebMCP tool identification and submission settings. `name` and `description` identify the form;
+`submit(model, signal)` explicitly enables agent submission. These settings do not opt fields in.
+See the [WebMCP guide](https://formly.dev/guide/web-mcp) for library defaults, field overrides, and submission behavior.
 
 ### formState
 

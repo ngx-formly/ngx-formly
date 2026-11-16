@@ -4,6 +4,7 @@ export {
   FormlyFieldConfig,
   FormlyTemplateOptions,
   FormlyFormOptions,
+  FormlyWebMcpOptions,
   FormlyValueChangeEvent,
   FormlyFieldProps,
   ConfigOption,
