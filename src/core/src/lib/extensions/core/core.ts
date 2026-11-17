@@ -103,7 +103,7 @@ export class CoreExtension implements FormlyExtension {
       options._detectChanges(f);
     };
 
-    options.resetModel = (model?: any) => {
+    options.resetModel = (model) => {
       model = clone(model ?? options._initialModel);
       if (field.model) {
         Object.keys(field.model).forEach((k) => delete field.model[k]);
@@ -117,7 +117,7 @@ export class CoreExtension implements FormlyExtension {
       field.form.reset(field.model);
     };
 
-    options.updateInitialValue = (model?: any) => (options._initialModel = clone(model ?? field.model));
+    options.updateInitialValue = (model) => (options._initialModel = clone(model ?? field.model));
     field.options.updateInitialValue();
   }
 
@@ -177,9 +177,10 @@ export class CoreExtension implements FormlyExtension {
         fieldComponentRef instanceof ComponentRef &&
         fieldComponentRef?.componentType === componentRef?.componentType
       ) {
-        componentRef = fieldComponentRef as any;
+        componentRef = fieldComponentRef;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- The proxy forwards custom properties and lifecycle hooks on user-defined field components.
       return componentRef?.instance as any;
     };
 

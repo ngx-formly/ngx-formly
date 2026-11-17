@@ -144,12 +144,18 @@ export function registerControl(
       field.props.disabled = !!field.props.disabled;
       const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
         if (!firstChange && field.formControl && acceptsImperativeApi(field.formControl)) {
-          currentValue ? field.formControl.disable() : field.formControl.enable();
+          if (currentValue) {
+            field.formControl.disable();
+          } else {
+            field.formControl.enable();
+          }
         }
       });
       observe<AbstractControl>(field, ['formControl'], ({ previousValue, currentValue }) => {
         if (previousValue instanceof FormControl) {
-          (previousValue as any)._unregisterOnDisabledChange(disabledObserver.setValue);
+          (
+            previousValue as FormControl & { _unregisterOnDisabledChange(fn: (disabled: boolean) => void): void }
+          )._unregisterOnDisabledChange(disabledObserver.setValue);
         }
         if (currentValue instanceof FormControl || currentValue instanceof FormlySignalFormControl) {
           currentValue.registerOnDisabledChange(disabledObserver.setValue);
@@ -157,7 +163,7 @@ export function registerControl(
       });
     }
     field.formControl = control;
-    if (isSignalFormControl(control)) {
+    if (isSignalFormControl(control) && !(control instanceof FormlySignalFormControl)) {
       syncParentOnStatusChange(control);
     }
     if (acceptsImperativeApi(control)) {
@@ -220,7 +226,7 @@ export function updateValidity(c: AbstractControl, onlySelf = false) {
   }
 
   if (value !== c.value) {
-    (c.valueChanges as EventEmitter<any>).emit(c.value);
+    (c.valueChanges as EventEmitter<unknown>).emit(c.value);
   }
 }
 

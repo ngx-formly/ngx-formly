@@ -7,7 +7,7 @@ export function IpValidator(control: AbstractControl): ValidationErrors {
   return !control.value || /(\d{1,3}\.){3}\d{1,3}/.test(control.value) ? null : { ip: true };
 }
 
-export function IpValidatorMessage(error: any, field: FormlyFieldConfig) {
+export function IpValidatorMessage(error: unknown, field: FormlyFieldConfig) {
   return `"${field.formControl.value}" is not a valid IP Address`;
 }
 

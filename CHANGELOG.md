@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.3.0](https://github.com/ngx-formly/ngx-formly/compare/v11.2.0...v11.3.0) (2026-11-16)
+
+### Features
+
+* **core:** Add experimental WebMCP support for browser agents to inspect validation and fill participating fields. Opt in with `webMcp: true`. Submission requires an explicit `options.webMcp.submit` callback. See the [WebMCP guide](https://github.com/ngx-formly/ngx-formly/blob/v11.3.0/docs/web-mcp.md) ([#4266](https://github.com/ngx-formly/ngx-formly/pull/4266)).
+* **mcp:** Add `@ngx-formly/mcp`, a standalone server package for searching guides and API docs, retrieving example source, and checking field configuration JSON with the same rules as the website validator. The package requires Node.js 24 or newer and has no Angular runtime dependency. See the [MCP guide](https://github.com/ngx-formly/ngx-formly/blob/v11.3.0/docs/mcp.md) ([#4265](https://github.com/ngx-formly/ngx-formly/pull/4265)).
+* **demo:** Edit the Formly configuration JSON on the homepage and see the form update as you type ([6810f84](https://github.com/ngx-formly/ngx-formly/commit/6810f8449a91a83c77191ab56615556bae04bfd6)).
+
+### Bug fixes
+
+* **core:** Preserve ranges such as `[0-9]` and escape literal hyphens in native HTML `pattern` validation. Valid values such as `12345` now pass a five-digit pattern, and classes such as `[a-b-c]` continue to reject values outside the class ([#4271](https://github.com/ngx-formly/ngx-formly/pull/4271)).
+* **schematics:** Set an explicit TypeScript source root to keep the `ng-add` factories compiling when loaded individually with `ts-node` ([#4271](https://github.com/ngx-formly/ngx-formly/pull/4271)).
+
+### Development tooling
+
+* Add a reusable [ngx-formly coding skill](https://github.com/ngx-formly/ngx-formly/tree/v11.3.0/skills/ngx-formly) for setup, field configuration, validation, and custom types ([#4267](https://github.com/ngx-formly/ngx-formly/pull/4267)).
+* Rename the documentation development command to `pnpm dev`. Tighten internal types and add a build check that public APIs still accept existing consumer event types and document mocks ([6810f84](https://github.com/ngx-formly/ngx-formly/commit/6810f8449a91a83c77191ab56615556bae04bfd6), [#4272](https://github.com/ngx-formly/ngx-formly/pull/4272)).
+
 ## [11.2.0](https://github.com/ngx-formly/ngx-formly/compare/v11.1.0...v11.2.0) (2026-11-10)
 
 ### Features

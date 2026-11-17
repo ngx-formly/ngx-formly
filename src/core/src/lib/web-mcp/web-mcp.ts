@@ -48,7 +48,7 @@ class FormlyWebMcp {
   private watchedForm: FormlyFieldConfig['form'];
   private watchedFields: FormlyFieldConfig[];
   private events?: Subscription;
-  private readonly sources = new Map<Observable<any[]>, { subscription: Subscription; value?: any[] }>();
+  private readonly sources = new Map<Observable<unknown[]>, { subscription: Subscription; value?: unknown[] }>();
 
   constructor(
     private root: () => FormlyFieldConfig,
@@ -82,13 +82,13 @@ class FormlyWebMcp {
   }
 
   private fields(): FormlyWebMcpField[] {
-    const used = new Set<Observable<any[]>>();
+    const used = new Set<Observable<unknown[]>>();
     const fields = collectFields(this.root(), !!this.config.extras.webMcp, (field) => {
       const options = field.props?.options;
       if (!isObservable(options)) return options;
       used.add(options);
       if (!this.sources.has(options)) {
-        const source: { subscription: Subscription; value?: any[] } = { subscription: new Subscription() };
+        const source: { subscription: Subscription; value?: unknown[] } = { subscription: new Subscription() };
         this.sources.set(options, source);
         source.subscription.add(
           options.subscribe({

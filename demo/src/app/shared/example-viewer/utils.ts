@@ -20,7 +20,7 @@ interface IThemeOption {
   appendCopyright?: boolean;
 }
 
-export function getExampleFiles(type: string, exampleData: ExampleType): any {
+export function getExampleFiles(type: string, exampleData: ExampleType) {
   let appConfig = exampleData.files.find((f) => f.file === 'app.config.ts');
   if (!appConfig) {
     appConfig = {
@@ -130,7 +130,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType): any {
     ),
   };
 
-  const exampleFiles: { [id: string]: string }[] = [];
+  const exampleFiles: { file: string; content: string }[] = [];
   [...TEMPLATE_FILES.core, ...(TEMPLATE_FILES[options.type] || []), ...exampleData.files].forEach((data) => {
     let file = data.file;
 

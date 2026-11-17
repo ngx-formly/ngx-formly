@@ -52,6 +52,7 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig<MultiChe
     },
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Checkbox values retain the arbitrary shapes accepted by the public API.
   onChange(value: any, checked: boolean) {
     this.formControl.markAsDirty();
     if (this.props.type === 'array') {
@@ -66,6 +67,7 @@ export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig<MultiChe
     this.formControl.markAsTouched();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Checkbox values retain the arbitrary shapes accepted by the public API.
   isChecked(option: any) {
     const value = this.formControl.value;
 

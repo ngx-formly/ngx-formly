@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/material/form-field';
 
-interface InputProps extends FormlyFieldProps {}
+type InputProps = FormlyFieldProps;
 
 export interface FormlyInputFieldConfig extends FormlyFieldConfig<InputProps> {
   type: 'input' | Type<FormlyFieldInput>;

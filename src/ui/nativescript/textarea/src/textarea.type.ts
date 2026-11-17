@@ -5,6 +5,7 @@ import { FormlyFieldProps } from '@ngx-formly/nativescript/form-field';
 interface TextAreaProps extends FormlyFieldProps {
   hint?: string;
   autocorrect?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Keep the existing public keyboard configuration type for NativeScript consumers.
   keyboardType?: any;
 }
 

@@ -24,6 +24,7 @@ interface MatFormlyFieldConfig extends FormlyFieldConfig<FormlyFieldProps> {
   _formField?: FormlyWrapperFormField;
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- Public templates retain their consumer-defined context types. */
 export interface FormlyFieldProps extends CoreFormlyFieldProps {
   prefix?: TemplateRef<any>;
   suffix?: TemplateRef<any>;
@@ -39,6 +40,8 @@ export interface FormlyFieldProps extends CoreFormlyFieldProps {
   hintStart?: TemplateRef<any> | string;
   hintEnd?: TemplateRef<any> | string;
 }
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 @Component({
   selector: 'formly-wrapper-mat-form-field',
@@ -162,7 +165,9 @@ export class FormlyWrapperFormField
     // temporary fix for https://github.com/angular/material2/issues/7891
     if (this.formField.appearance !== 'outline' && this.props.hideFieldUnderline === true) {
       const underlineElement = this.formField._elementRef.nativeElement.querySelector('.mat-form-field-underline');
-      underlineElement && this.renderer.removeChild(underlineElement.parentNode, underlineElement);
+      if (underlineElement) {
+        this.renderer.removeChild(underlineElement.parentNode, underlineElement);
+      }
     }
   }
 

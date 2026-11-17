@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
 
   existingUsers = ['user1', 'user2', 'user3'];

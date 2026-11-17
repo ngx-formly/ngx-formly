@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
-interface SliderProps extends FormlyFieldProps {}
+type SliderProps = FormlyFieldProps;
 
 export interface FormlySliderFieldConfig extends FormlyFieldConfig<SliderProps> {
   type: 'slider' | Type<FormlyFieldSlider>;

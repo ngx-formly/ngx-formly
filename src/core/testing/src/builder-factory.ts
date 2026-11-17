@@ -24,7 +24,9 @@ export function createBuilder({ extensions, onInit }: IBuilderOption = {}) {
       { name: 'expression', extension: new FieldExpressionExtension() },
     ].filter(({ name }) => !extensions || extensions.includes(name)),
   });
-  onInit && onInit(config);
+  if (onInit) {
+    onInit(config);
+  }
 
   return new FormlyFormBuilder(config, null, null, null);
 }

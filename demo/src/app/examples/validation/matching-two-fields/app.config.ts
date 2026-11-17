@@ -3,7 +3,7 @@ import { provideFormlyCore, FormlyFieldConfig } from '@ngx-formly/core';
 import { withFormlyBootstrap } from '@ngx-formly/bootstrap';
 import { AbstractControl } from '@angular/forms';
 
-export function minLengthValidationMessages(error: any, field: FormlyFieldConfig) {
+export function minLengthValidationMessages(error: unknown, field: FormlyFieldConfig) {
   return `Should have atleast ${field.props.minLength} characters`;
 }
 
@@ -22,7 +22,6 @@ export function fieldMatchValidator(control: AbstractControl) {
   return { fieldMatch: { message: 'Password Not Matching' } };
 }
 
-import { AppComponent } from './app.component';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideFormlyCore([
