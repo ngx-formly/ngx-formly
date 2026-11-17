@@ -158,6 +158,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     let currentValue: any;
+    let currentValueSnapshot: string | undefined | null = null;
     let initialized = false;
 
     return {
@@ -170,9 +171,14 @@ export class FieldExpressionExtension implements FormlyExtension {
           );
 
           let valueChanged = currentValue !== exprValue;
-          if (valueChanged && (!ignoreCache || initialized) && isObject(exprValue) && !isObservable(exprValue)) {
+          let valueSnapshot: string | undefined | null = null;
+          if ((ignoreCache || valueChanged) && isObject(exprValue) && !isObservable(exprValue)) {
             try {
-              valueChanged = JSON.stringify(exprValue) !== JSON.stringify(currentValue);
+              valueSnapshot = JSON.stringify(exprValue);
+              // Rebuilds need the previous content because the object itself may have been mutated.
+              valueChanged =
+                valueSnapshot !==
+                (ignoreCache && currentValueSnapshot !== null ? currentValueSnapshot : JSON.stringify(currentValue));
             } catch (error) {
               // Rebuilds previously skipped serialization; retain reference equality when it fails.
               if (!ignoreCache) {
@@ -191,6 +197,7 @@ export class FieldExpressionExtension implements FormlyExtension {
             const emit = !ignoreCache || !initialized || valueChanged;
             initialized = true;
             currentValue = exprValue;
+            currentValueSnapshot = valueSnapshot;
             this.evalExpr(field, path, exprValue, emit);
 
             return true;

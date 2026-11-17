@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 import { FormlyBootstrapSelectModule } from '@ngx-formly/bootstrap/select';
@@ -10,6 +11,32 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-bootstrap: Select Type', () => {
+  it.each(['function', 'signal'])('should refresh mutated options on rebuild with a %s expression', (source) => {
+    const options = [{ label: 'First', value: 1 }];
+    const { field, queryAll, detectChanges } = renderComponent({
+      key: 'item',
+      type: 'select',
+      expressions: { 'props.options': source === 'signal' ? signal(options) : () => options },
+    });
+    const labels = () => queryAll<HTMLOptionElement>('option').map(({ nativeElement }) => nativeElement.text.trim());
+    expect(labels()).toEqual(['First']);
+
+    options.push({ label: 'Second', value: 2 });
+    field.options.build();
+    detectChanges();
+    expect(labels()).toEqual(['First', 'Second']);
+
+    options[0].label = 'Updated';
+    field.options.build();
+    detectChanges();
+    expect(labels()).toEqual(['Updated', 'Second']);
+
+    options.pop();
+    field.options.build();
+    detectChanges();
+    expect(labels()).toEqual(['Updated']);
+  });
+
   it('should render select type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',

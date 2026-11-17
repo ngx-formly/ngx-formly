@@ -1290,6 +1290,42 @@ describe('FieldExpressionExtension', () => {
       const circular: any = {};
       circular.self = circular;
 
+      it('should emit mutated option values once on rebuild', () => {
+        const options = signal([{ label: 'First', value: 1 }]);
+        const field = buildField({
+          key: 'item',
+          expressions: { 'props.options': source === 'signal' ? options : () => options() },
+        });
+        const spy = vi.fn();
+        const subscription = field.options.fieldChanges.subscribe(spy);
+
+        // A normal check must also refresh the snapshot used by the next rebuild.
+        options.set([{ label: 'Second', value: 2 }]);
+        field.options.checkExpressions(field.parent);
+        expect(spy).toHaveBeenCalledExactlyOnceWith({
+          field,
+          type: 'expressionChanges',
+          property: 'props.options',
+          value: options(),
+        });
+        spy.mockClear();
+        field.options.build();
+        expect(spy).not.toHaveBeenCalled();
+
+        options().push({ label: 'Third', value: 3 });
+        field.options.build();
+        expect(spy).toHaveBeenCalledExactlyOnceWith({
+          field,
+          type: 'expressionChanges',
+          property: 'props.options',
+          value: options(),
+        });
+        spy.mockClear();
+        field.options.build();
+        expect(spy).not.toHaveBeenCalled();
+        subscription.unsubscribe();
+      });
+
       it.each([
         ['circular', circular],
         ['bigint', BigInt(1)],
