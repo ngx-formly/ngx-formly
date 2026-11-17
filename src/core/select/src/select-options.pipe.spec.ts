@@ -1,7 +1,8 @@
 import { FormlySelectOptionsPipe } from './select-options.pipe';
 import { firstValueFrom, isObservable, Observable, of as observableOf, Subject } from 'rxjs';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormlyValueChangeEvent } from 'src/core/src/lib/models';
+import { FormlyFormOptionsCache, FormlyValueChangeEvent } from 'src/core/src/lib/models';
+import { createBuilder } from '@ngx-formly/core/testing';
 
 describe('Pipe: FormlySelectOptionsPipe', () => {
   let pipe: FormlySelectOptionsPipe;
@@ -59,6 +60,115 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     fieldChanges.next({ value: [], field, type: 'expressionChanges', property: 'templateOptions.options' });
     fieldChanges.next({ value: [], field, type: 'expressionChanges', property: 'test' });
     expect(spy).toHaveBeenCalledTimes(3);
+  });
+
+  it.each(['properties', 'mapProp'])('should refresh contextual %s after rebuilding unchanged options', (mapping) => {
+    const options = [{}];
+    let label = 'Before';
+    let group = 'First group';
+    let value = 1;
+    let disabled = false;
+    const field: FormlyFieldConfig = {
+      key: 'item',
+      props:
+        mapping === 'properties'
+          ? {
+              labelProp: () => label,
+              groupProp: () => group,
+              valueProp: () => value,
+              disabledProp: () => disabled,
+            }
+          : { mapProp: () => ({ label: group, group: [{ label, value, disabled }] }) },
+      expressions: { 'props.options': () => options },
+    };
+    createBuilder().build({ fieldGroup: [field] });
+    const next = vi.fn();
+    pipe.transform(field.props.options, field).subscribe(next);
+    expect(next).toHaveBeenLastCalledWith([
+      { label: 'First group', group: [{ label: 'Before', value: 1, disabled: false }] },
+    ]);
+
+    label = 'After';
+    group = 'Second group';
+    value = 2;
+    disabled = true;
+    next.mockClear();
+    field.options.build();
+    expect(next).toHaveBeenCalledExactlyOnceWith([
+      { label: 'Second group', group: [{ label: 'After', value: 2, disabled: true }] },
+    ]);
+    pipe.ngOnDestroy();
+  });
+
+  it('should release rebuild callbacks when changing fields, switching to a stream, or destroying the pipe', () => {
+    const first: FormlyFieldConfig = { key: 'first', props: { options: [{ label: 'First', value: 1 }] } };
+    const second: FormlyFieldConfig = { key: 'second', props: { options: [{ label: 'Second', value: 2 }] } };
+    createBuilder().build({ fieldGroup: [first] });
+    createBuilder().build({ fieldGroup: [second] });
+    const firstNext = vi.fn();
+    const secondNext = vi.fn();
+    const complete = vi.fn();
+    pipe.transform(first.props.options, first).subscribe({ next: firstNext, complete });
+    pipe.transform(second.props.options, second).subscribe(secondNext);
+    expect(complete).toHaveBeenCalledOnce();
+    firstNext.mockClear();
+    secondNext.mockClear();
+
+    first.options.build();
+    expect(firstNext).not.toHaveBeenCalled();
+    expect(secondNext).not.toHaveBeenCalled();
+    second.options.build();
+    expect(secondNext).toHaveBeenCalledOnce();
+
+    secondNext.mockClear();
+    const streamNext = vi.fn();
+    pipe.transform(observableOf([{ label: 'Stream', value: 3 }]), second).subscribe(streamNext);
+    second.options.build();
+    expect(secondNext).not.toHaveBeenCalled();
+    expect(streamNext).toHaveBeenCalledExactlyOnceWith([{ label: 'Stream', value: 3, disabled: false }]);
+
+    pipe.transform(second.props.options, second).subscribe(secondNext);
+    secondNext.mockClear();
+    pipe.ngOnDestroy();
+    second.options.build();
+    expect(secondNext).not.toHaveBeenCalled();
+    expect((first.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
+    expect((second.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
+  });
+
+  it('should refresh after partial builds and wait for failed builds to recover', () => {
+    let fail = false;
+    let label = 'Before';
+    const field: FormlyFieldConfig = {
+      key: 'item',
+      props: { options: [{}], labelProp: () => label },
+      expressions: {
+        'props.description': () => {
+          if (fail) {
+            throw new Error('Invalid expression');
+          }
+          return '';
+        },
+      },
+    };
+    createBuilder().build({ fieldGroup: [field] });
+    const next = vi.fn();
+    pipe.transform(field.props.options, field).subscribe(next);
+
+    label = 'Partial';
+    next.mockClear();
+    field.options.build(field);
+    expect(next).toHaveBeenCalledExactlyOnceWith([{ label: 'Partial', value: undefined, disabled: false }]);
+
+    label = 'Recovered';
+    fail = true;
+    next.mockClear();
+    expect(() => field.options.build()).toThrow('Invalid expression');
+    expect(next).not.toHaveBeenCalled();
+    fail = false;
+    field.options.build();
+    expect(next).toHaveBeenCalledExactlyOnceWith([{ label: 'Recovered', value: undefined, disabled: false }]);
+    pipe.ngOnDestroy();
   });
 
   it('already grouped structure, so nothing to process', () => {

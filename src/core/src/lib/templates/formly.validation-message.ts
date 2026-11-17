@@ -2,9 +2,9 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable, combineLatest, isObservable, merge, of } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
-import { FormlyFieldConfig } from '../models';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { FormlyConfig } from '../services/formly.config';
-import { FORMLY_VALIDATORS, observe } from '../utils';
+import { FORMLY_VALIDATORS, defineHiddenProp, observe } from '../utils';
 import { getValidationMessage } from './validation-message';
 
 /**
@@ -36,6 +36,18 @@ export class FormlyValidationMessage implements OnChanges {
     });
     this.errorMessage$ = merge(
       controlChanges.pipe(switchMap((control) => (control ? control.statusChanges.pipe(startWith(null)) : of(null)))),
+      new Observable<void>((subscriber) => {
+        const options = (this.field as FormlyFieldConfigCache).options;
+        if (!options) {
+          return undefined;
+        }
+        if (!options._afterBuild) {
+          defineHiddenProp(options, '_afterBuild', new Set());
+        }
+        const afterBuild = () => subscriber.next();
+        options._afterBuild.add(afterBuild);
+        return () => options._afterBuild.delete(afterBuild);
+      }),
       !this.field.options
         ? of(null)
         : this.field.options.fieldChanges.pipe(

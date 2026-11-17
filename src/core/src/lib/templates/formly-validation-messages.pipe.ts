@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { isObservable, Observable, of, Subscription } from 'rxjs';
-import { FormlyFieldConfig, FormlyValueChangeEvent } from '../models';
+import { FormlyFieldConfig, FormlyFormOptionsCache, FormlyValueChangeEvent } from '../models';
 import { FormlyConfig } from '../services/formly.config';
 import { getValidationMessage } from './validation-message';
+import { defineHiddenProp } from '../utils';
 
 export interface FormlyValidationMessageEntry {
   /** The visible field associated with the error. */
@@ -25,7 +26,10 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
     const roots: readonly FormlyFieldConfig[] = Array.isArray(fields) ? fields : [fields as FormlyFieldConfig];
 
     return new Observable<FormlyValidationMessageEntry[]>((subscriber) => {
-      const subscriptions = new Map<Observable<string | FormlyValueChangeEvent>, Subscription>();
+      const subscriptions = new Map<
+        Observable<string | FormlyValueChangeEvent> | FormlyFormOptionsCache,
+        Subscription
+      >();
       const messages = new Map<
         FormlyFieldConfig,
         Map<
@@ -87,13 +91,16 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
           }
         });
 
-        const sources = new Set<Observable<string | FormlyValueChangeEvent>>();
+        const sources = new Set<Observable<string | FormlyValueChangeEvent> | FormlyFormOptionsCache>();
         watchedFields.forEach((field) => {
           if (field.formControl) {
             sources.add(field.formControl.statusChanges);
           }
           if (field.options?.fieldChanges) {
             sources.add(field.options.fieldChanges);
+          }
+          if (field.options) {
+            sources.add(field.options);
           }
         });
 
@@ -105,6 +112,14 @@ export class FormlyValidationMessagesPipe implements PipeTransform {
         });
         sources.forEach((source) => {
           if (!subscriber.closed && !subscriptions.has(source)) {
+            if (!isObservable(source)) {
+              if (!source._afterBuild) {
+                defineHiddenProp(source, '_afterBuild', new Set());
+              }
+              source._afterBuild.add(refresh);
+              subscriptions.set(source, new Subscription(() => source._afterBuild.delete(refresh)));
+              return;
+            }
             subscriptions.set(
               source,
               source.subscribe({

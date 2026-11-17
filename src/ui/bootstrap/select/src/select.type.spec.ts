@@ -1,8 +1,9 @@
 import { signal } from '@angular/core';
+import { FormlyFormOptionsCache } from 'src/core/src/lib/models';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { of } from 'rxjs';
 import { FormlyBootstrapSelectModule } from '@ngx-formly/bootstrap/select';
-import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createComponent, createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -11,30 +12,97 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-bootstrap: Select Type', () => {
-  it.each(['function', 'signal'])('should refresh mutated options on rebuild with a %s expression', (source) => {
-    const options = [{ label: 'First', value: 1 }];
-    const { field, queryAll, detectChanges } = renderComponent({
+  it.each(['object', 'signal'])('should remap options when the host replaces its %s model', (source) => {
+    const model = signal({ label: 'Before' });
+    const options = [{ value: 1 }];
+    const field: FormlyFieldConfig = {
       key: 'item',
       type: 'select',
-      expressions: { 'props.options': source === 'signal' ? signal(options) : () => options },
+      props: { labelProp: () => field.model.label },
+      expressions: { 'props.options': () => options },
+    };
+    const host = createComponent({
+      template: '<formly-form [fields]="fields" [model]="model"></formly-form>',
+      inputs: { fields: [field], model: source === 'signal' ? model : model() },
+      imports: [FormlyBootstrapSelectModule],
     });
-    const labels = () => queryAll<HTMLOptionElement>('option').map(({ nativeElement }) => nativeElement.text.trim());
-    expect(labels()).toEqual(['First']);
+    const label = () => host.query<HTMLOptionElement>('option').nativeElement.text.trim();
+    expect(label()).toBe('Before');
 
-    options.push({ label: 'Second', value: 2 });
-    field.options.build();
-    detectChanges();
-    expect(labels()).toEqual(['First', 'Second']);
+    if (source === 'signal') {
+      model.set({ label: 'After' });
+      host.detectChanges();
+    } else {
+      host.setInputs({ model: { label: 'After' } });
+    }
+    expect(label()).toBe('After');
+    host.fixture.destroy();
+    expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
+  });
 
-    options[0].label = 'Updated';
-    field.options.build();
-    detectChanges();
-    expect(labels()).toEqual(['Updated', 'Second']);
+  describe.each(['function', 'signal'])('%s option expressions', (source) => {
+    const circular: { self?: unknown } = {};
+    circular.self = circular;
 
-    options.pop();
-    field.options.build();
-    detectChanges();
-    expect(labels()).toEqual(['Updated']);
+    it.each([
+      ['number', 1],
+      ['bigint', BigInt(1)],
+      ['circular', circular],
+    ])('should refresh mutated options with %s values on rebuild', (_name, value) => {
+      const options = [{ label: 'First', value }];
+      const { field, queryAll, detectChanges } = renderComponent({
+        key: 'item',
+        type: 'select',
+        expressions: { 'props.options': source === 'signal' ? signal(options) : () => options },
+      });
+      const labels = () => queryAll<HTMLOptionElement>('option').map(({ nativeElement }) => nativeElement.text.trim());
+      expect(labels()).toEqual(['First']);
+
+      options.push({ label: 'Second', value });
+      field.options.build();
+      detectChanges();
+      expect(labels()).toEqual(['First', 'Second']);
+
+      options[0].label = 'Updated';
+      field.options.build();
+      detectChanges();
+      expect(labels()).toEqual(['Updated', 'Second']);
+
+      options.pop();
+      field.options.build();
+      detectChanges();
+      expect(labels()).toEqual(['Updated']);
+    });
+
+    it('should refresh contextual labels and disabled states without changing the selection', () => {
+      const options = [{ value: 1 }, { value: 2 }];
+      let label = 'Before';
+      let disabled = false;
+      const { field, query, queryAll, detectChanges } = renderComponent({
+        key: 'item',
+        type: 'select',
+        defaultValue: 2,
+        props: { labelProp: (option) => `${label} ${option.value}`, disabledProp: () => disabled },
+        expressions: { 'props.options': source === 'signal' ? signal(options) : () => options },
+      });
+      const events = vi.fn();
+      const subscription = field.options.fieldChanges.subscribe(events);
+      const labels = () => queryAll<HTMLOptionElement>('option').map(({ nativeElement }) => nativeElement.text.trim());
+      expect(labels()).toEqual(['Before 1', 'Before 2']);
+
+      label = 'After';
+      disabled = true;
+      field.options.build();
+      detectChanges();
+
+      expect(labels()).toEqual(['After 1', 'After 2']);
+      const select = query<HTMLSelectElement>('select').nativeElement;
+      expect([...select.options].every((option) => option.disabled)).toBe(true);
+      expect(select.selectedIndex).toBe(1);
+      expect(field.formControl.value).toBe(2);
+      expect(events.mock.calls.filter(([event]) => event.type === 'expressionChanges')).toEqual([]);
+      subscription.unsubscribe();
+    });
   });
 
   it('should render select type', () => {

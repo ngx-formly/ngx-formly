@@ -1,3 +1,4 @@
+import { FormlyFormOptionsCache } from '../models';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import {
   FormlyModule,
@@ -31,6 +32,22 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('FormlyValidationMessage Component', () => {
+  it('should refresh a contextual message after rebuilding an unchanged expression', () => {
+    let text = 'Before';
+    const message = () => text;
+    const { field, query, detectChanges } = renderComponent({
+      key: 'title',
+      props: { required: true },
+      expressions: { 'validation.messages.required': () => message },
+    });
+    expect(validationMessageContent(query)).toBe('Before');
+
+    text = 'After';
+    field.options.build();
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('After');
+  });
+
   it('should not display message error when form is valid', () => {
     const { query } = renderComponent({ key: 'title' });
 
@@ -309,8 +326,10 @@ describe.each([
     expect(translation.observers).toHaveLength(0);
     field.formControl.setErrors({ first: true });
     expect(translation.observers).toHaveLength(1);
+    expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(1);
     fixture.destroy();
     expect(translation.observers).toHaveLength(0);
+    expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
   });
 
   it('updates the mode through expressions without replacing the field', () => {

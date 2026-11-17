@@ -1,7 +1,12 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { BehaviorSubject, isObservable, Observable, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
+import {
+  FormlyFieldConfig,
+  FormlyFieldProps,
+  FormlyFormOptions,
+  ɵdefineHiddenProp as defineHiddenProp,
+} from '@ngx-formly/core';
 
 export interface FormlySelectOption {
   label: string;
@@ -137,6 +142,19 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
           tap(() => this._options.next(f.props.options as any)),
         )
         .subscribe();
+
+      const formOptions = f.options as FormlyFormOptions & { _afterBuild?: Set<() => void> };
+      if (!formOptions._afterBuild) {
+        defineHiddenProp(formOptions, '_afterBuild', new Set());
+      }
+      // Mapping callbacks and mutable option values can change without an expression event.
+      const afterBuild = () => {
+        if (Array.isArray(f.props.options)) {
+          this._options.next(f.props.options);
+        }
+      };
+      formOptions._afterBuild.add(afterBuild);
+      this._subscription.add(() => formOptions._afterBuild.delete(afterBuild));
     }
 
     this._options = new BehaviorSubject(options);
