@@ -159,6 +159,8 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     let currentValue: any;
+    let currentValueSnapshot: string | undefined | null = null;
+    let initialized = false;
 
     return {
       callback: (ignoreCache?: boolean) => {
@@ -169,17 +171,35 @@ export class FieldExpressionExtension implements FormlyExtension {
             [field.model, field.options.formState, field, ignoreCache],
           );
 
+          let valueChanged = currentValue !== exprValue;
+          let valueSnapshot: string | undefined | null = null;
+          if ((ignoreCache || valueChanged) && isObject(exprValue) && !isObservable(exprValue)) {
+            try {
+              valueSnapshot = JSON.stringify(exprValue);
+              // Rebuilds need the previous content because the object itself may have been mutated.
+              valueChanged =
+                valueSnapshot !==
+                (ignoreCache && currentValueSnapshot !== null ? currentValueSnapshot : JSON.stringify(currentValue));
+            } catch (error) {
+              // Rebuilds previously skipped serialization; retain reference equality when it fails.
+              if (!ignoreCache) {
+                throw error;
+              }
+            }
+          }
+
           if (
             ignoreCache ||
             (isDisabledExpression &&
               (field.props.disabled !== !!exprValue || (exprValue && hasKey(field) && field.formControl?.enabled))) ||
-            (currentValue !== exprValue &&
-              (!isObject(exprValue) ||
-                isObservable(exprValue) ||
-                JSON.stringify(exprValue) !== JSON.stringify(currentValue)))
+            valueChanged
           ) {
+            // A rebuild re-applies the value but only reports it when it differs from the previous one.
+            const emit = !ignoreCache || !initialized || valueChanged;
+            initialized = true;
             currentValue = exprValue;
-            this.evalExpr(field, path, exprValue);
+            currentValueSnapshot = valueSnapshot;
+            this.evalExpr(field, path, exprValue, emit);
 
             return true;
           }
@@ -292,7 +312,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
+  private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any, emit = true) {
     if (prop.indexOf('model.') === 0) {
       const key = prop.replace(/^model\./, ''),
         parent = field.fieldGroup ? field : field.parent;
@@ -329,7 +349,9 @@ export class FieldExpressionExtension implements FormlyExtension {
       }
     }
 
-    this.emitExpressionChanges(field, prop, value);
+    if (emit) {
+      this.emitExpressionChanges(field, prop, value);
+    }
   }
 
   private emitExpressionChanges(field: FormlyFieldConfigCache, property: string, value: any) {
