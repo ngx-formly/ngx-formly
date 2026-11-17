@@ -308,7 +308,7 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 - Fields with a `fieldGroup` or `fieldArray` keep their `FormGroup` or `FormArray`; only their keyed leaf fields get a signal form control.
 - A `SignalFormControl` that the application registered in the form under the field key is reused and keeps its own rules. Formly does not apply validators or the disabled state to it.
 - Formly updates the parent form when the control status changes. A signal form control placed in a `FormGroup` outside Formly does not notify that group on status changes ([angular/angular#72009](https://github.com/angular/angular/issues/72009)).
-- `emitEvent: false` on `disable()`, `enable()` and `setErrors()` silences `statusChanges` and the parent's `valueChanges`. The `events` stream, and `valueChanges` on `setValue()`, still emit when the effects run.
+- `emitEvent: false` on `disable()`, `enable()`, `reset()` and `setErrors()` silences `statusChanges` and the parent's `valueChanges`. The `events` stream, and `valueChanges` on `setValue()`, still emit when the effects run. `onlySelf: true` on `disable()`, `enable()` and `reset()` keeps value and status updates local to the control.
 - An error routed to a child with `errorPath` is dropped when that child revalidates on its own, until the group validator runs again.
 
 #### UI adapters

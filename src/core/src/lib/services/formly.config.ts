@@ -15,7 +15,7 @@ import {
 } from '../models';
 import { FieldWrapper } from '../templates/field.wrapper';
 
-declare const ngDevMode: any;
+declare const ngDevMode: unknown;
 
 function defaultShowValidation(field: FieldType) {
   return field.formControl?.touched || field.options.parentForm?.submitted || !!field.field.validation?.show;
@@ -91,11 +91,13 @@ export class FormlyConfig {
         this.types[options.name] = <TypeOption>{ name: options.name };
       }
 
-      (['component', 'extends', 'defaultOptions', 'wrappers'] as (keyof TypeOption)[]).forEach((prop) => {
-        if (options.hasOwnProperty(prop)) {
-          this.types[options.name][prop] = options[prop] as any;
-        }
-      });
+      (['component', 'extends', 'defaultOptions', 'wrappers'] as (keyof TypeOption)[]).forEach(
+        <K extends keyof TypeOption>(prop: K) => {
+          if (options.hasOwnProperty(prop)) {
+            this.types[options.name][prop] = options[prop];
+          }
+        },
+      );
     }
   }
 
@@ -120,6 +122,7 @@ export class FormlyConfig {
   }
 
   /** @ignore */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Keep the existing public return type for consumers of getMergedField.
   getMergedField(field: FormlyFieldConfig = {}): any {
     const type = this.getType(field.type);
     if (!type) {
@@ -240,7 +243,7 @@ export class FormlyConfig {
   addValidatorMessage(name: string, message: ValidationMessageOption['message']) {
     this.messages[name] = message;
     if (typeof ngDevMode === 'undefined' || ngDevMode) {
-      const deprecated = { minlength: 'minLength', maxlength: 'maxLength' } as any;
+      const deprecated: Record<string, string> = { minlength: 'minLength', maxlength: 'maxLength' };
       if (deprecated[name]) {
         console.warn(
           `Formly deprecation: passing validation messages key '${name}' is deprecated since v6.0, use '${deprecated[name]}' instead.`,

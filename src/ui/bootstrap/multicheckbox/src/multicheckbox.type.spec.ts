@@ -58,7 +58,7 @@ describe('ui-bootstrap: MultiCheckbox Type', () => {
     query('input[type="checkbox"]').triggerEventHandler('change', ɵCustomEvent({ checked: true }));
     detectChanges();
     expect(field.formControl.value).toEqual({ '1': true });
-    expect(changeSpy).toHaveBeenCalledOnce;
+    expect(changeSpy).toHaveBeenCalledOnce();
 
     queryAll('input[type="checkbox"]').forEach((x) => {
       x.triggerEventHandler('change', ɵCustomEvent({ checked: true }));
@@ -71,6 +71,6 @@ describe('ui-bootstrap: MultiCheckbox Type', () => {
     query('input[type="checkbox"]').triggerEventHandler('change', ɵCustomEvent({ checked: false }));
     detectChanges();
     expect(field.formControl.value).toEqual({ '1': false, '2': true, '3': true });
-    expect(changeSpy).toHaveBeenCalledOnce;
+    expect(changeSpy).toHaveBeenCalledTimes(5);
   });
 });

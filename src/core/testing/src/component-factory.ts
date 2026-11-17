@@ -1,6 +1,6 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, NgModule, ChangeDetectionStrategy } from '@angular/core';
-import { FormlyModule, FormlyFormBuilder, FormlyFieldConfig, ConfigOption } from '@ngx-formly/core';
+import { FormlyModule, FormlyFormBuilder, FormlyFieldConfig, FormlyFormOptions, ConfigOption } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -83,8 +83,8 @@ export function createFieldComponent(
 ) {
   const model = field?.model || {};
   const options = field?.options || {};
-  delete (field as any)?.model;
-  delete (field as any)?.options;
+  delete (field as { model?: unknown })?.model;
+  delete (field as { options?: FormlyFormOptions })?.options;
 
   const utils = createComponent<{ field: FormlyFieldConfig }>({
     template: '<formly-field [field]="field"></formly-field>',
@@ -92,7 +92,7 @@ export function createFieldComponent(
     ...config,
     detectChanges: false,
   });
-  const builder = (utils.fixture.componentRef.instance as any).builder;
+  const builder = utils.fixture.debugElement.injector.get(FormlyFormBuilder);
   builder.build({ model, options, fieldGroup: [field] });
   utils.detectChanges();
 

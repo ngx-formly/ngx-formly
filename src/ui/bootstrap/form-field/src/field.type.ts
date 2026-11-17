@@ -3,6 +3,7 @@ import { FieldType as CoreFieldType, FormlyFieldConfig } from '@ngx-formly/core'
 
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> extends CoreFieldType<F> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public templates retain their consumer-defined context types.
   @ViewChild('fieldTypeTemplate', { static: true }) set content(templateRef: TemplateRef<any>) {
     if (templateRef && this.hostContainerRef) {
       this.hostContainerRef.createEmbeddedView(templateRef);

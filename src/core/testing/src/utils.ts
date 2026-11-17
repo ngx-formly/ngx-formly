@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Test helpers expose dynamically named component properties and synthetic event targets. */
 import { Mock, vi } from 'vitest';
 import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -19,7 +20,7 @@ export function mockComponent(options: Component): any {
   }
 
   metadata.outputs.forEach((method) => {
-    Mock.prototype[method] = new EventEmitter<any>();
+    Mock.prototype[method] = new EventEmitter<unknown>();
   });
 
   return Component(metadata)(Mock);

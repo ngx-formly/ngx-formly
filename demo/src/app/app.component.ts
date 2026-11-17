@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
   readonly searchShortcut = this.document.defaultView?.navigator.platform.includes('Mac') ? '⌘' : 'Ctrl';
   private systemDark = false;
   readonly theme = signal<'system' | 'dark' | 'light'>('system');
-  private destroy$: Subject<any> = new Subject<any>();
+  private destroy$: Subject<void> = new Subject<void>();
   isSmallDevice$ = this.breakpointObserver.observe('(max-width: 767px)').pipe(map((result) => result.matches));
   menu = APP_MENU;
   readonly menuPath = signal<MenuItem[]>([]);
@@ -82,7 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
   };
   usDefaultLayout = !this.location.path().includes('embeddedview=true');
   documentTitle$ = this.router.events.pipe(
-    filter((event: any) => event instanceof NavigationEnd),
+    filter((event) => event instanceof NavigationEnd),
     map((event: NavigationEnd) => event.urlAfterRedirects),
     map((currentUrl) => {
       const activeLink = menuPages(this.menu).find((link) => link.path === currentUrl.split(/[?#]/)[0]);
@@ -214,7 +214,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

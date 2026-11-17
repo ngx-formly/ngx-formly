@@ -23,6 +23,7 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Radio values retain the arbitrary shapes accepted by the public API.
   tap(id: any) {
     const value = this.formControl.value === id ? null : id;
     setTimeout(() => {

@@ -4,11 +4,13 @@ import { FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 
 interface AddonsProps extends FormlyFieldProps {
   addonRight?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public addon callbacks and templates retain consumer-defined event and context types.
     onClick?: (field: FormlyFieldConfig, event?: any) => void;
     class?: string;
     text?: string;
   };
   addonLeft?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public addon callbacks and templates retain consumer-defined event and context types.
     onClick?: (field: FormlyFieldConfig, event?: any) => void;
     class?: string;
     text?: string;
@@ -23,6 +25,7 @@ interface AddonsProps extends FormlyFieldProps {
   standalone: false,
 })
 export class FormlyWrapperAddons extends FieldWrapper<FieldTypeConfig<AddonsProps>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public addon callbacks and templates retain consumer-defined event and context types.
   @ViewChild('fieldTypeTemplate', { static: true }) set content(templateRef: TemplateRef<any>) {
     if (templateRef && this.hostContainerRef) {
       this.hostContainerRef.createEmbeddedView(templateRef);
@@ -33,11 +36,11 @@ export class FormlyWrapperAddons extends FieldWrapper<FieldTypeConfig<AddonsProp
     super();
   }
 
-  addonRightClick($event: any) {
+  addonRightClick($event: unknown) {
     this.props.addonRight.onClick?.(this.field, $event);
   }
 
-  addonLeftClick($event: any) {
+  addonLeftClick($event: unknown) {
     this.props.addonLeft.onClick?.(this.field, $event);
   }
 }

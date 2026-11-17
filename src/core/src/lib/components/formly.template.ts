@@ -4,6 +4,7 @@ import { Directive, Injectable, Input, OnChanges, QueryList, TemplateRef } from 
 export class FormlyTemplate implements OnChanges {
   @Input('formlyTemplate') name: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Public templates retain their consumer-defined context types.
   constructor(public ref: TemplateRef<any>) {}
 
   ngOnChanges() {

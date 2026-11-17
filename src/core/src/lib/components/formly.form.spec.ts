@@ -17,6 +17,7 @@ import {
   FieldType,
   FieldTypeConfig,
   FormlyConfig,
+  ConfigOption,
   FormlyFieldConfig,
   FormlyFormOptions,
   FormlyModule,
@@ -32,12 +33,15 @@ type IFormlyFormInputs = Partial<{
   form: FormGroup | FormArray;
   fields: FormlyFieldConfig[];
   options: FormlyFormOptions;
-  model: any;
-  modelChange: (m: any) => void;
+  model: FormlyFieldConfig['model'];
+  modelChange: (m: unknown) => void;
   fieldChange: (event: FormlyValueChangeEvent) => void;
 }>;
 
-export const renderComponent = (inputs: IFormlyFormInputs, config: any = {}) => {
+export const renderComponent = (
+  inputs: IFormlyFormInputs,
+  config: ConfigOption & Parameters<typeof createComponent<IFormlyFormInputs>>[0] = {},
+) => {
   inputs = {
     form: new FormGroup({}),
     model: {},
@@ -435,7 +439,7 @@ describe('FormlyForm Component', () => {
 
   describe('model input as a WritableSignal', () => {
     it('should set a copy of the model on the signal after each change', () => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const { form, detectChanges } = renderComponent({
         model,
         fields: [{ key: 'title', type: 'input' }],
@@ -450,7 +454,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should set nested keyed group changes on the signal', () => {
-      const model = signal<any>({ address: { city: 'foo' } });
+      const model = signal({ address: { city: 'foo' } });
       const { form, detectChanges } = renderComponent({
         model,
         fields: [{ key: 'address', fieldGroup: [{ key: 'city', type: 'input' }] }],
@@ -463,7 +467,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should keep model properties without a field', () => {
-      const model = signal<any>({ id: 1, title: 'foo' });
+      const model = signal({ id: 1, title: 'foo' });
       const { form, detectChanges } = renderComponent({
         model,
         fields: [{ key: 'title', type: 'input' }],
@@ -476,7 +480,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should rebuild the form when the host sets a new value', () => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const { form, detectChanges } = renderComponent({
         model,
         fields: [{ key: 'title', type: 'input' }],
@@ -489,7 +493,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should set a copy of the model on the signal with the immutable option', () => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const { form, detectChanges } = renderComponent(
         {
           model,
@@ -508,7 +512,7 @@ describe('FormlyForm Component', () => {
       'should rebuild the form when the host resets the signal to its original value with immutable=%s',
       (immutable) => {
         const initial = { title: 'foo' };
-        const model = signal<any>(initial);
+        const model = signal(initial);
         const { form, detectChanges } = renderComponent(
           { model, fields: [{ key: 'title', type: 'input' }] },
           { extras: { immutable } },
@@ -525,7 +529,7 @@ describe('FormlyForm Component', () => {
 
     it('should not mutate the initial object held by the signal', () => {
       const initial = { title: 'foo', address: { city: 'foo' } };
-      const model = signal<any>(initial);
+      const model = signal(initial);
       const { form, detectChanges } = renderComponent({
         model,
         fields: [
@@ -541,7 +545,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not mutate an object the host sets on the signal later', () => {
-      const model = signal<any>({ title: 'foo', address: { city: 'foo' } });
+      const model = signal({ title: 'foo', address: { city: 'foo' } });
       const { form, detectChanges } = renderComponent({
         model,
         fields: [
@@ -562,7 +566,7 @@ describe('FormlyForm Component', () => {
 
     it('should set a newly chosen file on the signal', () => {
       const chosen = new File([], 'a.txt');
-      const model = signal<any>({ file: new File([], 'a.txt') });
+      const model = signal({ file: new File([], 'a.txt') });
       const { form, detectChanges } = renderComponent({ model, fields: [{ key: 'file' }] });
 
       form.get('file').setValue(chosen);
@@ -572,7 +576,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should give expressions that read the signal the latest edit', () => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const { form, fields, detectChanges } = renderComponent({
         model,
         fields: [{ key: 'title', type: 'input', expressions: { 'props.placeholder': () => model().title } }],
@@ -587,7 +591,7 @@ describe('FormlyForm Component', () => {
     it.each([false, true])(
       'should keep an edit when the host updates the signal in the same task with zoneless=%s',
       async (zoneless) => {
-        const model = signal<any>({ title: 'foo' });
+        const model = signal({ title: 'foo' });
         const { fixture } = createComponent({
           template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
           inputs: { form: new UntypedFormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
@@ -609,7 +613,7 @@ describe('FormlyForm Component', () => {
     );
 
     it.each([false, true])('should set build-time default values on the signal with zoneless=%s', async (zoneless) => {
-      const model = signal<any>({});
+      const model = signal({});
       const modelChange = vi.fn();
       const { fixture } = createComponent({
         template: `<formly-form [form]="form" [fields]="fields" [model]="model" (modelChange)="modelChange($event)"></formly-form>`,
@@ -633,7 +637,7 @@ describe('FormlyForm Component', () => {
     it.each([false, true])(
       'should keep initially hidden values on the signal like a plain model with zoneless=%s',
       async (zoneless) => {
-        const model = signal<any>({ title: 'hidden' });
+        const model = signal({ title: 'hidden' });
         const { fixture } = createComponent({
           template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
           inputs: { form: new FormGroup({}), fields: [{ key: 'title', type: 'input', hide: true }], model },
@@ -651,7 +655,7 @@ describe('FormlyForm Component', () => {
     it.each([false, true])(
       'should keep a value set by the host before it is applied with zoneless=%s',
       async (zoneless) => {
-        const model = signal<any>({ id: 1, title: 'foo' });
+        const model = signal({ id: 1, title: 'foo' });
         const { fixture } = createComponent({
           template: `<formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>`,
           inputs: { form: new UntypedFormGroup({}), fields: [{ key: 'title', type: 'input' }], model },
@@ -671,7 +675,7 @@ describe('FormlyForm Component', () => {
     );
 
     it.each([false, true])('should settle when two forms share one signal with zoneless=%s', async (zoneless) => {
-      const model = signal<any>({ a: 'foo' });
+      const model = signal({ a: 'foo' });
       const { fixture } = createComponent({
         template: `
           <formly-form [form]="form1" [fields]="fields1" [model]="model"></formly-form>
@@ -680,7 +684,7 @@ describe('FormlyForm Component', () => {
         inputs: {
           form1: new UntypedFormGroup({}),
           form2: new UntypedFormGroup({}),
-          fields1: [{ key: 'a', type: 'input' }],
+          fields1: [{ key: 'a', type: 'input' }] as FormlyFieldConfig[],
           fields2: [{ key: 'b', type: 'input', defaultValue: 'bar' }],
           model,
         },
@@ -702,7 +706,7 @@ describe('FormlyForm Component', () => {
     it.each([false, true])(
       'should settle when the fields are computed from the signal with zoneless=%s',
       async (zoneless) => {
-        const model = signal<any>({ type: 'a' });
+        const model = signal({ type: 'a' });
         const fields = computed(() => [
           { key: 'type', type: 'input' },
           { key: `extra_${model().type}`, type: 'input' },
@@ -725,7 +729,7 @@ describe('FormlyForm Component', () => {
     );
 
     it('should keep a null signal value when the build leaves the model empty', () => {
-      const model = signal<any>(null);
+      const model = signal(null);
       const { form, detectChanges } = renderComponent({ model, fields: [{ key: 'title', type: 'input' }] });
       expect(model()).toBeNull();
 
@@ -735,7 +739,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should keep syncing a signal that has a custom equal function', () => {
-      const model = signal<any>({ title: 'foo' }, { equal: (a, b) => JSON.stringify(a) === JSON.stringify(b) });
+      const model = signal({ title: 'foo' }, { equal: (a, b) => JSON.stringify(a) === JSON.stringify(b) });
       const { form, detectChanges } = renderComponent({ model, fields: [{ key: 'title', type: 'input' }] });
 
       form.get('title').setValue('bar');
@@ -750,7 +754,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should set default values added by options.build() on the signal', () => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const fields: FormlyFieldConfig[] = [{ key: 'title', type: 'input' }];
       const { options, detectChanges } = renderComponent({ model, fields });
 
@@ -762,7 +766,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not make a host effect that calls options.build() depend on the signal', () => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const config = signal(1);
       const options: FormlyFormOptions = {};
       const { form, detectChanges } = renderComponent({ model, options, fields: [{ key: 'title', type: 'input' }] });
@@ -791,32 +795,32 @@ describe('FormlyForm Component', () => {
     it('should not keep a reference to itself on the options after it is destroyed', () => {
       const options: FormlyFormOptions = {};
       const { fixture } = renderComponent({
-        model: signal<any>({ title: 'foo' }),
+        model: signal({ title: 'foo' }),
         options,
         fields: [{ key: 'title', type: 'input' }],
       });
 
       fixture.destroy();
 
-      expect((options as any)._afterBuild.size).toEqual(0);
+      expect((options as import('../models').FormlyFormOptionsCache)._afterBuild.size).toEqual(0);
     });
 
     it('should not keep a reference to itself on options that were replaced', () => {
       const options: FormlyFormOptions = {};
       const { setInputs } = renderComponent({
-        model: signal<any>({ title: 'foo' }),
+        model: signal({ title: 'foo' }),
         options,
         fields: [{ key: 'title', type: 'input' }],
       });
 
       setInputs({ options: {} });
 
-      expect((options as any)._afterBuild.size).toEqual(0);
+      expect((options as import('../models').FormlyFormOptionsCache)._afterBuild.size).toEqual(0);
     });
 
     it('should keep the build hook of another form that shares the options', () => {
       const options: FormlyFormOptions = {};
-      const shared = signal<any>({ title: 'foo' });
+      const shared = signal({ title: 'foo' });
       const fields1: FormlyFieldConfig[] = [{ key: 'title', type: 'input' }];
       const { fixture, form1, form2 } = createComponent({
         template: `
@@ -826,7 +830,7 @@ describe('FormlyForm Component', () => {
           }
         `,
         inputs: {
-          form1: new FormGroup({}),
+          form1: new UntypedFormGroup({}),
           form2: new FormGroup({}),
           fields1,
           fields2: [{ key: 'title', type: 'input' }],
@@ -850,17 +854,17 @@ describe('FormlyForm Component', () => {
 
     it('should sync defaults from options.build() when two forms with signals share options', () => {
       const options: FormlyFormOptions = {};
-      const sig1 = signal<any>({ a: 'foo' });
-      const sig2 = signal<any>({ b: 'bar' });
-      const { fields1, form1, detectChanges } = createComponent<any>({
+      const sig1 = signal({ a: 'foo' });
+      const sig2 = signal({ b: 'bar' });
+      const { fields1, form1, detectChanges } = createComponent({
         template: `
           <formly-form [form]="form1" [fields]="fields1" [model]="sig1" [options]="options"></formly-form>
           <formly-form [form]="form2" [fields]="fields2" [model]="sig2" [options]="options"></formly-form>
         `,
         inputs: {
-          form1: new FormGroup({}),
+          form1: new UntypedFormGroup({}),
           form2: new FormGroup({}),
-          fields1: [{ key: 'a', type: 'input' }],
+          fields1: [{ key: 'a', type: 'input' }] as FormlyFieldConfig[],
           fields2: [{ key: 'b', type: 'input' }],
           sig1,
           sig2,
@@ -880,7 +884,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should not set the signal again when the model contains NaN', () => {
-      const model = signal<any>({ title: 'foo', n: NaN });
+      const model = signal({ title: 'foo', n: NaN });
       const set = vi.spyOn(model, 'set');
       const { options, detectChanges } = renderComponent({ model, fields: [{ key: 'title', type: 'input' }] });
 
@@ -893,7 +897,7 @@ describe('FormlyForm Component', () => {
     });
 
     it('should stop following the signal when a plain model is bound', () => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const { form, setInputs, detectChanges } = renderComponent({
         model,
         fields: [{ key: 'title', type: 'input' }],
@@ -929,7 +933,7 @@ describe('FormlyForm Component', () => {
     });
 
     it.each([false, true])('should update a computed read in the host template with zoneless=%s', async (zoneless) => {
-      const model = signal<any>({ title: 'foo' });
+      const model = signal({ title: 'foo' });
       const { fixture, query } = createComponent({
         template: `
           <p>{{ title() }}</p>

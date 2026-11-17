@@ -36,8 +36,11 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Array items can have any consumer-defined model shape.
   add(i?: number, initialModel?: any, { markAsDirty } = { markAsDirty: true }) {
-    markAsDirty && this.formControl.markAsDirty();
+    if (markAsDirty) {
+      this.formControl.markAsDirty();
+    }
     i = i == null ? this.field.fieldGroup.length : i;
     if (!this.model) {
       assignFieldValue(this.field, []);
@@ -77,7 +80,9 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
   }
 
   remove(i: number, { markAsDirty } = { markAsDirty: true }) {
-    markAsDirty && this.formControl.markAsDirty();
+    if (markAsDirty) {
+      this.formControl.markAsDirty();
+    }
     this.model.splice(i, 1);
 
     const fields = hasKey(this.field)
@@ -96,7 +101,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
   private _build(fixedFields: FormlyFieldConfig[] = []) {
     const fields = (this.field as FormlyFieldConfigCache).formControl._fields ?? [this.field];
-    fields.forEach((f) => (this.options as any).build(f));
+    fields.forEach((f) => this.options.build(f));
     const getPath = (field: FormlyFieldConfig) => {
       const path: string[] = [];
       for (let parent = field; parent; parent = parent.parent) {

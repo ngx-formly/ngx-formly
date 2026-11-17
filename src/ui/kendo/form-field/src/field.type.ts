@@ -12,6 +12,6 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   private get formField(): FormFieldComponent {
-    return (this.field as any)?.['_formField'];
+    return (this.field as F & { _formField?: FormFieldComponent })?._formField;
   }
 }

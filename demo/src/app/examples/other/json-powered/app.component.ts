@@ -13,10 +13,10 @@ import { Observable, Subject } from 'rxjs';
   imports: [AsyncPipe, ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent implements OnDestroy {
-  private destroy$: Subject<any> = new Subject<any>();
+  private destroy$: Subject<void> = new Subject<void>();
   form = new UntypedFormGroup({});
   options: FormlyFormOptions = {};
-  model: any;
+  model: { firstName: string; lastName: string };
   fields: FormlyFieldConfig[];
   firstName$: Observable<string>;
 
@@ -61,7 +61,7 @@ export class AppComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

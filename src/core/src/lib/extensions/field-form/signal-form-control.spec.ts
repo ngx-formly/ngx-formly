@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormResetEvent, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormlySignalFormControl } from './signal-form-control';
 
 function createControl(value: unknown, isDisabled = false): FormlySignalFormControl {
@@ -84,6 +84,24 @@ describe('FormlySignalFormControl', () => {
   });
 
   describe('reset()', () => {
+    it('should preserve reset events unless suppressed', () => {
+      const control = createControl('Alice');
+      const resets: FormResetEvent[] = [];
+      control.events.subscribe((event) => {
+        if (event instanceof FormResetEvent) {
+          resets.push(event);
+        }
+      });
+
+      control.reset('Bob');
+      expect(resets).toHaveLength(1);
+      expect(resets[0].source).toBe(control);
+
+      control.reset('Carol', { emitEvent: false });
+      TestBed.tick();
+      expect(resets).toHaveLength(1);
+    });
+
     it('should accept the { value, disabled } form like a FormControl', () => {
       const control = createControl('foo');
       control.markAsTouched();
@@ -159,6 +177,23 @@ describe('FormlySignalFormControl', () => {
   });
 
   describe('setErrors()', () => {
+    it.each(['set', 'update'] as const)('should discard manual errors after field-tree value.%s()', (method) => {
+      const control = createControl('Alice');
+      control.setErrors({ server: true });
+      expect(control.errors).toEqual({ server: true });
+      const value = control.fieldTree().value;
+
+      if (method === 'set') {
+        value.set('Bob');
+      } else {
+        value.update(() => 'Bob');
+      }
+      expect(control.errors).toBeNull();
+
+      value.set('Alice');
+      expect(control.errors).toBeNull();
+    });
+
     it('should report the same errors as a FormControl', () => {
       const control = createControl('foo');
       const classic = new FormControl('foo');
@@ -273,8 +308,6 @@ describe('FormlySignalFormControl', () => {
     function build(signalForms: boolean): FormControl | FormlySignalFormControl {
       const control = signalForms ? createControl('Alice') : new FormControl('Alice');
       new FormGroup({ name: control });
-      // Formly subscribes to the status of its signal controls to keep the parent in sync.
-      control.statusChanges.subscribe(() => control.parent.updateValueAndValidity());
       TestBed.tick();
 
       return control;

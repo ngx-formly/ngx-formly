@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Expression evaluation preserves JavaScript coercion of user-defined values. */
 /**
  * Legacy implementation
  */

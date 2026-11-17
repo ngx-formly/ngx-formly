@@ -1,15 +1,17 @@
-import { Injector, signal, WritableSignal } from '@angular/core';
+import { Injector, linkedSignal, signal, untracked, WritableSignal } from '@angular/core';
 import {
   AbstractControl,
   AbstractControlOptions,
   AsyncValidatorFn,
   FormControlState,
   FormControlStatus,
+  FormResetEvent,
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
 import { disabled, SchemaFn, validate, ValidationError } from '@angular/forms/signals';
 import { CompatValidationError, SignalFormControl } from '@angular/forms/signals/compat';
+import { Subject } from 'rxjs';
 
 type UpdateOn = NonNullable<AbstractControlOptions['updateOn']>;
 type EventOptions = { onlySelf?: boolean; emitEvent?: boolean };
@@ -23,11 +25,6 @@ interface PendingState {
   _pendingTouched: boolean;
 }
 
-interface ManualErrors {
-  errors: ValidationErrors | null;
-  value: unknown;
-}
-
 /**
  * `SignalFormControl` rejects the imperative `AbstractControl` API with NG01920.
  * This control forwards it to signals read by Signal Forms rules, so code written
@@ -38,9 +35,10 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   // Validators are plain functions: bumping this signal re-runs the rule that calls them.
   private readonly revalidate: WritableSignal<number>;
   // Errors set with setErrors(); they replace the validators until the next validation run, as on a FormControl.
-  private readonly manualErrors: WritableSignal<ManualErrors | undefined>;
+  private readonly manualErrors: WritableSignal<ValidationErrors | null | undefined>;
   // Last status that statusChanges emitted, or that a call with `emitEvent: false` asked not to emit.
   private lastStatus?: string;
+  private onlySelfStatus?: FormControlStatus;
 
   constructor(
     private readonly defaultValue: unknown,
@@ -52,23 +50,20 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     // `this` is not available before super(), so the rules close over locals.
     const disabledState = signal(isDisabled);
     const revalidate = signal(0);
-    const manualErrors = signal<ManualErrors | undefined>(undefined);
     const self: { control?: FormlySignalFormControl } = {};
     super(
       defaultValue,
       (p) => {
         disabled(p, { when: () => disabledState() });
-        validate(p, ({ value }) => {
+        validate(p, () => {
           revalidate();
           const control: FormlySignalFormControl | undefined = self.control;
           if (!control) {
             return undefined;
           }
 
-          const manual = manualErrors();
-          // setValue() and reset() discard manual errors; the comparison covers direct writes to the field tree.
-          const errors =
-            manual && Object.is(manual.value, value()) ? manual.errors : (control.validator?.(control) ?? null);
+          const manual = control.manualErrors();
+          const errors = manual !== undefined ? manual : (control.validator?.(control) ?? null);
 
           return toSignalErrors(errors, control);
         });
@@ -76,10 +71,10 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
       },
       { injector },
     );
-    self.control = this;
     this.disabledState = disabledState;
     this.revalidate = revalidate;
-    this.manualErrors = manualErrors;
+    this.manualErrors = linkedSignal({ source: this.sourceValue, computation: (): undefined => undefined });
+    self.control = this;
 
     // SignalFormControl emits its status from an effect, after the call that asked for `emitEvent: false` returned.
     // The effect also runs again when the status was read between two writes that cancel out (a group validator
@@ -87,8 +82,13 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     const statusChanges = this.statusChanges;
     const emit = statusChanges.emit.bind(statusChanges);
     statusChanges.emit = (status: FormControlStatus) => {
+      const onlySelf = status === this.onlySelfStatus;
+      this.onlySelfStatus = undefined;
       if (status !== this.lastStatus) {
         this.lastStatus = status;
+        if (!onlySelf) {
+          this.parent?.updateValueAndValidity();
+        }
         emit(status);
       }
     };
@@ -129,14 +129,15 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
 
   private setDisabled(isDisabled: boolean, opts?: EventOptions): void {
     this.disabledState.set(isDisabled);
-    this.silence(opts);
+    this.trackStatusOptions(opts);
     if (!opts?.onlySelf) {
       // Events, unless silenced, are emitted when the status effect runs.
       this.parent?.updateValueAndValidity({ emitEvent: false });
     }
   }
 
-  private silence(opts?: EventOptions): void {
+  private trackStatusOptions(opts?: EventOptions): void {
+    this.onlySelfStatus = opts?.onlySelf ? this.status : undefined;
     if (opts?.emitEvent === false) {
       this.lastStatus = this.status;
     }
@@ -187,8 +188,8 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   }
 
   override setErrors(errors: ValidationErrors | null, opts?: { emitEvent?: boolean }): void {
-    this.manualErrors.set({ errors, value: this.value });
-    this.silence(opts);
+    this.manualErrors.set(errors);
+    this.trackStatusOptions(opts);
     // Same internal call as FormControl.setErrors(): recomputes the status of the ancestors only.
     (
       this.parent as unknown as { _updateControlsErrors?(emitEvent: boolean, changed: AbstractControl): void }
@@ -207,14 +208,11 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
       this.disabledState.set(state.disabled);
     }
 
-    const next = state ? state.value : value;
-    this.manualErrors.set(undefined);
-    super.reset(next, options);
-    // SignalFormControl.reset(undefined) restores a defined initial value and otherwise keeps the current one;
-    // FormControl resets to the given value, or to its default value without arguments.
-    if (next === undefined && (state || this.defaultValue === undefined)) {
-      this.setValue(undefined, options);
-    }
+    const next = state ? state.value : value === undefined ? this.defaultValue : value;
+    // A value passed to the field-tree reset notifies the parent without respecting control options.
+    this.fieldTree().reset();
+    this.setValue(next, options);
+    this.trackStatusOptions(options);
 
     Object.assign(this, {
       _pendingValue: this.value,
@@ -222,6 +220,9 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
       _pendingDirty: false,
       _pendingTouched: false,
     });
+    if (options?.emitEvent !== false) {
+      untracked(() => (this as unknown as { _events: Subject<FormResetEvent> })._events.next(new FormResetEvent(this)));
+    }
   }
 }
 

@@ -15,7 +15,7 @@ import { FormlyExtension, FormlyFieldConfigCache } from '../models';
 import { BehaviorSubject, Subject, timer } from 'rxjs';
 import { FieldType } from '../templates/field.type';
 
-const renderComponent = (field: FormlyFieldConfig, opts: any = {}) => {
+const renderComponent = (field: FormlyFieldConfig, opts: Parameters<typeof createFieldComponent>[1] = {}) => {
   const { config, ...options } = opts;
   return createFieldComponent(field, {
     imports: [FormlyInputModule],
@@ -157,7 +157,7 @@ describe('FormlyField Component', () => {
 
     const hooks = f.hooks;
     Object.keys(f.hooks).forEach((hook) => {
-      vi.spyOn(hooks, hook as any);
+      vi.spyOn(hooks, hook as keyof typeof hooks);
     });
 
     const { fixture, field } = renderComponent(f);

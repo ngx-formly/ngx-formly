@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/kendo/form-field';
 
-interface TextAreaProps extends FormlyFieldProps {}
+type TextAreaProps = FormlyFieldProps;
 
 export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaProps> {
   type: 'textarea' | Type<FormlyFieldTextArea>;

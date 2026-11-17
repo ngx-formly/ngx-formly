@@ -7,7 +7,7 @@ import { FormlyFieldConfig, FormlyFormOptions } from './fieldconfig';
 
 export interface FormlyFieldConfigCache extends FormlyFieldConfig {
   form?: UntypedFormGroup | UntypedFormArray;
-  model?: any;
+  model?: FormlyFieldConfig['model'];
   formControl?: AbstractControl & {
     _fields?: FormlyFieldConfigCache[];
     _childrenErrors?: { [id: string]: () => void };
@@ -23,7 +23,7 @@ export interface FormlyFieldConfigCache extends FormlyFieldConfig {
       callback?: (ingoreCache: boolean) => boolean;
       paths?: string[];
       subscription?: Subscription | null;
-      value$?: Observable<any>;
+      value$?: Observable<unknown>;
     };
   };
   _hide?: boolean;
@@ -42,7 +42,7 @@ export interface FormlyFormOptionsCache extends FormlyFormOptions {
   _viewContainerRef?: ViewContainerRef;
   _injector?: Injector;
   _hiddenFieldsForCheck?: { field: FormlyFieldConfigCache; default?: boolean; emitEvent?: boolean }[];
-  _initialModel?: any;
+  _initialModel?: FormlyFieldConfig['model'];
   _formControlsForCheck?: Set<FormlyFieldConfigCache>;
   _detectChanges?: (field: FormlyFieldConfig) => void;
   _afterBuild?: Set<() => void>;

@@ -483,6 +483,73 @@ describe('FieldFormExtension', () => {
       expect(field.formControl.disabled).toBe(false);
     });
 
+    it.each(['disable', 'enable'] as const)('should keep %s({ onlySelf: true }) local after effects run', (method) => {
+      const field = build({ fieldGroup: [{ key: 'name' }, { key: 'age' }] }, { name: 'Alice', age: 25 });
+      const control = field.formControl.get('name');
+      if (method === 'enable') {
+        control.disable();
+        TestBed.tick();
+      }
+      const value = field.form.value;
+      const events: unknown[] = [];
+      const statuses: string[] = [];
+      field.form.valueChanges.subscribe((v) => events.push(v));
+      control.statusChanges.subscribe((status) => statuses.push(status));
+
+      control[method]({ onlySelf: true });
+      TestBed.tick();
+
+      expect(control.disabled).toBe(method === 'disable');
+      expect(field.form.value).toEqual(value);
+      expect(events).toEqual([]);
+      expect(statuses).toEqual([method === 'disable' ? 'DISABLED' : 'VALID']);
+
+      control[method === 'disable' ? 'enable' : 'disable']();
+      TestBed.tick();
+      expect(events.length).toBeGreaterThan(0);
+    });
+
+    it.each([
+      { value: 'Alice', disabled: true },
+      { value: 'Bob', disabled: true },
+      { value: 'Alice', disabled: false },
+      { value: 'Bob', disabled: false },
+    ])('should silence reset($value, disabled: $disabled)', (state) => {
+      const field = build({ fieldGroup: [{ key: 'name' }, { key: 'age' }] }, { name: 'Alice', age: 25 });
+      const control = field.formControl.get('name');
+      if (!state.disabled) {
+        control.disable();
+        TestBed.tick();
+      }
+      const events: unknown[] = [];
+      control.statusChanges.subscribe((status) => events.push(status));
+      field.form.valueChanges.subscribe((value) => events.push(value));
+      field.form.statusChanges.subscribe((status) => events.push(status));
+
+      control.reset(state, { emitEvent: false });
+      TestBed.tick();
+
+      expect(control.value).toBe(state.value);
+      expect(control.disabled).toBe(state.disabled);
+      expect(field.form.value).toEqual(state.disabled ? { age: 25 } : { name: state.value, age: 25 });
+      expect(events).toEqual([]);
+    });
+
+    it('should keep reset({ onlySelf: true }) local after effects run', () => {
+      const field = build({ fieldGroup: [{ key: 'name' }, { key: 'age' }] }, { name: 'Alice', age: 25 });
+      const control = field.formControl.get('name');
+      const events: unknown[] = [];
+      field.form.valueChanges.subscribe((value) => events.push(value));
+
+      control.reset({ value: 'Bob', disabled: true }, { onlySelf: true });
+      TestBed.tick();
+
+      expect(control.value).toBe('Bob');
+      expect(control.disabled).toBe(true);
+      expect(field.form.value).toEqual({ name: 'Alice', age: 25 });
+      expect(events).toEqual([]);
+    });
+
     it('should inherit disabled state from a keyed parent group', () => {
       const field = build(
         { key: 'address', props: { disabled: true }, fieldGroup: [{ key: 'city' }] },

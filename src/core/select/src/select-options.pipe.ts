@@ -3,6 +3,7 @@ import { BehaviorSubject, isObservable, Observable, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- Public option callbacks must accept consumer-defined value shapes. */
 export interface FormlySelectOption {
   label: string;
   disabled?: boolean;
@@ -26,11 +27,14 @@ type ITransformOption = {
   mapProp?: (option: any) => FormlySelectOption;
 };
 
+/* eslint-enable @typescript-eslint/no-explicit-any */
+
 @Pipe({ name: 'formlySelectOptions', standalone: true })
 export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   private _subscription: Subscription;
-  private _options: BehaviorSubject<any[]>;
+  private _options: BehaviorSubject<unknown[]>;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Option mappings retain the consumer-defined values accepted by the public select API.
   transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[]> {
     if (!isObservable(options)) {
       options = this.observableOf(options, field);
@@ -38,14 +42,14 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
       this.dispose();
     }
 
-    return (options as Observable<any>).pipe(map((value) => this.transformOptions(value, field)));
+    return (options as Observable<unknown[]>).pipe(map((value) => this.transformOptions(value, field)));
   }
 
   ngOnDestroy(): void {
     this.dispose();
   }
 
-  private transformOptions(options: any[], field?: FormlyFieldConfig): FormlySelectOption[] {
+  private transformOptions(options: unknown[], field?: FormlyFieldConfig): FormlySelectOption[] {
     const to = this.transformSelectProps(field);
 
     const opts: FormlySelectOption[] = [];
@@ -73,7 +77,7 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
     return opts;
   }
 
-  private transformOption(option: any, props: ITransformOption): FormlySelectOption {
+  private transformOption(option: unknown, props: ITransformOption): FormlySelectOption {
     const group = props.groupProp(option);
     if (Array.isArray(group)) {
       return {
@@ -82,21 +86,22 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
       };
     }
 
-    option = {
+    const result = {
       label: props.labelProp(option),
       value: props.valueProp(option),
       disabled: !!props.disabledProp(option),
     };
 
     if (group) {
-      return { label: group, group: [option] };
+      return { label: group, group: [result] };
     }
 
-    return option;
+    return result;
   }
 
   private transformSelectProps(field?: FormlyFieldConfig): ITransformOption {
     const props = field?.props || field?.templateOptions || {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Option mappings retain the consumer-defined values accepted by the public select API.
     const selectPropFn = (prop: any) => (typeof prop === 'function' ? prop : (o: any) => o[prop]);
 
     return {
@@ -120,7 +125,7 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  private observableOf(options: any, f?: FormlyFieldConfig) {
+  private observableOf(options: unknown[], f?: FormlyFieldConfig) {
     this.dispose();
     if (f && f.options && f.options.fieldChanges) {
       this._subscription = f.options.fieldChanges
@@ -134,7 +139,7 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
               !!this._options
             );
           }),
-          tap(() => this._options.next(f.props.options as any)),
+          tap(() => this._options.next(f.props.options as unknown[])),
         )
         .subscribe();
     }
