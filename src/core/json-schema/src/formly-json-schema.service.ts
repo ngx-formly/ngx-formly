@@ -704,6 +704,7 @@ export class FormlyJsonschema {
           props: {
             multiple: mode === 'anyOf',
             options: schemas.map((s, i) => ({ label: s.title, value: i, disabled: s.readOnly })),
+            change: (f) => f.form.markAsDirty(),
           },
           hooks: {
             onInit: (f) => f.formControl.valueChanges.pipe(tap(() => f.options.detectChanges(f.parent))),
