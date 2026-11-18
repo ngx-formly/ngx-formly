@@ -7,15 +7,22 @@ import { provideFormlyCore } from '@ngx-formly/core';
 import { withFormlyPrimeNG } from '@ngx-formly/primeng';
 import { withFormlyFieldDatepicker } from '@ngx-formly/primeng/datepicker';
 import { additionalTypes as primeTypes } from './ui-primeng/additional-types.component';
+import { withFormlyOptimusUI } from '@ngx-formly/optimus-ui';
+import { withFormlyFieldDatepicker as withFormlyOptimusUIDatepicker } from '@ngx-formly/optimus-ui/datepicker';
+import { additionalTypes as optimusTypes } from './ui-optimus-ui/additional-types.component';
 import { appConfig as kendo } from './ui-kendo/app.config';
 import { appConfig as zorro } from './ui-ng-zorro-antd/app.config';
 
 const primeng = { providers: [provideFormlyCore([...withFormlyPrimeNG(), withFormlyFieldDatepicker(), primeTypes])] };
+const optimusUI = {
+  providers: [provideFormlyCore([...withFormlyOptimusUI(), withFormlyOptimusUIDatepicker(), optimusTypes])],
+};
 
 describe.each([
   ['Bootstrap', bootstrap, 'input'],
   ['Ionic', ionic, 'ion-searchbar'],
   ['PrimeNG', primeng, 'p-autocomplete'],
+  ['Optimus UI', optimusUI, 'p-autocomplete'],
   ['Kendo', kendo, 'kendo-autocomplete'],
   ['Zorro', zorro, 'input[nz-input]'],
 ] as const)('%s gallery controls', (name, config, autocompleteSelector) => {
@@ -73,7 +80,7 @@ describe.each([
       { providers: config.providers, imports: [NoopAnimationsModule] },
     );
     const control = query<HTMLInputElement>(autocompleteSelector);
-    if (name === 'PrimeNG') {
+    if (name === 'PrimeNG' || name === 'Optimus UI') {
       control.triggerEventHandler('completeMethod', { query: 'Cal' });
     } else if (name === 'Kendo') {
       control.triggerEventHandler('filterChange', 'Cal');

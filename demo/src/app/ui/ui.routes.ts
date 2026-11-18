@@ -8,6 +8,7 @@ export const uiRoutes: Routes = [
       { path: 'bootstrap', loadChildren: () => import('./ui-bootstrap/app.routes').then((m) => m.appRoutes) },
       { path: 'material', loadChildren: () => import('./ui-material/app.routes').then((m) => m.appRoutes) },
       { path: 'ionic', loadChildren: () => import('./ui-ionic/app.routes').then((m) => m.appRoutes) },
+      { path: 'optimus-ui', loadChildren: () => import('./ui-optimus-ui/app.routes').then((m) => m.appRoutes) },
       { path: 'primeng', loadChildren: () => import('./ui-primeng/app.routes').then((m) => m.appRoutes) },
       { path: 'kendo', loadChildren: () => import('./ui-kendo/app.routes').then((m) => m.appRoutes) },
       {

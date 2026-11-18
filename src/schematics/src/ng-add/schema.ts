@@ -8,5 +8,5 @@ export interface Schema extends ComponentSchema {
   /**
    * The UI with pre-defined types/templates
    */
-  uiTheme?: 'material' | 'bootstrap' | 'ionic' | 'primeng' | 'kendo' | 'ng-zorro-antd';
+  uiTheme?: 'material' | 'bootstrap' | 'ionic' | 'primeng' | 'optimus-ui' | 'kendo' | 'ng-zorro-antd';
 }

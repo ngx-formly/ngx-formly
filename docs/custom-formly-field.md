@@ -11,6 +11,7 @@ there are prebuilt templates you can use:
   - Kendo
   - PrimeNG
   - NG-ZORRO
+  - Optimus-ui
 
 
 ## Creating a Custom Type
