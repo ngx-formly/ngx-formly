@@ -1,7 +1,9 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
+import { map, merge, tap } from 'rxjs';
 
 @Component({
   selector: 'formly-app-example',
@@ -17,6 +19,7 @@ export class AppComponent {
   isRequired = signal(true);
   isDisabled = signal(false);
   isHidden = signal(false);
+  events = signal<string[]>([]);
 
   options: FormlyFormOptions = { signalForms: true };
   fields: FormlyFieldConfig[] = [
@@ -35,6 +38,9 @@ export class AppComponent {
       type: 'input',
       props: { label: 'Age (updates on blur)', type: 'number' },
       modelOptions: { updateOn: 'blur' },
+      hooks: {
+        onInit: (field) => field.formControl.statusChanges.pipe(tap((status) => this.log(`age status: ${status}`))),
+      },
     },
     {
       key: 'range',
@@ -53,6 +59,23 @@ export class AppComponent {
       ],
     },
   ];
+
+  constructor() {
+    merge(
+      this.form.statusChanges.pipe(map((status) => `form status: ${status}`)),
+      this.form.valueChanges.pipe(map(() => 'form value')),
+    )
+      .pipe(takeUntilDestroyed())
+      .subscribe((event) => this.log(event));
+  }
+
+  control(key: string): AbstractControl {
+    return this.form.get(key);
+  }
+
+  log(event: string): void {
+    this.events.update((events) => [...events, event]);
+  }
 
   toggleRequired(): void {
     this.isRequired.update((v) => !v);

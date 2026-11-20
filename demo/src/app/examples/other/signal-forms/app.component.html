@@ -21,3 +21,39 @@
 
 <h6>FormGroup</h6>
 <pre class="formly-group-state">{{ { status: form.status, value: form.value } | json }}</pre>
+
+<h6>Verify fixes</h6>
+<div class="d-flex flex-wrap gap-2 mb-3">
+  <button type="button" class="btn btn-outline-secondary" (click)="form.setErrors({ server: true })">
+    Set form error
+  </button>
+  <button type="button" class="btn btn-outline-secondary" (click)="control('age').setErrors({ invalid: true })">
+    Set age error
+  </button>
+  <button type="button" class="btn btn-outline-secondary" (click)="control('age').setErrors(null)">
+    Clear age error
+  </button>
+  <button type="button" class="btn btn-outline-secondary" (click)="control('name').reset()">Reset name</button>
+  <button
+    type="button"
+    class="btn btn-outline-secondary"
+    (click)="control('age').updateValueAndValidity({ emitEvent: false })"
+  >
+    Revalidate age silently
+  </button>
+  <button type="button" class="btn btn-outline-secondary" (click)="events.set([])">Clear log</button>
+</div>
+<pre class="formly-controls-state">{{
+  {
+    form: { status: form.status, errors: form.errors, dirty: form.dirty, touched: form.touched },
+    name: { status: control('name')?.status, dirty: control('name')?.dirty, touched: control('name')?.touched },
+    age: {
+      status: control('age')?.status,
+      errors: control('age')?.errors,
+      dirty: control('age')?.dirty,
+      touched: control('age')?.touched,
+    },
+  } | json
+}}</pre>
+<h6>Events</h6>
+<pre class="formly-events">{{ events() | json }}</pre>
