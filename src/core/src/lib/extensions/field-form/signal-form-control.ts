@@ -3,9 +3,14 @@ import {
   AbstractControl,
   AbstractControlOptions,
   AsyncValidatorFn,
+  ControlEvent,
+  FormArray,
   FormControlState,
   FormControlStatus,
+  FormGroup,
   FormResetEvent,
+  PristineChangeEvent,
+  TouchedChangeEvent,
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
@@ -25,6 +30,13 @@ interface PendingState {
   _pendingTouched: boolean;
 }
 
+// What a FormControl calls on its parent to recompute it without resetting the siblings.
+interface ParentInternals {
+  _updateControlsErrors(emitEvent: boolean, changed: AbstractControl): void;
+  _updatePristine(opts: EventOptions, changed: AbstractControl): void;
+  _updateTouched(opts: EventOptions, changed: AbstractControl): void;
+}
+
 /**
  * `SignalFormControl` rejects the imperative `AbstractControl` API with NG01920.
  * This control forwards it to signals read by Signal Forms rules, so code written
@@ -38,7 +50,16 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   private readonly manualErrors: WritableSignal<ValidationErrors | null | undefined>;
   // Last status that statusChanges emitted, or that a call with `emitEvent: false` asked not to emit.
   private lastStatus?: string;
-  private onlySelfStatus?: FormControlStatus;
+  // A call that did not pass `emitEvent: false` changed the status, and the status effect has not emitted it yet.
+  private statusEmitPending = false;
+  // Above 0 while valueChanges emits: subscriber calls belong to the change being emitted.
+  private valueEmitDepth = 0;
+  // Status the parent was already updated for by the call that changed it.
+  private parentSyncedStatus?: FormControlStatus;
+  // Dirty and touched states the parent already reflects.
+  private readonly synced = { dirty: false, touched: false };
+  // Event a dirty or touched effect of SignalFormControl just emitted, before it reads `parent`.
+  private effectEvent?: PristineChangeEvent | TouchedChangeEvent;
 
   constructor(
     private readonly defaultValue: unknown,
@@ -82,16 +103,59 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     const statusChanges = this.statusChanges;
     const emit = statusChanges.emit.bind(statusChanges);
     statusChanges.emit = (status: FormControlStatus) => {
-      const onlySelf = status === this.onlySelfStatus;
-      this.onlySelfStatus = undefined;
+      const parentSynced = status === this.parentSyncedStatus;
+      this.parentSyncedStatus = undefined;
+      this.statusEmitPending = false;
       if (status !== this.lastStatus) {
         this.lastStatus = status;
-        if (!onlySelf) {
-          this.parent?.updateValueAndValidity();
+        if (!parentSynced) {
+          // Status only, as FormControl.setErrors() does: the parent's own validators and errors are kept.
+          (this.parent as unknown as ParentInternals | null)?._updateControlsErrors(true, this);
         }
         emit(status);
       }
     };
+
+    // SignalFormControl emits valueChanges from an effect, after the call that set the value returned. A subscriber
+    // that normalizes the value with `emitEvent: false` must not silence the status of that change.
+    const valueChanges = this.valueChanges;
+    const emitValue = valueChanges.emit.bind(valueChanges);
+    valueChanges.emit = (value: unknown) => {
+      this.valueEmitDepth++;
+      try {
+        emitValue(value);
+      } finally {
+        this.valueEmitDepth--;
+      }
+    };
+
+    // The dirty and touched effects of SignalFormControl emit their event, then call markAsPristine() or
+    // markAsUntouched() on `parent`, which also resets every sibling. That `parent` read returns null and the
+    // ancestors are recomputed instead, as a FormControl does.
+    // ponytail: relies on that order in @angular/forms 22.2-22.3; the sibling specs fail if it changes.
+    const base = this as unknown as { emitControlEvent(event: ControlEvent): void };
+    const emitControlEvent = base.emitControlEvent.bind(this);
+    base.emitControlEvent = (event: ControlEvent) => {
+      emitControlEvent(event);
+      if ((event instanceof PristineChangeEvent || event instanceof TouchedChangeEvent) && event.source === this) {
+        this.effectEvent = event;
+      }
+    };
+  }
+
+  override get parent(): FormGroup | FormArray | null {
+    const event = this.effectEvent;
+    if (!event) {
+      return super.parent;
+    }
+
+    this.effectEvent = undefined;
+    const state = event instanceof PristineChangeEvent ? 'dirty' : 'touched';
+    if (this[state] !== this.synced[state]) {
+      this.syncParent(state);
+    }
+
+    return null;
   }
 
   // The forms directives read `updateOn` to decide when a typed value reaches the control.
@@ -129,17 +193,65 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
 
   private setDisabled(isDisabled: boolean, opts?: EventOptions): void {
     this.disabledState.set(isDisabled);
+    this.updateParent(opts);
+  }
+
+  // The status effect emits this control's status unless `emitEvent: false`; the parent is updated here.
+  private updateParent(opts?: EventOptions, sourceControl?: AbstractControl): void {
     this.trackStatusOptions(opts);
     if (!opts?.onlySelf) {
-      // Events, unless silenced, are emitted when the status effect runs.
-      this.parent?.updateValueAndValidity({ emitEvent: false });
+      this.parent?.updateValueAndValidity({ emitEvent: opts?.emitEvent, sourceControl } as EventOptions);
     }
   }
 
+  // When it is unclear whether a status should be emitted, it is emitted.
   private trackStatusOptions(opts?: EventOptions): void {
-    this.onlySelfStatus = opts?.onlySelf ? this.status : undefined;
-    if (opts?.emitEvent === false) {
+    if (this.valueEmitDepth > 0) {
+      return;
+    }
+
+    this.parentSyncedStatus = this.status;
+    if (opts?.emitEvent !== false) {
+      this.statusEmitPending = this.status !== this.lastStatus;
+    } else if (!this.statusEmitPending) {
       this.lastStatus = this.status;
+    }
+  }
+
+  override markAsDirty(opts?: EventOptions): void {
+    super.markAsDirty(opts);
+    this.synced.dirty = true;
+  }
+
+  override markAsTouched(opts?: EventOptions): void {
+    super.markAsTouched(opts);
+    this.synced.touched = true;
+  }
+
+  // SignalFormControl calls markAsPristine() and markAsUntouched() on the parent, which resets the siblings.
+  override markAsPristine(opts?: EventOptions): void {
+    super.markAsPristine({ onlySelf: true });
+    (this as unknown as PendingState)._pendingDirty = false;
+    this.syncParent('dirty', opts);
+  }
+
+  override markAsUntouched(opts?: EventOptions): void {
+    super.markAsUntouched({ onlySelf: true });
+    (this as unknown as PendingState)._pendingTouched = false;
+    this.syncParent('touched', opts);
+  }
+
+  private syncParent(state: 'dirty' | 'touched', opts: EventOptions = {}): void {
+    this.synced[state] = this[state];
+    if (opts.onlySelf) {
+      return;
+    }
+
+    const parent = this.parent as unknown as ParentInternals | null;
+    if (state === 'dirty') {
+      parent?._updatePristine(opts, this);
+    } else {
+      parent?._updateTouched(opts, this);
     }
   }
 
@@ -147,7 +259,9 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   override setValue(value: unknown, options?: ValueOptions): void {
     this.manualErrors.set(undefined);
     (this as unknown as PendingState)._pendingValue = value;
+    // SignalFormControl updates the parent with these options.
     super.setValue(value, options);
+    this.trackStatusOptions(options);
   }
 
   override patchValue(value: unknown, options?: ValueOptions): void {
@@ -191,14 +305,13 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     this.manualErrors.set(errors);
     this.trackStatusOptions(opts);
     // Same internal call as FormControl.setErrors(): recomputes the status of the ancestors only.
-    (
-      this.parent as unknown as { _updateControlsErrors?(emitEvent: boolean, changed: AbstractControl): void }
-    )?._updateControlsErrors?.(false, this);
+    (this.parent as unknown as ParentInternals | null)?._updateControlsErrors(opts?.emitEvent !== false, this);
   }
 
-  override updateValueAndValidity(): void {
+  override updateValueAndValidity(opts?: EventOptions): void {
     this.manualErrors.set(undefined);
     this.revalidate.update((count) => count + 1);
+    this.updateParent(opts, this);
   }
 
   // SignalFormControl rejects the `{ value, disabled }` form, which Formly uses when hiding a field.
@@ -211,15 +324,11 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     const next = state ? state.value : value === undefined ? this.defaultValue : value;
     // A value passed to the field-tree reset notifies the parent without respecting control options.
     this.fieldTree().reset();
+    this.markAsPristine(options);
+    this.markAsUntouched(options);
     this.setValue(next, options);
-    this.trackStatusOptions(options);
 
-    Object.assign(this, {
-      _pendingValue: this.value,
-      _pendingChange: false,
-      _pendingDirty: false,
-      _pendingTouched: false,
-    });
+    Object.assign(this, { _pendingValue: this.value, _pendingChange: false });
     if (options?.emitEvent !== false) {
       untracked(() => (this as unknown as { _events: Subject<FormResetEvent> })._events.next(new FormResetEvent(this)));
     }

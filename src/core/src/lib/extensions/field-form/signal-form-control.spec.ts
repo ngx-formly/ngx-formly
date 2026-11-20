@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormResetEvent, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormResetEvent,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FormlySignalFormControl } from './signal-form-control';
+import { updateValidity } from './utils';
 
 function createControl(value: unknown, isDisabled = false): FormlySignalFormControl {
   return TestBed.runInInjectionContext(() => new FormlySignalFormControl(value, isDisabled, () => {}));
@@ -301,6 +309,19 @@ describe('FormlySignalFormControl', () => {
       expect(control.value).toEqual('Carol');
       expect(control.dirty).toBe(method === 'setValue');
     });
+
+    it('should drop the pending dirty and touched states on markAsPristine() and markAsUntouched()', () => {
+      const { control, root } = createHost('submit');
+
+      type(root, 'Bob').dispatchEvent(new Event('blur'));
+      control.markAsPristine();
+      control.markAsUntouched();
+      root.querySelector('form').dispatchEvent(new Event('submit'));
+
+      expect(control.value).toEqual('Bob');
+      expect(control.dirty).toBe(false);
+      expect(control.touched).toBe(false);
+    });
   });
 
   describe('Reactive Forms compatibility', () => {
@@ -376,6 +397,252 @@ describe('FormlySignalFormControl', () => {
 
         control.setErrors(null);
         expect(control.parent.valid).toBe(true);
+      });
+
+      it('should keep the errors set on the parent when the control sets and clears its errors', () => {
+        const control = build(signalForms);
+        control.parent.setErrors({ server: true });
+
+        control.setErrors({ required: true });
+        TestBed.tick();
+        expect(control.parent.errors).toEqual({ server: true });
+
+        control.setErrors(null);
+        TestBed.tick();
+        expect(control.parent.errors).toEqual({ server: true });
+        expect(control.parent.invalid).toBe(true);
+      });
+
+      describe.each([false, true])('signal sibling=%s', (signalSibling) => {
+        // The control sits in a nested group, so the root checks propagation to the grandparent.
+        function buildWithSibling() {
+          const control = signalForms ? createControl('Alice') : new FormControl('Alice');
+          const sibling = signalSibling ? createControl('') : new FormControl('');
+          const root = new FormGroup({ nested: new FormGroup({ name: control, sibling }) });
+          TestBed.tick();
+          sibling.markAsDirty();
+          sibling.markAsTouched();
+          control.markAsDirty();
+          control.markAsTouched();
+          TestBed.tick();
+
+          return { control, sibling, root };
+        }
+
+        it.each(['reset', 'markAsPristine', 'markAsUntouched'] as const)(
+          'should keep the sibling state on %s()',
+          (method) => {
+            const { control, sibling, root } = buildWithSibling();
+
+            control[method]();
+            TestBed.tick();
+
+            expect(sibling.dirty).toBe(true);
+            expect(sibling.touched).toBe(true);
+            expect(root.dirty).toBe(true);
+            expect(root.touched).toBe(true);
+          },
+        );
+
+        it('should update the ancestors once the sibling is reset too', () => {
+          const { control, sibling, root } = buildWithSibling();
+
+          control.reset();
+          sibling.reset();
+          TestBed.tick();
+
+          expect(control.parent.pristine).toBe(true);
+          expect(control.parent.untouched).toBe(true);
+          expect(root.pristine).toBe(true);
+          expect(root.untouched).toBe(true);
+        });
+
+        it('should keep the sibling state when the control is added to a group', () => {
+          const sibling = signalSibling ? createControl('') : new FormControl('');
+          const group = new FormGroup<Record<string, AbstractControl>>({ sibling });
+          sibling.markAsDirty();
+          sibling.markAsTouched();
+          TestBed.tick();
+
+          group.addControl('name', signalForms ? createControl('Alice') : new FormControl('Alice'));
+          TestBed.tick();
+
+          expect(sibling.dirty).toBe(true);
+          expect(sibling.touched).toBe(true);
+          expect(group.dirty).toBe(true);
+          expect(group.touched).toBe(true);
+        });
+      });
+
+      it.each(['markAsDirty', 'markAsTouched'] as const)(
+        'should not update the parent on %s({ onlySelf: true })',
+        (method) => {
+          const control = build(signalForms);
+
+          control[method]({ onlySelf: true });
+          TestBed.tick();
+
+          expect(control[method === 'markAsDirty' ? 'dirty' : 'touched']).toBe(true);
+          expect(control.parent[method === 'markAsDirty' ? 'dirty' : 'touched']).toBe(false);
+        },
+      );
+
+      it('should keep the parent state on reset({ onlySelf: true }), as FormGroup.reset() then updates it', () => {
+        const control = build(signalForms);
+        control.markAsDirty();
+        control.markAsTouched();
+        TestBed.tick();
+
+        control.reset(undefined, { onlySelf: true });
+        TestBed.tick();
+
+        expect(control.pristine).toBe(true);
+        expect(control.parent.dirty).toBe(true);
+        expect(control.parent.touched).toBe(true);
+      });
+
+      it('should reset the whole form', () => {
+        const control = build(signalForms);
+        const sibling = createControl('');
+        (control.parent as FormGroup).addControl('sibling', sibling);
+        control.markAsDirty();
+        sibling.markAsTouched();
+        TestBed.tick();
+
+        control.parent.reset();
+        TestBed.tick();
+
+        expect([control.dirty, control.touched, sibling.dirty, sibling.touched]).toEqual([false, false, false, false]);
+        expect(control.parent.pristine).toBe(true);
+        expect(control.parent.untouched).toBe(true);
+      });
+
+      it('should not emit on updateValueAndValidity({ emitEvent: false })', () => {
+        const control = build(signalForms);
+        let invalid = false;
+        control.setValidators(() => (invalid ? { invalid: true } : null));
+        control.updateValueAndValidity();
+        TestBed.tick();
+        const events: unknown[] = [];
+        control.valueChanges.subscribe((value) => events.push(value));
+        control.statusChanges.subscribe((status) => events.push(status));
+        control.parent.valueChanges.subscribe((value) => events.push(value));
+        control.parent.statusChanges.subscribe((status) => events.push(status));
+
+        invalid = true;
+        control.updateValueAndValidity({ emitEvent: false });
+        expect(control.parent.invalid).toBe(true);
+        TestBed.tick();
+
+        expect(events).toEqual([]);
+      });
+
+      it('should not update the parent on updateValueAndValidity({ onlySelf: true })', () => {
+        const control = build(signalForms);
+        let invalid = false;
+        control.setValidators(() => (invalid ? { invalid: true } : null));
+        control.updateValueAndValidity();
+        TestBed.tick();
+
+        invalid = true;
+        control.updateValueAndValidity({ onlySelf: true });
+        TestBed.tick();
+
+        expect(control.invalid).toBe(true);
+        expect(control.parent.valid).toBe(true);
+      });
+
+      // Formly revalidates silently, then emits the status of the control only.
+      it.each([false, true])('should emit only the control status on updateValidity(onlySelf=%s)', (onlySelf) => {
+        const control = build(signalForms);
+        let invalid = false;
+        control.setValidators(() => (invalid ? { invalid: true } : null));
+        control.updateValueAndValidity();
+        TestBed.tick();
+        const events: unknown[] = [];
+        control.statusChanges.subscribe((status) => events.push(`control:${status}`));
+        control.parent.statusChanges.subscribe((status) => events.push(`parent:${status}`));
+
+        invalid = true;
+        updateValidity(control, onlySelf);
+        TestBed.tick();
+
+        expect(events).toEqual(['control:INVALID']);
+        expect(control.parent.invalid).toBe(!onlySelf);
+      });
+
+      it.each([undefined, false])('should emit the statuses once on setValue({ emitEvent: %s })', (emitEvent) => {
+        const control = build(signalForms);
+        control.setValidators(Validators.required);
+        control.updateValueAndValidity();
+        TestBed.tick();
+        const events: unknown[] = [];
+        control.statusChanges.subscribe((status) => events.push(`control:${status}`));
+        control.parent.statusChanges.subscribe((status) => events.push(`parent:${status}`));
+
+        control.setValue('', { emitEvent });
+        TestBed.tick();
+
+        expect(control.parent.invalid).toBe(true);
+        expect(events).toEqual(
+          emitEvent === false
+            ? []
+            : signalForms
+              ? ['parent:INVALID', 'control:INVALID']
+              : ['control:INVALID', 'parent:INVALID'],
+        );
+      });
+
+      // Signal form controls emit once per tick: the last emitted status must still match the current one.
+      function trackLastStatus(control: AbstractControl) {
+        const last: { control?: string; parent?: string } = {};
+        control.statusChanges.subscribe((status) => (last.control = status));
+        control.parent.statusChanges.subscribe((status) => (last.parent = status));
+
+        return last;
+      }
+
+      it('should emit the status of a value normalized with emitEvent: false by a valueChanges subscriber', () => {
+        const control = build(signalForms);
+        control.setValidators((c) => (c.value === 'BAD' ? { bad: true } : null));
+        control.updateValueAndValidity();
+        TestBed.tick();
+        control.valueChanges.subscribe((value: string) => control.setValue(value.toUpperCase(), { emitEvent: false }));
+        const last = trackLastStatus(control);
+
+        control.setValue('bad');
+        TestBed.tick();
+
+        expect(control.status).toEqual('INVALID');
+        expect(last).toEqual({ control: 'INVALID', parent: 'INVALID' });
+      });
+
+      it('should still emit a status change followed by a setValue({ emitEvent: false })', () => {
+        const control = build(signalForms);
+        let invalid = false;
+        control.setValidators(() => (invalid ? { invalid: true } : null));
+        control.updateValueAndValidity();
+        TestBed.tick();
+        const last = trackLastStatus(control);
+
+        invalid = true;
+        control.updateValueAndValidity();
+        control.setValue('Bob', { emitEvent: false });
+        TestBed.tick();
+
+        expect(control.status).toEqual('INVALID');
+        expect(last).toEqual({ control: 'INVALID', parent: 'INVALID' });
+      });
+
+      it('should set the control as the source of the parent events on updateValueAndValidity()', () => {
+        const control = build(signalForms);
+        const sources: unknown[] = [];
+        control.parent.events.subscribe((event) => sources.push(event.source));
+
+        control.updateValueAndValidity();
+
+        expect(sources.length).toBeGreaterThan(0);
+        expect(sources.every((source) => source === control)).toBe(true);
       });
     });
   });

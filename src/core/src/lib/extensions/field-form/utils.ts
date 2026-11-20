@@ -220,7 +220,15 @@ export function registerControl(
 export function updateValidity(c: AbstractControl, onlySelf = false) {
   const status = c.status;
   const value = c.value;
-  c.updateValueAndValidity({ emitEvent: false, onlySelf });
+  if (c instanceof FormlySignalFormControl) {
+    // Its status is emitted by an effect, which `emitEvent: false` silences along with the emit below.
+    c.updateValueAndValidity({ onlySelf: true });
+    if (!onlySelf) {
+      c.parent?.updateValueAndValidity({ emitEvent: false });
+    }
+  } else {
+    c.updateValueAndValidity({ emitEvent: false, onlySelf });
+  }
   if (status !== c.status) {
     (c.statusChanges as EventEmitter<string>).emit(c.status);
   }

@@ -294,10 +294,11 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 | --- | --- |
 | `disable()`, `enable()`, `form.disable()`, `form.enable()` | Supported. |
 | `setValidators()`, `addValidators()`, `removeValidators()`, `clearValidators()` | Supported. `control.errors` keeps the Reactive Forms shape, such as `{ min: { min: 18, actual: 10 } }`. |
-| `updateValueAndValidity()` | Reruns the validators. The parent is notified only when the control status changes. |
-| `setErrors()` | Supported. The errors last until the value changes or `updateValueAndValidity()` runs, as on a `FormControl`. |
+| `updateValueAndValidity()` | Reruns the validators and updates the parent unless `onlySelf: true`. `statusChanges` emits only when the status changes, and `valueChanges` does not emit. |
+| `setErrors()` | Supported. The errors last until the value changes or `updateValueAndValidity()` runs, as on a `FormControl`. Errors set on the parent are kept. |
 | `reset()`, `reset({ value, disabled })` | Supported. `reset()` without a value restores the initial value. |
 | `setValue()`, `patchValue()`, `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
+| `markAsPristine()`, `markAsUntouched()` | Supported. As on a `FormControl`, the parent is recomputed and the sibling controls keep their state. |
 | `modelOptions.updateOn` (`'blur'`, `'submit'`) | Supported. |
 | `setAsyncValidators()`, `addAsyncValidators()` | Not supported: throw a Formly error, except when clearing with `null`. |
 | `markAsPending()` | Not supported: throws `NG01920`. |
@@ -308,7 +309,8 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 - Fields with a `fieldGroup` or `fieldArray` keep their `FormGroup` or `FormArray`; only their keyed leaf fields get a signal form control.
 - A `SignalFormControl` that the application registered in the form under the field key is reused and keeps its own rules. Formly does not apply validators or the disabled state to it.
 - Formly updates the parent form when the control status changes. A signal form control placed in a `FormGroup` outside Formly does not notify that group on status changes ([angular/angular#72009](https://github.com/angular/angular/issues/72009)).
-- `emitEvent: false` on `disable()`, `enable()`, `reset()` and `setErrors()` silences `statusChanges` and the parent's `valueChanges`. The `events` stream, and `valueChanges` on `setValue()`, still emit when the effects run. `onlySelf: true` on `disable()`, `enable()` and `reset()` keeps value and status updates local to the control.
+- The control emits `valueChanges` and `statusChanges` from effects, once per change detection, after the parent emitted. The last emitted status matches the control status; intermediate statuses within the same change detection are not emitted.
+- `emitEvent: false` on `disable()`, `enable()`, `reset()`, `setErrors()`, `setValue()` and `updateValueAndValidity()` silences `statusChanges` and the parent's events, unless an earlier call in the same change detection changed the status without it, or the call runs in a `valueChanges` subscriber of the control. The `events` stream, and `valueChanges` on `setValue()`, still emit when the effects run. `onlySelf: true` keeps value and status updates local to the control.
 - An error routed to a child with `errorPath` is dropped when that child revalidates on its own, until the group validator runs again.
 
 #### UI adapters
