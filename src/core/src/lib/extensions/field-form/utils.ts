@@ -120,7 +120,7 @@ export function registerControl(
       defineHiddenProp(field, 'formControl', undefined);
       field.props.disabled = !!field.props.disabled;
       const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
-        if (!firstChange && field.formControl) {
+        if (!firstChange && field.formControl && field.cascadeDisabled !== false) {
           if (currentValue) {
             field.formControl.disable();
           } else {
