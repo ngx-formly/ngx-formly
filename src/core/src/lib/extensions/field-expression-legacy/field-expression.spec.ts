@@ -998,6 +998,119 @@ describe('FieldExpressionExtension', () => {
         expect(field.fieldGroup[0].props.disabled).toBe(true);
       });
 
+      it('should not cascade disabled state to children when cascadeDisabled is false on fieldGroup', () => {
+        const field = buildField({
+          cascadeDisabled: false,
+          props: { disabled: true },
+          fieldGroup: [
+            {
+              key: 'child',
+              props: { label: 'Child' },
+              expressions: { 'props.disabled': () => false },
+            },
+            {
+              key: 'sibling',
+              props: { disabled: false },
+            },
+          ],
+        });
+
+        expect(field.props.disabled).toBe(true);
+        expect(field.fieldGroup[0].props.disabled).toBe(false);
+        expect(field.fieldGroup[0].formControl.enabled).toBe(true);
+        expect(field.fieldGroup[1].props.disabled).toBe(false);
+        expect(field.fieldGroup[1].formControl.enabled).toBe(true);
+      });
+
+      it('should stop disabled lookup when an intermediate group has cascadeDisabled set to false', () => {
+        let outerDisabled = true;
+        const field = buildField({
+          key: 'outer',
+          expressions: { 'props.disabled': () => outerDisabled },
+          fieldGroup: [
+            {
+              key: 'intermediate',
+              cascadeDisabled: false,
+              fieldGroup: [
+                {
+                  key: 'child',
+                  expressions: { 'props.disabled': () => false },
+                },
+              ],
+            },
+          ],
+        });
+
+        field.options.checkExpressions(field.parent);
+        const child = field.fieldGroup[0].fieldGroup[0];
+        expect(field.props.disabled).toBe(true);
+        expect(child.props.disabled).toBe(false);
+        expect(child.formControl.enabled).toBe(true);
+
+        outerDisabled = false;
+        field.options.checkExpressions(field.parent);
+        expect(field.props.disabled).toBe(false);
+        expect(child.props.disabled).toBe(false);
+        expect(child.formControl.enabled).toBe(true);
+      });
+
+      it('should stop disabled lookup when intermediate group has static cascadeDisabled: false and outer group is static disabled', () => {
+        const field = buildField({
+          key: 'outer',
+          props: { disabled: true },
+          fieldGroup: [
+            {
+              key: 'intermediate',
+              cascadeDisabled: false,
+              fieldGroup: [
+                {
+                  key: 'child',
+                  expressions: { 'props.disabled': () => false },
+                },
+              ],
+            },
+          ],
+        });
+
+        field.options.checkExpressions(field.parent);
+        const child = field.fieldGroup[0].fieldGroup[0];
+        expect(field.props.disabled).toBe(true);
+        expect(child.props.disabled).toBe(false);
+        expect(child.formControl.enabled).toBe(true);
+      });
+
+      it('should not recursively disable child controls when keyed group with cascadeDisabled: false is toggled by expression', () => {
+        let groupDisabled = false;
+        const field = buildField({
+          key: 'group',
+          cascadeDisabled: false,
+          expressions: { 'props.disabled': () => groupDisabled },
+          fieldGroup: [{ key: 'child1' }, { key: 'child2', expressions: { 'props.disabled': () => false } }],
+        });
+
+        const [child1, child2] = field.fieldGroup;
+
+        field.options.checkExpressions(field.parent);
+        expect(field.props.disabled).toBe(false);
+        expect(child1.formControl.enabled).toBe(true);
+        expect(child2.formControl.enabled).toBe(true);
+        expect(field.formControl.enabled).toBe(true);
+
+        groupDisabled = true;
+        field.options.checkExpressions(field.parent);
+        expect(field.props.disabled).toBe(true);
+        expect(child1.formControl.enabled).toBe(true);
+        expect(child2.formControl.enabled).toBe(true);
+        expect(field.formControl.enabled).toBe(true);
+
+        groupDisabled = false;
+        field.options.checkExpressions(field.parent);
+        expect(field.props.disabled).toBe(false);
+        expect(child1.formControl.enabled).toBe(true);
+        expect(child2.formControl.enabled).toBe(true);
+        expect(field.formControl.enabled).toBe(true);
+      });
+
       it('should update disabled state of hidden fields', () => {
         const field = buildField({
           key: 'group',
