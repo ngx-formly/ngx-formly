@@ -122,4 +122,61 @@ describe('Signal Forms example', () => {
     expect(groupState().status).toBe('VALID');
     expect(example.querySelector('formly-validation-message')).toBeNull();
   });
+
+  describe('verify fixes', () => {
+    type ControlsState = Record<
+      'form' | 'name' | 'age',
+      { status: string; errors?: object; dirty: boolean; touched: boolean }
+    >;
+    const controlsState = (example: HTMLElement): ControlsState =>
+      JSON.parse(example.querySelector('.formly-controls-state').textContent);
+    const events = (example: HTMLElement): string[] => JSON.parse(example.querySelector('.formly-events').textContent);
+
+    it('keeps the form error when the age error is set and cleared', async () => {
+      const { harness, example, button } = await render();
+
+      for (const text of ['Set form error', 'Set age error', 'Clear age error']) {
+        button(text).click();
+        await harness.fixture.whenStable();
+      }
+
+      expect(controlsState(example).form).toMatchObject({ status: 'INVALID', errors: { server: true } });
+      expect(controlsState(example).age).toMatchObject({ status: 'VALID', errors: null });
+    });
+
+    it('keeps the age state when the name is reset', async () => {
+      const { harness, example, button } = await render();
+      // Only a name that changes back to pristine and untouched reset its siblings.
+      const [name, age] = Array.from(example.querySelectorAll<HTMLInputElement>('formly-form input'));
+      for (const [input, value] of [
+        [name, 'Bob'],
+        [age, '30'],
+      ] as const) {
+        input.value = value;
+        input.dispatchEvent(new Event('input'));
+        input.dispatchEvent(new Event('blur'));
+      }
+      await harness.fixture.whenStable();
+
+      button('Reset name').click();
+      await harness.fixture.whenStable();
+
+      expect(controlsState(example).age).toMatchObject({ dirty: true, touched: true });
+      expect(controlsState(example).form).toMatchObject({ dirty: true, touched: true });
+    });
+
+    it('does not emit when the age is revalidated silently', async () => {
+      const { harness, example, button } = await render();
+      button('Set age error').click();
+      await harness.fixture.whenStable();
+      button('Clear log').click();
+      await harness.fixture.whenStable();
+
+      button('Revalidate age silently').click();
+      await harness.fixture.whenStable();
+
+      expect(controlsState(example).age.status).toBe('VALID');
+      expect(events(example)).toEqual([]);
+    });
+  });
 });

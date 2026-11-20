@@ -78,7 +78,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
         disabled(p, { when: () => disabledState() });
         validate(p, () => {
           revalidate();
-          const control: FormlySignalFormControl | undefined = self.control;
+          const control = self.control;
           if (!control) {
             return undefined;
           }
@@ -184,15 +184,12 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   }
 
   override disable(opts?: EventOptions): void {
-    this.setDisabled(true, opts);
+    this.disabledState.set(true);
+    this.updateParent(opts);
   }
 
   override enable(opts?: EventOptions): void {
-    this.setDisabled(false, opts);
-  }
-
-  private setDisabled(isDisabled: boolean, opts?: EventOptions): void {
-    this.disabledState.set(isDisabled);
+    this.disabledState.set(false);
     this.updateParent(opts);
   }
 
@@ -247,12 +244,8 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
       return;
     }
 
-    const parent = this.parent as unknown as ParentInternals | null;
-    if (state === 'dirty') {
-      parent?._updatePristine(opts, this);
-    } else {
-      parent?._updateTouched(opts, this);
-    }
+    const update = state === 'dirty' ? '_updatePristine' : '_updateTouched';
+    (this.parent as unknown as ParentInternals | null)?.[update](opts, this);
   }
 
   // As on a FormControl, a programmatic value replaces the typed value that waits for blur or submit.
@@ -328,7 +321,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     this.markAsUntouched(options);
     this.setValue(next, options);
 
-    Object.assign(this, { _pendingValue: this.value, _pendingChange: false });
+    (this as unknown as PendingState)._pendingChange = false;
     if (options?.emitEvent !== false) {
       untracked(() => (this as unknown as { _events: Subject<FormResetEvent> })._events.next(new FormResetEvent(this)));
     }
