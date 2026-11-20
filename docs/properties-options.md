@@ -252,3 +252,67 @@ The `formState` property is passed to all fields and is a mechanism for communic
 ### resetModel and updateInitialValue
 
 This also receives the methods `resetModel` and `updateInitialValue` which will invoke all of the field's resetModel and updateInitialValue respectively.
+
+### signalForms (experimental)
+
+> The API may change. It is a prototype for [Signal Forms support](https://github.com/ngx-formly/ngx-formly/issues/4241).
+
+When `signalForms` is `true`, Formly creates a signal form control instead of a `FormControl` for each keyed field without a `fieldGroup` or `fieldArray`. The control extends Angular's [`SignalFormControl`](https://angular.dev/guide/forms/signals/migration), so its value and state are signals, and it stays inside the same `FormGroup`. Existing field configuration keeps working: validation props such as `props.required` and `props.min`, `validators`, `props.disabled`, `hide`, `resetOnHide`, expressions (including signal expressions), `modelOptions.updateOn` and `options.resetModel()`.
+
+Enable it per form with `options` or globally with `extras`:
+
+```ts
+options: FormlyFormOptions = { signalForms: true };
+
+// or
+provideFormlyCore({ extras: { signalForms: true } });
+```
+
+See the [Signal Forms example](https://formly.dev/examples/other/signal-forms).
+
+#### Reading the field tree
+
+`field.formControl` exposes the Signal Forms field tree. Read its state as signals, for example in a `computed()` or a custom field type:
+
+```ts
+import { SignalFormControl } from '@angular/forms/signals/compat';
+
+const control = field.formControl as SignalFormControl<string>;
+const state = control.fieldTree();
+
+state.value(); // current value
+state.required(); // follows props.required
+state.disabled(); // follows props.disabled
+state.errors(); // Signal Forms errors; control.errors keeps the Reactive Forms shape
+```
+
+#### Supported control operations
+
+A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01920`. Formly's control forwards these calls, so code written for a `FormControl` keeps working:
+
+| Operation | Behavior |
+| --- | --- |
+| `disable()`, `enable()`, `form.disable()`, `form.enable()` | Supported. |
+| `setValidators()`, `addValidators()`, `removeValidators()`, `clearValidators()` | Supported. `control.errors` keeps the Reactive Forms shape, such as `{ min: { min: 18, actual: 10 } }`. |
+| `updateValueAndValidity()` | Reruns the validators and updates the parent unless `onlySelf: true`. `statusChanges` emits only when the status changes, and `valueChanges` does not emit. |
+| `setErrors()` | Supported. The errors last until the value changes or `updateValueAndValidity()` runs, as on a `FormControl`. Errors set on the parent are kept. |
+| `reset()`, `reset({ value, disabled })` | Supported. `reset()` without a value restores the initial value. |
+| `setValue()`, `patchValue()`, `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
+| `markAsPristine()`, `markAsUntouched()` | Supported. As on a `FormControl`, the parent is recomputed and the sibling controls keep their state. |
+| `modelOptions.updateOn` (`'blur'`, `'submit'`) | Supported. |
+| `setAsyncValidators()`, `addAsyncValidators()` | Not supported: throw a Formly error, except when clearing with `null`. |
+| `markAsPending()` | Not supported: throws `NG01920`. |
+
+#### Current limitations
+
+- `asyncValidators` are not supported. A field that configures them throws `[Formly Error] Async validators are not supported with signalForms (field "<key>").` instead of ignoring them.
+- Fields with a `fieldGroup` or `fieldArray` keep their `FormGroup` or `FormArray`; only their keyed leaf fields get a signal form control.
+- A `SignalFormControl` that the application registered in the form under the field key is reused and keeps its own rules. Formly does not apply validators or the disabled state to it.
+- Formly updates the parent form when the control status changes. A signal form control placed in a `FormGroup` outside Formly does not notify that group on status changes ([angular/angular#72009](https://github.com/angular/angular/issues/72009)).
+- The control emits `valueChanges` and `statusChanges` from effects, once per change detection, after the parent emitted. The last emitted status matches the control status; intermediate statuses within the same change detection are not emitted.
+- `emitEvent: false` on `disable()`, `enable()`, `reset()`, `setErrors()`, `setValue()` and `updateValueAndValidity()` silences `statusChanges` and the parent's events, unless an earlier call in the same change detection changed the status without it, or the call runs in a `valueChanges` subscriber of the control. The `events` stream, and `valueChanges` on `setValue()`, still emit when the effects run. `onlySelf: true` keeps value and status updates local to the control.
+- An error routed to a child with `errorPath` is dropped when that child revalidates on its own, until the group validator runs again.
+
+#### UI adapters
+
+The unit tests of every UI adapter were run with the option enabled. Bootstrap, Material, Ionic, Kendo, NG-ZORRO, PrimeNG and NativeScript pass.
