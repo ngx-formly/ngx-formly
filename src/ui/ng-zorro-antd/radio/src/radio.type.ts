@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
 import { FormlyFieldProps } from '@ngx-formly/ng-zorro-antd/form-field';
 
 type RadioProps = FormlyFieldProps;
@@ -12,7 +13,9 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   selector: 'formly-field-nz-radio',
   template: `
     <nz-radio-group [formControl]="formControl" (ngModelChange)="props.change && props.change(field, $event)">
-      @for (option of props.options | formlySelectOptions: field | async; track option) {
+      @let options = props.options | formlySelectOptions: field | async;
+      @for (choice of optionSources(options); track choice; let i = $index) {
+        @let option = options[i];
         <label nz-radio [nzValue]="option.value" [nzDisabled]="option.disabled">
           {{ option.label }}
         </label>
@@ -22,4 +25,6 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {}
+export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
+  protected readonly optionSources = FormlySelectOptionsPipe.ɵgetOptionSources;
+}

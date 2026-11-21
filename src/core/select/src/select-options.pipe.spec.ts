@@ -77,6 +77,24 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     pipe.ngOnDestroy();
   });
 
+  it('returns the custom mapper result when the source replaces an option with equal data', () => {
+    let options = [{ label: 'Choice', value: 1 }];
+    const field: FormlyFieldConfig = {
+      key: 'item',
+      props: { mapProp: (option) => option },
+      expressions: { 'props.options': () => options },
+    };
+    createBuilder().build({ fieldGroup: [field] });
+    const next = vi.fn();
+    pipe.transform(field.props.options, field).subscribe(next);
+    expect(next.mock.lastCall[0][0]).toBe(options[0]);
+
+    options = [{ label: 'Choice', value: 1 }];
+    field.options.build();
+    expect(next.mock.lastCall[0][0]).toBe(options[0]);
+    pipe.ngOnDestroy();
+  });
+
   it('preserves the selected object reference when a rebuild replaces it with an equal value', () => {
     const options = [{ label: 'Choice', value: { id: 1 } }];
     const field: FormlyFieldConfig = { key: 'item', props: { options } };

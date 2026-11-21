@@ -34,8 +34,15 @@ type ITransformOption = {
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
+const optionSources = new WeakMap<FormlySelectOption[], readonly unknown[]>();
+
 @Pipe({ name: 'formlySelectOptions', standalone: true })
 export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
+  /** @internal Source rows for adapters that track custom-mapped choices across rebuilds. */
+  static ɵgetOptionSources(options: FormlySelectOption[]): readonly unknown[] {
+    return optionSources.get(options) ?? options;
+  }
+
   private _subscription: Subscription;
   private _options: BehaviorSubject<unknown[]>;
 
@@ -49,6 +56,15 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
     return this.observableOf(options, field).pipe(
       scan((previous, value) => {
         const mapped = this.transformOptions(value, field);
+        // Custom mappers own their option objects and may use their identity.
+        if ((field?.props || field?.templateOptions)?.mapProp) {
+          const sources = value ?? [];
+          optionSources.set(
+            mapped,
+            new Set(sources).size === sources.length ? sources.slice() : sources.map((_, i) => i),
+          );
+          return mapped;
+        }
         return mapped.map((option, i) => (sameOption(previous[i], option) ? previous[i] : option));
       }, [] as FormlySelectOption[]),
     );
@@ -172,51 +188,16 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   }
 }
 
-// Preserve the nodes tracked by option identity when a rebuild produces the same mapped data.
-function sameOption(
-  previous: FormlySelectOption,
-  next: FormlySelectOption,
-  parents?: Set<FormlySelectOption>,
-): boolean {
-  if (previous === next) {
-    return true;
-  }
-
-  if (
-    !previous ||
-    !next ||
-    parents?.has(previous) ||
-    Object.getPrototypeOf(previous) !== Object.prototype ||
-    Object.getPrototypeOf(next) !== Object.prototype
-  ) {
-    return false;
-  }
-
-  const keys = Reflect.ownKeys(previous);
+// Keep generated option identities stable for templates that track the mapped object.
+function sameOption(previous: FormlySelectOption, next: FormlySelectOption): boolean {
   return (
-    keys.length === Reflect.ownKeys(next).length &&
-    keys.every((key) => {
-      const before = Object.getOwnPropertyDescriptor(previous, key);
-      const after = Object.getOwnPropertyDescriptor(next, key);
-      if (!after || !('value' in before) || !('value' in after)) {
-        return false;
-      }
-      if (Object.is(before.value, after.value)) {
-        return true;
-      }
-      if (
-        key !== 'group' ||
-        !Array.isArray(before.value) ||
-        !Array.isArray(after.value) ||
-        before.value.length !== after.value.length
-      ) {
-        return false;
-      }
-      const ancestors = new Set(parents).add(previous);
-      return before.value.every((option: FormlySelectOption, i: number) =>
-        sameOption(option, after.value[i], ancestors),
-      );
-    })
+    !!previous &&
+    previous.label === next.label &&
+    previous.disabled === next.disabled &&
+    Object.is(previous.value, next.value) &&
+    (previous.group === next.group ||
+      (previous.group?.length === next.group?.length &&
+        previous.group.every((option, i) => sameOption(option, next.group[i]))))
   );
 }
 

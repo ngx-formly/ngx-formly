@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
 import { FormlyFieldProps } from '@ngx-formly/nativescript/form-field';
 
 type RadioProps = FormlyFieldProps;
@@ -11,7 +12,9 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-ns-radio',
   template: `
-    @for (option of props.options | formlySelectOptions: field | async; track option) {
+    @let options = props.options | formlySelectOptions: field | async;
+    @for (choice of optionSources(options); track choice; let i = $index) {
+      @let option = options[i];
       <GridLayout class="input-field input-sides" rows="auto, auto" columns="*,*">
         <Label class="label" [text]="option.label"></Label>
         <Switch col="1" class="switch input" [checked]="formControl.value === option.value" (tap)="tap(option.value)">
@@ -23,6 +26,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
+  protected readonly optionSources = FormlySelectOptionsPipe.ɵgetOptionSources;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Radio values retain the arbitrary shapes accepted by the public API.
   tap(id: any) {
     const value = this.formControl.value === id ? null : id;

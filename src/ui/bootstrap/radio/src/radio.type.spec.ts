@@ -27,6 +27,35 @@ describe('ui-bootstrap: Radio Type', () => {
     expect(document.activeElement).toBe(input);
   });
 
+  it.each(['radio', 'multicheckbox'])(
+    'keeps focus on the same %s choice when equal-valued source choices reorder',
+    (type) => {
+      const options = [
+        { label: 'One', value: 1 },
+        { label: 'Two', value: 1 },
+      ];
+      const field: FormlyFieldConfig = {
+        key: 'choice',
+        type,
+        props: { options, mapProp: (option) => ({ ...option }) },
+      };
+      const { queryAll, detectChanges } = createComponent({
+        template: '<formly-form [fields]="fields"></formly-form>',
+        inputs: { fields: [field] },
+        imports: [FormlyBootstrapRadioModule, FormlyBootstrapMultiCheckboxModule],
+      });
+      const inputs = () => queryAll<HTMLInputElement>('input').map(({ nativeElement }) => nativeElement);
+      const first = inputs()[0];
+      first.focus();
+
+      options.reverse();
+      field.options.build();
+      detectChanges();
+      expect(inputs()[1]).toBe(first);
+      expect(document.activeElement).toBe(first);
+    },
+  );
+
   it('should render radio type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
