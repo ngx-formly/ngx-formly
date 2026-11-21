@@ -70,6 +70,7 @@ export class FieldExpressionExtension implements FormlyExtension {
                 field._expressions[key].callback(true);
               } else {
                 this.evalExpr(field, key, v);
+                this.emitExpressionChanges(field, key, v);
               }
               field.options._detectChanges(field);
             }),
@@ -194,10 +195,13 @@ export class FieldExpressionExtension implements FormlyExtension {
 
           if (ignoreCache || needsDisabledSync || valueChanged) {
             const emit = !ignoreCache || !initialized || valueChanged || needsDisabledSync;
+            this.evalExpr(field, path, exprValue);
             initialized = true;
             currentValue = exprValue;
             currentValueSnapshot = valueSnapshot;
-            this.evalExpr(field, path, exprValue, emit);
+            if (emit) {
+              this.emitExpressionChanges(field, path, exprValue);
+            }
 
             return true;
           }
@@ -310,7 +314,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
   }
 
-  private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any, emit = true) {
+  private evalExpr(field: FormlyFieldConfigCache, prop: string, value: any) {
     if (prop.indexOf('model.') === 0) {
       const key = prop.replace(/^model\./, ''),
         parent = field.fieldGroup ? field : field.parent;
@@ -345,10 +349,6 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
         this.changeDisabledState(field, value);
       }
-    }
-
-    if (emit) {
-      this.emitExpressionChanges(field, prop, value);
     }
   }
 

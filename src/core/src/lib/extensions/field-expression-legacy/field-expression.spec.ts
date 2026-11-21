@@ -1240,6 +1240,29 @@ describe('FieldExpressionExtension', () => {
       subscription.unsubscribe();
     });
 
+    it('emits on the first successful assignment after a failed build', () => {
+      const field: FormlyFieldConfig = { key: 'item', expressions: { 'props.nested.label': () => 'Ready' } };
+      const fieldChanges = new Subject<FormlyValueChangeEvent>();
+      const next = vi.fn();
+      fieldChanges.subscribe(next);
+      const root = { fieldGroup: [field], options: { fieldChanges } };
+      const builder = createBuilder();
+
+      expect(() => builder.build(root)).toThrow('props.nested.label');
+      expect(next).not.toHaveBeenCalled();
+      field.props.nested = {};
+      builder.build(root);
+      expect(field.props.nested.label).toBe('Ready');
+      expect(next).toHaveBeenCalledExactlyOnceWith({
+        field,
+        type: 'expressionChanges',
+        property: 'props.nested.label',
+        value: 'Ready',
+      });
+      builder.build(root);
+      expect(next).toHaveBeenCalledOnce();
+    });
+
     it('should not emit expressionChanges on rebuild when the value is unchanged', () => {
       const fieldChanges = new Subject<any>();
       const spy = vi.fn();

@@ -33,6 +33,28 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('FormlyValidationMessage Component', () => {
+  it.each([true, false])('retains a translated message across rebuilds with showAllErrors=%s', (showAllErrors) => {
+    const translation = new Subject<string>();
+    const subscribe = vi.spyOn(translation, 'subscribe');
+    const { field, query, detectChanges } = renderComponent({
+      key: 'title',
+      props: { required: true },
+      validation: { showAllErrors, messages: { required: () => translation } },
+    });
+    translation.next('Required');
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Required');
+    subscribe.mockClear();
+
+    field.options.build();
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Required');
+    expect(subscribe).not.toHaveBeenCalled();
+    translation.next('Updated');
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Updated');
+  });
+
   it('should refresh a contextual message after rebuilding an unchanged expression', () => {
     let text = 'Before';
     const message = () => text;
@@ -331,6 +353,26 @@ describe.each([
     fixture.destroy();
     expect(translation.observers).toHaveLength(0);
     expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
+  });
+
+  it('retains a hot translation while a sibling message changes on rebuild', () => {
+    const { fixture, field, content } = renderMessages(true);
+    const translation = new Subject<string>();
+    const subscribe = vi.spyOn(translation, 'subscribe');
+    let second = 'Second';
+    field.validation.messages = { first: () => translation, second: () => of(second) };
+    field.formControl.setErrors({ first: true, second: true });
+    translation.next('First');
+    fixture.detectChanges();
+    expect(content()).toBe('First\nSecond');
+
+    second = 'Updated';
+    field.options._afterBuild.forEach((afterBuild) => afterBuild());
+    fixture.detectChanges();
+    expect(content()).toBe('First\nUpdated');
+    expect(subscribe).toHaveBeenCalledOnce();
+    fixture.destroy();
+    expect(translation.observers).toHaveLength(0);
   });
 
   it('updates the mode through expressions without replacing the field', () => {

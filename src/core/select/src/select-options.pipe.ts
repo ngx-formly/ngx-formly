@@ -1,6 +1,6 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { BehaviorSubject, isObservable, Observable, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map, scan, tap } from 'rxjs/operators';
 import {
   FormlyFieldConfig,
   FormlyFieldProps,
@@ -41,13 +41,17 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Option mappings retain the consumer-defined values accepted by the public select API.
   transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[]> {
-    if (!isObservable(options)) {
-      options = this.observableOf(options, field);
-    } else {
+    if (isObservable(options)) {
       this.dispose();
+      return (options as Observable<unknown[]>).pipe(map((value) => this.transformOptions(value, field)));
     }
 
-    return (options as Observable<unknown[]>).pipe(map((value) => this.transformOptions(value, field)));
+    return this.observableOf(options, field).pipe(
+      scan((previous, value) => {
+        const mapped = this.transformOptions(value, field);
+        return mapped.map((option, i) => (sameOption(previous[i], option) ? previous[i] : option));
+      }, [] as FormlySelectOption[]),
+    );
   }
 
   ngOnDestroy(): void {
@@ -133,6 +137,13 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   private observableOf(options: unknown[], f?: FormlyFieldConfig) {
     this.dispose();
     if (f && f.options && f.options.fieldChanges) {
+      const usesFieldOptions = options === f.props?.options;
+      const refresh = () => {
+        const current = usesFieldOptions ? f.props?.options : options;
+        if (Array.isArray(current)) {
+          this._options.next(current);
+        }
+      };
       this._subscription = f.options.fieldChanges
         .pipe(
           filter(({ property, type, field }) => {
@@ -140,11 +151,10 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
               type === 'expressionChanges' &&
               (property.indexOf('templateOptions.options') === 0 || property.indexOf('props.options') === 0) &&
               field === f &&
-              Array.isArray(field.props.options) &&
               !!this._options
             );
           }),
-          tap(() => this._options.next(f.props.options as unknown[])),
+          tap(refresh),
         )
         .subscribe();
 
@@ -153,18 +163,61 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
         defineHiddenProp(formOptions, '_afterBuild', new Set());
       }
       // Mapping callbacks and mutable option values can change without an expression event.
-      const afterBuild = () => {
-        if (Array.isArray(f.props.options)) {
-          this._options.next(f.props.options);
-        }
-      };
-      formOptions._afterBuild.add(afterBuild);
-      this._subscription.add(() => formOptions._afterBuild.delete(afterBuild));
+      formOptions._afterBuild.add(refresh);
+      this._subscription.add(() => formOptions._afterBuild.delete(refresh));
     }
 
     this._options = new BehaviorSubject(options);
     return this._options.asObservable();
   }
+}
+
+// Preserve the nodes tracked by option identity when a rebuild produces the same mapped data.
+function sameOption(
+  previous: FormlySelectOption,
+  next: FormlySelectOption,
+  parents?: Set<FormlySelectOption>,
+): boolean {
+  if (previous === next) {
+    return true;
+  }
+
+  if (
+    !previous ||
+    !next ||
+    parents?.has(previous) ||
+    Object.getPrototypeOf(previous) !== Object.prototype ||
+    Object.getPrototypeOf(next) !== Object.prototype
+  ) {
+    return false;
+  }
+
+  const keys = Reflect.ownKeys(previous);
+  return (
+    keys.length === Reflect.ownKeys(next).length &&
+    keys.every((key) => {
+      const before = Object.getOwnPropertyDescriptor(previous, key);
+      const after = Object.getOwnPropertyDescriptor(next, key);
+      if (!after || !('value' in before) || !('value' in after)) {
+        return false;
+      }
+      if (Object.is(before.value, after.value)) {
+        return true;
+      }
+      if (
+        key !== 'group' ||
+        !Array.isArray(before.value) ||
+        !Array.isArray(after.value) ||
+        before.value.length !== after.value.length
+      ) {
+        return false;
+      }
+      const ancestors = new Set(parents).add(previous);
+      return before.value.every((option: FormlySelectOption, i: number) =>
+        sameOption(option, after.value[i], ancestors),
+      );
+    })
+  );
 }
 
 @Pipe({ name: 'formlySelectOptions', standalone: false })

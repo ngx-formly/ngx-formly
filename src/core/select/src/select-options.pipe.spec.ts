@@ -62,6 +62,37 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     expect(spy).toHaveBeenCalledTimes(3);
   });
 
+  it('keeps the supplied options when the field has a longer list', () => {
+    const options = [
+      { label: 'Visible', value: 1 },
+      { label: 'Excluded', value: 2 },
+    ];
+    const field: FormlyFieldConfig = { key: 'item', props: { options } };
+    createBuilder().build({ fieldGroup: [field] });
+    const next = vi.fn();
+    pipe.transform(options.slice(0, 1), field).subscribe(next);
+
+    field.options.build();
+    expect(next).toHaveBeenLastCalledWith([{ label: 'Visible', value: 1, disabled: false }]);
+    pipe.ngOnDestroy();
+  });
+
+  it('preserves the selected object reference when a rebuild replaces it with an equal value', () => {
+    const options = [{ label: 'Choice', value: { id: 1 } }];
+    const field: FormlyFieldConfig = { key: 'item', props: { options } };
+    createBuilder().build({ fieldGroup: [field] });
+    const next = vi.fn();
+    pipe.transform(options, field).subscribe(next);
+    const previous = next.mock.lastCall[0][0];
+
+    options[0].value = { id: 1 };
+    field.options.build();
+    const current = next.mock.lastCall[0][0];
+    expect(current.value).toBe(options[0].value);
+    expect(current).not.toBe(previous);
+    pipe.ngOnDestroy();
+  });
+
   it.each(['properties', 'mapProp'])('should refresh contextual %s after rebuilding unchanged options', (mapping) => {
     const options = [{}];
     let label = 'Before';

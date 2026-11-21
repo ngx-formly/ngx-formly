@@ -1,6 +1,7 @@
+import { FormlyBootstrapMultiCheckboxModule } from '@ngx-formly/bootstrap/multicheckbox';
 import { FormlyBootstrapRadioModule } from '@ngx-formly/bootstrap/radio';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createComponent, createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -9,6 +10,23 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-bootstrap: Radio Type', () => {
+  it.each(['radio', 'multicheckbox'])('keeps keyboard focus on a %s when a sibling rebuilds', (type) => {
+    const sibling: FormlyFieldConfig = { key: 'sibling', fieldGroup: [] };
+    const { query, detectChanges } = createComponent({
+      template: '<formly-form [fields]="fields"></formly-form>',
+      inputs: { fields: [{ key: 'choice', type, props: { options: [{ label: 'One', value: 1 }] } }, sibling] },
+      imports: [FormlyBootstrapRadioModule, FormlyBootstrapMultiCheckboxModule],
+    });
+    const input = query<HTMLInputElement>('input').nativeElement;
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    sibling.options.build(sibling);
+    detectChanges();
+    expect(query('input').nativeElement).toBe(input);
+    expect(document.activeElement).toBe(input);
+  });
+
   it('should render radio type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',
