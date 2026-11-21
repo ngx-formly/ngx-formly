@@ -185,6 +185,68 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     expect((second.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
   });
 
+  it('should not fail on a rebuild when mapProp returns a non-object', () => {
+    const field: FormlyFieldConfig = {
+      key: 'item',
+      props: { options: [{ label: 'A', value: 1 }], mapProp: () => undefined },
+    };
+    createBuilder().build({ fieldGroup: [field] });
+    const next = vi.fn();
+    const error = vi.fn();
+    pipe.transform(field.props.options, field).subscribe({ next, error });
+
+    expect(() => field.options.build()).not.toThrow();
+    expect(error).not.toHaveBeenCalled();
+    pipe.ngOnDestroy();
+  });
+
+  it('should keep the identity of unchanged static options after a rebuild', () => {
+    const field: FormlyFieldConfig = {
+      key: 'item',
+      props: {
+        options: [
+          { label: 'A', value: 1 },
+          { label: 'B', value: 2 },
+        ],
+      },
+    };
+    createBuilder().build({ fieldGroup: [field] });
+    const next = vi.fn();
+    pipe.transform(field.props.options, field).subscribe(next);
+    const [first] = next.mock.lastCall[0];
+
+    field.options.build();
+    const latest = next.mock.lastCall[0];
+    expect(latest[0]).toBe(first);
+
+    (field.props.options as { label: string }[])[1].label = 'Changed';
+    field.options.build();
+    expect(next.mock.lastCall[0][0]).toBe(first);
+    expect(next.mock.lastCall[0][1]).toEqual({ label: 'Changed', value: 2, disabled: false });
+    pipe.ngOnDestroy();
+  });
+
+  it('T4: should keep emitting options derived from the transform argument after a rebuild', () => {
+    const field: FormlyFieldConfig = {
+      key: 'item',
+      props: {
+        options: [
+          { label: 'A', value: 1 },
+          { label: 'B', value: 2 },
+        ],
+      },
+    };
+    createBuilder().build({ fieldGroup: [field] });
+    const derived = (field.props.options as { label: string; value: number }[]).filter(({ value }) => value === 2);
+    const next = vi.fn();
+    pipe.transform(derived, field).subscribe(next);
+    expect(next).toHaveBeenLastCalledWith([{ label: 'B', value: 2, disabled: false }]);
+
+    field.options.build();
+    expect(next).toHaveBeenLastCalledWith([{ label: 'B', value: 2, disabled: false }]);
+    pipe.ngOnDestroy();
+  });
+
   it('should refresh after partial builds and wait for failed builds to recover', () => {
     let fail = false;
     let label = 'Before';
