@@ -10,7 +10,7 @@ import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/co
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model: any = {};
+  model = {};
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {

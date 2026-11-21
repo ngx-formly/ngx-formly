@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy expressions support arbitrary model values, callback arguments, and thrown errors. */
 import { effect, isSignal, untracked } from '@angular/core';
 import { FormlyValueChangeEvent, FormlyFieldConfigCache } from '../../models';
 import {
@@ -62,7 +63,7 @@ export class FieldExpressionExtension implements FormlyExtension {
         field._expressions[key] = this.parseExpressions(field, key, expr);
       } else if (expr instanceof Observable) {
         field._expressions[key] = {
-          value$: (expr as Observable<any>).pipe(
+          value$: (expr as Observable<unknown>).pipe(
             tap((v) => {
               if (['props.disabled', 'templateOptions.disabled'].includes(key)) {
                 field._expressions[key].callback = this.parseExpressions(field, key, () => v).callback;
@@ -229,7 +230,9 @@ export class FieldExpressionExtension implements FormlyExtension {
     if (field._expressions) {
       const hide = field.hide;
       for (const key of Object.keys(field._expressions)) {
-        field._expressions[key].callback?.(ignoreCache) && (fieldChanged = true);
+        if (field._expressions[key].callback?.(ignoreCache)) {
+          fieldChanged = true;
+        }
       }
 
       if (ignoreCache && field._expressions.hide && hide === false && field.hide === false) {

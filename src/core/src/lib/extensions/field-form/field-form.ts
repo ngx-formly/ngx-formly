@@ -74,7 +74,7 @@ export class FieldFormExtension implements FormlyExtension {
     } else {
       if (control instanceof FormControl) {
         const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
-        (control as any).defaultValue = value;
+        (control as { defaultValue: unknown }).defaultValue = value;
       }
     }
 
@@ -149,8 +149,11 @@ export class FieldFormExtension implements FormlyExtension {
     return field.fieldGroup?.some((f) => f?.fieldGroup && !hasKey(f) && this.hasValidators(f, type));
   }
 
-  private mergeValidators<T>(field: FormlyFieldConfigCache, type: '_validators' | '_asyncValidators'): T[] {
-    const validators: any = [];
+  private mergeValidators<T extends ValidatorFn | AsyncValidatorFn>(
+    field: FormlyFieldConfigCache,
+    type: '_validators' | '_asyncValidators',
+  ): T[] {
+    const validators: (ValidatorFn | AsyncValidatorFn)[] = [];
     const c = field.formControl;
     if (c?._fields?.length > 1) {
       c._fields
@@ -166,6 +169,6 @@ export class FieldFormExtension implements FormlyExtension {
         .forEach((f) => validators.push(...this.mergeValidators(f, type)));
     }
 
-    return validators;
+    return validators as T[];
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Public model and callback types must accept consumer-defined values. */
 import { Type } from '@angular/core';
 import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -66,6 +67,11 @@ export interface ConfigOption {
   extensions?: ExtensionOption[];
   validationMessages?: ValidationMessageOption[];
   extras?: {
+    /**
+     * Default WebMCP participation. Fields and groups can override it. Defaults to false.
+     * @experimental
+     */
+    webMcp?: boolean;
     immutable?: boolean;
     showError?: (field: FieldType) => boolean;
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { createComponent } from '@ngx-formly/core/testing';
-import { CopierService } from '../copier/copier.service';
+import { appConfig } from '../../app.config';
 import { ExampleViewerComponent } from './example-viewer.component';
 
 @Component({
@@ -16,12 +16,12 @@ describe('Example model preview', () => {
       template: '<formly-example-viewer [exampleData]="exampleData" />',
       inputs: { exampleData: { title: '', component: PlainModelExampleComponent, files: [] } },
       imports: [ExampleViewerComponent],
-      providers: [CopierService],
+      providers: appConfig.providers,
     });
     const preview = () => query('.json-formatter-row').nativeElement.textContent;
     expect(preview()).toContain('Ada');
 
-    query('.edit-model').nativeElement.click();
+    query<HTMLButtonElement>('.edit-model').nativeElement.click();
     detectChanges();
     expect(preview()).toContain('Grace');
   });

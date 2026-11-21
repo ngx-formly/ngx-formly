@@ -31,6 +31,7 @@ export class FormlyFormBuilder {
   buildForm(
     form: UntypedFormGroup | UntypedFormArray,
     fieldGroup: FormlyFieldConfig[] = [],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Keep the public builder compatible with arbitrary consumer model shapes.
     model: any,
     options: FormlyFormOptions,
   ) {

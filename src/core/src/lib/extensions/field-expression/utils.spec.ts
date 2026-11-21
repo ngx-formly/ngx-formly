@@ -6,7 +6,7 @@ describe('evalStringExpression', () => {
       'should support optional property chains for %p',
       (model) => {
         const expr = evalStringExpression('model?.foo?.name', ['model']);
-        expect(expr(model)).toBe((model as any)?.foo?.name);
+        expect(expr(model)).toBe((model as { foo?: { name: string } })?.foo?.name);
       },
     );
 

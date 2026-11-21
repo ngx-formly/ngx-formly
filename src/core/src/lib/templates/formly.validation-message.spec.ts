@@ -1,4 +1,4 @@
-import { FormlyFormOptionsCache } from '../models';
+import { FormlyValueChangeEvent } from '@ngx-formly/core';
 import { createFieldComponent } from '@ngx-formly/core/testing';
 import {
   FormlyModule,
@@ -11,6 +11,7 @@ import { of, Subject } from 'rxjs';
 import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
+import { FormlyFieldConfigCache, FormlyFormOptionsCache } from '../models';
 
 function validationMessageContent(query: (v: string) => DebugElement): string {
   return query('formly-validation-message').nativeElement.textContent;
@@ -117,7 +118,7 @@ describe('FormlyValidationMessage Component', () => {
     it('should handle expressions changes', () => {
       const { query, field, detectChanges } = renderComponent({
         key: 'title',
-        options: { fieldChanges: new Subject<any>() },
+        options: { fieldChanges: new Subject<FormlyValueChangeEvent>() },
         validators: {
           required: {
             expression: () => false,
@@ -196,7 +197,7 @@ describe.each([
     });
     TestBed.inject(FormlyConfig).addValidatorMessage('first', 'First error.');
     const fixture = TestBed.createComponent(MessageComponent);
-    const field: FormlyFieldConfig = {
+    const field: FormlyFieldConfigCache = {
       formControl: new FormControl(),
       validation: { showAllErrors },
       options: { fieldChanges: new Subject() },

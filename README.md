@@ -35,7 +35,7 @@ Formly is a dynamic (JSON powered) form library for Angular that brings unmatche
 
 ## Docs
 
-Try the live configuration-to-form example on [formly.dev](https://formly.dev), then explore the guides and UI demos.
+Edit the input fields' JSON and try the live form on [formly.dev](https://formly.dev), then explore the guides and UI demos.
 Use the search button or Cmd/Ctrl+K to search guide and migration text, plus UI and example page names.
 
 - [Get Started](https://formly.dev/guide)

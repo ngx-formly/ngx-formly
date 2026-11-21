@@ -1,6 +1,6 @@
 {
   "name": "@ngx-formly/common",
-  "version": "11.2.0",
+  "version": "11.3.0",
   "packageManager": "npm@11.19.0",
   "author": "Zama Khan Mohammed <mohammedzamakhan@gmail.com>",
   "contributors": [
@@ -21,7 +21,7 @@
     "publish": "ts-node --dir build publish.ts",
     "start": "ng serve app --port 4100 --open",
     "demo": "npm run start",
-    "dev:portless": "npm run docs:api && portless run --name ngx-formly ng serve app",
+    "dev": "npm run docs:api && portless run --name ngx-formly ng serve app",
     "docs:api": "node build/docs.mjs",
     "docs:check": "node build/docs.mjs --check && node --test build/docs.test.mjs",
     "docs:build": "npm run docs:api && ng build app --configuration production",

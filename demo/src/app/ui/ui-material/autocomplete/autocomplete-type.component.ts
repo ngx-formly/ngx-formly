@@ -39,12 +39,12 @@ import { MatOption } from '@angular/material/core';
   ],
 })
 export class AutocompleteTypeComponent extends FieldType<FieldTypeConfig> implements OnInit {
-  filter: Observable<any>;
+  filter: Observable<string[]>;
 
   ngOnInit() {
     this.filter = this.formControl.valueChanges.pipe(
       startWith(''),
-      switchMap((term) => this.props.filter(term)),
+      switchMap((term): Observable<string[]> => this.props.filter(term)),
     );
   }
 }

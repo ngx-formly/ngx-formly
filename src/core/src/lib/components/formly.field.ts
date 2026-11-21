@@ -29,12 +29,11 @@ import {
   isObject,
   markFieldForCheck,
   hasKey,
-  IObserver,
   isSignalRequired,
 } from '../utils';
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
-import { Subscription, isObservable } from 'rxjs';
+import { Subscription, Unsubscribable, isObservable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
@@ -52,7 +51,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
   @Input() field: FormlyFieldConfig;
   @ViewChild('container', { read: ViewContainerRef, static: true }) viewContainerRef!: ViewContainerRef;
 
-  private hostObservers: (IObserver<any> | Subscription)[] = [];
+  private hostObservers: Unsubscribable[] = [];
   private componentRefs: (ComponentRef<FieldType> | EmbeddedViewRef<FieldType>)[] = [];
   private hooksObservers: (() => void)[] = [];
   private detectFieldBuild = false;
@@ -130,7 +129,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
       const ref = containerRef.createComponent<FieldWrapper>(component);
       this.attachComponentRef(ref, f);
-      observe<ViewContainerRef & { _lContainer: any }>(
+      observe<ViewContainerRef & { _lContainer: unknown }>(
         ref.instance,
         ['fieldComponent'],
         ({ currentValue, previousValue, firstChange }) => {
@@ -146,12 +145,15 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
               this.renderField(currentValue, f, wps);
             }
 
-            !firstChange && ref.changeDetectorRef.detectChanges();
+            if (!firstChange) {
+              ref.changeDetectorRef.detectChanges();
+            }
           }
         },
       );
     } else if (f?.type) {
       const inlineType = this.form?.templates?.find((ref) => ref.name === f.type);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Component instances and inline-template contexts have different runtime shapes.
       let ref: ComponentRef<any> | EmbeddedViewRef<any>;
       if (inlineType) {
         ref = containerRef.createEmbeddedView(
@@ -161,7 +163,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
         );
       } else {
         const { component } = this.config.getType(f.type, true);
-        ref = containerRef.createComponent<FieldWrapper>(component as any);
+        ref = containerRef.createComponent(component);
       }
       this.attachComponentRef(ref, f);
     }
@@ -244,10 +246,13 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       observe<boolean>(this.field, ['hide'], ({ firstChange, currentValue }) => {
         const containerRef = this.containerRef;
         if (this.config.extras.lazyRender === false) {
-          firstChange && this.renderField(containerRef, this.field);
+          if (firstChange) {
+            this.renderField(containerRef, this.field);
+          }
           if (!firstChange || (firstChange && currentValue)) {
-            this.elementRef &&
+            if (this.elementRef) {
               this.renderer.setStyle(this.elementRef.nativeElement, 'display', currentValue ? 'none' : '');
+            }
           }
         } else {
           if (currentValue) {
@@ -263,14 +268,18 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           }
         }
 
-        !firstChange && this.field.options.detectChanges(this.field);
+        if (!firstChange) {
+          this.field.options.detectChanges(this.field);
+        }
       }),
       observe<string>(this.field, ['className'], ({ firstChange, currentValue }) => {
         if (
           (!firstChange || (firstChange && currentValue)) &&
           (!this.config.extras.lazyRender || this.field.hide !== true)
         ) {
-          this.elementRef && this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
+          if (this.elementRef) {
+            this.renderer.setAttribute(this.elementRef.nativeElement, 'class', currentValue);
+          }
         }
       }),
     ];
@@ -375,7 +384,10 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
               startWith(control.value),
               filter(() => !independent || !field._hide),
               map((value) => {
-                field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
+                field.parsers?.map(
+                  (parserFn) =>
+                    (value = (parserFn as (value: unknown, field: FormlyFieldConfig) => unknown)(value, field)),
+                );
                 if (!Object.is(value, control.value)) {
                   control.setValue(value, { emitEvent: !independent });
                 }

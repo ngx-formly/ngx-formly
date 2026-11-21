@@ -1,0 +1,20 @@
+<p>Inspect <code>fill_registration</code> using a WebMCP-compatible browser agent. The form also works normally.</p>
+<label class="d-block mb-2">
+  <input
+    type="checkbox"
+    [checked]="config.extras.webMcp"
+    (change)="config.extras.webMcp = $any($event.target).checked"
+  />
+  Include fields without an explicit WebMCP setting
+</label>
+<label class="d-block mb-3">
+  <input type="checkbox" (change)="allowSubmission($any($event.target).checked)" />
+  Allow the agent to submit this example
+</label>
+<form [formGroup]="form" (ngSubmit)="save()">
+  <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options" />
+  <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Submit</button>
+</form>
+@if (submitted()) {
+  <p class="mt-3" role="status">The example registration was submitted. No data was sent to a server.</p>
+}

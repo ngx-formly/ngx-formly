@@ -5,6 +5,7 @@ import { FormlyFieldProps } from '@ngx-formly/ionic/form-field';
 
 interface DatetimeProps extends FormlyFieldProps {
   presentation?: 'date' | 'date-time' | 'month' | 'month-year' | 'time' | 'time-date' | 'year';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Keep the existing public locale type accepted by Ionic field configurations.
   locale?: any;
   cancelText?: string;
   doneText?: string;

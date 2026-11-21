@@ -6,6 +6,7 @@ import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
 import { takeUntil, tap } from 'rxjs/operators';
 
 import { Subject } from 'rxjs';
+import { JSONSchema7 } from 'json-schema';
 
 import { FormlyForm } from '@ngx-formly/core';
 
@@ -15,9 +16,9 @@ import { FormlyForm } from '@ngx-formly/core';
   imports: [ReactiveFormsModule, FormlyForm],
 })
 export class AppComponent implements OnDestroy {
-  private destroy$: Subject<any> = new Subject<any>();
+  private destroy$: Subject<void> = new Subject<void>();
   form: UntypedFormGroup;
-  model: any;
+  model: unknown;
   options: FormlyFormOptions;
   fields: FormlyFieldConfig[];
 
@@ -48,7 +49,7 @@ export class AppComponent implements OnDestroy {
 
   loadExample(type: string) {
     this.http
-      .get<any>(`assets/json-schema/${type}_json`)
+      .get<{ schema: JSONSchema7; model: unknown }>(`assets/json-schema/${type}_json`)
       .pipe(
         tap(({ schema, model }) => {
           this.type = type;
@@ -68,7 +69,7 @@ export class AppComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }

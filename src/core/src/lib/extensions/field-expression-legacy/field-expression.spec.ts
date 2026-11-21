@@ -1,3 +1,4 @@
+import { FormlyValueChangeEvent } from '@ngx-formly/core';
 import { MockInstance } from 'vitest';
 import { computed, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
@@ -159,7 +160,7 @@ describe('FieldExpressionExtension', () => {
     });
 
     it('should emit the initial value only once', () => {
-      const fieldChanges = new Subject<any>();
+      const fieldChanges = new Subject<FormlyValueChangeEvent>();
       const spy = vi.fn();
       const subscription = fieldChanges.subscribe(spy);
       const { detectChanges } = createFieldComponent(
@@ -1216,7 +1217,7 @@ describe('FieldExpressionExtension', () => {
 
   describe('fieldChanges', () => {
     it('should emit fieldChanges on change field visibility', () => {
-      const fieldChanges = new Subject<any>();
+      const fieldChanges = new Subject<FormlyValueChangeEvent>();
       const spy = vi.fn();
       const subscription = fieldChanges.subscribe(spy);
 
@@ -1391,7 +1392,7 @@ describe('FieldExpressionExtension', () => {
     });
 
     it('should emit fieldChanges when expression value changes', () => {
-      const fieldChanges = new Subject<any>();
+      const fieldChanges = new Subject<FormlyValueChangeEvent>();
       const spy = vi.fn();
       const subscription = fieldChanges.subscribe(spy);
 
