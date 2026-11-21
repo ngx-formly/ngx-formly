@@ -188,14 +188,12 @@ export class FieldExpressionExtension implements FormlyExtension {
             }
           }
 
-          if (
-            ignoreCache ||
-            (isDisabledExpression &&
-              (field.props.disabled !== !!exprValue || (exprValue && hasKey(field) && field.formControl?.enabled))) ||
-            valueChanged
-          ) {
-            // A rebuild re-applies the value but only reports it when it differs from the previous one.
-            const emit = !ignoreCache || !initialized || valueChanged;
+          const needsDisabledSync =
+            isDisabledExpression &&
+            (field.props.disabled !== !!exprValue || (exprValue && hasKey(field) && field.formControl?.enabled));
+
+          if (ignoreCache || needsDisabledSync || valueChanged) {
+            const emit = !ignoreCache || !initialized || valueChanged || needsDisabledSync;
             initialized = true;
             currentValue = exprValue;
             currentValueSnapshot = valueSnapshot;

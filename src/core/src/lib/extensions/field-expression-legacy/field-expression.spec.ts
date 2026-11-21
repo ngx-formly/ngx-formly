@@ -1264,6 +1264,32 @@ describe('FieldExpressionExtension', () => {
       subscription.unsubscribe();
     });
 
+    it('should emit expressionChanges when a rebuild corrects the disabled state', () => {
+      const field = buildField({
+        key: 'input',
+        expressions: { 'props.disabled': () => true },
+      });
+      const spy = vi.fn();
+      const subscription = field.options.fieldChanges.subscribe(spy);
+
+      field.props.disabled = false;
+      expect(field.formControl.enabled).toBe(true);
+
+      field.options.build();
+
+      expect(field.formControl.disabled).toBe(true);
+      expect(spy).toHaveBeenCalledExactlyOnceWith({
+        field,
+        type: 'expressionChanges',
+        property: 'props.disabled',
+        value: true,
+      });
+
+      field.options.build();
+      expect(spy).toHaveBeenCalledTimes(1);
+      subscription.unsubscribe();
+    });
+
     it('should emit expressionChanges on rebuild when the value changed', () => {
       const fieldChanges = new Subject<any>();
       const spy = vi.fn();
