@@ -96,6 +96,7 @@ The output shares the `options.fieldChanges` payload shape; it does not forward 
 | parsers              | `function[]` | Array of functions to execute, as a pipeline, whenever the model updates, usually via user input. |
 | shareFormControl     | `boolean` | Whether fields at the same model path share a control. Defaults to `true`. Set to `false` on each mutually exclusive alternative to isolate its parsers and validators. |
 | fieldGroup           | `FormlyFieldConfig[]` | A field group is a way to group fields together, making advanced layout very simple. It can also be used to group fields that are associated with the same model (useful if it's different than the model for the rest of the fields). |
+| cascadeDisabled      | `boolean` | Whether a disabled state on this container fieldGroup should cascade to its child fields. Defaults to `true`. Set to `false` on layout container wrappers (e.g. cards, panels) to prevent container-level disabled state from disabling inner controls. |
 | fieldArray           | `FormlyFieldConfig` | |
 | fieldGroupClassName  | `string` | Specify your own class that will be applied to the `formly-group` component. |
 | validation           | `object` | An object with a few useful properties: messages, show |

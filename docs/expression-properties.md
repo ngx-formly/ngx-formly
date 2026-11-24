@@ -55,6 +55,25 @@ options = {
 
 :::
 
+### Container groups and cascadeDisabled
+
+By default, disabling a container `fieldGroup` (statically or via an expression) cascades the disabled state down to its child fields. Set `cascadeDisabled: false` on layout container wrappers (e.g. cards, panels) to prevent a container-level disabled state from disabling inner controls:
+
+```typescript
+{
+  props: { label: 'Card Panel' },
+  cascadeDisabled: false,
+  expressions: { 'props.disabled': '!model.text' },
+  fieldGroup: [
+    {
+      key: 'independent',
+      type: 'input',
+      props: { label: 'Independent Child' },
+    },
+  ],
+}
+```
+
 ### Signals
 
 Pass a signal or a `computed` to update the property as soon as it changes, even when the model does not change:

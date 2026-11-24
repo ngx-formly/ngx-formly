@@ -164,17 +164,28 @@ export class FieldExpressionExtension implements FormlyExtension {
     const isDisabledExpression = ['props.disabled', 'templateOptions.disabled'].includes(path);
     let parentExpression: any;
     if (field.parent && (path === 'hide' || isDisabledExpression)) {
-      const rootValue = (f: FormlyFieldConfigCache) => {
-        return path === 'hide' ? f.hide : f.props.disabled;
-      };
-
       parentExpression = () => {
+        if (isDisabledExpression) {
+          let root = field.parent;
+          while (root) {
+            if (root.cascadeDisabled === false) {
+              return false;
+            }
+            if (root.props?.disabled) {
+              return true;
+            }
+            root = root.parent;
+          }
+
+          return false;
+        }
+
         let root = field.parent;
-        while (root.parent && !rootValue(root)) {
+        while (root.parent && !root.hide) {
           root = root.parent;
         }
 
-        return rootValue(root);
+        return root.hide;
       };
     }
 
@@ -219,7 +230,8 @@ export class FieldExpressionExtension implements FormlyExtension {
 
           const needsDisabledSync =
             isDisabledExpression &&
-            (field.props.disabled !== !!exprValue || (exprValue && hasKey(field) && field.formControl?.enabled));
+            (field.props.disabled !== !!exprValue ||
+              (exprValue && field.cascadeDisabled !== false && hasKey(field) && field.formControl?.enabled));
 
           if (ignoreCache || needsDisabledSync || valueChanged) {
             const emit = !ignoreCache || !wasInitialized || valueChanged || needsDisabledSync;
@@ -281,7 +293,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private changeDisabledState(field: FormlyFieldConfigCache, value: boolean) {
-    if (field.fieldGroup) {
+    if (field.fieldGroup && field.cascadeDisabled !== false) {
       field.fieldGroup
         .filter((f: FormlyFieldConfigCache) => !f._expressions.hasOwnProperty('props.disabled'))
         .forEach((f) => this.changeDisabledState(f, value));
@@ -371,7 +383,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
       if (['templateOptions.disabled', 'props.disabled'].includes(prop) && hasKey(field)) {
         // Angular enables descendants without updating a group's disabled property.
-        if (value && field.formControl?.enabled) {
+        if (value && field.cascadeDisabled !== false && field.formControl?.enabled) {
           field.formControl.disable();
         }
         this.changeDisabledState(field, value);
