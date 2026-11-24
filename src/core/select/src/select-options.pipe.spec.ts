@@ -247,6 +247,45 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     pipe.ngOnDestroy();
   });
 
+  it.each([
+    ['Set', () => new Set([{ id: 1 }, { id: 2 }])],
+    [
+      'Map',
+      () =>
+        new Map([
+          ['a', { id: 1 }],
+          ['b', { id: 2 }],
+        ]),
+    ],
+  ])('should map options held in a %s with mapProp', async (_name, create) => {
+    const field: FormlyFieldConfig = { props: { mapProp: (o: { id: number }) => ({ label: `${o.id}`, value: o.id }) } };
+
+    await expect(firstValueFrom(pipe.transform(create(), field))).resolves.toEqual([
+      { label: '1', value: 1 },
+      { label: '2', value: 2 },
+    ]);
+  });
+
+  it('should refresh and keep the identity of unchanged options after an in-place push and rebuild', () => {
+    const list = [{ label: 'a', value: 'a' }];
+    const field: FormlyFieldConfig = { key: 's', expressions: { 'props.options': () => list } };
+    createBuilder({ extensions: ['core', 'validation', 'form', 'expression'] }).build({
+      model: {},
+      options: { fieldChanges: new Subject<FormlyValueChangeEvent>() },
+      fieldGroup: [field],
+    });
+    const emitted: { label: string }[][] = [];
+    pipe.transform(field.props.options, field).subscribe((options) => emitted.push(options));
+
+    list.push({ label: 'b', value: 'b' });
+    field.options.build();
+
+    const last = emitted[emitted.length - 1];
+    expect(last).toHaveLength(2);
+    expect(last[0]).toBe(emitted[0][0]);
+    pipe.ngOnDestroy();
+  });
+
   it('should refresh after partial builds and wait for failed builds to recover', () => {
     let fail = false;
     let label = 'Before';

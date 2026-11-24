@@ -1479,6 +1479,91 @@ describe('FieldExpressionExtension', () => {
       });
     });
 
+    describe('rebuild drift', () => {
+      const expressionEvents = (spy: MockInstance) =>
+        spy.mock.calls.filter(([e]) => e.type === 'expressionChanges').map(([e]) => e);
+
+      it('should report a prop changed outside the expression when a rebuild restores it', () => {
+        const field = buildField({ key: 'text', expressions: { 'props.label': () => 'Expr' } });
+        const spy = vi.fn();
+        const subscription = field.options.fieldChanges.subscribe(spy);
+
+        field.props.label = 'Manual';
+        field.options.build();
+
+        expect(field.props.label).toBe('Expr');
+        expect(expressionEvents(spy)).toEqual([
+          { field, type: 'expressionChanges', property: 'props.label', value: 'Expr' },
+        ]);
+
+        spy.mockReset();
+        field.options.build();
+        expect(expressionEvents(spy)).toEqual([]);
+        subscription.unsubscribe();
+      });
+
+      it('should not emit on repeated rebuilds when a static prop is overridden by an expression', () => {
+        const field = buildField({
+          key: 'text',
+          props: { label: 'Static' },
+          expressions: { 'props.label': () => 'Expr' },
+        });
+        const spy = vi.fn();
+        const subscription = field.options.fieldChanges.subscribe(spy);
+
+        field.options.build();
+        field.options.build();
+
+        expect(field.props.label).toBe('Expr');
+        expect(expressionEvents(spy)).toEqual([]);
+        subscription.unsubscribe();
+      });
+
+      it.each([
+        ['NaN', NaN],
+        ['null', null],
+        ['undefined', undefined],
+        ['an empty string', ''],
+        ['false', false],
+        ['zero', 0],
+      ])('should not emit on rebuild when the expression value is %s and unchanged', (_name, value) => {
+        const field = buildField({ key: 'text', expressions: { 'props.description': () => value } });
+        const spy = vi.fn();
+        const subscription = field.options.fieldChanges.subscribe(spy);
+
+        field.options.build();
+        field.options.build();
+
+        expect(expressionEvents(spy)).toEqual([]);
+        subscription.unsubscribe();
+      });
+
+      it('should not emit on rebuild for an unchanged array or object value that is a new reference', () => {
+        const field = buildField({
+          key: 'text',
+          expressions: { 'props.options': () => [{ label: 'A', value: 1 }], 'props.attributes': () => ({ a: 'b' }) },
+        });
+        const spy = vi.fn();
+        const subscription = field.options.fieldChanges.subscribe(spy);
+
+        field.options.build();
+
+        expect(expressionEvents(spy)).toEqual([]);
+        subscription.unsubscribe();
+      });
+
+      it('should not emit on rebuild when an expression targets a missing nested path', () => {
+        const field = buildField({ key: 'text', expressions: { 'props.label': () => 'Label' } });
+        field.props.label = undefined;
+        const spy = vi.fn();
+        const subscription = field.options.fieldChanges.subscribe(spy);
+
+        expect(() => field.options.build()).not.toThrow();
+        expect(field.props.label).toBe('Label');
+        subscription.unsubscribe();
+      });
+    });
+
     it('should not emit expressionChanges on rebuild when the value is unchanged', () => {
       const fieldChanges = new Subject<any>();
       const spy = vi.fn();

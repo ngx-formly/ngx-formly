@@ -19,6 +19,8 @@ import { FormlyExtension } from '../../models';
 import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
 import { AbstractControl, UntypedFormArray } from '@angular/forms';
 
+const UNREADABLE = Symbol('unreadable');
+
 // Maps and Sets serialize as `{}` by default, which hides in-place mutations from the content comparison.
 function snapshotReplacer(_key: string, value: unknown) {
   if (value instanceof Map) {
@@ -197,6 +199,7 @@ export class FieldExpressionExtension implements FormlyExtension {
     let currentValue: any;
     let currentValueSnapshot: string | undefined | null = null;
     let initialized = false;
+    let appliedValue: unknown = UNREADABLE;
 
     return {
       callback: (ignoreCache?: boolean) => {
@@ -211,7 +214,8 @@ export class FieldExpressionExtension implements FormlyExtension {
           // later rebuild does not report that value as new.
           const wasInitialized = initialized;
           initialized = true;
-          let valueChanged = currentValue !== exprValue;
+          // `NaN !== NaN`, so an unchanged NaN result would otherwise count as a change on every check.
+          let valueChanged = currentValue !== exprValue && !(Number.isNaN(currentValue) && Number.isNaN(exprValue));
           let valueSnapshot: string | undefined | null = null;
           if ((ignoreCache || valueChanged) && isObject(exprValue) && !isObservable(exprValue)) {
             try {
@@ -233,9 +237,16 @@ export class FieldExpressionExtension implements FormlyExtension {
             (field.props.disabled !== !!exprValue ||
               (exprValue && field.cascadeDisabled !== false && hasKey(field) && field.formControl?.enabled));
 
+          // A rebuild restores the expression value, so report it when something else changed the property since it
+          // was applied. The applied value is compared, not the expression result, because applying may normalize it.
+          const liveValue = ignoreCache && wasInitialized && !valueChanged ? this.readTarget(field, path) : UNREADABLE;
+          const targetDrifted =
+            liveValue !== UNREADABLE && appliedValue !== UNREADABLE && !Object.is(liveValue, appliedValue);
+
           if (ignoreCache || needsDisabledSync || valueChanged) {
-            const emit = !ignoreCache || !wasInitialized || valueChanged || needsDisabledSync;
+            const emit = !ignoreCache || !wasInitialized || valueChanged || needsDisabledSync || targetDrifted;
             this.evalExpr(field, path, exprValue);
+            appliedValue = isObject(exprValue) ? UNREADABLE : this.readTarget(field, path);
             currentValue = exprValue;
             currentValueSnapshot = valueSnapshot;
             if (emit) {
@@ -388,6 +399,25 @@ export class FieldExpressionExtension implements FormlyExtension {
         }
         this.changeDisabledState(field, value);
       }
+    }
+  }
+
+  /** The value currently held by the property an expression writes to, or `UNREADABLE` if it cannot be read. */
+  private readTarget(field: FormlyFieldConfigCache, prop: string): unknown {
+    if (prop.indexOf('model.') === 0) {
+      return UNREADABLE;
+    }
+
+    try {
+      let target: any = field;
+      for (const path of this._evalExpressionPath(field, prop)) {
+        target = target[path];
+      }
+
+      return target;
+    } catch {
+      // An unreachable target is reported by `evalExpr` when the value is applied.
+      return UNREADABLE;
     }
   }
 

@@ -58,7 +58,9 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
         const mapped = this.transformOptions(value, field);
         // Custom mappers own their option objects and may use their identity.
         if ((field?.props || field?.templateOptions)?.mapProp) {
-          const sources = value ?? [];
+          // Read the rows the same way `transformOptions` does, so any iterable with `forEach` (Set, Map) works.
+          const sources: unknown[] = [];
+          value?.forEach((option) => sources.push(option));
           optionSources.set(
             mapped,
             new Set(sources).size === sources.length ? sources.slice() : sources.map((_, i) => i),
