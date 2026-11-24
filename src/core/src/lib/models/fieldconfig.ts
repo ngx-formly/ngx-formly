@@ -119,6 +119,13 @@ export interface FormlyFieldConfig<Props = FormlyFieldProps & { [additionalPrope
   resetOnHide?: boolean;
 
   /**
+   * Whether a disabled state on this container fieldGroup should cascade to its child fields.
+   * Defaults to `true`. Set to `false` on layout container wrappers (e.g. cards, panels)
+   * to prevent container-level disabled state from disabling inner controls.
+   */
+  cascadeDisabled?: boolean;
+
+  /**
    * Whether fields at the same model path share a control. Defaults to `true`.
    * Set to `false` on each mutually exclusive alternative to isolate parsers and validators.
    */
