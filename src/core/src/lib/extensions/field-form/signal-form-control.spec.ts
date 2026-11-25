@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
   AbstractControl,
@@ -335,6 +335,21 @@ describe('FormlySignalFormControl', () => {
     }
 
     describe.each([false, true])('signalForms=%s', (signalForms) => {
+      it('should preserve edits until the source of a synchronization effect changes', () => {
+        const control = build(signalForms);
+        const recordName = signal('Alice');
+        TestBed.runInInjectionContext(() => effect(() => control.setValue(recordName(), { emitEvent: false })));
+        TestBed.tick();
+
+        control.setValue('Bob');
+        TestBed.tick();
+        expect(control.parent.value).toEqual({ name: 'Bob' });
+
+        recordName.set('Carol');
+        TestBed.tick();
+        expect(control.parent.value).toEqual({ name: 'Carol' });
+      });
+
       it('should not restore manual errors when the value comes back', () => {
         const control = build(signalForms);
         control.setErrors({ server: true });

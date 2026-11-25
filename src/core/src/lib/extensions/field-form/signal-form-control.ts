@@ -265,16 +265,19 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
 
   // As on a FormControl, a programmatic value replaces the typed value that waits for blur or submit.
   override setValue(value: unknown, options?: ValueOptions): void {
-    this.manualErrors.set(undefined);
-    (this as unknown as PendingState)._pendingValue = value;
-    // Setting an array or object that was mutated in place does not notify the signal.
-    this.revalidate.update((count) => count + 1);
-    super.setValue(value, { ...options, onlySelf: true });
-    this.handledValue = value;
-    if (options?.emitEvent !== false) {
-      this.emitValue(value);
-    }
-    this.updateParent(options, this);
+    // Keep validation and parent state out of the calling effect's dependencies.
+    untracked(() => {
+      this.manualErrors.set(undefined);
+      (this as unknown as PendingState)._pendingValue = value;
+      // Setting an array or object that was mutated in place does not notify the signal.
+      this.revalidate.update((count) => count + 1);
+      super.setValue(value, { ...options, onlySelf: true });
+      this.handledValue = value;
+      if (options?.emitEvent !== false) {
+        this.emitValue(value);
+      }
+      this.updateParent(options, this);
+    });
   }
 
   override patchValue(value: unknown, options?: ValueOptions): void {
