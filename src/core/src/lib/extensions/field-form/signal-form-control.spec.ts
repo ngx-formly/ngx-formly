@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { take } from 'rxjs/operators';
 import { FormlySignalFormControl } from './signal-form-control';
 import { updateValidity } from './utils';
 
@@ -50,6 +51,7 @@ describe('FormlySignalFormControl', () => {
       const classic = new FormControl(10, Validators.min(18));
 
       control.setValidators(Validators.min(18));
+      control.updateValueAndValidity();
 
       expect(control.errors).toEqual(classic.errors);
       expect(control.errors).toEqual({ min: { min: 18, actual: 10 } });
@@ -70,10 +72,12 @@ describe('FormlySignalFormControl', () => {
     it('should clear the errors when validators are removed', () => {
       const control = createControl(10);
       control.setValidators(Validators.min(18));
+      control.updateValueAndValidity();
 
       control.setValidators(null);
-
       expect(control.validator).toBeNull();
+      expect(control.hasError('min')).toBe(true);
+      control.updateValueAndValidity();
       expect(control.errors).toBeNull();
     });
 
@@ -81,6 +85,7 @@ describe('FormlySignalFormControl', () => {
       const control = createControl(10);
       let min = 18;
       control.setValidators((c) => (c.value < min ? { min: true } : null));
+      control.updateValueAndValidity();
       expect(control.hasError('min')).toBe(true);
 
       min = 5;
@@ -160,15 +165,19 @@ describe('FormlySignalFormControl', () => {
 
       control.addValidators(min);
       expect(control.hasValidator(min)).toBe(true);
+      control.updateValueAndValidity();
       expect(control.errors).toEqual({ min: { min: 18, actual: 10 } });
 
       control.removeValidators(min);
       expect(control.hasValidator(min)).toBe(false);
+      control.updateValueAndValidity();
       expect(control.errors).toBeNull();
 
       control.setValidators(min);
+      control.updateValueAndValidity();
       control.clearValidators();
       expect(control.validator).toBeNull();
+      control.updateValueAndValidity();
       expect(control.errors).toBeNull();
     });
 
@@ -335,6 +344,25 @@ describe('FormlySignalFormControl', () => {
     }
 
     describe.each([false, true])('signalForms=%s', (signalForms) => {
+      it('should allow silent validator updates inside a parent valueChanges listener', () => {
+        const name = signalForms ? createControl('') : new FormControl('');
+        const kind = new FormControl('draft');
+        const form = new FormGroup({ kind, name });
+        TestBed.tick();
+        const updateRequired = vi.fn(() => {
+          name.setValidators(kind.value === 'final' ? Validators.required : null);
+          name.updateValueAndValidity({ emitEvent: false });
+        });
+        // Bound the listener so a recursive emission fails the assertion instead of overflowing the stack.
+        form.valueChanges.pipe(take(2)).subscribe(updateRequired);
+
+        kind.setValue('final');
+        TestBed.tick();
+        expect(updateRequired).toHaveBeenCalledTimes(1);
+        expect(name.errors).toEqual({ required: true });
+        expect(form.invalid).toBe(true);
+      });
+
       it('should preserve edits until the source of a synchronization effect changes', () => {
         const control = build(signalForms);
         const recordName = signal('Alice');

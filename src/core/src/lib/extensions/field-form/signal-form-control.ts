@@ -287,7 +287,6 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   override setValidators(validators: ValidatorFn | ValidatorFn[] | null): void {
     // AbstractControl stores them and exposes the composed function as `validator`.
     AbstractControl.prototype.setValidators.call(this, validators);
-    this.updateValueAndValidity();
   }
 
   // AbstractControl implements these on top of setValidators(), which this control forwards.
