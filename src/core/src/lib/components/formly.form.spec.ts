@@ -516,6 +516,39 @@ describe('FormlyForm Component', () => {
       TestBed.tick();
       expect(valueChange.mock.calls).toEqual([['Bob']]);
     });
+
+    it.each(['blur', 'submit'] as const)('should inherit updateOn %s from a field group', (updateOn) => {
+      const { form, query, queryAll } = renderComponent({
+        options: { signalForms: true },
+        model: { group: { name: 'Alice', immediate: 'old' } },
+        fields: [
+          {
+            key: 'group',
+            modelOptions: { updateOn },
+            fieldGroup: [
+              { key: 'name', type: 'input' },
+              { key: 'immediate', type: 'input', modelOptions: { updateOn: 'change' } },
+            ],
+          },
+        ],
+      });
+      const name = form.get('group.name');
+      expect(name).toBeInstanceOf(SignalFormControl);
+      expect(name.updateOn).toBe(updateOn);
+      const [input, immediate] = queryAll<HTMLInputElement>('input').map((el) => el.nativeElement);
+      input.value = 'Bob';
+      input.dispatchEvent(new Event('input'));
+      immediate.value = 'new';
+      immediate.dispatchEvent(new Event('input'));
+      expect(form.value.group).toEqual({ name: 'Alice', immediate: 'new' });
+
+      input.dispatchEvent(new Event('blur'));
+      if (updateOn === 'submit') {
+        expect(name.value).toBe('Alice');
+        query('form').nativeElement.dispatchEvent(new Event('submit'));
+      }
+      expect(form.value.group).toEqual({ name: 'Bob', immediate: 'new' });
+    });
   });
 
   describe('model input as a WritableSignal', () => {

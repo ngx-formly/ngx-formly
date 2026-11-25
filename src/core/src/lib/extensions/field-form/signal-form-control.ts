@@ -164,9 +164,14 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     return null;
   }
 
+  // Angular 22.3 rejects delayed updates on a SignalFormControl's parent. Formly handles them below.
+  override setParent(parent: FormGroup | FormArray | null): void {
+    AbstractControl.prototype.setParent.call(this, parent);
+  }
+
   // The forms directives read `updateOn` to decide when a typed value reaches the control.
   override get updateOn(): UpdateOn {
-    return this.updateStrategy ?? super.updateOn;
+    return this.updateStrategy ?? this.parent?.updateOn ?? 'change';
   }
 
   // Called by FormGroupDirective on submit; same steps as FormControl, which SignalFormControl skips.

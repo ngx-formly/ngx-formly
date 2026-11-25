@@ -300,7 +300,7 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 | `reset()`, `reset({ value, disabled })` | Supported. A control's `reset()` uses the model value from the most recent build. `options.resetModel()` restores the saved model, while `options.resetModel({})` clears fields that have no configured default. |
 | `setValue()`, `patchValue()`, `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
 | `markAsPristine()`, `markAsUntouched()` | Supported. As on a `FormControl`, the parent is recomputed and the sibling controls keep their state. |
-| `modelOptions.updateOn` (`'blur'`, `'submit'`) | Supported. |
+| `modelOptions.updateOn` (`'blur'`, `'submit'`) | A leaf inherits the parent group's update strategy unless the leaf sets its own. |
 | `setAsyncValidators()`, `addAsyncValidators()` | Not supported: throw a Formly error, except when clearing with `null`. |
 | `markAsPending()` | Not supported: throws `NG01920`. |
 
