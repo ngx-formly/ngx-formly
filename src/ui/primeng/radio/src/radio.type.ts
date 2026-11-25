@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 
 type RadioProps = FormlyFieldProps;
@@ -12,7 +13,9 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
 @Component({
   selector: 'formly-field-primeng-radio',
   template: `
-    @for (option of props.options | formlySelectOptions: field | async; track option; let index = $index) {
+    @let options = props.options | formlySelectOptions: field | async;
+    @for (choice of optionSources(options); track choice; let index = $index) {
+      @let option = options[index];
       <div class="p-field-radiobutton field-radiobutton">
         <p-radiobutton
           [name]="field.name || id"
@@ -29,6 +32,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
+  protected readonly optionSources = FormlySelectOptionsPipe.ɵgetOptionSources;
+
   get disabledControl() {
     return new UntypedFormControl({ value: this.formControl.value, disabled: true });
   }

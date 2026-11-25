@@ -7,11 +7,12 @@ import {
   FormlyValidationMessage,
   LegacyFormlyValidationMessage,
 } from '../core';
-import { of, Subject } from 'rxjs';
+import { defer, of, Subject } from 'rxjs';
+import { delayWhen } from 'rxjs/operators';
 import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { FormlyFieldConfigCache } from '../models';
+import { FormlyFieldConfigCache, FormlyFormOptionsCache } from '../models';
 
 function validationMessageContent(query: (v: string) => DebugElement): string {
   return query('formly-validation-message').nativeElement.textContent;
@@ -33,6 +34,83 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('FormlyValidationMessage Component', () => {
+  it.each([false, true])('refreshes a completed validation message with showAllErrors=%s', (showAllErrors) => {
+    const control = new FormControl('a');
+    const message = defer(() => of(`Too short: ${control.value}`));
+    const { query, detectChanges } = renderComponent({
+      key: 'title',
+      formControl: control,
+      defaultValue: 'a',
+      props: { minLength: 3 },
+      validation: { showAllErrors, messages: { minLength: () => message } },
+    });
+    expect(validationMessageContent(query)).toBe('Too short: a');
+
+    control.setValue('ab');
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Too short: ab');
+  });
+
+  it.each([false, true])(
+    'restarts a pending message after the control value changes with showAllErrors=%s',
+    (showAllErrors) => {
+      const control = new FormControl('a');
+      const response = new Subject<void>();
+      const message = defer(() => of(`Too short: ${control.value}`).pipe(delayWhen(() => response)));
+      const { query, detectChanges } = renderComponent({
+        key: 'title',
+        formControl: control,
+        defaultValue: 'a',
+        props: { minLength: 3 },
+        validation: { showAllErrors, messages: { minLength: () => message } },
+      });
+      expect(validationMessageContent(query)).toBe('');
+
+      control.setValue('ab');
+      response.next();
+      detectChanges();
+      expect(validationMessageContent(query)).toBe('Too short: ab');
+    },
+  );
+
+  it.each([true, false])('retains a translated message across rebuilds with showAllErrors=%s', (showAllErrors) => {
+    const translation = new Subject<string>();
+    const subscribe = vi.spyOn(translation, 'subscribe');
+    const { field, query, detectChanges } = renderComponent({
+      key: 'title',
+      props: { required: true },
+      validation: { showAllErrors, messages: { required: () => translation } },
+    });
+    translation.next('Required');
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Required');
+    subscribe.mockClear();
+
+    field.options.build();
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Required');
+    expect(subscribe).not.toHaveBeenCalled();
+    translation.next('Updated');
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Updated');
+  });
+
+  it('should refresh a contextual message after rebuilding an unchanged expression', () => {
+    let text = 'Before';
+    const message = () => text;
+    const { field, query, detectChanges } = renderComponent({
+      key: 'title',
+      props: { required: true },
+      expressions: { 'validation.messages.required': () => message },
+    });
+    expect(validationMessageContent(query)).toBe('Before');
+
+    text = 'After';
+    field.options.build();
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('After');
+  });
+
   it('should not display message error when form is valid', () => {
     const { query } = renderComponent({ key: 'title' });
 
@@ -311,6 +389,28 @@ describe.each([
     expect(translation.observers).toHaveLength(0);
     field.formControl.setErrors({ first: true });
     expect(translation.observers).toHaveLength(1);
+    expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(1);
+    fixture.destroy();
+    expect(translation.observers).toHaveLength(0);
+    expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
+  });
+
+  it('retains a hot translation while a sibling message changes on rebuild', () => {
+    const { fixture, field, content } = renderMessages(true);
+    const translation = new Subject<string>();
+    const subscribe = vi.spyOn(translation, 'subscribe');
+    let second = 'Second';
+    field.validation.messages = { first: () => translation, second: () => of(second) };
+    field.formControl.setErrors({ first: true, second: true });
+    translation.next('First');
+    fixture.detectChanges();
+    expect(content()).toBe('First\nSecond');
+
+    second = 'Updated';
+    field.options._afterBuild.forEach((afterBuild) => afterBuild());
+    fixture.detectChanges();
+    expect(content()).toBe('First\nUpdated');
+    expect(subscribe).toHaveBeenCalledOnce();
     fixture.destroy();
     expect(translation.observers).toHaveLength(0);
   });

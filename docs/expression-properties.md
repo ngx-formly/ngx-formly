@@ -223,6 +223,8 @@ The emitted event object include the following info:
 | property | The evaluated expression key   |
 | value    | The evaluated expression value |
 
+Rebuilding the form emits `expressionChanges` when an expression is evaluated for the first time, its result changes, or Formly corrects an out-of-sync disabled state. Objects and arrays are compared by their serialized content, not by reference, and so is a `Map` or `Set` that an expression returns directly. A `Map` or `Set` nested inside another value is not inspected.
+
 Example ([Demo](https://stackblitz.com/edit/angular-yobrug?file=src/app/app.component.ts)): The following example print a console log when a the `city` field is rendered:
 
 ```typescript

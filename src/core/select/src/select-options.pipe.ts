@@ -1,7 +1,12 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { BehaviorSubject, isObservable, Observable, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
-import { FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
+import { filter, map, scan, tap } from 'rxjs/operators';
+import {
+  FormlyFieldConfig,
+  FormlyFieldProps,
+  FormlyFormOptions,
+  ɵdefineHiddenProp as defineHiddenProp,
+} from '@ngx-formly/core';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- Public option callbacks must accept consumer-defined value shapes. */
 export interface FormlySelectOption {
@@ -29,20 +34,42 @@ type ITransformOption = {
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
+const optionSources = new WeakMap<FormlySelectOption[], readonly unknown[]>();
+
 @Pipe({ name: 'formlySelectOptions', standalone: true })
 export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
+  /** @internal Source rows for adapters that track custom-mapped choices across rebuilds. */
+  static ɵgetOptionSources(options: FormlySelectOption[]): readonly unknown[] {
+    return optionSources.get(options) ?? options;
+  }
+
   private _subscription: Subscription;
   private _options: BehaviorSubject<unknown[]>;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Option mappings retain the consumer-defined values accepted by the public select API.
   transform(options: any, field?: FormlyFieldConfig): Observable<FormlySelectOption[]> {
-    if (!isObservable(options)) {
-      options = this.observableOf(options, field);
-    } else {
+    if (isObservable(options)) {
       this.dispose();
+      return (options as Observable<unknown[]>).pipe(map((value) => this.transformOptions(value, field)));
     }
 
-    return (options as Observable<unknown[]>).pipe(map((value) => this.transformOptions(value, field)));
+    return this.observableOf(options, field).pipe(
+      scan((previous, value) => {
+        const mapped = this.transformOptions(value, field);
+        // Custom mappers own their option objects and may use their identity.
+        if ((field?.props || field?.templateOptions)?.mapProp) {
+          // Read the rows the same way `transformOptions` does, so any iterable with `forEach` (Set, Map) works.
+          const sources: unknown[] = [];
+          value?.forEach((option) => sources.push(option));
+          optionSources.set(
+            mapped,
+            new Set(sources).size === sources.length ? sources.slice() : sources.map((_, i) => i),
+          );
+          return mapped;
+        }
+        return mapped.map((option, i) => (sameOption(previous[i], option) ? previous[i] : option));
+      }, [] as FormlySelectOption[]),
+    );
   }
 
   ngOnDestroy(): void {
@@ -128,25 +155,54 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   private observableOf(options: unknown[], f?: FormlyFieldConfig) {
     this.dispose();
     if (f && f.options && f.options.fieldChanges) {
-      this._subscription = f.options.fieldChanges
+      const formOptions = f.options as FormlyFormOptions & { _afterBuild?: Set<() => void> };
+      const usesFieldOptions = options === f.props?.options;
+      const refresh = () => {
+        const current = usesFieldOptions ? f.props?.options : options;
+        if (Array.isArray(current)) {
+          this._options.next(current);
+        }
+      };
+      this._subscription = formOptions.fieldChanges
         .pipe(
           filter(({ property, type, field }) => {
             return (
               type === 'expressionChanges' &&
               (property.indexOf('templateOptions.options') === 0 || property.indexOf('props.options') === 0) &&
               field === f &&
-              Array.isArray(field.props.options) &&
+              // During a build the after-build callback refreshes the final options.
+              !('_formControlsForCheck' in formOptions) &&
               !!this._options
             );
           }),
-          tap(() => this._options.next(f.props.options as unknown[])),
+          tap(refresh),
         )
         .subscribe();
+
+      if (!formOptions._afterBuild) {
+        defineHiddenProp(formOptions, '_afterBuild', new Set());
+      }
+      // Mapping callbacks and mutable option values can change without an expression event.
+      formOptions._afterBuild.add(refresh);
+      this._subscription.add(() => formOptions._afterBuild.delete(refresh));
     }
 
     this._options = new BehaviorSubject(options);
     return this._options.asObservable();
   }
+}
+
+// Keep generated option identities stable for templates that track the mapped object.
+function sameOption(previous: FormlySelectOption, next: FormlySelectOption): boolean {
+  return (
+    !!previous &&
+    previous.label === next.label &&
+    previous.disabled === next.disabled &&
+    Object.is(previous.value, next.value) &&
+    (previous.group === next.group ||
+      (previous.group?.length === next.group?.length &&
+        previous.group.every((option, i) => sameOption(option, next.group[i]))))
+  );
 }
 
 @Pipe({ name: 'formlySelectOptions', standalone: false })
