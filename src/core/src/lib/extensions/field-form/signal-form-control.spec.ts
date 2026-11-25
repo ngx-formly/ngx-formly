@@ -347,6 +347,47 @@ describe('FormlySignalFormControl', () => {
         expect(control.errors).toBeNull();
       });
 
+      it('should revalidate and emit an array that was mutated in place', () => {
+        const control = build(signalForms);
+        control.setValue(['tag']);
+        control.setValidators(Validators.required);
+        control.updateValueAndValidity();
+        TestBed.tick();
+        const values: unknown[] = [];
+        control.valueChanges.subscribe((value) => values.push(value));
+
+        const tags = control.value as unknown as string[];
+        tags.pop();
+        control.patchValue(tags as never);
+        TestBed.tick();
+
+        expect(control.errors).toEqual({ required: true });
+        expect(control.parent.invalid).toBe(true);
+        expect(values).toEqual([[]]);
+      });
+
+      it.each([undefined, false])('should emit the value once, during setValue({ emitEvent: %s })', (emitEvent) => {
+        const control = build(signalForms);
+        const events: unknown[] = [];
+        control.valueChanges.subscribe((value) => events.push(value));
+        control.parent.valueChanges.subscribe((value) => events.push(value));
+        const expected = emitEvent === false ? [] : ['Bob', { name: 'Bob' }];
+
+        control.setValue('Bob', { emitEvent });
+        expect(events).toEqual(expected);
+        TestBed.tick();
+        expect(events).toEqual(expected);
+      });
+
+      it('should not emit the initial value', () => {
+        const control = signalForms ? createControl('Alice') : new FormControl('Alice');
+        const values: unknown[] = [];
+        control.valueChanges.subscribe((value) => values.push(value));
+        TestBed.tick();
+
+        expect(values).toEqual([]);
+      });
+
       it('should drop manual errors on reset', () => {
         const control = build(signalForms);
         control.setErrors({ server: true });
@@ -645,6 +686,21 @@ describe('FormlySignalFormControl', () => {
         expect(sources.every((source) => source === control)).toBe(true);
       });
     });
+  });
+
+  it('should emit a value written to the field tree when the effects run', () => {
+    const control = createControl('Alice');
+    const group = new FormGroup({ name: control });
+    TestBed.tick();
+    const values: unknown[] = [];
+    control.valueChanges.subscribe((value) => values.push(value));
+
+    control.setValue('Bob');
+    control.fieldTree().value.set('Carol');
+    TestBed.tick();
+
+    expect(values).toEqual(['Bob', 'Carol']);
+    expect(group.value).toEqual({ name: 'Carol' });
   });
 
   describe('setAsyncValidators()', () => {

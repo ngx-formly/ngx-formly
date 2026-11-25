@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { FormArray } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyInputModule, createFieldChangesSpy, createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
@@ -24,6 +25,28 @@ const renderComponent = (field: FormlyFieldConfig, config = {}) => {
 };
 
 describe('Array Field Type', () => {
+  it.each([false, true])(
+    'should keep the surviving row when an edited row is removed (signalForms: %s)',
+    (signalForms) => {
+      const { field, query, queryAll, detectChanges } = renderComponent(
+        { key: 'rows', type: 'array', model: { rows: ['A', 'B'] }, fieldArray: { type: 'input' } },
+        { extras: { signalForms } },
+      );
+      TestBed.tick();
+      const model = field.parent.model;
+      const input = queryAll<HTMLInputElement>('input')[0].nativeElement;
+      input.value = 'Edited';
+      input.dispatchEvent(new Event('input'));
+
+      (query('formly-array').componentInstance as ArrayTypeComponent).remove(0);
+      TestBed.tick();
+      detectChanges();
+
+      expect(field.formControl.value).toEqual(['B']);
+      expect(model.rows).toEqual(['B']);
+    },
+  );
+
   it.each([false, true])('should keep a fixed-path editor bound after insertion (editor first: %s)', (editorFirst) => {
     const rows: FormlyFieldConfig = {
       key: 'rows',

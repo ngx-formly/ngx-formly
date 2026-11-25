@@ -140,6 +140,24 @@ describe('FieldFormExtension', () => {
       expect(form.value).toEqual({ age: 25 });
     });
 
+    it('should keep the parent errors when a SignalFormControl rule changes its status', () => {
+      const isRequired = signal(true);
+      const name = TestBed.runInInjectionContext(
+        () => new SignalFormControl('', (p) => required(p, { when: () => isRequired() })),
+      );
+      const form = new FormGroup({ name });
+      buildField({ fieldGroup: [{ key: 'name' }], form, model: { name: '' } });
+      TestBed.tick();
+      form.setErrors({ server: true });
+
+      isRequired.set(false);
+      TestBed.tick();
+
+      expect(name.errors).toBeNull();
+      expect(form.errors).toEqual({ server: true });
+      expect(form.status).toEqual('INVALID');
+    });
+
     it('should use the same formcontrol for fields that use the same key', () => {
       const {
         fieldGroup: [f1, f2],

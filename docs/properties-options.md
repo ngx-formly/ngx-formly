@@ -298,7 +298,8 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 | `updateValueAndValidity()` | Reruns the validators and updates the parent unless `onlySelf: true`. `statusChanges` emits only when the status changes, and `valueChanges` does not emit. |
 | `setErrors()` | Supported. The errors last until the value changes or `updateValueAndValidity()` runs, as on a `FormControl`. Errors set on the parent are kept. |
 | `reset()`, `reset({ value, disabled })` | Supported. A control's `reset()` uses the model value from the most recent build. `options.resetModel()` restores the saved model, while `options.resetModel({})` clears fields that have no configured default. |
-| `setValue()`, `patchValue()`, `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
+| `setValue()`, `patchValue()` | Supported. As on a `FormControl`, `valueChanges` emits during the call and the validators rerun, also for an array or object mutated in place. |
+| `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
 | `markAsPristine()`, `markAsUntouched()` | Supported. As on a `FormControl`, the parent is recomputed and the sibling controls keep their state. |
 | `modelOptions.updateOn` (`'blur'`, `'submit'`) | A leaf inherits the parent group's update strategy unless the leaf sets its own. |
 | `setAsyncValidators()`, `addAsyncValidators()` | Not supported: throw a Formly error, except when clearing with `null`. |
@@ -309,9 +310,11 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 - `asyncValidators` are not supported. A field that configures them throws `[Formly Error] Async validators are not supported with signalForms (field "<key>").` instead of ignoring them.
 - Fields with a `fieldGroup` or `fieldArray` keep their `FormGroup` or `FormArray`; only their keyed leaf fields get a signal form control.
 - A `SignalFormControl` that the application registered in the form under the field key is reused and keeps its own rules. Formly does not apply validators or the disabled state to it.
-- Formly updates the parent form when the control status changes. A signal form control placed in a `FormGroup` outside Formly does not notify that group on status changes ([angular/angular#72009](https://github.com/angular/angular/issues/72009)).
-- The control normally emits `valueChanges` and `statusChanges` from effects, once per change detection, after the parent emitted. With `updateOn: 'submit'`, a pending edit emits `valueChanges` before `ngSubmit`, so the handler can read the updated model. The last emitted status matches the control status; intermediate statuses within the same change detection are not emitted.
-- `emitEvent: false` on `disable()`, `enable()`, `reset()`, `setErrors()`, `setValue()` and `updateValueAndValidity()` silences `statusChanges` and the parent's events, unless an earlier call in the same change detection changed the status without it, or the call runs in a `valueChanges` subscriber of the control. The `events` stream, and `valueChanges` on `setValue()`, still emit when the effects run. `onlySelf: true` keeps value and status updates local to the control.
+- Formly updates the parent form when the control status changes; errors set on the parent with `setErrors()` are kept unless the disabled state changes. A signal form control placed in a `FormGroup` outside Formly does not notify that group on status changes ([angular/angular#72009](https://github.com/angular/angular/issues/72009)).
+- The control emits `statusChanges` from an effect, once per change detection, after the parent emitted. The last emitted status matches the control status; intermediate statuses within the same change detection are not emitted.
+- A value written directly to the field tree (`fieldTree().value.set()`) reaches `valueChanges` and the model when the effects run. Use `setValue()` when code in the same turn reads the model or adds or removes `fieldArray` rows.
+- An array or object mutated in place and set again does not notify signals that read `fieldTree().value()`. Set a new reference instead.
+- `emitEvent: false` on `disable()`, `enable()`, `reset()`, `setErrors()`, `setValue()` and `updateValueAndValidity()` silences `statusChanges` and the parent's events, unless an earlier call in the same change detection changed the status without it, or the call runs in a `valueChanges` subscriber of the control. `setValue()` also silences `valueChanges`. The `events` stream still emits when the effects run. `onlySelf: true` keeps value and status updates local to the control.
 - An error routed to a child with `errorPath` is dropped when that child revalidates on its own, until the group validator runs again.
 
 #### UI adapters

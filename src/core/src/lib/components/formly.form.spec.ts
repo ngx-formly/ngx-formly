@@ -352,7 +352,7 @@ describe('FormlyForm Component', () => {
       );
       expect(form.get('name')).toBeInstanceOf(SignalFormControl);
 
-      const input: HTMLInputElement = query('input').nativeElement;
+      const input = query<HTMLInputElement>('input').nativeElement;
       input.value = 'bar';
       input.dispatchEvent(new Event('input'));
       TestBed.tick();
@@ -426,7 +426,7 @@ describe('FormlyForm Component', () => {
 
       it.each(['blur', 'submit'] as const)('should discard the pending %s input', (updateOn) => {
         const options: FormlyFormOptions = { signalForms: enabled };
-        const { fixture, form } = createComponent<{ form: FormGroup }>({
+        const { fixture, form } = createComponent({
           template: `<form [formGroup]="form">
             <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options" />
           </form>`,
@@ -515,6 +515,66 @@ describe('FormlyForm Component', () => {
       expect(submit).toHaveReturnedWith('Bob');
       TestBed.tick();
       expect(valueChange.mock.calls).toEqual([['Bob']]);
+    });
+
+    it.each([false, true])('should update every input that shares a key with signalForms=%s', (enabled) => {
+      const { model, form, queryAll, detectChanges } = renderComponent({
+        options: { signalForms: enabled },
+        model: { name: 'Alice' },
+        fields: [
+          { key: 'name', type: 'input' },
+          { key: 'name', type: 'input' },
+        ],
+      });
+      TestBed.tick();
+      const inputs = queryAll<HTMLInputElement>('input').map((el) => el.nativeElement);
+      const valueChange = vi.fn();
+      form.get('name').valueChanges.subscribe(valueChange);
+
+      inputs[0].value = 'Bob';
+      inputs[0].dispatchEvent(new Event('input'));
+      TestBed.tick();
+      detectChanges();
+      expect(inputs.map((input) => input.value)).toEqual(['Bob', 'Bob']);
+
+      inputs[1].value = 'Carol';
+      inputs[1].dispatchEvent(new Event('input'));
+      TestBed.tick();
+      detectChanges();
+      expect(inputs.map((input) => input.value)).toEqual(['Carol', 'Carol']);
+      expect(model).toEqual({ name: 'Carol' });
+      expect(valueChange.mock.calls).toEqual([['Bob'], ['Carol']]);
+    });
+
+    describe.each([false, true])('immediate submit with signalForms=%s', (enabled) => {
+      it.each(['change', 'blur'] as const)('should expose the %s edit inside ngSubmit', (updateOn) => {
+        const model = { name: 'Alice' };
+        const submit = vi.fn(() => model.name);
+        const { query } = createComponent({
+          template: `<form [formGroup]="form" (ngSubmit)="submit()">
+            <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options" />
+          </form>`,
+          imports: [FormlyInputModule],
+          inputs: {
+            form: new FormGroup({}),
+            model,
+            submit,
+            options: { signalForms: enabled },
+            fields: [{ key: 'name', type: 'input', modelOptions: { updateOn } }],
+          },
+        });
+        TestBed.tick();
+        const input = query<HTMLInputElement>('input').nativeElement;
+        input.value = 'Bob';
+        input.dispatchEvent(new Event('input'));
+        if (updateOn === 'blur') {
+          input.dispatchEvent(new Event('blur'));
+        }
+
+        query('form').nativeElement.dispatchEvent(new Event('submit'));
+
+        expect(submit).toHaveReturnedWith('Bob');
+      });
     });
 
     it.each(['blur', 'submit'] as const)('should inherit updateOn %s from a field group', (updateOn) => {

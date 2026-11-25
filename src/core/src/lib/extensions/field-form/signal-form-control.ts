@@ -31,7 +31,7 @@ interface PendingState {
 }
 
 // What a FormControl calls on its parent to recompute it without resetting the siblings.
-interface ParentInternals {
+export interface ParentInternals {
   _updateControlsErrors(emitEvent: boolean, changed: AbstractControl): void;
   _updatePristine(opts: EventOptions, changed: AbstractControl): void;
   _updateTouched(opts: EventOptions, changed: AbstractControl): void;
@@ -52,6 +52,9 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   private lastStatus?: string;
   // A call that did not pass `emitEvent: false` changed the status, and the status effect has not emitted it yet.
   private statusEmitPending = false;
+  // Last value that valueChanges emitted, or that a call with `emitEvent: false` asked not to emit.
+  private handledValue: unknown;
+  private readonly emitValue: (value: unknown) => void;
   // Above 0 while valueChanges emits: subscriber calls belong to the change being emitted.
   private valueEmitDepth = 0;
   // Status the parent was already updated for by the call that changed it.
@@ -116,22 +119,23 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
       }
     };
 
-    // SignalFormControl emits valueChanges from an effect, after the call that set the value returned. A subscriber
-    // that normalizes the value with `emitEvent: false` must not silence the status of that change.
+    // SignalFormControl emits valueChanges from an effect, after the call that set the value returned. setValue()
+    // emits it instead, as on a FormControl; the effect only emits values written to the signal or the field tree.
+    this.handledValue = defaultValue;
     const valueChanges = this.valueChanges;
     const emitValue = valueChanges.emit.bind(valueChanges);
-    let lastSubmitValue: unknown = Symbol();
-    valueChanges.emit = (value: unknown) => {
-      if (this.updateOn === 'submit') {
-        // A pending edit is emitted during submit, before the value effect sees it.
-        if (Object.is(lastSubmitValue, value)) return;
-        lastSubmitValue = value;
-      }
+    this.emitValue = (value: unknown) => {
       this.valueEmitDepth++;
       try {
-        emitValue(value);
+        untracked(() => emitValue(value));
       } finally {
         this.valueEmitDepth--;
+      }
+    };
+    valueChanges.emit = (value: unknown) => {
+      if (!Object.is(value, this.handledValue)) {
+        this.handledValue = value;
+        this.emitValue(value);
       }
     };
 
@@ -190,7 +194,6 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
       return false;
     }
     this.setValue(pending._pendingValue, { onlySelf: true, emitModelToViewChange: false });
-    this.valueChanges.emit(this.value);
 
     return true;
   }
@@ -264,9 +267,14 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   override setValue(value: unknown, options?: ValueOptions): void {
     this.manualErrors.set(undefined);
     (this as unknown as PendingState)._pendingValue = value;
-    // SignalFormControl updates the parent with these options.
-    super.setValue(value, options);
-    this.trackStatusOptions(options);
+    // Setting an array or object that was mutated in place does not notify the signal.
+    this.revalidate.update((count) => count + 1);
+    super.setValue(value, { ...options, onlySelf: true });
+    this.handledValue = value;
+    if (options?.emitEvent !== false) {
+      this.emitValue(value);
+    }
+    this.updateParent(options, this);
   }
 
   override patchValue(value: unknown, options?: ValueOptions): void {
@@ -296,7 +304,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     this.setAsyncValidators(validators);
   }
 
-  override removeAsyncValidators(): void {}
+  override removeAsyncValidators(_validators: AsyncValidatorFn | AsyncValidatorFn[]): void {}
 
   override clearAsyncValidators(): void {}
 

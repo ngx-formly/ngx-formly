@@ -2,7 +2,7 @@ import { EventEmitter } from '@angular/core';
 import { UntypedFormArray, UntypedFormGroup, AbstractControl, FormControl } from '@angular/forms';
 import { getKeyPath, getField, getFieldValue, isNil, defineHiddenProp, observe, hasKey } from '../../utils';
 import { FormlyFieldConfigCache } from '../../models';
-import { FormlySignalFormControl } from './signal-form-control';
+import { FormlySignalFormControl, ParentInternals } from './signal-form-control';
 
 // Duck-typed to keep `@angular/forms/signals/compat` out of the core bundle.
 export function isSignalFormControl(control: AbstractControl | null | undefined): boolean {
@@ -27,7 +27,17 @@ function syncParentOnStatusChange(control: AbstractControl): void {
     return;
   }
   parentSyncedControls.add(control);
-  control.statusChanges.subscribe(() => control.parent?.updateValueAndValidity());
+  let wasDisabled = control.disabled;
+  control.statusChanges.subscribe(() => {
+    if (control.disabled !== wasDisabled) {
+      // The value of the parent excludes disabled controls.
+      control.parent?.updateValueAndValidity();
+    } else {
+      // Status only, as FormControl.setErrors() does: the parent's own errors are kept.
+      (control.parent as unknown as ParentInternals | null)?._updateControlsErrors(true, control);
+    }
+    wasDisabled = control.disabled;
+  });
 }
 
 export function unregisterControl(field: FormlyFieldConfigCache, emitEvent = false) {
