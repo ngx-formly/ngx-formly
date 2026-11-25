@@ -280,7 +280,8 @@ describe('Pipe: FormlySelectOptionsPipe', () => {
     list.push({ label: 'b', value: 'b' });
     field.options.build();
 
-    const last = emitted[emitted.length - 1];
+    expect(emitted).toHaveLength(2);
+    const last = emitted[1];
     expect(last).toHaveLength(2);
     expect(last[0]).toBe(emitted[0][0]);
     pipe.ngOnDestroy();

@@ -155,6 +155,7 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
   private observableOf(options: unknown[], f?: FormlyFieldConfig) {
     this.dispose();
     if (f && f.options && f.options.fieldChanges) {
+      const formOptions = f.options as FormlyFormOptions & { _afterBuild?: Set<() => void> };
       const usesFieldOptions = options === f.props?.options;
       const refresh = () => {
         const current = usesFieldOptions ? f.props?.options : options;
@@ -162,13 +163,15 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
           this._options.next(current);
         }
       };
-      this._subscription = f.options.fieldChanges
+      this._subscription = formOptions.fieldChanges
         .pipe(
           filter(({ property, type, field }) => {
             return (
               type === 'expressionChanges' &&
               (property.indexOf('templateOptions.options') === 0 || property.indexOf('props.options') === 0) &&
               field === f &&
+              // During a build the after-build callback refreshes the final options.
+              !('_formControlsForCheck' in formOptions) &&
               !!this._options
             );
           }),
@@ -176,7 +179,6 @@ export class FormlySelectOptionsPipe implements PipeTransform, OnDestroy {
         )
         .subscribe();
 
-      const formOptions = f.options as FormlyFormOptions & { _afterBuild?: Set<() => void> };
       if (!formOptions._afterBuild) {
         defineHiddenProp(formOptions, '_afterBuild', new Set());
       }
