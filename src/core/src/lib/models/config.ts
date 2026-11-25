@@ -85,6 +85,16 @@ export interface ConfigOption {
     showValidation?: (field: FieldType) => boolean;
 
     /**
+     * When `true`, keyed leaf fields get a control extending Angular's `SignalFormControl` instead of a `FormControl`.
+     * Validators, `props.disabled` and the imperative control API keep working; `asyncValidators` are not supported.
+     *
+     * @experimental Prototype for Signal Forms support (#4241); the API may change.
+     *
+     * Defaults to `false`.
+     */
+    signalForms?: boolean;
+
+    /**
      * Defines the option which formly rely on to check field expression properties.
      * - `modelChange`: perform a check when the value of the form control changes.
      * - `changeDetectionCheck`: triggers an immediate check when `ngDoCheck` is called.

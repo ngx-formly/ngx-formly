@@ -1,6 +1,8 @@
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { TestBed } from '@angular/core/testing';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SignalFormControl } from '@angular/forms/signals/compat';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { registerControl, unregisterControl } from './utils';
+import { clearControl, registerControl, unregisterControl } from './utils';
 
 describe('registerControl', () => {
   it('FormArray', () => {
@@ -202,5 +204,32 @@ describe('unregisterControl', () => {
     unregisterControl(field);
     expect(parent.get('test.0')).toBeNull();
     expect(field.formControl.parent).toBeNull();
+  });
+});
+
+describe('clearControl', () => {
+  it('should clear child validation silently and preserve errors set on the parent', () => {
+    const name = new FormControl('', Validators.required);
+    const form = new FormGroup({ name });
+    form.setErrors({ server: true });
+    const onEvent = vi.fn();
+    form.events.subscribe(onEvent);
+    name.events.subscribe(onEvent);
+
+    clearControl(form);
+
+    expect(name.errors).toBeNull();
+    expect(form.errors).toEqual({ server: true });
+    expect(onEvent).not.toHaveBeenCalled();
+  });
+
+  it('should not call the imperative validator setters on a SignalFormControl', () => {
+    const name = TestBed.runInInjectionContext(() => new SignalFormControl(''));
+    const form = new FormGroup({ name, age: new FormControl(25, Validators.required) });
+
+    // Would throw NG01920 if setValidators/setAsyncValidators were called on `name`.
+    clearControl(form as any);
+
+    expect(form.get('age').validator).toBeNull();
   });
 });

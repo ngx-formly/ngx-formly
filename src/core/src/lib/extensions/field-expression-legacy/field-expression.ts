@@ -16,7 +16,7 @@ import { evalExpression, evalStringExpressionLegacy } from './utils';
 import { isObservable, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../models';
-import { unregisterControl, registerControl, updateValidity } from '../field-form/utils';
+import { unregisterControl, registerControl, updateValidity, canSetDisabledState } from '../field-form/utils';
 import { AbstractControl, UntypedFormArray } from '@angular/forms';
 
 const UNREADABLE = Symbol('unreadable');
@@ -231,7 +231,7 @@ export class FieldExpressionExtension implements FormlyExtension {
           const needsDisabledSync =
             isDisabledExpression &&
             (field.props.disabled !== !!exprValue ||
-              (exprValue && field.cascadeDisabled !== false && hasKey(field) && field.formControl?.enabled));
+              (exprValue && hasKey(field) && canSetDisabledState(field) && field.formControl.enabled));
 
           // A rebuild restores the expression value, so report it when something else changed the property since it
           // was applied. The applied value is compared, not the expression result, because applying may normalize it.
@@ -393,7 +393,7 @@ export class FieldExpressionExtension implements FormlyExtension {
 
       if (['templateOptions.disabled', 'props.disabled'].includes(prop) && hasKey(field)) {
         // Angular enables descendants without updating a group's disabled property.
-        if (value && field.cascadeDisabled !== false && field.formControl?.enabled) {
+        if (value && canSetDisabledState(field) && field.formControl.enabled) {
           field.formControl.disable();
         }
         this.changeDisabledState(field, value);

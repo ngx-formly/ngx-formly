@@ -1,3 +1,6 @@
+import { TestBed } from '@angular/core/testing';
+import { FormGroup } from '@angular/forms';
+import { SignalFormControl } from '@angular/forms/signals/compat';
 import { createBuilder } from '@ngx-formly/core/testing';
 import { Subject } from 'rxjs';
 import { MockInstance } from 'vitest';
@@ -13,6 +16,27 @@ const exprEvents = (spy: MockInstance) =>
   spy.mock.calls.map(([e]) => e as FormlyValueChangeEvent).filter((e) => e.type === 'expressionChanges');
 
 describe('FieldExpressionExtension rebuilds with disabled and cascadeDisabled', () => {
+  it('should not repeat a disabled expression when a supplied SignalFormControl stays enabled', () => {
+    const name = TestBed.runInInjectionContext(() => new SignalFormControl('Ada'));
+    const fieldChanges = new Subject<FormlyValueChangeEvent>();
+    const spy = vi.fn();
+    fieldChanges.subscribe(spy);
+    const field: FormlyFieldConfigCache = { key: 'name', expressions: { 'props.disabled': () => true } };
+    const root = build({
+      model: { name: 'Ada' },
+      form: new FormGroup({ name }),
+      options: { fieldChanges },
+      fieldGroup: [field],
+    });
+    expect(field.props.disabled).toBe(true);
+    expect(name.enabled).toBe(true);
+    spy.mockClear();
+
+    root.options.build();
+    root.options.checkExpressions(root);
+    expect(exprEvents(spy)).toHaveLength(0);
+  });
+
   it('should not repeat expressionChanges for a truthy non-boolean disabled expression', () => {
     const fieldChanges = new Subject<FormlyValueChangeEvent>();
     const spy = vi.fn();
