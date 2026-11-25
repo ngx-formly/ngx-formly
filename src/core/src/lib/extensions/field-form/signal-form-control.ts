@@ -120,7 +120,13 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
     // that normalizes the value with `emitEvent: false` must not silence the status of that change.
     const valueChanges = this.valueChanges;
     const emitValue = valueChanges.emit.bind(valueChanges);
+    let lastSubmitValue: unknown = Symbol();
     valueChanges.emit = (value: unknown) => {
+      if (this.updateOn === 'submit') {
+        // A pending edit is emitted during submit, before the value effect sees it.
+        if (Object.is(lastSubmitValue, value)) return;
+        lastSubmitValue = value;
+      }
       this.valueEmitDepth++;
       try {
         emitValue(value);
@@ -179,6 +185,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
       return false;
     }
     this.setValue(pending._pendingValue, { onlySelf: true, emitModelToViewChange: false });
+    this.valueChanges.emit(this.value);
 
     return true;
   }

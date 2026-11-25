@@ -454,6 +454,38 @@ describe('FormlyForm Component', () => {
 
       expect(values).toEqual([]);
     });
+
+    it.each([false, true])('should expose the submitted edit inside ngSubmit with a signal model=%s', (useSignal) => {
+      const initial = { name: 'Alice' };
+      const model = useSignal ? signal(initial) : initial;
+      const readName = () => (typeof model === 'function' ? model() : model).name;
+      const submit = vi.fn(readName);
+      const { query, form } = createComponent({
+        template: `<form [formGroup]="form" (ngSubmit)="submit()">
+          <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options" />
+        </form>`,
+        imports: [FormlyInputModule],
+        inputs: {
+          form: new FormGroup({}),
+          model,
+          submit,
+          options: { signalForms: true },
+          fields: [{ key: 'name', type: 'input', modelOptions: { updateOn: 'submit' } }],
+        },
+      });
+      TestBed.tick();
+      const valueChange = vi.fn();
+      form.get('name').valueChanges.subscribe(valueChange);
+      const input = query<HTMLInputElement>('input').nativeElement;
+      input.value = 'Bob';
+      input.dispatchEvent(new Event('input'));
+      expect(readName()).toBe('Alice');
+
+      query('form').nativeElement.dispatchEvent(new Event('submit'));
+      expect(submit).toHaveReturnedWith('Bob');
+      TestBed.tick();
+      expect(valueChange.mock.calls).toEqual([['Bob']]);
+    });
   });
 
   describe('model input as a WritableSignal', () => {
