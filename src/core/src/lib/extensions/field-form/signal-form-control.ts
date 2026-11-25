@@ -62,7 +62,7 @@ export class FormlySignalFormControl extends SignalFormControl<unknown> {
   private effectEvent?: PristineChangeEvent | TouchedChangeEvent;
 
   constructor(
-    private readonly defaultValue: unknown,
+    public defaultValue: unknown,
     isDisabled: boolean,
     schema: SchemaFn<unknown>,
     injector?: Injector,

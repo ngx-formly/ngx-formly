@@ -394,6 +394,36 @@ describe('FormlyForm Component', () => {
     });
 
     describe.each([false, true])('resetModel with signalForms=%s', (enabled) => {
+      it('should clear a missing key when given an empty model', () => {
+        const { options, form, model, query } = renderComponent({
+          options: { signalForms: enabled },
+          model: { name: 'Alice' },
+          fields: [{ key: 'name', type: 'input' }],
+        });
+        options.resetModel({});
+        TestBed.tick();
+
+        expect(model).toEqual({});
+        expect(form.get('name').value).toBeUndefined();
+        expect(query<HTMLInputElement>('input').nativeElement.value).toBe('');
+      });
+
+      it('should reset a reused control to the replacement model value', () => {
+        const { form, setInputs } = renderComponent({
+          options: { signalForms: enabled },
+          model: { name: 'Alice' },
+          fields: [{ key: 'name', type: 'input' }],
+        });
+        const name = form.get('name');
+        setInputs({ model: { name: 'Bob' } });
+        expect(form.get('name')).toBe(name);
+        expect(name.value).toBe('Bob');
+        name.setValue('Carol');
+        form.reset();
+
+        expect(name.value).toBe('Bob');
+      });
+
       it.each(['blur', 'submit'] as const)('should discard the pending %s input', (updateOn) => {
         const options: FormlyFormOptions = { signalForms: enabled };
         const { fixture, form } = createComponent<{ form: FormGroup }>({

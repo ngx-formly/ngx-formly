@@ -77,11 +77,9 @@ export class FieldFormExtension implements FormlyExtension {
           { ...controlOptions, initialValueIsDefault: true },
         );
       }
-    } else {
-      if (control instanceof FormControl) {
-        const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
-        (control as { defaultValue: unknown }).defaultValue = value;
-      }
+    } else if (control instanceof FormControl || control instanceof FormlySignalFormControl) {
+      const value = hasKey(field) ? getFieldValue(field) : field.defaultValue;
+      (control as { defaultValue: unknown }).defaultValue = value;
     }
 
     registerControl(field, control);

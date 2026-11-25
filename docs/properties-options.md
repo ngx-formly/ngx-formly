@@ -297,7 +297,7 @@ A plain `SignalFormControl` rejects the imperative Reactive Forms API with `NG01
 | `setValidators()`, `addValidators()`, `removeValidators()`, `clearValidators()` | Supported. `control.errors` keeps the Reactive Forms shape, such as `{ min: { min: 18, actual: 10 } }`. |
 | `updateValueAndValidity()` | Reruns the validators and updates the parent unless `onlySelf: true`. `statusChanges` emits only when the status changes, and `valueChanges` does not emit. |
 | `setErrors()` | Supported. The errors last until the value changes or `updateValueAndValidity()` runs, as on a `FormControl`. Errors set on the parent are kept. |
-| `reset()`, `reset({ value, disabled })` | Supported. `reset()` without a value restores the initial value. |
+| `reset()`, `reset({ value, disabled })` | Supported. A control's `reset()` uses the model value from the most recent build. `options.resetModel()` restores the saved model, while `options.resetModel({})` clears fields that have no configured default. |
 | `setValue()`, `patchValue()`, `markAsTouched()`, `markAsDirty()` | Supported by Angular. |
 | `markAsPristine()`, `markAsUntouched()` | Supported. As on a `FormControl`, the parent is recomputed and the sibling controls keep their state. |
 | `modelOptions.updateOn` (`'blur'`, `'submit'`) | Supported. |
