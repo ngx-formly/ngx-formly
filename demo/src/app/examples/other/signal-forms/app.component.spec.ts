@@ -49,7 +49,7 @@ describe('Signal Forms example', () => {
 
     button('Submit').click();
     await harness.fixture.whenStable();
-    expect(example.querySelector('formly-validation-message')).not.toBeNull();
+    expect(example.querySelector('formly-validation-message').textContent).toContain('This field is required');
 
     button('Required: on').click();
     await harness.fixture.whenStable();
@@ -163,6 +163,19 @@ describe('Signal Forms example', () => {
 
       expect(controlsState(example).age).toMatchObject({ dirty: true, touched: true });
       expect(controlsState(example).form).toMatchObject({ dirty: true, touched: true });
+    });
+
+    it('disables the name reset while the name is hidden', async () => {
+      const { harness, button } = await render();
+      expect(button('Reset name').disabled).toBe(false);
+
+      button('Hidden: off').click();
+      await harness.fixture.whenStable();
+      expect(button('Reset name').disabled).toBe(true);
+
+      button('Hidden: on').click();
+      await harness.fixture.whenStable();
+      expect(button('Reset name').disabled).toBe(false);
     });
 
     it('does not emit when the age is revalidated silently', async () => {

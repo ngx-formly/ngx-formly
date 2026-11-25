@@ -33,7 +33,9 @@
   <button type="button" class="btn btn-outline-secondary" (click)="control('age').setErrors(null)">
     Clear age error
   </button>
-  <button type="button" class="btn btn-outline-secondary" (click)="control('name').reset()">Reset name</button>
+  <button type="button" class="btn btn-outline-secondary" [disabled]="isHidden()" (click)="control('name').reset()">
+    Reset name
+  </button>
   <button
     type="button"
     class="btn btn-outline-secondary"
