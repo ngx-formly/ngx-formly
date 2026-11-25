@@ -116,6 +116,23 @@ describe('FormlyForm Component', () => {
       expect(form.valid).toEqual(false);
     });
 
+    it.each([false, true])('should clear errors from a replaced field with signalForms=%s', (signalForms) => {
+      const { form, setInputs } = renderComponent({
+        fields: [{ key: 'contact.name', props: { required: true } }],
+        options: { signalForms },
+      });
+      const name = form.get('contact.name');
+      expect(name.errors).toEqual({ required: true });
+      expect(form.invalid).toBe(true);
+
+      setInputs({ fields: [{ key: 'email' }] });
+
+      expect(form.get('contact.name')).toBe(name);
+      expect(name.errors).toBeNull();
+      expect(form.get('contact').valid).toBe(true);
+      expect(form.valid).toBe(true);
+    });
+
     it('should update validation of root form on fields input change', () => {
       const { form, setInputs } = renderComponent({});
       expect(form.valid).toEqual(true);

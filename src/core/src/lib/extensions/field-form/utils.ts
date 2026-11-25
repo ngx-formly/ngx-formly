@@ -20,6 +20,11 @@ export function canSetDisabledState(field: FormlyFieldConfigCache): boolean {
 
 const parentSyncedControls = new WeakSet<AbstractControl>();
 
+// Recalculate ancestor status without running their validators or replacing errors set by the application.
+function updateParentStatus(control: AbstractControl, emitEvent: boolean): void {
+  (control.parent as unknown as ParentInternals | null)?._updateControlsErrors(emitEvent, control);
+}
+
 // SignalFormControl notifies its parent on value changes only, not when a rule changes its status.
 // Workaround for https://github.com/angular/angular/issues/72009: remove once it is fixed.
 function syncParentOnStatusChange(control: AbstractControl): void {
@@ -33,8 +38,7 @@ function syncParentOnStatusChange(control: AbstractControl): void {
       // The value of the parent excludes disabled controls.
       control.parent?.updateValueAndValidity();
     } else {
-      // Status only, as FormControl.setErrors() does: the parent's own errors are kept.
-      (control.parent as unknown as ParentInternals | null)?._updateControlsErrors(true, control);
+      updateParentStatus(control, true);
     }
     wasDisabled = control.disabled;
   });
@@ -254,9 +258,14 @@ export function updateValidity(c: AbstractControl, onlySelf = false) {
 
 export function clearControl(form: FormlyFieldConfigCache['formControl']) {
   delete form?._fields;
-  if (acceptsImperativeApi(form)) {
+  if (acceptsImperativeApi(form) && (form.validator || form.asyncValidator)) {
+    const status = form.status;
     form.setValidators(null);
     form.setAsyncValidators(null);
+    form.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+    if (status !== form.status) {
+      updateParentStatus(form, false);
+    }
   }
   if (form instanceof UntypedFormGroup || form instanceof UntypedFormArray) {
     Object.values(form.controls).forEach((c) => clearControl(c));

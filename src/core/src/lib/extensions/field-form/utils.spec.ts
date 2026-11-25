@@ -208,6 +208,21 @@ describe('unregisterControl', () => {
 });
 
 describe('clearControl', () => {
+  it('should clear child validation silently and preserve errors set on the parent', () => {
+    const name = new FormControl('', Validators.required);
+    const form = new FormGroup({ name });
+    form.setErrors({ server: true });
+    const onEvent = vi.fn();
+    form.events.subscribe(onEvent);
+    name.events.subscribe(onEvent);
+
+    clearControl(form);
+
+    expect(name.errors).toBeNull();
+    expect(form.errors).toEqual({ server: true });
+    expect(onEvent).not.toHaveBeenCalled();
+  });
+
   it('should not call the imperative validator setters on a SignalFormControl', () => {
     const name = TestBed.runInInjectionContext(() => new SignalFormControl(''));
     const form = new FormGroup({ name, age: new FormControl(25, Validators.required) });
