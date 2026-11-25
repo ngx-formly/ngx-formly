@@ -63,30 +63,42 @@ export class FormlyValidationMessage implements OnChanges {
 
     this.errorMessage$ = defer(() => {
       const streams = new Map<Observable<string>, { latest: ReplaySubject<string>; subscription: Subscription }>();
-      // A completed source may read a different control value on its next subscription.
-      const activeSources = new Set<Observable<string>>();
+      const activeSources = new Map<
+        Observable<string>,
+        { control: FormlyFieldConfig['formControl']; value: unknown }
+      >();
+      const isCurrent = (source: Observable<string>) => {
+        const context = activeSources.get(source);
+        const control = this.field.formControl;
+        return context && context.control === control && Object.is(context.value, control?.value);
+      };
       const observeMessage = (source: Observable<string>) => {
-        activeSources.add(source);
-        return source.pipe(finalize(() => activeSources.delete(source)));
+        // A contextual message may capture the control value at subscription time.
+        const control = this.field.formControl;
+        const context = { control, value: control?.value };
+        activeSources.set(source, context);
+        return source.pipe(
+          finalize(() => {
+            if (activeSources.get(source) === context) {
+              activeSources.delete(source);
+            }
+          }),
+        );
       };
       return changes.pipe(
         map(() => this.errorMessage),
         distinctUntilChanged(
-          (previous, current) => previous === current && (!isObservable(current) || activeSources.has(current)),
+          (previous, current) => previous === current && (!isObservable(current) || isCurrent(current)),
         ),
-        map((message) => {
+        switchMap((message) => {
           for (const [source, { subscription }] of streams) {
-            if (
-              !activeSources.has(source) ||
-              !(message instanceof CombinedMessages) ||
-              !message.messages.includes(source)
-            ) {
+            if (!isCurrent(source) || !(message instanceof CombinedMessages) || !message.messages.includes(source)) {
               subscription.unsubscribe();
               streams.delete(source);
             }
           }
           if (!(message instanceof CombinedMessages)) {
-            return message;
+            return isObservable(message) ? observeMessage(message) : of(message);
           }
 
           // Keep each active translation subscribed when another message changes.
@@ -101,7 +113,6 @@ export class FormlyValidationMessage implements OnChanges {
             return streams.get(source).latest;
           });
         }),
-        switchMap((message) => (isObservable(message) ? observeMessage(message) : of(message))),
         finalize(() => streams.forEach(({ subscription }) => subscription.unsubscribe())),
       );
     });

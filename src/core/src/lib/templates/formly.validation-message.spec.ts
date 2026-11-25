@@ -8,6 +8,7 @@ import {
   LegacyFormlyValidationMessage,
 } from '../core';
 import { defer, of, Subject } from 'rxjs';
+import { delayWhen } from 'rxjs/operators';
 import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
@@ -49,6 +50,28 @@ describe('FormlyValidationMessage Component', () => {
     detectChanges();
     expect(validationMessageContent(query)).toBe('Too short: ab');
   });
+
+  it.each([false, true])(
+    'restarts a pending message after the control value changes with showAllErrors=%s',
+    (showAllErrors) => {
+      const control = new FormControl('a');
+      const response = new Subject<void>();
+      const message = defer(() => of(`Too short: ${control.value}`).pipe(delayWhen(() => response)));
+      const { query, detectChanges } = renderComponent({
+        key: 'title',
+        formControl: control,
+        defaultValue: 'a',
+        props: { minLength: 3 },
+        validation: { showAllErrors, messages: { minLength: () => message } },
+      });
+      expect(validationMessageContent(query)).toBe('');
+
+      control.setValue('ab');
+      response.next();
+      detectChanges();
+      expect(validationMessageContent(query)).toBe('Too short: ab');
+    },
+  );
 
   it.each([true, false])('retains a translated message across rebuilds with showAllErrors=%s', (showAllErrors) => {
     const translation = new Subject<string>();
