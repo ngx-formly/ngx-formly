@@ -210,10 +210,6 @@ export class FieldExpressionExtension implements FormlyExtension {
             [field.model, field.options.formState, field, ignoreCache],
           );
 
-          // Any successful evaluation counts, even one that matches the initial value and updates nothing, so a
-          // later rebuild does not report that value as new.
-          const wasInitialized = initialized;
-          initialized = true;
           // `NaN !== NaN`, so an unchanged NaN result would otherwise count as a change on every check.
           let valueChanged = currentValue !== exprValue && !(Number.isNaN(currentValue) && Number.isNaN(exprValue));
           let valueSnapshot: string | undefined | null = null;
@@ -239,13 +235,14 @@ export class FieldExpressionExtension implements FormlyExtension {
 
           // A rebuild restores the expression value, so report it when something else changed the property since it
           // was applied. The applied value is compared, not the expression result, because applying may normalize it.
-          const liveValue = ignoreCache && wasInitialized && !valueChanged ? this.readTarget(field, path) : UNREADABLE;
+          const liveValue = ignoreCache && initialized && !valueChanged ? this.readTarget(field, path) : UNREADABLE;
           const targetDrifted =
             liveValue !== UNREADABLE && appliedValue !== UNREADABLE && !Object.is(liveValue, appliedValue);
 
           if (ignoreCache || needsDisabledSync || valueChanged) {
-            const emit = !ignoreCache || !wasInitialized || valueChanged || needsDisabledSync || targetDrifted;
+            const emit = !ignoreCache || !initialized || valueChanged || needsDisabledSync || targetDrifted;
             this.evalExpr(field, path, exprValue);
+            initialized = true;
             appliedValue = isObject(exprValue) ? UNREADABLE : this.readTarget(field, path);
             currentValue = exprValue;
             currentValueSnapshot = valueSnapshot;
@@ -256,6 +253,8 @@ export class FieldExpressionExtension implements FormlyExtension {
             return true;
           }
 
+          // A successful check also counts when the initial value needs no assignment.
+          initialized = true;
           return false;
         } catch (error: any) {
           error.message = `[Formly Error] [Expression "${path}"] ${error.message}`;

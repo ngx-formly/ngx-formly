@@ -1359,8 +1359,8 @@ describe('FieldExpressionExtension', () => {
       subscription.unsubscribe();
     });
 
-    it('emits on the first successful assignment after a failed build', () => {
-      const field: FormlyFieldConfig = { key: 'item', expressions: { 'props.nested.label': () => 'Ready' } };
+    it.each(['Ready', undefined])('emits on the first successful assignment of %s after a failed build', (value) => {
+      const field: FormlyFieldConfig = { key: 'item', expressions: { 'props.nested.label': () => value } };
       const fieldChanges = new Subject<FormlyValueChangeEvent>();
       const next = vi.fn();
       fieldChanges.subscribe(next);
@@ -1371,12 +1371,12 @@ describe('FieldExpressionExtension', () => {
       expect(next).not.toHaveBeenCalled();
       field.props.nested = {};
       builder.build(root);
-      expect(field.props.nested.label).toBe('Ready');
+      expect(field.props.nested).toHaveProperty('label', value);
       expect(next).toHaveBeenCalledExactlyOnceWith({
         field,
         type: 'expressionChanges',
         property: 'props.nested.label',
-        value: 'Ready',
+        value,
       });
       builder.build(root);
       expect(next).toHaveBeenCalledOnce();
