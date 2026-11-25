@@ -63,12 +63,24 @@ export class FormlyValidationMessage implements OnChanges {
 
     this.errorMessage$ = defer(() => {
       const streams = new Map<Observable<string>, { latest: ReplaySubject<string>; subscription: Subscription }>();
+      // A completed source may read a different control value on its next subscription.
+      const activeSources = new Set<Observable<string>>();
+      const observeMessage = (source: Observable<string>) => {
+        activeSources.add(source);
+        return source.pipe(finalize(() => activeSources.delete(source)));
+      };
       return changes.pipe(
         map(() => this.errorMessage),
-        distinctUntilChanged(),
+        distinctUntilChanged(
+          (previous, current) => previous === current && (!isObservable(current) || activeSources.has(current)),
+        ),
         map((message) => {
           for (const [source, { subscription }] of streams) {
-            if (!(message instanceof CombinedMessages) || !message.messages.includes(source)) {
+            if (
+              !activeSources.has(source) ||
+              !(message instanceof CombinedMessages) ||
+              !message.messages.includes(source)
+            ) {
               subscription.unsubscribe();
               streams.delete(source);
             }
@@ -84,12 +96,12 @@ export class FormlyValidationMessage implements OnChanges {
               latest.next('');
               const subscription = new Subscription();
               streams.set(source, { latest, subscription });
-              subscription.add(source.subscribe(latest));
+              subscription.add(observeMessage(source).subscribe(latest));
             }
             return streams.get(source).latest;
           });
         }),
-        switchMap((message) => (isObservable(message) ? message : of(message))),
+        switchMap((message) => (isObservable(message) ? observeMessage(message) : of(message))),
         finalize(() => streams.forEach(({ subscription }) => subscription.unsubscribe())),
       );
     });

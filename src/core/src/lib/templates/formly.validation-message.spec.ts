@@ -7,7 +7,7 @@ import {
   FormlyValidationMessage,
   LegacyFormlyValidationMessage,
 } from '../core';
-import { of, Subject } from 'rxjs';
+import { defer, of, Subject } from 'rxjs';
 import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
@@ -33,6 +33,23 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('FormlyValidationMessage Component', () => {
+  it.each([false, true])('refreshes a completed validation message with showAllErrors=%s', (showAllErrors) => {
+    const control = new FormControl('a');
+    const message = defer(() => of(`Too short: ${control.value}`));
+    const { query, detectChanges } = renderComponent({
+      key: 'title',
+      formControl: control,
+      defaultValue: 'a',
+      props: { minLength: 3 },
+      validation: { showAllErrors, messages: { minLength: () => message } },
+    });
+    expect(validationMessageContent(query)).toBe('Too short: a');
+
+    control.setValue('ab');
+    detectChanges();
+    expect(validationMessageContent(query)).toBe('Too short: ab');
+  });
+
   it.each([true, false])('retains a translated message across rebuilds with showAllErrors=%s', (showAllErrors) => {
     const translation = new Subject<string>();
     const subscribe = vi.spyOn(translation, 'subscribe');
