@@ -299,6 +299,20 @@ describe('FieldFormExtension', () => {
       expect(control.get('street').disabled).toBe(true);
     });
 
+    it('should not disable sub-fields when parent has cascadeDisabled set to false', () => {
+      const field = buildField({
+        key: 'address',
+        cascadeDisabled: false,
+        props: { disabled: true },
+        fieldGroup: [{ key: 'city' }, { key: 'street' }],
+      });
+
+      const control = field.formControl;
+      expect(control.disabled).toBe(false);
+      expect(control.get('city').disabled).toBe(false);
+      expect(control.get('street').disabled).toBe(false);
+    });
+
     it('should not affect parent disabled state', () => {
       const field = buildField({
         key: 'address',

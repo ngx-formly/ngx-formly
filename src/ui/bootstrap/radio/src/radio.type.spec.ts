@@ -1,6 +1,7 @@
+import { FormlyBootstrapMultiCheckboxModule } from '@ngx-formly/bootstrap/multicheckbox';
 import { FormlyBootstrapRadioModule } from '@ngx-formly/bootstrap/radio';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
+import { createComponent, createFieldComponent, ɵCustomEvent } from '@ngx-formly/core/testing';
 
 const renderComponent = (field: FormlyFieldConfig) => {
   return createFieldComponent(field, {
@@ -9,6 +10,52 @@ const renderComponent = (field: FormlyFieldConfig) => {
 };
 
 describe('ui-bootstrap: Radio Type', () => {
+  it.each(['radio', 'multicheckbox'])('keeps keyboard focus on a %s when a sibling rebuilds', (type) => {
+    const sibling: FormlyFieldConfig = { key: 'sibling', fieldGroup: [] };
+    const { query, detectChanges } = createComponent({
+      template: '<formly-form [fields]="fields"></formly-form>',
+      inputs: { fields: [{ key: 'choice', type, props: { options: [{ label: 'One', value: 1 }] } }, sibling] },
+      imports: [FormlyBootstrapRadioModule, FormlyBootstrapMultiCheckboxModule],
+    });
+    const input = query<HTMLInputElement>('input').nativeElement;
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    sibling.options.build(sibling);
+    detectChanges();
+    expect(query('input').nativeElement).toBe(input);
+    expect(document.activeElement).toBe(input);
+  });
+
+  it.each(['radio', 'multicheckbox'])(
+    'keeps focus on the same %s choice when equal-valued source choices reorder',
+    (type) => {
+      const options = [
+        { label: 'One', value: 1 },
+        { label: 'Two', value: 1 },
+      ];
+      const field: FormlyFieldConfig = {
+        key: 'choice',
+        type,
+        props: { options, mapProp: (option) => ({ ...option }) },
+      };
+      const { queryAll, detectChanges } = createComponent({
+        template: '<formly-form [fields]="fields"></formly-form>',
+        inputs: { fields: [field] },
+        imports: [FormlyBootstrapRadioModule, FormlyBootstrapMultiCheckboxModule],
+      });
+      const inputs = () => queryAll<HTMLInputElement>('input').map(({ nativeElement }) => nativeElement);
+      const first = inputs()[0];
+      first.focus();
+
+      options.reverse();
+      field.options.build();
+      detectChanges();
+      expect(inputs()[1]).toBe(first);
+      expect(document.activeElement).toBe(first);
+    },
+  );
+
   it('should render radio type', () => {
     const { query, queryAll } = renderComponent({
       key: 'name',

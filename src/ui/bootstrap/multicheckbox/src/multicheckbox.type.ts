@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 
 interface MultiCheckboxProps extends FormlyFieldProps {
@@ -14,7 +15,9 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
   selector: 'formly-field-multicheckbox',
   template: `
     <ng-template #fieldTypeTemplate>
-      @for (option of props.options | formlySelectOptions: field | async; track option; let i = $index) {
+      @let options = props.options | formlySelectOptions: field | async;
+      @for (choice of optionSources(options); track choice; let i = $index) {
+        @let option = options[i];
         <div
           class="form-check"
           [ngClass]="{
@@ -46,6 +49,8 @@ export interface FormlyMultiCheckboxFieldConfig extends FormlyFieldConfig<MultiC
   standalone: false,
 })
 export class FormlyFieldMultiCheckbox extends FieldType<FieldTypeConfig<MultiCheckboxProps>> {
+  protected readonly optionSources = FormlySelectOptionsPipe.ɵgetOptionSources;
+
   override defaultOptions = {
     props: {
       formCheck: 'default' as const, // 'default' | 'inline' | 'switch' | 'inline-switch'

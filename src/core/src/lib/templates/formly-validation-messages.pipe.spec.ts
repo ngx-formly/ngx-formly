@@ -1,3 +1,4 @@
+import { FormlyFormOptionsCache } from '../models';
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
@@ -42,6 +43,49 @@ describe('FormlyValidationMessagesPipe', () => {
 
   it.each([null, undefined, [], {}])('emits an empty array for %p', (fields) => {
     expect(watch(fields).entries).toEqual([]);
+  });
+
+  it('refreshes contextual messages after rebuilding an unchanged expression', () => {
+    let text = 'Before';
+    const message = () => text;
+    const field: FormlyFieldConfig = {
+      key: 'title',
+      props: { required: true },
+      expressions: { 'validation.messages.required': () => message },
+    };
+    createBuilder().build({ fieldGroup: [field] });
+    const result = watch(field);
+    expect(result.entries[0].message).toBe('Before');
+
+    text = 'After';
+    field.options.build();
+    expect(result.entries[0].message).toBe('After');
+  });
+
+  it('refreshes shared form options once per rebuild while retaining unchanged message streams', () => {
+    const translation = new Subject<string>();
+    const subscribe = vi.spyOn(translation, 'subscribe');
+    const field: FormlyFieldConfig = {
+      fieldGroup: ['first', 'second'].map((key) => ({
+        key,
+        props: { required: true },
+        validation: { messages: { required: () => translation } },
+      })),
+    };
+    createBuilder().build(field);
+    const result = watch(field);
+    translation.next('Translated');
+    expect(subscribe).toHaveBeenCalledTimes(2);
+    expect(result.entries.map(({ message }) => message)).toEqual(['Translated', 'Translated']);
+
+    result.next.mockClear();
+    field.options.build();
+    expect(result.next).toHaveBeenCalledOnce();
+    expect(subscribe).toHaveBeenCalledTimes(2);
+    expect(result.entries.map(({ message }) => message)).toEqual(['Translated', 'Translated']);
+    result.subscription.unsubscribe();
+    expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
+    expect(translation.observers).toHaveLength(0);
   });
 
   it('collects all own errors in field and error-key order, without traversing fieldArray templates', () => {
@@ -405,6 +449,7 @@ describe('FormlyValidationMessagesPipe', () => {
     expect(fieldChanges.observers).toHaveLength(0);
     expect(message.observers).toHaveLength(0);
     expect((field.formControl.statusChanges as Subject<string>).observers).toHaveLength(0);
+    expect((field.options as FormlyFormOptionsCache)._afterBuild.size).toBe(0);
   });
 
   it.each(['observable', 'function'])('propagates %s message errors and releases its subscriptions', (source) => {

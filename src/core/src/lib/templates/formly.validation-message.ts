@@ -1,10 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Observable, combineLatest, isObservable, merge, of } from 'rxjs';
-import { filter, map, startWith, switchMap } from 'rxjs/operators';
-import { FormlyFieldConfig } from '../models';
+import { Observable, ReplaySubject, Subscription, combineLatest, defer, isObservable, merge, of } from 'rxjs';
+import { distinctUntilChanged, filter, finalize, map, startWith, switchMap } from 'rxjs/operators';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
 import { FormlyConfig } from '../services/formly.config';
-import { FORMLY_VALIDATORS, observe } from '../utils';
+import { FORMLY_VALIDATORS, defineHiddenProp, observe } from '../utils';
 import { getValidationMessage } from './validation-message';
 
 /**
@@ -34,8 +34,20 @@ export class FormlyValidationMessage implements OnChanges {
       );
       return () => observer.unsubscribe();
     });
-    this.errorMessage$ = merge(
+    const changes = merge(
       controlChanges.pipe(switchMap((control) => (control ? control.statusChanges.pipe(startWith(null)) : of(null)))),
+      new Observable<void>((subscriber) => {
+        const options = (this.field as FormlyFieldConfigCache).options;
+        if (!options) {
+          return undefined;
+        }
+        if (!options._afterBuild) {
+          defineHiddenProp(options, '_afterBuild', new Set());
+        }
+        const afterBuild = () => subscriber.next();
+        options._afterBuild.add(afterBuild);
+        return () => options._afterBuild.delete(afterBuild);
+      }),
       !this.field.options
         ? of(null)
         : this.field.options.fieldChanges.pipe(
@@ -47,38 +59,85 @@ export class FormlyValidationMessage implements OnChanges {
               );
             }),
           ),
-    ).pipe(
-      switchMap(() => {
-        const message = this.errorMessage;
-        return isObservable(message) ? message : of(message);
-      }),
     );
+
+    this.errorMessage$ = defer(() => {
+      const streams = new Map<Observable<string>, { latest: ReplaySubject<string>; subscription: Subscription }>();
+      const activeSources = new Map<
+        Observable<string>,
+        { control: FormlyFieldConfig['formControl']; value: unknown }
+      >();
+      const isCurrent = (source: Observable<string>) => {
+        const context = activeSources.get(source);
+        const control = this.field.formControl;
+        return context && context.control === control && Object.is(context.value, control?.value);
+      };
+      const observeMessage = (source: Observable<string>) => {
+        // A contextual message may capture the control value at subscription time.
+        const control = this.field.formControl;
+        const context = { control, value: control?.value };
+        activeSources.set(source, context);
+        return source.pipe(
+          finalize(() => {
+            if (activeSources.get(source) === context) {
+              activeSources.delete(source);
+            }
+          }),
+        );
+      };
+      return changes.pipe(
+        map(() => this.errorMessage),
+        distinctUntilChanged(
+          (previous, current) => previous === current && (!isObservable(current) || isCurrent(current)),
+        ),
+        switchMap((message) => {
+          for (const [source, { subscription }] of streams) {
+            if (!isCurrent(source) || !(message instanceof CombinedMessages) || !message.messages.includes(source)) {
+              subscription.unsubscribe();
+              streams.delete(source);
+            }
+          }
+          if (!(message instanceof CombinedMessages)) {
+            return isObservable(message) ? observeMessage(message) : of(message);
+          }
+
+          // Keep each active translation subscribed when another message changes.
+          return message.combine((source) => {
+            if (!streams.has(source)) {
+              const latest = new ReplaySubject<string>(1);
+              latest.next('');
+              const subscription = new Subscription();
+              streams.set(source, { latest, subscription });
+              subscription.add(observeMessage(source).subscribe(latest));
+            }
+            return streams.get(source).latest;
+          });
+        }),
+        finalize(() => streams.forEach(({ subscription }) => subscription.unsubscribe())),
+      );
+    });
   }
 
   get errorMessage() {
-    const errors = this.field.formControl?.errors || {};
-    const messages: (string | Observable<string>)[] = [];
-    for (const error in errors) {
-      if (errors.hasOwnProperty(error)) {
-        const message = getValidationMessage(this.field, error, this.config);
-        if (!this.field.validation?.showAllErrors) {
-          return message;
-        }
-        if (message) {
-          messages.push(message);
-        }
-      }
+    const errors = Object.keys(this.field.formControl?.errors || {});
+    if (!this.field.validation?.showAllErrors) {
+      return errors.length ? getValidationMessage(this.field, errors[0], this.config) : undefined;
     }
 
-    if (this.field.validation?.showAllErrors) {
-      return messages.some(isObservable)
-        ? combineLatest(
-            messages.map((message) => (isObservable(message) ? message.pipe(startWith('')) : of(message))),
-          ).pipe(map((values) => values.filter(Boolean).join('\n')))
-        : messages.join('\n');
-    }
+    const messages = errors.map((error) => getValidationMessage(this.field, error, this.config)).filter(Boolean);
+    return messages.some(isObservable) ? new CombinedMessages(messages) : messages.join('\n');
+  }
+}
 
-    return undefined;
+class CombinedMessages extends Observable<string> {
+  constructor(readonly messages: (string | Observable<string>)[]) {
+    super((subscriber) => this.combine((source) => source.pipe(startWith(''))).subscribe(subscriber));
+  }
+
+  combine(observe: (source: Observable<string>) => Observable<string>) {
+    return combineLatest(this.messages.map((message) => (isObservable(message) ? observe(message) : of(message)))).pipe(
+      map((values) => values.filter(Boolean).join('\n')),
+    );
   }
 }
 

@@ -55,6 +55,25 @@ options = {
 
 :::
 
+### Container groups and cascadeDisabled
+
+By default, disabling a container `fieldGroup` (statically or via an expression) cascades the disabled state down to its child fields. Set `cascadeDisabled: false` on layout container wrappers (e.g. cards, panels) to prevent a container-level disabled state from disabling inner controls:
+
+```typescript
+{
+  props: { label: 'Card Panel' },
+  cascadeDisabled: false,
+  expressions: { 'props.disabled': '!model.text' },
+  fieldGroup: [
+    {
+      key: 'independent',
+      type: 'input',
+      props: { label: 'Independent Child' },
+    },
+  ],
+}
+```
+
 ### Signals
 
 Pass a signal or a `computed` to update the property as soon as it changes, even when the model does not change:
@@ -203,6 +222,8 @@ The emitted event object include the following info:
 | type     | Event type, for expression changes it should be equal to `expressionChanges` |
 | property | The evaluated expression key   |
 | value    | The evaluated expression value |
+
+Rebuilding the form emits `expressionChanges` when an expression is evaluated for the first time, its result changes, or Formly corrects an out-of-sync disabled state. Objects and arrays are compared by their serialized content, not by reference, and so is a `Map` or `Set` that an expression returns directly. A `Map` or `Set` nested inside another value is not inspected.
 
 Example ([Demo](https://stackblitz.com/edit/angular-yobrug?file=src/app/app.component.ts)): The following example print a console log when a the `city` field is rendered:
 

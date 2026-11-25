@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
 import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/bootstrap/form-field';
 import { UntypedFormControl } from '@angular/forms';
 
@@ -15,7 +16,9 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   selector: 'formly-field-radio',
   template: `
     <ng-template #fieldTypeTemplate>
-      @for (option of props.options | formlySelectOptions: field | async; track option; let i = $index) {
+      @let options = props.options | formlySelectOptions: field | async;
+      @for (choice of optionSources(options); track choice; let i = $index) {
+        @let option = options[i];
         <div class="form-check" [class.form-check-inline]="props.formCheck === 'inline'">
           <input
             type="radio"
@@ -41,6 +44,8 @@ export interface FormlyRadioFieldConfig extends FormlyFieldConfig<RadioProps> {
   standalone: false,
 })
 export class FormlyFieldRadio extends FieldType<FieldTypeConfig<RadioProps>> {
+  protected readonly optionSources = FormlySelectOptionsPipe.ɵgetOptionSources;
+
   override defaultOptions = {
     props: {
       formCheck: 'default' as const,

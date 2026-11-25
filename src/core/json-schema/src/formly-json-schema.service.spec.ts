@@ -1581,6 +1581,83 @@ describe('Service: FormlyJsonschema', () => {
     describe('Multi-Schema (oneOf, anyOf) support', () => {
       let schema: JSONSchema7;
 
+      it.each(['oneOf', 'anyOf'])('should mark the form dirty when the user switches %s branches', (mode) => {
+        TestBed.overrideTemplate(
+          FormlyFieldInput,
+          `
+            @if (props.options) {
+              <select [formControl]="formControl" [formlyAttributes]="field" ${mode === 'anyOf' ? 'multiple' : ''}>
+                @for (option of props.options; track option.value) {
+                  <option [ngValue]="option.value">{{ option.label }}</option>
+                }
+              </select>
+            } @else {
+              <input [formControl]="formControl" [formlyAttributes]="field" />
+            }
+          `,
+        );
+        const { field, query, detectChanges } = renderComponent({
+          schema: {
+            type: 'object',
+            properties: {
+              output: {
+                [mode]: [
+                  {
+                    title: 'HTTP',
+                    type: 'object',
+                    properties: { url: { type: 'string', default: 'https://example.test' } },
+                  },
+                  {
+                    title: 'File',
+                    type: 'object',
+                    properties: { path: { type: 'string', default: '/var/log/job.log' } },
+                  },
+                ],
+              },
+            },
+          },
+        });
+        const output = field.fieldGroup[0];
+        const selector = output.fieldGroup[0].fieldGroup[0];
+        const form = field.formControl;
+        const select = query<HTMLSelectElement>('select').nativeElement;
+
+        expect(field.model).toEqual({ output: { url: 'https://example.test' } });
+        expect(form.pristine).toBe(true);
+
+        select.options[0].selected = false;
+        select.options[1].selected = true;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        detectChanges();
+
+        expect(field.model).toEqual({ output: { path: '/var/log/job.log' } });
+        expect(selector.formControl.dirty).toBe(true);
+        expect(output.formControl.dirty).toBe(true);
+        expect(form.dirty).toBe(true);
+
+        field.options.resetModel();
+        detectChanges();
+
+        expect(field.model).toEqual({ output: { url: 'https://example.test' } });
+        expect(output.formControl.pristine).toBe(true);
+        expect(form.pristine).toBe(true);
+
+        selector.formControl.setValue(mode === 'oneOf' ? 1 : [1]);
+        detectChanges();
+
+        expect(field.model).toEqual({ output: { path: '/var/log/job.log' } });
+        expect(form.pristine).toBe(true);
+
+        select.options[1].selected = false;
+        select.options[0].selected = true;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        detectChanges();
+
+        expect(field.model).toEqual({ output: { url: 'https://example.test' } });
+        expect(output.formControl.dirty).toBe(true);
+        expect(form.dirty).toBe(true);
+      });
+
       describe('oneOf', () => {
         beforeEach(() => {
           schema = {

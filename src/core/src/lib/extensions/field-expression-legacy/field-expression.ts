@@ -16,8 +16,34 @@ import { evalExpression, evalStringExpressionLegacy } from './utils';
 import { isObservable, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FormlyExtension } from '../../models';
-import { unregisterControl, registerControl, updateValidity, acceptsImperativeApi } from '../field-form/utils';
+import { unregisterControl, registerControl, updateValidity, canSetDisabledState } from '../field-form/utils';
 import { AbstractControl, UntypedFormArray } from '@angular/forms';
+
+const UNREADABLE = Symbol('unreadable');
+
+// Maps and Sets serialize as `{}` by default, which hides in-place mutations from the content comparison.
+function snapshotReplacer(_key: string, value: unknown) {
+  if (value instanceof Map) {
+    return { __map: [...value] };
+  }
+
+  return value instanceof Set ? { __set: [...value] } : value;
+}
+
+function snapshot(value: unknown): string | undefined {
+  // The replacer is several times slower than native serialization, so only a directly returned Map or Set uses it.
+  if (!(value instanceof Map || value instanceof Set)) {
+    return JSON.stringify(value);
+  }
+
+  try {
+    return JSON.stringify(value, snapshotReplacer);
+  } catch {
+    // Map and Set contents may not be serializable (cycles, BigInt); fall back to the plain comparison, which
+    // only throws for values that already failed before Maps and Sets were inspected.
+    return JSON.stringify(value);
+  }
+}
 
 export class FieldExpressionExtension implements FormlyExtension {
   onPopulate(field: FormlyFieldConfigCache) {
@@ -70,6 +96,7 @@ export class FieldExpressionExtension implements FormlyExtension {
                 field._expressions[key].callback(true);
               } else {
                 this.evalExpr(field, key, v);
+                this.emitExpressionChanges(field, key, v);
               }
               field.options._detectChanges(field);
             }),
@@ -139,17 +166,28 @@ export class FieldExpressionExtension implements FormlyExtension {
     const isDisabledExpression = ['props.disabled', 'templateOptions.disabled'].includes(path);
     let parentExpression: any;
     if (field.parent && (path === 'hide' || isDisabledExpression)) {
-      const rootValue = (f: FormlyFieldConfigCache) => {
-        return path === 'hide' ? f.hide : f.props.disabled;
-      };
-
       parentExpression = () => {
+        if (isDisabledExpression) {
+          let root = field.parent;
+          while (root) {
+            if (root.cascadeDisabled === false) {
+              return false;
+            }
+            if (root.props?.disabled) {
+              return true;
+            }
+            root = root.parent;
+          }
+
+          return false;
+        }
+
         let root = field.parent;
-        while (root.parent && !rootValue(root)) {
+        while (root.parent && !root.hide) {
           root = root.parent;
         }
 
-        return rootValue(root);
+        return root.hide;
       };
     }
 
@@ -159,6 +197,9 @@ export class FieldExpressionExtension implements FormlyExtension {
     }
 
     let currentValue: any;
+    let currentValueSnapshot: string | undefined | null = null;
+    let initialized = false;
+    let appliedValue: unknown = UNREADABLE;
 
     return {
       callback: (ignoreCache?: boolean) => {
@@ -169,21 +210,51 @@ export class FieldExpressionExtension implements FormlyExtension {
             [field.model, field.options.formState, field, ignoreCache],
           );
 
-          if (
-            ignoreCache ||
-            (isDisabledExpression &&
-              (field.props.disabled !== !!exprValue || (exprValue && hasKey(field) && field.formControl?.enabled))) ||
-            (currentValue !== exprValue &&
-              (!isObject(exprValue) ||
-                isObservable(exprValue) ||
-                JSON.stringify(exprValue) !== JSON.stringify(currentValue)))
-          ) {
-            currentValue = exprValue;
+          // `NaN !== NaN`, so an unchanged NaN result would otherwise count as a change on every check.
+          let valueChanged = currentValue !== exprValue && !(Number.isNaN(currentValue) && Number.isNaN(exprValue));
+          let valueSnapshot: string | undefined | null = null;
+          if ((ignoreCache || valueChanged) && isObject(exprValue) && !isObservable(exprValue)) {
+            try {
+              valueSnapshot = snapshot(exprValue);
+              // Rebuilds need the previous content because the object itself may have been mutated.
+              valueChanged =
+                valueSnapshot !==
+                (ignoreCache && currentValueSnapshot !== null ? currentValueSnapshot : snapshot(currentValue));
+            } catch (error) {
+              // Rebuilds previously skipped serialization; retain reference equality when it fails.
+              if (!ignoreCache) {
+                throw error;
+              }
+            }
+          }
+
+          const needsDisabledSync =
+            isDisabledExpression &&
+            (field.props.disabled !== !!exprValue ||
+              (exprValue && hasKey(field) && canSetDisabledState(field) && field.formControl.enabled));
+
+          // A rebuild restores the expression value, so report it when something else changed the property since it
+          // was applied. The applied value is compared, not the expression result, because applying may normalize it.
+          const liveValue = ignoreCache && initialized && !valueChanged ? this.readTarget(field, path) : UNREADABLE;
+          const targetDrifted =
+            liveValue !== UNREADABLE && appliedValue !== UNREADABLE && !Object.is(liveValue, appliedValue);
+
+          if (ignoreCache || needsDisabledSync || valueChanged) {
+            const emit = !ignoreCache || !initialized || valueChanged || needsDisabledSync || targetDrifted;
             this.evalExpr(field, path, exprValue);
+            initialized = true;
+            appliedValue = isObject(exprValue) ? UNREADABLE : this.readTarget(field, path);
+            currentValue = exprValue;
+            currentValueSnapshot = valueSnapshot;
+            if (emit) {
+              this.emitExpressionChanges(field, path, exprValue);
+            }
 
             return true;
           }
 
+          // A successful check also counts when the initial value needs no assignment.
+          initialized = true;
           return false;
         } catch (error: any) {
           error.message = `[Formly Error] [Expression "${path}"] ${error.message}`;
@@ -232,7 +303,7 @@ export class FieldExpressionExtension implements FormlyExtension {
   }
 
   private changeDisabledState(field: FormlyFieldConfigCache, value: boolean) {
-    if (field.fieldGroup) {
+    if (field.fieldGroup && field.cascadeDisabled !== false) {
       field.fieldGroup
         .filter((f: FormlyFieldConfigCache) => !f._expressions.hasOwnProperty('props.disabled'))
         .forEach((f) => this.changeDisabledState(f, value));
@@ -322,14 +393,31 @@ export class FieldExpressionExtension implements FormlyExtension {
 
       if (['templateOptions.disabled', 'props.disabled'].includes(prop) && hasKey(field)) {
         // Angular enables descendants without updating a group's disabled property.
-        if (value && field.formControl?.enabled && acceptsImperativeApi(field.formControl)) {
+        if (value && canSetDisabledState(field) && field.formControl.enabled) {
           field.formControl.disable();
         }
         this.changeDisabledState(field, value);
       }
     }
+  }
 
-    this.emitExpressionChanges(field, prop, value);
+  /** The value currently held by the property an expression writes to, or `UNREADABLE` if it cannot be read. */
+  private readTarget(field: FormlyFieldConfigCache, prop: string): unknown {
+    if (prop.indexOf('model.') === 0) {
+      return UNREADABLE;
+    }
+
+    try {
+      let target: any = field;
+      for (const path of this._evalExpressionPath(field, prop)) {
+        target = target[path];
+      }
+
+      return target;
+    } catch {
+      // An unreachable target is reported by `evalExpr` when the value is applied.
+      return UNREADABLE;
+    }
   }
 
   private emitExpressionChanges(field: FormlyFieldConfigCache, property: string, value: any) {

@@ -14,6 +14,10 @@ export function acceptsImperativeApi(control: AbstractControl | null | undefined
   return !isSignalFormControl(control) || control instanceof FormlySignalFormControl;
 }
 
+export function canSetDisabledState(field: FormlyFieldConfigCache): boolean {
+  return !!field.formControl && field.cascadeDisabled !== false && acceptsImperativeApi(field.formControl);
+}
+
 const parentSyncedControls = new WeakSet<AbstractControl>();
 
 // SignalFormControl notifies its parent on value changes only, not when a rule changes its status.
@@ -143,7 +147,7 @@ export function registerControl(
       defineHiddenProp(field, 'formControl', undefined);
       field.props.disabled = !!field.props.disabled;
       const disabledObserver = observe(field, ['props', 'disabled'], ({ firstChange, currentValue }) => {
-        if (!firstChange && field.formControl && acceptsImperativeApi(field.formControl)) {
+        if (!firstChange && canSetDisabledState(field)) {
           if (currentValue) {
             field.formControl.disable();
           } else {

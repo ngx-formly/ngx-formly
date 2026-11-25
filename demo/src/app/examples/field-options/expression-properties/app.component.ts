@@ -57,6 +57,21 @@ export class AppComponent {
         },
       ],
     },
+    {
+      props: { label: 'Container group (cascadeDisabled: false)' },
+      cascadeDisabled: false,
+      expressions: { 'props.disabled': '!model?.text' },
+      fieldGroup: [
+        {
+          key: 'independent',
+          type: 'input',
+          props: {
+            label: 'Independent child',
+            placeholder: 'Stays enabled even when container group disabled is true',
+          },
+        },
+      ],
+    },
   ];
 
   submit() {
