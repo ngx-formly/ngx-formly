@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getExampleFiles } from './utils';
+import datepickerConfig from '../../ui/ui-optimus-ui/datepicker/app.config.ts?raw' with { loader: 'text' };
 
 const example = { title: '', description: '', component: null, debug: false, files: [] };
 
@@ -52,5 +53,21 @@ describe('getExampleFiles', () => {
 
     expect(manifest.dependencies.primeng).toBeUndefined();
     expect(manifest.overrides).toBeUndefined();
+  });
+
+  it.each(['optimus-ui', 'core'])('exports Optimus UI examples with the Aura theme for %s', (type) => {
+    const files = type === 'optimus-ui' ? [] : [{ file: 'app.config.ts', filecontent: datepickerConfig }];
+    const { files: exported } = getExampleFiles(type, { ...example, files });
+    const manifest = JSON.parse(exported['package.json']);
+    expect(manifest.dependencies['@ngx-formly/optimus-ui']).toBe(manifest.dependencies['@ngx-formly/core']);
+    expect(manifest.dependencies['@openng/optimus-ui']).toBe('^2.1.0');
+    expect(manifest.dependencies['@openng/optimus-ui-themes']).toBe('^2.1.0');
+    expect(manifest.dependencies.primeng).toBeUndefined();
+    expect(manifest.overrides).toBeUndefined();
+    expect(exported['src/app/app.config.ts']).toContain('withFormlyOptimusUI()');
+    const project = JSON.parse(exported['angular.json']).projects['formly-app'];
+    expect(exported[project.architect.build.options.tsConfig]).toContain('"extends": "./tsconfig.json"');
+    expect(exported['tsconfig.json']).toBeDefined();
+    expect(exported['src/app/app.config.ts']).toContain('provideOptimus({ theme: { preset: Aura } })');
   });
 });

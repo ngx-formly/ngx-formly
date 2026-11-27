@@ -7,6 +7,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatToggleModule } from '@ngx-formly/material/toggle';
 import { FormlyIonicModule } from '@ngx-formly/ionic';
 import { FormlyKendoModule } from '@ngx-formly/kendo';
+import { FormlyOptimusUIModule } from '@ngx-formly/optimus-ui';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { FormlyNgZorroAntdModule } from '@ngx-formly/ng-zorro-antd';
 
@@ -32,6 +33,7 @@ const adapters = [
     types: ['input', 'number', 'checkbox', 'radio', 'select', 'textarea', 'toggle', 'slider', 'datetime'],
   },
   { name: 'kendo', imports: [FormlyKendoModule], types: ['input', 'checkbox', 'radio', 'select', 'textarea'] },
+  { name: 'optimus-ui', imports: [FormlyOptimusUIModule], types: ['input', 'checkbox', 'radio', 'select', 'textarea'] },
   { name: 'primeng', imports: [FormlyPrimeNGModule], types: ['input', 'checkbox', 'radio', 'select', 'textarea'] },
   {
     name: 'ng-zorro-antd',

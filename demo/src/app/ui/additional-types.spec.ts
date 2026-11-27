@@ -7,6 +7,7 @@ import { provideFormlyCore } from '@ngx-formly/core';
 import { withFormlyPrimeNG } from '@ngx-formly/primeng';
 import { withFormlyFieldDatepicker } from '@ngx-formly/primeng/datepicker';
 import { additionalTypes as primeTypes } from './ui-primeng/additional-types.component';
+import { appConfig as optimus } from './ui-optimus-ui/app.config';
 import { appConfig as kendo } from './ui-kendo/app.config';
 import { appConfig as zorro } from './ui-ng-zorro-antd/app.config';
 
@@ -15,6 +16,7 @@ const primeng = { providers: [provideFormlyCore([...withFormlyPrimeNG(), withFor
 describe.each([
   ['Bootstrap', bootstrap, 'input'],
   ['Ionic', ionic, 'ion-searchbar'],
+  ['Optimus UI', optimus, 'p-autocomplete'],
   ['PrimeNG', primeng, 'p-autocomplete'],
   ['Kendo', kendo, 'kendo-autocomplete'],
   ['Zorro', zorro, 'input[nz-input]'],
@@ -73,7 +75,7 @@ describe.each([
       { providers: config.providers, imports: [NoopAnimationsModule] },
     );
     const control = query<HTMLInputElement>(autocompleteSelector);
-    if (name === 'PrimeNG') {
+    if (name === 'PrimeNG' || name === 'Optimus UI') {
       control.triggerEventHandler('completeMethod', { query: 'Cal' });
     } else if (name === 'Kendo') {
       control.triggerEventHandler('filterChange', 'Cal');

@@ -6,6 +6,7 @@ import { withFormlyFieldRadio } from '@ngx-formly/primeng/radio';
 import { withFormlyFieldCheckbox } from '@ngx-formly/primeng/checkbox';
 import { withFormlyFieldSelect } from '@ngx-formly/primeng/select';
 
+/** @deprecated Use withFormlyOptimusUI from @ngx-formly/optimus-ui. */
 export function withFormlyPrimeNG(): ConfigOption[] {
   return [
     withFormlyFormField(),

@@ -51,6 +51,12 @@ export const dependencies: { [id: string]: { [id: string]: string } } = {
     '@progress/kendo-licensing': '^1.11.0',
     '@progress/kendo-theme-default': '^14.6.1',
   },
+  'optimus-ui': {
+    '@ngx-formly/optimus-ui': formlyVersion,
+    '@angular/cdk': angularVersion,
+    '@openng/optimus-ui': '^2.1.0',
+    '@openng/optimus-ui-themes': '^2.1.0',
+  },
   primeng: {
     '@ngx-formly/primeng': formlyVersion,
     '@angular/router': angularVersion,
@@ -87,8 +93,9 @@ export const ngProvider: { [id: string]: string } = {
   bootstrap: 'withFormlyBootstrap',
   material: 'withFormlyMaterial',
   kendo: 'withFormlyKendo',
-  primeng: 'withFormlyPrimeNG',
   ionic: 'withFormlyIonic',
+  'optimus-ui': 'withFormlyOptimusUI',
+  primeng: 'withFormlyPrimeNG',
   'ng-zorro-antd': 'withFormlyNgZorroAntd',
 };
 
@@ -110,6 +117,7 @@ export const TEMPLATE_FILES: { [id: string]: ExampleType['files'] } = {
     },
   ],
   kendo: [{ file: 'styles.scss', filecontent: `@import '@progress/kendo-theme-default/dist/all.css';` }],
+  'optimus-ui': [{ file: 'styles.scss', filecontent: '' }],
   primeng: [
     {
       file: 'styles.scss',

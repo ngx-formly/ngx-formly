@@ -280,12 +280,50 @@
     ]
   },
   {
+    "path": "/api/ui/optimus-ui",
+    "label": "Optimus UI",
+    "items": [
+      {
+        "path": "/api/ui/optimus-ui",
+        "label": "Optimus UI"
+      },
+      {
+        "path": "/api/ui/optimus-ui/checkbox",
+        "label": "Checkbox"
+      },
+      {
+        "path": "/api/ui/optimus-ui/datepicker",
+        "label": "Datepicker"
+      },
+      {
+        "path": "/api/ui/optimus-ui/form-field",
+        "label": "Form Field"
+      },
+      {
+        "path": "/api/ui/optimus-ui/input",
+        "label": "Input"
+      },
+      {
+        "path": "/api/ui/optimus-ui/radio",
+        "label": "Radio"
+      },
+      {
+        "path": "/api/ui/optimus-ui/select",
+        "label": "Select"
+      },
+      {
+        "path": "/api/ui/optimus-ui/textarea",
+        "label": "Textarea"
+      }
+    ]
+  },
+  {
     "path": "/api/ui/primeng",
-    "label": "PrimeNG",
+    "label": "PrimeNG (deprecated)",
     "items": [
       {
         "path": "/api/ui/primeng",
-        "label": "PrimeNG"
+        "label": "PrimeNG (deprecated)"
       },
       {
         "path": "/api/ui/primeng/checkbox",

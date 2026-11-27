@@ -6,6 +6,7 @@ import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
 import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
 import { FormlySelectModule } from '@ngx-formly/primeng/select';
 
+/** @deprecated Use FormlyOptimusUIModule from @ngx-formly/optimus-ui. */
 @NgModule({
   imports: [
     FormlyFormFieldModule,

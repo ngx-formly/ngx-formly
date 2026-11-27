@@ -1,0 +1,35 @@
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldProps as CheckboxProps } from '@ngx-formly/optimus-ui/form-field';
+
+export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxProps> {
+  type: 'checkbox' | Type<FormlyFieldCheckbox>;
+}
+
+@Component({
+  selector: 'formly-field-optimus-ui-checkbox',
+  template: `
+    <div class="p-field-checkbox field-checkbox">
+      <p-checkbox
+        [binary]="true"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [inputId]="id"
+        [id]="id + '-container'"
+      />
+      <label [for]="id">
+        @if (props.allowHtml) {
+          <span [innerHTML]="props.label"></span>
+        } @else {
+          <ng-container>{{ props.label }}</ng-container>
+        }
+      </label>
+    </div>
+  `,
+  styleUrl: '../../choice-row.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+export class FormlyFieldCheckbox extends FieldType<FieldTypeConfig<CheckboxProps>> {
+  override defaultOptions = { props: { hideLabel: true } };
+}

@@ -18,6 +18,7 @@ module.exports = {
         'material',
         'bootstrap',
         'ionic',
+        'optimus-ui',
         'primeng',
         'kendo',
         'ng-zorro-antd',

@@ -1,5 +1,7 @@
 # @ngx-formly/primeng
 
+**Deprecated.** Migrate to `@ngx-formly/optimus-ui`. Follow the [PrimeNG migration steps](https://github.com/ngx-formly/ngx-formly/blob/main/src/ui/optimus-ui/README.md#migrate-from-primeng).
+
 PrimeNG field types and wrappers for Formly. This adapter connects PrimeNG inputs, selection controls, and validation messages to Angular Reactive Forms.
 
 ## Installation

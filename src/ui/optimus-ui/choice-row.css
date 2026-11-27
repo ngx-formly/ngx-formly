@@ -1,0 +1,10 @@
+.field-checkbox,
+.field-radiobutton {
+  display: flex;
+  align-items: center;
+  margin-block-end: 1rem;
+}
+
+label {
+  margin-inline-start: 0.5rem;
+}

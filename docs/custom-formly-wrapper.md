@@ -22,7 +22,7 @@ ui-material
   - form-field
     - Has label, shows validation messages, shows description, and label for required.
 
-ui-primeng
+ui-optimus-ui and ui-primeng (deprecated)
   - form-field
     - Has label, required and validation message.
 
