@@ -1,0 +1,16 @@
+import { ApplicationConfig } from '@angular/core';
+import { provideFormlyCore } from '@ngx-formly/core';
+import { withFormlyOptimusUI } from '@ngx-formly/optimus-ui';
+import { additionalTypes } from './additional-types.component';
+import { withFormlyFieldDatepicker } from '@ngx-formly/optimus-ui/datepicker';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideFormlyCore([
+      ...withFormlyOptimusUI(),
+      withFormlyFieldDatepicker(),
+      additionalTypes,
+      { validationMessages: [{ name: 'required', message: 'This field is required' }] },
+    ]),
+  ],
+};

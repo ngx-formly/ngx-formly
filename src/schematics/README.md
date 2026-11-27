@@ -12,7 +12,7 @@ Run this in your Angular workspace:
 ng add @ngx-formly/schematics@^11 --ui-theme=bootstrap
 ```
 
-Replace `bootstrap` with `material`, `ionic`, `primeng`, `kendo`, `ng-zorro-antd`, or `nativescript`. Omit `--ui-theme` if you plan to register your own field types.
+Replace `bootstrap` with `material`, `ionic`, `optimus-ui`, `kendo`, `ng-zorro-antd`, or `nativescript`. The `primeng` option is deprecated. [Migrate to Optimus UI](https://github.com/ngx-formly/ngx-formly/blob/main/src/ui/optimus-ui/README.md#migrate-from-primeng). Omit `--ui-theme` if you plan to register your own field types.
 
 For a workspace with multiple projects, specify the target:
 
@@ -36,6 +36,7 @@ Complete the UI library's setup, including its dependencies, global styles, and 
 | `material`      | [@ngx-formly/material](https://www.npmjs.com/package/@ngx-formly/material)           |
 | `ionic`         | [@ngx-formly/ionic](https://www.npmjs.com/package/@ngx-formly/ionic)                 |
 | `primeng`       | [@ngx-formly/primeng](https://www.npmjs.com/package/@ngx-formly/primeng)             |
+| `optimus-ui`    | [@ngx-formly/optimus-ui](https://www.npmjs.com/package/@ngx-formly/optimus-ui)       |
 | `kendo`         | [@ngx-formly/kendo](https://www.npmjs.com/package/@ngx-formly/kendo)                 |
 | `ng-zorro-antd` | [@ngx-formly/ng-zorro-antd](https://www.npmjs.com/package/@ngx-formly/ng-zorro-antd) |
 | `nativescript`  | [@ngx-formly/nativescript](https://www.npmjs.com/package/@ngx-formly/nativescript)   |

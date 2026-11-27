@@ -19,7 +19,8 @@ npm install @ngx-formly/core@^11
 | [@ngx-formly/bootstrap](https://www.npmjs.com/package/@ngx-formly/bootstrap)         | Bootstrap            |
 | [@ngx-formly/material](https://www.npmjs.com/package/@ngx-formly/material)           | Angular Material     |
 | [@ngx-formly/ionic](https://www.npmjs.com/package/@ngx-formly/ionic)                 | Ionic                |
-| [@ngx-formly/primeng](https://www.npmjs.com/package/@ngx-formly/primeng)             | PrimeNG              |
+| [@ngx-formly/optimus-ui](https://www.npmjs.com/package/@ngx-formly/optimus-ui)       | Optimus UI           |
+| [@ngx-formly/primeng](https://www.npmjs.com/package/@ngx-formly/primeng)             | PrimeNG (deprecated, migrate to Optimus UI) |
 | [@ngx-formly/kendo](https://www.npmjs.com/package/@ngx-formly/kendo)                 | Kendo UI for Angular |
 | [@ngx-formly/ng-zorro-antd](https://www.npmjs.com/package/@ngx-formly/ng-zorro-antd) | NG-ZORRO Ant Design  |
 | [@ngx-formly/nativescript](https://www.npmjs.com/package/@ngx-formly/nativescript)   | NativeScript         |

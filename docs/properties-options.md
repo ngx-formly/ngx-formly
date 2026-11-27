@@ -167,7 +167,7 @@ Set `props.allowHtml` to `true` to render `props.label` and `props.description` 
 ```
 
 This option defaults to `false`, so existing labels and descriptions remain plain text.
-It applies to the built-in fields in Bootstrap, Material, Ionic, Kendo, PrimeNG, and NG-ZORRO.
+It applies to the built-in fields in Bootstrap, Material, Ionic, Kendo, Optimus UI, PrimeNG, and NG-ZORRO.
 NativeScript and custom field templates do not automatically support it.
 
 Angular sanitizes the HTML, removing scripts and event handlers and neutralizing unsafe URLs.

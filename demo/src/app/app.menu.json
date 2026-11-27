@@ -39,7 +39,8 @@
       { "path": "/ui/bootstrap", "label": "Bootstrap" },
       { "path": "/ui/material", "label": "Material" },
       { "path": "/ui/ionic", "label": "Ionic" },
-      { "path": "/ui/primeng", "label": "PrimeNG" },
+      { "path": "/ui/optimus-ui", "label": "Optimus UI" },
+      { "path": "/ui/primeng", "label": "PrimeNG (deprecated)" },
       { "path": "/ui/kendo", "label": "Kendo" },
       { "path": "/ui/ng-zorro-antd", "label": "Ng-Zorro-Antd" }
     ]

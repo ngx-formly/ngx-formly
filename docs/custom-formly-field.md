@@ -9,7 +9,8 @@ there are prebuilt templates you can use:
   - Bootstrap
   - Ionic
   - Kendo
-  - PrimeNG
+  - Optimus UI
+  - PrimeNG (deprecated)
   - NG-ZORRO
 
 

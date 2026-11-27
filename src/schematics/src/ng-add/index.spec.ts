@@ -46,7 +46,7 @@ describe('ng-add-schematic', () => {
     const packageJson = JSON.parse(tree.get('/package.json').content.toString());
 
     // @TODO: list of themes should probably be retrieved from some config file
-    ['material', 'bootstrap', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd'].forEach(theme => {
+    ['material', 'bootstrap', 'ionic', 'optimus-ui', 'primeng', 'kendo', 'ng-zorro-antd'].forEach(theme => {
       expect(packageJson.dependencies[`@ngx-formly/${theme}`]).toBeUndefined();
     });
   });
@@ -82,7 +82,7 @@ describe('ng-add-schematic', () => {
     );
   });
 
-  it.each(['bootstrap', 'material', 'ionic', 'primeng', 'kendo', 'ng-zorro-antd', 'nativescript'])(
+  it.each(['bootstrap', 'material', 'ionic', 'optimus-ui', 'primeng', 'kendo', 'ng-zorro-antd', 'nativescript'])(
     'should install %s with the same version as core',
     async (uiTheme) => {
       const tree = await runner.runSchematic('ng-add', { uiTheme }, appTree);
@@ -105,6 +105,13 @@ describe('ng-add-schematic', () => {
       // eslint-disable-next-line:trailing-comma
       /FormlyBootstrapModule/
     );
+  });
+
+  it('imports the Optimus UI module when selected', async () => {
+    const tree = await runner.runSchematic('ng-add', { uiTheme: 'optimus-ui' }, appTree);
+    const content = tree.readContent(`${projectPath}/src/app/app-module.ts`);
+    expect(content).toContain("import { FormlyOptimusUIModule } from '@ngx-formly/optimus-ui';");
+    expect(content).toMatch(/imports:\s*\[[^\]]*FormlyOptimusUIModule/);
   });
 
   it('should add to any module', async () => {

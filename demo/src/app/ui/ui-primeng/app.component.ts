@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'formly-app-example',
-  template: `<router-outlet></router-outlet>`,
+  template: ` <router-outlet /> `,
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   imports: [RouterOutlet],

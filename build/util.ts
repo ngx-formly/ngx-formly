@@ -11,6 +11,7 @@ export const PACKAGES = [
   'bootstrap',
   'material',
   'ionic',
+  'optimus-ui',
   'primeng',
   'kendo',
   'nativescript',

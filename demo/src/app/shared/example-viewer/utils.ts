@@ -37,20 +37,9 @@ export function getExampleFiles(type: string, exampleData: ExampleType) {
 
   const options: IThemeOption = { type };
 
-  if (['bootstrap', 'material', 'kendo', 'ionic', 'primeng', 'ng-zorro-antd'].indexOf(options.type) === -1) {
-    if (appConfigContent.indexOf('@ngx-formly/bootstrap') !== -1) {
-      options.type = 'bootstrap';
-    } else if (appConfigContent.indexOf('@ngx-formly/material') !== -1) {
-      options.type = 'material';
-    } else if (appConfigContent.indexOf('@ngx-formly/kendo') !== -1) {
-      options.type = 'kendo';
-    } else if (appConfigContent.indexOf('@ngx-formly/ionic') !== -1) {
-      options.type = 'ionic';
-    } else if (appConfigContent.indexOf('@ngx-formly/primeng') !== -1) {
-      options.type = 'primeng';
-    } else if (appConfigContent.indexOf('@ngx-formly/ng-zorro-antd') !== -1) {
-      options.type = 'ng-zorro-antd';
-    }
+  const themes = Object.keys(ngProvider);
+  if (!themes.includes(options.type)) {
+    options.type = themes.find((theme) => appConfigContent.includes(`@ngx-formly/${theme}`)) ?? options.type;
   }
 
   if (!options.type) {
@@ -135,7 +124,7 @@ export function getExampleFiles(type: string, exampleData: ExampleType) {
     let file = data.file;
 
     if (
-      file.match(/(component|module|type|service|preset|wrapper|extension|config)/) ||
+      file.match(/(component|module|type|service|preset|wrapper|extension)/) ||
       (exampleData.files.includes(data) && file.endsWith('.ts'))
     ) {
       file = 'app/' + file;
@@ -162,6 +151,16 @@ export function getExampleFiles(type: string, exampleData: ExampleType) {
 
 function _replaceExamplePlaceholderNames(filename: string, filecontent: string, options: IThemeOption): string {
   if (filename === 'app.config.ts') {
+    if (options.type === 'optimus-ui' && !filecontent.includes('provideOptimus')) {
+      filecontent = `import { provideOptimus } from '@openng/optimus-ui/config';
+import Aura from '@openng/optimus-ui-themes/aura';
+${filecontent}`;
+      filecontent = filecontent.replace(
+        /providers: \[\s*/,
+        'providers: [\n    provideOptimus({ theme: { preset: Aura } }),\n    ',
+      );
+    }
+
     if (options.type === 'ionic' && !filecontent.includes('provideIonicAngular')) {
       filecontent = filecontent.replace(
         `'@angular/core';`,
